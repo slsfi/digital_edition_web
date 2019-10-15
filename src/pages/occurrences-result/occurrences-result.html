@@ -1,0 +1,198 @@
+<ion-content padding>
+  <ion-fab class="search-results--mobile" bottom lef *ngIf="searchResult">
+    <button ion-button small (click)="openSearchResult()">{{searchResult}}&nbsp;<ion-icon name="search"></ion-icon></button>
+  </ion-fab>
+  <ion-fab class="search-results--desktop" top left *ngIf="searchResult">
+      <button ion-button small (click)="openSearchResult()">{{searchResult}}&nbsp;<ion-icon name="search"></ion-icon></button>
+  </ion-fab>
+  <ion-grid class="occurrences-result">
+    <ion-row justify-content-center>
+      <ion-col col-md-8 col-sm-12 class="occurrences-result__content">
+        <div margin>
+          <h2 text-center [ngClass]="userSettingsService.isMobile() ? 'title-mobile' : ''">
+            <ng-container *ngIf="title">{{title}}</ng-container>
+          </h2>
+          <ion-segment [(ngModel)]="segments" color="primary" (ionChange)=onSegmentChanged($event)>
+            <ion-segment-button value="info" class="segment-header" [ngClass]="userSettingsService.isMobile() ? 'segment-header-mobile' : ''">
+              {{"Occurrences.Info" | translate}}
+            </ion-segment-button>
+            <ion-segment-button value="occurrences" class="segment-header" [ngClass]="userSettingsService.isMobile() ? 'segment-header-mobile' : ''">
+              {{"Occurrences.Title" | translate}} <ng-container *ngIf="allOccurrences && allOccurrences.length">({{allOccurrences.length}})</ng-container>
+            </ion-segment-button>
+          </ion-segment>
+          <div *ngIf="segments=='info'" class="tei">
+            <div text-center *ngIf="loadingInfoData">
+              <br><br>
+              <ion-spinner></ion-spinner>
+            </div>
+            <ng-container *ngIf="!loadingInfoData">
+              <ng-container *ngIf="hasInfoDataToDisplay">
+                <!-- MEDIA DATA -->
+                <ng-container *ngIf="mediaData.description || mediaData.imageUrl">
+                  <ion-row *ngIf="!userSettingsService.isMobile()">
+                    <ion-col col-md-6 class="media_image_wrapper" *ngIf="mediaData.description">
+                      {{mediaData.description}}
+                    </ion-col>
+                    <ion-col col-md-6 class="media_description" *ngIf="mediaData.imageUrl">
+                      <img class="occurrences-result__media-image" src="{{mediaData.imageUrl}}">
+                    </ion-col>
+                  </ion-row>
+                  <ng-container *ngIf="userSettingsService.isMobile()">
+                    <div *ngIf="mediaData.imageUrl">
+                      <img class="occurrences-result__media-image--mobile" src="{{mediaData.imageUrl}}">
+                    </div>
+                    <div *ngIf="mediaData.description">
+                      {{mediaData.description}}
+                    </div>
+                  </ng-container>
+                </ng-container>
+                <!-- ./MEDIA DATA -->
+                <!-- INFO DATA -->
+                <ion-list *ngIf="hasInfoDataToDisplay && !hasInfoMediaDataOnlyToDisplay">
+                  <ion-item style="margin-top: 10px;">
+                      <ion-grid>
+                        <ion-row *ngIf="infoData.city">
+                          <ion-col class="header">
+                            {{"Occurrences.city" | translate}}
+                          </ion-col>
+                          <ion-col>
+                            <span class="city">{{infoData.city}}</span>
+                          </ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="infoData.region">
+                          <ion-col class="header">
+                            {{"Occurrences.region" | translate}}
+                          </ion-col>
+                          <ion-col>
+                            <span class="region">{{infoData.region}}</span>
+                          </ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="infoData.country">
+                          <ion-col class="header">
+                            {{"Occurrences.country" | translate}}
+                          </ion-col>
+                          <ion-col>
+                            <span class="country">{{infoData.country}}</span>
+                          </ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="infoData.place_of_birth">
+                          <ion-col class="header">
+                            {{"Occurrences.place_of_birth" | translate}}
+                          </ion-col>
+                          <ion-col>
+                            <span class="place_of_birth">{{infoData.place_of_birth}}</span>
+                          </ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="infoData.type">
+                          <ion-col class="header">
+                            {{"Occurrences.type" | translate}}
+                          </ion-col>
+                          <ion-col>
+                              <span class="type" *ngIf="infoData.type_translation">{{infoData.type_translation | translate}}</span>
+                              <span class="type" *ngIf="!infoData.type_translation">{{infoData.type}}</span>
+                          </ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="infoData.source">
+                          <ion-col class="header">
+                            {{"Occurrences.source" | translate}}
+                          </ion-col>
+                          <ion-col>
+                            <span class="source"><a href="{{infoData.source}}" target="_blank">{{infoData.source}}</a></span>
+                          </ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="infoData.description">
+                          <ion-col col-12 class="header">
+                            {{"Occurrences.description" | translate}}
+                          </ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="infoData.description">
+                          <ion-col col-12>
+                              <div class="description">{{infoData.description}}</div>
+                          </ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="articleData.length>0">
+                          <ion-col col-12 class="header">
+                            {{"Occurrences.articles" | translate}}
+                          </ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="articleData.length>0">
+                          <ion-col *ngFor="let article of articleData; let i = index" col-12>
+                            <ion-row class="info-article">
+                            <ion-col col-1>{{i+1}}. </ion-col>
+                            <ion-col col-11 class="info-article__description">
+                              <div>{{article.description}}</div>
+                              <div class="download-section">
+                                <a href="{{article.pdf_path}}" target="_blank">
+                                {{"Occurrences.download" | translate}}
+                                <ion-icon class="download" name="cloud-download"></ion-icon>
+                                </a>
+                              </div>
+                            </ion-col>
+                            </ion-row>
+                          </ion-col>
+                        </ion-row>
+                      </ion-grid>
+                      <!--<ion-icon *ngIf="isFiltersShown() && longitude" class="map_icon" name="ios-map"></ion-icon>
+                      <ion-icon *ngIf="!isFiltersShown() && longitude" class="map_icon" name="ios-map-outline"></ion-icon>-->
+                  </ion-item>
+                  <ion-item *ngIf="longitude" [ngClass]="isFiltersShown()?'map_item':'map_item_hidden'">
+                      <div id="map" [ngClass]="isFiltersShown()?'map':'map_hidden'"></div>
+                  </ion-item>
+                </ion-list>
+                <!-- ./INFO DATA -->
+              </ng-container>
+              <div *ngIf="!hasInfoDataToDisplay">
+                <div>
+                  <br>
+                  {{"Occurrences.NoInfoFound" | translate}} 
+                  <ng-container *ngIf="allOccurrences && allOccurrences.length">
+                  {{"Occurrences.Found" | translate}} {{allOccurrences.length}} {{"Occurrences.OccurrencesSmall" | translate}}.
+                  </ng-container>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+          <div *ngIf="segments=='occurrences'" class="tei">
+            <div text-center *ngIf="loadingOccurrencesData">
+              <br><br>
+              <ion-spinner></ion-spinner>
+            </div>
+            <ion-grid>
+              <ion-row>
+                <ion-col *ngFor="let text of occurrencesToShow" (click)="openText(text)" class="occurrence-result" >
+                  <div class="resultContainer">
+                    <div class="result-icon">
+                      <div>
+                        <div><ion-icon *ngIf="text.textType == 'ms'" name="clipboard"></ion-icon></div>
+                        <div><ion-icon *ngIf="text.textType == 'var'" name="copy"></ion-icon></div>
+                        <div><ion-icon *ngIf="text.textType == 'com'" name="chatbubbles"></ion-icon></div>
+                        <div><ion-icon *ngIf="text.textType == 'facs'" name="images"></ion-icon></div>
+                        <div><ion-icon *ngIf="text.textType == 'est'" name="book"></ion-icon></div>
+                        <div><ion-icon *ngIf="text.textType == 'song'" name="md-musical-note"></ion-icon></div>
+                      </div>
+                    </div>
+                    <div class="result-data">
+                      <div>
+                        <div class="first">{{text.displayName}}</div>
+                        <div>{{text.publication_name}}</div>
+                        <div>{{text.landscape}} - {{text.place}}</div>
+                      </div>
+                    </div>
+                    <div class="result-data-continued">
+                      <div>
+                        <div>{{text.publication_facsimile_page}}</div>
+                      </div>
+                    </div>
+                  </div>
+                </ion-col>
+                <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+                  <ion-infinite-scroll-content></ion-infinite-scroll-content>
+                </ion-infinite-scroll>
+              </ion-row>
+            </ion-grid>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

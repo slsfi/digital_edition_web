@@ -1,0 +1,7 @@
+<!-- Go to previous or next publication -->
+<ion-fab *ngIf="displayPrev" bottom left class="goLeft">
+    <button ion-fab color="primary" mini (click)="previous()"><ion-icon name="arrow-back"></ion-icon></button>
+</ion-fab>
+<ion-fab *ngIf="displayNext" bottom right>
+    <button ion-fab color="primary" mini (click)="next()"><ion-icon name="arrow-forward"></ion-icon></button>
+</ion-fab>

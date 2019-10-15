@@ -1,0 +1,25 @@
+.teiComment{
+    font-family: Georgia, serif  !important;
+    p[class*="p"]{
+        text-indent: 30px !important;
+    }    
+    
+    h4{
+        margin: 1em 0 .5em !important;
+        font-size: 1.1em !important;
+    }
+    
+    h3{
+        margin: 1.1em 0 .6em !important;
+        font-size: 1.4em !important;
+        font-variant: small-caps;
+    }
+}
+
+span.seg img{
+    width: 0.5em;
+}
+
+comments{
+    font-family: Georgia, serif  !important;
+}

@@ -1,0 +1,36 @@
+<ion-list *ngIf="menuStack">
+  <ion-item *ngIf="menuStack.length > 1" (click)="unDrill()" class="back-to-list-button" no-lines>
+    <div style="padding-left:2rem; white-space: normal;">{{titleStack[0]}}</div><ion-icon name="ios-arrow-back" item-left small></ion-icon>
+  </ion-item>
+  <ion-item *ngIf="menuStack.length === 1" (click)="exit()" class="back-to-list-button collections" no-lines>
+    <ion-icon name="ios-arrow-back" item-left small></ion-icon>
+  </ion-item>
+  <ion-item *ngIf="menuStack.length === 1 && titleText.length>0" shwoWen="core, mobile" [ngClass]="this.coverSelected?'selected':''">
+    <p class="justLevel" (click)="openTitlePage()">{{ "Read.TitlePage.Title" | translate }}</p>
+  </ion-item>
+  <ion-item *ngIf="menuStack.length === 1 && introText.length>0" [ngClass]="this.titleSelected?'selected':''">
+    <p class="justLevel" (click)="openIntroduction()">{{ "Read.Introduction.Title" | translate }}</p>
+  </ion-item>
+  <ng-container *ngFor="let item of menuStack[menuStack.length -1]; let i = index;">
+    <ng-container *ngIf="item.children">
+      <ion-item  (click)="drillDown(item)" id="toc_{{item.itemId}}">
+        <p>{{item.text}}</p>
+        <ion-icon name="ios-arrow-forward" item-right small></ion-icon>
+      </ion-item>
+    </ng-container>
+    <ng-container *ngIf="!item.children">
+      <ion-item-divider *ngIf="item.type==='subtitle'">
+        {{item.text}}
+      </ion-item-divider>
+      <ion-item *ngIf="item.type==='est'" (click)="open(item, null, 'toc_'+item.itemId)" id="toc_{{item.itemId}}" [ngClass]="(item.selected)?'selected':''">
+        <p>{{item.text}}</p>
+      </ion-item>
+      <ion-item *ngIf="item.type==='facsimile'" (click)="open(item, 'facsimile', 'toc_'+item.itemId)" id="toc_{{item.itemId}}" [ngClass]="(item.selected)?'selected':''">
+        <p>{{item.text}}</p>
+      </ion-item>
+      <ion-item *ngIf="item.type==='song-example'" (click)="open(item, 'song-example', 'toc_'+item.itemId)" id="toc_{{item.itemId}}" [ngClass]="(item.selected)?'selected':''">
+        <p>{{item.text}}</p>
+      </ion-item>
+    </ng-container>
+  </ng-container>
+</ion-list>

@@ -1,0 +1,15 @@
+<ion-fab top right *ngIf="displaySocialSharing" class="socialSharing">
+    <button ion-fab mini><ion-icon name="share"></ion-icon></button>
+      <ion-fab-list *ngIf="userSettingsService.isDesktop() || userSettingsService.isTablet()">
+        <button ion-fab *ngIf="show.facebook" shareButton="facebook"><ion-icon name="logo-facebook"></ion-icon></button>
+        <button ion-fab *ngIf="show.twitter" shareButton="twitter"><ion-icon name="logo-twitter"></ion-icon></button>
+        <!--<button ion-fab *ngIf="show.instagram"><ion-icon name="logo-instagram"></ion-icon></button>
+        <button ion-fab *ngIf="show.email"><ion-icon name="mail"></ion-icon></button>-->
+      </ion-fab-list>
+      <ion-fab-list *ngIf="userSettingsService.isMobile()">
+        <button ion-fab *ngIf="show.facebook" (click)="shareFacebook()"><ion-icon name="logo-facebook"></ion-icon></button>
+        <button ion-fab *ngIf="show.twitter" (click)="shareTwitter()"><ion-icon name="logo-twitter"></ion-icon></button>
+        <button ion-fab *ngIf="show.instagram" (click)="shareInstagram()"><ion-icon name="logo-instagram"></ion-icon></button>
+        <button ion-fab *ngIf="show.email" (click)="shareEmail()"><ion-icon name="mail"></ion-icon></button>
+      </ion-fab-list>
+</ion-fab>

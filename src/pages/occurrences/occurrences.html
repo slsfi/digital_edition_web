@@ -1,0 +1,138 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-title>{{"Occurrences.Title" | translate}}</ion-title>
+        <ion-buttons end>
+          <button (click)="cancel()" ion-button>
+            <ion-icon class="close-button" ios="ios-close" md="md-close"></ion-icon>
+          </button>
+        </ion-buttons>
+      </ion-toolbar>
+  
+  </ion-header>
+
+
+<ion-content padding>
+  <ion-col>
+      <ion-card *ngIf="title" class="custom-card">
+          <ion-card-header>
+            <div class="info">
+              <h3>
+                <span *ngIf="occupation" class="occupation">{{occupation}} - </span>
+                <span class="title">{{title}}</span>
+                <span *ngIf="date_born!=null||date_deceased!=null" class="date_born">({{date_born}} - </span>
+                <span *ngIf="date_born!=null||date_deceased!=null" class="date_deceased">{{date_deceased}})</span>
+                <span *ngIf="latitude" class="latitude">({{"Occurrences.latitude" | translate}} {{latitude}}, </span>
+                <span *ngIf="longitude" class="longitude">{{"Occurrences.longitude" | translate}} {{longitude}})</span>
+              </h3>
+              <div class="media_image_wrapper" *ngIf="mediaData.imageUrl">
+                <img src="{{mediaData.imageUrl}}">
+              </div>
+              <div class="media_description" *ngIf="mediaData.description">
+                {{mediaData.description}}
+              </div>
+            </div>
+          </ion-card-header>
+          <ion-card-content *ngIf="texts">
+              <ion-list>
+                <ion-item class="item-stable" (click)="showFilters()">
+                    <ion-grid>
+                      <ion-row *ngIf="city">
+                        <ion-col class="header">
+                          {{"Occurrences.city" | translate}}
+                        </ion-col>
+                        <ion-col>
+                          <span class="city">{{city}}</span>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row *ngIf="region">
+                        <ion-col class="header">
+                          {{"Occurrences.region" | translate}}
+                        </ion-col>
+                        <ion-col>
+                            <span *ngIf="region" class="region">{{region}}</span>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row *ngIf="country">
+                        <ion-col class="header">
+                          {{"Occurrences.country" | translate}}
+                        </ion-col>
+                        <ion-col>
+                            <span *ngIf="country" class="country">{{country}}</span>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row *ngIf="place_of_birth">
+                        <ion-col class="header">
+                          {{"Occurrences.place_of_birth" | translate}}
+                        </ion-col>
+                        <ion-col>
+                            <span *ngIf="place_of_birth" class="place_of_birth">{{place_of_birth}}</span>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row *ngIf="type">
+                        <ion-col class="header">
+                          {{"Occurrences.type" | translate}}
+                        </ion-col>
+                        <ion-col>
+                            <span *ngIf="type" class="type">{{type}}</span>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row *ngIf="source">
+                        <ion-col class="header">
+                          {{"Occurrences.source" | translate}}
+                        </ion-col>
+                        <ion-col>
+                            <span *ngIf="source" class="source"><a href="{{source}}" target="_blank">{{source}}</a></span>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row *ngIf="description">
+                        <ion-col col-12 class="header">
+                          {{"Occurrences.description" | translate}}
+                        </ion-col>
+                      </ion-row>
+                      <ion-row *ngIf="description">
+                        <ion-col col-12>
+                            <div *ngIf="description" class="description">{{description}}</div>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row *ngIf="articleData.length>0">
+                        <ion-col col-12 class="header">
+                          {{"Occurrences.articles" | translate}}
+                        </ion-col>
+                      </ion-row>
+                      <ion-row *ngIf="articleData.length>0">
+                        <ion-col *ngFor="let article of articleData; let i = index" col-12>
+                          <div class="article_count">{{i+1}}. </div>  
+                          <div class="article_description">{{article.description}}</div>
+                          <div class="article_link"><a href="{{article.pdf_path}}" target="_blank">{{"Occurrences.download" | translate}}</a></div>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                    <ion-icon *ngIf="isFiltersShown() && longitude" class="map_icon" name="ios-map"></ion-icon>
+                    <ion-icon *ngIf="!isFiltersShown() && longitude" class="map_icon" name="ios-map-outline"></ion-icon>
+                </ion-item>
+                <ion-item *ngIf="longitude" [ngClass]="isFiltersShown()?'map_item':'map_item_hidden'">
+                    <div id="map" [ngClass]="isFiltersShown()?'map':'map_hidden'"></div>
+                </ion-item>
+                <ion-item text-wrap style="margin-top: 10px;" *ngFor="let text of texts" (click)="openText(text)">
+                  <ion-label class="collectionName">{{text.collectionName}}</ion-label>
+                  <ion-label class="displayName">{{text.displayName}}</ion-label>
+                  <ion-label class="displayName">
+                  <div *ngIf="text.textType == 'song' && text.description">
+                    {{"Occurrences.Song" | translate}}: {{text.description}}
+                  </div>
+                  <div *ngIf="text.publication_facsimile_page">
+                    Facsimile page: {{text.publication_facsimile_page}}
+                  </div>
+                </ion-label>
+                  <button *ngIf="text.textType == 'ms'" ion-button outline item-end>{{"Occurrences.Manuscript" | translate}}</button>
+                  <button *ngIf="text.textType == 'var'" ion-button outline item-end>{{"Occurrences.Variation" | translate}}</button>
+                  <button *ngIf="text.textType == 'com'" ion-button outline item-end>{{"Occurrences.Commentary" | translate}}</button>
+                  <button *ngIf="text.textType == 'facs'" ion-button outline item-end>{{"Occurrences.Facsimile" | translate}}</button>
+                  <button *ngIf="text.textType == 'est'" ion-button outline item-end>{{"Occurrences.Established" | translate}}</button>
+                  <button *ngIf="text.textType == 'song'" ion-button outline item-end>{{"Occurrences.Song" | translate}}</button>
+                </ion-item>
+              </ion-list>
+            </ion-card-content>
+      </ion-card>
+    </ion-col>
+</ion-content>

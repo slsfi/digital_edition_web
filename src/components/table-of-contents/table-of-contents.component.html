@@ -1,0 +1,22 @@
+<ion-list>
+    <ion-item *ngIf="showIntroduction">
+      <p class="justLevel" (click)="openIntroduction()">{{ "Read.Introduction.Title" | translate }}</p>
+    </ion-item>
+    <ion-item *ngFor="let item of tocItems; let i = index;" (click)="openTocItem(item)">
+      <p class="{{(item.isIndented)?'indented':((item.isHighLevel)?'highLevel':'justLevel')}}">{{item.title}}</p>
+    </ion-item>
+
+  <!--
+  <template ngFor let-cat [ngForOf]="tableOfContents" []>
+
+    <template [ngIf]="cat.items">
+      <ion-item-divider color="dark" *ngIf="cat.items.length && cat.items.length > 1">{{cat.title}}</ion-item-divider>
+      <ion-item *ngFor="let item of cat.items" (click)="openTocItem(item)">{{item.title}}</ion-item>      
+    </template>
+
+    <ion-item *ngIf="cat.link && cat.title" (click)="openTocItem(cat)">
+      {{cat.title}}
+    </ion-item>
+
+  </template>-->
+</ion-list>

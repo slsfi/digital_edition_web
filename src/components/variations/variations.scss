@@ -1,0 +1,107 @@
+variations {
+    .toolTip{
+        z-index: 1000;
+        position: absolute;
+        background: #88b7d5;
+        border: 1px solid #c2e1f5;
+        box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
+        padding-left: 4px;
+        padding-right: 4px;
+        white-space: normal;
+    }
+    .toolTip:after, .toolTip:before {
+        right: 100%;
+        top: 50%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+    }
+    
+    .toolTip:after {
+        border-color: rgba(136, 183, 213, 0);
+        border-right-color: #88b7d5;
+        border-width: 4px;
+        margin-top: -4px;
+    }
+    .toolTip:before {
+        border-color: rgba(194, 225, 245, 0);
+        border-right-color: #c2e1f5;
+        border-width: 5px;
+        margin-top: -5px;
+    }
+
+    .tab-container{
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        width: 90%;
+        background: #efefef;
+        align-items: flex-end;
+        position: relative;
+        cursor: pointer;
+        margin-bottom: 1rem;
+        top: -1.2rem;
+        background-color: transparent;
+    }
+
+    .tab{
+        color: #dedede;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-left: 0.5rem;
+        padding-right: 1rem;
+        padding-top: 1rem;
+        padding-bottom: 0.2rem;
+        align-self: flex-end;
+        background-color: white;
+        border-bottom: 1px solid black;
+    }
+
+
+    .firts-tab{
+        white-space: nowrap;
+        padding-right: 1rem;
+        padding-top: 1rem;
+        padding-bottom: 0.2rem;
+        padding-left: 0.5rem;
+        background-color: white;
+        border-bottom: 1px solid red;
+        font-weight: 600;
+        color: black;
+    }
+
+    .open-in-tab-hidden{
+        display: none;
+        position: absolute;
+        margin-top: 0.3rem;
+        font-weight: 100;
+        font-size: 0.8rem !important;
+    }
+
+    .tab-container > div:hover .open-in-tab-hidden{
+        display: block;
+    }
+
+    .tab-container > div:hover{
+        white-space: nowrap;
+        overflow: initial;
+        text-overflow: unset;
+        padding-right: 1rem;
+        padding-top: 1rem;
+        padding-bottom: 0.2rem;
+        padding-left: 0.5rem;
+        background-color: white;
+        border-bottom: 1px solid red;
+        font-weight: 600;
+        color: black;
+    }
+
+    .open-in-tab{
+        display: none;
+    }
+}

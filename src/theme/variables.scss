@@ -1,0 +1,220 @@
+// Ionic Variables and Theming. For more info, please see:
+// http://ionicframework.com/docs/v2/theming/
+@import "ionic.globals";
+
+
+// Shared Variables
+// --------------------------------------------------
+// To customize the look and feel of this app, you can override
+// the Sass variables found in Ionic's source scss files.
+// To view all the possible Ionic variables, see:
+// http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
+
+$text-color:        #000000;
+$background-color:  #fafafa;
+
+
+// Named Color Variables
+// --------------------------------------------------
+// Named colors makes it easy to reuse colors on various components.
+// It's highly recommended to change the default colors
+// to match your app's branding. Ionic uses a Sass map of
+// colors so you can add, rename and remove colors as needed.
+// The "primary" color is the only required color in the map.
+
+$colors: (
+	primary:	#B0A898,
+	secondary:	#888174,
+	danger:		#f53d3d,
+	light:		#D3DD9F,
+	person:		#edd19f,
+	location:	#62c3e1,
+	change:		#606b2f,
+	dark:		#222,
+	white:		#fff,
+	purple:		#413861,
+	orange:		#e1a462,
+	com:		#e1a462,
+	est:		#e6572c,
+	ms:			#b0e162,
+	inl:		#e162ac,
+	tit:		#62c3e1,
+	var:		#b262e1
+);
+
+
+$fab-content-margin: 0;
+
+$text-color:                           $text-color;
+
+// Use the primary color as the background for the toolbar-md-background
+$toolbar-background:                   color($colors, purple);
+
+// Use the default background for the tabbar since it inherits from toolbar
+$tabs-background:                      color($colors, purple);
+
+// Change the color of the tabs text
+$tabs-tab-color-active:                color($colors, white);
+$tabs-tab-color-inactive:              color($colors, white);
+
+// Change the color of the segment button text
+$toolbar-active-color:                 #fff;
+$toolbar-inactive-color:               #fff;
+$segment-button-text-color-activated:  #fff;
+
+$back-button-color:							color($colors, primary);
+$back-button-text-color:				color($colors, dark);
+$forward-arrow-color:						color($colors, dark);
+
+
+// App iOS Variables
+// --------------------------------------------------
+// iOS only Sass variables can go here
+
+
+
+// App Material Design Variables
+// --------------------------------------------------
+// Material Design only Sass variables can go here
+
+// Change #000 to any color to see the md text color change
+//$text-md-color:                           $text-color;
+
+// Use the primary color as the background for the toolbar-md-background
+//$toolbar-md-background:                   color($colors, purple);
+
+// Use the default background for the tabbar since it inherits from toolbar
+//$tabs-md-background:                      color($colors, purple);
+
+// Change the color of the tabs text
+$tabs-md-tab-color-active:                color($colors, white);
+$tabs-md-tab-color-inactive:              color($colors, white);
+
+// Change the color of the segment button text
+$toolbar-md-active-color:                 #fff;
+$toolbar-md-inactive-color:               #fff;
+$segment-button-md-text-color-activated:  #fff;
+//$item-md-detail-push-show: true;*/
+
+// App Windows Variables
+// --------------------------------------------------
+// Windows only Sass variables can go here
+
+
+
+// custom variables
+
+$top-menu-left: 370px;
+$top-menu-left-split-pane: 10px;
+
+$font-family-base:'Open Sans',Arial,sans-serif;
+$font-family-header:'Open Sans',Arial,sans-serif;
+
+// Project specific variables
+@import "project-variables.scss";
+
+
+// App Theme
+// --------------------------------------------------
+// Ionic apps can have different themes applied, which can
+// then be future customized. This import comes last
+// so that the above variables are used and Ionic's
+// default are overridden.
+
+@import "ionic.theme.default";
+
+
+// Ionicons
+// --------------------------------------------------
+// The premium icon font for Ionic. For more info, please see:
+// http://ionicframework.com/docs/v2/ionicons/
+
+$ionicons-font-path: "../assets/fonts";
+@import "ionicons";
+
+.searchbar-search-icon{
+	left: 1rem !important;
+	top: 0.5rem !important;
+	width: 2rem !important;
+	height: 2rem !important;
+}
+
+.filter-button {
+	font-size: 2rem !important;
+}
+
+.button-md{
+	height: 2.3rem !important;
+}
+
+.tei.heading{
+    font-size: 1.3rem !important;
+    text-transform: none;
+}
+
+.tei.places{
+    font-size: 1.0rem;
+    color: #78756f;
+}
+
+.tei.collections{
+    font-size: 1rem;
+    color: #78756f;
+}
+
+.tei h2{
+    padding-top: 1em;
+    font-size: 1em !important; 
+}
+
+.tei.place_name,.onki_province,.collection{
+    color: #78756f;
+}
+
+match {
+	background-color: transparent !important;
+}
+
+.selected-toc-item p{
+	font-weight: bold;
+}
+
+img[src*="#fsfd_bild_md_left"] {
+    padding: 2px;
+    border: 1px solid #c4c4b1;
+    float: left;
+    margin-right: 10px;
+}
+
+img[src*="#fsfd_bild_md_right"] {
+    padding: 2px;
+    border: 1px solid #c4c4b1;
+    float: right;
+    margin-left: 10px;
+}
+
+blockquote{
+    font-style: italic;
+    font-weight: 600;
+}
+
+.toolbar-background{
+    background-color: #A6AEBD;
+}
+
+.content {
+    background-color: #ECEBE4 !important;
+}
+
+.item {
+    background-color: #ECEBE4 !important;
+}
+
+.description{
+    white-space: normal;
+    line-height: 1.4rem !important;
+}
+.media_description {
+    float: left;
+}
+

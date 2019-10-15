@@ -1,0 +1,55 @@
+<ion-content>
+    <ion-scroll scrollX="true" scrollY="true" zoom="true" class="scroll">
+        <div class="contents">
+            <div class="center_content">        
+                <div class="div_img">
+                    <div middle class="facsimile_button_group">
+                        <ion-item *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()">
+                            <ion-label position="floating">{{"Read.Facsimiles.Page" | translate}} ({{"Read.Facsimiles.Of" | translate}} {{(images)?images.length:0}}):</ion-label>
+                            <ion-input class="page_number_input" size="12" (change)="setPage($event)" [(ngModel)]="manualPageNumber" type="number"></ion-input>
+                        </ion-item>
+                        <div class="buttons">
+                            <button style="display: inline-block;" ion-fab color="primary" mini (click)="previous()">
+                                <ion-icon name="arrow-back"></ion-icon>
+                            </button>
+                            <button style="display: inline-block;" ion-fab color="primary" mini (click)="next()">
+                                <ion-icon name="arrow-forward"></ion-icon>
+                            </button>
+                            <button *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()" style="display: inline-block;" ion-fab color="primary" mini (click)="zoomIn()">
+                                <ion-icon name="add"></ion-icon>
+                            </button>
+                            <button *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()" style="display: inline-block;" ion-fab color="primary" mini (click)="zoomOut()">
+                                <ion-icon name="remove"></ion-icon>
+                            </button>
+                            <button style="display: inline-block;" ion-fab mini (click)="cancel()">
+                                <ion-icon name="close" class="close_button"></ion-icon>
+                            </button>
+                        </div>
+                        <div *ngIf="userSettingsService.isMobile() || userSettingsService.isTablet()" class="mobile_pagenr">
+                            <ion-item>
+                                <ion-label position="floating">{{"Read.Facsimiles.Page" | translate}} ({{"Read.Facsimiles.Of" | translate}} {{(images)?images.length:0}}):</ion-label>
+                                <ion-input class="page_number_input" size="12" (change)="setPage($event)" [(ngModel)]="manualPageNumber" type="number"></ion-input>
+                            </ion-item>
+                        </div>
+                    </div>
+                    <div *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()">
+                        <img *ngIf="!facsimilePagesInfinite" [ngStyle]="{'transform':'scale('+zoom+')'}" [src]="images[activeImage]" class="facsimile-zoom-image">
+                        <img *ngIf="facsimilePagesInfinite && facsNumber" [ngStyle]="{'transform':'scale('+zoom+')'}" [src]="facsUrl + facsNumber" class="facsimile-zoom-image">
+                    </div>
+                    <div *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet())">
+                        <div *ngIf="!facsimilePagesInfinite">
+                            <pinch-zoom (swipe)="handleSwipeEvent($event)">
+                                <img [src]="images[activeImage]" class="facsimile-zoom-image">
+                            </pinch-zoom>
+                        </div>
+                        <div *ngIf="facsimilePagesInfinite && facsNumber">
+                            <pinch-zoom (swipe)="handleSwipeEvent($event)">
+                                <img [src]="facsUrl + facsNumber" class="facsimile-zoom-image">
+                            </pinch-zoom>
+                        </div>
+                    </div>
+                </div>
+            </div>      
+        </div>
+    </ion-scroll>
+</ion-content>

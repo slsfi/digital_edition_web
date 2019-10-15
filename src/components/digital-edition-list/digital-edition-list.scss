@@ -1,0 +1,35 @@
+digital-editions-list {
+    .download {
+        position: absolute;
+        top: 0;
+        right: 0.5em;
+        color: rgba($color: #000000, $alpha: 0.3)
+    }
+    .card-content-md{
+        padding: 0;
+    }
+    .card{
+        cursor: pointer;
+    }
+    .col-mobile{
+        padding: 0;
+    }
+    .grid-mobile{
+        padding: 0;
+    }
+    .card-md {
+        ion-card-content {
+            h2 {
+               word-break: break-all;
+               margin-bottom: 1rem;
+            }
+            p {
+                text-align: left;
+                font-size: 1rem;
+                color: #ccc;
+                margin-bottom: 0.8rem;
+                line-height: 1rem;
+            }
+        }
+    }
+}

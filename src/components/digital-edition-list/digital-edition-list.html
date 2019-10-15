@@ -1,0 +1,129 @@
+<div *ngIf="layoutType == 'auto'">
+  <ion-grid *ngIf="userSettingsService.isDesktop() && !userSettingsService.isTablet()">
+      <ion-row>
+        <ion-col style="display: flex;justify-content: center;" *ngFor="let edition of digitalEditions" menuClose col-md-4 col-sm-6 col-lg-3 (click)="openCollection(edition, false)">
+          <ion-card class="digital-edition" style="padding: 20px; margin: 20px; position: relative; background-color: white;">
+              <ion-card-header>
+                <img src="{{editionImages[edition.id] ? (editionImages[edition.id]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
+                <ion-icon (click)="downloadPDF(edition)" class="download" *ngIf="edition.isDownload" name="cloud-download"></ion-icon>
+                <ion-icon class="download" *ngIf="!edition.isDownload"  name="book"></ion-icon>
+              </ion-card-header>
+              <ion-card-content style="padding-top: 35px;">
+                <div style="background-color: white; text-align: center;">
+                  <h2>{{edition.title}}</h2>
+                  <p *ngFor="let row of shortText(edition.id)">{{row}}</p>
+                </div>
+              </ion-card-content>
+            </ion-card>
+        </ion-col>
+      </ion-row>
+  </ion-grid>
+
+  <ion-grid *ngIf="userSettingsService.isTablet()">
+      <ion-row>
+        <ion-col style="display: flex;justify-content: center;" *ngFor="let edition of digitalEditions" menuClose (click)="openCollection(edition, false)" col-md-6>
+          <ion-card class="digital-edition" style="padding: 20px; margin: 20px; position: relative; background-color: white;">
+              <ion-card-header>
+                <img src="{{editionImages[edition.id] ? (editionImages[edition.id]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
+                <ion-icon class="download" *ngIf="!edition.isDownload"  name="book"></ion-icon>
+                <ion-icon (click)="downloadPDF(edition)" class="download" *ngIf="edition.isDownload" name="cloud-download"></ion-icon>
+              </ion-card-header>
+              <ion-card-content style="padding-top: 35px;">
+                  <div style="background-color: white; text-align: center;">
+                    <h2>{{edition.title}}</h2>
+                    <p *ngFor="let row of shortText(edition.id)">{{row}}</p>
+                  </div>
+              </ion-card-content>
+            </ion-card>
+        </ion-col>
+      </ion-row>
+  </ion-grid>
+  <ion-grid *ngIf="userSettingsService.isMobile() && !userSettingsService.isTablet()" class="grid-mobile">
+    <ion-row>
+        <ion-col class="col-mobile">
+            <ion-list class="item-white">
+                <ion-item *ngFor="let edition of digitalEditions" menuClose (click)="openCollection(edition, true)">
+                <ion-thumbnail item-left>
+                  <img src="{{editionImages[edition.id] ? (editionImages[edition.id]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
+                  <ion-icon class="download" *ngIf="!edition.isDownload"  name="book"></ion-icon>
+                  <ion-icon (click)="downloadPDF(edition)" class="download" *ngIf="edition.isDownload" name="cloud-download"></ion-icon>
+                </ion-thumbnail>
+                <h2>{{edition.title}}</h2>
+                <p *ngFor="let row of shortText(edition.id)">{{row}}</p>
+                </ion-item>
+            </ion-list>
+        </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
+
+<div *ngIf="layoutType == 'grid'">
+    <ion-grid>
+        <ion-row>
+            <ion-col style="display: flex;
+            justify-content: center;" *ngFor="let edition of digitalEditions" menuClose (click)="openCollection(edition, false)" col-sm-6 col-sm-3>
+              <ion-card class="digital-edition" style="padding: 20px; margin: 20px; position: relative;">
+                  <ion-card-header>
+                    <img src="{{editionImages[edition.id] ? (editionImages[editionid]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
+                    <ion-icon class="download" *ngIf="!edition.isDownload"  name="book"></ion-icon>
+                    <ion-icon (click)="downloadPDF(edition)" class="download" *ngIf="edition.isDownload" name="cloud-download"></ion-icon>
+                  </ion-card-header>
+                  <ion-card-content style="padding-top: 35px;">
+                      <div style="background-color: white; text-align: center;">
+                        <h2>{{edition.title}}</h2>
+                        <p *ngFor="let row of shortText(edition.id)">{{row}}</p>
+                      </div>
+                  </ion-card-content>
+                </ion-card>
+            </ion-col>
+          </ion-row>
+    </ion-grid>
+  </div>
+
+<div *ngIf="layoutType == 'list'">
+    <ion-grid>
+        <ion-row *ngIf="userSettingsService.isDesktop() && !userSettingsService.isTablet() && !userSettingsService.isMobile()">
+            <ion-col class="front-page-list">
+                <ion-list class="item-white" margin>
+                    <ion-item *ngFor="let edition of digitalEditionsFirstHalf" menuClose (click)="openCollection(edition, true)">
+                    <ion-thumbnail item-left>
+                      <img src="{{editionImages[edition.id] ? (editionImages[edition.id]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
+                      <ion-icon class="download" *ngIf="!edition.isDownload"  name="book"></ion-icon>
+                      <ion-icon (click)="downloadPDF(edition)" class="download" *ngIf="edition.isDownload" name="cloud-download"></ion-icon>
+                    </ion-thumbnail>
+                    <h2>{{edition.title}}</h2>
+                    <p *ngFor="let row of shortText(edition.id)">{{row}}</p>
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+            <ion-col class="front-page-list">
+                <ion-list class="item-white" margin>
+                    <ion-item *ngFor="let edition of digitalEditionsSecondHalf" menuClose (click)="openCollection(edition, true)">
+                    <ion-thumbnail item-left>
+                      <img src="{{editionImages[edition.id] ? (editionImages[edition.id]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
+                      <ion-icon class="download" *ngIf="!edition.isDownload"  name="book"></ion-icon>
+                      <ion-icon (click)="downloadPDF(edition)" class="download" *ngIf="edition.isDownload" name="cloud-download"></ion-icon>
+                    </ion-thumbnail>
+                    <h2>{{edition.title}}</h2>
+                    <p *ngFor="let row of shortText(edition.id)">{{row}}</p>
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="userSettingsService.isMobile() || userSettingsService.isTablet()">
+            <ion-col>
+                <ion-list class="item-white" margin>
+                    <ion-item *ngFor="let edition of digitalEditions" menuClose (click)="openCollection(edition, true)">
+                    <ion-thumbnail item-left>
+                      <img src="{{editionImages[edition.id] ? (editionImages[edition.id]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
+                      <ion-icon class="download" *ngIf="!edition.isDownload"  name="book"></ion-icon>
+                      <ion-icon (click)="downloadPDF(edition)" class="download" *ngIf="edition.isDownload" name="cloud-download"></ion-icon>
+                    </ion-thumbnail>
+                    <h2>{{edition.title}}</h2>
+                    <p *ngFor="let row of shortText(edition.id)">{{row}}</p>
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</div>

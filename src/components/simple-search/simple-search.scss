@@ -1,0 +1,295 @@
+simple-search {
+    em{
+        font-weight: bold;
+        color: color($colors, purple);
+    }
+
+    h2{
+        text-decoration: underline;
+    }
+
+    .matchesOn h2{
+        text-decoration: none;
+    }
+
+    .highLightText{
+        padding-top: 0.5em;
+        display: block;
+        white-space: normal;
+    }
+
+    .searchItem:hover {
+        background-color: color($colors, secondary);
+        cursor: pointer;
+    }
+
+    .textType{
+        text-transform: lowercase;
+    }
+
+    .matches{
+        display: inline;
+    }
+
+    .matchesOn{
+        display: block;
+        position: absolute;
+        right: 0.4em;
+        bottom: 0;
+        font-size: 75%;
+    }
+
+    .textType{
+        position: absolute;
+        right: 0.3em;
+        top: 0;
+    }
+
+    .coll_pub{
+        padding-top: 1rem;
+        font-size: 80%;
+    }
+
+    .title, .occupation{
+        text-decoration: underline;
+    }
+
+    .title{
+        white-space: normal;
+    }
+
+    .textType.person{
+        color: rgba(color($colors, person), 0.7);
+        display: inline;
+        font-size: 0.9rem !important;
+    }
+    .textType.location{
+        color: rgba(color($colors, location), 0.7);
+        display: inline;
+        font-size: 0.9rem !important;
+    }
+    .textType.tag{
+        color: rgba(color($colors, tag), 0.7);
+        display: inline;
+        font-size: 0.9rem !important;
+    }
+    .textType.est{
+        color: rgba(color($colors, est), 0.7);
+        background-color: transparent;
+        display: inline;
+        font-size: 0.9rem !important;
+    }
+    .textType.com{
+        color: rgba(color($colors, com), 0.7);
+        background-color: transparent;
+        display: inline;
+        font-size: 0.9rem !important;
+    }
+    .textType.ms{
+        color: rgba(color($colors, ms), 0.7);
+        background-color: transparent;
+        display: inline;
+        font-size: 0.9rem !important;
+    }
+    .textType.inl{
+        color: rgba(color($colors, inl), 0.7);
+        background-color: transparent;
+        display: inline;
+        font-size: 0.9rem !important;
+    }
+    .textType.tit{
+        color: rgba(color($colors, tit), 0.7);
+        background-color: transparent;
+        display: inline;
+        font-size: 0.9rem !important;
+    }
+    .textType.var{
+        color: rgba(color($colors, var), 0.7);
+        background-color: transparent;
+        display: inline;
+        font-size: 0.9rem !important;
+    }
+
+    .subFacets > .item{
+        padding-left: 0px;
+    }
+
+    .subFacetsLabel{
+        margin: 0%;
+    }
+
+    .facets > div > .item-block{
+        padding-left: 0px;
+    }
+
+    .facetArrow{
+        z-index: 999;
+        cursor: pointer;
+        text-align: right;
+        font-size: 2rem !important;
+    }
+
+    .subFacetOpen{
+        display: block;
+    }
+
+    .subFacetClosed{
+        display: none;
+    }
+
+    .search-suggestions {
+        .item {
+            .item-inner {
+                border: unset;
+            }
+
+            &:not(.selected-suggestion) {
+                background-color: white !important;
+
+                &:hover {
+                    background-color: #eee !important;
+                }
+            }
+
+            &.selected-suggestion {
+                background-color: color($colors, light) !important;
+            }
+        }
+
+        .scroll-content {
+            background-color: white;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+    }
+
+    .search-bar-page {
+        padding: 0;
+        min-height: unset;
+
+        &:not(.has-suggestions) {
+            padding-bottom: 5px;
+        }
+
+        &.has-suggestions .searchbar-input {
+            border-bottom-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+        }
+    }
+
+    .result-container{
+        /*display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;*/
+    }
+
+    .results{
+        order: 0;
+    }
+
+    .results.dimmed{
+        opacity: 0.4;
+    }
+
+    .facets{
+        order: 0;
+        background-color: rgba(178, 178, 178, 1);
+        min-width: 65%;
+        z-index: 99;
+        height: fit-content;
+        -webkit-box-shadow: 4px 4px 1px -2px rgba(0,0,0,0.45);
+        -moz-box-shadow: 4px 4px 1px -2px rgba(0,0,0,0.45);
+        box-shadow: 4px 4px 1px -2px rgba(0,0,0,0.45);
+        position: absolute;
+    }
+
+    .facetCategories * {
+        background-color: rgb(240, 240, 240);
+        cursor: pointer;
+    }
+
+    .facetCategories ion-label {
+        padding-left: 0.4rem;
+    }
+
+    .facetCategories ion-item{
+        height: 2.2rem;
+    }    
+
+    .subFacets * {
+        background-color: rgb(245, 245, 245);
+        cursor: pointer;
+    }
+    
+    .subFacets > * {
+        background-color: rgb(245, 245, 245);
+        cursor: pointer;
+    }
+
+    .count{
+        float: right;
+    }
+
+    .facets > ion-label{
+        display: flex;
+    }
+
+    .hideFacets{
+        display: none;
+    }
+
+    .toggleRow{
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .toggleFacets{
+        padding-right: 1.2rem;
+        cursor: pointer;
+    }
+
+    .hitCount{
+        float: right;
+        white-space: nowrap;
+    }
+
+    .appliedFacets{
+        display: flex;
+        flex-wrap: wrap;
+        cursor: pointer;
+    }
+
+    .appliedFacets > div{
+        padding-right: 2px;
+    }
+
+    .appliedFacets ion-label{
+        font-size: 0.7rem;
+    }
+
+    .appliedFacets ion-icon{
+        color: black;
+        background-color: transparent;
+    }
+
+    ion-chip{
+        height: 1.3rem !important;
+        line-height: 1.3rem !important;
+    }
+
+    ion-chip ion-icon{
+        height: 1.3rem !important;
+        line-height: 1.3rem !important;
+        font-size: 1rem;
+    }
+
+    .facetsRight{
+        right: 0;
+        width: 100%;
+        position: absolute;
+        order: 1;
+        height: 100%;
+        z-index: 1;
+    }
+}

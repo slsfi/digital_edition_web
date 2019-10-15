@@ -1,0 +1,38 @@
+page-search-app {
+    .close-button {
+        float: right;
+        display: flex;
+        padding-right: 1rem;
+        font-size: 3rem !important;
+    }
+
+    .search-title {
+        margin-left: 1.2rem !important;
+        color: white;
+    }
+
+    .segment-header{
+        font-size: 1rem !important;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        min-width: max-content;
+    }
+
+    .segment-button{
+        border: 0px !important;
+        border-radius: 0px !important;
+    }
+
+    .segment-button{
+        border: 0px !important;
+        border-radius: 0px !important;
+	}
+	
+	.segment-activated{
+		background-color: color($colors, primary) !important;
+		color: color($colors, white) !important;
+	}
+	.header{
+		border-bottom: 1px solid color($colors, primary);
+	}
+}

@@ -1,0 +1,152 @@
+<ng-container *ngIf="!scrollableSimpleSearch">
+  <ion-searchbar class="search-bar search-bar-page"
+    [ngClass]="{'has-suggestions': searchSuggestions && searchSuggestions.length}"
+    placeholder="{{'SearchApp.search-holder' | translate}}"
+    [(ngModel)]="searchString"
+    [showCancelButton]="shouldShowCancel"
+    (ionInput)="onInput($event)"
+    (ionCancel)="onCancel($event)"
+    #searchbar>
+  </ion-searchbar>
+  <div class="toggleRow">
+    <div class="toggleFacets">
+      <ion-icon name="md-funnel" (click)="toggleFacets()"></ion-icon>
+    </div>
+    <div class="appliedFacets">
+      <div *ngFor="let item of appliedFacets" >
+        <ion-chip outline="true">
+          <ion-label>{{item.name}}</ion-label>
+          <ion-icon name="md-close-circle" (click)="removeSubType(item)"></ion-icon>
+        </ion-chip>
+      </div>
+    </div>
+    <div class="hitCount">
+      {{"SearchApp.hitCount" | translate}}: {{totalHits}}
+    </div>
+  </div>
+  <ion-scroll 
+    *ngIf="searchSuggestions.length"
+    class="search-suggestions" 
+    [ngStyle]="searchSuggestions && searchSuggestions.length > 0 && simpleSearchHeight > 0 ? {'height.px': searchSuggestions.length > 30 ? 90 : searchSuggestions.length * 50} : {'height': 0}" 
+    style="width:100%;" 
+    scrollY="true">
+    <ion-list scroll="true">
+      <ion-item *ngFor="let item of searchSuggestions; let i = index" class="searchItem" (click)="selectAutocomplete(item)" [ngClass]="{'selected-suggestion': i == acIndex}">
+        {{item}}
+      </ion-item>
+    </ion-list>
+  </ion-scroll>
+  <ion-list>
+    <div text-center *ngIf="isLoading && searchTypesMade !== searchTypesTotal">
+      <ion-spinner class="loading" name="dots"></ion-spinner>
+    </div>
+    <div class="result-container">
+      <div class="facetsContainer">
+        <div class="facets" [ngClass]="showFacets?'showFacets':'hideFacets'">
+          <div class="facetCategories" *ngFor="let item of searchFacets">
+            <ion-item *ngIf="item['count'] > 0">
+              <ion-icon *ngIf="item.opened" name="ios-arrow-forward" item-right (click)="showSubFacets(item)" class="facetArrow"></ion-icon>
+              <ion-icon *ngIf="!item.opened" name="ios-arrow-down" item-right (click)="showSubFacets(item)" class="facetArrow"></ion-icon>
+              <ion-label (click)="showSubFacets(item)">{{item['name'] | translate }}</ion-label>
+            </ion-item>
+            <div class="subFacets" *ngIf="item.children.length > 0" [ngClass]="item.opened?'subFacetOpen':'subFacetClosed'">
+              <ion-item *ngFor="let childItem of item.children">
+                  <ion-label (click)="filterSubType(childItem)" class="subFacetsLabel">{{childItem.name}} <div class="count">{{childItem.count}}</div></ion-label>
+              </ion-item>
+            </div>          
+          </div>
+        </div>
+        <div class="facetsRight" *ngIf="showFacets" (click)="toggleFacets(true)">&nbsp;</div>
+      </div>
+      <div [ngClass]="showFacets?'results dimmed':'results'">
+        <div *ngFor="let item of resultsToShow" >
+          <ion-item class="searchItem" (click)="gotToText(item.path, item.textType, item.matches, item.facsimilePage, item)">
+              <div class="textType {{ item.textType }}">
+                <span *ngIf="item.textType=='person'" name="person">{{("subject"|translate)}}</span>
+                <span *ngIf="item.textType=='location'" name="globe">{{("location"|translate)}}</span>
+                <span *ngIf="item.textType=='tag'" name="information-circle">{{("tag"|translate)}}</span>
+                <span *ngIf="item.textType=='song'" name="musical-notes">{{("song"|translate)}}</span>
+                <span *ngIf="item.textType!='tag' && item.textType!='location' && item.textType!='person' && item.textType!='song'" name="information-circle">{{(item.textType|translate)}}</span>
+              </div>
+              <span class="title"><span class="occupation" *ngIf="item.occupation" class="occupation">{{item.occupation}} - </span>{{item.TitleIndexed}}</span>
+              <span class="dates" *ngIf="item.date_born || item.date_deceased" >(</span>
+              <span class="dates" *ngIf="item.date_born!='null'" innerHTML="{{item.date_born}}"></span>
+              <span class="dates" *ngIf="item.date_born || item.date_deceased"> - </span>
+              <span class="dates" *ngIf="item.date_deceased!='null'" innerHTML="{{item.date_deceased}}"></span>
+              <span class="dates" *ngIf="item.date_born || item.date_deceased">)</span>      
+              <span class="highLightText" innerHTML="{{item.highLightText}}"></span>
+              <div *ngIf="item.collection_name || item.publication_name" class="coll_pub">
+                <span class="collection" innerHTML="{{item.collection_name}} - "></span>
+                <span class="publication" innerHTML="{{item.publication_name}}"></span>
+                <span *ngIf="item.facsimilePage && showPageNumbers" class="facsimilePage">( {{("SearchApp.pagenumber"|translate)}} {{item.facsimilePage}} )</span>
+              </div>
+              <div *ngIf="item.song_performer_firstname" class="coll_pub">
+                {{("playman"|translate)}}
+                <span class="collection" innerHTML=": {{item.song_performer_firstname}} "></span>
+                <span class="publication" innerHTML="{{item.song_performer_lastname}}, "></span>
+                {{("recorder"|translate)}}
+                <span class="collection" innerHTML=": {{item.song_recorder_firstname}} "></span>
+                <span class="publication" innerHTML="{{item.song_recorder_lastname}}"></span>
+              </div>
+          </ion-item>
+        </div>
+      </div>
+    </div>
+  </ion-list>
+</ng-container>
+
+<ion-grid *ngIf="scrollableSimpleSearch">
+    <ion-row>
+      <ion-col>
+          <ion-searchbar class="search-bar search-bar-page"
+            [ngClass]="{'has-suggestions': searchSuggestions && searchSuggestions.length}"
+            placeholder="{{'SearchApp.search-holder' | translate}}"
+            [(ngModel)]="myInput"
+            [showCancelButton]="shouldShowCancel"
+            (ionInput)="onInput($event)"
+            (ionCancel)="onCancel($event)">
+          </ion-searchbar>
+          <ion-scroll *ngIf="searchSuggestions.length" class="search-suggestions" [ngStyle]="searchSuggestions && searchSuggestions.length > 0 && simpleSearchHeight > 0 ? {'height.px': searchSuggestions.length > 30 ? 90 : searchSuggestions.length * 40} : {'height': 0}" style="width:100%;" scrollY="true">
+            <ion-list scroll="true">
+            <ion-item *ngFor="let item of searchSuggestions; let i = index" class="searchItem" (click)="selectAutocomplete(item)" [ngClass]="{'selected-suggestion': i == acIndex}">
+              {{item}}
+            </ion-item>
+            </ion-list>
+          </ion-scroll>
+      </ion-col>
+    </ion-row>
+    <ion-row class="scrollable-simple-search">
+      <ion-col>
+        <div text-center *ngIf="isLoading && searchTypesMade !== searchTypesTotal">
+          <ion-spinner class="loading" name="dots"></ion-spinner>
+        </div>
+        <ion-scroll [ngStyle]="displayResults && displayResults.length > 0 && simpleSearchHeight > 0 ? {'height.px': simpleSearchHeight} : {'height': 0}" style="width:100%;" scrollY="true">
+           <ion-list scroll="true">
+            <ion-item class="item-stable">
+                {{"SearchApp.hitCount" | translate}}: {{totalHits}}
+            </ion-item>
+            <ion-item *ngFor="let item of displayResults" class="searchItem" (click)="gotToText(item.path, item.textType, item.matches, item.facsimilePage, item)">
+                <div class="textType {{ item.textType }}">
+                  <ion-icon *ngIf="item.textType=='person'" name="person"></ion-icon>
+                  <ion-icon *ngIf="item.textType=='location'" name="globe"></ion-icon>
+                  <ion-icon *ngIf="item.textType=='tag'" name="information-circle"></ion-icon>
+                  <ion-icon *ngIf="item.textType=='song'" name="musical-notes"></ion-icon>
+                </div>
+                <span class="title"><span class="occupation" *ngIf="item.occupation" class="occupation">{{item.occupation}} - </span>{{item.TitleIndexed}}</span>
+                <span class="dates" *ngIf="item.date_born || item.date_deceased" >(</span>
+                <span class="dates" *ngIf="item.date_born!='null'" innerHTML="{{item.date_born}}"></span>
+                <span class="dates" *ngIf="item.date_born || item.date_deceased"> - </span>
+                <span class="dates" *ngIf="item.date_deceased!='null'" innerHTML="{{item.date_deceased}}"></span>
+                <span class="dates" *ngIf="item.date_born || item.date_deceased">)</span>      
+                <span class="highLightText" innerHTML="{{item.highLightText}}"></span>
+                <div *ngIf="item.collection_name || item.publication_name" class="coll_pub">
+                  <span class="collection" innerHTML="{{item.collection_name}} - "></span>
+                  <span class="publication" innerHTML="{{item.publication_name}}"></span>
+                  <span *ngIf="item.facsimilePage && showPageNumbers" class="facsimilePage">( {{("SearchApp.pagenumber"|translate)}} {{item.facsimilePage}} )</span>
+                </div>
+            </ion-item>
+        </ion-list>
+        </ion-scroll>
+      </ion-col>
+    </ion-row>
+</ion-grid>

@@ -1,0 +1,158 @@
+page-occurrences-result {
+    .occurrences-result {
+        .title-mobile {
+            font-size: 2rem;
+        }
+
+        .segment-header-mobile {
+            font-size: 1rem !important;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            min-width: max-content;
+        }
+
+        &__content {
+            background-color: white;
+        }
+
+        &__media-image {
+            display: block;
+            margin-left: 0;
+            margin-right: auto;
+            width: 50%;
+
+            &--mobile {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 50%;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+        }
+    }
+    
+    .search-results {
+        @media only screen and (min-width: 1200px) { 
+            &--desktop {
+                display: block;
+            }
+
+            &--mobile {
+                display: none;
+            }
+        }
+
+        @media only screen and (max-width: 1199px) { 
+            &--desktop {
+                display: none;
+            }
+
+            &--mobile {
+                display: block;
+            }
+        }
+    }
+
+    .info-article {
+        &__description {
+            white-space: normal;
+            
+            .download-section {
+                margin-top: 10px;
+
+                .download {
+                    color: black;
+                    margin-left: 5px;
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+
+    .song-with-description {
+        padding-top: 1.5rem !important;
+        padding-bottom: 1.5rem !important;
+    }
+
+    .description{
+        white-space: normal;
+        line-height: 1.4rem !important;
+    }
+    .media_description {
+        float: left;
+    }
+
+    .article_count{
+        float:left;
+        margin-right: 1rem;
+        height: 100%;
+    }
+    .article_description{
+        white-space: normal;
+        max-width: 100%;
+        display:inline;
+    }
+    .article_link{
+        display:inline;
+    }
+
+    .occurrence-result{
+        background-color: whitesmoke;
+        margin: 5px;
+        -webkit-box-shadow: 4px 4px 4px -3px rgba(0,0,0,0.72); 
+        box-shadow: 4px 4px 4px -3px rgba(0,0,0,0.72);
+        flex-basis: 30%;
+        &:hover {
+            background-color: rgb(223, 219, 219);
+        }
+    }
+
+    .resultContainer{
+        display: flex;
+        cursor: pointer;
+    }
+
+    .result-icon{
+        padding-left: 1rem;
+        padding-right: 1.5rem;
+        flex-grow: 0;
+    }
+    .result-icon > div{
+        display: table;
+        height: 100%;
+    }
+
+    .result-icon > div > div{
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    .result-data-continued{
+        text-align: center;
+        flex-grow: 1;
+    }
+
+    .result-data{
+        flex-grow: 2;
+    }
+
+    .result-data > div > div{
+        line-height: 1.2rem !important;
+    }
+
+    .result-data-continued > div {
+        display: table;
+        height: 100%;
+    }
+
+    .result-data-continued > div > div {
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    .result-data .first{
+        font-weight: 600;
+    }
+
+}

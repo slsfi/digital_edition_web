@@ -1,0 +1,64 @@
+.teiManuscript{
+    font-family: Georgia, serif  !important;
+    .immediate_symbol img{
+        display: inline;
+        width: 0.9rem;
+    }
+
+    .add_over{
+        vertical-align: super;
+        color: #0000a1;
+    }
+    .deletion {
+        text-decoration: line-through;
+    }
+
+    .deletion_subst{
+        text-decoration: line-through;
+    }
+    
+    span.underline{
+        border-bottom: 1px solid black;
+        font-style: normal !important;
+    }
+    .add_subst {
+        color: #0000a1;
+    }
+    .add_sublinear{
+        vertical-align: -30%;
+        color: #0000a1;
+    }
+
+    span.lemma{
+        background-color: #c1bac1;
+    }
+
+    p[class*="p"]{
+        text-indent: 30px !important;
+    }    
+    
+    h4{
+        margin: 1em 0 .5em !important;
+        font-size: 1.1em !important;
+    }
+    
+    h3{
+        margin: 1.1em 0 .6em !important;
+        font-size: 1.3em !important;
+        font-variant: small-caps;
+    }
+}
+
+span.seg img{
+    width: 0.5em;
+    display: inline;
+}
+
+p.teiManuscript.strofe[class*="lg"] {
+	line-height: 200% !important;
+	position: relative;
+}
+
+comments{
+    font-family: Georgia, serif  !important;
+}

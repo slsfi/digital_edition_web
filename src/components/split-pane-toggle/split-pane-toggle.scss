@@ -1,0 +1,25 @@
+split-pane-toggle {
+  .menu{
+    margin-left: 0.3em;
+  }
+  .enable {
+    display: inherit;
+  }
+  .disable {
+    display: none;
+  }
+  ion-icon:first-child {
+    margin-right: -10px;
+  }
+}
+
+.split-pane-visible {
+  split-pane-toggle {
+    .enable {
+      display: none;
+    }
+    .disable {
+      display: inherit;
+    }
+  }
+}

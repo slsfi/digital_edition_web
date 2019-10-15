@@ -1,0 +1,35 @@
+<!-- Generated template for the SongExampleComponent component -->
+<div *ngIf="song">
+  <button *ngIf="!playing" ion-button (click)="playSong()">
+      <ion-icon name="play"></ion-icon>
+  </button>
+  <button *ngIf="playing" ion-button (click)="stopSong()">
+    <ion-icon name="square"></ion-icon>
+  </button>
+  <div class="downloads">
+    <a ion-button small href="{{'assets/midi-files/' + songDatafile + '.mid'}}" download>Midi &nbsp;
+      <ion-icon name="cloud-download"></ion-icon>
+    </a>
+    <a ion-button small href="{{musicXmlPath + songDatafile}}" download>Music XML &nbsp;
+      <ion-icon name="cloud-download"></ion-icon>
+    </a>
+    <!--<a ion-button small href="{{'assets/jpeg-files/' + song.id + '.jpg'}}" download>JPEG &nbsp;
+      <ion-icon name="cloud-download"></ion-icon>
+    </a>-->
+  </div>
+  <ion-list *ngIf="song" class="song-example-details">
+    <ion-item><strong>{{"Song.Playman" | translate}}:</strong> {{song.playman}}</ion-item>
+    <ion-item><strong>{{"Song.SongType" | translate}}:</strong> {{song.songType}}</ion-item>
+    <ion-item><strong>{{"Song.SongName" | translate}}:</strong> {{song.songName}}</ion-item>
+    <ion-item><strong>{{"Song.Landscape" | translate}}:</strong> {{song.landscape}}</ion-item>
+    <ion-item><strong>{{"Song.Place" | translate}}:</strong> {{song.place}}</ion-item>
+    <ion-item><strong>{{"Song.Recorder" | translate}}:</strong> {{song.recorder}}</ion-item>
+    <ion-item><strong>{{"Song.Year" | translate}}:</strong> {{song.year}}</ion-item>
+    <ion-item><strong>{{"Song.OCL" | translate}}:</strong> {{song.originalCollectionLocation}}</ion-item>
+    <ion-item><strong>{{"Song.OCS" | translate}}:</strong> {{song.originalCollectionSignature}}</ion-item>
+    <ion-item><strong>{{"Song.Volume" | translate}}:</strong> {{song.volume}}</ion-item>
+    <ion-item><strong>{{"Song.SongNumber" | translate}}:</strong> {{song.songNumber}}</ion-item>
+    <ion-item><strong>{{"Song.Comments" | translate}}:</strong> {{song.comments}}</ion-item>
+    <ion-item><strong>{{"Song.SongText" | translate}}:</strong> {{song.songText}}</ion-item>
+  </ion-list>
+</div>

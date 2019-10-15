@@ -1,0 +1,47 @@
+<!--
+  Generated template for the IllustrationPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-toolbar *ngIf="showDescription">
+      <ion-buttons end>
+          <button (click)="cancel()" ion-button>
+            <ion-icon class="close-button" ios="ios-close" md="md-close"></ion-icon>
+          </button>
+        </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="illustration-content">
+    <ion-fab right *ngIf="zoomImage" class="close-modal-button">
+        <button ion-fab mini (click)="cancel()">
+          <ion-icon name="close"></ion-icon>
+        </button>
+    </ion-fab>
+    <ion-fab *ngIf="showDescription" middle right>
+      <button ion-fab (click)="zoomImg()"><ion-icon name="search"></ion-icon></button>
+    </ion-fab>
+    <ion-scroll class="illustration-box" scrollX="true" scrollY="true" zoom="true" style="height:100%; width:100%; position: relative;">
+      <img *ngIf="showDescription" [src]="imgPath">
+      <img [style.zoom]="zoom" *ngIf="zoomImage" class="illustration-img" [src]="imgPath">
+      <div *ngIf="showDescription">
+        <p>Foo Bar, <i>Description</i></p>
+        <div>
+          <a>
+            <ion-icon name="book"></ion-icon> Se förlagan
+          </a>
+        </div>
+        <div>
+          <a>
+            <ion-icon name="book"></ion-icon> Gå till bildbanken
+          </a>
+        </div>
+      </div>
+    </ion-scroll>
+    <ion-fab *ngIf="zoomImage && userSettingsService.isDesktop()" class="zoom-buttons" bottom right>
+      <button ion-fab color="secondary" mini (click)="zoomIn()"><ion-icon name="add"></ion-icon></button>
+      <button ion-fab color="secondary" mini (click)="zoomOut()"><ion-icon name="remove"></ion-icon></button>
+    </ion-fab>
+</ion-content>

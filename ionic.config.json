@@ -1,0 +1,8 @@
+{
+  "name": "digitalEditions",
+  "integrations": {
+    "cordova": {}
+  },
+  "devtool": "source-map",
+  "type": "ionic-angular"
+}

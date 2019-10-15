@@ -1,0 +1,15 @@
+page-pdf {
+  ngx-extended-pdf-viewer {
+    .toolbar {
+      min-height: initial !important;
+    }
+  }
+  .pdftitle {
+    position: absolute;
+    width: 100%;
+    text-align:center;
+    top: 0;
+    padding: 11px 80px 0 80px;
+    text-overflow: ellipsis;
+  }
+}

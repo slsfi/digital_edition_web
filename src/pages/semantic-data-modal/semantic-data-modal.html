@@ -1,0 +1,48 @@
+<!--
+  Generated template for the SemanticDataModal page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+    <ion-segment [(ngModel)]="segments" color="primary">
+      <ion-segment-button value="title" class="segment-header">
+        {{(title)?title:'...'}}
+      </ion-segment-button>
+      <ion-segment-button value="occurrences" class="segment-header">
+        {{"Occurrences.Title" | translate}}
+      </ion-segment-button>
+      <ion-segment-button value="close" (click)="dismiss()" class="close-icon">
+        <ion-icon class="close-button" ios="ios-close" md="md-close"></ion-icon>
+      </ion-segment-button>
+    </ion-segment>
+</ion-header>
+
+
+<ion-content padding>
+  <div *ngIf="segments=='title'" class="tei" [innerHTML]="semanticData">...</div>
+  <div *ngIf="segments=='occurrences'" class="tei">
+    <ion-list *ngIf="this.type=='person'">
+      <div *ngFor="let occurrence of subjectOccurrences">
+        <ion-item (click)="openText(occurrence['occurrences'][0])">
+          <span>{{occurrence['occurrences'][0].description}}</span>
+          <p>{{occurrence['occurrences'][0].publication_collection_name}} - {{occurrence['occurrences'][0].publication_name}}</p>
+        </ion-item>
+      </div>
+      <div *ngIf="subjectOccurrences.length == 0">
+        <span>{{"Occurrences.no_occurrences" | translate}}</span>
+      </div>
+    </ion-list>
+    <ion-list *ngIf="this.type=='place'">
+      <div *ngFor="let occurrence of locationOccurrences">
+        <ion-item (click)="openText(occurrence['occurrences'][0])">
+          <span>{{occurrence['occurrences'][0].description}}</span>
+          <p>{{occurrence['occurrences'][0].publication_collection_name}} - {{occurrence['occurrences'][0].publication_name}}</p>
+        </ion-item>
+      </div>
+      <div *ngIf="subjectOccurrences.length == 0">
+        <span>{{"Occurrences.no_occurrences" | translate}}</span>
+      </div>
+    </ion-list>
+  </div>
+</ion-content>

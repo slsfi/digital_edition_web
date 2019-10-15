@@ -1,0 +1,44 @@
+<div class="tab-container" *ngIf="platform.is('core')">
+  <div *ngFor="let facsimile of facsimiles; let i = index" (click)="changeFacsimile(facsimile)"
+    [ngClass]="(selectedFacsimile.title === facsimile.title)?'firts-tab':'tab'">
+    {{facsimile.title}}
+    <div [ngClass]="(selectedFacsimile.title === facsimile.title)?'open-in-tab':'open-in-tab-hidden'"
+      (click)="openNewFacs($event, facsimile)">{{"Read.OpenInTab" | translate}}</div>
+    <div
+      [ngClass]="(selectedFacsimile.title === facsimile.title)?'open-manuscript-in-tab':'open-manuscript-in-tab-hidden'"
+      (click)="openNewManuscriptFacs($event, facsimile)" *ngIf="facsimile.manuscript_id">
+      {{"Read.Facsimiles.OpenManuscript" | translate}}</div>
+  </div>
+</div>
+
+<ion-item>
+  <ion-label position="floating">{{"Read.Facsimiles.Page" | translate}} ({{"Read.Facsimiles.Of" | translate}}
+    {{(images)?images.length:0}}):</ion-label>
+  <ion-input class="page_number_input" type="number" size="12" (change)="setPage($event)" [(ngModel)]="manualPageNumber"
+    type="number"></ion-input>
+</ion-item>
+
+<img *ngIf="!facsimilePagesInfinite" style="width: 100%;" [src]="images ? images[activeImage] : ''"
+  (click)="openZoom()">
+<img *ngIf="facsimilePagesInfinite && facsNumber" style="width: 100%;" [src]="facsUrl + facsNumber"
+  (click)="openZoom()">
+
+<ion-fab middle left class="leftFacsimileArrow">
+  <button ion-fab color="primary" mini (click)="previous()">
+    <ion-icon name="arrow-back"></ion-icon>
+  </button>
+</ion-fab>
+<ion-fab middle right>
+  <button ion-fab color="primary" mini (click)="next()">
+    <ion-icon name="arrow-forward"></ion-icon>
+  </button>
+  <button ion-fab color="secondary" mini (click)="openZoom()">
+    <ion-icon name="search"></ion-icon>
+  </button>
+</ion-fab>
+
+<div class="tei" [innerHTML]="text" [class.show_comments]="readPopoverService.show.comments"
+  [class.show_personInfo]="readPopoverService.show.personInfo"
+  [class.show_abbreviations]="readPopoverService.show.abbreviations"
+  [class.show_pageNumbering]="readPopoverService.show.pageNumbering" [class.largeFont]="readPopoverService.fontsize">
+</div>

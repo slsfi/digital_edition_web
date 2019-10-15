@@ -1,0 +1,22 @@
+<div class="tab-container">
+  <div *ngFor="let manuscript of manuscripts" (click)="changeManuscript(manuscript)"
+    [ngClass]="(selectedManuscript === manuscript)?'firts-tab':'tab'">
+    {{manuscript.name}}
+    <div [ngClass]="(selectedManuscript === manuscript)?'open-in-tab':'open-in-tab-hidden'"
+      (click)="openNewMan($event, manuscript)">{{"Read.OpenInTab" | translate}}</div>
+    <div [ngClass]="(selectedManuscript === manuscript)?'open-facsimile-in-tab':'open-facsimile-in-tab-hidden'"
+      (click)="openFacsimileMan($event, manuscript)">{{"Read.Manuscripts.OpenFacsimile" | translate}}</div>
+  </div>
+</div>
+
+<ion-item>
+  <ion-label *ngIf="normalized">{{"Read.Manuscripts.ShowNormalized" | translate}}</ion-label>
+  <ion-label *ngIf="!normalized">{{"Read.Manuscripts.ShowChanges" | translate}}</ion-label>
+  <ion-toggle [(ngModel)]="normalized" (ionChange)="changeManuscript()"></ion-toggle>
+</ion-item>
+
+<div class="tei" [innerHTML]="text" [class.show_comments]="readPopoverService.show.comments"
+  [class.show_personInfo]="readPopoverService.show.personInfo"
+  [class.show_abbreviations]="readPopoverService.show.abbreviations"
+  [class.show_pageNumbering]="readPopoverService.show.pageNumbering" [class.largeFont]="readPopoverService.fontsize">
+</div>

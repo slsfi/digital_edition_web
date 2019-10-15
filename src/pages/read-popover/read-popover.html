@@ -1,0 +1,62 @@
+    <ion-list>
+      <ion-list-header>
+        {{'Read.Popover.Appearance' | translate}}
+      </ion-list-header>
+      <ion-row>
+        <ion-col width-50><button class="text-button text-smaller item-block" (click)="decreaseFontSize()">A</button></ion-col>
+        <ion-col width-50><button class="text-button text-larger item-block" (click)="increaseFontSize()">A</button></ion-col>
+      </ion-row>
+
+    </ion-list>
+
+    <ion-list>
+      <ion-list-header>
+        {{'Read.Popover.Show' | translate}}:
+      </ion-list-header>
+
+      <ion-item>
+        <ion-label>{{'Read.Popover.All' | translate}}</ion-label>
+        <ion-toggle (ionChange)="toggleAll($event)"></ion-toggle>
+      </ion-item>
+
+      <ion-item *ngIf="readToggles.comments">
+        <ion-label><img src="assets/images/asterix.svg" class="asterix"/>{{'Read.Popover.Comments' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="show.comments" (ionChange)="toggleComments()"></ion-toggle>
+      </ion-item>
+
+      <ion-item *ngIf="readToggles.personInfo">
+        <ion-label class="show_personInfo">{{'Read.Popover.PersonInfo' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="show.personInfo" (ionChange)="togglePersonInfo()"></ion-toggle>
+      </ion-item>
+
+      <ion-item *ngIf="readToggles.placeInfo">
+        <ion-label class="show_placeInfo">{{'Read.Popover.PlaceInfo' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="show.placeInfo" (ionChange)="togglePlaceInfo()"></ion-toggle>
+      </ion-item>
+
+      <ion-item *ngIf="readToggles.abbreviations">
+        <ion-label class="show_abbreviations">{{'Read.Popover.Abbreviations' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="show.abbreviations" (ionChange)="toggleAbbreviations()"></ion-toggle>
+      </ion-item>
+
+      <ion-item *ngIf="readToggles.changes">
+        <ion-label class="show_changesInfo">{{'Read.Popover.Changes' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="show.changes" (ionChange)="toggleChanges()"></ion-toggle>
+      </ion-item>
+
+      <ion-item *ngIf="readToggles.pageNumbering">
+        <ion-label>{{'Read.Popover.PageNumbering' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="show.pageNumbering" (ionChange)="togglePageNumbering()"></ion-toggle>
+      </ion-item>
+
+      <ion-item *ngIf="readToggles.pageBreakOriginal">
+        <ion-label>{{'Read.Popover.PageBreakOriginal' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="show.pageBreakOriginal" (ionChange)="togglePageBreakOriginal()"></ion-toggle>
+      </ion-item>
+
+      <ion-item *ngIf="readToggles.pageBreakEdition">
+        <ion-label>{{'Read.Popover.PageBreakEdition' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="show.pageBreakEdition" (ionChange)="togglePageBreakEdition()"></ion-toggle>
+      </ion-item>
+    </ion-list>
+

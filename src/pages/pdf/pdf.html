@@ -1,0 +1,9 @@
+<ion-header no-border>
+  <ion-toolbar color="secondary" class="secondary">
+      <div class="pdftitle">{{title}} <span *ngIf="page > 1">- Sida {{page}}</span></div>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ngx-extended-pdf-viewer [src]="pdf" useBrowserLocale="true" showOpenFileButton="false" showBookmarkButton="false" [(page)]="page" (pagesLoaded)="doneLoading()"></ngx-extended-pdf-viewer>
+
+</ion-content>

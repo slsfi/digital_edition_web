@@ -1,0 +1,127 @@
+page-facsimile-zoom {  
+  .facsimile-zoom-image{
+    position: relative !important;
+    transform-origin: center top;
+    top: 5em;
+  }
+  /*ion-fab{
+    position: relative !important;
+    margin-top: 0 !important;
+    top:0 !important;
+  }*/
+
+  .custom_arrow_left {
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 999;
+    margin-left: -100px;
+  }
+
+  .custom_arrow_right {
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 99;
+    margin-right: -100px;
+  }
+
+  .scroll{
+    height:100%; 
+    width:100%; 
+    position: relative;
+  }
+
+  .contents{
+    text-align: center;
+  }
+  .top{
+    height: 100%;
+    display: flex;
+    position: relative;
+  }
+  .center_content{
+    text-align: center;
+    display:inline-block;
+  }
+  .plus_minus{
+    display:flex;
+    flex-direction:row;
+    justify-content: space-around;
+  }
+  .div_img{
+    position: relative;
+
+    display:inline-block;
+  }
+
+  .arrow_right{
+    float: right;
+  }
+  .arrow_left{
+    float: left;
+  }
+
+  .facsimile_button_group {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 99;
+    background-color: #464646;
+  }
+
+  .facsimile_button_group ion-item{
+    width: 30%;
+    display:inline-block;
+    background-color: #464646;
+    float: left;
+    padding-top: 0.3rem;
+  }
+
+  .facsimile_button_group .buttons{
+    text-align: right;
+    float: right;
+    width: 70%;
+    background-color: #464646;
+  }
+
+  .facsimile_button_group div.item-inner{
+    box-shadow: none !important;
+    border: 0px !important;
+  }
+
+  .page_number_input input{
+    color: white;
+  }
+
+  .div_close{
+    z-index: 999;
+    width: 40%;
+  }
+  .div_arrow_left{
+    
+  }
+  .div_plus_minus{
+    
+  }
+  .div_arrow_right{
+    
+  }
+  background-color: rgba(2,2,2,0.5);
+
+  pinch-zoom{
+    min-width: 100%;
+    min-height: 100%;
+  }
+  .mobile_pagenr{
+    display: inline-block;
+  }
+  .mobile_pagenr ion-item{
+    width: 100%;
+  }
+  .mobile_pagenr ion-label{
+    color: white;
+  }
+}

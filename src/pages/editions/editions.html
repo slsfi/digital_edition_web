@@ -1,0 +1,6 @@
+<ion-content padding>
+  <div [ngClass]="(userSettingsService.isMobile())?'markdown-container-mobile':'markdown-container'">
+    <markdown [data]="readContent"></markdown>
+  </div>
+  <digital-editions-list [layoutType]="'auto'"></digital-editions-list>
+</ion-content>

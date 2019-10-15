@@ -1,0 +1,41 @@
+.teiVariant{
+    font-family: Georgia, serif  !important;
+    span.anchorScrollTarget {
+        cursor: pointer;
+    }
+    span.anchorScrollTarget img{
+        display: inline;
+        width: 0.9rem;
+    }
+
+    p[class*="p"]{
+        text-indent: 30px !important;
+    }    
+    
+    h1, h2, h3{
+        font-family: Georgia, serif  !important;
+    }
+    
+    h4{
+        margin: 1em 0 .5em !important;
+        font-size: 1.1em !important;
+    }
+    
+    h3{
+        margin: 1.1em 0 .6em !important;
+        font-size: 1.4em !important;
+        font-variant: initial !important;
+    }
+}
+
+span.seg img{
+    width: 0.5em;
+}
+
+p.strofeSpacing {
+    padding-bottom: 1em !important;
+}
+
+comments{
+    font-family: Georgia, serif  !important;
+}

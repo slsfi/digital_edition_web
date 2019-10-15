@@ -1,0 +1,30 @@
+<!-- Generated template for the ListOfSongsComponent component -->
+<div text-center *ngIf="isLoading">
+  <ion-spinner class="loading" name="dots"></ion-spinner>
+</div>
+<div *ngIf="!isLoading">
+  <ion-grid>
+    <ion-row>
+      <ion-col class="list-of-songs__row" *ngFor="let song of songsToShow" [ngClass]="song.selected ? 'list-of-songs__selected-song' : ''" (click)="songAction(song)">
+        <div class="resultContainer">
+          <div class="result-icon">
+            <div>
+              <div><ion-icon name="md-musical-note"></ion-icon></div>
+            </div>
+          </div>
+          <div class="result-data">
+            <div>
+              <div class="first">{{song.song_name}}</div>
+              <div><p>{{song.song_type}}, {{song.location_name}}</p></div>
+              <div><p>Spelman: {{song.playman_name}}</p></div>
+              <div><p>Upptecknare: {{song.recorder_name}}</p></div>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+      <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </ion-row>
+  </ion-grid>  
+</div>

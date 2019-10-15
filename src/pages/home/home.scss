@@ -1,0 +1,143 @@
+home-page {
+	.page-title {
+		margin-left: 5px;
+	}
+
+	.toolbar-ios ion-title {
+		padding: 0;
+		.toolbar-title-ios {
+			text-align: left;
+		}
+	}
+
+	.banner {
+		position: relative;
+		margin-top: 0.00em;
+		padding-left: 0px;
+		margin-left: 0px;
+		height: 50%; 
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
+
+	.banner:before {
+		content: "";
+		position: absolute;
+		left: 0; right: 0;
+		top: 0; bottom: 0;
+		background: rgba(93, 106, 126, 0.4);
+	  }
+
+	.foreground {
+		width:100%;
+	}
+
+	.scroll-content .content.content-md {
+		display: none;
+	}
+
+	.background {
+		width: 100%;
+		height: auto;
+
+		img {
+			width: 100%;
+		}
+	}
+
+	.banner-title {
+		font-family: $font-family-header;
+		font-size: 4rem;
+		font-weight: 500;
+		line-height: 80px;
+		color: white;
+
+		@media only screen and (max-width: 650px) {
+			font-size: 31px;
+		}
+	}
+
+	.banner-subtitle {
+		font-family: $font-family-header;
+		font-size: 28px;
+		font-weight: 300;
+		font-style: italic;
+
+		@media only screen and (max-width: 650px) {
+			font-size: 22px;
+		}
+	}
+	
+	.fp_h1 {
+		font-size: 2rem;
+	}
+	
+	.foreground {
+		border-bottom: 5px solid color($colors, orange);
+	}
+
+	h1{
+		text-transform: none;
+	}
+
+	h2{
+		font-size: 1.6rem;
+	}
+
+	p{
+		line-height: 1.8rem;
+	}
+
+	.banner-title {
+		color: black !important;
+		padding-left: 1rem;
+		padding-right: 1rem;
+		padding-bottom: 0.8rem;
+		background-color: rgba(228, 220, 202, 0.8);
+	}
+	
+	.banner-subtitle {
+		color: #364930;
+		padding-left: 1rem;
+		padding-right: 1rem;
+		background-color: rgba(228, 220, 202, 0.8);
+	}
+
+	.banner::before{
+		background: rgba(93, 106, 126, 0) !important;
+	}
+	
+	.banner-title{
+		color: black !important;
+	}
+	
+	.banner-subtitle{
+		color: #364930;
+	}
+}
+
+
+.person-text {
+	font-family: $font-family-header;
+	font-weight: 300;
+}
+
+
+footer{
+	text-align: center;
+	padding-bottom: 2rem;
+}
+
+footer p{
+	font-size: 1rem;
+	color: rgba($color: #000000, $alpha: 0.6);
+}
+
+footer p{
+	margin: 0; 
+}
+
+.front-page-simple-search {
+	margin: 0 auto;
+}

@@ -1,0 +1,63 @@
+<ion-header no-border>
+    <top-menu></top-menu>
+</ion-header>
+      
+<ion-content>
+        <div class="banner" style="background-image: url('assets/project/topelius/frontpage-image-landscape.jpg');">
+          <div style="color: white; position: relative; float: left; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+            <h1 class="text-center banner-title">{{appName}}</h1>
+            <h3 class="text-center banner-subtitle">{{appSubtitle}}</h3>
+          </div>
+        </div>
+        <!-- layoutType options: auto, grid, list -->
+        <digital-editions-list [layoutType]="'list'"></digital-editions-list>
+        <div>
+            <ion-grid>
+                <ion-row>
+                    <ion-col style="display: flex; justify-content: center;">
+                        <div class="green-box" margin>
+                            <div padding>
+                                <h2 padding-top padding-left padding-right>{{"HomePage.digitalEditionHeading" | translate }}</h2>
+                                <div padding-left padding-right>
+                                    <markdown [data]="homeContent"></markdown>
+                                </div>
+                            </div>
+                            <br><br>
+                        </div>
+                    </ion-col>
+                    <ion-col style="display: flex; justify-content: center;">
+                        <div class="brown-box" margin>
+                            <div padding>
+                                <h2 padding-top padding-left padding-right>{{"HomePage.current" | translate }}</h2>
+                                <div padding-left padding-right>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                </div>
+                            </div>
+                            <br><br>
+                        </div>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </div>
+        <ion-grid>
+          <ion-row>
+            <ion-col *ngIf="userSettingsService.isMobile() || userSettingsService.isTablet()" col-xs>
+                <div margin>
+                    <h2>{{"HomePage.publishedEditions" | translate }}</h2>
+                    <div>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </div>
+                </div>
+            </ion-col>
+            <ion-col *ngIf="userSettingsService.isDesktop() && !userSettingsService.isTablet() && !userSettingsService.isMobile()" col-6>
+                <div margin>
+                    <h2>{{"HomePage.publishedEditions" | translate }}</h2>
+                    <div>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </div>
+                </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+</ion-content>
+      

@@ -1,0 +1,42 @@
+page-semantic-data-modal {
+	.tei{
+		font-family: $font-semantic-data-model-tei;
+		line-height: 2.2rem;
+		font-size: 1.5rem;
+	}
+
+	ion-item{
+		cursor: pointer;
+	}
+
+	ion-item:hover{
+		background-color: color($colors, secondary);
+	}
+
+	.close-button {
+        float: right;
+        display: flex;
+		padding-right: 1rem;
+        font-size: 3rem !important;
+    }
+
+	.segment-header{
+        font-size: 1rem !important;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        min-width: max-content;
+    }
+
+    .segment-button{
+        border: 0px !important;
+        border-radius: 0px !important;
+	}
+	
+	.segment-activated{
+		background-color: color($colors, primary) !important;
+		color: color($colors, white) !important;
+	}
+	.header{
+		border-bottom: 1px solid color($colors, primary);
+	}
+}

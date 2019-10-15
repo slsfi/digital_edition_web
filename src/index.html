@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="msapplication-tap-highlight" content="no">
+	<link href="https://fonts.googleapis.com/css?family=Merriweather|Open+Sans" rel="stylesheet">
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" />
+
+	<link rel="icon" type="image/x-icon" href="assets/icon/favicon.ico">
+	<link rel="icon" type="image/png" href="assets/images/SLSVit228.png" sizes="228x228">
+	<link rel="manifest" href="manifest.json">
+	<meta name="theme-color" content="#4e8ef7">
+
+	<!-- generics -->
+	<link rel="icon" href="assets/images/SLSVit32.png" sizes="32x32">
+	<link rel="icon" href="assets/images/SLSVit57.png" sizes="57x57">
+	<link rel="icon" href="assets/images/SLSVit76.png" sizes="76x76">
+	<link rel="icon" href="assets/images/SLSVit96.png" sizes="96x96">
+	<link rel="icon" href="assets/images/SLSVit128.png" sizes="128x128">
+	<link rel="icon" href="assets/images/SLSVit228.png" sizes="228x228">
+
+	<!-- Android -->
+	<link rel="shortcut icon" sizes="196x196" href="assets/images/SLSVit196.png">
+
+	<!-- iOS -->
+	<link rel="apple-touch-icon" href="assets/images/SLSVit120.png" sizes="120x120">
+	<link rel="apple-touch-icon" href="assets/images/SLSVit152.png" sizes="152x152">
+	<link rel="apple-touch-icon" href="assets/images/SLSVit180.png" sizes="180x180">
+
+	<!-- Windows 8 IE 10 -->
+	<meta name="msapplication-TileColor" content="#ccccff">
+	<meta name="msapplication-TileImage" content="assets/images/SLSVit.png">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
+	<!-- cordova.js required for cordova apps -->
+	<script src="cordova.js"></script>
+	<!--
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('service worker installed'))
+        .catch(err => console.log('Error', err));
+    }
+  </script>
+-->
+
+	<link href="build/main.css" rel="stylesheet">
+	<link href="assets/custom_css/custom.css" rel="stylesheet">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism.min.css" rel="stylesheet" />
+
+	<!-- Works -->
+	<script type='text/javascript' src='//www.midijs.net/lib/midi.js'></script>
+
+	<!--Start of Tawk.to Script-->
+	<script type="text/javascript">
+	var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+	(function(){
+		var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+		s1.async=true;
+		s1.src='https://embed.tawk.to/5d89c1f8c22bdd393bb77a1d/default';
+		s1.charset='UTF-8';
+		s1.setAttribute('crossorigin','*');
+		s0.parentNode.insertBefore(s1,s0);
+	})();
+	</script>
+	<script type="text/javascript">
+		Tawk_API.onLoad = function () {
+
+		};
+	</script>
+	<!--End of Tawk.to Script-->
+</head>
+
+<body body style="background-color: #1c1b17;
+background-image: url('assets/images/logo.png');
+background-position: center center; background-repeat: no-repeat;
+background-attachment: fixed;
+background-size:40%;">
+
+	<!-- Ionic's root component and where the app will load -->
+	<ion-app></ion-app>
+
+	<!-- The polyfills js is generated during the build process -->
+	<!-- The polyfills js is generated during the build process -->
+	<script src="assets/ngx-extended-pdf-viewer/pdf.js"></script>
+	<script src="assets/ngx-extended-pdf-viewer/pdf.worker.js"></script>
+	<script src="assets/ngx-extended-pdf-viewer/web/viewer.js"></script>
+	<script src="build/polyfills.js"></script>
+
+	<!-- all code from node_modules directory is here -->
+	<script src="build/vendor.js"></script>
+
+	<!-- The bundle js is generated during the build process -->
+	<script src="build/main.js"></script>
+
+	<noscript>Your browser does not support JavaScript!</noscript>
+</body>
+
+</html>

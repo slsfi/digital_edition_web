@@ -1,0 +1,190 @@
+// Shared Variables
+// --------------------------------------------------
+// To customize the look and feel of this app, you can override
+// the Sass variables found in Ionic's source scss files.
+// To view all the possible Ionic variables, see:
+// http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
+
+// $text-color:        #000000;
+// $background-color:  #fafafa;
+
+
+// Named Color Variables
+// --------------------------------------------------
+// Named colors makes it easy to reuse colors on various components.
+// It's highly recommended to change the default colors
+// to match your app's branding. Ionic uses a Sass map of
+// colors so you can add, rename and remove colors as needed.
+// The "primary" color is the only required color in the map.
+
+
+ $colors: (
+	primary:	#538494,
+	secondary:	#e4dcca,
+	danger:		#f53d3d,
+	light:		#D3DD9F,
+	person:		#edd19f,
+	change:		#606b2f,
+	dark:		#364930,
+	white:		#fff,
+	purple:		#413861,
+	blue: 		#538494,
+	orange:		#e1a462,
+	beige: 		#e4dcca,
+	lightbeige: #f3f1ea,
+	greensih: 	#d3de9c,
+	com:		#e1a462,
+	est:		#e6572c,
+	ms:			#b0e162,
+	inl:		#e162ac,
+	tit:		#62c3e1,
+	var:		#b262e1,
+	location:	#62c3e1,
+	tag:		#0fa14c,
+	abbreviations: #D3DD9F,
+	changes: #c0c0c0
+);
+
+
+$background-color:  #f3f1ea;
+
+//$fab-content-margin: 0;
+
+// App Material Design Variables
+// --------------------------------------------------
+// Material Design only Sass variables can go here
+
+// Change #000 to any color to see the md text color change
+//$text-md-color:                           $text-color;
+
+// Use the primary color as the background for the toolbar-md-background
+$toolbar-background:                   color($colors, blue);
+$toolbar-md-background:                $toolbar-background;
+
+// Use the default background for the tabbar since it inherits from toolbar
+$tabs-background:                         color($colors, blue);
+$tabs-md-background:                      $tabs-background;
+
+$fab-md-box-shadow: none;
+// Change the color of the tabs text
+//$tabs-md-tab-color-active:                color($colors, white);
+//$tabs-md-tab-color-inactive:              color($colors, white);
+
+// Change the color of the segment button text
+//$toolbar-md-active-color:                 #fff;
+//$toolbar-md-inactive-color:               #fff;
+//$segment-button-md-text-color-activated:  #fff;
+
+$card-md-title-text-color:      color($colors, dark);
+$card-md-box-shadow: 						none;
+$card-md-background-color: 			color($colors, white);
+
+$back-button-color:							color($colors, secondary);
+$back-button-text-color:				color($colors, dark);
+$forward-arrow-color:						color($colors, dark);
+$divider-bg-color:				color($colors, light);
+
+// $top-menu-left: 370px;
+// $top-menu-left-split-pane: 10px;
+
+// FONTS
+// ------------------------
+// @import 'https://fonts.googleapis.com/css?family=Halant|Work+Sans';
+// $font-family-ios-base: "Lato";
+// $font-family-wp-base: "Lato";
+
+@font-face {
+	font-family: "Muli";
+	font-display: auto;
+	font-style: normal;
+	font-weight: 400;
+	src: url(../assets/fonts/Muli-Regular.ttf) format("truetype");
+}
+
+@font-face {
+	font-family: "Muli";
+	font-display: auto;
+	font-style: italic;
+	font-weight: 400;
+	src: url(../assets/fonts/Muli-Italic.ttf) format("truetype");
+}
+
+@font-face {
+	font-family: "Muli";
+	font-display: auto;
+	font-style: normal;
+	font-weight: 700;
+	src: url(../assets/fonts/Muli-Bold.ttf) format("truetype");
+}
+
+@font-face {
+	font-family: "Muli";
+	font-display: auto;
+	font-style: italic;
+	font-weight: 700;
+	src: url(../assets/fonts/Muli-BoldItalic.ttf) format("truetype");
+}
+
+@font-face {
+	font-family: "Muli";
+	font-display: auto;
+	font-weight: 600;
+	src: url(../assets/fonts/Muli-SemiBold.ttf) format("truetype");
+}
+
+@font-face {
+	font-family: "Lora";
+	font-display: auto;
+	font-style: normal;
+	font-weight: 400;
+	src: url(../assets/fonts/Lora-Regular.ttf) format("truetype");
+}
+
+$font-family-base: 'Muli';
+$font-family-header: 'Muli';
+$font-family-top-menu: 'Muli';
+$font-read-column-p: 'Open Sans',Arial,sans-serif;
+
+// Tei fonts
+//$font-app-tei: Georgia,Times,"Times New Roman",serif;
+$font-app-tei: "Muli",Times,"Times New Roman",serif;
+$font-comment-modal-tei: 'Open Sans',Arial,sans-serif;
+$font-semantic-data-model-tei: 'Open Sans',Arial,sans-serif;
+$font-stamp-print-tei: "Times New Roman", serif;
+$font-tei-note-editorial: arial, helvetica, sans-serif;
+
+// Load tei stylesheet
+@import 'tei';
+@import 'tei_comment';
+@import 'tei_variant';
+@import 'tei_manuscript';
+
+.menu-inner .item-md p{
+	white-space: normal !important;
+}
+
+html {
+	font-size: 16px !important;
+}
+
+home-page{
+	h2{
+		margin-top: 0px !important;
+	}
+}
+
+h2{
+	font-size: 1.6rem;
+}
+
+p{
+	font-size: 1.1rem;
+}
+
+.popover_settings .popover-content{ width: min-content !important; } 
+
+.selected-toc-item {
+	p {
+		font-weight: bold;
+	}	
+}

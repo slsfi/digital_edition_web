@@ -1,0 +1,47 @@
+read-popover-page {
+	.text-button {
+		text-align: center;
+		background: transparent;
+		margin-left: 43%;
+	}
+
+	.text-smaller {
+		font-size: 12px;
+	}
+
+	.text-larger {
+		font-size: 20px;
+	}
+
+	ion-list-header {
+		font-weight: bold;
+		margin-bottom: 0px !important;
+		min-height: 1rem !important;
+	}
+
+	.asterix{
+		height: 0.8em;
+		padding-right: 0.1em;
+	}
+
+	.show_personInfo{
+		display: inline;
+		background-color: color($colors, person);
+	}
+	.show_placeInfo{
+		display: inline;
+		background-color: color($colors, location);
+	}
+	.show_abbreviations{
+		display: inline;
+		background-color: color($colors, abbreviations);
+	}
+	.show_changesInfo{
+		display: inline;
+		background-color: color($colors, changes);
+	}
+}
+
+.popover-content{
+	overflow: hidden !important;
+}

@@ -1,0 +1,105 @@
+page-occurrences {
+    .custom-card {
+        background-color: white;
+    }
+
+    .close-button {
+        font-size: 5.2rem;
+        margin-right: 1.2rem;
+    }
+
+    .info{
+        white-space: normal;
+    }
+
+    .info h3{
+        font-size: 2rem;
+    }
+
+    .info{
+        .occupation{
+            font-size: 1.6rem;
+        }
+        .title{
+            font-size: 1.6rem;
+        }
+    }
+
+    ion-title {
+        margin-left: 1.2rem;
+        div{
+            font-size: 1.4rem !important;
+        }        
+    }
+
+    .collectionName{
+        max-width: 60%;
+        min-width: max-content;
+    }
+
+    .displayName{
+        min-width: min-content;
+    }
+
+    .map{
+        height: 200px;
+        position: inherit;
+    }
+
+    .map_hidden{
+        display: none;
+    }
+    
+    .map_icon{
+        position: absolute;
+        right: 0.3em;
+        top: 0;
+    }
+
+    .header{
+        font-weight: normal;
+    }
+
+    .map_item_hidden{
+        display: none;
+    }
+
+    .col{
+        white-space: normal !important;
+    }
+
+    span{
+        font-size: 1rem;
+    }
+
+    .media_image_wrapper {
+        margin-top: 1rem;
+    }
+
+    .media_image_wrapper img{
+        width: auto !important;
+    }
+    
+    .media_description {
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .toolbar-title{
+        text-align: left;
+    }
+
+    .article_count{
+        float:left;
+        margin-right: 1rem;
+        height: 100%;
+    }
+    .article_description{
+        white-space: normal;
+        max-width: 100%;
+
+    }
+    .article_link{
+        margin-bottom: 1rem;
+    }
+}

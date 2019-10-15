@@ -1,0 +1,59 @@
+page-content {
+    .tooltiptrigger{
+        display:inline-block;
+        width:20px;
+    }
+    .md_content{
+        max-width: 780px;
+        margin-left: 1.8rem;
+    }
+
+    list-of-songs{
+        margin-left: 1.8rem;
+        display: block;
+    }
+    
+    h1, h2, h3, h4{
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    h1{
+        margin-top: 2rem !important;
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+    }
+
+    h2{
+        font-size: 1.4rem;
+        margin-top: 1.8rem;
+    }
+    
+    h3{
+        font-size: 1.2rem;
+        margin-top: 1.5rem;
+    }
+
+    h2+h3{
+        margin-top: 1rem;
+    }
+
+    p{
+        line-height: 1.6rem;
+        margin-bottom: 0.8rem;
+        margin-top: 0.8rem;
+    }
+
+    .content-md hr{
+        background-color: rgba(0,0,0,0.1);
+    }
+
+    ion-content{
+        padding-left: 0px;
+    }
+    .scroll-content{
+        padding-left: 0px !important;
+    }
+}
+
+

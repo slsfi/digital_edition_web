@@ -1,0 +1,50 @@
+<!--
+  Generated template for the FilterPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <!--<ion-navbar>
+    <ion-title>Filters</ion-title>
+  </ion-navbar>-->
+  <ion-toolbar>
+      <ion-buttons>
+        <button class="apply-button" (click)="apply()" ion-button>Apply</button>
+      </ion-buttons>
+      <ion-buttons end>
+        <button (click)="cancel()" ion-button>
+          <ion-icon class="close-button" ios="ios-close" md="md-close"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
+
+</ion-header>
+
+<ion-content padding>
+    <ion-item *ngIf="shouldFilterYear">
+        <ion-label color="primary" floating>Year</ion-label>
+        <ion-input type="number" [(ngModel)]="filterYear"></ion-input>
+      </ion-item>
+      <ion-item-divider style="background: transparent;"></ion-item-divider>
+    <ion-list *ngIf="filterPersonTypes">
+      <ion-list-header>
+        Person types
+      </ion-list-header>
+      <ion-item *ngFor="let filterPT of filterPersonTypes">
+          <ion-label>{{filterPT.title}}</ion-label>
+          <ion-toggle [(ngModel)]="filterPT.selected"></ion-toggle>
+        </ion-item>
+    </ion-list>
+
+    <ion-list *ngIf="filterCollections">
+      <ion-list-header>
+        Collections
+      </ion-list-header>
+      <ion-item *ngFor="let filterCollection of filterCollections">
+        <ion-label>{{filterCollection.title}}</ion-label>
+        <ion-toggle [(ngModel)]="filterCollection.selected"></ion-toggle>
+      </ion-item>
+    </ion-list>
+</ion-content>

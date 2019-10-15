@@ -1,0 +1,24 @@
+user-settings-popover-page {
+	.text-button {
+		text-align: center;
+		background: transparent;
+		margin-left: 43%;
+	}
+
+	.text-smaller {
+		font-size: 1rem;
+	}
+
+	.text-larger {
+		font-size: 1.1rem;
+	}
+
+	ion-list-header {
+		font-weight: bold;
+	}
+
+	ion-icon{
+		font-size: 2rem !important;
+		min-height: 2rem !important;
+	}
+}
