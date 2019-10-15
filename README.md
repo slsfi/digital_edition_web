@@ -11,3 +11,5 @@ https://ionicframework.com/
 
 ## Live Site Example
 [folkdiktning.sls.fi](http://folkdiktning.sls.fi)
+[granqvist.sls.fi](http://granqvist.sls.fi)
+[ordsprak.sls.fi](http://ordsprak.sls.fi)
