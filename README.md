@@ -8,3 +8,6 @@ https://ionicframework.com/
 
 ## Migrated from BitBucket (without history)
 [https://bitbucket.org/slssu/digital_edition_web](https://bitbucket.org/slssu/digital_edition_web)
+
+## Live Site Example
+[folkdiktning.sls.fi](http://folkdiktning.sls.fi)
