@@ -5,3 +5,6 @@ https://ionicframework.com/
 
 ## Template Project
 [https://github.com/slsfi/digital_edition_web_template](https://github.com/slsfi/digital_edition_web_template)
+
+## Migrated from BitBucket (without history)
+[https://bitbucket.org/slssu/digital_edition_web](https://bitbucket.org/slssu/digital_edition_web)
