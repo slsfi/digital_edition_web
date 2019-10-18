@@ -9,7 +9,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpModule, Http } from '@angular/http';
 import { BrowserModule, Title } from '@angular/platform-browser';
 
-import { DigitalEditionsApp} from './app.component';
+import { DigitalEditionsApp } from './app.component';
 
 
 
@@ -19,7 +19,7 @@ import { SemanticDataModalPage } from '../pages/semantic-data-modal/semantic-dat
 import { ReferenceDataModalPage } from '../pages/reference-data-modal/reference-data-modal';
 import { FacsimileZoomModalPage } from '../pages/facsimile-zoom/facsimile-zoom';
 
-import { ConfigLoader, ConfigModule  } from '@ngx-config/core';
+import { ConfigLoader, ConfigModule } from '@ngx-config/core';
 import { ConfigHttpLoader } from '@ngx-config/http-loader';
 import { ComponentsModule } from '../components/components.module';
 import { HtmlContentService } from './services/html/html-content.service';
@@ -62,7 +62,7 @@ Sentry.init({
 
 @Injectable()
 export class SentryErrorHandler implements ErrorHandler {
-  constructor() {}
+  constructor() { }
   handleError(error) {
     const eventId = Sentry.captureException(error.originalError || error);
   }
@@ -74,7 +74,7 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
 }
 
 export function createConfigLoader(http: HttpClient): ConfigLoader {
-    return new ConfigHttpLoader(http, 'config.json');
+  return new ConfigHttpLoader(http, 'config.json');
 }
 
 @NgModule({
@@ -100,9 +100,9 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
     }),
     TableOfContentsModule,
     ConfigModule.forRoot({
-        provide: ConfigLoader,
-        useFactory: (createConfigLoader),
-        deps: [HttpClient]
+      provide: ConfigLoader,
+      useFactory: (createConfigLoader),
+      deps: [HttpClient]
     }),
     IonicModule.forRoot(
       DigitalEditionsApp, {
@@ -145,7 +145,7 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
     SplashScreen,
     SongService,
     TutorialService,
-    {provide: ErrorHandler, useClass: SentryErrorHandler}
+    { provide: ErrorHandler, useClass: SentryErrorHandler }
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -160,4 +160,4 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
     SearchAppPage
   ]
 })
-export class AppModule {}
+export class AppModule { }

@@ -508,7 +508,7 @@ export class DigitalEditionsApp {
   }
 
   getAboutPages() {
-    if (this.genericSettingsService.show('TOC.SongTypes') && this.aboutMenuMarkdown) {
+    if (this.aboutMenuMarkdown) {
       (async () => {
         const aboutMarkdownMenu = await this.mdcontentService.getMarkdownMenu(this.language, this.aboutMenuMarkdownInfo.idNumber);
         this.aboutOptionsMarkdown.toc = aboutMarkdownMenu.children;
@@ -517,39 +517,39 @@ export class DigitalEditionsApp {
   }
 
   google() {
-      this.googleAnalytics.enableUncaughtExceptionReporting(true)
+    this.googleAnalytics.enableUncaughtExceptionReporting(true)
       .then((_success) => {
         this.googleAnalytics.startTrackerWithId(this.googleAnalyticsID, 30)
-        .then(() => {
-          console.log('Google analytics is ready now');
-          this.googleAnalytics.setAllowIDFACollection(true);
-          this.googleAnalytics.trackView('home');
-          this.events.subscribe('view:enter', (view: string) => {
-            this.googleAnalytics.trackEvent('view', 'enter', view);
-          });
-
-          this.events.subscribe('view:search', (word: string) => {
-            this.googleAnalytics.trackEvent('view', 'search', word);
-          });
-
-          this.events.subscribe('view:occurrance', (word: string) => {
-            this.googleAnalytics.trackEvent('view', 'occurrance', word);
-          });
-
-          this.events.subscribe('view:text', (word: string) => {
-            this.googleAnalytics.trackEvent('view', 'text', word);
-          });
-
-          this.events.subscribe('track:download-pdf', (name: string) => {
-            this.googleAnalytics.trackEvent('download', 'pdf', name).then(() => {
+          .then(() => {
+            console.log('Google analytics is ready now');
+            this.googleAnalytics.setAllowIDFACollection(true);
+            this.googleAnalytics.trackView('home');
+            this.events.subscribe('view:enter', (view: string) => {
+              this.googleAnalytics.trackEvent('view', 'enter', view);
             });
-          });
-          this.events.subscribe('track:share', (name: string) => {
-            this.googleAnalytics.trackEvent('share', 'social', name).then(() => {
+
+            this.events.subscribe('view:search', (word: string) => {
+              this.googleAnalytics.trackEvent('view', 'search', word);
             });
-          });
-        })
-        .catch(e => console.log('Error starting GoogleAnalytics', e));
+
+            this.events.subscribe('view:occurrance', (word: string) => {
+              this.googleAnalytics.trackEvent('view', 'occurrance', word);
+            });
+
+            this.events.subscribe('view:text', (word: string) => {
+              this.googleAnalytics.trackEvent('view', 'text', word);
+            });
+
+            this.events.subscribe('track:download-pdf', (name: string) => {
+              this.googleAnalytics.trackEvent('download', 'pdf', name).then(() => {
+              });
+            });
+            this.events.subscribe('track:share', (name: string) => {
+              this.googleAnalytics.trackEvent('share', 'social', name).then(() => {
+              });
+            });
+          })
+          .catch(e => console.log('Error starting GoogleAnalytics', e));
       }).catch((_error) => {
         console.log('GoogleAnalytics error: ' + _error);
       });
@@ -606,8 +606,8 @@ export class DigitalEditionsApp {
           collection.highlight = false;
         }
       }
-    } catch ( e ) {
-        // handle error
+    } catch (e) {
+      // handle error
     }
   }
 
@@ -986,8 +986,17 @@ export class DigitalEditionsApp {
   }
 
   getStaticPagesMenus() {
-    this.staticPagesMenus = this.config.getSettings('StaticPagesMenus');
-    this.staticPagesMenusInTOC = this.config.getSettings('StaticPagesMenusInTOC');
+    try {
+      this.staticPagesMenus = this.config.getSettings('StaticPagesMenus');
+    } catch (e) {
+
+    }
+    try {
+      this.staticPagesMenusInTOC = this.config.getSettings('StaticPagesMenusInTOC');
+    } catch (e) {
+
+    }
+
     for (const menu of this.staticPagesMenusInTOC) {
       if (menu.menuID === 'songTypesMenu') {
         this.songTypesMenuMarkdownInfo = menu;
