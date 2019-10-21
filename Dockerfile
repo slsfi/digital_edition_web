@@ -18,6 +18,8 @@ COPY resources resources
 RUN mkdir www
 
 RUN npm install 
+RUN npm install cheerio
+RUN npm install rev-hash
 RUN npm install -g ionic 
 RUN npm i -g cordova 
 RUN npm i -g native-run
@@ -32,3 +34,4 @@ RUN ionic cordova platform add browser@latest --save
 RUN ionic cordova plugin add cordova-plugin-x-socialsharing 
 RUN ionic cordova plugin add cordova-plugin-google-analytics
 RUN ionic cordova build browser --prod
+RUN node .\scripts\cache-busting.js
