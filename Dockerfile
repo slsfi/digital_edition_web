@@ -34,4 +34,4 @@ RUN ionic cordova platform add browser@latest --save
 RUN ionic cordova plugin add cordova-plugin-x-socialsharing 
 RUN ionic cordova plugin add cordova-plugin-google-analytics
 RUN ionic cordova build browser --prod
-RUN node .\scripts\cache-busting.js
+RUN node ./scripts/cache-busting.js
