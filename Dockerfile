@@ -3,9 +3,7 @@ FROM node:lts-alpine
 RUN apk update
 RUN apk add --no-cache g++ gcc libgcc libstdc++ linux-headers make python git
 
-ADD https://api.bitbucket.org/2.0/repositories/slssu/digital_edition_web/refs/branches/3.x version.json
-
-RUN git clone --depth 1 -b 3.x https://niklil@bitbucket.org/slssu/digital_edition_web.git
+RUN git clone --depth 1 -b master https://github.com/slsfi/digital_edition_web.git
 
 WORKDIR /digital_edition_web
 
