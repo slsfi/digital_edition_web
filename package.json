@@ -10,7 +10,9 @@
     "emulate:before": "build",
     "deploy:before": "build",
     "build:before": "build",
-    "run:before": "build"
+    "run:before": "build",
+    "ionic:build:prod": "ionic-app-scripts build --prod --webpack ./config/webpack.config.js --platform browser && npm run postbuild",
+    "postbuild": "./scripts/cache-busting.js"
   },
   "dependencies": {
     "@angular/animations": "^7.2.7",
@@ -33,7 +35,7 @@
     "@ngx-config/http-loader": "^5.0.0",
     "@ngx-translate/core": "^8.0.0",
     "@ngx-translate/http-loader": "^2.0.1",
-    "@sentry/browser": "5.6.3",
+    "@sentry/browser": "^5.6.3",
     "@types/intro.js": "^2.4.5",
     "angular2-markdown": "^2.2.3",
     "cheerio": "^1.0.0-rc.3",

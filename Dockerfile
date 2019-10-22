@@ -35,5 +35,5 @@ RUN ionic cordova platform rm browser --save
 RUN ionic cordova platform add browser@latest --save 
 RUN ionic cordova plugin add cordova-plugin-x-socialsharing 
 RUN ionic cordova plugin add cordova-plugin-google-analytics
-RUN ionic cordova build browser --prod
+RUN ionic cordova build browser --prod --aot --webpack ./config/webpack.config.js
 RUN node ./scripts/cache-busting.js
