@@ -19,6 +19,7 @@ export class SemanticDataModalPage {
 
   public semanticData: any;
   public title: string;
+  public description: string;
   public segments: string;
   public legacyPrefix: string;
   public subjectOccurrences: Array<object>;
@@ -89,7 +90,9 @@ export class SemanticDataModalPage {
   getPlace(id: string) {
       this.semanticDataService.getPlace(id).subscribe(
           data => {
-            // in order to get id attributes for tooltips
+              // in order to get id attributes for tooltips
+              this.title = data.name;
+              this.description = data.description;
               this.semanticData = this.sanitizer.bypassSecurityTrustHtml(
                 data.replace(/images\//g, 'assets/images/')
                     .replace(/\.png/g, '.svg')
@@ -105,7 +108,8 @@ export class SemanticDataModalPage {
   getPerson(id: string) {
       this.semanticDataService.getPerson(id).subscribe(
           data => {
-        this.title = data['full_name'];
+              this.title = data['full_name'];
+              this.description = data.description;
               // in order to get id attributes for tooltips
               if ( data['description'] !== undefined && data['description'] !== null ) {
                 this.semanticData = this.sanitizer.bypassSecurityTrustHtml(

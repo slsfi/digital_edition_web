@@ -20,7 +20,7 @@
 
 
 <ion-content padding>
-  <div *ngIf="segments=='title'" class="tei" [innerHTML]="semanticData">...</div>
+  <div *ngIf="segments=='title'" class="tei">{{description}}</div>
   <div *ngIf="segments=='occurrences'" class="tei">
     <ion-list *ngIf="this.type=='person'">
       <div *ngFor="let occurrence of subjectOccurrences">
@@ -40,7 +40,7 @@
           <p>{{occurrence['occurrences'][0].publication_collection_name}} - {{occurrence['occurrences'][0].publication_name}}</p>
         </ion-item>
       </div>
-      <div *ngIf="subjectOccurrences.length == 0">
+      <div *ngIf="locationOccurrences.length == 0">
         <span>{{"Occurrences.no_occurrences" | translate}}</span>
       </div>
     </ion-list>

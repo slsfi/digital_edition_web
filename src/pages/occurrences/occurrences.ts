@@ -304,7 +304,8 @@ export class OccurrencesPage {
     newOccurrence.filename = fileName;
     newOccurrence.textType = type;
     newOccurrence.title = occurrence.name;
-    newOccurrence.collectionID = newOccurrence.linkID.split('_' + type)[0];
+    newOccurrence.collectionID = (occurrence.collection_id) ?
+      occurrence.collection_id + '_' + occurrence.publication_id : newOccurrence.linkID.split('_' + type)[0];
     newOccurrence.collectionName = occurrence.collection_name;
     newOccurrence.displayName = (occurrence.publication_name !== null) ? occurrence.publication_name : occurrence.collection_name;
     this.texts.push(newOccurrence);

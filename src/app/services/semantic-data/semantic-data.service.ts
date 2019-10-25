@@ -37,7 +37,7 @@ export class SemanticDataService {
       .map(res => {
         const body = res.json();
 
-        return body.content || ' - no content - ';
+        return body || ' - no content - ';
       })
       .catch(this.handleError);
   }
