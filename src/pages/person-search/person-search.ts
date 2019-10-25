@@ -201,8 +201,7 @@ export class PersonSearchPage {
           }
 
           element['sortBy'] = sortBy.join();
-
-          if ( this.subType !== '' && element['object_type'] !== this.subType ) {
+          if ( this.subType !== '' && this.subType !== null && element['object_type'] !== this.subType ) {
           } else {
             personsTmp.push(element);
           }
