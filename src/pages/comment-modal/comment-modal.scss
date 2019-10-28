@@ -10,4 +10,24 @@ page-comment-modal {
 		line-height: 2.2rem;
 		font-size: 1.5rem;
 	}
+	.notePosition {
+		display: inline-block;
+		padding-right: 1rem;
+    }
+    .noteLemma {
+		display: inline;
+    }
+    .teiComment  + p{
+        display: inline;
+    }
+    .tei p.note{
+        display: inline;
+    }
+    p .teiComment{
+        margin-top: 1rem;
+    }
+    .noteLegend{
+        margin-bottom: 0rem !important;
+        display: block !important;
+    }
 }

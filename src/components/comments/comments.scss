@@ -1,3 +1,21 @@
 comments {
-    
+    .notePosition {
+        display: inline-block;
+    }
+    .noteLemma {
+        display: inline;
+    }
+    .teiComment  + p{
+        display: inline;
+    }
+    .tei p.note{
+        display: inline;
+    }
+    p .teiComment{
+        margin-top: 1rem;
+    }
+    .noteLegend{
+        margin-bottom: 0rem !important;
+        display: block !important;
+    }
 }

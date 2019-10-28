@@ -47,6 +47,7 @@ export class CommentModalPage {
             this.comment = this.sanitizer.bypassSecurityTrustHtml(
               data.replace(/images\//g, 'assets/images/')
                   .replace(/\.png/g, '.svg')
+                  .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
             );
 
           },

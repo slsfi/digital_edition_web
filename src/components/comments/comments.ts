@@ -1,5 +1,5 @@
 import { Component, Input, Renderer, ElementRef, EventEmitter, Output } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ReadTextComponent } from '../read-text/read-text';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { CommentService } from '../../app/services/comments/comment.service';
@@ -38,8 +38,9 @@ export class CommentsComponent {
       text => {
           // in order to get id attributes for tooltips
           this.text = this.sanitizer.bypassSecurityTrustHtml (
-            text.replace(/images\//g, 'assets/images/')
+            String(text).replace(/images\//g, 'assets/images/')
               .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiComment $1\"')
+              .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
           );
         },
       error =>  {
