@@ -18,10 +18,18 @@
     type="number"></ion-input>
 </ion-item>
 
-<img *ngIf="!facsimilePagesInfinite" style="width: 100%;" [src]="images ? images[activeImage] : ''"
-  (click)="openZoom()">
-<img *ngIf="facsimilePagesInfinite && facsNumber" style="width: 100%;" [src]="facsUrl + facsNumber"
-  (click)="openZoom()">
+<div>
+  <img *ngIf="!facsimilePagesInfinite" [src]="images ? images[activeImage] : ''" style="width: 100%;"
+    [ngStyle]="{'transform':'scale('+zoom+')'}" (pan)="handleSwipeEvent($event)">
+</div>
+
+
+<div>
+  <img *ngIf="facsimilePagesInfinite && facsNumber" [src]="facsUrl + facsNumbe" style="width: 100%;"
+    [ngStyle]="{'transform':'scale('+zoom+')'}" (pan)="handleSwipeEvent($event)">
+</div>
+
+
 
 <ion-fab middle left class="leftFacsimileArrow">
   <button ion-fab color="primary" mini (click)="previous()">
@@ -34,6 +42,15 @@
   </button>
   <button ion-fab color="secondary" mini (click)="openZoom()">
     <ion-icon name="search"></ion-icon>
+  </button>
+  <button ion-fab color="secondary" mini (click)="zoomIn()">
+    <ion-icon name="add"></ion-icon>
+  </button>
+  <button ion-fab color="secondary" mini (click)="zoomOut()">
+    <ion-icon name="remove"></ion-icon>
+  </button>
+  <button ion-fab color="secondary" mini (click)="zoomReset()">
+    <ion-icon name="refresh"></ion-icon>
   </button>
 </ion-fab>
 

@@ -39,6 +39,7 @@ export class FacsimilesComponent {
   activeImage = 0;
   facsimilePage = 0;
   manualPageNumber: number;
+  zoom = 1.0;
 
   facsUrl = '';
   facsimilePagesInfinite = false;
@@ -300,6 +301,27 @@ export class FacsimilesComponent {
     modal.onDidDismiss(data => {
       console.log('dismissed', data);
     });
+  }
+
+  zoomIn() {
+    this.zoom = this.zoom + 0.1;
+  }
+  zoomOut() {
+    this.zoom = this.zoom - 0.1;
+    if (this.zoom < 0.5) {
+      this.zoom = 0.5;
+    }
+  }
+
+  zoomReset() {
+    this.zoom = 1 + (Math.random() * (0.00001 - 0.00000001) + 0.00000001);
+  }
+
+  handleSwipeEvent(event) {
+    const img = event.target;
+    if (img !== null) {
+      img.style.transform = 'scale(' + this.zoom + ') translate3d(' + event.deltaX + 'px, ' + event.deltaY + 'px, 0px)';
+    }
   }
 
 }

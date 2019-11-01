@@ -1049,8 +1049,8 @@ export class ReadPage /*implements OnDestroy*/ {
       }
 
       // Always open two variations if no variation is yet open
-      if (type === 'variation' && this.hasKey('variation', this.views) === false) {
-        this.addView('variation');
+      if (type === 'variations' && this.hasKey('variations', this.views) === false) {
+        this.addView('variations');
       }
     }
   }

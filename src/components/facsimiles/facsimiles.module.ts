@@ -6,6 +6,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 import { FacsimileService } from '../../app/services/facsimile/facsimile.service';
+import { PinchZoomModule } from 'ngx-pinch-zoom';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
@@ -15,6 +16,7 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [FacsimilesComponent],
   imports: [
     IonicModule,
+    PinchZoomModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
@@ -28,4 +30,4 @@ export function createTranslateLoader(http: HttpClient) {
     FacsimileService
   ]
 })
-export class FacsimilesModule {}
+export class FacsimilesModule { }

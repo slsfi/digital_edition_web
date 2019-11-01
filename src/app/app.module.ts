@@ -145,7 +145,7 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
     SplashScreen,
     SongService,
     TutorialService,
-    { provide: ErrorHandler, useClass: SentryErrorHandler }
+    { provide: ErrorHandler, useClass: ErrorHandler }
   ],
   bootstrap: [IonicApp],
   entryComponents: [
