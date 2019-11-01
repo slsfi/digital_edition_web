@@ -53,7 +53,9 @@
       "intro": "ReadTocItemText",
       "show": true,
       "alreadySeen": false,
-      "hideOn": ["HomePage"],
+      "hideOn": [
+        "HomePage"
+      ],
       "showOn": []
     },
     {
@@ -63,7 +65,9 @@
       "show": false,
       "alreadySeen": false,
       "hideOn": [],
-      "showOn": ["PersonSearchPage"]
+      "showOn": [
+        "PersonSearchPage"
+      ]
     }
   ],
   "settings": {
@@ -84,7 +88,8 @@
       "manuscripts": true,
       "variations": true,
       "facsimiles": true,
-      "introduction": true
+      "introduction": true,
+      "songexample": false
     },
     "enableModeToggle": true,
     "getFacsimilePagesInfinite": false

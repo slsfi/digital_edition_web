@@ -123,11 +123,11 @@ export class ReadPage /*implements OnDestroy*/ {
   show = 'established'; // Mobile tabs
 
   availableViewModes = [
-    'manuscript',
-    'variation',
-    'commentary',
+    'manuscripts',
+    'variations',
+    'comments',
     'established',
-    'facsimile',
+    'facsimiles',
     'introduction',
     'songexample'
   ];
@@ -180,12 +180,14 @@ export class ReadPage /*implements OnDestroy*/ {
     let link = null;
 
     this.matches = [];
+    this.availableViewModes = [];
 
     // Hide some or all of the display toggles (variations, facsimiles, established etc.)
     this.displayToggles = this.config.getSettings('settings.displayTypesToggles');
     let foundTrueCount = 0;
     for (const toggle in this.displayToggles) {
       if (this.displayToggles[toggle]) {
+        this.availableViewModes.push(toggle);
         foundTrueCount++;
       }
     }
@@ -456,17 +458,17 @@ export class ReadPage /*implements OnDestroy*/ {
   viewModeShouldBeShown(viewmode) {
     if (viewmode === 'established' && !this.displayToggles['established']) {
       return false;
-    } else if (viewmode === 'commentary' && !this.displayToggles['comments']) {
+    } else if (viewmode === 'comments' && !this.displayToggles['comments']) {
       return false;
-    } else if (viewmode === 'facsimile' && !this.displayToggles['facsimiles']) {
+    } else if (viewmode === 'facsimiles' && !this.displayToggles['facsimiles']) {
       return false;
-    } else if (viewmode === 'manuscript' && !this.displayToggles['manuscripts']) {
+    } else if (viewmode === 'manuscripts' && !this.displayToggles['manuscripts']) {
       return false;
-    } else if (viewmode === 'variation' && !this.displayToggles['variations']) {
+    } else if (viewmode === 'variations' && !this.displayToggles['variations']) {
       return false;
     } else if (viewmode === 'introduction' && !this.displayToggles['introduction']) {
       return false;
-    } else if (viewmode === 'songexample' && !this.displayToggles['song-example']) {
+    } else if (viewmode === 'songexample' && !this.displayToggles['songexample']) {
       return false;
     }
 
@@ -483,9 +485,13 @@ export class ReadPage /*implements OnDestroy*/ {
    * If no default views needs to be opened it opens the default views set in config.json
    */
   setDefaultViews() {
-    const urlViews = this.params.get('urlviews') || '';
+    let urlViews = '';
+    try {
+      urlViews = this.params.get('urlviews') || '';
+    } catch (e) {
+      console.log(e);
+    }
     const views = urlViews.split('&');
-
     if (this.params.get('views') !== undefined) {
       this.setViewsFromSearchResults();
     } else {
@@ -539,20 +545,20 @@ export class ReadPage /*implements OnDestroy*/ {
         this.addView(v.type, v.id);
       }
 
-      if (v.type === 'manuscript') {
-        this.show = 'manuscript';
+      if (v.type === 'manuscripts') {
+        this.show = 'manuscripts';
         this.typeVersion = v.id;
       } else if (v.type === 'variation') {
         this.show = 'variations';
         this.typeVersion = v.id;
-      } else if ((v.type === 'commentary')) {
-        this.show = 'commentaries';
+      } else if ((v.type === 'comments')) {
+        this.show = 'comments';
       } else if (v.type === 'established') {
         this.show = 'established';
-      } else if (v.type === 'facsimile') {
-        this.show = 'facsimile';
-      } else if (v.type === 'songexample') {
-        this.show = 'songexample';
+      } else if (v.type === 'facsimiles') {
+        this.show = 'facsimiles';
+      } else if (v.type === 'song-example') {
+        this.show = 'song-example';
       } else if (v.type === 'introduction') {
         this.show = 'introduction';
       }
@@ -1028,10 +1034,10 @@ export class ReadPage /*implements OnDestroy*/ {
         content: `This is an upcoming ${type} view`,
         type,
         established: { show: (type === 'established'), id: id },
-        commentary: { show: (type === 'commentary'), id: id },
-        facsimile: { show: (type === 'facsimile'), id: id },
-        manuscript: { show: (type === 'manuscript'), id: id },
-        variation: { show: (type === 'variation'), id: id },
+        comments: { show: (type === 'comments'), id: id },
+        facsimiles: { show: (type === 'facsimiles'), id: id },
+        manuscripts: { show: (type === 'manuscripts'), id: id },
+        variations: { show: (type === 'variations'), id: id },
         introduction: { show: (type === 'introduction'), id: id },
         songexample: { show: (type === 'songexample'), id: id }
       });
