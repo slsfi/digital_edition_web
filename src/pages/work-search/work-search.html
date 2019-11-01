@@ -5,23 +5,22 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <top-menu></top-menu>
-  <ion-toolbar color="secondary" class="secondary"  *ngIf="userSettingsService.isDesktop()">
-   <ion-title>
+  <ion-toolbar color="secondary" class="secondary" *ngIf="userSettingsService.isDesktop()">
+    <ion-title>
       <div class="page-title"></div>
       <div class="page-subtitle"></div>
     </ion-title>
     <ion-buttons end>
-        <ion-grid>
-            <ion-row>
-              <ion-col>
-                <div name="download" (click)="download()">
-                  <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
-                  <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
-                </div>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div name="download" (click)="download()">
+              <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
+              <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -36,51 +35,54 @@
     </div>
   </div>
   <ion-fab bottom left *ngIf="userSettingsService.isMobile()">
-      <ion-grid>
-          <ion-row>
-            <ion-col>
-                <button ion-fab name="download" (click)="download()">
-                    <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
-                    <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
-                  </button>
-            </ion-col>
-          </ion-row>
-      </ion-grid>
-    </ion-fab>
-  <ion-grid>
+    <ion-grid>
       <ion-row>
-          <ion-col col-10>
-              <ion-row>
-                  <ion-col col-11>
-                    <ion-searchbar class="searchbar" [(ngModel)]="searchText" (keyup)="filter($event.target.value)"></ion-searchbar>
-                  </ion-col>
-                  <ion-col col-1 *ngIf="showFilter">
-                      <button (click)="openFilterModal()" ion-button><ion-icon class="filter-button" ios="ios-options" md="md-options"></ion-icon></button>
-                  </ion-col>
-              </ion-row>
-              <ion-row class="loadingRow" *ngIf="showLoading">
-                  <ion-col col-6></ion-col>
-                  <ion-col col-6>
-                      <ion-spinner class="loading" name="dots"></ion-spinner>
-                  </ion-col>
-              </ion-row>
-              
-            <ion-list>
-                <div *ngFor="let p of works">
-                  <ion-item *ngIf="p?.firstOfItsKind">
-                    <ion-item-divider color="light">{{p.firstOfItsKind}}</ion-item-divider>
-                  </ion-item>
-                  <ion-item *ngIf="p?.name.length > 1" (click)="openTag(p)">
-                    <p>{{p.name}}</p>
-                  </ion-item>
-                </div>
-            </ion-list>
-          
-              <ion-infinite-scroll *ngIf="!searchText" (ionInfinite)="doInfinite($event)">
-                <ion-infinite-scroll-content></ion-infinite-scroll-content>
-              </ion-infinite-scroll>
+        <ion-col>
+          <button ion-fab name="download" (click)="download()">
+            <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
+            <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-fab>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-10>
+        <ion-row>
+          <ion-col col-11>
+            <ion-searchbar class="searchbar" [(ngModel)]="searchText" (keyup)="filter($event.target.value)">
+            </ion-searchbar>
+          </ion-col>
+          <ion-col col-1 *ngIf="showFilter">
+            <button (click)="openFilterModal()" ion-button>
+              <ion-icon class="filter-button" ios="ios-options" md="md-options"></ion-icon>
+            </button>
           </ion-col>
         </ion-row>
+        <ion-row class="loadingRow" *ngIf="showLoading">
+          <ion-col col-6></ion-col>
+          <ion-col col-6>
+            <ion-spinner class="loading" name="dots"></ion-spinner>
+          </ion-col>
+        </ion-row>
+
+        <ion-list>
+          <div *ngFor="let p of works">
+            <ion-item *ngIf="p?.firstOfItsKind">
+              <ion-item-divider color="light">{{p.firstOfItsKind}}</ion-item-divider>
+            </ion-item>
+            <ion-item *ngIf="p?.name.length > 1" (click)="openTag(p)">
+              <p>{{p.name}}</p>
+            </ion-item>
+          </div>
+        </ion-list>
+
+        <ion-infinite-scroll *ngIf="!searchText" (ionInfinite)="doInfinite($event)">
+          <ion-infinite-scroll-content></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 
 </ion-content>

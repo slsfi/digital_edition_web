@@ -64,7 +64,8 @@ export class ReadTextComponent {
       }
     });
     this.renderer.listen(this.elementRef.nativeElement, 'mouseover', (event) => {
-      if (event.target.classList.contains('tooltiptrigger') && this.readPopoverService.show.comments) {
+      if ((event.target.parentNode.classList.contains('tooltiptrigger') || event.target.classList.contains('tooltiptrigger')) &&
+        this.readPopoverService.show.comments) {
         if (event.target !== undefined) {
           this.showTooltip(event);
         }
@@ -133,14 +134,28 @@ export class ReadTextComponent {
   }
 
   showTooltip(origin: any) {
-    if (origin.target.nextSibling !== null && origin.target.nextSibling !== undefined) {
-      if (origin.target.nextSibling.className !== undefined && String(origin.target.nextSibling.className).includes('tooltip')) {
+    let elem = [];
+    if (origin.target.nextSibling !== null && origin.target.nextSibling !== undefined &&
+      !String(origin.target.nextSibling.className).includes('tooltiptrigger')) {
+      elem = origin.target;
+    } else if (origin.target.parentNode.nextSibling !== null && origin.target.parentNode.nextSibling !== undefined) {
+      elem = origin.target.parentNode;
+    }
+    if (elem['nextSibling'] !== null && elem['nextSibling'] !== undefined) {
+      if (elem['nextSibling'].className !== undefined && String(elem['nextSibling'].className).includes('tooltip')) {
         this.toolTipPosition = {
-          top: (origin.target.offsetTop - (origin.target.offsetHeight / 2) + 4) +
-            'px', left: (origin.target.offsetLeft + origin.target.offsetWidth + 4) + 'px'
+          top: (elem['offsetTop'] - (elem['offsetHeight'] / 2) + 4) +
+            'px', left: (elem['offsetLeft'] + elem['offsetWidth'] + 4) + 'px'
         };
         this.showToolTip = true;
-        this.toolTipText = origin.target.nextSibling.textContent;
+        this.toolTipText = elem['nextSibling'].textContent;
+        if ((elem['offsetParent'].clientWidth) < ((elem['offsetLeft'] + elem['offsetWidth'] + 70))) {
+          this.toolTipPosition = {
+            top: (elem['offsetTop'] - (elem['offsetHeight'] / 2) + 40) +
+              'px', left: (elem['offsetLeft'] + elem['offsetWidth'] - 100) + 'px'
+          };
+        }
+
         setTimeout(() => {
           this.showToolTip = false;
           this.toolTipText = '';
