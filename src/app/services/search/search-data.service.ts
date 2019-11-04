@@ -125,6 +125,8 @@ export class SearchDataService {
               body[i]['suggestion'] = String(body[i]['highlight']['name']).replace('<em>', '').replace('</em>', '');
             } else if (body[i]['highlight']['song_name'] !== undefined) {
               body[i]['suggestion'] = String(body[i]['highlight']['song_name']).replace('<em>', '').replace('</em>', '');
+            } else if (body[i]['highlight']['textData'] !== undefined) {
+              body[i]['suggestion'] = String(body[i]['highlight']['textData']).replace('<em>', '').replace('</em>', '');
             }
           }
         }

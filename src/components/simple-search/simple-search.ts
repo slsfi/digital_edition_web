@@ -658,24 +658,22 @@ export class SimpleSearchComponent {
         const path = String(element['_source']['path']).split('/');
         pathString = String(path[path.length - 2]) + '_' + String(path[path.length - 1]).replace('.xml', '').replace('.txt', '');
         pubStr = String(path[path.length - 2]);
-        const tmpPath: Array<string> = pathString.split('_');
-        const textType = tmpPath.filter(function (item) {
-          if (item === 'est') {
-            return item;
-          } else if (item === 'com') {
-            return item;
-          } else if (item === 'var') {
-            return item;
-          } else if (item === 'inl') {
-            return item;
-          } else if (item === 'tit') {
-            return item;
-          } else if (item === 'ms') {
-            return item;
-          } else {
-            return 'Text';
-          }
-        }).toString();
+        let textType = 'Text';
+        if (pathString.indexOf('_est') > 0) {
+          textType = 'est';
+        } else if (pathString.indexOf('_com') > 0) {
+          textType = 'com';
+        } else if (pathString.indexOf('_var') > 0) {
+          textType = 'var';
+        } else if (pathString.indexOf('_inl') > 0) {
+          textType = 'inl';
+        } else if (pathString.indexOf('_tit') > 0) {
+          textType = 'tit';
+        } else if (pathString.indexOf('_ms') > 0) {
+          textType = 'ms';
+        } else {
+          textType = 'Text';
+        }
 
         if (element['highlight'] !== undefined) {
           matches = highLightText.match(/<em>(.*?)<\/em>/g).map(function (val) {
@@ -711,7 +709,7 @@ export class SimpleSearchComponent {
               'TitleIndexed': TitleIndexed,
               'highLightText': highLightText,
               'path': pathString,
-              'textType': 'Text',
+              'textType': textType,
               'matches': matches,
               'text': pubName,
               'hidden': false,
@@ -744,18 +742,18 @@ export class SimpleSearchComponent {
 
       if (data.length > 3) {
         text = {
-          'collectionID': data[0],
-          'publicationId': data[1],
-          'textType': textType,
-          'version': data[3],
+          'collectionID': data[1],
+          'publicationId': data[2],
+          'textType': data[3],
+          'version': data[4],
           'linkID': id,
           'facsimilePage': facsimilePage
         };
       } else {
         text = {
-          'collectionID': data[0],
-          'publicationId': data[1],
-          'textType': textType,
+          'collectionID': data[1],
+          'publicationId': data[2],
+          'textType': data[3],
           'version': '',
           'linkID': id,
           'facsimilePage': facsimilePage
