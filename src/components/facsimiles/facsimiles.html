@@ -20,13 +20,13 @@
 
 <div>
   <img *ngIf="!facsimilePagesInfinite" [src]="images ? images[activeImage] : ''" style="width: 100%;"
-    [ngStyle]="{'transform':'scale('+zoom+')'}" (pan)="handleSwipeEvent($event)">
+    [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg)'}" (pan)="handleSwipeEvent($event)">
 </div>
 
 
 <div>
   <img *ngIf="facsimilePagesInfinite && facsNumber" [src]="facsUrl + facsNumbe" style="width: 100%;"
-    [ngStyle]="{'transform':'scale('+zoom+')'}" (pan)="handleSwipeEvent($event)">
+    [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg)'}" (pan)="handleSwipeEvent($event)">
 </div>
 
 
@@ -49,8 +49,11 @@
   <button ion-fab color="secondary" mini (click)="zoomOut()">
     <ion-icon name="remove"></ion-icon>
   </button>
-  <button ion-fab color="secondary" mini (click)="zoomReset()">
+  <button ion-fab color="secondary" mini (click)="rotate()">
     <ion-icon name="refresh"></ion-icon>
+  </button>
+  <button ion-fab color="secondary" mini (click)="zoomReset()">
+    <ion-icon name="undo"></ion-icon>
   </button>
 </ion-fab>
 

@@ -40,6 +40,7 @@ export class FacsimilesComponent {
   facsimilePage = 0;
   manualPageNumber: number;
   zoom = 1.0;
+  angle = 0;
 
   facsUrl = '';
   facsimilePagesInfinite = false;
@@ -313,14 +314,38 @@ export class FacsimilesComponent {
     }
   }
 
+  rotate() {
+    this.angle += 90;
+    if ( this.angle >= 360 ) {
+      this.angle = 0;
+    }
+  }
+
   zoomReset() {
     this.zoom = 1 + (Math.random() * (0.00001 - 0.00000001) + 0.00000001);
+    this.angle = 0;
   }
 
   handleSwipeEvent(event) {
     const img = event.target;
+    let x = event.deltaX;
+    let y = event.deltaY;
+    if ( this.angle === 90 ) {
+      const tmp = x;
+      x = y;
+      y = tmp;
+      y = y * -1;
+    } else if ( this.angle === 180 ) {
+      y = y * -1;
+      x = x * -1;
+    } else if ( this.angle === 270 ) {
+      const tmp = x;
+      x = y;
+      y = tmp;
+      x = x * -1;
+    }
     if (img !== null) {
-      img.style.transform = 'scale(' + this.zoom + ') translate3d(' + event.deltaX + 'px, ' + event.deltaY + 'px, 0px)';
+      img.style.transform = 'rotate(' + this.angle + 'deg) scale(' + this.zoom + ') translate3d(' + x + 'px, ' + y + 'px, 0px)';
     }
   }
 
