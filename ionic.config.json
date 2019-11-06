@@ -4,5 +4,8 @@
     "cordova": {}
   },
   "devtool": "source-map",
-  "type": "ionic-angular"
+  "type": "ionic-angular",
+  "hooks" : {
+    "ionic:build:after": "npm run postbuild"
+  }
 }

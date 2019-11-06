@@ -2,12 +2,14 @@
 // This file when run (i.e: npm run postbuild) will add a hash to these files: main.js, main.css, polyfills.js, vendor.js
 // and will update index.html so that the script/link tags request those files with their corresponding hashes
 // Based upon source: https://gist.github.com/haydenbr/7df417a8678efc404c820c61b6ffdd24
+// It is now heavily rewritten by Christoffer Björkskog.
 // Don't forget to: chmod 755 scripts/cache-busting.js
 
 var fs = require('fs'),
     path = require('path'),
     cheerio = require('cheerio'),
     revHash = require('rev-hash');
+
 const { exit } = require('process');
 const { execSync } = require('child_process');
 
@@ -32,120 +34,129 @@ function findFile(dir,rgx){
   return null;
 }
 
+// Helper function for finding the hash in an already hashed file.
+function findHash(filePath) {
+  let pathParts = filePath.split('/');
+  const filename = pathParts.pop();
+  const folderPath = pathParts.join('/');
+  const fileParts = filename.split('.');
+
+  const buildFiles = fs.readdirSync(folderPath);
+
+  for (buildFile of buildFiles) {
+    const buildFileParts = buildFile.split('.');
+    if (buildFileParts.length == 3 && buildFileParts[0] === fileParts[0] && buildFileParts[2] == fileParts[1]) {
+      return buildFileParts[1];
+    }
+  }
+}
+
+function getHash(filename, folderPath) {
+  let files = fs.readdirSync(folderPath);
+  let filePath = path.join(folderPath, filename);
+
+  let theFileIsAlreadyHashed = !files.includes(filename);
+  let fileHash = null;
+  if (!theFileIsAlreadyHashed) {
+    // console.log(filename + " is not yet hashed");
+    fileHash = revHash(fs.readFileSync(filePath));
+    // console.log("new hash is " + fileHash);
+  } else {
+    fileHash = findHash(filePath);
+    if (!fileHash) {
+      console.log("\n\n\n" + filename  + " does not exist. please run build.\n\n\n");
+      process.exit();
+    }
+    // console.log(filename + " is already hashed", filePath);
+    // console.log("existing hash is " + fileHash);
+  }
+  return [fileHash, theFileIsAlreadyHashed];
+}
+
+
 var rootDir = path.resolve(__dirname, '../');
-// var wwwRootDir = path.resolve(rootDir, 'platforms', 'browser', 'www');
 var wwwRootDir = path.resolve(rootDir, 'www');
 var buildDir = path.join(wwwRootDir, 'build');
 var indexPath = path.join(wwwRootDir, 'index.html');
 var serviceWorkerPath = path.join(wwwRootDir, 'service-worker.js');
-//var oldSWPaths = path.join(wwwRootDir, 'service-worker.*.js');
-//exe(`if [ -e ${oldSWPaths} ]; then rm ${oldSWPaths};fi`);
+var buildFiles = fs.readdirSync(buildDir);
 
-var cssPath = path.join(buildDir, 'main.css');
-var cssFileHash = revHash(fs.readFileSync(cssPath));
-var cssNewFileName = `main.${cssFileHash}.css`;
-var cssNewPath = path.join(buildDir, cssNewFileName);
-var cssNewRelativePath = path.join('build', cssNewFileName);
-
- var jsPath = path.join(buildDir, 'main.js');
- var jsHashedPath = findFile(buildDir,/main.*.js/);
- var jsFileHash;
- var jsNewFileName;
- if(jsPath == jsHashedPath && fs.existsSync(jsPath)){
-   jsFileHash = revHash(fs.readFileSync(jsPath));
-   jsNewFileName = `main.${jsFileHash}.js`;
- }
- else{
-   jsPath = jsHashedPath;
-   jsNewFileName = jsPath.replace(buildDir,'');
- }
-// var jsNewFileName = `main.${jsFileHash}.js`;
-var jsNewPath = path.join(buildDir, jsNewFileName);
-var jsNewRelativePath = path.join('build', jsNewFileName);
-
-var jsPolyfillsPath = path.join(buildDir, 'polyfills.js');
-var jsPolyfillsFileHash = revHash(fs.readFileSync(jsPolyfillsPath));
-var jsPolyfillsNewFileName = `polyfills.${jsPolyfillsFileHash}.js`;
-var jsPolyfillsNewPath = path.join(buildDir, jsPolyfillsNewFileName);
-var jsPolyfillsNewRelativePath = path.join('build', jsPolyfillsNewFileName);
-
-var jsVendorPath = path.join(buildDir, 'vendor.js');
-var jsVendorHashedPath = findFile(buildDir,/vendor.*.js/);
-var jsVendorFileHash;
-var jsVendorNewFileName;
-if(jsVendorPath == jsVendorHashedPath && fs.existsSync(jsVendorPath)){
-  jsVendorFileHash = revHash(fs.readFileSync(jsVendorPath));
-  jsVendorNewFileName = `vendor.${jsVendorFileHash}.js`;
-}
-else{
-  jsVendorPath = jsVendorHashedPath;
-  jsVendorNewFileName = jsVendorPath.replace(buildDir,'');
-}
-// var jsVendorFileHash = revHash(fs.readFileSync(jsVendorPath));
-// var jsVendorNewFileName = `vendor.${jsVendorFileHash}.js`;
-var jsVendorNewPath = path.join(buildDir, jsVendorNewFileName);
-var jsVendorNewRelativePath = path.join('build', jsVendorNewFileName);
-
-var jsToolboxPath = path.join(buildDir, 'sw-toolbox.js');
-var jsToolboxFileHash = revHash(fs.readFileSync(jsToolboxPath));
-var jsToolboxNewFileName = `sw-toolbox.${jsToolboxFileHash}.js`;
-var jsToolboxNewPath = path.join(buildDir, jsToolboxNewFileName);
-var jsToolboxNewRelativePath = path.join('build', jsToolboxNewFileName);
-
-// rename main.css to main.[hash].css
-fs.renameSync(cssPath, cssNewPath);
-if(fs.existsSync(cssPath+'.map'))
-fs.renameSync(cssPath+'.map', cssNewPath+'.map');
-
-// rename main.js to main.[hash].js
-fs.renameSync(jsPath, jsNewPath);
-if(fs.existsSync(jsPath+'.map'))
-fs.renameSync(jsPath+'.map', jsNewPath+'.map');
-
-// rename polyfills.js to polyfills.[hash].js
-fs.renameSync(jsPolyfillsPath, jsPolyfillsNewPath);
-if(fs.existsSync(jsPolyfillsPath+'.map'))
-fs.renameSync(jsPolyfillsPath+'.map', jsPolyfillsNewPath+'.map');
-
-// rename vendor.js to vendor.[hash].js
-fs.renameSync(jsVendorPath, jsVendorNewPath);
-if(fs.existsSync(jsVendorPath+'.map'))
-fs.renameSync(jsVendorPath+'.map', jsVendorNewPath+'.map');
-
-// rename sw-toolbox.js to sw-toolbox.[hash].js
-fs.renameSync(jsToolboxPath, jsToolboxNewPath);
-if(fs.existsSync(jsToolboxPath+'.map'))
-fs.renameSync(jsToolboxPath+'.map', jsToolboxNewPath+'.map');
-
-// update service-worker.js to load main.[hash].css
-var swFile = fs.readFileSync(serviceWorkerPath, 'utf-8');
-swFile = swFile.replace(/build\/main.css/mg,cssNewRelativePath)
-.replace(/build\/main.js/mg,jsNewRelativePath)
-.replace(/build\/polyfills.js/mg,jsPolyfillsNewRelativePath)
-.replace(/build\/vendor.js/mg,jsVendorNewRelativePath)
-.replace(/build\/sw-toolbox.js/mg,jsToolboxNewRelativePath);
-
-fs.writeFileSync(serviceWorkerPath, swFile);
-
-var swHash = revHash(fs.readFileSync(serviceWorkerPath));
-fs.renameSync(serviceWorkerPath, serviceWorkerPath.replace(/\.js/,`.${swHash}.js`));
-
-
-// update index.html to load main.[hash].css
+// Renaming service-worker.js in index.html
 $ = cheerio.load(fs.readFileSync(indexPath, 'utf-8'));
-
-$('head link[href="build/main.css"]').attr('href', cssNewRelativePath);
-$('body script[src="build/main.js"]').attr('src', jsNewRelativePath);
-$('body script[src="build/polyfills.js"]').attr('src', jsPolyfillsNewRelativePath);
-$('body script[src="build/vendor.js"]').attr('src', jsVendorNewRelativePath);
-$('body script[src="build/sw-toolbox.js"]').attr('src', jsToolboxNewRelativePath);
-const jsSWorker = $(`<script type="text/javascript">
-   if (\'serviceWorker\' in navigator) {
-      navigator.serviceWorker.register(\'service-worker.${swHash}.js\')
+let [fileHash, theFileIsAlreadyHashed] = getHash('service-worker.js', wwwRootDir);
+// console.log("fileHash", fileHash);
+let jsSWorker = $(`<script type="text/javascript" id="cache-bursting-script">
+  if (\'serviceWorker\' in navigator) {
+      navigator.serviceWorker.register(\'service-worker.${fileHash}.js\')
         .then(() => console.log(\'service worker installed\'))
         .catch(err => console.error(\'Error\', err));
     }
-   </script>`);
-$('head script').replaceWith(jsSWorker);
-
+  </script>`);
+$("head script#service-worker-script").replaceWith(jsSWorker);
 fs.writeFileSync(indexPath, $.html());
+
+// rename serviceWorker file
+let newServiceWorkerPath = path.join(wwwRootDir, `service-worker.${fileHash}.js`);
+if(fs.existsSync(serviceWorkerPath)) {
+  // delete old hashed file if it exists.
+  var oldSWPaths = path.join(wwwRootDir, 'service-worker.*.js');
+  exe(`if [ -e ${oldSWPaths} ]; then rm ${oldSWPaths};fi`);
+  fs.renameSync(serviceWorkerPath, newServiceWorkerPath);
+}
+
+let f = {};
+
+for (let filename of ['main.js', 'main.css', 'polyfills.js', 'sw-toolbox.js', 'vendor.js']) {
+  let filePath = path.join(buildDir, filename);
+  let relativePath = path.join('build', filename);
+
+  let [file, fileExtension] = filename.split('.');
+  let fileBase = file.split('/').pop();
+  let [fileHash, theFileIsAlreadyHashed] = getHash(filename, buildDir);
+
+  let newFilename = `${fileBase}.${fileHash}.${fileExtension}`;
+  let newPath = path.join(buildDir, newFilename);
+  let newRelativePath = path.join('build', newFilename);
+
+  f[filename] = {
+    'path' : filePath,
+    'hash' : fileHash,
+    'alreadyHashed' :  theFileIsAlreadyHashed,
+    'base' : fileBase,
+    'extenstion' : fileExtension,
+    'unhashedFilename': filename,
+    'newFilename' : newFilename,
+    'newPath' : newPath,
+    'newRelativePath' : newRelativePath,
+    'relativePath': relativePath,
+    'selector': fileExtension == 'css' ? `head link[href="${relativePath}"]` : `body script[src="${relativePath}"]`,
+    'attr': fileExtension == 'css' ? 'href' : 'src' // if there will be more than js and css, we will refactor this into a function
+  }
+  // console.log(f[filename]);
+
+  // update service-worker.js to load base.[hash].ext
+  let re = new RegExp(f[filename].relativePath, "mg");
+  var swFile = fs.readFileSync(newServiceWorkerPath, 'utf-8');
+  swFile = swFile.replace(re, f[filename].newRelativePath);
+  fs.writeFileSync(newServiceWorkerPath, swFile);
+  // console.log("new sw path", newServiceWorkerPath);
+  // update index.html to load base.[hash].ext
+  $ = cheerio.load(fs.readFileSync(indexPath, 'utf-8'));
+  $(f[filename].selector).attr(f[filename].attr, f[filename].newRelativePath);
+  fs.writeFileSync(indexPath, $.html());
+
+  // rename actual file
+  if (!f[filename].alreadyHashed) {
+    // console.log("will now create hasn file for " + filename + "\n" + f[filename].path + "\n" + f[filename].newPath + "\n\n");
+    if(fs.existsSync(f[filename].path) && !fs.existsSync(f[filename].newPath)) {
+      console.log(`Cache bursting ${filename} => ${f[filename].newFilename}`);
+      fs.renameSync(f[filename].path, f[filename].newPath);
+    }
+    if(fs.existsSync(f[filename].path + '.map') && !fs.existsSync(f[filename].newPath + '.map') ) {
+      console.log(`Cache bursting ${filename}.map => ${f[filename].newFilename}.map`);
+      fs.renameSync(f[filename].path + '.map', f[filename].newPath + '.map');
+    }
+  }
+}
+
+return;
