@@ -666,7 +666,7 @@ export class DigitalEditionsApp {
       }
       this.cdRef.detectChanges();
     });
-    this.events.subscribe('songTypesAccordion:change', (data) => {
+    this.events.subscribe('typesAccordion:change', (data) => {
       if (!data) {
         return;
       }

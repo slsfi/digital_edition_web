@@ -356,7 +356,7 @@ export class ReadPage /*implements OnDestroy*/ {
     this.tocService.getTableOfContents(id)
       .subscribe(
         tocItems => {
-          console.log('get toc root... --- --- in single edition');
+          console.log('get toc root... --- --- in read');
           tocItems.selectedCollId = null;
           tocItems.selectedPubId = null;
           if (this.params.get('collectionID') && this.params.get('publicationID')) {
@@ -375,7 +375,6 @@ export class ReadPage /*implements OnDestroy*/ {
               tocLoadedParams['search_title'] = this.search_title;
             }
           }
-
           this.events.publish('tableOfContents:loaded', tocLoadedParams);
         },
         error => { this.errorMessage = <any>error });

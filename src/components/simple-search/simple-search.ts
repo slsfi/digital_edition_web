@@ -816,15 +816,15 @@ export class SimpleSearchComponent {
     let text_type: string;
 
     if (text.textType === 'ms') {
-      text_type = 'manuscript';
+      text_type = 'manuscripts';
     } else if (text.textType === 'var') {
-      text_type = 'variation';
+      text_type = 'variations';
     } else if (text.textType === 'facs') {
-      text_type = 'facsimile'
+      text_type = 'facsimiles'
     } else if (text.textType === 'est') {
       text_type = 'established';
     } else if (text.facsimilePage) {
-      text_type = 'facsimile';
+      text_type = 'facsimiles';
     } else if (text.textType === 'location') {
       text_type = 'established';
     } else if (text.textType === 'subject') {
@@ -832,7 +832,7 @@ export class SimpleSearchComponent {
     } else if (text.textType === 'tag') {
       text_type = 'established';
     } else {
-      text_type = 'commentary';
+      text_type = 'comments';
     }
 
     if (text.facsimilePage) {

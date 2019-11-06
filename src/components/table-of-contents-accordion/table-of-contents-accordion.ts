@@ -190,6 +190,7 @@ export class TableOfContentsAccordionComponent {
       this.menuOptions = value.toc;
       this.collapsableItems = new Array<InnerMenuOptionModel>();
 
+      let foundSelected = false;
       // Map the options to our internal models
       this.menuOptions.forEach(option => {
         const innerMenuOption = InnerMenuOptionModel.fromMenuOptionModel(option, null, false, value.searchTocItem);
@@ -202,21 +203,27 @@ export class TableOfContentsAccordionComponent {
           innerMenuOption.subOptions.forEach(subItem => {
             if (subItem.selected) {
               this.selectedOption = subItem;
+              foundSelected = true;
             }
           });
         }
       });
 
+      if ( !foundSelected ) {
+      } else {
+        console.log('found menu item');
+      }
+
       if (value.searchTocItem) {
         // Find toc item and open its parents
         if (value.searchPublicationId && value.searchTitle) {
           this.findTocByPubAndTitle(this.collapsableItems, value.searchPublicationId, value.searchTitle);
-          this.events.publish('songTypesAccordion:change', {
+          this.events.publish('typesAccordion:change', {
             expand: true
           });
         } else if (value.searchPublicationId) {
           this.findTocByPubOnly(this.collapsableItems, value.searchPublicationId);
-          this.events.publish('songTypesAccordion:change', {
+          this.events.publish('typesAccordion:change', {
             expand: true
           });
         }
@@ -319,7 +326,7 @@ export class TableOfContentsAccordionComponent {
 
         if (this.collectionId === 'songTypesMarkdown') {
           this.findTocByMarkdownID(this.collapsableItems, data.markdownID);
-          this.events.publish('songTypesAccordion:change', {
+          this.events.publish('typesAccordion:change', {
             expand: true
           });
         }
@@ -408,7 +415,7 @@ export class TableOfContentsAccordionComponent {
           }
         }
         tocItem.parent.important = true;
-        this.cdRef.detectChanges();
+        tocItem.parent.selected = true;
         this.openTocItemParentAccordions(tocItem.parent);
       }
     } catch (e) {console.log(e)}
@@ -465,7 +472,7 @@ export class TableOfContentsAccordionComponent {
         this.findTocByPubOnly(item.subOptions, publicationID);
       } else if (
         item.publication_id &&
-        (item.publication_id === publicationID || Number(item.publication_id) === Number(publicationID))
+        (String(item.publication_id) === String(publicationID) || Number(item.publication_id) === Number(publicationID))
       ) {
         item.selected = true;
         this.currentOption = item;

@@ -201,13 +201,13 @@ export class SemanticDataModalPage {
     let text_type: string;
 
     if (text.publication_facsimile_id !== null) {
-      text_type = 'facsimile';
+      text_type = 'facsimiles';
     } else if (text.publication_comment_id !== null) {
-      text_type = 'commentary';
+      text_type = 'comments';
     } else if (text.publication_version_id !== null) {
-      text_type = 'variation'
+      text_type = 'variations'
     } else if (text.publication_manuscript_id !== null) {
-      text_type = 'manuscript'
+      text_type = 'manuscripts'
     } else {
       text_type = 'established';
     }
