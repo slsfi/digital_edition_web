@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { ConfigService } from '@ngx-config/core';
 
 export const enum Fontsize {
-    small,
+    small = 0,
+    medium,
     large
 }
 

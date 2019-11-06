@@ -143,15 +143,15 @@ $divider-bg-color:				color($colors, light);
 $font-family-base: 'Muli';
 $font-family-header: 'Muli';
 $font-family-top-menu: 'Muli';
-$font-read-column-p: 'Open Sans',Arial,sans-serif;
+$font-read-column-p: "Muli", 'Open Sans',Arial,sans-serif;
 
 // Tei fonts
 //$font-app-tei: Georgia,Times,"Times New Roman",serif;
 $font-app-tei: "Muli",Times,"Times New Roman",serif;
-$font-comment-modal-tei: 'Open Sans',Arial,sans-serif;
-$font-semantic-data-model-tei: 'Open Sans',Arial,sans-serif;
+$font-comment-modal-tei: "Muli",'Open Sans',Arial,sans-serif;
+$font-semantic-data-model-tei: "Muli",'Open Sans',Arial,sans-serif;
 $font-stamp-print-tei: "Times New Roman", serif;
-$font-tei-note-editorial: arial, helvetica, sans-serif;
+$font-tei-note-editorial: "Muli", arial, helvetica, sans-serif;
 
 // Load tei stylesheet
 @import 'tei';

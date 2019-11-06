@@ -71,7 +71,7 @@
               <span class="title"><span class="occupation" *ngIf="item.occupation" class="occupation">{{item.occupation}} - </span>{{item.TitleIndexed}}</span>
               <span class="dates" *ngIf="item.date_born || item.date_deceased" >(</span>
               <span class="dates" *ngIf="item.date_born!='null'" innerHTML="{{item.date_born}}"></span>
-              <span class="dates" *ngIf="item.date_born || item.date_deceased"> - </span>
+              <span class="dates" *ngIf="item.date_born || item.date_deceased">-</span>
               <span class="dates" *ngIf="item.date_deceased!='null'" innerHTML="{{item.date_deceased}}"></span>
               <span class="dates" *ngIf="item.date_born || item.date_deceased">)</span>      
               <span class="highLightText" innerHTML="{{item.highLightText}}"></span>
@@ -132,15 +132,15 @@
                   <ion-icon *ngIf="item.textType=='tag'" name="information-circle"></ion-icon>
                   <ion-icon *ngIf="item.textType=='song'" name="musical-notes"></ion-icon>
                 </div>
-                <span class="title"><span class="occupation" *ngIf="item.occupation" class="occupation">{{item.occupation}} - </span>{{item.TitleIndexed}}</span>
+                <span class="title"><span class="occupation" *ngIf="item.occupation" class="occupation">{{item.occupation}} – </span>{{item.TitleIndexed}}</span>
                 <span class="dates" *ngIf="item.date_born || item.date_deceased" >(</span>
                 <span class="dates" *ngIf="item.date_born!='null'" innerHTML="{{item.date_born}}"></span>
-                <span class="dates" *ngIf="item.date_born || item.date_deceased"> - </span>
+                <span class="dates" *ngIf="item.date_born || item.date_deceased">–</span>
                 <span class="dates" *ngIf="item.date_deceased!='null'" innerHTML="{{item.date_deceased}}"></span>
                 <span class="dates" *ngIf="item.date_born || item.date_deceased">)</span>      
                 <span class="highLightText" innerHTML="{{item.highLightText}}"></span>
                 <div *ngIf="item.collection_name || item.publication_name" class="coll_pub">
-                  <span class="collection" innerHTML="{{item.collection_name}} - "></span>
+                  <span class="collection" innerHTML="{{item.collection_name}} – "></span>
                   <span class="publication" innerHTML="{{item.publication_name}}"></span>
                   <span *ngIf="item.facsimilePage && showPageNumbers" class="facsimilePage">( {{("SearchApp.pagenumber"|translate)}} {{item.facsimilePage}} )</span>
                 </div>

@@ -19,8 +19,7 @@
               <h3>
                 <span *ngIf="occupation" class="occupation">{{occupation}} - </span>
                 <span class="title">{{title}}</span>
-                <span *ngIf="date_born!=null||date_deceased!=null" class="date_born">({{date_born}} - </span>
-                <span *ngIf="date_born!=null||date_deceased!=null" class="date_deceased">{{date_deceased}})</span>
+                <span *ngIf="date_born!=null||date_deceased!=null" class="date_born">({{date_born}}–{{date_deceased}})</span>
                 <span *ngIf="latitude" class="latitude">({{"Occurrences.latitude" | translate}} {{latitude}}, </span>
                 <span *ngIf="longitude" class="longitude">{{"Occurrences.longitude" | translate}} {{longitude}})</span>
               </h3>

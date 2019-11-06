@@ -132,6 +132,11 @@ export class ReadPopoverPage {
     this.readPopoverService.fontsize = this.fontsize;
   }
 
+  increaseFontMeduimSize() {
+    this.fontsize = Fontsize.medium;
+    this.readPopoverService.fontsize = this.fontsize;
+  }
+
   increaseFontSize() {
     this.fontsize = Fontsize.large;
     this.readPopoverService.fontsize = this.fontsize;

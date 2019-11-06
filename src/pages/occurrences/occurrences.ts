@@ -82,9 +82,9 @@ export class OccurrencesPage {
     this.description = this.occurrenceResult.description;
     this.country = this.occurrenceResult.country;
     this.date_born = (this.occurrenceResult.date_born !== undefined && this.occurrenceResult.date_born !== null) ?
-                              String(this.occurrenceResult.date_born).replace('-01-01 00:00:00', '') : null;
+                              String(this.occurrenceResult.date_born).split('-')[0] : null;
     this.date_deceased = (this.occurrenceResult.date_deceased !== undefined && this.occurrenceResult.date_deceased !== null) ?
-                              String(this.occurrenceResult.date_deceased).replace('-01-01 00:00:00', '') : null;
+                              String(this.occurrenceResult.date_deceased).split('-')[0] : null;
 
     try {
       this.singleOccurrenceType = this.config.getSettings('SingleOccurrenceType');

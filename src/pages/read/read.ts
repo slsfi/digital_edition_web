@@ -1,4 +1,4 @@
-import { Component, Renderer, ElementRef, OnDestroy, ViewChild, Input } from '@angular/core';
+import { Component, Renderer, ElementRef, OnDestroy, ViewChild, Input, EventEmitter } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import {
   App, ViewController, NavController, NavParams, PopoverController, ActionSheetController,
@@ -774,16 +774,22 @@ export class ReadPage /*implements OnDestroy*/ {
   private setUpTextListeners() {
     // We must do it like this since we want to trigger an event on a dynamically loaded innerhtml.
     this.listenFunc = this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
-      if (event.target.classList.contains('tooltiptrigger')) {
-        if (event.target.hasAttribute('data-id')) {
-          if (event.target.classList.contains('person') && this.readPopoverService.show.personInfo) {
-            this.showPersonModal(event.target.getAttribute('data-id'));
-          } else if (event.target.classList.contains('placeName') && this.readPopoverService.show.placeInfo) {
+      let eventTarget: Element;
+      if (event.target.parentNode.classList.contains('tooltiptrigger')) {
+        eventTarget = event.target.parentNode;
+      } else if ( event.target.classList.contains('tooltiptrigger') ) {
+        eventTarget = event.target;
+      }
+      if (eventTarget.classList.contains('tooltiptrigger')) {
+        if (eventTarget.hasAttribute('data-id')) {
+          if (eventTarget.classList.contains('person') && this.readPopoverService.show.personInfo) {
+            this.showPersonModal(eventTarget.getAttribute('data-id'));
+          } else if (eventTarget.classList.contains('placeName') && this.readPopoverService.show.placeInfo) {
             this.showPlaceModal(event.target.getAttribute('data-id'));
-          } else if (event.target.classList.contains('comment') && this.readPopoverService.show.comments) {
-            this.showCommentModal(event.target.getAttribute('data-id'));
-          } else if (event.target.classList.contains('ttVariant') && this.readPopoverService.show.comments) {
-            this.showCommentModal(event.target.getAttribute('data-id'));
+          } else if (eventTarget.classList.contains('comment') && this.readPopoverService.show.comments) {
+            this.showCommentModal(eventTarget.getAttribute('data-id'));
+          } else if (eventTarget.classList.contains('ttVariant') && this.readPopoverService.show.comments) {
+            this.showCommentModal(eventTarget.getAttribute('data-id'));
           }
         } else {
 

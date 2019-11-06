@@ -152,6 +152,14 @@ export class SimpleSearchComponent {
     }
   }
 
+  getPublicationNameByPublicationId(fId) {
+    for (let i = 0; i < this.facsimileLookupData.length; i++) {
+      if (String(this.facsimileLookupData[i]['p_id']) === String(fId)) {
+        return {'p_name': this.facsimileLookupData[i]['p_name'], 'pc_name': this.facsimileLookupData[i]['pc_name']};
+      }
+    }
+  }
+
   getPageCountNameByFacsimileId(fId) {
     for (let i = 0; i < this.facsimileLookupData.length; i++) {
       if (String(this.facsimileLookupData[i]['pf_id']) === String(fId)) {
@@ -493,8 +501,8 @@ export class SimpleSearchComponent {
           'origDate': '',
           'object_id': element._source.id ? element._source.id : null,
           'hidden': false,
-          'date_born': String(subjectData['date_born']).replace('-01-01T00:00:00.000Z', ''),
-          'date_deceased': String(subjectData['date_deceased']).replace('-01-01T00:00:00.000Z', ''),
+          'date_born': String(subjectData['date_born']).split('-')[0],
+          'date_deceased': String(subjectData['date_deceased']).split('-')[0],
           'place_of_birth': subjectData['place_of_birth'],
           'occupation': subjectData['occupation'],
           'score': element._score,
@@ -614,6 +622,87 @@ export class SimpleSearchComponent {
     }
   }
 
+  formatTextResults(userField, element) {
+    let pathString = '';
+    let pubStr = '';
+    let highLightText = '';
+    let matches = [];
+    if (element['highlight'] !== undefined) {
+      highLightText = Array(element['highlight'][userField]).join();
+    }
+    const path = String(element['_source']['path']).split('/');
+    pathString = String(path[path.length - 2]) + '_' + String(path[path.length - 1]).replace('.xml', '').replace('.txt', '');
+    pubStr = String(path[path.length - 2]);
+    let textType = 'Text';
+    if (pathString.indexOf('_est') > 0) {
+      textType = 'est';
+    } else if (pathString.indexOf('_com') > 0) {
+      textType = 'com';
+    } else if (pathString.indexOf('_var') > 0) {
+      textType = 'var';
+    } else if (pathString.indexOf('_inl') > 0) {
+      textType = 'inl';
+    } else if (pathString.indexOf('_tit') > 0) {
+      textType = 'tit';
+    } else if (pathString.indexOf('_ms') > 0) {
+      textType = 'ms';
+    } else {
+      textType = 'Text';
+    }
+
+    if (element['highlight'] !== undefined) {
+      matches = highLightText.match(/<em>(.*?)<\/em>/g).map(function (val) {
+        return val.replace(/<\/?em>/g, '');
+      });
+    }
+
+    let TitleIndexed = '';
+    let origDate = '';
+    let text = '';
+    let facsimilePage = '';
+    let SLSCollection = '';
+    let collection = '';
+    let fId = '';
+    try {
+      TitleIndexed = (element['_source']['TitleIndexed']) ?
+        String(element['_source']['TitleIndexed']).replace('Kommentarer till ', '') :
+        Array(element['_source']['Chapter']).join();
+      origDate = (element['_source']['origDate']) ? element['_source']['origDate'] : null;
+      text = element['_source'][userField][0];
+      facsimilePage = ((path[path.length - 1]) ? String(path[path.length - 1]).replace('.txt', '') : null);
+      SLSCollection = ((element['_source']['Samling']) ? Array(element['_source']['Samling']).join() : null);
+      collection = ((element['_source']['ChapterIndexed']) ? Array(element['_source']['ChapterIndexed']).join() : null);
+    } catch (e) {
+    }
+
+    fId = String(path[path.length - 1]).split('_')[1];
+    const pData = this.getPublicationNameByPublicationId(fId);
+    const pubName = pData['p_name'];
+    const colName = pData['pc_name'];
+    const pubId = this.getPublicationIdNameByFacsimileId(fId);
+    if (element._score > 1) {
+      this.displayResult['texts'].push(
+        {
+          'TitleIndexed': TitleIndexed,
+          'highLightText': highLightText,
+          'path': pathString,
+          'textType': textType,
+          'matches': matches,
+          'text': pubName,
+          'hidden': false,
+          'origDate': origDate,
+          'identifier': String('text' + pubName).toLowerCase().trim().replace(' ', ''),
+          'score': element._score,
+          'facsimilePage': facsimilePage,
+          'SLSCollection': SLSCollection,
+          'publication_name': pubName,
+          'publication_id': pubId,
+          'collection_name': colName
+        }
+      );
+    }
+  }
+
   formatSearchresult(userField?: string) {
     this.displayResult['texts'] = [];
     this.displayResult['subjects'] = [];
@@ -624,6 +713,7 @@ export class SimpleSearchComponent {
     const locationIds: Array<Number> = [];
     const tagIds: Array<Number> = [];
     const songIds: Array<Number> = [];
+    const textIds: Array<String> = [];
     this.searchResult.forEach(function (element) {
 
       if (element['_index'] === 'subject') {
@@ -647,83 +737,10 @@ export class SimpleSearchComponent {
         }
         songIds.push(Number(element['_source']['id']));
       } else {
-        let pathString = '';
-        let pubStr = '';
-        let highLightText = '';
-        let matches = [];
-        if (element['highlight'] !== undefined) {
-          highLightText = Array(element['highlight'][userField]).join();
+        if (textIds.indexOf(element['_source']['path']) === -1) {
+          this.formatTextResults(userField, element);
         }
-
-        const path = String(element['_source']['path']).split('/');
-        pathString = String(path[path.length - 2]) + '_' + String(path[path.length - 1]).replace('.xml', '').replace('.txt', '');
-        pubStr = String(path[path.length - 2]);
-        let textType = 'Text';
-        if (pathString.indexOf('_est') > 0) {
-          textType = 'est';
-        } else if (pathString.indexOf('_com') > 0) {
-          textType = 'com';
-        } else if (pathString.indexOf('_var') > 0) {
-          textType = 'var';
-        } else if (pathString.indexOf('_inl') > 0) {
-          textType = 'inl';
-        } else if (pathString.indexOf('_tit') > 0) {
-          textType = 'tit';
-        } else if (pathString.indexOf('_ms') > 0) {
-          textType = 'ms';
-        } else {
-          textType = 'Text';
-        }
-
-        if (element['highlight'] !== undefined) {
-          matches = highLightText.match(/<em>(.*?)<\/em>/g).map(function (val) {
-            return val.replace(/<\/?em>/g, '');
-          });
-        }
-
-        let TitleIndexed = '';
-        let origDate = '';
-        let text = '';
-        let facsimilePage = '';
-        let SLSCollection = '';
-        let collection = '';
-
-        try {
-          TitleIndexed = (element['_source']['TitleIndexed']) ?
-            String(element['_source']['TitleIndexed']).replace('Kommentarer till ', '') :
-            Array(element['_source']['Chapter']).join();
-          origDate = (element['_source']['origDate']) ? element['_source']['origDate'] : null;
-          text = element['_source'][userField][0];
-          facsimilePage = ((path[path.length - 1]) ? String(path[path.length - 1]).replace('.txt', '') : null);
-          SLSCollection = ((element['_source']['Samling']) ? Array(element['_source']['Samling']).join() : null);
-          collection = ((element['_source']['ChapterIndexed']) ? Array(element['_source']['ChapterIndexed']).join() : null);
-        } catch (e) {
-        }
-
-        const pubName = this.getPublicationNameByFacsimileId(path[path.length - 2]);
-        const pubId = this.getPublicationIdNameByFacsimileId(path[path.length - 2]);
-        const colName = this.getPublicationCollectionNameByFacsimileId(path[path.length - 2]);
-        if (element._score > 1) {
-          this.displayResult['texts'].push(
-            {
-              'TitleIndexed': TitleIndexed,
-              'highLightText': highLightText,
-              'path': pathString,
-              'textType': textType,
-              'matches': matches,
-              'text': pubName,
-              'hidden': false,
-              'origDate': origDate,
-              'identifier': String('text' + pubName).toLowerCase().trim().replace(' ', ''),
-              'score': element._score,
-              'facsimilePage': facsimilePage,
-              'SLSCollection': SLSCollection,
-              'publication_name': pubName,
-              'publication_id': pubId,
-              'collection_name': colName
-            }
-          );
-        }
+        textIds.push(String(element['_source']['path']));
       }
     }.bind(this));
   }

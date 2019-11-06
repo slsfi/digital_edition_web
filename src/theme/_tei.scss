@@ -886,4 +886,6 @@
 .tei a.anchor, .tei a.anchor:hover {color: inherit; }
 
 .tei                        p { font-size: 1rem;}
-.tei.largeFont              p { font-size: 1.3rem; line-height: 3rem;}
+.tei.smallFont              p { font-size: 1rem; line-height: 1.5rem;}
+.tei.largeFont              p { font-size: 1.6rem; line-height: 2rem;}
+.tei.mediumFont              p { font-size: 1.2rem; line-height: 1.8rem;}
