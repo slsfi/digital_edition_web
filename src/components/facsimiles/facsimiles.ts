@@ -41,6 +41,8 @@ export class FacsimilesComponent {
   manualPageNumber: number;
   zoom = 1.0;
   angle = 0;
+  latestDeltaX = null;
+  latestDeltaY = null;
 
   facsUrl = '';
   facsimilePagesInfinite = false;
@@ -330,6 +332,12 @@ export class FacsimilesComponent {
     const img = event.target;
     let x = event.deltaX;
     let y = event.deltaY;
+    if ( this.latestDeltaX !== null ) {
+      x = this.latestDeltaX;
+      y = this.latestDeltaY;
+      this.latestDeltaX = null;
+      this.latestDeltaY = null;
+    }
     if ( this.angle === 90 ) {
       const tmp = x;
       x = y;
@@ -346,6 +354,26 @@ export class FacsimilesComponent {
     }
     if (img !== null) {
       img.style.transform = 'rotate(' + this.angle + 'deg) scale(' + this.zoom + ') translate3d(' + x + 'px, ' + y + 'px, 0px)';
+    }
+  }
+
+  setLatestPos(e) {
+    this.latestDeltaX = e.clientX - e.offsetX;
+    this.latestDeltaY = e.clientY - e.offsetY;
+  }
+
+  onMouseWheel(e) {
+    const img = e.target;
+    this.latestDeltaY = e.clientY - e.offsetY;
+    this.latestDeltaX = e.clientX - e.offsetX;
+    if ( e.deltaY > 0 ) {
+      this.zoomIn();
+      img.style.transform = 'rotate(' + this.angle + 'deg) scale(' + this.zoom + ') translate3d(' + this.latestDeltaX + 'px, ' +
+       this.latestDeltaY + 'px, 0px)';
+    } else {
+      this.zoomOut();
+      img.style.transform = 'rotate(' + this.angle + 'deg) scale(' + this.zoom + ') translate3d(' + this.latestDeltaX + 'px, ' +
+       this.latestDeltaY + 'px, 0px)';
     }
   }
 

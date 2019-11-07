@@ -20,13 +20,13 @@
 
 <div>
   <img *ngIf="!facsimilePagesInfinite" [src]="images ? images[activeImage] : ''" style="width: 100%;"
-    [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg)'}" (pan)="handleSwipeEvent($event)">
+    [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg)'}" (wheel)="onMouseWheel($event)" (pan)="handleSwipeEvent($event)" (mouseup)="setLatestPos($event)">
 </div>
 
 
 <div>
   <img *ngIf="facsimilePagesInfinite && facsNumber" [src]="facsUrl + facsNumbe" style="width: 100%;"
-    [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg)'}" (pan)="handleSwipeEvent($event)">
+    [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg)'}" (wheel)="onMouseWheel($event)" (pan)="handleSwipeEvent($event)" (mouseup)="setLatestPos($event)">
 </div>
 
 

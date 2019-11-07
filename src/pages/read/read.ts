@@ -773,33 +773,38 @@ export class ReadPage /*implements OnDestroy*/ {
 
   private setUpTextListeners() {
     // We must do it like this since we want to trigger an event on a dynamically loaded innerhtml.
-    this.listenFunc = this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
-      let eventTarget: Element;
-      if (event.target.parentNode.classList.contains('tooltiptrigger')) {
-        eventTarget = event.target.parentNode;
-      } else if ( event.target.classList.contains('tooltiptrigger') ) {
-        eventTarget = event.target;
-      }
-      if (eventTarget.classList.contains('tooltiptrigger')) {
-        if (eventTarget.hasAttribute('data-id')) {
-          if (eventTarget.classList.contains('person') && this.readPopoverService.show.personInfo) {
-            this.showPersonModal(eventTarget.getAttribute('data-id'));
-          } else if (eventTarget.classList.contains('placeName') && this.readPopoverService.show.placeInfo) {
-            this.showPlaceModal(event.target.getAttribute('data-id'));
-          } else if (eventTarget.classList.contains('comment') && this.readPopoverService.show.comments) {
-            this.showCommentModal(eventTarget.getAttribute('data-id'));
-          } else if (eventTarget.classList.contains('ttVariant') && this.readPopoverService.show.comments) {
-            this.showCommentModal(eventTarget.getAttribute('data-id'));
-          }
-        } else {
+    const nElement: any = this.elementRef.nativeElement;
+      this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
+        let eventTarget: any = document.createElement('div');
+        eventTarget['classList'] = [];
+        if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
+          eventTarget = event['target']['parentNode'];
+        } else if ( event.target !== undefined && event['target']['classList'].contains('tooltiptrigger') ) {
+          eventTarget = event.target;
+        } else if ( event.target !== undefined && eventTarget['classList'].contains('anchor') ) {
+          eventTarget = event.target;
+        }
 
+        if ( eventTarget['classList'].contains('tooltiptrigger')) {
+          if (eventTarget.hasAttribute('data-id')) {
+            if (eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
+              this.showPersonModal(eventTarget.getAttribute('data-id'));
+            } else if (eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
+              this.showPlaceModal(eventTarget.getAttribute('data-id'));
+            } else if (eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
+              this.showCommentModal(eventTarget.getAttribute('data-id'));
+            } else if (eventTarget['classList'].contains('ttVariant') && this.readPopoverService.show.comments) {
+              this.showCommentModal(eventTarget.getAttribute('data-id'));
+            }
+          } else {
+
+          }
+        } else if ( eventTarget['classList'].contains('anchor')) {
+          if (eventTarget.hasAttribute('href')) {
+            this.scrollToElement(eventTarget.getAttribute('href'));
+          }
         }
-      } else if (event.target.classList.contains('anchor')) {
-        if (event.target.hasAttribute('href')) {
-          this.scrollToElement(event.target.getAttribute('href'));
-        }
-      }
-    });
+      }).bind(this);
   }
   public get isIntroduction() {
     return this.textType === TextType.Introduction;

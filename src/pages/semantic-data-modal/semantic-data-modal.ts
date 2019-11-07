@@ -94,7 +94,7 @@ export class SemanticDataModalPage {
               this.title = data.name;
               this.description = data.description;
               this.semanticData = this.sanitizer.bypassSecurityTrustHtml(
-                data.replace(/images\//g, 'assets/images/')
+                String(data).replace(/images\//g, 'assets/images/')
                     .replace(/\.png/g, '.svg')
               );
 
@@ -183,7 +183,7 @@ export class SemanticDataModalPage {
       this.semanticDataService.getSemanticData(id).subscribe(
           data => {
               this.semanticData = this.sanitizer.bypassSecurityTrustHtml(
-                data.replace(/images\//g, 'assets/images/')
+                String(data).replace(/images\//g, 'assets/images/')
                     .replace(/\.png/g, '.svg')
               );
             },
