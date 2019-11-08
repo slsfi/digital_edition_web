@@ -1,4 +1,4 @@
-FROM node:lts-alpine
+FROM node:10-alpine
 
 RUN apk update
 RUN apk add --no-cache g++ gcc libgcc libstdc++ linux-headers make python git
