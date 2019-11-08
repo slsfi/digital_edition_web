@@ -14,9 +14,11 @@ import {
 import { PagesLoadedEvent } from './pages-loaded-event';
 import { PageRenderedEvent } from './page-rendered-event';
 import { defaultOptions } from './default-options';
+import { Events, NavParams } from 'ionic-angular';
 require('./assets/pdf');
 require('./assets/pdf.worker');
 require('./assets/viewer');
+import { PdfService } from '../../app/services/pdf/pdf.service';
 
 @Component({
   selector: 'ngx-extended-pdf-viewer',
@@ -319,7 +321,7 @@ export class NgxExtendedPdfViewerComponent implements OnInit, OnChanges, OnDestr
     }
   }
 
-  constructor(private zone: NgZone) { }
+  constructor(private zone: NgZone, public events: Events, public pdfService: PdfService, private params: NavParams) { }
 
   public dispatchFindInput(input: HTMLInputElement) {
     console.log('Input');
@@ -353,6 +355,13 @@ export class NgxExtendedPdfViewerComponent implements OnInit, OnChanges, OnDestr
   ngOnInit() {
     const langLinks = document.querySelectorAll('link[type="application/l10n"]');
     const langCount = langLinks.length;
+
+    this.events.subscribe('open:pdf', (params) => {
+      const facsimileId = params['facsimileId'];
+      const details = this.pdfService.getPdfDetails(facsimileId);
+      this._src = details.pdfUrl;
+      this.openPDF();
+    });
 
     if (langCount === 0) {
       const dict = document.querySelector('script[type="application/l10n"]');
@@ -544,6 +553,7 @@ export class NgxExtendedPdfViewerComponent implements OnInit, OnChanges, OnDestr
   }
 
   public ngOnDestroy(): void {
+    this.events.publish('pdfview:open', {'isOpen': false});
     NgxExtendedPdfViewerComponent.ngxExtendedPdfViewerInitialized = false;
     if (this.initTimeout) {
       clearTimeout(this.initTimeout);

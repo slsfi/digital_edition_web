@@ -5,6 +5,7 @@ import { TableOfContentsCategory, GeneralTocItem } from '../../app/models/table-
 import { ConfigService } from '@ngx-config/core';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { Facet } from '../../app/models/facet.model';
+import { Storage } from '@ionic/storage';
 import { IfObservable } from 'rxjs/observable/IfObservable';
 /**
  * Generated class for the SimpleSearchComponent component.
@@ -49,6 +50,7 @@ export class SimpleSearchComponent {
   acIndex = 0;
   facsimileLookupData: Array<object>;
   showFacets: boolean;
+  pdfViewOpen: boolean;
 
   simpleSearchHeight = 0;
   simpleSearchHeightSizeInPx = {
@@ -69,7 +71,8 @@ export class SimpleSearchComponent {
     public navParams: NavParams,
     private _eref: ElementRef,
     public userSettingsService: UserSettingsService,
-    public viewctrl: ViewController) {
+    public viewctrl: ViewController,
+    private storage: Storage) {
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.projectMachineName = this.config.getSettings('app.machineName');
     this.showPageNumbers = this.config.getSettings('simpleSearch.showPageNumbers');
@@ -100,6 +103,7 @@ export class SimpleSearchComponent {
     this.searchString = null;
     this.checkedDefault = false;
     this.showFacets = false;
+    this.pdfViewOpen = false;
 
     this.getFacsimileLookupData();
 
@@ -108,6 +112,10 @@ export class SimpleSearchComponent {
       this.searchString = navParams.get('searchResult');
       this.onInput(null, this.searchString);
     }
+
+    this.storage.get('pdfIsOpen').then((isOpen) => {
+      this.pdfViewOpen = isOpen;
+    });
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -152,9 +160,17 @@ export class SimpleSearchComponent {
     }
   }
 
-  getPublicationNameByPublicationId(fId) {
+  getPublicationDataByPublicationId(fId) {
     for (let i = 0; i < this.facsimileLookupData.length; i++) {
       if (String(this.facsimileLookupData[i]['p_id']) === String(fId)) {
+        return {'p_name': this.facsimileLookupData[i]['p_name'], 'pc_name': this.facsimileLookupData[i]['pc_name']};
+      }
+    }
+  }
+
+  getPublicationDataByFacsimileId(fId) {
+    for (let i = 0; i < this.facsimileLookupData.length; i++) {
+      if (String(this.facsimileLookupData[i]['pf_id']) === String(fId)) {
         return {'p_name': this.facsimileLookupData[i]['p_name'], 'pc_name': this.facsimileLookupData[i]['pc_name']};
       }
     }
@@ -676,9 +692,15 @@ export class SimpleSearchComponent {
     }
 
     fId = String(path[path.length - 1]).split('_')[1];
-    const pData = this.getPublicationNameByPublicationId(fId);
-    const pubName = pData['p_name'];
-    const colName = pData['pc_name'];
+    if ( fId === undefined ) {
+      fId = String(path[path.length - 2]);
+    }
+    let pData = this.getPublicationDataByPublicationId(fId);
+    if ( pData === undefined ) {
+      pData = this.getPublicationDataByFacsimileId(fId);
+    }
+    const pubName = (pData !== undefined) ? pData['p_name'] : null;
+    const colName = (pData !== undefined) ? pData['pc_name'] : null;
     const pubId = this.getPublicationIdNameByFacsimileId(fId);
     if (element._score > 1) {
       this.displayResult['texts'].push(
@@ -900,7 +922,12 @@ export class SimpleSearchComponent {
     const isChildPdf = true;
     const nav = this.app.getActiveNavs();
     const params = { facsimileId: facsimileId, page: pageNbr, search: 'fooo' };
-    this.app.getRootNav().push('pdf', params);
+    if ( this.pdfViewOpen ) {
+      this.events.publish('open:pdf', params);
+    } else {
+      this.app.getRootNav().push('pdf', params);
+      this.pdfViewOpen = true;
+    }
   }
 
   toggleFacets(closeOnly?) {

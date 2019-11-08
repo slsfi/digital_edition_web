@@ -42,11 +42,18 @@ export class PdfPage {
     this.pdfFile = details.pdfFile;
     this.pdf = details.pdfUrl;
     this.title = details.title;
+    this.events.subscribe('open:pdf', (params) => {
+      console.log(params);
+      const facsimileId = params['facsimileId'];
+      this.title = this.pdfService.getPdfDetails(facsimileId).title;
+    });
+    this.events.publish('pdfview:open', {'isOpen': true});
   }
 
   ionViewWillLeave() {
     this.events.publish('ionViewWillLeave', this.constructor.name);
     this.loading.dismiss();
+    this.events.publish('pdfview:open', {'isOpen': false});
   }
   ionViewWillEnter() {
     this.events.publish('ionViewWillEnter', this.constructor.name);

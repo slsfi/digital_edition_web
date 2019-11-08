@@ -794,6 +794,10 @@ export class DigitalEditionsApp {
         this.sortCollectionsRoman();
       }
     });
+
+    this.events.subscribe('pdfview:open', (params) => {
+      this.storage.set('pdfIsOpen', Boolean(params['isOpen']));
+    });
   }
 
   mobileSplitPaneDetector() {
