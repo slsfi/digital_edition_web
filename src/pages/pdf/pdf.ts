@@ -42,9 +42,8 @@ export class PdfPage {
     this.pdfFile = details.pdfFile;
     this.pdf = details.pdfUrl;
     this.title = details.title;
-    this.events.subscribe('open:pdf', (params) => {
-      console.log(params);
-      const facsimileId = params['facsimileId'];
+    this.events.subscribe('open:pdf', ( p: any ) => {
+      const facsimileId = p['facsimileId'];
       this.title = this.pdfService.getPdfDetails(facsimileId).title;
     });
     this.events.publish('pdfview:open', {'isOpen': true});

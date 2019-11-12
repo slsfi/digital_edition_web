@@ -107,14 +107,29 @@ export class PlaceSearchPage {
         this.cacheData = places;
         this.showLoading = false;
 
+        const placesTmp = [];
+        places.forEach(element => {
+          element['sortBy'] = String(element['name']).toLowerCase().trim().replace('ʽ', '');
+          const ltr = element['sortBy'].charAt(0);
+          const mt = ltr.match(/[a-zåäö]/i);
+          if (ltr.length === 1 && ltr.match(/[a-zåäö]/i) !== null) {
+            // console.log(ltr);
+          } else {
+            const combining = /[\u0300-\u036F]/g;
+            element['sortBy'] = element['sortBy'].normalize('NFKD').replace(combining, '').replace(',', '');
+          }
+          placesTmp.push(element);
+        });
+
+        this.allData = placesTmp;
         this.sortListAlphabeticallyAndGroup(this.allData);
 
         for (let i = 0; i < 30; i++) {
           if (i === places.length) {
             break;
           } else {
-            this.places.push(places[this.count]);
-            this.placesCopy.push(places[this.count]);
+            this.places.push(placesTmp[this.count]);
+            this.placesCopy.push(placesTmp[this.count]);
             this.count++
           }
         }
@@ -184,7 +199,7 @@ export class PlaceSearchPage {
     const list = [];
     try {
       for (const p of this.allData) {
-        if (p.name && p.name.startsWith(letter)) {
+        if (p.sortBy && p.sortBy.charCodeAt(0) === String(letter).charCodeAt(0)) {
           list.push(p);
         }
       }
@@ -201,11 +216,11 @@ export class PlaceSearchPage {
       this.places = [];
       terms = terms.toLocaleLowerCase();
       for (const place of this.allData) {
-        if (place.name) {
-          const title = place.name.toLocaleLowerCase();
+        if (place.sortBy) {
+          const title = place.sortBy.toLocaleLowerCase();
           if (title.includes(terms)) {
             const inList = this.places.some(function(p) {
-              return p.name === place.name
+              return p.sortBy === place.sortBy
             });
             if (!inList) {
               this.places.push(place);
@@ -353,20 +368,20 @@ export class PlaceSearchPage {
 
     // Sort alphabetically
     data.sort(function(a, b) {
-      if (a.name < b.name) { return -1; }
-      if (a.name > b.name) { return 1; }
+      if (a.sortBy.charCodeAt(0) < b.sortBy.charCodeAt(0)) { return -1; }
+      if (a.sortBy.charCodeAt(0) > b.sortBy.charCodeAt(0)) { return 1; }
       return 0;
     });
 
     // Check when first character changes in order to divide names into alphabetical groups
     for (let i = 0; i < data.length ; i++) {
       if (data[i] && data[i - 1]) {
-        if (data[i].name && data[i - 1].name) {
-          if (data[i].name.length > 1 && data[i - 1].name.length > 1) {
-            if (data[i].name.charAt(0) !== data[i - 1].name.charAt(0)) {
-              const ltr = data[i].name.charAt(0);
-              if (ltr.length === 1 && ltr.match(/[a-z]/i)) {
-                data[i]['firstOfItsKind'] = data[i].name.charAt(0);
+        if (data[i].sortBy && data[i - 1].sortBy) {
+          if (data[i].sortBy.length > 1 && data[i - 1].sortBy.length > 1) {
+            if (data[i].sortBy.charAt(0) !== data[i - 1].sortBy.charAt(0)) {
+              const ltr = data[i].sortBy.charAt(0);
+              if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
+                data[i]['firstOfItsKind'] = data[i].sortBy.charAt(0);
               }
             }
           }
@@ -375,8 +390,8 @@ export class PlaceSearchPage {
     }
 
     for (let j = 0; j < data.length; j++) {
-      if (data[j].name.length > 1) {
-        data[j]['firstOfItsKind'] = data[j].name.charAt(0);
+      if (data[j].sortBy.length > 1) {
+        data[j]['firstOfItsKind'] = data[j].sortBy.charAt(0);
         break;
       }
     }
