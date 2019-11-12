@@ -160,8 +160,14 @@ export class PersonSearchPage {
     const list = [];
     try {
       for (const p of this.allData) {
-        if (p.sortBy && p.sortBy.charCodeAt(0) === String(letter).charCodeAt(0)) {
+        if (p.sortBy && p.sortBy.charCodeAt(0) === String(letter).toLowerCase().charCodeAt(0)) {
           list.push(p);
+        } else {
+          const combining = /[\u0300-\u036F]/g;
+          const tmpChar = p.sortBy.normalize('NFKD').replace(combining, '').replace(',', '');
+          if ( tmpChar.charCodeAt(0) === String(letter).toLowerCase().charCodeAt(0) ) {
+            list.push(p);
+          }
         }
       }
     } catch ( e ) {

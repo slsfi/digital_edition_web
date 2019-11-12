@@ -122,6 +122,7 @@ export class PlaceSearchPage {
         });
 
         this.allData = placesTmp;
+        this.cacheData = placesTmp;
         this.sortListAlphabeticallyAndGroup(this.allData);
 
         for (let i = 0; i < 30; i++) {
@@ -199,8 +200,14 @@ export class PlaceSearchPage {
     const list = [];
     try {
       for (const p of this.allData) {
-        if (p.sortBy && p.sortBy.charCodeAt(0) === String(letter).charCodeAt(0)) {
+        if (p.sortBy && p.sortBy.charCodeAt(0) === String(letter).toLowerCase().charCodeAt(0)) {
           list.push(p);
+        } else {
+          const combining = /[\u0300-\u036F]/g;
+          const tmpChar = p.sortBy.normalize('NFKD').replace(combining, '').replace(',', '');
+          if ( tmpChar.charCodeAt(0) === String(letter).toLowerCase().charCodeAt(0) ) {
+            list.push(p);
+          }
         }
       }
     } catch ( e ) {
@@ -217,7 +224,7 @@ export class PlaceSearchPage {
       terms = terms.toLocaleLowerCase();
       for (const place of this.allData) {
         if (place.sortBy) {
-          const title = place.sortBy.toLocaleLowerCase();
+          const title = String(place.name).toLowerCase().replace(' ', '').replace('ʽ', '');
           if (title.includes(terms)) {
             const inList = this.places.some(function(p) {
               return p.sortBy === place.sortBy
