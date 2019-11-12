@@ -241,10 +241,6 @@ export class TableOfContentsDrilldownMenuComponent {
       this.scrollToTOC(document.getElementById(html));
     } catch ( e ) {
     }
-
-    try {
-      this.events.publish('view:text', this.currentItem.title);
-    } catch ( e ) {}
   }
 
   openIntroduction() {

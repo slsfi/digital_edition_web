@@ -85,7 +85,6 @@ export class PlaceSearchPage {
       }
     });
     this.setData();
-    this.events.publish('view:enter', 'place-search');
   }
 
   setData() {
@@ -97,6 +96,11 @@ export class PlaceSearchPage {
         this.getPlaces();
       }
     });
+  }
+
+  ionViewDidEnter() {
+    (<any>window).ga('set', 'page', 'Places');
+    (<any>window).ga('send', 'pageview');
   }
 
   getPlaces() {

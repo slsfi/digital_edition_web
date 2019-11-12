@@ -13,7 +13,6 @@ import { MdContentService } from './services/md/md-content.service';
 import { StaticPage } from './models/static-pages.model';
 import { UserSettingsService } from './services/settings/user-settings.service';
 import { GenericSettingsService } from './services/settings/generic-settings.service';
-import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { DigitalEditionListService } from './services/toc/digital-edition-list.service';
 import { ThrowStmt } from '@angular/compiler';
@@ -180,7 +179,6 @@ export class DigitalEditionsApp {
     public app: App,
     public genericSettingsService: GenericSettingsService,
     public titleService: Title,
-    private googleAnalytics: GoogleAnalytics,
     private splashScreen: SplashScreen,
     public digitalEditionListService: DigitalEditionListService,
     protected tableOfContentsService: TableOfContentsService,
@@ -314,7 +312,6 @@ export class DigitalEditionsApp {
         const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.id + '/pdf/' +
           this.collectionDownloads['pdf'][collection.id] + '/';
         const ref = window.open(dURL, '_self', 'location=no');
-        this.events.publish('track:download-pdf', this.collectionDownloads['pdf'][collection.id]);
       } else if (collection.id in this.collectionDownloads['epub']) {
         const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.id + '/epub/' +
           this.collectionDownloads['epub'][collection.id] + '/';
@@ -351,7 +348,6 @@ export class DigitalEditionsApp {
         const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.id + '/pdf/' +
           this.collectionDownloads['pdf'][collection.id] + '/';
         const ref = window.open(dURL, '_self', 'location=no');
-        this.events.publish('track:download-pdf', this.collectionDownloads['pdf'][collection.id]);
       } else if (collection.id in this.collectionDownloads['epub']) {
         const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.id + '/epub/' +
           this.collectionDownloads['epub'][collection.id] + '/';
@@ -516,45 +512,6 @@ export class DigitalEditionsApp {
     }
   }
 
-  google() {
-    this.googleAnalytics.enableUncaughtExceptionReporting(true)
-      .then((_success) => {
-        this.googleAnalytics.startTrackerWithId(this.googleAnalyticsID, 30)
-          .then(() => {
-            console.log('Google analytics is ready now');
-            this.googleAnalytics.setAllowIDFACollection(true);
-            this.googleAnalytics.trackView('home');
-            this.events.subscribe('view:enter', (view: string) => {
-              this.googleAnalytics.trackEvent('view', 'enter', view);
-            });
-
-            this.events.subscribe('view:search', (word: string) => {
-              this.googleAnalytics.trackEvent('view', 'search', word);
-            });
-
-            this.events.subscribe('view:occurrance', (word: string) => {
-              this.googleAnalytics.trackEvent('view', 'occurrance', word);
-            });
-
-            this.events.subscribe('view:text', (word: string) => {
-              this.googleAnalytics.trackEvent('view', 'text', word);
-            });
-
-            this.events.subscribe('track:download-pdf', (name: string) => {
-              this.googleAnalytics.trackEvent('download', 'pdf', name).then(() => {
-              });
-            });
-            this.events.subscribe('track:share', (name: string) => {
-              this.googleAnalytics.trackEvent('share', 'social', name).then(() => {
-              });
-            });
-          })
-          .catch(e => console.log('Error starting GoogleAnalytics', e));
-      }).catch((_error) => {
-        console.log('GoogleAnalytics error: ' + _error);
-      });
-  }
-
   initializeApp() {
     this.platform.ready().then(() => {
       const platforms = [
@@ -581,7 +538,6 @@ export class DigitalEditionsApp {
       this.getPersonSearchTypes();
       this.getStaticPagesMenus();
       this.setRootPage();
-      this.google();
       this.getSongTypes();
       this.getAboutPages();
     });
@@ -1127,7 +1083,6 @@ export class DigitalEditionsApp {
           const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.id + '/pdf/' +
             this.collectionDownloads['pdf'][collection.id] + '/';
           const ref = window.open(dURL, '_self', 'location=no');
-          this.events.publish('track:download-pdf', this.collectionDownloads['pdf'][collection.id]);
         } else if (collection.id in this.collectionDownloads['epub']) {
           const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.id + '/epub/' +
             this.collectionDownloads['epub'][collection.id] + '/';

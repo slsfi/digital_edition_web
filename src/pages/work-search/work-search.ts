@@ -78,7 +78,11 @@ export class WorkSearchPage {
       this.showFilter = this.config.getSettings('PersonSearch.ShowFilter');
     });
     this.setData();
-    this.events.publish('view:enter', 'works-search');
+  }
+
+  ionViewDidEnter() {
+    (<any>window).ga('set', 'page', 'Works');
+    (<any>window).ga('send', 'pageview');
   }
 
   ionViewDidLeave() {

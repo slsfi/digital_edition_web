@@ -258,7 +258,6 @@ export class ReadPage /*implements OnDestroy*/ {
       this.updateTexts();
     });
 
-    this.events.publish('view:enter', 'read');
 
     /*if (this.params.get('url') !== undefined && this.params.get('url').indexOf('=') !== -1) {
       this.songID = this.params.get('url').split('=')[1];
@@ -287,6 +286,11 @@ export class ReadPage /*implements OnDestroy*/ {
     }
 
     this.getAdditionalParams();
+  }
+
+  ionViewDidEnter() {
+    (<any>window).ga('set', 'page', 'Read');
+    (<any>window).ga('send', 'pageview');
   }
 
   getAdditionalParams() {

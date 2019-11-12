@@ -92,8 +92,21 @@ export class OccurrencesPage {
       this.singleOccurrenceType = null;
     }
 
+    try {
+      try {
+        (<any>window).ga('send', 'event', {
+          eventCategory: 'Occurrence',
+          eventLabel: 'Title',
+          eventAction: String(this.title),
+          eventValue: 10
+        });
+      } catch ( e ) {
+      }
+    } catch ( e ) {
+
+    }
+
     this.getOccurrenceTexts(navParams.get('occurrenceResult'));
-    this.events.publish('view:enter', 'occurrences');
     this.setObjectType();
     this.getMediaData();
     this.getArticleData();
@@ -140,6 +153,8 @@ export class OccurrencesPage {
   }
 
   ionViewDidEnter() {
+    (<any>window).ga('set', 'page', 'Occurrences');
+    (<any>window).ga('send', 'pageview');
     this.loadmap();
   }
 
@@ -200,9 +215,6 @@ export class OccurrencesPage {
     } else if ( this.singleOccurrenceType === occurrence.type ) {
       this.setOccurrence(occurrence, occurrence.type);
     }
-    try {
-      this.events.publish('view:occurrance', occurrence.name);
-    } catch ( e ) {}
   }
 
   getOccurrenceTexts(occurrenceResult) {

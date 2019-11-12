@@ -107,7 +107,6 @@ export class SimpleSearchComponent {
 
     this.getFacsimileLookupData();
 
-    this.events.publish('view:enter', 'simple-search');
     if (navParams.get('searchResult') !== undefined) {
       this.searchString = navParams.get('searchResult');
       this.onInput(null, this.searchString);
@@ -306,6 +305,16 @@ export class SimpleSearchComponent {
   }
 
   startSearch(searchString) {
+    try {
+      (<any>window).ga('send', 'event', {
+        eventCategory: 'Search',
+        eventLabel: 'SimpleSearch',
+        eventAction: String(searchString),
+        eventValue: 10
+      });
+    } catch ( e ) {
+
+    }
     this.isLoading = true;
     this.searchString = searchString;
     this.userDefinedSearchFields.forEach(function (val) {

@@ -42,7 +42,6 @@ export class ManuscriptsComponent {
   ) {
     this.text = '';
     this.manuscripts = [];
-    this.events.publish('view:enter', 'manuscript');
   }
 
   ngOnInit() {

@@ -44,7 +44,6 @@ import { UserSettingsPopoverPage } from '../pages/user-settings-popover/user-set
 import { IllustrationPage } from '../pages/illustration/illustration';
 import { SearchAppPage } from '../pages/search-app/search-app';
 import { SocialSharing } from '@ionic-native/social-sharing';
-import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ShareButtonsModule } from 'ngx-sharebuttons';
 import { GenericSettingsService } from './services/settings/generic-settings.service';
@@ -141,7 +140,6 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
     UserSettingsService,
     SocialSharing,
     GenericSettingsService,
-    GoogleAnalytics,
     SplashScreen,
     SongService,
     TutorialService,

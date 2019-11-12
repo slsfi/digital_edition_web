@@ -60,10 +60,23 @@ export class DigitalEditionListChildrenComponent {
     if (event && event.stopPropagation) {
       event.stopPropagation();
     }
+    this.doAnalytics('Download', 'PDF', edition.pdfFile);
     const isChildPdf = true;
     const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + this.collectionID + '/pdf/' +
     edition.pdfFile + '/' + isChildPdf;
     const ref = window.open(dURL, '_self', 'location=no');
+  }
+
+  doAnalytics( action, type, name ) {
+    try {
+      (<any>window).ga('send', 'event', {
+        eventCategory: action,
+        eventLabel: 'Song',
+        eventAction: type + ' - ' +  name,
+        eventValue: 10
+      });
+    } catch ( e ) {
+    }
   }
 
   showPDF(edition) {

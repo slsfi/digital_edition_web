@@ -29,7 +29,6 @@ export class ReferenceDataModalPage {
     const id = String(params.get('id')).split('#')[1];
     const type = params.get('type');
     this.getReferenceData(id);
-    this.events.publish('view:enter', 'reference-data-modal');
   }
 
 

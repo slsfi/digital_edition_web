@@ -399,6 +399,15 @@ export class OccurrencesResultPage {
           let title = tag.name;
           title = title.charAt(0).toUpperCase() + title.slice(1);
           this.title = title;
+          try {
+            (<any>window).ga('send', 'event', {
+              eventCategory: 'TagOccurrence',
+              eventLabel: 'Occurrence',
+              eventAction: String(title),
+              eventValue: 10
+            });
+          } catch ( e ) {
+          }
         }
         // string.charAt(0).toUpperCase() + string.slice(1);
         this.loadingInfoData = false;
@@ -415,6 +424,15 @@ export class OccurrencesResultPage {
   setSubject(subject) {
     if (subject.name) {
       this.title = subject.name;
+      try {
+        (<any>window).ga('send', 'event', {
+          eventCategory: 'SubjectOccurrence',
+          eventLabel: 'Occurrence',
+          eventAction: String(this.title),
+          eventValue: 10
+        });
+      } catch ( e ) {
+      }
     }
 
     this.infoData.type = subject.object_type;
@@ -428,6 +446,15 @@ export class OccurrencesResultPage {
   setLocation(location) {
     if (location.name) {
       this.title = location.name;
+      try {
+        (<any>window).ga('send', 'event', {
+          eventCategory: 'LocationOccurrence',
+          eventLabel: 'Occurrence',
+          eventAction: String(this.title),
+          eventValue: 10
+        });
+      } catch ( e ) {
+      }
     }
 
     this.infoData.city = location.city;
@@ -565,6 +592,11 @@ export class OccurrencesResultPage {
     } else {
       this.app.getRootNav().push('read', params);
     }
+  }
+
+  ionViewDidEnter() {
+    (<any>window).ga('set', 'page', 'Occurrence-result');
+    (<any>window).ga('send', 'pageview');
   }
 
   /**

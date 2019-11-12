@@ -66,7 +66,6 @@ export class ContentPage /*implements OnDestroy*/ {
       });
     });
 
-    this.events.publish('view:enter', 'content');
 
     if (!this.params.get('selectedItemInAccordion')) {
       this.searchTocItem();

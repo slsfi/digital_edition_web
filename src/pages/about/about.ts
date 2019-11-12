@@ -44,7 +44,6 @@ export class AboutPage {
       this.language = lang;
       this.appName = this.config.getSettings('app.name.' + lang);
     });
-    this.events.publish('view:enter', 'about');
   }
 
   ionViewDidLoad() {
@@ -60,6 +59,11 @@ export class AboutPage {
     this.events.publish('ionViewWillEnter', this.constructor.name);
     this.events.publish('tableOfContents:unSelectSelectedTocItem', true);
     this.events.publish('musicAccordion:reset', true);
+  }
+
+  ionViewDidEnter() {
+    (<any>window).ga('set', 'page', 'About');
+    (<any>window).ga('send', 'pageview');
   }
 
   changeLanguage() {

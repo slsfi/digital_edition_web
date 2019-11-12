@@ -33,7 +33,6 @@ export class FacsimileZoomModalPage {
               public navParams: NavParams,
               private events: Events,
               private userSettingsService: UserSettingsService) {
-    this.events.publish('view:enter', 'facsimile-zoom');
     this.manualPageNumber = 1;
   }
 

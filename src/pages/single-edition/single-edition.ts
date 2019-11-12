@@ -111,6 +111,8 @@ export class SingleEditionPage {
   }
 
   ionViewDidEnter() {
+    (<any>window).ga('set', 'page', 'Single-edition');
+    (<any>window).ga('send', 'pageview');
     if (this.hasDigitalEditionListChildren && this.platform.is('mobile') ) {
       this.events.publish('splitPaneToggle:disable');
     }

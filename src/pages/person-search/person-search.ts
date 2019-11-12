@@ -98,7 +98,6 @@ export class PersonSearchPage {
         this.personSearchTypes = [];
       }
     });
-    this.events.publish('view:enter', 'person-search');
   }
 
   getParamsData() {
@@ -143,6 +142,11 @@ export class PersonSearchPage {
   ionViewDidLeave() {
     this.storage.remove('filterCollections');
     this.storage.remove('filterPersonTypes');
+  }
+
+  ionViewDidEnter() {
+    (<any>window).ga('set', 'page', 'Subjects');
+    (<any>window).ga('send', 'pageview');
   }
 
   ionViewWillLeave() {

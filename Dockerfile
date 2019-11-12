@@ -24,7 +24,6 @@ RUN npm install -g ionic
 RUN npm i -g cordova 
 RUN npm i -g native-run
 RUN npm i -g @sentry/browser
-RUN npm i --save @ionic-native/google-analytics 
 RUN npm i --save @ionic-native/social-sharing     
 RUN npm i --save leaflet 
 RUN npm audit fix
@@ -32,6 +31,5 @@ RUN ionic cordova prepare --source-map
 RUN ionic cordova platform rm browser --save 
 RUN ionic cordova platform add browser@latest --save 
 RUN ionic cordova plugin add cordova-plugin-x-socialsharing 
-RUN ionic cordova plugin add cordova-plugin-google-analytics
 RUN ionic cordova build browser --prod --aot --webpack ./config/webpack.config.js
 RUN node ./scripts/cache-busting.js

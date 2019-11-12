@@ -36,7 +36,6 @@ export class IntroductionComponent {
     private elementRef: ElementRef,
     private viewctrl: ViewController,
   ) {
-    this.events.publish('view:enter', 'introduction');
   }
 
   ngOnInit() {

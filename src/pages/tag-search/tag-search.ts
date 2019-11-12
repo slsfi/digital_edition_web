@@ -85,7 +85,11 @@ export class TagSearchPage {
       }
     });
     this.setData();
-    this.events.publish('view:enter', 'tag-search');
+  }
+
+  ionViewDidEnter() {
+    (<any>window).ga('set', 'page', 'Tags');
+    (<any>window).ga('send', 'pageview');
   }
 
   setData() {

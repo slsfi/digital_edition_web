@@ -58,11 +58,18 @@ export class PdfPage {
     this.events.publish('ionViewWillEnter', this.constructor.name);
   }
 
+  ionViewDidEnter() {
+    (<any>window).ga('set', 'page', 'PDF');
+    (<any>window).ga('send', 'pageview');
+  }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad PdfPage');
     this.loading = this.loadingCtrl.create({
       content: 'Laddar ' + this.title
-    })
+    });
+    (<any>window).ga('set', 'page', 'PDF - ' + this.title);
+    (<any>window).ga('send', 'pageview');
     this.loading.present();
   }
 

@@ -58,6 +58,11 @@ export class SongPage {
     this.getSongDetails();
   }
 
+  ionViewDidEnter() {
+    (<any>window).ga('set', 'page', 'Song');
+    (<any>window).ga('send', 'pageview');
+  }
+
   setSongFilter() {
     if (this.navParams.get('filter_songs_by')) {
       const filter = this.navParams.get('filter_songs_by');
@@ -103,6 +108,7 @@ export class SongPage {
   }
 
   playSong() {
+    this.doAnalytics('Play', 'play midi');
     this.playing = true;
     MIDIjs.play(`assets/midi-files/${this.songOriginalId}.mid`);
   }
@@ -120,6 +126,15 @@ export class SongPage {
         this.songOriginalId = String(song['song_original_id']).toLowerCase();
         this.setSongFilter();
         this.cdRef.detectChanges();
+        try {
+          (<any>window).ga('send', 'event', {
+            eventCategory: 'Song - ' + this.song.type,
+            eventLabel: 'Song',
+            eventAction: String(this.songOriginalId),
+            eventValue: 10
+          });
+        } catch ( e ) {
+        }
       },
       err => console.error(err),
       () => console.log('fetch song')
@@ -141,18 +156,33 @@ export class SongPage {
   }
 
   downloadMIDI() {
+    this.doAnalytics('Download', 'mid');
     const dURL = `assets/midi-files/${this.songOriginalId}.mid`;
     const ref = window.open(dURL, '_self', 'location=no');
   }
 
   downloadXML() {
+    this.doAnalytics('Download', 'xml');
     const dURL = `assets/musicxml/${this.songOriginalId}.xml`;
     const ref = window.open(dURL, '_self', 'location=no');
   }
 
   downloadJPEG() {
+    this.doAnalytics('Download', 'jpg');
     const dURL = `assets/jpeg-files/${this.songOriginalId}.jpg`;
     const ref = window.open(dURL, '_self', 'location=no');
+  }
+
+  doAnalytics( action, type ) {
+    try {
+      (<any>window).ga('send', 'event', {
+        eventCategory: action,
+        eventLabel: 'Song',
+        eventAction: type + ' - ' +  this.songOriginalId,
+        eventValue: 10
+      });
+    } catch ( e ) {
+    }
   }
 
 }

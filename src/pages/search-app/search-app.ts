@@ -37,6 +37,8 @@ export class SearchAppPage {
   }
 
   ionViewDidEnter() {
+    (<any>window).ga('set', 'page', 'Search');
+    (<any>window).ga('send', 'pageview');
     setTimeout(() => {
         this.childcmp.setFocus();
     });

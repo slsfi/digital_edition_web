@@ -43,22 +43,18 @@ export class SocialSharingComponent {
 
   shareFacebook() {
     //
-    this.events.publish('track:share', 'facebook');
   }
 
   shareTwitter() {
     //
-    this.events.publish('track:share', 'twitter');
   }
 
   shareInstagram() {
     //
-    this.events.publish('track:share', 'instagram');
   }
 
   shareEmail() {
     //
-    this.events.publish('track:share', 'email');
   }
 
   nativeEmail() {

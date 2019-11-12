@@ -75,7 +75,6 @@ export class FacsimilesComponent {
     } else {
       this.facsimilePage = 0;
     }
-    this.events.publish('view:enter', 'facsimiles');
   }
 
   openNewFacs(event: Event, id: any) {

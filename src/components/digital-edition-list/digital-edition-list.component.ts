@@ -159,12 +159,24 @@ export class DigitalEditionList implements OnInit {
         const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.id + '/pdf/' +
         this.collectionDownloads['pdf'][collection.id] + '/';
         const ref = window.open(dURL, '_self', 'location=no');
-        this.events.publish('track:download-pdf', this.collectionDownloads['pdf'][collection.id]);
       } else if ( collection.id in this.collectionDownloads['epub'] ) {
         const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.id + '/epub/' +
         this.collectionDownloads['epub'][collection.id] + '/';
         const ref = window.open(dURL, '_self', 'location=no');
       }
+    }
+    this.doAnalytics('Download', 'PDF', this.collectionDownloads['pdf'][collection.id]);
+  }
+
+  doAnalytics( action, type, name ) {
+    try {
+      (<any>window).ga('send', 'event', {
+        eventCategory: action,
+        eventLabel: 'Song',
+        eventAction: type + ' - ' +  name,
+        eventValue: 10
+      });
+    } catch ( e ) {
     }
   }
 
