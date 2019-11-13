@@ -401,8 +401,8 @@ export class OccurrencesResultPage {
           this.title = title;
           try {
             (<any>window).ga('send', 'event', {
-              eventCategory: 'TagOccurrence',
-              eventLabel: 'Occurrence',
+              eventCategory: 'Occurrence',
+              eventLabel: 'tag',
               eventAction: String(title),
               eventValue: 10
             });
@@ -426,8 +426,8 @@ export class OccurrencesResultPage {
       this.title = subject.name;
       try {
         (<any>window).ga('send', 'event', {
-          eventCategory: 'SubjectOccurrence',
-          eventLabel: 'Occurrence',
+          eventCategory: 'Occurrence',
+          eventLabel: 'subject',
           eventAction: String(this.title),
           eventValue: 10
         });
@@ -448,8 +448,8 @@ export class OccurrencesResultPage {
       this.title = location.name;
       try {
         (<any>window).ga('send', 'event', {
-          eventCategory: 'LocationOccurrence',
-          eventLabel: 'Occurrence',
+          eventCategory: 'Occurrence',
+          eventLabel: 'location',
           eventAction: String(this.title),
           eventValue: 10
         });

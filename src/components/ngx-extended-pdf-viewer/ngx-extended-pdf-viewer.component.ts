@@ -351,7 +351,7 @@ export class NgxExtendedPdfViewerComponent implements OnInit, OnChanges, OnDestr
       this.emitZoomChange();
     }, 10);
   }
-
+  
   ngOnInit() {
     const langLinks = document.querySelectorAll('link[type="application/l10n"]');
     const langCount = langLinks.length;

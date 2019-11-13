@@ -110,6 +110,7 @@ export class ReadTextComponent {
       } else {
         this.getEstText();
       }
+      this.doAnalytics();
     });
   }
 
@@ -131,6 +132,18 @@ export class ReadTextComponent {
       },
       error => { this.errorMessage = <any>error }
     );
+  }
+
+  doAnalytics() {
+    try {
+      (<any>window).ga('send', 'event', {
+        eventCategory: 'Established',
+        eventLabel: 'Established',
+        eventAction: this.link,
+        eventValue: 10
+      });
+    } catch ( e ) {
+    }
   }
 
   showTooltip(origin: any) {

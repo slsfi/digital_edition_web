@@ -96,7 +96,7 @@ export class OccurrencesPage {
       try {
         (<any>window).ga('send', 'event', {
           eventCategory: 'Occurrence',
-          eventLabel: 'Title',
+          eventLabel: this.navParams.get('objectType'),
           eventAction: String(this.title),
           eventValue: 10
         });

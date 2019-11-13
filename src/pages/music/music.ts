@@ -64,6 +64,11 @@ export class MusicPage {
     }
   }
 
+  ionViewDidEnter() {
+    (<any>window).ga('set', 'page', 'music');
+    (<any>window).ga('send', 'pageview');
+  }
+
   ionViewWillLeave() {
     this.events.publish('ionViewWillLeave', this.constructor.name);
   }

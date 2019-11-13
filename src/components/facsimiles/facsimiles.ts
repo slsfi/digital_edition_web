@@ -92,6 +92,18 @@ export class FacsimilesComponent {
     this.openNewFacsimileView.emit(id);
   }
 
+  doAnalytics() {
+    try {
+      (<any>window).ga('send', 'event', {
+        eventCategory: 'Facsimiles',
+        eventLabel: 'Facsimiles',
+        eventAction: this.selectedFacsimile.title,
+        eventValue: 10
+      });
+    } catch ( e ) {
+    }
+  }
+
   ngOnInit() {
     if (!this.selectedFacsimile) {
       let getFacsimilePagesInfinite = false;
@@ -192,6 +204,7 @@ export class FacsimilesComponent {
           this.activeImage = 0;
         }
         this.changeFacsimile();
+        this.doAnalytics();
       },
       error => {
         console.log('Error loading facsimiles...', this.itemId);

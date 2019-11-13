@@ -56,10 +56,22 @@ export class VariationsComponent {
     this.setText();
   }
 
+  doAnalytics() {
+    try {
+      (<any>window).ga('send', 'event', {
+        eventCategory: 'Variations',
+        eventLabel: 'Variations',
+        eventAction: this.varID,
+        eventValue: 10
+      });
+    } catch ( e ) {
+    }
+  }
+
   openNewVar( event: Event, id: any ) {
     event.preventDefault();
     event.stopPropagation();
-    id.viewType = 'variation';
+    id.viewType = 'variations';
     this.openNewVarView.emit(id);
   }
 
@@ -70,6 +82,7 @@ export class VariationsComponent {
       } else {
         this.getVariation();
       }
+      this.doAnalytics();
     });
   }
 

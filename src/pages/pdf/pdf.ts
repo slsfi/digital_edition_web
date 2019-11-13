@@ -45,6 +45,12 @@ export class PdfPage {
     this.events.subscribe('open:pdf', ( p: any ) => {
       const facsimileId = p['facsimileId'];
       this.title = this.pdfService.getPdfDetails(facsimileId).title;
+      try {
+        (<any>window).ga('set', 'page', 'PDF - ' + this.title);
+        (<any>window).ga('send', 'pageview');
+      } catch ( e ) {
+
+      }
     });
     this.events.publish('pdfview:open', {'isOpen': true});
   }

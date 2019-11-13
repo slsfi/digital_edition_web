@@ -120,6 +120,16 @@ export class ContentPage /*implements OnDestroy*/ {
     this.events.publish('title-logo:setTitle', this.config.getSettings('app.page-title.' + this.lang));
   }
 
+  ionViewDidEnter() {
+    (<any>window).ga('set', 'page', 'Content');
+    (<any>window).ga('send', 'pageview');
+  }
+
+  doAnalytics( title ) {
+    (<any>window).ga('set', 'page', 'Content - ' + title);
+    (<any>window).ga('send', 'pageview');
+  }
+
   getMdContent(fileID: string) {
     // console.log(`Calling getMdContent from content.ts ${fileID}`);
     this.mdContentService.getMdContent(fileID)
@@ -128,6 +138,7 @@ export class ContentPage /*implements OnDestroy*/ {
               this.getSongsByType(text.content);
               this.getSongExample(text.content);
               this.mdContent.content = text.content;
+              this.doAnalytics(this.mdContent.id);
             },
             error =>  {this.errorMessage = <any>error}
         );

@@ -56,13 +56,27 @@ export class ManuscriptsComponent {
       } else {
         this.getManuscript();
       }
+      this.doAnalytics();
     });
   }
+
+  doAnalytics() {
+    try {
+      (<any>window).ga('send', 'event', {
+        eventCategory: 'Manuscripts',
+        eventLabel: 'Manuscripts',
+        eventAction: this.msID,
+        eventValue: 10
+      });
+    } catch ( e ) {
+    }
+  }
+
 
   openNewMan(event: Event, id: any) {
     event.preventDefault();
     event.stopPropagation();
-    id.viewType = 'manuscript';
+    id.viewType = 'manuscripts';
     this.openNewManView.emit(id);
   }
 

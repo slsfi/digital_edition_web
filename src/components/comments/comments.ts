@@ -42,12 +42,25 @@ export class CommentsComponent {
               .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiComment $1\"')
               .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
           );
+          this.doAnalytics();
         },
       error =>  {
         console.log('Error loading comments...', this.link);
         this.errorMessage = <any>error
       }
     );
+  }
+
+  doAnalytics() {
+    try {
+      (<any>window).ga('send', 'event', {
+        eventCategory: 'Comments',
+        eventLabel: 'Comments',
+        eventAction: this.link,
+        eventValue: 10
+      });
+    } catch ( e ) {
+    }
   }
 
   openNewIntro( event, id: any ) {
