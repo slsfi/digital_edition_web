@@ -15,21 +15,6 @@ module.exports = [
         "runs": true
     },
     {
-        "file": "plugins/cordova-plugin-google-analytics/www/analytics.js",
-        "id": "cordova-plugin-google-analytics.UniversalAnalytics",
-        "pluginId": "cordova-plugin-google-analytics",
-        "clobbers": [
-            "analytics",
-            "ga"
-        ]
-    },
-    {
-        "file": "plugins/cordova-plugin-google-analytics/browser/UniversalAnalyticsProxy.js",
-        "id": "cordova-plugin-google-analytics.UniversalAnalyticsProxy",
-        "pluginId": "cordova-plugin-google-analytics",
-        "runs": true
-    },
-    {
         "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
         "id": "cordova-plugin-splashscreen.SplashScreen",
         "pluginId": "cordova-plugin-splashscreen",
@@ -71,7 +56,6 @@ module.exports.metadata =
 {
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-geolocation": "4.0.1",
-    "cordova-plugin-google-analytics": "1.8.6",
     "cordova-plugin-ionic-keyboard": "2.0.5",
     "cordova-plugin-ionic-webview": "1.1.19",
     "cordova-plugin-splashscreen": "5.0.2",

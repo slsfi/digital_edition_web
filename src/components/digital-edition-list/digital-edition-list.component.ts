@@ -8,6 +8,7 @@ import { DigitalEditionListService } from '../../app/services/toc/digital-editio
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
 import { GeneralTocItem } from '../../app/models/table-of-contents.model';
+import { text } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'digital-editions-list',
@@ -104,10 +105,16 @@ export class DigitalEditionList implements OnInit {
   }
 
   shortText(edition_id: string): Array<string> {
-    const lang = this.translate.currentLang;
-    const text =  this.editionShortTexts[lang][edition_id] ||
-                  this.editionShortTexts[lang].default;
-    return text.split('\n');
+    let textData = '';
+    try {
+      const lang = this.translate.currentLang;
+      textData =  this.editionShortTexts[lang][edition_id] ||
+                    this.editionShortTexts[lang].default;
+      return textData.split('\n');
+    } catch ( e ) {
+      console.log( e );
+    }
+    return textData.split('\n');
   }
 
   filterCollectionsToShow (collections) {
