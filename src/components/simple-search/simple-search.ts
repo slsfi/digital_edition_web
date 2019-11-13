@@ -799,9 +799,9 @@ export class SimpleSearchComponent {
         };
       } else {
         text = {
-          'collectionID': data[1],
-          'publicationId': data[2],
-          'textType': data[3],
+          'collectionID': data[0],
+          'publicationId': data[1],
+          'textType': textType,
           'version': '',
           'linkID': id,
           'facsimilePage': facsimilePage

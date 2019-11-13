@@ -540,6 +540,7 @@ export class DigitalEditionsApp {
       this.setRootPage();
       this.getSongTypes();
       this.getAboutPages();
+      this.events.publish('pdfview:open', {'isOpen': false});
     });
   }
 
