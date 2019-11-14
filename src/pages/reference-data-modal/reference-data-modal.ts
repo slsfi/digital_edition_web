@@ -27,8 +27,24 @@ export class ReferenceDataModalPage {
 
   ) {
     const id = String(params.get('id')).split('#')[1];
-    const type = params.get('type');
-    this.getReferenceData(id);
+    const idParts = id.split('/');
+    let relevantParts = '';
+    if ( idParts[0] !== undefined ) {
+      relevantParts += idParts[0] + ((idParts[1] === undefined) ? '/' : '');
+    }
+    if ( idParts[1] !== undefined ) {
+      relevantParts += '/' + idParts[1];
+    }
+    if ( idParts[2] !== undefined ) {
+      relevantParts += '/' + idParts[2];
+    }
+    if ( idParts[3] !== undefined ) {
+      relevantParts += '/' + idParts[3];
+    }
+    if ( idParts[4] !== undefined ) {
+      relevantParts += '/' + idParts[4];
+    }
+    this.getReferenceData(relevantParts);
   }
 
 
