@@ -1,7 +1,7 @@
 <ion-content>
     <ion-scroll scrollX="true" scrollY="true" zoom="true" class="scroll">
         <div class="contents">
-            <div class="center_content">        
+            <div class="center_content">
                 <div class="div_img">
                     <div middle class="facsimile_button_group">
                         <ion-item *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()">
@@ -9,8 +9,14 @@
                             <ion-input class="page_number_input" size="12" (change)="setPage($event)" [(ngModel)]="manualPageNumber" type="number"></ion-input>
                         </ion-item>
                         <div class="buttons">
+                            <ion-label *ngIf="descriptions && descriptions[activeImage]" class="facs-desc">
+                                    {{descriptions[activeImage]}}
+                            </ion-label>
                             <button style="display: inline-block;" ion-fab color="primary" mini (click)="previous()">
                                 <ion-icon name="arrow-back"></ion-icon>
+                            </button>
+                            <button *ngIf="backsides.length" style="display: inline-block;" ion-fab color="primary" mini (click)="backside = !backside">
+                                <ion-icon name="refresh-circle"></ion-icon>
                             </button>
                             <button style="display: inline-block;" ion-fab color="primary" mini (click)="next()">
                                 <ion-icon name="arrow-forward"></ion-icon>
@@ -34,7 +40,8 @@
                     </div>
                     <div *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()">
                         <img *ngIf="!facsimilePagesInfinite" [ngStyle]="{'transform':'scale('+zoom+')'}" [src]="images[activeImage]" class="facsimile-zoom-image">
-                        <img *ngIf="facsimilePagesInfinite && facsNumber" [ngStyle]="{'transform':'scale('+zoom+')'}" [src]="facsUrl + facsNumber" class="facsimile-zoom-image">
+                        <img *ngIf="facsimilePagesInfinite && facsNumber && (!backside || !backsides[activeImage])" [ngStyle]="{'transform':'scale('+zoom+')'}" [src]="facsUrl + facsNumber" class="facsimile-zoom-image">
+                        <img *ngIf="facsimilePagesInfinite && facsNumber && backside && backsides[activeImage]" [ngStyle]="{'transform':'scale('+zoom+')'}" [src]="facsUrl + facsNumber" class="facsimile-zoom-image">
                     </div>
                     <div *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet())">
                         <div *ngIf="!facsimilePagesInfinite">
@@ -49,7 +56,7 @@
                         </div>
                     </div>
                 </div>
-            </div>      
+            </div>
         </div>
     </ion-scroll>
 </ion-content>

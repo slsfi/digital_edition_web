@@ -1115,6 +1115,16 @@ export class DigitalEditionsApp {
     this.showBackButton = show;
   }
 
+  openGalleries() {
+    const params = { fetch: true };
+    this.nav.setRoot('galleries', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
+  }
+
+  openMediaCollections() {
+    const params = {};
+    this.nav.setRoot('media-collections', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
+  }
+
   openGalleryPage(galleryPage: string) {
     const params = { galleryPage: galleryPage, fetch: false };
     this.nav.setRoot('image-gallery', params, { animate: false, direction: 'forward', animation: 'ios-transition' });

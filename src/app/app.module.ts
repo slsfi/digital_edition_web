@@ -55,6 +55,7 @@ import { UserSettingsPopoverPageModule } from '../pages/user-settings-popover/us
 import { ReadPopoverPageModule } from '../pages/read-popover/read-popover.module';
 import { TutorialService } from './services/tutorial/tutorial.service';
 import * as Sentry from '@sentry/browser';
+import { GalleryService } from './services/gallery/gallery.service';
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
 });
@@ -143,6 +144,7 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
     SplashScreen,
     SongService,
     TutorialService,
+    GalleryService,
     { provide: ErrorHandler, useClass: ErrorHandler }
   ],
   bootstrap: [IonicApp],

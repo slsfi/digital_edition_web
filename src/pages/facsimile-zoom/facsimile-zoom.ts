@@ -19,11 +19,14 @@ import { UserSettingsService } from '../../app/services/settings/user-settings.s
 export class FacsimileZoomModalPage {
 
   images: any;
+  backsides: any;
+  descriptions: any;
   activeImage: any;
   zoom = 1.0;
 
   facsUrl = '';
   facsimilePagesInfinite = false;
+  backside = false;
   facsPage: any;
   facsNumber = 0;
   manualPageNumber = 1;
@@ -54,6 +57,18 @@ export class FacsimileZoomModalPage {
       this.facsNumber = this.navParams.get('facsNr');
     } else {
       this.images = this.navParams.get('images');
+      try {
+        this.backsides = this.navParams.get('backsides');
+        console.log('backsides', this.backsides);
+      } catch (e) {
+        this.backsides = [];
+      }
+      try {
+        this.descriptions = this.navParams.get('descriptions');
+        console.log('descriptions', this.descriptions);
+      } catch (e) {
+        this.descriptions = [];
+      }
       this.activeImage = this.navParams.get('activeImage');
       console.log(this.navParams);
     }

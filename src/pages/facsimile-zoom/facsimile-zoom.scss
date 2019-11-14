@@ -124,4 +124,14 @@ page-facsimile-zoom {
   .mobile_pagenr ion-label{
     color: white;
   }
+
+  .facs-desc {
+    display: block;
+    padding: 30px;
+    position: absolute;
+    right: 0;
+    width: 100%;
+    top: 45px;
+    text-align: center;
+  }
 }

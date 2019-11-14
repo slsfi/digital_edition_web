@@ -39,15 +39,16 @@
 
 	<!-- cordova.js required for cordova apps -->
 	<script src="cordova.js"></script>
+	<!-- service-worker.js start -->
 	<!--
-  <script>
+  <script type="text/javascript" id="cache-bursting-script"">
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
         .then(() => console.log('service worker installed'))
         .catch(err => console.log('Error', err));
     }
   </script>
--->
+	<!-- service-worker.js end -->
 
 	<link href="build/main.css" rel="stylesheet">
 	<link href="assets/custom_css/custom.css" rel="stylesheet">

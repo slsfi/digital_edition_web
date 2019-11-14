@@ -91,12 +91,16 @@
         "Language": "Språk",
         "Information": "Information"
     },
+    "MediaCollections": {
+        "MediaCollections": "Faksimilsamlinar"
+    },
     "TOC": {
         "Home": "Till startsidan",
         "About": "Om utgåvan",
         "Read": "Läs",
         "Facsimiles": "Faksimil i urval",
         "ImageGallery": "Bildgalleri",
+        "MediaCollections": "Famsimilsamlingar",
         "PersonSearch": "Personsök",
         "PlaceSearch": "Platsregister",
         "TagSearch": "Ämnesord",
