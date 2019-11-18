@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectorRef, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectorRef, ChangeDetectionStrategy, ViewEncapsulation, OnInit } from '@angular/core';
 import { Platform, Events, App, LoadingController } from 'ionic-angular';
 import { MenuOptionModel } from '../../app/models/menu-option.model';
 import { SideMenuSettings } from '../../app/models/side-menu-settings';
@@ -348,6 +348,33 @@ export class TableOfContentsAccordionComponent {
     });
 
     this.unSelectSelectedTocItemEventListener();
+  }
+
+  ngOnChanges(about) {
+    if ( Array.isArray(about) ) {
+      this.menuOptions = about;
+      this.collapsableItems = new Array<InnerMenuOptionModel>();
+
+      let foundSelected = false;
+      // Map the options to our internal models
+      this.menuOptions.forEach(option => {
+        const innerMenuOption = InnerMenuOptionModel.fromMenuOptionModel(option, null, false, false);
+        this.collapsableItems.push(innerMenuOption);
+
+        // Check if there's any option marked as selected
+        if (option.selected) {
+          this.selectedOption = innerMenuOption;
+        } else if (innerMenuOption.childrenCount) {
+          innerMenuOption.subOptions.forEach(subItem => {
+            if (subItem.selected) {
+              this.selectedOption = subItem;
+              foundSelected = true;
+            }
+          });
+        }
+      });
+      this.cdRef.detectChanges();
+    }
   }
 
   ngOnInit() {

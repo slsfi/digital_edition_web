@@ -74,8 +74,9 @@
         "Information": "Information"
     },
     "TOC": {
-        "Home": "Goto start",
+        "Home": "Home",
         "Read": "Read",
+        "About": "About Hilma Granqvist",
         "Facsimiles": "Assorted Facsimile",
         "ImageGallery": "Image Gallery",
         "PersonSearch": "Persons",
@@ -85,7 +86,7 @@
         "WriterSearch": "Writers Search",
         "SongTypes": "Song Types",
         "WorkSearch": "Works",
-        "Collections": "Kategorier"
+        "Collections": "Publications"
     },
     "GalleryPages": {
         "0": "Headline 1",

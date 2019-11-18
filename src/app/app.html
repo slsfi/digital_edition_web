@@ -23,7 +23,7 @@
           <div [style.height]="simpleAccordionsExpanded.aboutMenuAccordion ? '100%' : '0px'"
             class="simple-accordion-options options">
             <div class="sub-option" tappable>
-              <table-of-contents-accordion *ngIf="aboutOptionsMarkdown.toc.length" [isMarkdown]="true"
+              <table-of-contents-accordion #aboutMenuMarkdownAccordion *ngIf="aboutOptionsMarkdown.toc.length" [isMarkdown]="true"
                 [showBackButton]="false" [options]="aboutOptionsMarkdown" [collectionId]="'aboutMarkdown'"
                 [collectionName]="'About'" [settings]="sideMenuSettings"></table-of-contents-accordion>
             </div>

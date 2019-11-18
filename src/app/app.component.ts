@@ -26,6 +26,7 @@ import { TableOfContentsService } from './services/toc/table-of-contents.service
 import { DigitalEdition } from './models/digital-edition.model';
 import { GeneralTocItem } from './models/table-of-contents.model';
 import { TutorialService } from './services/tutorial/tutorial.service';
+import { TableOfContentsAccordionComponent } from '../components/table-of-contents-accordion/table-of-contents-accordion';
 
 @Component({
   templateUrl: `app.html`,
@@ -34,6 +35,7 @@ import { TutorialService } from './services/tutorial/tutorial.service';
 })
 export class DigitalEditionsApp {
   @ViewChild(Nav) nav: Nav;
+  @ViewChild('aboutMenuMarkdownAccordion') aboutMenuMarkdownAccordion: TableOfContentsAccordionComponent
 
   rootPage = 'TabsPage';
   aboutPages: any[];
@@ -417,15 +419,6 @@ export class DigitalEditionsApp {
     return hasChildrenPdfs;
   }
 
-  getCollectionTOC(collectionID) {
-    this.tableOfContentsService.getTableOfContents(collectionID)
-      .subscribe(
-        tocItems => {
-          return tocItems;
-        },
-        error => { this.errorMessage = <any>error });
-  }
-
   sortListRoman(list) {
     for (const coll of list) {
       const romanNumeral = coll.title.split(' ')[0];
@@ -508,9 +501,22 @@ export class DigitalEditionsApp {
       (async () => {
         const aboutMarkdownMenu = await this.mdcontentService.getMarkdownMenu(this.language, this.aboutMenuMarkdownInfo.idNumber);
         this.aboutOptionsMarkdown.toc = aboutMarkdownMenu.children;
+        if ( this.aboutMenuMarkdownAccordion !== undefined ) {
+          this.aboutMenuMarkdownAccordion.ngOnChanges(aboutMarkdownMenu.children);
+        }
       }).bind(this)();
     }
   }
+
+  getCollectionTOC(collectionID) {
+    this.tableOfContentsService.getTableOfContents(collectionID)
+      .subscribe(
+        tocItems => {
+          return tocItems;
+        },
+        error => { this.errorMessage = <any>error });
+  }
+
 
   initializeApp() {
     this.platform.ready().then(() => {
@@ -533,13 +539,12 @@ export class DigitalEditionsApp {
         this.language = lang;
         this.appName = this.config.getSettings('app.name.' + lang);
         this.titleService.setTitle(this.appName);
+        this.getPersonSearchTypes();
+        this.getStaticPagesMenus();
+        this.setRootPage();
+        this.getSongTypes();
+        this.getAboutPages();
       });
-
-      this.getPersonSearchTypes();
-      this.getStaticPagesMenus();
-      this.setRootPage();
-      this.getSongTypes();
-      this.getAboutPages();
       this.events.publish('pdfview:open', {'isOpen': false});
     });
   }
@@ -754,6 +759,14 @@ export class DigitalEditionsApp {
 
     this.events.subscribe('pdfview:open', (params) => {
       this.storage.set('pdfIsOpen', Boolean(params['isOpen']));
+    });
+
+    this.events.subscribe('language:change', () => {
+      this.languageService.getLanguage().subscribe((lang: string) => {
+        this.language = lang;
+        this.getStaticPagesMenus();
+        this.getAboutPages();
+      });
     });
   }
 
