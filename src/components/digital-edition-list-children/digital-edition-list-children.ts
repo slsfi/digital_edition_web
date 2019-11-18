@@ -71,8 +71,8 @@ export class DigitalEditionListChildrenComponent {
     try {
       (<any>window).ga('send', 'event', {
         eventCategory: action,
-        eventLabel: 'Song',
-        eventAction: type + ' - ' +  name,
+        eventLabel: type,
+        eventAction: name,
         eventValue: 10
       });
     } catch ( e ) {

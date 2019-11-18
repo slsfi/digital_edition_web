@@ -31,6 +31,10 @@ page-occurrences-result {
             }
         }
     }
+
+    a{
+        cursor: pointer;
+    }
     
     .search-results {
         @media only screen and (min-width: 1200px) { 

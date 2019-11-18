@@ -121,8 +121,8 @@
                             <ion-col col-1>{{i+1}}. </ion-col>
                             <ion-col col-11 class="info-article__description">
                               <div>{{article.description}}</div>
-                              <div class="download-section">
-                                <a href="{{article.pdf_path}}" target="_blank">
+                              <div class="download-section" (click)="downloadArticle(article.pdf_path)">
+                                <a>
                                 {{"Occurrences.download" | translate}}
                                 <ion-icon class="download" name="cloud-download"></ion-icon>
                                 </a>

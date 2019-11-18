@@ -599,6 +599,23 @@ export class OccurrencesResultPage {
     (<any>window).ga('send', 'pageview');
   }
 
+  downloadArticle(url) {
+    const ref = window.open(url, '_blank', 'location=no');
+    this.doAnalytics(url);
+  }
+
+  doAnalytics(url) {
+    try {
+      (<any>window).ga('send', 'event', {
+        eventCategory: 'Download',
+        eventLabel: 'PDF',
+        eventAction: url,
+        eventValue: 10
+      });
+    } catch ( e ) {
+    }
+  }
+
   /**
    * If occurrence is a song, go to song page instead
    */
