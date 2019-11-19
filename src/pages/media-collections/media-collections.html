@@ -1,6 +1,5 @@
 <ion-content padding>
-  <h1>Gallerier</h1>
-  <p>Lorem ipsum</p>
+  <h1>{{"TOC.MediaCollections" | translate }}</h1>
   <ion-grid>
     <ion-row>
       <ion-col *ngFor="let gallery of galleries; index as i" (click)="openMediaCollection(gallery.id)" col-md-4 col-sm-12 col-lg-3>

@@ -11,8 +11,8 @@
 </ion-header>
 
 <ion-content padding>
-  <h1>Titlen på Galleriet</h1>
-  <p>Lorem ipsum</p>
+  <h1>{{mediaTitle}}</h1>
+  <p>{{mediaDescription}}</p>
   <ion-grid *ngIf="userSettingsService.isDesktop() || userSettingsService.isTablet()">
     <ion-row>
       <ion-col *ngFor="let image of mediaCollection; index as i" col-md-4 col-sm-12 col-lg-3>

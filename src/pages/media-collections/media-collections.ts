@@ -65,7 +65,7 @@ export class MediaCollectionsPage {
 
   openMediaCollection(mediaCollectionId: string) {
     const nav = this.app.getActiveNavs();
-    const params = {mediaCollectionId: mediaCollectionId, fetch: false};
+    const params = {mediaCollectionId: mediaCollectionId , fetch: false};
     nav[0].push('media-collection', params, {animate: true, direction: 'forward', animation: 'ios-transition'});
   }
 

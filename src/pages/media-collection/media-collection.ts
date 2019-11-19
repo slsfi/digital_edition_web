@@ -23,6 +23,7 @@ export class MediaCollectionPage {
 
   mediaCollectionId: string;
   mediaTitle: string;
+  mediaDescription: string;
   mediaCollection = [];
   private apiEndPoint: string;
   private projectMachineName: string;
@@ -39,6 +40,7 @@ export class MediaCollectionPage {
 
   ) {
     this.mediaCollectionId =  this.navParams.get('mediaCollectionId');
+    this.mediaTitle =  this.navParams.get('mediaTitle');
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.projectMachineName = this.config.getSettings('app.machineName');
     try {
@@ -52,8 +54,11 @@ export class MediaCollectionPage {
   getMediaCollections() {
     this.galleryService.getGallery(this.mediaCollectionId)
     .subscribe(gallery => {
-      console.log(gallery);
-      this.mediaCollection = gallery;
+
+      this.mediaCollection = gallery.gallery ? gallery.gallery : gallery;
+      this.mediaTitle = gallery.title ? gallery.title : 'Galleriets titel';
+      this.mediaDescription = gallery.description ? gallery.description : 'Galleriets beskrivning';
+
     });
   }
 
