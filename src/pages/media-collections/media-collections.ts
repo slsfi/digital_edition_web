@@ -43,10 +43,6 @@ export class MediaCollectionsPage {
     .subscribe(galleries => {this.galleries = galleries; });
   }
 
-  firstImage(gallery) {
-    return 'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg';
-  }
-
   ionViewWillLeave() {
     this.events.publish('ionViewWillLeave', this.constructor.name);
   }
@@ -63,9 +59,9 @@ export class MediaCollectionsPage {
     return foldername.charAt(0).toUpperCase() + foldername.substring(1);
   }
 
-  openMediaCollection(mediaCollectionId: string) {
+  openMediaCollection(gallery) {
     const nav = this.app.getActiveNavs();
-    const params = {mediaCollectionId: mediaCollectionId , fetch: false};
+    const params = {mediaCollectionId: gallery.id , mediaTitle: this.makeTitle(gallery.image_path), fetch: false};
     nav[0].push('media-collection', params, {animate: true, direction: 'forward', animation: 'ios-transition'});
   }
 

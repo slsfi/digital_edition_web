@@ -155,4 +155,8 @@ export class FacsimileZoomModalPage {
       this.previous();
     }
   }
+
+  backSide(url) {
+    return url.replace('.jpg', 'B.jpg');
+  }
 }

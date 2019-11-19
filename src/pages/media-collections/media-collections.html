@@ -2,7 +2,7 @@
   <h1>{{"TOC.MediaCollections" | translate }}</h1>
   <ion-grid>
     <ion-row>
-      <ion-col *ngFor="let gallery of galleries; index as i" (click)="openMediaCollection(gallery.id)" col-md-4 col-sm-12 col-lg-3>
+      <ion-col *ngFor="let gallery of galleries; index as i" (click)="openMediaCollection(gallery)" col-md-4 col-sm-12 col-lg-3>
         <ion-card>
           <div [ngClass]="{'remove-scan-details' : removeScanDetails}">
             <img src="{{apiEndPoint}}/{{projectMachineName}}/gallery/get/{{gallery.id}}/Fotografi_001_thumb.jpg"/>

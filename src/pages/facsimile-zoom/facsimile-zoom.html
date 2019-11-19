@@ -39,9 +39,9 @@
                         </div>
                     </div>
                     <div *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()">
-                        <img *ngIf="!facsimilePagesInfinite" [ngStyle]="{'transform':'scale('+zoom+')'}" [src]="images[activeImage]" class="facsimile-zoom-image">
-                        <img *ngIf="facsimilePagesInfinite && facsNumber && (!backside || !backsides[activeImage])" [ngStyle]="{'transform':'scale('+zoom+')'}" [src]="facsUrl + facsNumber" class="facsimile-zoom-image">
-                        <img *ngIf="facsimilePagesInfinite && facsNumber && backside && backsides[activeImage]" [ngStyle]="{'transform':'scale('+zoom+')'}" [src]="facsUrl + facsNumber" class="facsimile-zoom-image">
+                        <img *ngIf="!facsimilePagesInfinite && (!backside || !backsides[activeImage])" [ngStyle]="{'transform':'scale('+zoom+')'}" [src]="images[activeImage]" class="facsimile-zoom-image">
+                        <img *ngIf="!facsimilePagesInfinite && backside && backsides[activeImage]" [ngStyle]="{'transform':'scale('+zoom+')'}" [src]="backSide(images[activeImage])" class="facsimile-zoom-image">
+                        <img *ngIf="facsimilePagesInfinite && facsNumber" [ngStyle]="{'transform':'scale('+zoom+')'}" [src]="facsUrl + facsNumber" class="facsimile-zoom-image">
                     </div>
                     <div *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet())">
                         <div *ngIf="!facsimilePagesInfinite">

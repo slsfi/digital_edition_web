@@ -56,8 +56,8 @@ export class MediaCollectionPage {
     .subscribe(gallery => {
 
       this.mediaCollection = gallery.gallery ? gallery.gallery : gallery;
-      this.mediaTitle = gallery.title ? gallery.title : 'Galleriets titel';
-      this.mediaDescription = gallery.description ? gallery.description : 'Galleriets beskrivning';
+      this.mediaTitle = gallery.title ? gallery.title : this.mediaTitle;
+      this.mediaDescription = gallery.description ? gallery.description : '';
 
     });
   }

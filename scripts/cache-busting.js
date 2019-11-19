@@ -132,7 +132,6 @@ for (let filename of ['main.js', 'main.css', 'polyfills.js', 'sw-toolbox.js', 'v
     'selector': fileExtension == 'css' ? `head link[href="${relativePath}"]` : `body script[src="${relativePath}"]`,
     'attr': fileExtension == 'css' ? 'href' : 'src' // if there will be more than js and css, we will refactor this into a function
   }
-  // console.log(f[filename]);
 
   // update service-worker.js to load base.[hash].ext
   let re = new RegExp(f[filename].relativePath, "mg");
