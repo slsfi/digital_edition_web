@@ -158,11 +158,16 @@
             {{"TOC.ImageGallery" | translate }}
           </p>
         </ion-item>
-        <ion-item *ngIf="genericSettingsService.show('TOC.MediaCollections')" menuClose (click)="openMediaCollections();"
+        <ion-item *ngIf="genericSettingsService.show('TOC.MediaCollections')" menuClose (click)="mediaCollectionsMenuOpen=!mediaCollectionsMenuOpen;openMediaCollections();"
           class="mainMenuItem">
           <p>
             {{"TOC.MediaCollections" | translate }}
           </p>
+          <ion-list *ngIf="mediaCollectionsMenuOpen && mediaCollections.length">
+            <ion-item *ngFor="let mediaCollection of mediaCollections" (click)="openMediaCollection(mediaCollection)" >
+              {{makeTitle(mediaCollection.image_path)}}
+            </ion-item>
+          </ion-list>
         </ion-item>
         <ng-container *ngIf="genericSettingsService.show('TOC.PersonSearch') && !musicAccordion.personSearchTypes.show">
           <ion-item *ngFor="let ps of personSearchTypes" menuClose detail-push (click)="openPersonSearchPage(ps)"

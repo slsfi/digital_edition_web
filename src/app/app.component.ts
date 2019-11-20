@@ -27,6 +27,7 @@ import { DigitalEdition } from './models/digital-edition.model';
 import { GeneralTocItem } from './models/table-of-contents.model';
 import { TutorialService } from './services/tutorial/tutorial.service';
 import { TableOfContentsAccordionComponent } from '../components/table-of-contents-accordion/table-of-contents-accordion';
+import { GalleryService } from './services/gallery/gallery.service';
 
 @Component({
   templateUrl: `app.html`,
@@ -51,7 +52,8 @@ export class DigitalEditionsApp {
   currentContentName: string;
   showBackButton = true;
   readMenuOpen = false;
-  galleryMenuOpen = false;
+  galleryMenuOpen = false; // legacy
+  mediaCollections = [];
   personSearchTypes = [];
   apiEndPoint: string;
   projectMachineName: string;
@@ -186,7 +188,8 @@ export class DigitalEditionsApp {
     protected tableOfContentsService: TableOfContentsService,
     public cdRef: ChangeDetectorRef,
     private alertCtrl: AlertController,
-    private tutorial: TutorialService
+    private tutorial: TutorialService,
+    private galleryService: GalleryService
   ) {
 
     // Check for IE11
@@ -235,6 +238,10 @@ export class DigitalEditionsApp {
       this.hasCover = this.config.getSettings('HasCover');
     } catch (e) {
       this.hasCover = true;
+    }
+
+    if (this.genericSettingsService.show('TOC.MediaCollections')) {
+      this.getMediaCollections();
     }
 
     this.getCollectionsWithoutTOC();
@@ -1115,9 +1122,21 @@ export class DigitalEditionsApp {
     this.showBackButton = show;
   }
 
+  /* Legacy code */
   openGalleries() {
     const params = { fetch: true };
     this.nav.setRoot('galleries', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
+  }
+
+  /* Legacy code */
+  openGalleryPage(galleryPage: string) {
+    const params = { galleryPage: galleryPage, fetch: false };
+    this.nav.setRoot('image-gallery', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
+  }
+
+  getMediaCollections() {
+    this.galleryService.getGalleries()
+    .subscribe(galleries => {this.mediaCollections = galleries; });
   }
 
   openMediaCollections() {
@@ -1125,9 +1144,10 @@ export class DigitalEditionsApp {
     this.nav.setRoot('media-collections', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
   }
 
-  openGalleryPage(galleryPage: string) {
-    const params = { galleryPage: galleryPage, fetch: false };
-    this.nav.setRoot('image-gallery', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
+  openMediaCollection(gallery) {
+    const nav = this.app.getActiveNavs();
+    const params = {mediaCollectionId: gallery.id , mediaTitle: this.makeTitle(gallery.image_path), fetch: false};
+    nav[0].push('media-collection', params, {animate: true, direction: 'forward', animation: 'ios-transition'});
   }
 
   public front() {
@@ -1139,4 +1159,10 @@ export class DigitalEditionsApp {
     this.events.publish('splitPaneToggle:disable');
     this.events.publish('topMenu:about');
   }
+
+  makeTitle(foldername) {
+    foldername = foldername.replace(/_/g, ' ');
+    return foldername.charAt(0).toUpperCase() + foldername.substring(1);
+  }
+
 }
