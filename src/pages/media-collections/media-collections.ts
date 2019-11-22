@@ -54,14 +54,9 @@ export class MediaCollectionsPage {
     return url.replace('.jpg', '_thumb.jpg');
   }
 
-  makeTitle(foldername) {
-    foldername = foldername.replace(/_/g, ' ');
-    return foldername.charAt(0).toUpperCase() + foldername.substring(1);
-  }
-
   openMediaCollection(gallery) {
     const nav = this.app.getActiveNavs();
-    const params = {mediaCollectionId: gallery.id , mediaTitle: this.makeTitle(gallery.image_path), fetch: false};
+    const params = {mediaCollectionId: gallery.id , mediaTitle: gallery.title, fetch: false};
     nav[0].push('media-collection', params, {animate: true, direction: 'forward', animation: 'ios-transition'});
   }
 

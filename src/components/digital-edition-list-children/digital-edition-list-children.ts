@@ -32,7 +32,7 @@ export class DigitalEditionListChildrenComponent {
   }
 
   ngOnInit() {
-    if (this.childrenPdfs && this.childrenPdfs.length) {
+    if (this.childrenPdfs !== undefined && this.childrenPdfs.length) {
       this.setThumbnails(this.childrenPdfs);
     }
   }

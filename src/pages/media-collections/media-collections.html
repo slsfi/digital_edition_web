@@ -1,17 +1,17 @@
 <ion-content padding>
-  <h1>{{"TOC.MediaCollections" | translate }}</h1>
-  <ion-grid>
-    <ion-row>
-      <ion-col *ngFor="let gallery of galleries; index as i" (click)="openMediaCollection(gallery)" col-md-4 col-sm-12 col-lg-3>
-        <ion-card>
-          <div [ngClass]="{'remove-scan-details' : removeScanDetails}">
-            <img src="{{apiEndPoint}}/{{projectMachineName}}/gallery/get/{{gallery.id}}/Fotografi_001_thumb.jpg"/>
-          </div>
-          <ion-card-content>
-            <p>{{makeTitle(gallery.image_path)}}</p>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+    <h1>{{"TOC.MediaCollections" | translate }}</h1>
+    <ion-grid>
+        <ion-row>
+            <ion-col *ngFor="let gallery of galleries; index as i" (click)="openMediaCollection(gallery)" col-md-4 col-sm-12 col-lg-3>
+                <ion-card>
+                    <div [ngClass]="{'remove-scan-details' : removeScanDetails}">
+                        <img src="{{apiEndPoint}}/{{projectMachineName}}/gallery/get/{{gallery.id}}/Fotografi_001_thumb.jpg" />
+                    </div>
+                    <ion-card-content>
+                        <p>{{gallery.title}}</p>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>
