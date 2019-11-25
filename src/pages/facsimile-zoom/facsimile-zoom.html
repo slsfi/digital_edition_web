@@ -18,7 +18,7 @@
                                 <button *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()" style="display: inline-block;" ion-fab color="primary" mini (click)="zoomOut()">
                                     <ion-icon name="remove"></ion-icon>
                                 </button>
-                                <button style="display: inline-block;" ion-fab color="primary" mini (click)="showAbout()" >
+                                <button *ngIf="descriptions && descriptions[activeImage]" style="display: inline-block;" ion-fab color="primary" mini (click)="showAbout()" >
                                     <ion-icon name="code-working" *ngIf="showAboutHelp"></ion-icon>
                                     <ion-icon name="code" *ngIf="!showAboutHelp"></ion-icon>
                                 </button>

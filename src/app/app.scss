@@ -1048,15 +1048,3 @@ tr.introjs-showElement > th {
     font-size: 14px !important;
   }
 }
-
-/**
-* remove the color correction parts in the scanned images.
-*/
-.remove-scan-details {
-  overflow: hidden;
-  padding-bottom: -300px;
-}
-
-.remove-scan-details > img {
-  margin-bottom: -133px;
-}

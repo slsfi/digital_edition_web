@@ -148,7 +148,7 @@ page-facsimile-zoom {
     display: flex;
     justify-content: center;
     width: 40rem;
-    padding-bottom: 1rem;
+    
   }
 
   .description ion-label{
@@ -169,5 +169,6 @@ page-facsimile-zoom {
     display: flex;
     justify-content: center;
     flex-direction: row;
+    padding-bottom: 1rem;
   }
 }
