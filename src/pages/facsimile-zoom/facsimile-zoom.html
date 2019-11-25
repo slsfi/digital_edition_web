@@ -25,17 +25,11 @@
                                 <button style="display: inline-block;" ion-fab mini (click)="cancel()">
                                     <ion-icon name="close" class="close_button"></ion-icon>
                                 </button>
-                                <div class="page_nubering">
-                                    <ion-item *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()">
+                                <div class="page_nubering"  *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()">
+                                    <ion-item>
                                         <ion-label position="floating">{{"Read.Facsimiles.Page" | translate}} ({{"Read.Facsimiles.Of" | translate}} {{(images)?images.length:0}}):</ion-label>
                                         <ion-input class="page_number_input" size="12" (change)="setPage($event)" [(ngModel)]="manualPageNumber" type="number"></ion-input>
                                     </ion-item>
-                                    <div *ngIf="userSettingsService.isMobile() || userSettingsService.isTablet()" class="mobile_pagenr">
-                                        <ion-item>
-                                            <ion-label position="floating">{{"Read.Facsimiles.Page" | translate}} ({{"Read.Facsimiles.Of" | translate}} {{(images)?images.length:0}}):</ion-label>
-                                            <ion-input class="page_number_input" size="12" (change)="setPage($event)" [(ngModel)]="manualPageNumber" type="number"></ion-input>
-                                        </ion-item>
-                                    </div>
                                 </div>
                             </div>
                             <div *ngIf="descriptions && descriptions[activeImage]" class="description" [ngStyle]="{'display': showAboutHelp?'':'none'}">

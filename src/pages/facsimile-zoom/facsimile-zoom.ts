@@ -60,18 +60,15 @@ export class FacsimileZoomModalPage {
       this.images = this.navParams.get('images');
       try {
         this.backsides = this.navParams.get('backsides');
-        console.log('backsides', this.backsides);
       } catch (e) {
         this.backsides = [];
       }
       try {
         this.descriptions = this.navParams.get('descriptions');
-        console.log('descriptions', this.descriptions);
       } catch (e) {
         this.descriptions = [];
       }
       this.activeImage = this.navParams.get('activeImage');
-      console.log(this.navParams);
     }
    }
 

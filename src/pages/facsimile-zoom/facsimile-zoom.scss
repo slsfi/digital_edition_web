@@ -144,13 +144,6 @@ page-facsimile-zoom {
     background-color: color($colors, secondary) !important;
   }
 
-  .description {
-    display: flex;
-    justify-content: center;
-    width: 40rem;
-    
-  }
-
   .description ion-label{
     white-space: normal;
   }
@@ -160,11 +153,27 @@ page-facsimile-zoom {
     justify-content: center;
     width: 40%;
   }
+
   .action_buttons{
     display: flex;
     justify-content: center;
     width: 40rem;
   }
+  .description {
+    display: flex;
+    justify-content: center;
+    width: 40rem;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .action_buttons{
+      width: 25rem;
+    }
+    .description {
+      width: 25rem;
+    }
+  }
+
   .facsimile_button_group{
     display: flex;
     justify-content: center;
