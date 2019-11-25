@@ -30,6 +30,7 @@ export class FacsimileZoomModalPage {
   facsPage: any;
   facsNumber = 0;
   manualPageNumber = 1;
+  showAboutHelp = true;
 
   constructor(public viewCtrl: ViewController,
               public navCtrl: NavController,
@@ -130,6 +131,10 @@ export class FacsimileZoomModalPage {
     if (this.zoom < 0.5) {
       this.zoom = 0.5;
     }
+  }
+
+  showAbout() {
+    this.showAboutHelp = !this.showAboutHelp;
   }
 
   setPage( e ) {

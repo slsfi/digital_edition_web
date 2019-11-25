@@ -69,22 +69,10 @@ page-facsimile-zoom {
     top: 0;
     width: 100%;
     z-index: 99;
-    background-color: #464646;
   }
 
   .facsimile_button_group ion-item{
-    width: 30%;
     display:inline-block;
-    background-color: #464646;
-    float: left;
-    padding-top: 0.3rem;
-  }
-
-  .facsimile_button_group .buttons{
-    text-align: right;
-    float: right;
-    width: 70%;
-    background-color: #464646;
   }
 
   .facsimile_button_group div.item-inner{
@@ -93,7 +81,8 @@ page-facsimile-zoom {
   }
 
   .page_number_input input{
-    color: white;
+    color:  #464646;
+    margin: 0px;
   }
 
   .div_close{
@@ -127,11 +116,58 @@ page-facsimile-zoom {
 
   .facs-desc {
     display: block;
-    padding: 30px;
-    position: absolute;
-    right: 0;
     width: 100%;
-    top: 45px;
     text-align: center;
+    background-color: color($colors, primary);
+    padding: 10px;
+    margin: 0px;
+  }
+
+  .imgbox {
+    display: grid;
+    height: 100%;
+  }
+  .facsimile-zoom-image {
+    max-width: 100%;
+    max-height: 100vh;
+    margin: auto;
+  }
+
+  .buttons{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .buttons ion-item{
+    display: flex;
+    background-color: color($colors, secondary) !important;
+  }
+
+  .description {
+    display: flex;
+    justify-content: center;
+    width: 40rem;
+    padding-bottom: 1rem;
+  }
+
+  .description ion-label{
+    white-space: normal;
+  }
+
+  .page_nubering{
+    display: flex;
+    justify-content: center;
+    width: 40%;
+  }
+  .action_buttons{
+    display: flex;
+    justify-content: center;
+    width: 40rem;
+  }
+  .facsimile_button_group{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
   }
 }
