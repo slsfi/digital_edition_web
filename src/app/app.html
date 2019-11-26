@@ -23,9 +23,10 @@
           <div [style.height]="simpleAccordionsExpanded.aboutMenuAccordion ? '100%' : '0px'"
             class="simple-accordion-options options">
             <div class="sub-option" tappable>
-              <table-of-contents-accordion #aboutMenuMarkdownAccordion *ngIf="aboutOptionsMarkdown.toc.length" [isMarkdown]="true"
-                [showBackButton]="false" [options]="aboutOptionsMarkdown" [collectionId]="'aboutMarkdown'"
-                [collectionName]="'About'" [settings]="sideMenuSettings"></table-of-contents-accordion>
+              <table-of-contents-accordion #aboutMenuMarkdownAccordion *ngIf="aboutOptionsMarkdown.toc.length"
+                [isMarkdown]="true" [showBackButton]="false" [options]="aboutOptionsMarkdown"
+                [collectionId]="'aboutMarkdown'" [collectionName]="'About'" [settings]="sideMenuSettings">
+              </table-of-contents-accordion>
             </div>
           </div>
         </ion-list>
@@ -67,19 +68,21 @@
                 </div>
               </ion-list>
             </ng-container>
-            <ng-container>
+            <ng-container *ngIf="mediaCollectionOptions">
               <ion-list class="accordion-menu">
-                  <ion-item [ngClass]="mediaCollectionOptions.highlight ? 'selected-toc-item' : ''" class="header"
-                    (tap)="toggleSingleCollectionAccordion(mediaCollectionOptions)" tappable>
-                    <ion-icon [class.rotate]="mediaCollectionOptions.expanded" class="header-icon"
-                      [name]="'ios-arrow-forward'" small item-right></ion-icon>
-                    <p>{{"TOC.MediaCollections" | translate }}</p>
-                  </ion-item>
-                  <div [style.height]="mediaCollectionOptions.expanded ? '100%' : '0px'" class="simple-accordion-options options">
-                    <table-of-contents-accordion *ngIf="accordionTOC && mediaCollectionOptions" [showBackButton]="false" [isGallery]="true"
-                    [options]="mediaCollectionOptions.accordionToc" [collectionId]="'mediaCollections'" [collectionName]="'media'"
-                    [settings]="sideMenuSettings"></table-of-contents-accordion>
-                  </div>
+                <ion-item [ngClass]="mediaCollectionOptions.highlight ? 'selected-toc-item' : ''" class="header"
+                  (tap)="toggleSingleCollectionAccordion(mediaCollectionOptions)" tappable>
+                  <ion-icon [class.rotate]="mediaCollectionOptions.expanded" class="header-icon"
+                    [name]="'ios-arrow-forward'" small item-right></ion-icon>
+                  <p>{{"TOC.MediaCollections" | translate }}</p>
+                </ion-item>
+                <div [style.height]="mediaCollectionOptions.expanded ? '100%' : '0px'"
+                  class="simple-accordion-options options">
+                  <table-of-contents-accordion *ngIf="accordionTOC && mediaCollectionOptions" [showBackButton]="false"
+                    [isGallery]="true" [options]="mediaCollectionOptions.accordionToc"
+                    [collectionId]="'mediaCollections'" [collectionName]="'media'" [settings]="sideMenuSettings">
+                  </table-of-contents-accordion>
+                </div>
               </ion-list>
             </ng-container>
           </div>
@@ -159,10 +162,9 @@
             </div>
           </div>
         </ion-list>
-        <ion-list no-margin *ngIf="pdfCollections && showBooks"
-          class="accordion-menu">
-          <ion-item class="header" (tap)="simpleAccordionsExpanded.pdfAccordion = !simpleAccordionsExpanded.pdfAccordion;"
-            tappable>
+        <ion-list no-margin *ngIf="pdfCollections && showBooks" class="accordion-menu">
+          <ion-item class="header"
+            (tap)="simpleAccordionsExpanded.pdfAccordion = !simpleAccordionsExpanded.pdfAccordion;" tappable>
             <ion-icon [class.rotate]="simpleAccordionsExpanded.pdfAccordion" class="header-icon"
               [name]="'ios-arrow-forward'" small item-right></ion-icon>
             <p>{{"Books" | translate }}</p>
@@ -187,8 +189,8 @@
             {{"TOC.Facsimiles" | translate }}
           </p>
         </ion-item>
-        <ion-item *ngIf="genericSettingsService.show('TOC.ImageGallery')" menuClose (click)="galleryMenuOpen=true;openGalleries();"
-          class="mainMenuItem">
+        <ion-item *ngIf="genericSettingsService.show('TOC.ImageGallery')" menuClose
+          (click)="galleryMenuOpen=true;openGalleries();" class="mainMenuItem">
           <p>
             {{"TOC.ImageGallery" | translate }}
           </p>

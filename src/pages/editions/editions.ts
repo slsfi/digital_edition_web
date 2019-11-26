@@ -51,16 +51,15 @@ export class EditionsPage {
       this.events.publish('title-logo:setTitle', this.config.getSettings('app.page-title.' + lang));
       this.events.publish('title-logo:setSubTitle', 'Digitala verk');
     });
-    console.log('ion will enter.... in editions... ..');
-    this.events.publish('pageLoaded:collections', {'title': 'Editions'});
+    this.events.publish('pageLoaded:collections', { 'title': 'Editions' });
   }
 
   getMdContent(fileID: string) {
     // console.log('calling getMdContent from editions.ts');
     this.mdContentService.getMdContent(fileID)
-        .subscribe(
-            text => {this.readContent = text.content; },
-            error =>  {this.errorMessage = <any>error}
-        );
+      .subscribe(
+        text => { this.readContent = text.content; },
+        error => { this.errorMessage = <any>error }
+      );
   }
 }

@@ -1,7 +1,7 @@
 import { Title } from '@angular/platform-browser';
 import { Component, OnInit, Input } from '@angular/core';
 import { App, Platform, Events } from 'ionic-angular';
-import { TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { ConfigService } from '@ngx-config/core';
 import { DigitalEdition } from '../../app/models/digital-edition.model';
 import { DigitalEditionListService } from '../../app/services/toc/digital-edition-list.service';
@@ -29,6 +29,7 @@ export class DigitalEditionList implements OnInit {
   pdfsAreDownloadOnly = false;
   tocItems: GeneralTocItem[];
   hasCover = true;
+  hideBooks = false;
 
   @Input() layoutType: string;
   @Input() collectionsToShow?: Array<any>;
@@ -70,17 +71,23 @@ export class DigitalEditionList implements OnInit {
     let loadCollectionsFromAssets = false;
     try {
       loadCollectionsFromAssets = this.config.getSettings('LoadCollectionsFromAssets')
-    } catch ( e ) {
+    } catch (e) {
 
+    }
+
+    try {
+      this.hideBooks = this.config.getSettings('show.TOC.Books')
+    } catch (e) {
+      this.hideBooks = false;
     }
 
     if (loadCollectionsFromAssets) {
       this.digitalEditionListService.getCollectionsFromAssets()
-      .subscribe(digitalEditions => {
-        this.digitalEditions = digitalEditions;
-        this.events.publish('DigitalEditionList:recieveData', {digitalEditions});
-        this.setPDF(digitalEditions);
-      });
+        .subscribe(digitalEditions => {
+          this.digitalEditions = digitalEditions;
+          this.events.publish('DigitalEditionList:recieveData', { digitalEditions });
+          this.setPDF(digitalEditions);
+        });
     } else {
       this.getDigitalEditions();
     }
@@ -94,13 +101,13 @@ export class DigitalEditionList implements OnInit {
         digitalEditions => {
           this.digitalEditions = digitalEditions;
           const de = digitalEditions;
-          this.events.publish('DigitalEditionList:recieveData', {digitalEditions});
+          this.events.publish('DigitalEditionList:recieveData', { digitalEditions });
           this.setPDF(de);
-          if ( this.collectionsToShow !== undefined && this.collectionsToShow.length > 0 ) {
+          if (this.collectionsToShow !== undefined && this.collectionsToShow.length > 0) {
             this.filterCollectionsToShow(de);
           }
         },
-        error =>  {this.errorMessage = <any>error}
+        error => { this.errorMessage = <any>error }
       );
   }
 
@@ -108,20 +115,22 @@ export class DigitalEditionList implements OnInit {
     let textData = '';
     try {
       const lang = this.translate.currentLang;
-      textData =  this.editionShortTexts[lang][edition_id] ||
-                    this.editionShortTexts[lang].default;
+      textData = this.editionShortTexts[lang][edition_id] ||
+        this.editionShortTexts[lang].default;
       return textData.split('\n');
-    } catch ( e ) {
-      console.log( e );
+    } catch (e) {
+      console.log(e);
     }
     return textData.split('\n');
   }
 
-  filterCollectionsToShow (collections) {
+  filterCollectionsToShow(collections) {
     const filtered = [];
     if (this.collectionsToShow && this.collectionsToShow.length) {
-      collections.forEach( (item) => {
-        if (this.collectionsToShow.indexOf(item.id) !== -1) { filtered.push(item) }
+      collections.forEach((item) => {
+        if (this.collectionsToShow.indexOf(item.id) !== -1) {
+          filtered.push(item)
+        }
       });
     }
 
@@ -130,24 +139,24 @@ export class DigitalEditionList implements OnInit {
 
   getTocRoot(collection: DigitalEdition) {
     this.tableOfContentsService.getTableOfContents(collection.id)
-        .subscribe(
-            tocItems => {
-              this.tocItems = tocItems;
-              this.openFirstPage(collection);
-            },
-            error =>  {this.errorMessage = <any>error});
+      .subscribe(
+        tocItems => {
+          this.tocItems = tocItems;
+          this.openFirstPage(collection);
+        },
+        error => { this.errorMessage = <any>error });
   }
 
   setPDF(de) {
     console.log(de);
     let tresh = false;
-    for (let i = 0; i < de.length; i ++) {
+    for (let i = 0; i < de.length; i++) {
       if (i === (de.length / 2) && de.length % 2 === 0) {
         tresh = true;
       }
 
-      if ( (this.collectionDownloads['pdf'] !== undefined && de[i].id in this.collectionDownloads['pdf']) ||
-          (this.collectionDownloads['epub'] !== undefined && de[i].id in this.collectionDownloads['epub']) ) {
+      if ((this.collectionDownloads['pdf'] !== undefined && de[i].id in this.collectionDownloads['pdf']) ||
+        (this.collectionDownloads['epub'] !== undefined && de[i].id in this.collectionDownloads['epub'])) {
         de[i].url = this.collectionDownloads[de[i].title];
         de[i].isDownload = (String(de[i].url).length > 0) ? true : false;
       }
@@ -161,38 +170,38 @@ export class DigitalEditionList implements OnInit {
   }
 
   downloadPDF(collection) {
-    if ( collection.isDownload ) {
-      if ( collection.id in this.collectionDownloads['pdf'] ) {
+    if (collection.isDownload) {
+      if (collection.id in this.collectionDownloads['pdf']) {
         const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.id + '/pdf/' +
-        this.collectionDownloads['pdf'][collection.id] + '/';
+          this.collectionDownloads['pdf'][collection.id] + '/';
         const ref = window.open(dURL, '_self', 'location=no');
-      } else if ( collection.id in this.collectionDownloads['epub'] ) {
+      } else if (collection.id in this.collectionDownloads['epub']) {
         const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.id + '/epub/' +
-        this.collectionDownloads['epub'][collection.id] + '/';
+          this.collectionDownloads['epub'][collection.id] + '/';
         const ref = window.open(dURL, '_self', 'location=no');
       }
     }
     this.doAnalytics('Download', 'PDF', this.collectionDownloads['pdf'][collection.id]);
   }
 
-  doAnalytics( action, type, name ) {
+  doAnalytics(action, type, name) {
     try {
       (<any>window).ga('send', 'event', {
         eventCategory: action,
         eventLabel: 'Song',
-        eventAction: type + ' - ' +  name,
+        eventAction: type + ' - ' + name,
         eventValue: 10
       });
-    } catch ( e ) {
+    } catch (e) {
     }
   }
 
-  openFirstPage( collection: DigitalEdition ) {
-    const params = {tocItem: null, fetch: false, collection: {title: collection.title}};
+  openFirstPage(collection: DigitalEdition) {
+    const params = { tocItem: null, fetch: false, collection: { title: collection.title } };
     params['collectionID'] = collection.id
     try {
       params['publicationID'] = String(this.tocItems['children'][0]['itemId']).split('_')[1];
-    } catch ( e ) {
+    } catch (e) {
       params['publicationID'] = '1';
     }
 
@@ -201,13 +210,13 @@ export class DigitalEditionList implements OnInit {
   }
 
   openCollection(collection: DigitalEdition, animate = true) {
-    if ( !collection.isDownload ) {
-      if ( this.hasCover === false ) {
+    if (!collection.isDownload) {
+      if (this.hasCover === false) {
         this.getTocRoot(collection);
       } else {
         const nav = this.app.getActiveNavs();
         let params;
-        params = {collection: collection, fetch: true, collectionID: collection.id};
+        params = { collection: collection, fetch: true, collectionID: collection.id };
         nav[0].setRoot('cover', params);
       }
     } else {

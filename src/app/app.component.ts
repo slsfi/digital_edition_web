@@ -224,7 +224,7 @@ export class DigitalEditionsApp {
     this.projectMachineName = this.config.getSettings('app.machineName');
     try {
       this.showBooks = this.genericSettingsService.show('TOC.Books');
-    } catch ( e ) {
+    } catch (e) {
       this.showBooks = false;
     }
     this.sideMenuMobileConfig();
@@ -320,7 +320,7 @@ export class DigitalEditionsApp {
   openBook(collection) {
     collection.isDownloadOnly = true;
     this.pdfCollections.forEach(element => {
-      if ( collection.id === element.id ) {
+      if (collection.id === element.id) {
         element.highlight = true;
       } else {
         element.highlight = false;
@@ -354,8 +354,10 @@ export class DigitalEditionsApp {
         this.tableOfContentsService.getTableOfContents(collection.id)
           .subscribe(
             tocItems => {
-              collection.accordionToc.toc = tocItems.children;
-              collection.loading = false;
+              if (tocItems.collectionId === collection.id) {
+                collection.accordionToc.toc = tocItems.children;
+                collection.loading = false;
+              }
             },
             error => {
               this.errorMessage = <any>error;
@@ -366,9 +368,9 @@ export class DigitalEditionsApp {
   }
 
   openCollectionPage(collection) {
-      this.currentContentName = collection.title;
-      const params = { collection: collection, fetch: false, id: collection.id };
-      this.nav.setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
+    this.currentContentName = collection.title;
+    const params = { collection: collection, fetch: false, id: collection.id };
+    this.nav.setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
   }
 
   getCollectionsWithTOC() {
@@ -407,14 +409,14 @@ export class DigitalEditionsApp {
         }
 
         collection['highlight'] = false;
-        if ( !collection['has_children_pdfs'] || !this.showBooks ) {
+        if (!collection['has_children_pdfs'] || !this.showBooks) {
           collectionsTmp.push(collection);
         } else {
           pdfCollections.push(collection);
         }
       });
       this.collectionsListWithTOC = collectionsTmp;
-      if ( this.showBooks ) {
+      if (this.showBooks) {
         this.pdfCollections = pdfCollections;
       }
     }).bind(this)();
@@ -519,7 +521,7 @@ export class DigitalEditionsApp {
       (async () => {
         const aboutMarkdownMenu = await this.mdcontentService.getMarkdownMenu(this.language, this.aboutMenuMarkdownInfo.idNumber);
         this.aboutOptionsMarkdown.toc = aboutMarkdownMenu.children;
-        if ( this.aboutMenuMarkdownAccordion !== undefined ) {
+        if (this.aboutMenuMarkdownAccordion !== undefined) {
           this.aboutMenuMarkdownAccordion.ngOnChanges(aboutMarkdownMenu.children);
         }
       }).bind(this)();
@@ -566,7 +568,7 @@ export class DigitalEditionsApp {
           this.getMediaCollections();
         }
       });
-      this.events.publish('pdfview:open', {'isOpen': false});
+      this.events.publish('pdfview:open', { 'isOpen': false });
     });
   }
 
@@ -1152,20 +1154,24 @@ export class DigitalEditionsApp {
     if (this.mediaCollectionOptions) {
       (async () => {
         const mediaCollectionMenu: Array<object> = await this.galleryService.getGalleries(this.language);
-        mediaCollectionMenu.unshift({'id': 'all', 'title': 'Alla'});
-        this.mediaCollectionOptions['toc_exists'] = true;
-        this.mediaCollectionOptions['expanded'] = false;
-        this.mediaCollectionOptions['loading'] = false;
-        this.mediaCollectionOptions['accordionToc'] = {
-          toc: mediaCollectionMenu,
-          searchTocItem: false,
-          searchTitle: '', // If toc item has to be searched by unique title also
-          currentPublicationId: null
-        };
-        this.mediaCollectionOptions['has_children_pdfs'] = false;
-        this.mediaCollectionOptions['isDownload'] = false;
-        this.mediaCollectionOptions['highlight'] = false;
-        this.mediaCollectionOptions['title'] = 'hello';
+        if (mediaCollectionMenu.length > 0) {
+          mediaCollectionMenu.unshift({ 'id': 'all', 'title': 'Alla' });
+          this.mediaCollectionOptions['toc_exists'] = true;
+          this.mediaCollectionOptions['expanded'] = false;
+          this.mediaCollectionOptions['loading'] = false;
+          this.mediaCollectionOptions['accordionToc'] = {
+            toc: mediaCollectionMenu,
+            searchTocItem: false,
+            searchTitle: '', // If toc item has to be searched by unique title also
+            currentPublicationId: null
+          };
+          this.mediaCollectionOptions['has_children_pdfs'] = false;
+          this.mediaCollectionOptions['isDownload'] = false;
+          this.mediaCollectionOptions['highlight'] = false;
+          this.mediaCollectionOptions['title'] = '';
+        } else {
+          this.mediaCollectionOptions = [];
+        }
       }).bind(this)();
     }
   }
@@ -1177,8 +1183,8 @@ export class DigitalEditionsApp {
 
   openMediaCollection(gallery) {
     const nav = this.app.getActiveNavs();
-    const params = {mediaCollectionId: gallery.id , mediaTitle: this.makeTitle(gallery.image_path), fetch: false};
-    nav[0].push('media-collection', params, {animate: true, direction: 'forward', animation: 'ios-transition'});
+    const params = { mediaCollectionId: gallery.id, mediaTitle: this.makeTitle(gallery.image_path), fetch: false };
+    nav[0].push('media-collection', params, { animate: true, direction: 'forward', animation: 'ios-transition' });
   }
 
   public front() {
