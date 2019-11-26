@@ -1,7 +1,7 @@
-<ion-item *ngIf="hasCover && collectionName != 'About'" [ngClass]="coverSelected?'selected-toc-item':''">
+<ion-item *ngIf="hasCover && collectionName != 'About' && collectionId != 'mediaCollections'" [ngClass]="coverSelected?'selected-toc-item':''">
     <p class="justLevel" (click)="openTitlePage()">{{ "Read.TitlePage.Title" | translate }}</p>
 </ion-item>
-<ion-item *ngIf="hasIntro && collectionName != 'About'" [ngClass]="titleSelected?'selected-toc-item':''">
+<ion-item *ngIf="hasIntro && collectionName != 'About' && collectionId != 'mediaCollections'" [ngClass]="titleSelected?'selected-toc-item':''">
     <p class="justLevel" (click)="openIntroduction()">{{ "Read.Introduction.Title" | translate }}</p>
 </ion-item>
 <ion-list *ngIf="collectionId !== 'songtypes'" no-margin>

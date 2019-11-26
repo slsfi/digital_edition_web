@@ -67,6 +67,21 @@
                 </div>
               </ion-list>
             </ng-container>
+            <ng-container>
+              <ion-list class="accordion-menu">
+                  <ion-item [ngClass]="mediaCollectionOptions.highlight ? 'selected-toc-item' : ''" class="header"
+                    (tap)="toggleSingleCollectionAccordion(mediaCollectionOptions)" tappable>
+                    <ion-icon [class.rotate]="mediaCollectionOptions.expanded" class="header-icon"
+                      [name]="'ios-arrow-forward'" small item-right></ion-icon>
+                    <p>{{"TOC.MediaCollections" | translate }}</p>
+                  </ion-item>
+                  <div [style.height]="mediaCollectionOptions.expanded ? '100%' : '0px'" class="simple-accordion-options options">
+                    <table-of-contents-accordion *ngIf="accordionTOC && mediaCollectionOptions" [showBackButton]="false" [isGallery]="true"
+                    [options]="mediaCollectionOptions.accordionToc" [collectionId]="'mediaCollections'" [collectionName]="'media'"
+                    [settings]="sideMenuSettings"></table-of-contents-accordion>
+                  </div>
+              </ion-list>
+            </ng-container>
           </div>
         </ion-list>
         <ion-item *ngIf="genericSettingsService.show('TOC.Read') && !accordionTOC" menuClose
@@ -144,6 +159,26 @@
             </div>
           </div>
         </ion-list>
+        <ion-list no-margin *ngIf="pdfCollections && showBooks"
+          class="accordion-menu">
+          <ion-item class="header" (tap)="simpleAccordionsExpanded.pdfAccordion = !simpleAccordionsExpanded.pdfAccordion;"
+            tappable>
+            <ion-icon [class.rotate]="simpleAccordionsExpanded.pdfAccordion" class="header-icon"
+              [name]="'ios-arrow-forward'" small item-right></ion-icon>
+            <p>{{"Books" | translate }}</p>
+          </ion-item>
+          <div [style.height]="simpleAccordionsExpanded.pdfAccordion ? '100%' : '0px'"
+            class="simple-accordion-options options">
+            <ng-container *ngFor="let collection of pdfCollections">
+              <ion-list *ngIf="collection.toc_exists" class="accordion-menu">
+                <ion-item [ngClass]="collection.highlight ? 'selected-toc-item' : ''" class="header"
+                  (tap)="openBook(collection)" tappable>
+                  <p>{{ collection.title }}</p>
+                </ion-item>
+              </ion-list>
+            </ng-container>
+          </div>
+        </ion-list>
         <!-- ./MUSIC -->
 
         <ion-item *ngIf="genericSettingsService.show('TOC.Facsimiles')" menuClose detail-push
@@ -157,17 +192,6 @@
           <p>
             {{"TOC.ImageGallery" | translate }}
           </p>
-        </ion-item>
-        <ion-item *ngIf="genericSettingsService.show('TOC.MediaCollections')" menuClose (click)="mediaCollectionsMenuOpen=!mediaCollectionsMenuOpen;openMediaCollections();"
-          class="mainMenuItem">
-          <p>
-            {{"TOC.MediaCollections" | translate }}
-          </p>
-          <ion-list *ngIf="mediaCollectionsMenuOpen && mediaCollections.length">
-            <ion-item *ngFor="let mediaCollection of mediaCollections" (click)="openMediaCollection(mediaCollection)" >
-              {{makeTitle(mediaCollection.image_path)}}
-            </ion-item>
-          </ion-list>
         </ion-item>
         <ng-container *ngIf="genericSettingsService.show('TOC.PersonSearch') && !musicAccordion.personSearchTypes.show">
           <ion-item *ngFor="let ps of personSearchTypes" menuClose detail-push (click)="openPersonSearchPage(ps)"
@@ -219,7 +243,6 @@
             </div>
           </div>
         </ion-list>
-
 
       </ion-list>
       <!-- Read Menu -->

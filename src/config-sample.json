@@ -268,7 +268,8 @@
       "PlaceSearch": true,
       "TagSearch": true,
       "WorkSearch": true,
-      "SongTypes": false
+      "SongTypes": false,
+      "Books": false
     }
   },
   "defaults": {

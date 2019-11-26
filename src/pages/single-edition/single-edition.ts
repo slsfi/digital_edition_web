@@ -188,10 +188,10 @@ export class SingleEditionPage {
     this.events.publish('ionViewWillEnter', this.constructor.name);
     this.events.publish('tableOfContents:unSelectSelectedTocItem', true);
     this.events.publish('musicAccordion:reset', true);
-    if (this.collection.id) {
+    if (this.collection.id && this.collection.isDownloadOnly === false ) {
       this.getTocRoot(this.collection.id);
       this.maybeLoadTitlePage(this.collection.id);
-    } else {
+    } else if ( this.collection.isDownloadOnly === false ) {
       this.getTocGroup(this.parentItem.toc_ed_id, this.parentItem.toc_id);
     }
     this.viewCtrl.setBackButtonText('');

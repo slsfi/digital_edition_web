@@ -20,7 +20,7 @@ digital-editions-list {
     .card-md {
         ion-card-content {
             h2 {
-               word-break: break-all;
+               word-break: keep-all;
                margin-bottom: 1rem;
             }
             p {

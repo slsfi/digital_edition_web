@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, App, Events } from 'ionic-angular';
 import { GalleryService } from '../../app/services/gallery/gallery.service';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { ConfigService } from '@ngx-config/core';
+import { LanguageService } from '../../app/services/languages/language.service';
 
 @IonicPage({
   name: 'media-collections',
@@ -18,7 +19,7 @@ export class MediaCollectionsPage {
   private apiEndPoint: string;
   private projectMachineName: string;
   private removeScanDetails = false;
-
+  language = 'sv';
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -26,8 +27,9 @@ export class MediaCollectionsPage {
     private events: Events,
     private galleryService: GalleryService,
     private userSettingsService: UserSettingsService,
-    private config: ConfigService
-
+    private config: ConfigService,
+    public languageService: LanguageService,
+    public cdRef: ChangeDetectorRef
   ) {
     this.getMediaCollections();
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
@@ -37,10 +39,16 @@ export class MediaCollectionsPage {
     } catch (e) {
       this.removeScanDetails = false;
     }
+    this.languageService.getLanguage().subscribe((lang: string) => {
+      this.language = lang;
+    });
   }
+
   getMediaCollections() {
-    this.galleryService.getGalleries()
-    .subscribe(galleries => {this.galleries = galleries; });
+    (async () => {
+      this.galleries = await this.galleryService.getGalleries(this.language);
+      this.cdRef.detectChanges();
+    }).bind(this)();
   }
 
   ionViewWillLeave() {
