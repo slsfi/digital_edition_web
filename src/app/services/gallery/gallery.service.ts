@@ -14,15 +14,15 @@ export class GalleryService {
   constructor(private http: Http, private config: ConfigService) {
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.projectMachineName = this.config.getSettings('app.machineName');
-    this.getGalleries();
+    this.getGalleries('sv');
   }
 
-
-  getGalleries (): Observable<any> {
-    return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
-                           this.config.getSettings('app.machineName') + '/gallery/data/sv')
-                    .map(this.extractData)
-                    .catch(this.handleError);
+  async getGalleries(language: string): Promise<any> {
+    try {
+      const response = await this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
+      this.config.getSettings('app.machineName') + '/gallery/data/' + language).toPromise();
+      return response.json();
+    } catch (e) {}
   }
 
   getGallery (id: string): Observable<any> {

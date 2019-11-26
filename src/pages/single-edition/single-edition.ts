@@ -73,17 +73,17 @@ export class SingleEditionPage {
     protected mdcontentService: MdContentService,
     protected pdfService: PdfService
   ) {
-    this.collection = this.params.get('collection') || {id: this.params.get('id')};
+    this.collection = this.params.get('collection') || { id: this.params.get('id') };
     this.parentItem = this.params.get('tocItem');
     this.shallFetch = this.params.get('fetch');
-    this.collectionDescription = {content: null};
+    this.collectionDescription = { content: null };
 
     this.langService.getLanguage().subscribe((lang) => {
       this.appName = this.config.getSettings('app.name.' + lang);
       this.show = this.config.getSettings('defaults.ReadModeView');
     });
 
-    if ( this.collection !== undefined && this.collection.id !== undefined ) {
+    if (this.collection !== undefined && this.collection.id !== undefined) {
       if (this.collection.title !== undefined) {
         global.setSubtitle(this.collection.title);
       }
@@ -92,9 +92,9 @@ export class SingleEditionPage {
 
     this.collection.title = global.getSubtitle();
 
-    if (!this.shallFetch && this.params.data.tocItem && this.params.data.tocItem.items ) {
-        this.items = this.params.data.tocItem.items;
-        this.root = this.params.data.root;
+    if (!this.shallFetch && this.params.data.tocItem && this.params.data.tocItem.items) {
+      this.items = this.params.data.tocItem.items;
+      this.root = this.params.data.root;
     }
 
     const collectionImages = this.config.getSettings('editionImages');
@@ -113,59 +113,59 @@ export class SingleEditionPage {
   ionViewDidEnter() {
     (<any>window).ga('set', 'page', 'Single-edition');
     (<any>window).ga('send', 'pageview');
-    if (this.hasDigitalEditionListChildren && this.platform.is('mobile') ) {
+    if (this.hasDigitalEditionListChildren && this.platform.is('mobile')) {
       this.events.publish('splitPaneToggle:disable');
     }
   }
 
   getDescriptions() {
     this.mdcontentService.getStaticPagesToc(this.language)
-        .subscribe(
-          staticToc => {
-            let descriptions: any;
-            try {
-              if ( staticToc.children[4].children !== undefined ) {
-                descriptions = staticToc.children[4].children;
-              } else {
-                descriptions = [];
-              }
-            } catch ( e ) {
+      .subscribe(
+        staticToc => {
+          let descriptions: any;
+          try {
+            if (staticToc.children[4].children !== undefined) {
+              descriptions = staticToc.children[4].children;
+            } else {
               descriptions = [];
             }
-            let mdFileStartingNumber = '';
+          } catch (e) {
+            descriptions = [];
+          }
+          let mdFileStartingNumber = '';
 
-            try {
-              if ( this.params !== undefined && this.params) {
-                if (Number(this.params.get('id')) < 10) {
-                  mdFileStartingNumber = '0' + this.params.get('id');
-                } else {
-                  mdFileStartingNumber = this.params.get('id');
-                }
-              }
-            } catch (e) {
-              mdFileStartingNumber = '01';
-            }
-
-            for (const d of descriptions) {
-              if (d.basename.split('_desc')[0] === mdFileStartingNumber) {
-                this.getSingleDescription(d.id);
+          try {
+            if (this.params !== undefined && this.params) {
+              if (Number(this.params.get('id')) < 10) {
+                mdFileStartingNumber = '0' + this.params.get('id');
+              } else {
+                mdFileStartingNumber = this.params.get('id');
               }
             }
-          },
-          err => console.error(err),
-          () => console.log('get descriptions')
-        );
+          } catch (e) {
+            mdFileStartingNumber = '01';
+          }
+
+          for (const d of descriptions) {
+            if (d.basename.split('_desc')[0] === mdFileStartingNumber) {
+              this.getSingleDescription(d.id);
+            }
+          }
+        },
+        err => console.error(err),
+        () => console.log('get descriptions')
+      );
   }
 
   getSingleDescription(fileId) {
     this.mdcontentService.getMdContent(fileId)
-        .subscribe(
-          description => {
-            this.description = description.content;
-          },
-          err => console.error(err),
-          () => console.log('get single description')
-    );
+      .subscribe(
+        description => {
+          this.description = description.content;
+        },
+        err => console.error(err),
+        () => console.log('get single description')
+      );
   }
 
   async setCollectionTitle() {
@@ -188,54 +188,43 @@ export class SingleEditionPage {
     this.events.publish('ionViewWillEnter', this.constructor.name);
     this.events.publish('tableOfContents:unSelectSelectedTocItem', true);
     this.events.publish('musicAccordion:reset', true);
-    if (this.collection.id) {
+    if (this.collection.id && this.collection.isDownloadOnly === false) {
       this.getTocRoot(this.collection.id);
       this.maybeLoadTitlePage(this.collection.id);
-    } else {
-      this.getTocGroup(this.parentItem.toc_ed_id, this.parentItem.toc_id);
     }
     this.viewCtrl.setBackButtonText('');
     console.log('single collection ion will enter...');
-    this.events.publish('pageLoaded:single-edition', {'title': this.subTitle});
+    this.events.publish('pageLoaded:single-edition', { 'title': this.subTitle });
   }
 
   getTocRoot(id: string) {
     this.tableOfContentsService.getTableOfContents(id)
-        .subscribe(
-            tocItems => {
-              this.tocItems = tocItems;
-              console.log('get toc root... --- --- in single edition');
-              this.events.publish('tableOfContents:loaded', {tocItems: tocItems});
-            },
-            error =>  {this.errorMessage = <any>error});
-  }
-
-  getTocGroup(id: string, group_id: string) {
-    this.tableOfContentsService.getTableOfContentsGroup(id, group_id)
-        .subscribe(
-            tocItems => {
-              // this.tocItems = this.setTocItemTitleLevel(tocItems);
-            },
-            error =>  {this.errorMessage = <any>error});
+      .subscribe(
+        tocItems => {
+          this.tocItems = tocItems;
+          console.log('get toc root... --- --- in single edition');
+          this.events.publish('tableOfContents:loaded', { tocItems: tocItems });
+        },
+        error => { this.errorMessage = <any>error });
   }
 
   getTableOfContents(id: string) {
     this.tableOfContentsService.getTableOfContents(id)
-        .subscribe(
-            tableOfContents => {
-              this.root = tableOfContents;
-              this.tableOfContents = tableOfContents;
-            },
-            error =>  {this.errorMessage = <any>error});
+      .subscribe(
+        tableOfContents => {
+          this.root = tableOfContents;
+          this.tableOfContents = tableOfContents;
+        },
+        error => { this.errorMessage = <any>error });
   }
 
   getCollectionDescription(id: string) {
     this.htmlService.getHtmlContent(id + '_desc')
-        .subscribe(
-            collectionDescription => {
-              this.collectionDescription = collectionDescription;
-            },
-            error =>  {this.errorMessage = <any>error});
+      .subscribe(
+        collectionDescription => {
+          this.collectionDescription = collectionDescription;
+        },
+        error => { this.errorMessage = <any>error });
   }
 
   showPopover(myEvent) {
@@ -246,11 +235,11 @@ export class SingleEditionPage {
   }
 
   openFirstPage() {
-    const params = {tocItem: null, fetch: false, collection: {title: this.subTitle}};
+    const params = { tocItem: null, fetch: false, collection: { title: this.subTitle } };
     params['collectionID'] = this.params.get('id')
     try {
       params['publicationID'] = String(this.tocItems['children'][0]['itemId']).split('_')[1];
-    } catch ( e ) {
+    } catch (e) {
       console.log(e);
       params['publicationID'] = '1';
     }
@@ -262,7 +251,7 @@ export class SingleEditionPage {
   maybeLoadTitlePage(collectionID: string) {
     if (this.platform.is('core') || this.platform.is('tablet')) {
       const nav = this.app.getActiveNavs();
-      const params = {collection: this.collection, fetch: true, collectionID: this.collection.id};
+      const params = { collection: this.collection, fetch: true, collectionID: this.collection.id };
       nav[0].setRoot('cover', params);
     } else {
       this.showPage = true;

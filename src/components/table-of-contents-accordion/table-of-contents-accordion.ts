@@ -183,7 +183,7 @@ export class TableOfContentsAccordionComponent {
     searchPublicationId?: Number,
     searchTitle?: String
   }) {
-    if (value) {
+    if (value && value.toc && value.toc.length > 0) {
       if (value.searchTocItem) {
         this.searchingForTocItem = true;
       }
@@ -256,6 +256,7 @@ export class TableOfContentsAccordionComponent {
   @Input() collectionName: string;
   @Input() showBackButton?: Boolean;
   @Input() isMarkdown?: Boolean;
+  @Input() isGallery?: Boolean;
   @Output() selectOption = new EventEmitter<any>();
 
   currentItem: GeneralTocItem;
@@ -535,6 +536,8 @@ export class TableOfContentsAccordionComponent {
 
     if (this.isMarkdown) {
       this.selectMarkdown(item);
+    } else if (this.isGallery) {
+      this.selectGallery(item);
     } else {
       this.storage.set('currentTOCItem', item);
       const params = {root: this.options, tocItem: item, collection: {title: item.text}};
@@ -632,6 +635,17 @@ export class TableOfContentsAccordionComponent {
       console.log('pushed mobile')
     } else {
       nav[0].setRoot('content', params);
+    }
+  }
+
+  selectGallery(item) {
+    const nav = this.app.getActiveNavs();
+    if ( item.targetOption.id === 'all' ) {
+      const params = {};
+      nav[0].push('media-collections', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
+    } else {
+      const params = {mediaCollectionId: item.targetOption.id , mediaTitle: item.targetOption.title, fetch: false};
+      nav[0].push('media-collection', params, {animate: true, direction: 'forward', animation: 'ios-transition'});
     }
   }
 

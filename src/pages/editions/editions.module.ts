@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { EditionsPage } from './editions';
-// import { DigitalEditionList } from '../../app/digital-edition-list/digital-edition-list.component';
-// import { DigitalEditionListService } from '../../app/digital-edition-list/digital-edition-list.service';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ComponentsModule } from '../../components/components.module';
@@ -15,27 +13,27 @@ export function createTranslateLoader(http: HttpClient) {
 }
 
 @NgModule({
-    declarations: [
-      EditionsPage
-    ],
-    imports: [
-      IonicPageModule.forChild(EditionsPage),
-      TranslateModule.forChild({
-        loader: {
-          provide: TranslateLoader,
-          useFactory: (createTranslateLoader),
-          deps: [HttpClient]
-        }
-      }),
-      MarkdownModule.forRoot(),
-      ComponentsModule,
-      DigitalEditionListModule
-    ],
-    entryComponents: [
-      EditionsPage
-    ],
-    providers: [
+  declarations: [
+    EditionsPage
+  ],
+  imports: [
+    IonicPageModule.forChild(EditionsPage),
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    }),
+    MarkdownModule.forRoot(),
+    ComponentsModule,
+    DigitalEditionListModule
+  ],
+  entryComponents: [
+    EditionsPage
+  ],
+  providers: [
 
-    ]
-  })
-  export class EditionsPageModule {}
+  ]
+})
+export class EditionsPageModule { }

@@ -49,11 +49,11 @@ export class DigitalEditionsApp {
   splitPane = false;
   collectionsList: any[];
   collectionsListWithTOC: any[];
+  pdfCollections: any[];
   currentContentName: string;
   showBackButton = true;
   readMenuOpen = false;
   galleryMenuOpen = false; // legacy
-  mediaCollections = [];
   personSearchTypes = [];
   apiEndPoint: string;
   projectMachineName: string;
@@ -112,10 +112,10 @@ export class DigitalEditionsApp {
     toc: Array<TocAccordionMenuOptionModel>
   };
 
+  mediaCollectionOptions: any[];
   songTypesOptionsMarkdown = {
     toc: []
   };
-
   aboutOptionsMarkdown = {
     toc: []
   };
@@ -134,8 +134,10 @@ export class DigitalEditionsApp {
   simpleAccordionsExpanded = {
     musicAccordion: false,
     songTypesAccordion: false,
+    galleryAccordion: false,
     collectionsAccordion: false,
-    aboutMenuAccordion: false
+    aboutMenuAccordion: false,
+    pdfAccordion: false
   }
 
   musicAccordion = {
@@ -166,7 +168,7 @@ export class DigitalEditionsApp {
       selected: false
     }
   }
-
+  showBooks = false
   hasCover = true;
   tocItems: GeneralTocItem[];
 
@@ -212,6 +214,7 @@ export class DigitalEditionsApp {
       );
     }
 
+    this.mediaCollectionOptions = [];
 
     this.googleAnalyticsID = '';
     this.aboutPages = [];
@@ -219,6 +222,11 @@ export class DigitalEditionsApp {
     this.googleAnalyticsID = this.config.getSettings('GoogleAnalyticsId');
     this.collectionDownloads = this.config.getSettings('collectionDownloads');
     this.projectMachineName = this.config.getSettings('app.machineName');
+    try {
+      this.showBooks = this.genericSettingsService.show('TOC.Books');
+    } catch (e) {
+      this.showBooks = false;
+    }
     this.sideMenuMobileConfig();
     this.songTypesMenuMarkdownConfig();
     this.aboutMenuMarkdownConfig();
@@ -238,10 +246,6 @@ export class DigitalEditionsApp {
       this.hasCover = this.config.getSettings('HasCover');
     } catch (e) {
       this.hasCover = true;
-    }
-
-    if (this.genericSettingsService.show('TOC.MediaCollections')) {
-      this.getMediaCollections();
     }
 
     this.getCollectionsWithoutTOC();
@@ -313,6 +317,17 @@ export class DigitalEditionsApp {
     this.splitPanePossible = true;
   }
 
+  openBook(collection) {
+    collection.isDownloadOnly = true;
+    this.pdfCollections.forEach(element => {
+      if (collection.id === element.id) {
+        element.highlight = true;
+      } else {
+        element.highlight = false;
+      }
+    });
+    this.openCollectionPage(collection);
+  }
 
   toggleSingleCollectionAccordion(collection) {
 
@@ -339,8 +354,10 @@ export class DigitalEditionsApp {
         this.tableOfContentsService.getTableOfContents(collection.id)
           .subscribe(
             tocItems => {
-              collection.accordionToc.toc = tocItems.children;
-              collection.loading = false;
+              if (tocItems.collectionId === collection.id) {
+                collection.accordionToc.toc = tocItems.children;
+                collection.loading = false;
+              }
             },
             error => {
               this.errorMessage = <any>error;
@@ -351,22 +368,9 @@ export class DigitalEditionsApp {
   }
 
   openCollectionPage(collection) {
-    const downloadOnly = this.config.getSettings('collectionDownloads.isDownloadOnly');
-    if (collection.isDownload && downloadOnly) {
-      if (collection.id in this.collectionDownloads['pdf']) {
-        const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.id + '/pdf/' +
-          this.collectionDownloads['pdf'][collection.id] + '/';
-        const ref = window.open(dURL, '_self', 'location=no');
-      } else if (collection.id in this.collectionDownloads['epub']) {
-        const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.id + '/epub/' +
-          this.collectionDownloads['epub'][collection.id] + '/';
-        const ref = window.open(dURL, '_self', 'location=no');
-      }
-    } else {
-      this.currentContentName = collection.title;
-      const params = { collection: collection, fetch: false, id: collection.id };
-      this.nav.setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
-    }
+    this.currentContentName = collection.title;
+    const params = { collection: collection, fetch: false, id: collection.id };
+    this.nav.setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
   }
 
   getCollectionsWithTOC() {
@@ -377,8 +381,9 @@ export class DigitalEditionsApp {
       }
 
       collections = this.sortListRoman(collections);
-
-      for (const collection of collections) {
+      const collectionsTmp = [];
+      const pdfCollections = [];
+      collections.forEach(collection => {
         if (!(this.collectionsWithoutTOC.indexOf(collection.id) !== -1)) {
           collection['toc_exists'] = true;
           collection['expanded'] = false;
@@ -404,8 +409,16 @@ export class DigitalEditionsApp {
         }
 
         collection['highlight'] = false;
+        if (!collection['has_children_pdfs'] || !this.showBooks) {
+          collectionsTmp.push(collection);
+        } else {
+          pdfCollections.push(collection);
+        }
+      });
+      this.collectionsListWithTOC = collectionsTmp;
+      if (this.showBooks) {
+        this.pdfCollections = pdfCollections;
       }
-      this.collectionsListWithTOC = collections;
     }).bind(this)();
   }
 
@@ -508,7 +521,7 @@ export class DigitalEditionsApp {
       (async () => {
         const aboutMarkdownMenu = await this.mdcontentService.getMarkdownMenu(this.language, this.aboutMenuMarkdownInfo.idNumber);
         this.aboutOptionsMarkdown.toc = aboutMarkdownMenu.children;
-        if ( this.aboutMenuMarkdownAccordion !== undefined ) {
+        if (this.aboutMenuMarkdownAccordion !== undefined) {
           this.aboutMenuMarkdownAccordion.ngOnChanges(aboutMarkdownMenu.children);
         }
       }).bind(this)();
@@ -551,8 +564,11 @@ export class DigitalEditionsApp {
         this.setRootPage();
         this.getSongTypes();
         this.getAboutPages();
+        if (this.genericSettingsService.show('TOC.MediaCollections')) {
+          this.getMediaCollections();
+        }
       });
-      this.events.publish('pdfview:open', {'isOpen': false});
+      this.events.publish('pdfview:open', { 'isOpen': false });
     });
   }
 
@@ -696,7 +712,10 @@ export class DigitalEditionsApp {
     });
 
     this.events.subscribe('ionViewWillEnter', (currentPage) => {
-      this.setupPageSettings(currentPage);
+      const homeUrl = document.URL.indexOf('/#/home');
+      if (homeUrl >= 0) {
+        this.setupPageSettings(currentPage);
+      }
     });
 
     this.events.subscribe('ionViewWillLeave', (className) => {
@@ -988,10 +1007,13 @@ export class DigitalEditionsApp {
   }
 
   setRootPage() {
-    if (this.platform.is('core') || this.platform.is('tablet') || this.sideMenuMobile) {
-      this.rootPage = 'HomePage';
-    } else {
-      this.rootPage = 'mobile';
+    const homeUrl = document.URL.indexOf('/#/home');
+    if (homeUrl >= 0 || document.URL.indexOf('#') < 0) {
+      if (this.platform.is('core') || this.platform.is('tablet') || this.sideMenuMobile) {
+        this.rootPage = 'HomePage';
+      } else {
+        this.rootPage = 'mobile';
+      }
     }
   }
 
@@ -1135,8 +1157,29 @@ export class DigitalEditionsApp {
   }
 
   getMediaCollections() {
-    this.galleryService.getGalleries()
-    .subscribe(galleries => {this.mediaCollections = galleries; });
+    if (this.mediaCollectionOptions) {
+      (async () => {
+        const mediaCollectionMenu: Array<object> = await this.galleryService.getGalleries(this.language);
+        if (mediaCollectionMenu.length > 0) {
+          mediaCollectionMenu.unshift({ 'id': 'all', 'title': 'Alla' });
+          this.mediaCollectionOptions['toc_exists'] = true;
+          this.mediaCollectionOptions['expanded'] = false;
+          this.mediaCollectionOptions['loading'] = false;
+          this.mediaCollectionOptions['accordionToc'] = {
+            toc: mediaCollectionMenu,
+            searchTocItem: false,
+            searchTitle: '', // If toc item has to be searched by unique title also
+            currentPublicationId: null
+          };
+          this.mediaCollectionOptions['has_children_pdfs'] = false;
+          this.mediaCollectionOptions['isDownload'] = false;
+          this.mediaCollectionOptions['highlight'] = false;
+          this.mediaCollectionOptions['title'] = '';
+        } else {
+          this.mediaCollectionOptions = [];
+        }
+      }).bind(this)();
+    }
   }
 
   openMediaCollections() {
@@ -1146,8 +1189,8 @@ export class DigitalEditionsApp {
 
   openMediaCollection(gallery) {
     const nav = this.app.getActiveNavs();
-    const params = {mediaCollectionId: gallery.id , mediaTitle: this.makeTitle(gallery.image_path), fetch: false};
-    nav[0].push('media-collection', params, {animate: true, direction: 'forward', animation: 'ios-transition'});
+    const params = { mediaCollectionId: gallery.id, mediaTitle: this.makeTitle(gallery.image_path), fetch: false };
+    nav[0].push('media-collection', params, { animate: true, direction: 'forward', animation: 'ios-transition' });
   }
 
   public front() {

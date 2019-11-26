@@ -29,4 +29,9 @@ media-collections {
         background-color: color($colors, secondary);
         border-top: 2px solid color($colors, primary);
     }
+
+    h1 {
+        font-size: 1.8rem;
+        text-transform: none !important;
+    }
 }

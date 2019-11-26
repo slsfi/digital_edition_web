@@ -7,6 +7,7 @@ export class DigitalEdition {
   url: string;
   isDownload: boolean;
   expanded: boolean;
+  isDownloadOnly?: boolean;
 
   constructor(pubInfo: any) {
     this.title = pubInfo.title;
@@ -15,5 +16,6 @@ export class DigitalEdition {
     this.url = pubInfo.url;
     this.isDownload = pubInfo.isDownload;
     this.expanded = pubInfo.expanded;
+    this.isDownloadOnly = pubInfo.isDownloadOnly || false;
   }
 }
