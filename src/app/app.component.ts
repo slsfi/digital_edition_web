@@ -712,7 +712,10 @@ export class DigitalEditionsApp {
     });
 
     this.events.subscribe('ionViewWillEnter', (currentPage) => {
-      this.setupPageSettings(currentPage);
+      const homeUrl = document.URL.indexOf('/#/home');
+      if (homeUrl >= 0) {
+        this.setupPageSettings(currentPage);
+      }
     });
 
     this.events.subscribe('ionViewWillLeave', (className) => {
@@ -1004,10 +1007,13 @@ export class DigitalEditionsApp {
   }
 
   setRootPage() {
-    if (this.platform.is('core') || this.platform.is('tablet') || this.sideMenuMobile) {
-      this.rootPage = 'HomePage';
-    } else {
-      this.rootPage = 'mobile';
+    const homeUrl = document.URL.indexOf('/#/home');
+    if (homeUrl >= 0 || document.URL.indexOf('#') < 0) {
+      if (this.platform.is('core') || this.platform.is('tablet') || this.sideMenuMobile) {
+        this.rootPage = 'HomePage';
+      } else {
+        this.rootPage = 'mobile';
+      }
     }
   }
 
