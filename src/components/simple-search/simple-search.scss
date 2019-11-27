@@ -292,4 +292,10 @@ simple-search {
         height: 100%;
         z-index: 1;
     }
+    .resultItem{
+        display: flex;
+    }
+    .thumbnail img{
+        max-width: 100px;
+    }
 }

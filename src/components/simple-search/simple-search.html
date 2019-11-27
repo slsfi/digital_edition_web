@@ -60,33 +60,42 @@
       </div>
       <div [ngClass]="showFacets?'results dimmed':'results'">
         <div *ngFor="let item of resultsToShow" >
-          <ion-item class="searchItem" (click)="gotToText(item.path, item.textType, item.matches, item.facsimilePage, item)">
-              <div class="textType {{ item.textType }}">
-                <span *ngIf="item.textType=='person'" name="person">{{("subject"|translate)}}</span>
-                <span *ngIf="item.textType=='location'" name="globe">{{("location"|translate)}}</span>
-                <span *ngIf="item.textType=='tag'" name="information-circle">{{("tag"|translate)}}</span>
-                <span *ngIf="item.textType=='song'" name="musical-notes">{{("song"|translate)}}</span>
-                <span *ngIf="item.textType!='tag' && item.textType!='location' && item.textType!='person' && item.textType!='song'" name="information-circle">{{(item.textType|translate)}}</span>
-              </div>
-              <span class="title"><span class="occupation" *ngIf="item.occupation" class="occupation">{{item.occupation}} - </span>{{item.TitleIndexed}}</span>
-              <span class="dates" *ngIf="item.date_born || item.date_deceased" >(</span>
-              <span class="dates" *ngIf="item.date_born!='null'" innerHTML="{{item.date_born}}"></span>
-              <span class="dates" *ngIf="item.date_born || item.date_deceased">-</span>
-              <span class="dates" *ngIf="item.date_deceased!='null'" innerHTML="{{item.date_deceased}}"></span>
-              <span class="dates" *ngIf="item.date_born || item.date_deceased">)</span>      
-              <span class="highLightText" innerHTML="{{item.highLightText}}"></span>
-              <div *ngIf="item.collection_name || item.publication_name" class="coll_pub">
-                <span class="collection" innerHTML="{{item.collection_name}} - "></span>
-                <span class="publication" innerHTML="{{item.publication_name}}"></span>
-                <span *ngIf="item.facsimilePage && showPageNumbers" class="facsimilePage">( {{("SearchApp.pagenumber"|translate)}} {{item.facsimilePage}} )</span>
-              </div>
-              <div *ngIf="item.song_performer_firstname" class="coll_pub">
-                {{("playman"|translate)}}
-                <span class="collection" innerHTML=": {{item.song_performer_firstname}} "></span>
-                <span class="publication" innerHTML="{{item.song_performer_lastname}}, "></span>
-                {{("recorder"|translate)}}
-                <span class="collection" innerHTML=": {{item.song_recorder_firstname}} "></span>
-                <span class="publication" innerHTML="{{item.song_recorder_lastname}}"></span>
+          <ion-item class="searchItem">
+              <div class="resultItem">
+                <div class="thumbnail" (click)="openGallery(item.textType, item.object_id)">
+                  <img *ngIf="item.textType=='person'" onerror="this.style.display='none'" src="{{apiEndPoint}}/{{projectMachineName}}/gallery/thumb/subject/{{item.object_id}}"/>
+                  <img *ngIf="item.textType=='location'" onerror="this.style.display='none'" src="{{apiEndPoint}}/{{projectMachineName}}/gallery/thumb/location/{{item.object_id}}"/>
+                  <img *ngIf="item.textType=='tag'" onerror="this.style.display='none'" src="{{apiEndPoint}}/{{projectMachineName}}/gallery/thumb/tag/{{item.object_id}}"/>
+                </div>
+                <div class="data" (click)="gotToText(item.path, item.textType, item.matches, item.facsimilePage, item)">
+                  <div class="textType {{ item.textType }}">
+                    <span *ngIf="item.textType=='person'" name="person">{{("subject"|translate)}}</span>
+                    <span *ngIf="item.textType=='location'" name="globe">{{("location"|translate)}}</span>
+                    <span *ngIf="item.textType=='tag'" name="information-circle">{{("tag"|translate)}}</span>
+                    <span *ngIf="item.textType=='song'" name="musical-notes">{{("song"|translate)}}</span>
+                    <span *ngIf="item.textType!='tag' && item.textType!='location' && item.textType!='person' && item.textType!='song'" name="information-circle">{{(item.textType|translate)}}</span>
+                  </div>
+                  <span class="title"><span class="occupation" *ngIf="item.occupation" class="occupation">{{item.occupation}} - </span>{{item.TitleIndexed}}</span>
+                  <span class="dates" *ngIf="item.date_born || item.date_deceased" >(</span>
+                  <span class="dates" *ngIf="item.date_born!='null'" innerHTML="{{item.date_born}}"></span>
+                  <span class="dates" *ngIf="item.date_born || item.date_deceased">-</span>
+                  <span class="dates" *ngIf="item.date_deceased!='null'" innerHTML="{{item.date_deceased}}"></span>
+                  <span class="dates" *ngIf="item.date_born || item.date_deceased">)</span>      
+                  <span class="highLightText" innerHTML="{{item.highLightText}}"></span>
+                  <div *ngIf="item.collection_name || item.publication_name" class="coll_pub">
+                    <span class="collection" innerHTML="{{item.collection_name}} - "></span>
+                    <span class="publication" innerHTML="{{item.publication_name}}"></span>
+                    <span *ngIf="item.facsimilePage && showPageNumbers" class="facsimilePage">( {{("SearchApp.pagenumber"|translate)}} {{item.facsimilePage}} )</span>
+                  </div>
+                  <div *ngIf="item.song_performer_firstname" class="coll_pub">
+                    {{("playman"|translate)}}
+                    <span class="collection" innerHTML=": {{item.song_performer_firstname}} "></span>
+                    <span class="publication" innerHTML="{{item.song_performer_lastname}}, "></span>
+                    {{("recorder"|translate)}}
+                    <span class="collection" innerHTML=": {{item.song_recorder_firstname}} "></span>
+                    <span class="publication" innerHTML="{{item.song_recorder_lastname}}"></span>
+                  </div>
+                </div>
               </div>
           </ion-item>
         </div>

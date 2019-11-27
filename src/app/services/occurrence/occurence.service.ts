@@ -39,7 +39,7 @@ export class OccurrenceService {
   getGalleryOccurrences( type, id ) {
     return this.http.get(  this.config.getSettings('app.apiEndpoint')  + '/' +
                           this.config.getSettings('app.machineName') +
-                          '/gallery/' + type + '/connections/' + id)
+                          '/gallery/' + type + '/connections/' + id + '/1')
         .map(res => {
           const body = res.json();
 
