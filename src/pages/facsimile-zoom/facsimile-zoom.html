@@ -4,35 +4,43 @@
             <div class="buttons">
                 <div class="action_buttons">
                     <button style="display: inline-block;" ion-fab color="primary" mini (click)="previous()">
-                                    <ion-icon name="arrow-back"></ion-icon>
-                                </button>
-                    <button *ngIf="backsides.length" style="display: inline-block;" ion-fab color="primary" mini (click)="backside = !backside">
-                                    <ion-icon name="refresh-circle"></ion-icon>
-                                </button>
+                        <ion-icon name="arrow-back"></ion-icon>
+                    </button>
+                    <button *ngIf="backsides.length" style="display: inline-block;" ion-fab color="primary" mini
+                        (click)="backside = !backside">
+                        <ion-icon name="refresh-circle"></ion-icon>
+                    </button>
                     <button style="display: inline-block;" ion-fab color="primary" mini (click)="next()">
-                                    <ion-icon name="arrow-forward"></ion-icon>
-                                </button>
-                    <button *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()" style="display: inline-block;" ion-fab color="primary" mini (click)="zoomIn()">
-                                    <ion-icon name="add"></ion-icon>
-                                </button>
-                    <button *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()" style="display: inline-block;" ion-fab color="primary" mini (click)="zoomOut()">
-                                    <ion-icon name="remove"></ion-icon>
-                                </button>
-                    <button *ngIf="descriptions && descriptions[activeImage]" style="display: inline-block;" ion-fab color="primary" mini (click)="showAbout()">
-                                    <ion-icon name="code-working" *ngIf="showAboutHelp"></ion-icon>
-                                    <ion-icon name="code" *ngIf="!showAboutHelp"></ion-icon>
-                                </button>
+                        <ion-icon name="arrow-forward"></ion-icon>
+                    </button>
+                    <button *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()"
+                        style="display: inline-block;" ion-fab color="primary" mini (click)="zoomIn()">
+                        <ion-icon name="add"></ion-icon>
+                    </button>
+                    <button *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()"
+                        style="display: inline-block;" ion-fab color="primary" mini (click)="zoomOut()">
+                        <ion-icon name="remove"></ion-icon>
+                    </button>
+                    <button *ngIf="descriptions && descriptions[activeImage]" style="display: inline-block;" ion-fab
+                        color="primary" mini (click)="showAbout()">
+                        <ion-icon name="code-working" *ngIf="showAboutHelp"></ion-icon>
+                        <ion-icon name="code" *ngIf="!showAboutHelp"></ion-icon>
+                    </button>
                     <button style="display: inline-block;" ion-fab mini (click)="cancel()">
-                                    <ion-icon name="close" class="close_button"></ion-icon>
-                                </button>
-                    <div class="page_nubering" *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()">
+                        <ion-icon name="close" class="close_button"></ion-icon>
+                    </button>
+                    <div class="page_nubering"
+                        *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()">
                         <ion-item>
-                            <ion-label position="floating">{{"Read.Facsimiles.Page" | translate}} ({{"Read.Facsimiles.Of" | translate}} {{(images)?images.length:0}}):</ion-label>
-                            <ion-input class="page_number_input" size="12" (change)="setPage($event)" [(ngModel)]="manualPageNumber" type="number"></ion-input>
+                            <ion-label position="floating">{{"Read.Facsimiles.Page" | translate}}
+                                ({{"Read.Facsimiles.Of" | translate}} {{(images)?images.length:0}}):</ion-label>
+                            <ion-input class="page_number_input" size="12" (change)="setPage($event)"
+                                [(ngModel)]="manualPageNumber" type="number"></ion-input>
                         </ion-item>
                     </div>
                 </div>
-                <div *ngIf="descriptions && descriptions[activeImage]" class="description" [ngStyle]="{'display': showAboutHelp?'':'none'}">
+                <div *ngIf="descriptions && descriptions[activeImage]" class="description"
+                    [ngStyle]="{'display': showAboutHelp?'':'none'}">
                     <ion-label *ngIf="descriptions && descriptions[activeImage]" class="facs-desc">
                         {{descriptions[activeImage]}}
                     </ion-label>
@@ -43,9 +51,14 @@
             <div class="center_content">
                 <div class="div_img">
                     <div *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()">
-                        <img *ngIf="!facsimilePagesInfinite && (backside.length == 0 || !backsides[activeImage])" [ngStyle]="{'transform':'scale('+zoom+')'}" [src]="images[activeImage]" class="facsimile-zoom-image">
-                        <img *ngIf="!facsimilePagesInfinite && backside.length > 0  && backsides[activeImage]" [ngStyle]="{'transform':'scale('+zoom+')'}" [src]="backSide(images[activeImage])" class="facsimile-zoom-image">
-                        <img *ngIf="facsimilePagesInfinite && facsNumber" [ngStyle]="{'transform':'scale('+zoom+')'}" [src]="facsUrl + facsNumber" class="facsimile-zoom-image">
+                        <img *ngIf="!facsimilePagesInfinite && (!backside || !backsides[activeImage])"
+                            [ngStyle]="{'transform':'scale('+zoom+')'}" [src]="images[activeImage]"
+                            class="facsimile-zoom-image">
+                        <img *ngIf="!facsimilePagesInfinite && backside && backsides[activeImage]"
+                            [ngStyle]="{'transform':'scale('+zoom+')'}" [src]="backSide(images[activeImage])"
+                            class="facsimile-zoom-image">
+                        <img *ngIf="facsimilePagesInfinite && facsNumber" [ngStyle]="{'transform':'scale('+zoom+')'}"
+                            [src]="facsUrl + facsNumber" class="facsimile-zoom-image">
                     </div>
                     <div *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet())">
                         <div *ngIf="!facsimilePagesInfinite">

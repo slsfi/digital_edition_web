@@ -787,6 +787,8 @@ export class SimpleSearchComponent {
       type = 'tag';
     } else if ( type === 'subjects' )  {
       type = 'subject';
+    } else if (type === 'person') {
+      type = 'subject';
     }
 
     const params = {
