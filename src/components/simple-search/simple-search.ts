@@ -142,6 +142,10 @@ export class SimpleSearchComponent {
     }
   }
 
+  asThumb(url) {
+    return url.replace('.jpg', '_thumb.jpg');
+  }
+
   getFacsimileLookupData() {
     this.search.getFacsimileLookupData().subscribe(
       res => {
@@ -611,7 +615,7 @@ export class SimpleSearchComponent {
           'song_note': songData['song_note'],
           'song_lyrics': songData['song_lyrics'],
           'song_comment': songData['song_comment'],
-          'score': element._score,
+          'score': element._score
         }
       );
     }
@@ -774,6 +778,27 @@ export class SimpleSearchComponent {
         textIds.push(String(element['_source']['path']));
       }
     }.bind(this));
+  }
+
+  openGallery(type, id) {
+    if ( type === 'places' ) {
+      type = 'location';
+    } else if ( type === 'tags' ) {
+      type = 'tag';
+    } else if ( type === 'subjects' )  {
+      type = 'subject';
+    } else if (type === 'person') {
+      type = 'subject';
+    }
+
+    const params = {
+      id: id,
+      type: type,
+      mediaCollectionId: null,
+      mediaTitle: ''
+    };
+
+    this.app.getRootNav().push('media-collection', params);
   }
 
   gotToText(id: string, textType: string, matches: Array<string>, facsimilePage, item?) {

@@ -104,6 +104,18 @@ export class SearchDataService {
       .catch(this.handleError);
   }
 
+  getGalleryOccurrences( type, id ) {
+    return this.http.get(  this.config.getSettings('app.apiEndpoint')  + '/' +
+                          this.config.getSettings('app.machineName') +
+                          '/gallery/' + type + '/connections/' + id + '/1')
+        .map(res => {
+          const body = res.json();
+
+          return body || ' - no content - ';
+        })
+        .catch(this.handleError);
+  }
+
   getSearchSuggestiongs(search_str: string, limit?): Observable<any> {
     let search_limit = 10;
 

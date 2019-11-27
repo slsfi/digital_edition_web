@@ -52,7 +52,7 @@ export class MediaCollectionPage {
     } catch (e) {
       this.removeScanDetails = false;
     }
-    if ( this.mediaCollectionId !== null ) {
+    if (this.mediaCollectionId !== null && this.mediaCollectionId !== 'null' ) {
       this.getMediaCollections();
     } else {
       this.mediaCollectionId = undefined;
