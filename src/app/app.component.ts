@@ -1161,7 +1161,13 @@ export class DigitalEditionsApp {
       (async () => {
         const mediaCollectionMenu: Array<object> = await this.galleryService.getGalleries(this.language);
         if (mediaCollectionMenu.length > 0) {
-          mediaCollectionMenu.unshift({ 'id': 'all', 'title': 'Alla' });
+          let t_all = 'Alla';
+          this.translate.get('TOC.All').subscribe(
+            translation => {
+              t_all = translation;
+            }, error => { }
+          );
+          mediaCollectionMenu.unshift({ 'id': 'all', 'title': t_all });
           this.mediaCollectionOptions['toc_exists'] = true;
           this.mediaCollectionOptions['expanded'] = false;
           this.mediaCollectionOptions['loading'] = false;

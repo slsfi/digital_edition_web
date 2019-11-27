@@ -112,6 +112,9 @@
                 <ion-item *ngIf="longitude" [ngClass]="isFiltersShown()?'map_item':'map_item_hidden'">
                     <div id="map" [ngClass]="isFiltersShown()?'map':'map_hidden'"></div>
                 </ion-item>
+                <ion-item text-wrap style="margin-top: 10px;" *ngIf="galleryOccurrenceData.length > 0" (click)="openGallery(galleryOccurrenceData[0])">
+                  <button ion-button outline item-end>{{"TOC.MediaCollections" | translate}}</button>
+                </ion-item>
                 <ion-item text-wrap style="margin-top: 10px;" *ngFor="let text of texts" (click)="openText(text)">
                   <ion-label class="collectionName">{{text.collectionName}}</ion-label>
                   <ion-label class="displayName">{{text.displayName}}</ion-label>

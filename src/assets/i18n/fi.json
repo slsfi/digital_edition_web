@@ -93,7 +93,9 @@
         "WriterSearch": "Upptecknare",
         "SongTypes": "Låttyper",
         "Music": "Musik",
-        "Collections": "Kategorier"
+        "Collections": "Kategorier",
+        "Books": "Kirjat", 
+        "All": "kaikki"
     },
     "GalleryPages": {
         "0": "Finland framställdt i teckningar",

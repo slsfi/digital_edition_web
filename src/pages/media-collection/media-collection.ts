@@ -13,7 +13,7 @@ import { ConfigService } from '@ngx-config/core';
 
 @IonicPage({
   name: 'media-collection',
-  segment: 'media-collection/:mediaCollectionId'
+  segment: 'media-collection/:mediaCollectionId/:id/:type'
 })
 @Component({
   selector: 'page-media-collection',
@@ -28,6 +28,8 @@ export class MediaCollectionPage {
   private apiEndPoint: string;
   private projectMachineName: string;
   removeScanDetails = false;
+  singleId: string;
+  type: string;
 
   constructor(
     public navCtrl: NavController,
@@ -39,8 +41,10 @@ export class MediaCollectionPage {
     private config: ConfigService
 
   ) {
-    this.mediaCollectionId =  this.navParams.get('mediaCollectionId');
-    this.mediaTitle =  this.navParams.get('mediaTitle');
+    this.mediaCollectionId = this.navParams.get('mediaCollectionId');
+    this.singleId = this.navParams.get('id');
+    this.type = this.navParams.get('type');
+    this.mediaTitle = this.navParams.get('mediaTitle');
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.projectMachineName = this.config.getSettings('app.machineName');
     try {
@@ -48,18 +52,42 @@ export class MediaCollectionPage {
     } catch (e) {
       this.removeScanDetails = false;
     }
-    this.getMediaCollections();
+    if ( this.mediaCollectionId !== null ) {
+      this.getMediaCollections();
+    } else {
+      this.mediaCollectionId = undefined;
+      this.getMediaCollections(this.singleId, this.type);
+    }
   }
 
-  getMediaCollections() {
-    this.galleryService.getGallery(this.mediaCollectionId)
-    .subscribe(gallery => {
+  getMediaCollections(id?, type?) {
+    if ( id === undefined ) {
+      this.galleryService.getGallery(this.mediaCollectionId)
+      .subscribe(gallery => {
 
-      this.mediaCollection = gallery.gallery ? gallery.gallery : gallery;
-      this.mediaTitle = gallery.title ? gallery.title : this.mediaTitle;
-      this.mediaDescription = gallery.description ? gallery.description : '';
+        this.mediaCollection = gallery.gallery ? gallery.gallery : gallery;
+        this.mediaTitle = gallery[0].title ? gallery[0].title : this.mediaTitle;
+        this.mediaDescription = gallery.description ? gallery.description : '';
 
-    });
+      });
+    } else {
+      this.galleryService.getGalleryOccurrences(type, id)
+      .subscribe(occurrences => {
+        occurrences.forEach(element => {
+          element['mediaCollectionId'] = element['media_collection_id'];
+          element['front'] = element['filename'];
+          this.mediaCollection.push(element)
+        });
+
+        if ( type === 'subject' ) {
+          this.mediaTitle = occurrences[0]['full_name'];
+          this.mediaDescription = '';
+        } else {
+          this.mediaTitle = occurrences[0]['name'];
+          this.mediaDescription = '';
+        }
+      });
+    }
   }
 
   asThumb(url) {
@@ -77,16 +105,16 @@ export class MediaCollectionPage {
     console.log('ionViewDidLoad MediaCollectionPage');
   }
 
-  getImageUrl(filename) {
+  getImageUrl(filename, mediaCollectionId) {
     if (!filename) {
       return null;
     }
-    return this.apiEndPoint + '/' + this.projectMachineName + '/gallery/get/' + this.mediaCollectionId +
+    return this.apiEndPoint + '/' + this.projectMachineName + '/gallery/get/' + mediaCollectionId +
            '/' + filename;
   }
 
-  openImage(index) {
-    const zoomedImages = this.mediaCollection.map(i => this.getImageUrl(i.front));
+  openImage(index, mediaCollectionId) {
+    const zoomedImages = this.mediaCollection.map(i => this.getImageUrl(i.front, mediaCollectionId));
     const backsides = zoomedImages.map(i => i.replace('.jpg', 'B.jpg'));
     const descriptions = this.mediaCollection.map(i => i.description);
 

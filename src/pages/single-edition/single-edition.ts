@@ -98,13 +98,15 @@ export class SingleEditionPage {
     }
 
     const collectionImages = this.config.getSettings('editionImages');
-    this.image = collectionImages[this.collection.id];
-    this.setCollectionTitle();
-    this.events.publish('title-logo:collectionTitle', this.subTitle);
-    this.getDescriptions();
-    this.childrenPdfs = this.pdfService.getCollectionChildrenPdfs(this.collection.id);
+    if ( this.collection.id !== undefined ) {
+      this.image = collectionImages[this.collection.id];
+      this.setCollectionTitle();
+      this.events.publish('title-logo:collectionTitle', this.subTitle);
+      this.getDescriptions();
+      this.childrenPdfs = this.pdfService.getCollectionChildrenPdfs(this.collection.id);
+    }
 
-    if (this.childrenPdfs.length) {
+    if ( this.childrenPdfs !== undefined && Array.isArray(this.childrenPdfs) && this.childrenPdfs.length) {
       this.hasDigitalEditionListChildren = true;
       this.events.publish('CollectionWithChildrenPdfs:highlight', this.collection.id);
     }

@@ -45,6 +45,7 @@ export class OccurrencesPage {
   date_deceased: string = null;
   filterToggle: Boolean = true;
   singleOccurrenceType: string = null;
+  galleryOccurrenceData: any = [];
 
   objectType = '';
 
@@ -110,6 +111,7 @@ export class OccurrencesPage {
     this.setObjectType();
     this.getMediaData();
     this.getArticleData();
+    this.getGalleryOccurrences();
   }
 
   ionViewWillLeave() {
@@ -134,6 +136,19 @@ export class OccurrencesPage {
       mediaData => {
         this.mediaData.imageUrl = mediaData.image_path;
         this.mediaData.description = mediaData.description;
+      },
+      error =>  console.log(error)
+    );
+  }
+
+  getGalleryOccurrences() {
+    if (!this.objectType.length) {
+      return;
+    }
+
+    this.occurrenceService.getGalleryOccurrences(this.objectType, this.occurrenceResult.id).subscribe(
+      occurrenceData => {
+        this.galleryOccurrenceData = occurrenceData;
       },
       error =>  console.log(error)
     );
@@ -283,6 +298,27 @@ export class OccurrencesPage {
       this.viewCtrl.dismiss();
       this.app.getRootNav().push('read', params);
     }
+  }
+
+  openGallery(data) {
+    let type = this.objectType;
+    if ( type === 'places' ) {
+      type = 'location';
+    } else if ( type === 'tags' ) {
+      type = 'tag';
+    } else if ( type === 'subjects' )  {
+      type = 'subject';
+    }
+
+    const params = {
+      id: data.id,
+      type: type,
+      mediaCollectionId: null,
+      mediaTitle: ''
+    };
+
+    this.viewCtrl.dismiss();
+    this.app.getRootNav().push('media-collection', params);
   }
 
   /**

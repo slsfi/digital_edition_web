@@ -110,7 +110,9 @@
         "SongTypes": "Låttyper",
         "Music": "Musik",
         "Collections": "Kategorier",
-        "PlaymanTradition": "Finlandssvensk spelmanstradition"
+        "PlaymanTradition": "Finlandssvensk spelmanstradition",
+        "Books": "Böcker", 
+        "All": "Alla"
     },
     "GalleryPages": {
         "0": "Finland framställdt i teckningar",

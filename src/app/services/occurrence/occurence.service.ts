@@ -36,6 +36,18 @@ export class OccurrenceService {
         .catch(this.handleError);
   }
 
+  getGalleryOccurrences( type, id ) {
+    return this.http.get(  this.config.getSettings('app.apiEndpoint')  + '/' +
+                          this.config.getSettings('app.machineName') +
+                          '/gallery/' + type + '/connections/' + id)
+        .map(res => {
+          const body = res.json();
+
+          return body || ' - no content - ';
+        })
+        .catch(this.handleError);
+  }
+
   getArticleData(object_type: string, id: string): Observable<any> {
     return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
                           this.config.getSettings('app.machineName') +

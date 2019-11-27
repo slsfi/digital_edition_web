@@ -39,6 +39,18 @@ export class GalleryService {
     return body || { };
   }
 
+  getGalleryOccurrences( type, id ) {
+    return this.http.get(  this.config.getSettings('app.apiEndpoint')  + '/' +
+                          this.config.getSettings('app.machineName') +
+                          '/gallery/' + type + '/connections/' + id)
+        .map(res => {
+          const body = res.json();
+
+          return body || ' - no content - ';
+        })
+        .catch(this.handleError);
+  }
+
   private handleError (error: Response | any) {
     let errMsg: string;
     if (error instanceof Response) {
