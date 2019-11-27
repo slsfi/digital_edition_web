@@ -100,7 +100,7 @@
         "Read": "Läs",
         "Facsimiles": "Faksimil i urval",
         "ImageGallery": "Bildgalleri",
-        "MediaCollections": "Famsimilsamlingar",
+        "MediaCollections": "Album",
         "PersonSearch": "Personsök",
         "PlaceSearch": "Platsregister",
         "TagSearch": "Ämnesord",
@@ -111,7 +111,7 @@
         "Music": "Musik",
         "Collections": "Kategorier",
         "PlaymanTradition": "Finlandssvensk spelmanstradition",
-        "Books": "Böcker", 
+        "Books": "Böcker",
         "All": "Alla"
     },
     "GalleryPages": {
@@ -195,6 +195,7 @@
     "subject": "Person",
     "collections": "Samlingar",
     "works": "Verk",
+    "photos": "foton",
     "recorder": "Upptecknare",
     "playman": "Spelman",
     "song": "Melodi",

@@ -94,7 +94,7 @@
         "SongTypes": "Låttyper",
         "Music": "Musik",
         "Collections": "Kategorier",
-        "Books": "Kirjat", 
+        "Books": "Kirjat",
         "All": "kaikki"
     },
     "GalleryPages": {
@@ -178,6 +178,7 @@
     "recorder": "Upptecknare",
     "playman": "Upptecknare",
     "collections": "Samlingar",
+    "photos": "kuvaa",
     "song": "Melodi",
     "works": "Verk",
     "Reference": {

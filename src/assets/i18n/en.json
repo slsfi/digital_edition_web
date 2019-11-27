@@ -87,7 +87,7 @@
         "SongTypes": "Song Types",
         "WorkSearch": "Works",
         "Collections": "Publications",
-        "Books": "Books", 
+        "Books": "Books",
         "All": "All"
     },
     "GalleryPages": {
@@ -161,6 +161,7 @@
     "location": "Location",
     "tags": "Tags",
     "tag": "Tags",
+    "photos": "photos",
     "subjects": "Subjects",
     "subject": "Subject",
     "collections": "Collections",

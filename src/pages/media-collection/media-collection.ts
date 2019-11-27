@@ -4,6 +4,7 @@ import { GalleryService } from '../../app/services/gallery/gallery.service';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { FacsimileZoomModalPage } from '../facsimile-zoom/facsimile-zoom';
 import { ConfigService } from '@ngx-config/core';
+import { TranslateService } from '@ngx-translate/core/src/translate.service';
 /**
  * Generated class for the FacsimileCollectionPage page.
  *
@@ -38,7 +39,8 @@ export class MediaCollectionPage {
     private galleryService: GalleryService,
     private userSettingsService: UserSettingsService,
     private modalController: ModalController,
-    private config: ConfigService
+    private config: ConfigService,
+    public translate: TranslateService
 
   ) {
     this.mediaCollectionId = this.navParams.get('mediaCollectionId');
