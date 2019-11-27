@@ -38,6 +38,7 @@ export class FacsimileZoomModalPage {
               private events: Events,
               private userSettingsService: UserSettingsService) {
     this.manualPageNumber = 1;
+    this.backsides = [];
   }
 
   cancel() {
@@ -59,16 +60,19 @@ export class FacsimileZoomModalPage {
     } else {
       this.images = this.navParams.get('images');
       try {
-        this.backsides = this.navParams.get('backsides');
-      } catch (e) {
-        this.backsides = [];
-      }
-      try {
         this.descriptions = this.navParams.get('descriptions');
       } catch (e) {
         this.descriptions = [];
       }
       this.activeImage = this.navParams.get('activeImage');
+    }
+    try {
+      this.backsides = this.navParams.get('backsides');
+      if ( this.backsides === undefined ) {
+        this.backsides = [];
+      }
+    } catch (e) {
+      this.backsides = [];
     }
    }
 
