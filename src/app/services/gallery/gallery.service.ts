@@ -25,6 +25,22 @@ export class GalleryService {
     } catch (e) {}
   }
 
+  async getGalleryTags(): Promise<any> {
+    try {
+      const response = await this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
+        this.config.getSettings('app.machineName') + '/gallery/connections/tag').toPromise();
+      return response.json();
+    } catch (e) { }
+  }
+
+  async getGalleryLocations(): Promise<any> {
+    try {
+      const response = await this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
+        this.config.getSettings('app.machineName') + '/gallery/connections/location').toPromise();
+      return response.json();
+    } catch (e) { }
+  }
+
   getGallery (id: string): Observable<any> {
     return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
                            this.config.getSettings('app.machineName') + '/gallery/data/' +

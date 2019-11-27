@@ -1,5 +1,21 @@
 <ion-content padding>
     <h1>{{"TOC.MediaCollections" | translate }}</h1>
+    <div class="filters">
+        <ion-item class="tagSelect">
+            <ion-label>{{"tags" | translate}}</ion-label>
+            <ion-select [(ngModel)]="tagModel" class="tagSelect" (ngModelChange)="filterCollectionsByTag(tagModel)">
+                <ion-option selected value=""></ion-option>
+                <ion-option *ngFor="let tag of galleryTags" value="{{tag.name}}">{{tag.name}}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item class="locationSelect" >
+            <ion-label>{{"locations" | translate}}</ion-label>
+            <ion-select [(ngModel)]="locationModel" class="locationSelect" (ngModelChange)="filterCollectionsByLocation(locationModel)">
+                <ion-option selected value=""></ion-option>
+                <ion-option *ngFor="let location of galleryLocations" value="{{location.name}}">{{location.name}}</ion-option>
+            </ion-select>
+        </ion-item>
+    </div>
     <ion-grid>
         <ion-row>
             <ion-col *ngFor="let gallery of galleries; index as i" (click)="openMediaCollection(gallery)" col-md-4 col-sm-12 col-lg-3>

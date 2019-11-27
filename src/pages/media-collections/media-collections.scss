@@ -8,13 +8,13 @@ media-collections {
         flex-wrap: wrap;
         padding: 0 4px;
     }
-    
+
     /* Create two equal columns that sits next to each other */
     .column {
         flex: 20%;
         padding: 0 4px;
     }
-    
+
     .column img {
         margin-top: 8px;
         vertical-align: middle;
@@ -33,5 +33,28 @@ media-collections {
     h1 {
         font-size: 1.8rem;
         text-transform: none !important;
+    }
+    .tagSelect{
+        box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
+        -webkit-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
+        -moz-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
+        background-color: color($colors, secondary);
+    }
+    .locationSelect{
+        box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
+        -webkit-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
+        -moz-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
+        background-color: color($colors, secondary);
+    }
+    .filters{
+        display: flex;
+        flex-direction: row;
+        width: 50%;
+    }
+    .filters ion-item{
+        margin-right: 2rem;
+    }
+    img{
+        cursor: pointer;
     }
 }
