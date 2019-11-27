@@ -4,7 +4,6 @@ import { Nav, Platform, MenuController, IonicPage, Events, App, NavParams, Alert
 import { LangChangeEvent, TranslateService/*, TranslatePipe*/ } from '@ngx-translate/core';
 import { Storage } from '@ionic/storage';
 
-import { TabsPage } from '../pages/tabs/tabs';
 import { ConfigService } from '@ngx-config/core';
 
 import { Title } from '@angular/platform-browser';
@@ -38,7 +37,7 @@ export class DigitalEditionsApp {
   @ViewChild(Nav) nav: Nav;
   @ViewChild('aboutMenuMarkdownAccordion') aboutMenuMarkdownAccordion: TableOfContentsAccordionComponent
 
-  rootPage = 'TabsPage';
+  rootPage = 'HomePage';
   aboutPages: any[];
   language = 'sv';
   languages = [];
@@ -105,7 +104,7 @@ export class DigitalEditionsApp {
   }
 
   pagesWithoutMenu = [];
-  pagesWithClosedMenu = ['HomePage', 'TabsPage'];
+  pagesWithClosedMenu = ['HomePage', 'HomePage'];
 
   public options: Array<TocAccordionMenuOptionModel>;
   public songTypesOptions: {
@@ -1009,11 +1008,7 @@ export class DigitalEditionsApp {
   setRootPage() {
     const homeUrl = document.URL.indexOf('/#/home');
     if (homeUrl >= 0 || document.URL.indexOf('#') < 0) {
-      if (this.platform.is('core') || this.platform.is('tablet') || this.sideMenuMobile) {
-        this.rootPage = 'HomePage';
-      } else {
-        this.rootPage = 'mobile';
-      }
+      this.rootPage = 'HomePage';
     }
   }
 

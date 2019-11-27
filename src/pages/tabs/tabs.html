@@ -1,6 +1,0 @@
-<ion-tabs name="main" #mobileTabs>
-  <ion-tab [root]="tab1Root" tabTitle="{{texts.Home}}" tabUrlPatj="front" tabIcon="home"></ion-tab>
-  <ion-tab [root]="tab2Root" tabTitle="{{texts.Read}}" tabUrlPath="list" tabIcon="book"></ion-tab>
-  <ion-tab *ngIf="(userSettingsService.isDesktop() || userSettingsService.isTablet()) && !userSettingsService.isMobile()" tabTitle="{{texts.Info}}" (ionSelect)="about()" tabIcon="information-circle"></ion-tab>
-  <ion-tab *ngIf="userSettingsService.isMobile() && !userSettingsService.isDesktop() && !userSettingsService.isTablet()" tabTitle="{{texts.Info}}" [root]="tab3Root" (ionSelect)="closeSplitPane()" tabIcon="information-circle" tabUrlPath="info"></ion-tab>
-</ion-tabs>
