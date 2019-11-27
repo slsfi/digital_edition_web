@@ -74,7 +74,7 @@ export class MediaCollectionsPage {
       this.allTags = tags;
       const addedTags: Array<any> = [];
       tags.forEach(element => {
-        if (!addedTags.includes(element['id'])) {
+        if (addedTags.indexOf(element['id']) === -1) {
           this.galleryTags.push({ 'name': String(element['name']).toLowerCase(), id: element['id'], 'media_collection_id': element['media_collection_id'] });
           addedTags.push(element['id']);
         }
@@ -91,7 +91,7 @@ export class MediaCollectionsPage {
       this.allLocations = locations;
       const addedLocations: Array<any> = [];
       locations.forEach(element => {
-        if (!addedLocations.includes(element['id'])) {
+        if (addedLocations.indexOf(element['id']) === -1) {
           this.galleryLocations.push({ 'name': String(element['name']).toLowerCase(), id: element['id'], 'media_collection_id': element['media_collection_id'] });
           addedLocations.push(element['id']);
         }
@@ -116,7 +116,7 @@ export class MediaCollectionsPage {
         this.filterCollectionsByLocation(this.locationModel);
       }
     }
-    const galleryIds = [];
+    const galleryIds: Array<any> = [];
     const filteredGalleries = [];
     this.allTags.forEach(element => {
       if (String(element['name']).toLowerCase() === String(name).toLowerCase()) {
@@ -124,7 +124,7 @@ export class MediaCollectionsPage {
       }
     });
     this.galleries.forEach(element => {
-      if (galleryIds.includes(element['id'])) {
+      if (galleryIds.indexOf(element['id']) !== -1) {
         filteredGalleries.push(element);
       }
     });
@@ -146,7 +146,7 @@ export class MediaCollectionsPage {
         this.filterCollectionsByLocation(this.tagModel);
       }
     }
-    const galleryIds = [];
+    const galleryIds: Array<any> = [];
     const filteredGalleries = [];
     this.allLocations.forEach(element => {
       if (String(element['name']).toLowerCase() === String(name).toLowerCase()) {
@@ -154,7 +154,7 @@ export class MediaCollectionsPage {
       }
     });
     this.galleries.forEach(element => {
-      if (galleryIds.includes(element['id'])) {
+      if (galleryIds.indexOf(element['id']) !== -1) {
         filteredGalleries.push(element);
       }
     });
