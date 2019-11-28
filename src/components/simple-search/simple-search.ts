@@ -799,6 +799,9 @@ export class SimpleSearchComponent {
     };
 
     this.app.getRootNav().push('media-collection', params);
+    if (this.platform.is('mobile')) {
+      this.events.publish('searchModal:closed', {});
+    }
   }
 
   gotToText(id: string, textType: string, matches: Array<string>, facsimilePage, item?) {
@@ -961,6 +964,9 @@ export class SimpleSearchComponent {
     } else {
       this.app.getRootNav().push('pdf', params);
       this.pdfViewOpen = true;
+    }
+    if (this.platform.is('mobile')) {
+      this.events.publish('searchModal:closed', {});
     }
   }
 

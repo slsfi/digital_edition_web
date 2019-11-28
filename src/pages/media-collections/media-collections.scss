@@ -71,4 +71,16 @@ media-collections {
       font-size: 1rem !important;
       margin-left: 0.5rem !important;
     }
+
+    @media only screen and (max-width: 600px) {
+      .filters{
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+
+      }
+      .filters ion-item{
+        margin-bottom: 1rem;
+      }
+    }
 }

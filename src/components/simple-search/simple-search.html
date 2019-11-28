@@ -66,7 +66,7 @@
                   <img *ngIf="item.textType=='person'" onerror="this.style.display='none';this.parentNode.style.display='none'" src="{{apiEndPoint}}/{{projectMachineName}}/gallery/thumb/subject/{{item.object_id}}"/>
                   <img *ngIf="item.textType=='location'" onerror="this.style.display='none';this.parentNode.style.display='none'" src="{{apiEndPoint}}/{{projectMachineName}}/gallery/thumb/location/{{item.object_id}}"/>
                   <img *ngIf="item.textType=='tag'" onerror="this.style.display='none';this.parentNode.style.display='none'" src="{{apiEndPoint}}/{{projectMachineName}}/gallery/thumb/tag/{{item.object_id}}"/>
-                  <div class="img-help"><div class="center">{{'photos'|translate}}</div></div>
+                  <div class="img-help" (click)="openGallery(item.textType, item.object_id)"><div class="center">{{'photos'|translate}}</div></div>
                 </div>
                 <div class="data" (click)="gotToText(item.path, item.textType, item.matches, item.facsimilePage, item)">
                   <div class="textType {{ item.textType }}">
