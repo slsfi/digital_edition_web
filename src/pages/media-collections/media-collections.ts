@@ -26,8 +26,10 @@ export class MediaCollectionsPage {
   gallerySubjects = [];
   locationModel = '';
   tagModel = '';
+  subjectModel = '';
   prevTag = '';
   prevLoc = '';
+  prevSub = '';
   private apiEndPoint: string;
   private projectMachineName: string;
   private removeScanDetails = false;
@@ -57,6 +59,7 @@ export class MediaCollectionsPage {
     });
     this.getCollectionTags();
     this.getCollectionLocations();
+    this.getCollectionSubjects();
   }
 
   getMediaCollections() {
@@ -101,11 +104,30 @@ export class MediaCollectionsPage {
     }).bind(this)();
   }
 
+  getCollectionSubjects() {
+    (async () => {
+      let subjects = [];
+      subjects = await this.galleryService.getGallerySubjects();
+      this.allSubjects = subjects;
+      const addedSubjects: Array<any> = [];
+      subjects.forEach(element => {
+        if (addedSubjects.indexOf(element['id']) === -1 && String(element['name']).trim() !== '') {
+          this.gallerySubjects.push({ 'name': String(element['name']).toLowerCase(), id: element['id'], 'media_collection_id': element['media_collection_id'] });
+          addedSubjects.push(element['id']);
+        }
+      });
+      this.gallerySubjects.sort((a, b) => (a.name > b.name) ? 1 : -1)
+    }).bind(this)();
+  }
+
   filterCollectionsByTag(name) {
     if (name === '') {
       this.galleries = this.allGalleries;
       if (this.locationModel !== '') {
         this.filterCollectionsByLocation(this.locationModel);
+      }
+      if (this.subjectModel !== '') {
+        this.filterCollectionsBySubject(this.subjectModel);
       }
       return true;
     }
@@ -114,6 +136,9 @@ export class MediaCollectionsPage {
       this.prevTag = name;
       if (this.locationModel !== '') {
         this.filterCollectionsByLocation(this.locationModel);
+      }
+      if (this.subjectModel !== '') {
+        this.filterCollectionsBySubject(this.subjectModel);
       }
     }
     const galleryIds: Array<any> = [];
@@ -137,13 +162,19 @@ export class MediaCollectionsPage {
       if ( this.tagModel !== '' ) {
         this.filterCollectionsByTag(this.tagModel);
       }
+      if (this.subjectModel !== '') {
+        this.filterCollectionsBySubject(this.subjectModel);
+      }
       return true;
     }
     if (name !== this.prevLoc) {
       this.galleries = this.allGalleries;
       this.prevLoc = name;
       if (this.tagModel !== '') {
-        this.filterCollectionsByLocation(this.tagModel);
+        this.filterCollectionsByTag(this.tagModel);
+      }
+      if (this.subjectModel !== '') {
+        this.filterCollectionsBySubject(this.subjectModel);
       }
     }
     const galleryIds: Array<any> = [];
@@ -155,6 +186,42 @@ export class MediaCollectionsPage {
     });
     this.galleries.forEach(element => {
       if (galleryIds.indexOf(element['id']) !== -1) {
+        filteredGalleries.push(element);
+      }
+    });
+    this.galleries = filteredGalleries;
+  }
+
+  filterCollectionsBySubject(name) {
+    if (name === '') {
+      this.galleries = this.allGalleries;
+      if (this.tagModel !== '') {
+        this.filterCollectionsByTag(this.tagModel);
+      }
+      if (this.locationModel !== '') {
+        this.filterCollectionsByLocation(this.locationModel);
+      }
+      return true;
+    }
+    if (name !== this.prevSub) {
+      this.galleries = this.allGalleries;
+      this.prevSub = name;
+      if (this.tagModel !== '') {
+        this.filterCollectionsByTag(this.tagModel);
+      }
+      if (this.locationModel !== '') {
+        this.filterCollectionsByLocation(this.locationModel);
+      }
+    }
+    const filenames: Array<any> = [];
+    const filteredGalleries = [];
+    this.allSubjects.forEach(element => {
+      if (String(element['name']).toLowerCase() === String(name).toLowerCase()) {
+        filenames.push(element['media_collection_id']);
+      }
+    });
+    this.galleries.forEach(element => {
+      if (filenames.indexOf(element['id']) !== -1) {
         filteredGalleries.push(element);
       }
     });

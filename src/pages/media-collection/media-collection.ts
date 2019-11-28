@@ -32,6 +32,19 @@ export class MediaCollectionPage {
   singleId: string;
   type: string;
 
+  allTags = [];
+  allLocations = [];
+  allSubjects = [];
+  allMediaCollection = [];
+  galleryTags = [];
+  galleryLocations = [];
+  gallerySubjects = [];
+  locationModel = '';
+  tagModel = '';
+  subjectModel = '';
+  prevTag = '';
+  prevLoc = '';
+  prevSub = '';
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -56,6 +69,9 @@ export class MediaCollectionPage {
     }
     if (this.mediaCollectionId !== null && this.mediaCollectionId !== 'null' ) {
       this.getMediaCollections();
+      this.getCollectionTags();
+      this.getCollectionLocations();
+      this.getCollectionSubjects();
     } else {
       this.mediaCollectionId = undefined;
       this.getMediaCollections(this.singleId, this.type);
@@ -66,11 +82,10 @@ export class MediaCollectionPage {
     if ( id === undefined ) {
       this.galleryService.getGallery(this.mediaCollectionId)
       .subscribe(gallery => {
-
         this.mediaCollection = gallery.gallery ? gallery.gallery : gallery;
+        this.allMediaCollection = this.mediaCollection;
         this.mediaTitle = gallery[0].title ? gallery[0].title : this.mediaTitle;
         this.mediaDescription = gallery.description ? gallery.description : '';
-
       });
     } else {
       this.galleryService.getGalleryOccurrences(type, id)
@@ -128,6 +143,162 @@ export class MediaCollectionPage {
     modal.onDidDismiss(data => {
       console.log('dismissed', data);
     });
+  }
+
+  getCollectionTags() {
+    (async () => {
+      let tags = [];
+      tags = await this.galleryService.getGalleryTags(this.mediaCollectionId);
+      this.allTags = tags;
+      const addedTags: Array<any> = [];
+      tags.forEach(element => {
+        if (addedTags.indexOf(element['id']) === -1) {
+          this.galleryTags.push({ 'name': String(element['name']).toLowerCase(), id: element['id'], 'media_collection_id': element['media_collection_id'] });
+          addedTags.push(element['id']);
+        }
+      });
+      this.galleryTags.sort((a, b) => (a.name > b.name) ? 1 : -1)
+    }).bind(this)();
+  }
+
+  getCollectionLocations() {
+    (async () => {
+      let locations = [];
+      locations = await this.galleryService.getGalleryLocations(this.mediaCollectionId);
+      this.allLocations = locations;
+      const addedLocations: Array<any> = [];
+      locations.forEach(element => {
+        if (addedLocations.indexOf(element['id']) === -1) {
+          this.galleryLocations.push({ 'name': String(element['name']).toLowerCase(), id: element['id'], 'media_collection_id': element['media_collection_id'] });
+          addedLocations.push(element['id']);
+        }
+      });
+      this.galleryLocations.sort((a, b) => (a.name > b.name) ? 1 : -1)
+    }).bind(this)();
+  }
+
+  getCollectionSubjects() {
+    (async () => {
+      let subjects = [];
+      subjects = await this.galleryService.getGallerySubjects(this.mediaCollectionId);
+      this.allSubjects = subjects;
+      const addedSubjects: Array<any> = [];
+      subjects.forEach(element => {
+        if (addedSubjects.indexOf(element['id']) === -1) {
+          this.gallerySubjects.push({ 'name': String(element['name']).toLowerCase(), id: element['id'], 'media_collection_id': element['media_collection_id'] });
+          addedSubjects.push(element['id']);
+        }
+      });
+      this.gallerySubjects.sort((a, b) => (a.name > b.name) ? 1 : -1)
+    }).bind(this)();
+  }
+
+  filterCollectionsByTag(name) {
+    if (name === '') {
+      this.mediaCollection = this.allMediaCollection;
+      if (this.locationModel !== '') {
+        this.filterCollectionsByLocation(this.locationModel);
+      }
+      if (this.subjectModel !== '') {
+        this.filterCollectionsBySubject(this.subjectModel);
+      }
+      return true;
+    }
+    if (name !== this.prevTag) {
+      this.mediaCollection = this.allMediaCollection;
+      this.prevTag = name;
+      if (this.locationModel !== '') {
+        this.filterCollectionsByLocation(this.locationModel);
+      }
+      if (this.subjectModel !== '') {
+        this.filterCollectionsBySubject(this.subjectModel);
+      }
+    }
+    const filenames: Array<any> = [];
+    const filteredGalleries = [];
+    this.allTags.forEach(element => {
+      if (String(element['name']).toLowerCase() === String(name).toLowerCase()) {
+        filenames.push(element['filename']);
+      }
+    });
+    this.mediaCollection.forEach(element => {
+      if (filenames.indexOf(element['front']) !== -1) {
+        filteredGalleries.push(element);
+      }
+    });
+    this.mediaCollection = filteredGalleries;
+  }
+
+  filterCollectionsByLocation(name) {
+    if (name === '') {
+      this.mediaCollection = this.allMediaCollection;
+      if (this.tagModel !== '') {
+        this.filterCollectionsByTag(this.tagModel);
+      }
+      if (this.subjectModel !== '') {
+        this.filterCollectionsBySubject(this.subjectModel);
+      }
+      return true;
+    }
+    if (name !== this.prevLoc) {
+      this.mediaCollection = this.allMediaCollection;
+      this.prevLoc = name;
+      if (this.tagModel !== '') {
+        this.filterCollectionsByTag(this.tagModel);
+      }
+      if (this.subjectModel !== '') {
+        this.filterCollectionsBySubject(this.subjectModel);
+      }
+    }
+    const filenames: Array<any> = [];
+    const filteredGalleries = [];
+    this.allLocations.forEach(element => {
+      if (String(element['name']).toLowerCase() === String(name).toLowerCase()) {
+        filenames.push(element['filename']);
+      }
+    });
+    this.mediaCollection.forEach(element => {
+      if (filenames.indexOf(element['front']) !== -1) {
+        filteredGalleries.push(element);
+      }
+    });
+    this.mediaCollection = filteredGalleries;
+  }
+
+  filterCollectionsBySubject(name) {
+    if (name === '') {
+      this.mediaCollection = this.allMediaCollection;
+      if (this.tagModel !== '') {
+        this.filterCollectionsByTag(this.tagModel);
+      }
+      if (this.locationModel !== '') {
+        this.filterCollectionsByLocation(this.locationModel);
+      }
+      return true;
+    }
+    if (name !== this.prevSub) {
+      this.mediaCollection = this.allMediaCollection;
+      this.prevSub = name;
+      if (this.tagModel !== '') {
+        this.filterCollectionsByTag(this.tagModel);
+      }
+      if (this.locationModel !== '') {
+        this.filterCollectionsByLocation(this.locationModel);
+      }
+    }
+    const filenames: Array<any> = [];
+    const filteredGalleries = [];
+    this.allSubjects.forEach(element => {
+      if (String(element['name']).toLowerCase() === String(name).toLowerCase()) {
+        filenames.push(element['filename']);
+      }
+    });
+    this.mediaCollection.forEach(element => {
+      if (filenames.indexOf(element['front']) !== -1) {
+        filteredGalleries.push(element);
+      }
+    });
+    this.mediaCollection = filteredGalleries;
   }
 
 }

@@ -25,18 +25,38 @@ export class GalleryService {
     } catch (e) {}
   }
 
-  async getGalleryTags(): Promise<any> {
+  async getGalleryTags(id?): Promise<any> {
     try {
+      let incId = '';
+      if (id) {
+        incId = '/' + id;
+      }
       const response = await this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
-        this.config.getSettings('app.machineName') + '/gallery/connections/tag').toPromise();
+        this.config.getSettings('app.machineName') + '/gallery/connections/tag' + incId).toPromise();
       return response.json();
     } catch (e) { }
   }
 
-  async getGalleryLocations(): Promise<any> {
+  async getGalleryLocations(id?): Promise<any> {
     try {
+      let incId = '';
+      if (id) {
+        incId = '/' + id;
+      }
       const response = await this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
-        this.config.getSettings('app.machineName') + '/gallery/connections/location').toPromise();
+        this.config.getSettings('app.machineName') + '/gallery/connections/location' + incId).toPromise();
+      return response.json();
+    } catch (e) { }
+  }
+
+  async getGallerySubjects(id?): Promise<any> {
+    try {
+      let incId = '';
+      if (id) {
+        incId = '/' + id;
+      }
+      const response = await this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
+        this.config.getSettings('app.machineName') + '/gallery/connections/subject' + incId).toPromise();
       return response.json();
     } catch (e) { }
   }

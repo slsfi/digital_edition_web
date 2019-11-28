@@ -31,8 +31,34 @@ page-media-collection {
   h1 {
     font-size: 1.8rem;
     text-transform: none !important;
-}
-img{
+  }
+  .tagSelect{
+        box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
+        -webkit-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
+        -moz-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
+        background-color: color($colors, secondary);
+    }
+    .locationSelect{
+        box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
+        -webkit-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
+        -moz-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
+        background-color: color($colors, secondary);
+    }
+    .subjectSelect{
+        box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
+        -webkit-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
+        -moz-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
+        background-color: color($colors, secondary);
+    }
+    .filters{
+        display: flex;
+        flex-direction: row;
+        width: 50%;
+    }
+    .filters ion-item{
+        margin-right: 2rem;
+    }
+    img{
         cursor: pointer;
     }
 }

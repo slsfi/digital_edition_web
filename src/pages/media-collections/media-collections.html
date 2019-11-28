@@ -15,6 +15,14 @@
                 <ion-option *ngFor="let location of galleryLocations" value="{{location.name}}">{{location.name}}</ion-option>
             </ion-select>
         </ion-item>
+        <ion-item class="subjectSelect">
+            <ion-label>{{"subjects" | translate}}</ion-label>
+            <ion-select [(ngModel)]="subjectModel" class="subjectSelect"
+                (ngModelChange)="filterCollectionsBySubject(subjectModel)">
+                <ion-option selected value=""></ion-option>
+                <ion-option *ngFor="let subject of gallerySubjects" value="{{subject.name}}">{{subject.name}}</ion-option>
+            </ion-select>
+        </ion-item>
     </div>
     <ion-grid>
         <ion-row>
