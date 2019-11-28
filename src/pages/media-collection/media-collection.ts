@@ -77,11 +77,30 @@ export class MediaCollectionPage {
         this.getCollectionTags();
         this.getCollectionLocations();
         this.getCollectionSubjects();
+        this.doAnalytics('Collection', this.mediaTitle, '');
       } else {
         this.mediaCollectionId = undefined;
         this.getMediaCollections(this.singleId, this.type);
+        this.doAnalytics('Filter', this.type, this.singleId);
       }
     });
+  }
+
+  doAnalytics(action, type, name) {
+    try {
+      (<any>window).ga('send', 'event', {
+        eventCategory: action,
+        eventLabel: type,
+        eventAction: name,
+        eventValue: 10
+      });
+    } catch (e) {
+    }
+  }
+
+  ionViewDidEnter() {
+    (<any>window).ga('set', 'page', 'Collection');
+    (<any>window).ga('send', 'pageview');
   }
 
   getMediaCollections(id?, type?) {
@@ -233,6 +252,7 @@ export class MediaCollectionPage {
       }
     });
     this.mediaCollection = filteredGalleries;
+    this.doAnalytics('Filter', 'tag', name);
   }
 
   filterCollectionsByLocation(name) {
@@ -269,6 +289,7 @@ export class MediaCollectionPage {
       }
     });
     this.mediaCollection = filteredGalleries;
+    this.doAnalytics('Filter', 'location', name);
   }
 
   filterCollectionsBySubject(name) {
@@ -305,6 +326,7 @@ export class MediaCollectionPage {
       }
     });
     this.mediaCollection = filteredGalleries;
+    this.doAnalytics('Filter', 'subject', name);
   }
 
 }

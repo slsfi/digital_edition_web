@@ -57,6 +57,7 @@ export class FacsimileZoomModalPage {
       this.facsimilePagesInfinite = true;
       this.facsUrl = this.navParams.get('facsUrl');
       this.facsNumber = this.navParams.get('facsNr');
+      this.doAnalytics(String(this.facsUrl) + String(this.facsNumber));
     } else {
       this.images = this.navParams.get('images');
       try {
@@ -65,6 +66,7 @@ export class FacsimileZoomModalPage {
         this.descriptions = [];
       }
       this.activeImage = this.navParams.get('activeImage');
+      this.doAnalytics(String(this.images[this.activeImage]));
     }
     try {
       this.backsides = this.navParams.get('backsides');
@@ -78,6 +80,23 @@ export class FacsimileZoomModalPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad FacsimileZoomPage');
+  }
+
+  ionViewDidEnter() {
+    (<any>window).ga('set', 'page', 'Facsimile-zoom');
+    (<any>window).ga('send', 'pageview');
+  }
+
+  doAnalytics(name) {
+    try {
+      (<any>window).ga('send', 'event', {
+        eventCategory: 'Facsimile-zoom',
+        eventLabel: 'image',
+        eventAction: name,
+        eventValue: 10
+      });
+    } catch (e) {
+    }
   }
 
   previous() {
@@ -96,6 +115,7 @@ export class FacsimileZoomModalPage {
     if ( this.manualPageNumber === 0 ) {
       this.manualPageNumber = 1;
     }
+    this.doAnalytics(String(this.images[this.activeImage]));
   }
 
   next() {
@@ -111,6 +131,7 @@ export class FacsimileZoomModalPage {
       this.activeImage = 0;
       this.manualPageNumber = 1;
     }
+    this.doAnalytics(String(this.images[this.activeImage]));
   }
 
   nextFacsimileUrl() {
@@ -152,6 +173,7 @@ export class FacsimileZoomModalPage {
       this.activeImage = 0;
       this.manualPageNumber = 1;
     }
+    this.doAnalytics(String(this.images[this.activeImage]));
   }
 
   handleSwipeEvent(event) {

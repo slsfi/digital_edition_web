@@ -87,6 +87,23 @@ export class MediaCollectionsPage {
     }).bind(this)();
   }
 
+  doAnalytics(type, name) {
+    try {
+      (<any>window).ga('send', 'event', {
+        eventCategory: 'Filter',
+        eventLabel: type,
+        eventAction: name,
+        eventValue: 10
+      });
+    } catch (e) {
+    }
+  }
+
+  ionViewDidEnter() {
+    (<any>window).ga('set', 'page', 'Collections');
+    (<any>window).ga('send', 'pageview');
+  }
+
   getCollectionLocations() {
     (async () => {
       let locations = [];
@@ -154,6 +171,7 @@ export class MediaCollectionsPage {
       }
     });
     this.galleries = filteredGalleries;
+    this.doAnalytics('tag', name);
   }
 
   filterCollectionsByLocation(name) {
@@ -190,6 +208,7 @@ export class MediaCollectionsPage {
       }
     });
     this.galleries = filteredGalleries;
+    this.doAnalytics('location', name);
   }
 
   filterCollectionsBySubject(name) {
@@ -226,6 +245,7 @@ export class MediaCollectionsPage {
       }
     });
     this.galleries = filteredGalleries;
+    this.doAnalytics('subject', name);
   }
 
   ionViewWillLeave() {
