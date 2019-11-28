@@ -76,10 +76,10 @@ export class MediaCollectionPage {
     this.languageService.getLanguage().subscribe((lang: string) => {
       this.language = lang;
       if (this.mediaCollectionId !== null && this.mediaCollectionId !== 'null') {
-        this.getMediaCollections();
         this.getCollectionTags();
         this.getCollectionLocations();
         this.getCollectionSubjects();
+        this.getMediaCollections();
         this.doAnalytics('Collection', this.mediaTitle, '');
       } else {
         this.mediaCollectionId = undefined;
@@ -115,16 +115,28 @@ export class MediaCollectionPage {
         this.mediaTitle = gallery[0].title ? gallery[0].title : this.mediaTitle;
         this.mediaDescription = gallery.description ? gallery.description : '';
         if (this.tagModel !== undefined && this.tagModel !== '') {
-          this.prevTag = String(this.tagModel);
-          this.filterCollectionsByTag(this.tagModel);
+          this.prevTag = this.tagModel;
+          if (this.allTags.length > 0) {
+            this.filterCollectionsByTag(this.tagModel);
+          } else {
+            this.getCollectionTags(this.tagModel);
+          }
         }
         if (this.locationModel !== undefined && this.locationModel !== '') {
-          this.prevLoc = String(this.locationModel);
-          this.filterCollectionsByLocation(this.locationModel);
+          this.prevLoc = this.locationModel;
+          if (this.allLocations.length > 0) {
+            this.filterCollectionsByLocation(this.locationModel);
+          } else {
+            this.getCollectionLocations(this.locationModel);
+          }
         }
         if (this.subjectModel !== undefined && this.subjectModel !== '') {
-          this.prevSub = String(this.subjectModel);
-          this.filterCollectionsBySubject(this.subjectModel);
+          this.prevSub = this.subjectModel;
+          if (this.allSubjects.length > 0) {
+            this.filterCollectionsBySubject(this.subjectModel);
+          } else {
+            this.getCollectionSubjects(this.subjectModel);
+          }
         }
       });
     } else {
@@ -185,7 +197,7 @@ export class MediaCollectionPage {
     });
   }
 
-  getCollectionTags() {
+  getCollectionTags(filter?) {
     (async () => {
       let tags = [];
       tags = await this.galleryService.getGalleryTags(this.mediaCollectionId);
@@ -197,11 +209,14 @@ export class MediaCollectionPage {
           addedTags.push(element['id']);
         }
       });
-      this.galleryTags.sort((a, b) => (a.name > b.name) ? 1 : -1)
+      this.galleryTags.sort((a, b) => (a.name > b.name) ? 1 : -1);
+      if (filter) {
+        this.filterCollectionsByTag(filter);
+      }
     }).bind(this)();
   }
 
-  getCollectionLocations() {
+  getCollectionLocations(filter?) {
     (async () => {
       let locations = [];
       locations = await this.galleryService.getGalleryLocations(this.mediaCollectionId);
@@ -213,11 +228,14 @@ export class MediaCollectionPage {
           addedLocations.push(element['id']);
         }
       });
-      this.galleryLocations.sort((a, b) => (a.name > b.name) ? 1 : -1)
+      this.galleryLocations.sort((a, b) => (a.name > b.name) ? 1 : -1);
+      if (filter) {
+        this.filterCollectionsByLocation(filter);
+      }
     }).bind(this)();
   }
 
-  getCollectionSubjects() {
+  getCollectionSubjects(filter?) {
     (async () => {
       let subjects = [];
       subjects = await this.galleryService.getGallerySubjects(this.mediaCollectionId);
@@ -229,7 +247,10 @@ export class MediaCollectionPage {
           addedSubjects.push(element['id']);
         }
       });
-      this.gallerySubjects.sort((a, b) => (a.name > b.name) ? 1 : -1)
+      this.gallerySubjects.sort((a, b) => (a.name > b.name) ? 1 : -1);
+      if (filter) {
+        this.filterCollectionsBySubject(filter);
+      }
     }).bind(this)();
   }
 
