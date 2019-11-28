@@ -261,7 +261,10 @@ export class MediaCollectionsPage {
 
   openMediaCollection(gallery) {
     const nav = this.app.getActiveNavs();
-    const params = {mediaCollectionId: gallery.id , mediaTitle: gallery.title, fetch: false};
+    const params = {
+      mediaCollectionId: gallery.id, mediaTitle: gallery.title, fetch: false,
+      tag: this.tagModel, subject: this.subjectModel, location: this.locationModel
+    };
     nav[0].push('media-collection', params, {animate: true, direction: 'forward', animation: 'ios-transition'});
   }
 

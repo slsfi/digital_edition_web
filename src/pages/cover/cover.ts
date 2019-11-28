@@ -44,6 +44,7 @@ export class CoverPage {
     public navParams: NavParams,
     private langService: LanguageService,
     private textService: TextService,
+    private mdService: MdContentService,
     protected sanitizer: DomSanitizer,
     protected params: NavParams,
     protected events: Events,
@@ -75,10 +76,11 @@ export class CoverPage {
     });
 
     this.checkIfCollectionHasChildrenPdfs();
-
-    if (this.hasMDCover) {
+    if (!isNaN(Number(this.id))) {
+      if (this.hasMDCover) {
         const folder = this.hasMDCover;
         this.getMdContent(`${this.lang}-${folder}-${this.id}`);
+      }
     }
   }
 
@@ -127,22 +129,39 @@ export class CoverPage {
   ionViewDidLoad() {
     this.getTocRoot(this.params.get('collectionID'));
     this.events.publish('pageLoaded:cover');
-
-    if ( !this.hasMDCover ) {
-      this.langService.getLanguage().subscribe(lang => {
-        this.textService.getTitlePage(this.id, lang).subscribe(
-          res => {
+    if (!isNaN(Number(this.id))) {
+      if (!this.hasMDCover) {
+        this.langService.getLanguage().subscribe(lang => {
+          this.textService.getTitlePage(this.id, lang).subscribe(
+            res => {
               // in order to get id attributes for tooltips
               this.text = this.sanitizer.bypassSecurityTrustHtml(
                 res.content.replace(/images\//g, 'assets/images/')
-                    .replace(/\.png/g, '.svg')
+                  .replace(/\.png/g, '.svg')
               );
             },
-          error =>  {
-            this.errorMessage = <any>error;
-          }
-        );
-      });
+            error => {
+              this.errorMessage = <any>error;
+            }
+          );
+        });
+      }
+    } else {
+      if (isNaN(Number(this.id))) {
+        this.langService.getLanguage().subscribe(lang => {
+          const fileID = lang + '-08';
+          this.hasMDCover = true;
+          this.mdService.getMdContent(fileID).subscribe(
+            res => {
+              // in order to get id attributes for tooltips
+              this.mdContent = res.content;
+            },
+            error => {
+              this.errorMessage = <any>error;
+            }
+          );
+        });
+      }
     }
   }
 }

@@ -63,6 +63,9 @@ export class MediaCollectionPage {
     this.singleId = this.navParams.get('id');
     this.type = this.navParams.get('type');
     this.mediaTitle = this.navParams.get('mediaTitle');
+    this.tagModel = this.navParams.get('tag');
+    this.subjectModel = this.navParams.get('subject');
+    this.locationModel = this.navParams.get('location');
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.projectMachineName = this.config.getSettings('app.machineName');
     try {
@@ -111,6 +114,15 @@ export class MediaCollectionPage {
         this.allMediaCollection = this.mediaCollection;
         this.mediaTitle = gallery[0].title ? gallery[0].title : this.mediaTitle;
         this.mediaDescription = gallery.description ? gallery.description : '';
+        if (this.tagModel !== undefined && this.tagModel !== '') {
+          this.filterCollectionsByTag(this.tagModel);
+        }
+        if (this.locationModel !== undefined && this.locationModel !== '') {
+          this.filterCollectionsByLocation(this.locationModel);
+        }
+        if (this.subjectModel !== undefined && this.subjectModel !== '') {
+          this.filterCollectionsBySubject(this.subjectModel);
+        }
       });
     } else {
       this.galleryService.getGalleryOccurrences(type, id)
