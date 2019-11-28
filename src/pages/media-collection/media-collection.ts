@@ -115,12 +115,15 @@ export class MediaCollectionPage {
         this.mediaTitle = gallery[0].title ? gallery[0].title : this.mediaTitle;
         this.mediaDescription = gallery.description ? gallery.description : '';
         if (this.tagModel !== undefined && this.tagModel !== '') {
+          this.prevTag = String(this.tagModel);
           this.filterCollectionsByTag(this.tagModel);
         }
         if (this.locationModel !== undefined && this.locationModel !== '') {
+          this.prevLoc = String(this.locationModel);
           this.filterCollectionsByLocation(this.locationModel);
         }
         if (this.subjectModel !== undefined && this.subjectModel !== '') {
+          this.prevSub = String(this.subjectModel);
           this.filterCollectionsBySubject(this.subjectModel);
         }
       });
