@@ -5,6 +5,7 @@ import { UserSettingsService } from '../../app/services/settings/user-settings.s
 import { FacsimileZoomModalPage } from '../facsimile-zoom/facsimile-zoom';
 import { ConfigService } from '@ngx-config/core';
 import { TranslateService } from '@ngx-translate/core/src/translate.service';
+import { LanguageService } from '../../app/services/languages/language.service';
 /**
  * Generated class for the FacsimileCollectionPage page.
  *
@@ -31,6 +32,7 @@ export class MediaCollectionPage {
   removeScanDetails = false;
   singleId: string;
   type: string;
+  language = 'sv';
 
   allTags = [];
   allLocations = [];
@@ -53,7 +55,8 @@ export class MediaCollectionPage {
     private userSettingsService: UserSettingsService,
     private modalController: ModalController,
     private config: ConfigService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    public languageService: LanguageService,
 
   ) {
     this.mediaCollectionId = this.navParams.get('mediaCollectionId');
@@ -67,20 +70,23 @@ export class MediaCollectionPage {
     } catch (e) {
       this.removeScanDetails = false;
     }
-    if (this.mediaCollectionId !== null && this.mediaCollectionId !== 'null' ) {
-      this.getMediaCollections();
-      this.getCollectionTags();
-      this.getCollectionLocations();
-      this.getCollectionSubjects();
-    } else {
-      this.mediaCollectionId = undefined;
-      this.getMediaCollections(this.singleId, this.type);
-    }
+    this.languageService.getLanguage().subscribe((lang: string) => {
+      this.language = lang;
+      if (this.mediaCollectionId !== null && this.mediaCollectionId !== 'null') {
+        this.getMediaCollections();
+        this.getCollectionTags();
+        this.getCollectionLocations();
+        this.getCollectionSubjects();
+      } else {
+        this.mediaCollectionId = undefined;
+        this.getMediaCollections(this.singleId, this.type);
+      }
+    });
   }
 
   getMediaCollections(id?, type?) {
     if ( id === undefined ) {
-      this.galleryService.getGallery(this.mediaCollectionId)
+      this.galleryService.getGallery(this.mediaCollectionId, this.language)
       .subscribe(gallery => {
         this.mediaCollection = gallery.gallery ? gallery.gallery : gallery;
         this.allMediaCollection = this.mediaCollection;

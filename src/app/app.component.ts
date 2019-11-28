@@ -791,6 +791,7 @@ export class DigitalEditionsApp {
         this.language = lang;
         this.getStaticPagesMenus();
         this.getAboutPages();
+        this.getMediaCollections();
       });
     });
   }

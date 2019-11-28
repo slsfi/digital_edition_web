@@ -46,7 +46,6 @@ export class MediaCollectionsPage {
     public translate: TranslateService,
     public cdRef: ChangeDetectorRef
   ) {
-    this.getMediaCollections();
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.projectMachineName = this.config.getSettings('app.machineName');
     try {
@@ -56,10 +55,11 @@ export class MediaCollectionsPage {
     }
     this.languageService.getLanguage().subscribe((lang: string) => {
       this.language = lang;
+      this.getMediaCollections();
+      this.getCollectionTags();
+      this.getCollectionLocations();
+      this.getCollectionSubjects();
     });
-    this.getCollectionTags();
-    this.getCollectionLocations();
-    this.getCollectionSubjects();
   }
 
   getMediaCollections() {

@@ -57,6 +57,16 @@ page-media-collection {
     }
     .filters ion-item{
         margin-right: 2rem;
+        padding: 0px;
+    }
+
+    ion-item button{
+      background-color: rgba(0,0,0,0.1) !important;
+    }
+    ion-item ion-label{
+      color: black !important;
+      font-size: 1rem !important;
+      margin-left: 0.5rem !important;
     }
     img{
         cursor: pointer;

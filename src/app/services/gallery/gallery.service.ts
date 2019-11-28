@@ -61,10 +61,10 @@ export class GalleryService {
     } catch (e) { }
   }
 
-  getGallery (id: string): Observable<any> {
+  getGallery (id: string, lang: string): Observable<any> {
     return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
                            this.config.getSettings('app.machineName') + '/gallery/data/' +
-                           id + '/sv'
+                           id + '/' + lang
                            )
                     .map(this.extractData)
                     .catch(this.handleError);

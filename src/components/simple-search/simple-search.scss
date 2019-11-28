@@ -214,13 +214,13 @@ simple-search {
 
     .facetCategories ion-item{
         height: 2.2rem;
-    }    
+    }
 
     .subFacets * {
         background-color: rgb(245, 245, 245);
         cursor: pointer;
     }
-    
+
     .subFacets > * {
         background-color: rgb(245, 245, 245);
         cursor: pointer;
@@ -297,5 +297,30 @@ simple-search {
     }
     .thumbnail img{
         max-width: 100px;
+        max-height: 200px;
+    }
+
+    .img-help{
+        top:0;
+        display: none;
+        position: absolute;
+        height: 90%;
+        width: 100px;
+        margin-top: 0.9rem;
+        z-index: 999;
+        background-color: rgba(0,0,0,0.45);
+        text-align: center;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .center{
+        line-height: 200px !important;
+    }
+
+    .thumbnail:hover{
+        max-width: 100px;
+        .img-help{
+            display: block;
+        }
     }
 }

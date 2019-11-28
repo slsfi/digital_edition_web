@@ -24,11 +24,11 @@
       {{"SearchApp.hitCount" | translate}}: {{totalHits}}
     </div>
   </div>
-  <ion-scroll 
+  <ion-scroll
     *ngIf="searchSuggestions.length"
-    class="search-suggestions" 
-    [ngStyle]="searchSuggestions && searchSuggestions.length > 0 && simpleSearchHeight > 0 ? {'height.px': searchSuggestions.length > 30 ? 90 : searchSuggestions.length * 50} : {'height': 0}" 
-    style="width:100%;" 
+    class="search-suggestions"
+    [ngStyle]="searchSuggestions && searchSuggestions.length > 0 && simpleSearchHeight > 0 ? {'height.px': searchSuggestions.length > 30 ? 90 : searchSuggestions.length * 50} : {'height': 0}"
+    style="width:100%;"
     scrollY="true">
     <ion-list scroll="true">
       <ion-item *ngFor="let item of searchSuggestions; let i = index" class="searchItem" (click)="selectAutocomplete(item)" [ngClass]="{'selected-suggestion': i == acIndex}">
@@ -53,7 +53,7 @@
               <ion-item *ngFor="let childItem of item.children">
                   <ion-label (click)="filterSubType(childItem)" class="subFacetsLabel">{{childItem.name}} <div class="count">{{childItem.count}}</div></ion-label>
               </ion-item>
-            </div>          
+            </div>
           </div>
         </div>
         <div class="facetsRight" *ngIf="showFacets" (click)="toggleFacets(true)">&nbsp;</div>
@@ -62,10 +62,11 @@
         <div *ngFor="let item of resultsToShow" >
           <ion-item class="searchItem">
               <div class="resultItem">
-                <div class="thumbnail" (click)="openGallery(item.textType, item.object_id)">
-                  <img *ngIf="item.textType=='person'" onerror="this.style.display='none'" src="{{apiEndPoint}}/{{projectMachineName}}/gallery/thumb/subject/{{item.object_id}}"/>
-                  <img *ngIf="item.textType=='location'" onerror="this.style.display='none'" src="{{apiEndPoint}}/{{projectMachineName}}/gallery/thumb/location/{{item.object_id}}"/>
-                  <img *ngIf="item.textType=='tag'" onerror="this.style.display='none'" src="{{apiEndPoint}}/{{projectMachineName}}/gallery/thumb/tag/{{item.object_id}}"/>
+                <div class="thumbnail" *ngIf="item.textType=='person' || item.textType=='location' || item.textType=='tag' " (click)="openGallery(item.textType, item.object_id)">
+                  <img *ngIf="item.textType=='person'" onerror="this.style.display='none';this.parentNode.style.display='none'" src="{{apiEndPoint}}/{{projectMachineName}}/gallery/thumb/subject/{{item.object_id}}"/>
+                  <img *ngIf="item.textType=='location'" onerror="this.style.display='none';this.parentNode.style.display='none'" src="{{apiEndPoint}}/{{projectMachineName}}/gallery/thumb/location/{{item.object_id}}"/>
+                  <img *ngIf="item.textType=='tag'" onerror="this.style.display='none';this.parentNode.style.display='none'" src="{{apiEndPoint}}/{{projectMachineName}}/gallery/thumb/tag/{{item.object_id}}"/>
+                  <div class="img-help"><div class="center">{{'photos'|translate}}</div></div>
                 </div>
                 <div class="data" (click)="gotToText(item.path, item.textType, item.matches, item.facsimilePage, item)">
                   <div class="textType {{ item.textType }}">
@@ -80,7 +81,7 @@
                   <span class="dates" *ngIf="item.date_born!='null'" innerHTML="{{item.date_born}}"></span>
                   <span class="dates" *ngIf="item.date_born || item.date_deceased">-</span>
                   <span class="dates" *ngIf="item.date_deceased!='null'" innerHTML="{{item.date_deceased}}"></span>
-                  <span class="dates" *ngIf="item.date_born || item.date_deceased">)</span>      
+                  <span class="dates" *ngIf="item.date_born || item.date_deceased">)</span>
                   <span class="highLightText" innerHTML="{{item.highLightText}}"></span>
                   <div *ngIf="item.collection_name || item.publication_name" class="coll_pub">
                     <span class="collection" innerHTML="{{item.collection_name}} - "></span>
@@ -146,7 +147,7 @@
                 <span class="dates" *ngIf="item.date_born!='null'" innerHTML="{{item.date_born}}"></span>
                 <span class="dates" *ngIf="item.date_born || item.date_deceased">–</span>
                 <span class="dates" *ngIf="item.date_deceased!='null'" innerHTML="{{item.date_deceased}}"></span>
-                <span class="dates" *ngIf="item.date_born || item.date_deceased">)</span>      
+                <span class="dates" *ngIf="item.date_born || item.date_deceased">)</span>
                 <span class="highLightText" innerHTML="{{item.highLightText}}"></span>
                 <div *ngIf="item.collection_name || item.publication_name" class="coll_pub">
                   <span class="collection" innerHTML="{{item.collection_name}} – "></span>
