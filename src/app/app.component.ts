@@ -417,6 +417,11 @@ export class DigitalEditionsApp {
       this.collectionsListWithTOC = collectionsTmp;
       if (this.showBooks) {
         this.pdfCollections = pdfCollections;
+        this.pdfCollections.sort(function (a, b) {
+          if (a['title'] < b['title']) { return -1; }
+          if (a['title'] > b['title']) { return 1; }
+          return 0;
+        });
       }
     }).bind(this)();
   }
