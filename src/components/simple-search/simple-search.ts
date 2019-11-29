@@ -24,6 +24,7 @@ export class SimpleSearchComponent {
 
   myInput: any;
   isLoading = false;
+  occurrencesOnNewPage = false;
   searchTypesMade = 0;
   searchTypesTotal = 3;
   searchSuggestions = [];
@@ -76,6 +77,12 @@ export class SimpleSearchComponent {
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.projectMachineName = this.config.getSettings('app.machineName');
     this.showPageNumbers = this.config.getSettings('simpleSearch.showPageNumbers');
+    try {
+      this.occurrencesOnNewPage = this.config.getSettings('OpenOccurrencesAndInfoOnNewPage');
+    } catch ( e ) {
+      this.occurrencesOnNewPage = false;
+    }
+
     try {
       this.userDefinedSearchFields = this.config.getSettings('simpleSearch.user_defined_search_fields');
     } catch (e) {
@@ -752,27 +759,37 @@ export class SimpleSearchComponent {
     this.searchResult.forEach(function (element) {
 
       if (element['_index'] === 'subject') {
-        if (subjectIds.indexOf(element['_source']['id']) === -1) {
+        if (subjectIds.indexOf(element['_source']['id']) === -1 && this.occurrencesOnNewPage) {
+          this.formatSubjectResults(element);
+        } else {
           this.formatSubjectResults(element);
         }
         subjectIds.push(Number(element['_source']['id']));
       } else if (element['_index'] === 'location') {
-        if (locationIds.indexOf(element['_source']['id']) === -1) {
+        if (locationIds.indexOf(element['_source']['id']) === -1 && this.occurrencesOnNewPage) {
+          this.formatLocationResults(element);
+        } else {
           this.formatLocationResults(element);
         }
         locationIds.push(Number(element['_source']['id']));
       } else if (element['_index'] === 'tag') {
-        if (tagIds.indexOf(element['_source']['id']) === -1) {
+        if (tagIds.indexOf(element['_source']['id']) === -1 && this.occurrencesOnNewPage) {
+          this.formatTagsResults(element);
+        } else {
           this.formatTagsResults(element);
         }
         tagIds.push(Number(element['_source']['id']));
       } else if (element['_index'] === 'song') {
-        if (songIds.indexOf(element['_source']['id']) === -1) {
+        if (songIds.indexOf(element['_source']['id']) === -1 && this.occurrencesOnNewPage) {
+          this.formatSongResults(element);
+        } else {
           this.formatSongResults(element);
         }
         songIds.push(Number(element['_source']['id']));
       } else {
-        if (textIds.indexOf(element['_source']['path']) === -1) {
+        if (textIds.indexOf(element['_source']['path']) === -1 && this.occurrencesOnNewPage) {
+          this.formatTextResults(userField, element);
+        } else {
           this.formatTextResults(userField, element);
         }
         textIds.push(String(element['_source']['path']));
