@@ -353,7 +353,7 @@ export class DigitalEditionsApp {
         this.tableOfContentsService.getTableOfContents(collection.id)
           .subscribe(
             tocItems => {
-              if (tocItems.collectionId === collection.id) {
+              if (String(tocItems.collectionId) === String(collection.id)) {
                 collection.accordionToc.toc = tocItems.children;
                 collection.loading = false;
               }
