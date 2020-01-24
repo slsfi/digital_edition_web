@@ -39,10 +39,6 @@
     <social-sharing [facebook]="showSocial.facebook" [twitter]="showSocial.twitter"></social-sharing>
     <div class="read-columns" dragScroll drag-scroll-y-disabled scrollbar-hidden="true" reachesRightBound="true"
       snap-disabled="true" snap-offset="0" [ngClass]="views.length > 1 ? 'multiple-columns' : 'single-column'">
-      <!--<div class="read-column" style="position: relative;">
-        <text-changer [legacyId]="legacyId"></text-changer>
-        <read-text [link]="establishedText.link"></read-text>
-      </div>-->
       <text-changer [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
       <div class="read-column" *ngFor="let view of views; let i = index;" id="read_div_{{i}}" scrollY="true"
         [ngStyle]="{'position': 'relative','max-width':(95/((views.length>1)?views.length:2))+'%','min-width':'25%'}"
@@ -51,13 +47,13 @@
           <ion-card-content>
             <ion-fab top left [ngClass]="(views.length>1)?'close-button-many':'close-button-one'">
               <button ion-fab mini>
-                <ion-icon *ngIf="view.established.show" name="book"></ion-icon>
-                <ion-icon *ngIf="view.comments.show" name="chatbubbles"></ion-icon>
-                <ion-icon *ngIf="view.facsimiles.show" name="images"></ion-icon>
-                <ion-icon *ngIf="view.manuscripts.show" name="clipboard"></ion-icon>
-                <ion-icon *ngIf="view.variations.show" name="copy"></ion-icon>
-                <ion-icon *ngIf="view.songexample.show" name="musical-note"></ion-icon>
-                <ion-icon *ngIf="view.introduction.show" name="information-circle"></ion-icon>
+                <ion-icon *ngIf="view.established.show" name="menu"></ion-icon>
+                <ion-icon *ngIf="view.comments.show" name="menu"></ion-icon>
+                <ion-icon *ngIf="view.facsimiles.show" name="menu"></ion-icon>
+                <ion-icon *ngIf="view.manuscripts.show" name="menu"></ion-icon>
+                <ion-icon *ngIf="view.variations.show" name="menu"></ion-icon>
+                <ion-icon *ngIf="view.songexample.show" name="menu"></ion-icon>
+                <ion-icon *ngIf="view.introduction.show" name="menu"></ion-icon>
               </button>
               <ion-fab-list *ngIf="views.length>1">
                 <button ion-fab *ngIf="displayToggle" (click)="removeSlide(i)">

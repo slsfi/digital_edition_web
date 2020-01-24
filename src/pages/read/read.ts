@@ -451,7 +451,8 @@ export class ReadPage /*implements OnDestroy*/ {
 
   showAllViews() {
     this.availableViewModes.forEach(function (viewmode) {
-      if (this.viewModeShouldBeShown(viewmode)) {
+      const viewTypesShown = this.getViewTypesShown();
+      if ( viewmode !== 'showAll' && this.viewModeShouldBeShown(viewmode) && viewTypesShown.indexOf(viewmode) === -1 ) {
         this.show = viewmode;
         this.addView(viewmode);
       }
