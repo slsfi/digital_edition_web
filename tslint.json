@@ -1,6 +1,6 @@
 {
   "rules": {
-        "callable-types": true,
+    "callable-types": true,
     "class-name": true,
     "comment-format": [
       true,
