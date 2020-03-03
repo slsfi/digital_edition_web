@@ -90,6 +90,7 @@ export class ReadPage /*implements OnDestroy*/ {
   search_title: any;
 
   matches: Array<string>;
+  external: string;
 
   typeVersion: string;
   displayToggles: Object;
@@ -284,6 +285,12 @@ export class ReadPage /*implements OnDestroy*/ {
         }
       });
     }
+
+    this.events.subscribe('show:view', (view, id) => {
+      // user and time are the same arguments passed in `events.publish(user, time)`
+      console.log('Welcome', view, 'at', id);
+      this.openNewExternalView(view, id);
+    });
 
     this.getAdditionalParams();
   }
@@ -1031,19 +1038,28 @@ export class ReadPage /*implements OnDestroy*/ {
     actionSheet.present();
   }
 
-  openNewView(id: any) {
-    if (id.viewType === 'facsimile') {
-      this.addView(id.viewType, id);
-    } else if (id.viewType === 'manuscriptFacsimile') {
-      this.addView('facsimile', id);
-    } else if (id.viewType === 'facsimileManuscript') {
-      this.addView('manuscript', id.id);
+  openNewExternalView(view: string, id: any) {
+    this.addView(view, id, null, true);
+  }
+
+  openNewView(event: any) {
+    if (event.viewType === 'facsimile') {
+      this.addView(event.viewType, event.id);
+    } else if (event.viewType === 'manuscriptFacsimile') {
+      this.addView('facsimile', event.id);
+    } else if (event.viewType === 'facsimileManuscript') {
+      this.addView('manuscript', event.id);
     } else {
-      this.addView(id.viewType, id.id);
+      this.addView(event.viewType, event.id);
     }
   }
 
-  addView(type: string, id?: string, fab?: FabContainer) {
+  addView(type: string, id?: string, fab?: FabContainer, external?: boolean) {
+    if ( external === true ) {
+      this.external = id;
+    } else {
+      this.external = null;
+    }
     if (this.availableViewModes.indexOf(type) !== -1) {
       this.views.push({
         content: `This is an upcoming ${type} view`,

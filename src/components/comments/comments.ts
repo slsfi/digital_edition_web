@@ -1,6 +1,7 @@
 import { Component, Input, Renderer, ElementRef, EventEmitter, Output } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ReadTextComponent } from '../read-text/read-text';
+import { TextService } from '../../app/services/texts/text.service';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { CommentService } from '../../app/services/comments/comment.service';
 import { Events } from 'ionic-angular';
@@ -18,6 +19,7 @@ export class CommentsComponent {
 
   @Input() link: string;
   @Input() matches?: Array<string>;
+  @Input() external?: string;
   @Output() openNewIntroView: EventEmitter<any> = new EventEmitter();
   public text: any;
   protected errorMessage: string;
@@ -26,6 +28,7 @@ export class CommentsComponent {
   constructor(
     protected readPopoverService: ReadPopoverService,
     protected commentService: CommentService,
+    protected textService: TextService,
     protected sanitizer: DomSanitizer,
     private renderer: Renderer,
     private elementRef: ElementRef,
@@ -33,7 +36,22 @@ export class CommentsComponent {
   ) {
     this.setUpTextListeners();
   }
+
   ngOnInit() {
+    if ( this.external !== undefined && this.external !== null ) {
+      const extParts = String(this.external).split(' ');
+      this.textService.getCollectionAndPublicationByLegacyId(extParts[0] + '_' + extParts[1]).subscribe(data => {
+        if ( data[0] !== undefined ) {
+          this.link = data[0]['coll_id'] + '_' + data[0]['pub_id'];
+        }
+        this.setText();
+      });
+    } else {
+      this.setText();
+    }
+  }
+
+  setText() {
     this.commentService.getComment(this.link).subscribe(
       text => {
           // in order to get id attributes for tooltips
@@ -63,6 +81,10 @@ export class CommentsComponent {
     }
   }
 
+  openNewView( event, id: any, type: string ) {
+    this.events.publish('show:view', type, id);
+  }
+
   openNewIntro( event, id: any ) {
     id.viewType = 'introduction';
     this.openNewIntroView.emit(id);
@@ -80,7 +102,20 @@ export class CommentsComponent {
         if ( target !== null && target !== undefined ) {
           this.scrollToHTMLElement(target, true);
         } else if ( targetId !== null && targetId !== undefined ) {
-          this.openNewIntro(event, {id: String(elem.getAttribute('href')).split('#')[0].trim()});
+          // Check if intro or same publication id
+          // Check class ref_introduction, readingtext
+          // Also check if already open and if same publication?
+          if ( elem.classList !== undefined ) {
+            const list = elem.classList;
+            if ( list.contains('ref_introduction') ) {
+              this.openNewIntro(event, {id: String(elem.getAttribute('href')).split('#')[0].trim()});
+            } else if ( list.contains('ref_readingtext') ) {
+              this.openNewView(event, String(elem.getAttribute('href')).split('#')[0].trim(), 'established');
+            } else if ( list.contains('ref_comment') ) {
+              this.openNewView(event, String(elem.getAttribute('href')).split('#')[0].trim(), 'comments');
+            }
+          }
+          // Some other text, open in new window
           setTimeout(function() {
             target = document.getElementsByName(targetId)[0] as HTMLElement;
             if ( target !== null && target !== undefined ) {
@@ -113,7 +148,11 @@ export class CommentsComponent {
           if ( event.target.previousSibling !== null ) {
             event.target.style.fontWeight = 'bold';
             if (event.target.previousSibling.previousSibling !== null) {
-              event.target.previousSibling.style.fontWeight = 'bold';
+              try {
+                event.target.previousSibling.style.fontWeight = 'bold';
+              } catch ( e ) {
+
+              }
             }
           }
           if ( event.target.nextSibling !== null && event.target.nextSibling.style !== undefined ) {
@@ -128,7 +167,11 @@ export class CommentsComponent {
           if (event.target !== undefined && event.target.previousSibling) {
             event.target.style.fontWeight = 'normal';
             if (event.target.previousSibling.previousSibling !== null) {
-              event.target.previousSibling.style.fontWeight = 'normal';
+              try {
+                event.target.previousSibling.style.fontWeight = 'normal';
+              } catch ( e ) {
+
+              }
             }
           }
           if ( event.target.nextSibling !== null && event.target.nextSibling.style !== undefined ) {
