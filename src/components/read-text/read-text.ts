@@ -21,6 +21,7 @@ export class ReadTextComponent {
 
   @Input() link: string;
   @Input() matches?: Array<string>;
+  @Input() external?: string;
   public text: any;
   protected errorMessage: string;
   defaultView: string;
@@ -47,7 +48,17 @@ export class ReadTextComponent {
   }
 
   ngOnInit() {
-    this.setText();
+    if ( this.external !== undefined && this.external !== null ) {
+      const extParts = String(this.external).split(' ');
+      this.textService.getCollectionAndPublicationByLegacyId(extParts[0] + '_' + extParts[1]).subscribe(data => {
+        if ( data[0] !== undefined ) {
+          this.link = data[0]['coll_id'] + '_' + data[0]['pub_id'];
+        }
+        this.setText();
+      });
+    } else {
+      this.setText();
+    }
   }
 
   ngAfterViewInit() {
