@@ -94,6 +94,7 @@ export class CommentsComponent {
     this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
 
       event.stopPropagation();
+      event.preventDefault();
       // This is tagging in href to another page e.g. introduction
       try {
         const elem: HTMLElement = event.target as HTMLElement;
@@ -107,11 +108,11 @@ export class CommentsComponent {
           // Also check if already open and if same publication?
           if ( elem.classList !== undefined ) {
             const list = elem.classList;
-            if ( list.contains('ref_introduction') ) {
+            if ( list.contains('introduction') ) {
               this.openNewIntro(event, {id: String(elem.getAttribute('href')).split('#')[0].trim()});
-            } else if ( list.contains('ref_readingtext') ) {
+            } else if ( list.contains('readingtext') ) {
               this.openNewView(event, String(elem.getAttribute('href')).split('#')[0].trim(), 'established');
-            } else if ( list.contains('ref_comment') ) {
+            } else if ( list.contains('comment') ) {
               this.openNewView(event, String(elem.getAttribute('href')).split('#')[0].trim(), 'comments');
             }
           }
@@ -122,6 +123,8 @@ export class CommentsComponent {
               this.scrollToHTMLElement(target, false);
             }
           }.bind(this), 500);
+        } else if ( elem.classList !== undefined && elem.classList.contains('ext') ) {
+          const ref = window.open(elem.href, '_blank', 'location=no');
         }
       } catch ( e ) {}
 
