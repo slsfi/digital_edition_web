@@ -29,6 +29,7 @@
       "en": "Zacharias Topeliuksen Kirjoitukset"
     }
   },
+  "showTutorial" : false,
   "TutorialSteps": [
     {
       "id": "welcome",

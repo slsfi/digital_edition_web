@@ -57,14 +57,14 @@ export class TextService {
           .catch(this.handleError);
   }
 
-  getPublicationByLegacyId(legacyId: string): Observable<any> {
+  getCollectionAndPublicationByLegacyId(legacyId: string): Observable<any> {
     return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
-        this.config.getSettings('app.machineName') + '/publication/legacy/' + legacyId)
+        this.config.getSettings('app.machineName') + '/legacy/' + legacyId)
         .map(res => {
           return res.json();
         })
         .catch(this.handleError);
-}
+  }
 
   getTitlePage(id: string, lang: string): Observable<any> {
     const data = `${id}`.split('_');
