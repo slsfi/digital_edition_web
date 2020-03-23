@@ -13,6 +13,9 @@
                     <button style="display: inline-block;" ion-fab color="primary" mini (click)="next()">
                         <ion-icon name="arrow-forward"></ion-icon>
                     </button>
+                    <button ion-fab mini (click)="rotate()">
+                      <ion-icon name="refresh"></ion-icon>
+                    </button>
                     <button *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()"
                         style="display: inline-block;" ion-fab color="primary" mini (click)="zoomIn()">
                         <ion-icon name="add"></ion-icon>
@@ -52,10 +55,10 @@
                 <div class="div_img">
                     <div *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()">
                         <img *ngIf="!facsimilePagesInfinite && (!backside || !backsides[activeImage])"
-                            [ngStyle]="{'transform':'scale('+zoom+')'}" [src]="images[activeImage]"
+                            [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg)'}" [src]="images[activeImage]"
                             class="facsimile-zoom-image">
                         <img *ngIf="!facsimilePagesInfinite && backside && backsides[activeImage]"
-                            [ngStyle]="{'transform':'scale('+zoom+')'}" [src]="backSide(images[activeImage])"
+                            [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg)'}" [src]="backSide(images[activeImage])"
                             class="facsimile-zoom-image">
                         <img *ngIf="facsimilePagesInfinite && facsNumber" [ngStyle]="{'transform':'scale('+zoom+')'}"
                             [src]="facsUrl + facsNumber" class="facsimile-zoom-image">

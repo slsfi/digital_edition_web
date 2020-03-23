@@ -23,6 +23,7 @@ export class FacsimileZoomModalPage {
   descriptions: any;
   activeImage: any;
   zoom = 1.0;
+  angle = 0;
 
   facsUrl = '';
   facsimilePagesInfinite = false;
@@ -39,6 +40,13 @@ export class FacsimileZoomModalPage {
               private userSettingsService: UserSettingsService) {
     this.manualPageNumber = 1;
     this.backsides = [];
+  }
+
+  rotate() {
+    this.angle += 90;
+    if ( this.angle >= 360 ) {
+      this.angle = 0;
+    }
   }
 
   cancel() {
