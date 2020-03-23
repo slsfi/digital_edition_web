@@ -15,7 +15,7 @@ page-read {
 		font-size: 1rem !important;
 		min-width: max-content;
 	}
-	
+
 	.segment-activated{
 		background-color: color($colors, primary) !important;
 		color: color($colors, white) !important;
@@ -35,7 +35,14 @@ page-read {
 
 	ion-icon.settings-icon.icon {
 		font-size: 1.8em;
-	}
+  }
+
+  .settings-icon,
+  .facebook-icon,
+  .twitter-icon,
+  .mail-icon {
+    cursor: pointer;
+  }
 
 	button.close-button.fab.fab-md {
 		position: absolute;
@@ -96,7 +103,7 @@ page-read {
     .tooltip {
         display: none;
 	}
-	
+
 	.tooltiptrigger{
 		cursor: pointer;
 	}
@@ -193,7 +200,7 @@ page-read {
 		right: -10px !important;
 		top: -15px;
 	}
-	
+
 	.occurrenceButton{
 		float: left;
 		z-index: 999;
@@ -223,7 +230,7 @@ page-read {
 		font-size: 1.0rem;
 		color: #78756f;
 	}
-	
+
 	.collections{
 		font-size: 1.0rem;
 		color: #78756f;
