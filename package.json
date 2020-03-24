@@ -6,6 +6,7 @@
     "scripts": {
         "build": "ionic-app-scripts build",
         "watch": "ionic-app-scripts watch",
+        "start": "ionic-app-scripts serve --wwwDir",
         "serve:before": "watch",
         "emulate:before": "build",
         "deploy:before": "build",
@@ -71,8 +72,7 @@
     "description": "Generic Platform for Digital Editions",
     "config": {
         "ionic_bundler": "webpack",
-        "ionic_generate_source_map": "true",
-        "ionic_webpack": "./config/webpack.config.js"
+        "ionic_generate_source_map": "true"
     },
     "cordova": {
         "plugins": {
