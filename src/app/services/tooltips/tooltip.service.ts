@@ -9,27 +9,37 @@ import { CommentService } from '../comments/comment.service';
 @Injectable()
 export class TooltipService {
 
-  private personTooltipUrl = '/tooltips/subject/';
   private placeTooltipUrl = '/tooltips/locations/';
-
-  constructor(private http: Http, private config: ConfigService, private commentService: CommentService) {}
+  private apiEndPoint: string;
+  private projectMachineName: string;
+  constructor(private http: Http, private config: ConfigService, private commentService: CommentService) {
+    this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
+    this.projectMachineName = this.config.getSettings('app.machineName');
+  }
 
   getPersonTooltip(id: string): Observable<any> {
+    let url = '';
+    // url = `${this.apiEndPoint}/${this.projectMachineName}/subject/${id}`
+    url = 'http://api.sls.fi/digitaledition/fsfd/subject/11354';
 
-    return this.http.get(  this.config.getSettings('app.apiEndpoint') + this.personTooltipUrl + id)
+    return this.http.get(url)
         .map(res => {
           const body = res.json();
-          return body[0] || {'name': 'Error', 'description': 'Person data not found'};
+          console.log(body);
+          return body[0] || {'name': 'Person', 'description': body.full_name};
         })
         .catch(this.handleError);
   }
 
   getPlaceTooltip(id: string): Observable<any> {
+    let url = '';
+    // url = this.config.getSettings('app.apiEndpoint') + this.placeTooltipUrl + id
+    url = 'http://api.sls.fi/digitaledition/fsfd/subject/11354';
 
-    return this.http.get(  this.config.getSettings('app.apiEndpoint') + this.placeTooltipUrl + id)
+    return this.http.get( url )
         .map(res => {
           const body = res.json();
-          return body[0] || {'name': 'Error', 'description': 'Place data not found'};
+          return body[0] || {'name': 'Plae', 'description': body.description};
         })
         .catch(this.handleError);
   }
@@ -44,14 +54,11 @@ export class TooltipService {
       const parts = id.split(';');
       const htmlId = parts[0];
       const elementId = parts[1].replace('end', 'en');
-
-
       return this.commentService.getComment(parts[0]).map(
         data => {
           const range = document.createRange();
           const doc = range.createContextualFragment(data);
           const element = doc.querySelector('#' + elementId).nextElementSibling;
-
           return {
             'name': 'Comment',
             'description': element.innerHTML.replace(/(<([^>]+)>)/ig, '').replace(/^p\d+/gi, '') }

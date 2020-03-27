@@ -135,6 +135,15 @@ export class ReadPage /*implements OnDestroy*/ {
 
   appUsesAccordionToc = false;
 
+  tooltips = {
+    'persons' : {},
+    'comments': {},
+    'variations': {},
+    'locations': {},
+    'changes': {},
+    'abbreviations': {}
+  };
+
   constructor(private app: App,
     public viewCtrl: ViewController,
     public navCtrl: NavController,
@@ -772,7 +781,11 @@ export class ReadPage /*implements OnDestroy*/ {
       }
     }.bind(this), 1000);
   }
-
+  // "comments": true,
+  // "personInfo": true,
+  // "placeInfo": true,
+  // "changes": true,
+  // "abbreviations": true
   scrollToTOC(element: HTMLElement) {
     try {
       if (element !== null) {
@@ -783,19 +796,25 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 
+  private getEventTarget(event) {
+    let eventTarget: any = document.createElement('div');
+    eventTarget['classList'] = [];
+
+    if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
+      eventTarget = event['target']['parentNode'];
+    } else if ( event.target !== undefined && event['target']['classList'].contains('tooltiptrigger') ) {
+      eventTarget = event.target;
+    } else if ( event.target !== undefined && eventTarget['classList'].contains('anchor') ) {
+      eventTarget = event.target;
+    }
+    return eventTarget;
+  }
+
   private setUpTextListeners() {
     // We must do it like this since we want to trigger an event on a dynamically loaded innerhtml.
     const nElement: any = this.elementRef.nativeElement;
       this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
-        let eventTarget: any = document.createElement('div');
-        eventTarget['classList'] = [];
-        if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
-          eventTarget = event['target']['parentNode'];
-        } else if ( event.target !== undefined && event['target']['classList'].contains('tooltiptrigger') ) {
-          eventTarget = event.target;
-        } else if ( event.target !== undefined && eventTarget['classList'].contains('anchor') ) {
-          eventTarget = event.target;
-        }
+        let eventTarget = this.getEventTarget(event);
 
         if ( eventTarget['classList'].contains('tooltiptrigger')) {
           if (eventTarget.hasAttribute('data-id')) {
@@ -817,6 +836,32 @@ export class ReadPage /*implements OnDestroy*/ {
           }
         }
       }).bind(this);
+      const toolTipsSettings = this.config.getSettings("settings.toolTips");
+      this.renderer.listen(nElement, 'mouseover', (event) => {
+        let eventTarget = this.getEventTarget(event);
+
+        if ( eventTarget['classList'].contains('tooltiptrigger')) {
+          if (eventTarget.hasAttribute('data-id')) {
+            if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
+              this.showPersonTooltip(eventTarget.getAttribute('data-id'));
+            } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
+              this.showPlaceTooltip(eventTarget.getAttribute('data-id'));
+            } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
+              this.showCommentTooltip(eventTarget.getAttribute('data-id'));
+            } else if (toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges') && this.readPopoverService.show.changes) {
+              // this.showChangesTooltip(eventTarget.getAttribute('data-id'));
+            }
+          } else {
+
+          }
+        } else if ( eventTarget['classList'].contains('anchor')) {
+          if (eventTarget.hasAttribute('href')) {
+            this.scrollToElement(eventTarget.getAttribute('href'));
+          }
+        }
+      }).bind(this);
+
+
   }
   public get isIntroduction() {
     return this.textType === TextType.Introduction;
@@ -944,9 +989,18 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   showPersonTooltip(id: string) {
+
+    if (this.tooltips.persons[id]) {
+      this.showTooltip(this.tooltips.persons[id]);
+      return;
+    }
+
+
     this.tooltipService.getPersonTooltip(id).subscribe(
       tooltip => {
         this.showTooltip(tooltip.description);
+        this.tooltips.persons[id] = tooltip.description;
+        console.log(tooltip.description)
       },
       error => {
         this.showTooltip('Could not get person information');
@@ -993,6 +1047,7 @@ export class ReadPage /*implements OnDestroy*/ {
     this.tooltipService.getCommentTooltip(id).subscribe(
       tooltip => {
         this.showTooltip(tooltip.description);
+        console.log(tooltip)
       },
       error => {
         this.showTooltip('Could not get comment');
@@ -1001,9 +1056,11 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   showTooltip(text: string) {
+    this.tooltipContent = text;
   }
 
   showPopover(myEvent) {
+    console.log(myEvent)
     const popover = this.popoverCtrl.create(ReadPopoverPage, {}, { cssClass: 'popover_settings' });
     popover.present({
       ev: myEvent

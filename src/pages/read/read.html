@@ -66,7 +66,7 @@
             </ion-fab>
             <ion-scroll scrollY="true" style="height:100vh;" class="card" #scrollBar>
               <div *ngIf="view.established.show">
-                <read-text [link]="establishedText.link" [matches]="matches" [external]="external"></read-text>
+                <read-text [tooltipContent]="tooltipContent" [link]="establishedText.link" [matches]="matches" [external]="external"></read-text>
               </div>
               <div *ngIf="view.comments.show">
                 <comments [link]="establishedText.link" [matches]="matches" [external]="external" (openNewIntroView)="openNewView($event)">

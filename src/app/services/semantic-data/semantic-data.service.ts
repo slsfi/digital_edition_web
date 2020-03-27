@@ -18,6 +18,15 @@ export class SemanticDataService {
     }
   }
 
+  getSematicDataTooltip(type: string, id: string): Observable<any> {
+    switch(type) {
+      case 'place':
+        return this.getPlace(id);
+        break;
+
+    }
+  }
+
   getFilterCollections(): Observable<any[]> {
     return this.http.get('assets/filterCollections.json')
       .map(this.extractData)
