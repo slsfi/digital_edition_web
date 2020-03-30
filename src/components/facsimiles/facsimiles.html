@@ -19,17 +19,28 @@
 </ion-item>
 
 <div>
-  <img *ngIf="!facsimilePagesInfinite" [src]="images ? images[activeImage] : ''" style="width: 100%;"
-    [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg)'}" (wheel)="onMouseWheel($event)" (pan)="handleSwipeEvent($event)" (mouseup)="setLatestPos($event)">
+  <img *ngIf="!facsimilePagesInfinite"
+    [src]="images ? images[activeImage] : ''"
+    style="width: 100%;"
+    [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
+    (wheel)="onMouseWheel($event)"
+    (pan)="handleSwipeEvent($event)"
+    (mouseup)="onMouseUp($event)"
+    (touchend)="onTouchEnd($event)"
+  >
 </div>
-
 
 <div>
-  <img *ngIf="facsimilePagesInfinite && facsNumber" [src]="facsUrl + facsNumbe" style="width: 100%;"
-    [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg)'}" (wheel)="onMouseWheel($event)" (pan)="handleSwipeEvent($event)" (mouseup)="setLatestPos($event)">
+  <img *ngIf="facsimilePagesInfinite && facsNumber"
+    [src]="facsUrl + facsNumbe"
+    style="width: 100%;"
+    [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
+    (wheel)="onMouseWheel($event)"
+    (pan)="handleSwipeEvent($event)"
+    (mouseup)="onMouseUp($event)"
+    (touchend)="onTouchEnd($event)"
+  >
 </div>
-
-
 
 <ion-fab middle left class="leftFacsimileArrow">
   <button ion-fab color="primary" mini (click)="previous()">
@@ -60,6 +71,6 @@
 <div class="tei" [innerHTML]="text" [class.show_comments]="readPopoverService.show.comments"
   [class.show_personInfo]="readPopoverService.show.personInfo"
   [class.show_abbreviations]="readPopoverService.show.abbreviations"
-  [class.show_pageNumbering]="readPopoverService.show.pageNumbering" 
+  [class.show_pageNumbering]="readPopoverService.show.pageNumbering"
   [ngClass]="(readPopoverService.fontsize==0)?'smallFont':(readPopoverService.fontsize==1)?'mediumFont':'largeFont'">
 </div>

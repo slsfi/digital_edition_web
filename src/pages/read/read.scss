@@ -15,7 +15,7 @@ page-read {
 		font-size: 1rem !important;
 		min-width: max-content;
 	}
-	
+
 	.segment-activated{
 		background-color: color($colors, primary) !important;
 		color: color($colors, white) !important;
@@ -96,7 +96,7 @@ page-read {
     .tooltip {
         display: none;
 	}
-	
+
 	.tooltiptrigger{
 		cursor: pointer;
 	}
@@ -193,7 +193,7 @@ page-read {
 		right: -10px !important;
 		top: -15px;
 	}
-	
+
 	.occurrenceButton{
 		float: left;
 		z-index: 999;
@@ -223,7 +223,7 @@ page-read {
 		font-size: 1.0rem;
 		color: #78756f;
 	}
-	
+
 	.collections{
 		font-size: 1.0rem;
 		color: #78756f;
@@ -236,5 +236,14 @@ page-read {
 	.swiper-slide .swiper-slide-active{
 	   width: 240px;//your width here
 	   border: 1px solid black;
-   }
- }
+  }
+}
+
+.no-scroll {
+  padding-top: 40px;
+  height: 100%;
+
+  .scroll-content {
+    overflow: hidden;
+  }
+}

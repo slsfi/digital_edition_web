@@ -21,6 +21,16 @@
   </ion-toolbar>
 </ion-header>
 
+<!-- Main content without scroll. The mobile facsimile requires a no scrolling content to function correctly.
+This is a dirty hack only because of the pending refactor. -->
+<div *ngIf="userSettingsService.isMobile() && show === 'facsimiles'; else mainContent" class="no-scroll">
+  <ion-content padding (swipe)="swipePrevNext($event)" color="secondary">
+    <facsimiles [itemId]="establishedText.link" [matches]="matches" [facsID]="facs_id" [facsNr]="facs_nr" [songID]="song_id"></facsimiles>
+  </ion-content>
+</div>
+
+<!-- Main content with scroll -->
+<ng-template #mainContent>
 <ion-content padding (swipe)="swipePrevNext($event)" color="secondary">
   <div *ngIf="userSettingsService.isDesktop() && !userSettingsService.isTablet()" class="column-container">
 
@@ -64,7 +74,8 @@
                 </button>
               </ion-fab-list>
             </ion-fab>
-            <ion-scroll scrollY="true" style="height:100vh;" class="card" #scrollBar>
+            <!-- Don't scroll in facsimile view -->
+            <ion-scroll [scrollY]="!view.facsimiles.show" style="height:100vh;" class="card" #scrollBar>
               <div *ngIf="view.established.show">
                 <read-text [link]="establishedText.link" [matches]="matches" [external]="external"></read-text>
               </div>
@@ -213,3 +224,4 @@
   </ng-container>
 
 </ion-content>
+</ng-template>
