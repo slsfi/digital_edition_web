@@ -97,9 +97,9 @@ export class CommentsComponent {
       event.preventDefault();
       // This is tagging in href to another page e.g. introduction
       try {
-        const elem: HTMLElement = event.target as HTMLElement;
+        const elem: HTMLAnchorElement = event.target as HTMLAnchorElement;
         const targetId = String(elem.getAttribute('href')).split('#')[1];
-        let target = document.getElementsByName(targetId)[0] as HTMLElement;
+        let target = document.getElementsByName(targetId)[0] as HTMLAnchorElement;
         if ( target !== null && target !== undefined ) {
           this.scrollToHTMLElement(target, true);
         } else if ( targetId !== null && targetId !== undefined ) {
@@ -118,7 +118,7 @@ export class CommentsComponent {
           }
           // Some other text, open in new window
           setTimeout(function() {
-            target = document.getElementsByName(targetId)[0] as HTMLElement;
+            target = document.getElementsByName(targetId)[0] as HTMLAnchorElement;
             if ( target !== null && target !== undefined ) {
               this.scrollToHTMLElement(target, false);
             }

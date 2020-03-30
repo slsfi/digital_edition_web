@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage';
 import { ToastController, Events, ModalController } from 'ionic-angular';
 import { IllustrationPage } from '../../pages/illustration/illustration';
 import { ConfigService } from '@ngx-config/core';
+import { TextCacheService } from '../../app/services/texts/text-cache.service';
 
 /**
  * Generated class for the ReadTextComponent component.
@@ -22,6 +23,7 @@ export class ReadTextComponent {
   @Input() link: string;
   @Input() matches?: Array<string>;
   @Input() external?: string;
+  @Input() tooltipContent: string;
   public text: any;
   protected errorMessage: string;
   defaultView: string;
@@ -72,14 +74,6 @@ export class ReadTextComponent {
         const hashNumber = event.target.parentNode.hash;
         const imageNumber = hashNumber.split('#')[1];
         this.openIllustration(imageNumber);
-      }
-    });
-    this.renderer.listen(this.elementRef.nativeElement, 'mouseover', (event) => {
-      if ((event.target.parentNode.classList.contains('tooltiptrigger') || event.target.classList.contains('tooltiptrigger')) &&
-        this.readPopoverService.show.comments) {
-        if (event.target !== undefined) {
-          this.showTooltip(event);
-        }
       }
     });
   }
@@ -145,6 +139,9 @@ export class ReadTextComponent {
     );
   }
 
+  showTooltip(origin: any) {
+  }
+
   doAnalytics() {
     try {
       (<any>window).ga('send', 'event', {
@@ -154,37 +151,6 @@ export class ReadTextComponent {
         eventValue: 10
       });
     } catch ( e ) {
-    }
-  }
-
-  showTooltip(origin: any) {
-    let elem = [];
-    if (origin.target.nextSibling !== null && origin.target.nextSibling !== undefined &&
-      !String(origin.target.nextSibling.className).includes('tooltiptrigger')) {
-      elem = origin.target;
-    } else if (origin.target.parentNode.nextSibling !== null && origin.target.parentNode.nextSibling !== undefined) {
-      elem = origin.target.parentNode;
-    }
-    if (elem['nextSibling'] !== null && elem['nextSibling'] !== undefined) {
-      if (elem['nextSibling'].className !== undefined && String(elem['nextSibling'].className).includes('tooltip')) {
-        this.toolTipPosition = {
-          top: (elem['offsetTop'] - (elem['offsetHeight'] / 2) + 4) +
-            'px', left: (elem['offsetLeft'] + elem['offsetWidth'] + 4) + 'px'
-        };
-        this.showToolTip = true;
-        this.toolTipText = elem['nextSibling'].textContent;
-        if ((elem['offsetParent'].clientWidth) < ((elem['offsetLeft'] + elem['offsetWidth'] + 70))) {
-          this.toolTipPosition = {
-            top: (elem['offsetTop'] - (elem['offsetHeight'] / 2) + 40) +
-              'px', left: (elem['offsetLeft'] + elem['offsetWidth'] - 100) + 'px'
-          };
-        }
-
-        setTimeout(() => {
-          this.showToolTip = false;
-          this.toolTipText = '';
-        }, 5000);
-      }
     }
   }
 }
