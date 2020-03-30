@@ -68,7 +68,14 @@ page-read {
 
 	ion-icon.settings-icon.icon {
 		font-size: 1.8em;
-	}
+  }
+
+  .settings-icon,
+  .facebook-icon,
+  .twitter-icon,
+  .mail-icon {
+    cursor: pointer;
+  }
 
 	button.close-button.fab.fab-md {
 		position: absolute;
@@ -269,5 +276,14 @@ page-read {
 	.swiper-slide .swiper-slide-active{
 	   width: 240px;//your width here
 	   border: 1px solid black;
-   }
- }
+  }
+}
+
+.no-scroll {
+  padding-top: 40px;
+  height: 100%;
+
+  .scroll-content {
+    overflow: hidden;
+  }
+}
