@@ -4,12 +4,20 @@
       <ion-grid>
         <ion-row>
           <ion-col>
+            <div class="mail-icon" *ngIf="showSocial.email" shareButton="email" (click)="shareEmail()"><ion-icon name="mail"></ion-icon></div>
+          </ion-col>
+          <ion-col>
+            <div class="facebook-icon" *ngIf="showSocial.facebook" shareButton="facebook" (click)="shareFacebook()"><ion-icon name="logo-facebook"></ion-icon></div>
+          </ion-col>
+          <ion-col>
+            <div class="twitter-icon" *ngIf="showSocial.twitter" shareButton="twitter"><ion-icon name="logo-twitter" (click)="shareTwitter()"></ion-icon></div>
+          </ion-col>
+          <ion-col>
             <div name="download" (click)="download()">
               <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
               <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
             </div>
           </ion-col>
-          <ion-col></ion-col>
           <ion-col>
             <div (click)="showPopover($event)">
               <ion-icon class="settings-icon" name="settings"></ion-icon>
@@ -46,7 +54,6 @@ This is a dirty hack only because of the pending refactor. -->
       </button>
     </ion-fab>
 
-    <social-sharing [facebook]="showSocial.facebook" [twitter]="showSocial.twitter"></social-sharing>
     <div class="read-columns" dragScroll drag-scroll-y-disabled scrollbar-hidden="true" reachesRightBound="true"
       snap-disabled="true" snap-offset="0" [ngClass]="views.length > 1 ? 'multiple-columns' : 'single-column'">
       <text-changer [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
