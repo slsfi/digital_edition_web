@@ -76,14 +76,6 @@ export class ReadTextComponent {
         this.openIllustration(imageNumber);
       }
     });
-    this.renderer.listen(this.elementRef.nativeElement, 'mouseover', (event) => {
-      if ((event.target.parentNode.classList.contains('tooltiptrigger') || event.target.classList.contains('tooltiptrigger')) &&
-        this.readPopoverService.show.comments) {
-        if (event.target !== undefined) {
-          this.showTooltip(event);
-        }
-      }
-    });
   }
 
   openIllustration(imageNumber) {
@@ -145,6 +137,9 @@ export class ReadTextComponent {
       },
       error => { this.errorMessage = <any>error }
     );
+  }
+
+  showTooltip(origin: any) {
   }
 
   doAnalytics() {

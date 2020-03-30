@@ -80,6 +80,9 @@ export class ReadPage /*implements OnDestroy*/ {
   hasOccurrenceResults = false;
   showOccurrencesModal = false;
   searchResult: string;
+  showToolTip: boolean;
+  toolTipPosition: object;
+  toolTipText: string;
 
   divWidth = '100px';
 
@@ -171,6 +174,7 @@ export class ReadPage /*implements OnDestroy*/ {
   ) {
     this.isCached();
     this.searchResult = null;
+    this.toolTipPosition = { top: 40 + 'px', left: 100 + 'px' };
 
     try {
       this.appUsesAccordionToc = this.config.getSettings('AccordionTOC');
@@ -781,11 +785,7 @@ export class ReadPage /*implements OnDestroy*/ {
       }
     }.bind(this), 1000);
   }
-  // "comments": true,
-  // "personInfo": true,
-  // "placeInfo": true,
-  // "changes": true,
-  // "abbreviations": true
+
   scrollToTOC(element: HTMLElement) {
     try {
       if (element !== null) {
@@ -842,12 +842,21 @@ export class ReadPage /*implements OnDestroy*/ {
 
         if ( eventTarget['classList'].contains('tooltiptrigger')) {
           if (eventTarget.hasAttribute('data-id')) {
+            let elem = event.target;
+            this.toolTipPosition = {
+              top: (elem['offsetTop'] - (elem['offsetHeight'] / 2) + 4) + 'px',
+              left: (elem['offsetLeft'] + elem['offsetWidth'] + 4) + 'px'
+            };
+            setTimeout(() => {
+              this.showToolTip = false;
+              this.toolTipText = '';
+            }, 5000);
             if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
-              this.showPersonTooltip(eventTarget.getAttribute('data-id'));
+              this.showPersonTooltip(eventTarget.getAttribute('data-id'), event);
             } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
-              this.showPlaceTooltip(eventTarget.getAttribute('data-id'));
+              this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
             } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
-              this.showCommentTooltip(eventTarget.getAttribute('data-id'));
+              this.showCommentTooltip(eventTarget.getAttribute('data-id'), event);
             } else if (toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges') && this.readPopoverService.show.changes) {
               // this.showChangesTooltip(eventTarget.getAttribute('data-id'));
             }
@@ -988,33 +997,31 @@ export class ReadPage /*implements OnDestroy*/ {
     );
   }
 
-  showPersonTooltip(id: string) {
-
+  showPersonTooltip(id: string, origin: any) {
     if (this.tooltips.persons[id]) {
-      this.showTooltip(this.tooltips.persons[id]);
+      this.setToolTipText(this.tooltips.persons[id]);
       return;
     }
 
 
     this.tooltipService.getPersonTooltip(id).subscribe(
       tooltip => {
-        this.showTooltip(tooltip.description);
+        this.setToolTipText(tooltip.description);
         this.tooltips.persons[id] = tooltip.description;
-        console.log(tooltip.description)
       },
       error => {
-        this.showTooltip('Could not get person information');
+        this.setToolTipText('Could not get person information');
       }
     );
   }
 
-  showPlaceTooltip(id: string) {
+  showPlaceTooltip(id: string, origin: any) {
     this.tooltipService.getPlaceTooltip(id).subscribe(
       tooltip => {
-        this.showTooltip(tooltip.description);
+        this.setToolTipText(tooltip.description);
       },
       error => {
-        this.showTooltip('Could not get place information');
+        this.setToolTipText('Could not get place information');
       }
     );
   }
@@ -1037,26 +1044,20 @@ export class ReadPage /*implements OnDestroy*/ {
     modal.present();
   }
 
-
-
-
-
-  showCommentTooltip(id: string) {
-
+  showCommentTooltip(id: string, origin: any) {
     id = this.establishedText.link + ';' + id;
     this.tooltipService.getCommentTooltip(id).subscribe(
       tooltip => {
-        this.showTooltip(tooltip.description);
-        console.log(tooltip)
+        this.setToolTipText(tooltip.description);
       },
       error => {
-        this.showTooltip('Could not get comment');
+        this.setToolTipText('Could not get comment');
       }
     );
   }
 
-  showTooltip(text: string) {
-    this.tooltipContent = text;
+  setToolTipText(text: string) {
+      this.toolTipText = text;
   }
 
   showPopover(myEvent) {

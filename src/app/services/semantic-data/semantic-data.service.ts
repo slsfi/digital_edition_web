@@ -22,8 +22,6 @@ export class SemanticDataService {
     switch(type) {
       case 'place':
         return this.getPlace(id);
-        break;
-
     }
   }
 
