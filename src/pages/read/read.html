@@ -4,12 +4,20 @@
       <ion-grid>
         <ion-row>
           <ion-col>
+            <div class="mail-icon" *ngIf="showSocial.email" shareButton="email" (click)="shareEmail()"><ion-icon name="mail"></ion-icon></div>
+          </ion-col>
+          <ion-col>
+            <div class="facebook-icon" *ngIf="showSocial.facebook" shareButton="facebook" (click)="shareFacebook()"><ion-icon name="logo-facebook"></ion-icon></div>
+          </ion-col>
+          <ion-col>
+            <div class="twitter-icon" *ngIf="showSocial.twitter" shareButton="twitter"><ion-icon name="logo-twitter" (click)="shareTwitter()"></ion-icon></div>
+          </ion-col>
+          <ion-col>
             <div name="download" (click)="download()">
               <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
               <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
             </div>
           </ion-col>
-          <ion-col></ion-col>
           <ion-col>
             <div (click)="showPopover($event)">
               <ion-icon class="settings-icon" name="settings"></ion-icon>
@@ -21,6 +29,16 @@
   </ion-toolbar>
 </ion-header>
 
+<!-- Main content without scroll. The mobile facsimile requires a no scrolling content to function correctly.
+This is a dirty hack only because of the pending refactor. -->
+<div *ngIf="userSettingsService.isMobile() && show === 'facsimiles'; else mainContent" class="no-scroll">
+  <ion-content padding (swipe)="swipePrevNext($event)" color="secondary">
+    <facsimiles [itemId]="establishedText.link" [matches]="matches" [facsID]="facs_id" [facsNr]="facs_nr" [songID]="song_id"></facsimiles>
+  </ion-content>
+</div>
+
+<!-- Main content with scroll -->
+<ng-template #mainContent>
 <ion-content padding (swipe)="swipePrevNext($event)" color="secondary">
   <div *ngIf="userSettingsService.isDesktop() && !userSettingsService.isTablet()" class="column-container">
 
@@ -36,7 +54,6 @@
       </button>
     </ion-fab>
 
-    <social-sharing [facebook]="showSocial.facebook" [twitter]="showSocial.twitter"></social-sharing>
     <div class="read-columns" dragScroll drag-scroll-y-disabled scrollbar-hidden="true" reachesRightBound="true"
       snap-disabled="true" snap-offset="0" [ngClass]="views.length > 1 ? 'multiple-columns' : 'single-column'">
       <text-changer [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
@@ -66,7 +83,7 @@
             </ion-fab>
             <!-- Don't scroll in facsimile view -->
             <ion-scroll [scrollY]="!view.facsimiles.show" style="height:100vh;" class="card" #scrollBar>
-              <div *ngIf="showToolTip" class="toolTip" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}">{{toolTipText}}</div>
+              <div class="toolTip" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}">{{toolTipText}}</div>
               <div *ngIf="view.established.show">
                 <read-text [link]="establishedText.link" [matches]="matches" [external]="external"></read-text>
               </div>
@@ -215,3 +232,4 @@
   </ng-container>
 
 </ion-content>
+</ng-template>

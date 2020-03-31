@@ -35,6 +35,7 @@ import { ReferenceDataModalPage } from '../reference-data-modal/reference-data-m
 import { OccurrencesPage } from '../occurrences/occurrences';
 import { OccurrenceResult } from '../../app/models/occurrence.model';
 import { SearchAppPage } from '../search-app/search-app';
+import { SocialSharing } from '@ionic-native/social-sharing';
 
 /**
  * A page used for reading publications.
@@ -124,6 +125,39 @@ export class ReadPage /*implements OnDestroy*/ {
     instagram: false
   };
 
+  shareFacebook() {
+    //
+  }
+
+  shareTwitter() {
+    //
+  }
+
+  shareInstagram() {
+    //
+  }
+
+  shareEmail() {
+    //
+  }
+
+  nativeEmail() {
+    // Check if sharing via email is supported
+    this.socialSharing.canShareViaEmail().then(() => {
+      console.log('Sharing via email is possible');
+
+      // Share via email
+      this.socialSharing.shareViaEmail('Body', 'Subject', ['recipient@example.org']).then(() => {
+        // Success!
+      }).catch(() => {
+        // Error!
+        console.log('Email error')
+      });
+    }).catch(() => {
+      console.log('Sharing via email is not possible');
+    });
+  }
+
   show = 'established'; // Mobile tabs
 
   availableViewModes = [
@@ -168,7 +202,8 @@ export class ReadPage /*implements OnDestroy*/ {
     private platform: Platform,
     private storage: Storage,
     private userSettingsService: UserSettingsService,
-    public publicationCacheService: PublicationCacheService
+    public publicationCacheService: PublicationCacheService,
+    private socialSharing: SocialSharing
   ) {
     this.isCached();
     this.searchResult = null;
