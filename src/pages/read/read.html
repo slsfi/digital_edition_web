@@ -64,8 +64,9 @@
                 </button>
               </ion-fab-list>
             </ion-fab>
-            <ion-scroll scrollY="true" style="height:100vh;" class="card" #scrollBar>
-              <div class="toolTip" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}">{{toolTipText}}</div>
+            <!-- Don't scroll in facsimile view -->
+            <ion-scroll [scrollY]="!view.facsimiles.show" style="height:100vh;" class="card" #scrollBar>
+              <div *ngIf="showToolTip" class="toolTip" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}">{{toolTipText}}</div>
               <div *ngIf="view.established.show">
                 <read-text [link]="establishedText.link" [matches]="matches" [external]="external"></read-text>
               </div>
