@@ -74,7 +74,6 @@ export class ReadPage /*implements OnDestroy*/ {
   appName: string;
   tocRoot: TableOfContentsCategory[];
   popover: ReadPopoverPage;
-  tooltipContent: any;
   subTitle: string;
   cacheItem = false;
   collectionTitle: string;

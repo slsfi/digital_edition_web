@@ -23,13 +23,9 @@ export class ReadTextComponent {
   @Input() link: string;
   @Input() matches?: Array<string>;
   @Input() external?: string;
-  @Input() tooltipContent: string;
   public text: any;
   protected errorMessage: string;
   defaultView: string;
-  showToolTip: boolean;
-  toolTipPosition: object;
-  toolTipText: string;
 
   constructor(
     public events: Events,
@@ -44,9 +40,6 @@ export class ReadTextComponent {
     protected modalController: ModalController
   ) {
     this.defaultView = this.config.getSettings('defaults.ReadModeView');
-    this.showToolTip = false;
-    this.toolTipPosition = { top: 40 + 'px', left: 100 + 'px' };
-    this.toolTipText = '';
   }
 
   ngOnInit() {
@@ -65,11 +58,6 @@ export class ReadTextComponent {
 
   ngAfterViewInit() {
     this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
-      if (event.target.classList.contains('variantScrollTarget') && this.readPopoverService.show.comments) {
-        if (event.target !== undefined) {
-          this.showTooltip(event);
-        }
-      }
       if (event.target.parentNode.classList.contains('ref_illustration')) {
         const hashNumber = event.target.parentNode.hash;
         const imageNumber = hashNumber.split('#')[1];
@@ -137,9 +125,6 @@ export class ReadTextComponent {
       },
       error => { this.errorMessage = <any>error }
     );
-  }
-
-  showTooltip(origin: any) {
   }
 
   doAnalytics() {
