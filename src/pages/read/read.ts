@@ -141,9 +141,7 @@ export class ReadPage /*implements OnDestroy*/ {
   tooltips = {
     'persons' : {},
     'comments': {},
-    'variations': {},
-    'locations': {},
-    'changes': {},
+    'places': {},
     'abbreviations': {}
   };
 
@@ -784,6 +782,15 @@ export class ReadPage /*implements OnDestroy*/ {
         console.log(e);
       }
     }.bind(this), 1000);
+    this.renderer.listen(this.elementRef.nativeElement, 'mouseover', (event) => {
+      if ((event.target.parentNode.classList.contains('tooltiptrigger') || event.target.classList.contains('tooltiptrigger')) &&
+        this.readPopoverService.show.changes) {
+        if (event.target !== undefined) {
+          this.showChangesTooltip(event);
+        }
+      }
+    });
+
   }
 
   scrollToTOC(element: HTMLElement) {
@@ -839,26 +846,28 @@ export class ReadPage /*implements OnDestroy*/ {
       const toolTipsSettings = this.config.getSettings("settings.toolTips");
       this.renderer.listen(nElement, 'mouseover', (event) => {
         let eventTarget = this.getEventTarget(event);
+        let elem = event.target;
 
         if ( eventTarget['classList'].contains('tooltiptrigger')) {
+          this.toolTipPosition = {
+            top: (elem['offsetTop'] - (elem['offsetHeight'] / 2) + 4) + 'px',
+            left: (elem['offsetLeft'] + elem['offsetWidth'] + 14) + 'px'
+          };
+          this.showToolTip = true;
+          clearTimeout(window["reload_timer"]);
+          this.hideToolTip();
+
           if (eventTarget.hasAttribute('data-id')) {
-            let elem = event.target;
-            this.toolTipPosition = {
-              top: (elem['offsetTop'] - (elem['offsetHeight'] / 2) + 4) + 'px',
-              left: (elem['offsetLeft'] + elem['offsetWidth'] + 4) + 'px'
-            };
-            setTimeout(() => {
-              this.showToolTip = false;
-              this.toolTipText = '';
-            }, 5000);
             if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
               this.showPersonTooltip(eventTarget.getAttribute('data-id'), event);
             } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
               this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
+            } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
+              this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
             } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
               this.showCommentTooltip(eventTarget.getAttribute('data-id'), event);
-            } else if (toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges') && this.readPopoverService.show.changes) {
-              // this.showChangesTooltip(eventTarget.getAttribute('data-id'));
+            } else if (toolTipsSettings.variations && eventTarget['classList'].contains('ttVariant') && this.readPopoverService.show.placeInfo) {
+              this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
             }
           } else {
 
@@ -886,6 +895,12 @@ export class ReadPage /*implements OnDestroy*/ {
     this.textType = TextType.Introduction;
     this.establishedText.content = '';
     this.getIntroduction(this.params.get('collectionID'), this.translate.currentLang);
+  }
+
+  hideToolTip() {
+    window["reload_timer"] = setTimeout(() => {
+      this.showToolTip = false;
+    }, 4000);
   }
 
 
@@ -1003,7 +1018,6 @@ export class ReadPage /*implements OnDestroy*/ {
       return;
     }
 
-
     this.tooltipService.getPersonTooltip(id).subscribe(
       tooltip => {
         this.setToolTipText(tooltip.description);
@@ -1015,10 +1029,42 @@ export class ReadPage /*implements OnDestroy*/ {
     );
   }
 
+  showChangesTooltip(origin: any) {
+    let elem = [];
+    if (origin.target.nextSibling !== null && origin.target.nextSibling !== undefined &&
+      !String(origin.target.nextSibling.className).includes('tooltiptrigger')) {
+      elem = origin.target;
+    } else if (origin.target.parentNode.nextSibling !== null && origin.target.parentNode.nextSibling !== undefined) {
+      elem = origin.target.parentNode;
+    }
+    if (elem['nextSibling'] !== null && elem['nextSibling'] !== undefined) {
+      if (elem['nextSibling'].className !== undefined && String(elem['nextSibling'].className).includes('tooltip')) {
+        this.toolTipPosition = {
+          top: (elem['offsetTop'] - (elem['offsetHeight'] / 2) + 4) +
+            'px', left: (elem['offsetLeft'] + elem['offsetWidth'] + 4) + 'px'
+        };
+        this.showToolTip = true;
+        this.toolTipText = elem['nextSibling'].textContent;
+        if ((elem['offsetParent'].clientWidth) < ((elem['offsetLeft'] + elem['offsetWidth'] + 70))) {
+          this.toolTipPosition = {
+            top: (elem['offsetTop'] - (elem['offsetHeight'] / 2) + 40) +
+              'px', left: (elem['offsetLeft'] + elem['offsetWidth'] - 100) + 'px'
+          };
+        }
+      }
+    }
+  }
+
   showPlaceTooltip(id: string, origin: any) {
+    if (this.tooltips.places[id]) {
+      this.setToolTipText(this.tooltips.places[id]);
+      return;
+    }
+
     this.tooltipService.getPlaceTooltip(id).subscribe(
       tooltip => {
         this.setToolTipText(tooltip.description);
+        this.tooltips.places[id] = tooltip.description;
       },
       error => {
         this.setToolTipText('Could not get place information');
@@ -1026,12 +1072,35 @@ export class ReadPage /*implements OnDestroy*/ {
     );
   }
 
+  showCommentTooltip(id: string, origin: any) {
+    if (this.tooltips.comments[id]) {
+      this.setToolTipText(this.tooltips.comments[id]);
+      return;
+    }
+
+    id = this.establishedText.link + ';' + id;
+    this.tooltipService.getCommentTooltip(id).subscribe(
+      tooltip => {
+        this.setToolTipText(tooltip.description);
+        this.tooltips.comments[id] = tooltip.description
+      },
+      error => {
+        this.setToolTipText('Could not get comment');
+      }
+    );
+  }
+
+
+
+  setToolTipText(text: string) {
+      this.toolTipText = text;
+  }
+
   showCommentModal(id: string) {
     id = id.replace('end', 'en');
     id = this.establishedText.link + ';' + id;
     const modal = this.modalCtrl.create(CommentModalPage, { id: id, title: this.texts.CommentsFor + ' ' + this.establishedText.title });
     modal.present();
-
   }
 
   showPersonModal(id: string) {
@@ -1044,24 +1113,7 @@ export class ReadPage /*implements OnDestroy*/ {
     modal.present();
   }
 
-  showCommentTooltip(id: string, origin: any) {
-    id = this.establishedText.link + ';' + id;
-    this.tooltipService.getCommentTooltip(id).subscribe(
-      tooltip => {
-        this.setToolTipText(tooltip.description);
-      },
-      error => {
-        this.setToolTipText('Could not get comment');
-      }
-    );
-  }
-
-  setToolTipText(text: string) {
-      this.toolTipText = text;
-  }
-
   showPopover(myEvent) {
-    console.log(myEvent)
     const popover = this.popoverCtrl.create(ReadPopoverPage, {}, { cssClass: 'popover_settings' });
     popover.present({
       ev: myEvent
