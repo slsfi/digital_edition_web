@@ -2,4 +2,31 @@ text-changer {
     .goLeft{
         left: 0;
     }
+    .forwardBackward {
+      max-width: 80%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: auto;
+    .forwardBackward__currentpage-name {
+      margin: 0;
+      font-weight: bold;
+    }
+    .forwardBackward__previouspage-name,
+    .forwardBackward__nextpage-name {
+      vertical-align: super;
+      margin: 0 0.5rem;
+      &:hover {
+        text-shadow: 1px 0 0 currentColor;
+      }
+    }
+    .forwardButton,
+    .backwardButton {
+      background: transparent;
+      &:hover .forwardBackward__previouspage-name,
+      &:hover .forwardBackward__nextpage-name  {
+        text-shadow: 1px 0 0 currentColor;
+      }
+    }
+    }
 }

@@ -95,6 +95,7 @@ page-read {
 	}
 
 	.read-columns {
+    margin-bottom: 0.5rem;
 		-webkit-overflow-scrolling: touch;
 		overflow-x: scroll;
 		overflow-y: hidden;
@@ -180,14 +181,6 @@ page-read {
 		padding-left: 50px !important;
 	}
 
-	.forwardButtonDiv{
-		float:right;
-	}
-
-	.backwardButtonDiv{
-		float:left;
-	}
-
 	ion-slides {
 		.card {
 			background-color: #fff;
@@ -266,7 +259,7 @@ page-read {
 	.collections{
 		font-size: 1.0rem;
 		color: #78756f;
-	}
+  }
 }
 
 .md,
