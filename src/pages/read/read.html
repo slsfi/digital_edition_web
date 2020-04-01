@@ -56,7 +56,6 @@ This is a dirty hack only because of the pending refactor. -->
 
     <div class="read-columns" dragScroll drag-scroll-y-disabled scrollbar-hidden="true" reachesRightBound="true"
       snap-disabled="true" snap-offset="0" [ngClass]="views.length > 1 ? 'multiple-columns' : 'single-column'">
-      <text-changer [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
       <div class="read-column" *ngFor="let view of views; let i = index;" id="read_div_{{i}}" scrollY="true"
         [ngStyle]="{'position': 'relative','max-width':(95/((views.length>1)?views.length:2))+'%','min-width':'25%'}"
         #readColumn>
@@ -116,6 +115,8 @@ This is a dirty hack only because of the pending refactor. -->
         </ion-card>
       </div>
     </div>
+
+    <text-changer [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
 
     <!-- Add view -->
     <ion-fab *ngIf="!isTablet && displayToggle" middle right #fab>
