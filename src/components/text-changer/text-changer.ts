@@ -18,6 +18,9 @@ export class TextChangerComponent {
   @Input() recentlyOpenViews?: any;
   prevItem: any;
   nextItem: any;
+  prevItemTitle: string;
+  nextItemTitle: string;
+  currentItemTitle: string;
 
   displayNext: Boolean = true;
   displayPrev: Boolean = true;
@@ -114,7 +117,13 @@ export class TextChangerComponent {
     } else if (toc.children) {
       const childs = toc.children;
       for (let j = 0; j < childs.length; j ++) {
-        if (childs[j] && childs[j].itemId && childs[j].itemId === this.legacyId) {
+        if (childs[j] && childs[j].itemId === this.legacyId) {
+          this.nextItemTitle = childs[j + 1].text;
+          this.prevItemTitle = childs[j - 1].text;
+          this.currentItemTitle = childs[j].text;
+
+          this.nextItem = childs[j + 1];
+          this.prevItem = childs[j - 1];
         }
         if (childs[j] && childs[j].children) {
           this.findItem(childs[j].children, type);
@@ -124,7 +133,7 @@ export class TextChangerComponent {
   }
 
   open(item) {
-    const params = {tocItem: item, collection: {title: item.text}};
+    const params = {tocItem: item, collection: {title: item.itemId}};
     const nav = this.app.getActiveNavs();
 
     params['tocLinkId'] = item.itemId;
