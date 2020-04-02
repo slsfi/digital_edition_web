@@ -24,6 +24,10 @@ export class FacsimileZoomModalPage {
   activeImage: any;
   zoom = 1.0;
   angle = 0;
+  latestDeltaX = 0
+  latestDeltaY = 0
+  prevX = 0
+  prevY = 0
 
   facsUrl = '';
   facsimilePagesInfinite = false;
@@ -194,5 +198,54 @@ export class FacsimileZoomModalPage {
 
   backSide(url) {
     return url.replace('.jpg', 'B.jpg');
+  }
+
+  handlePanEvent(event) {
+    const img = event.target;
+    // Store latest zoom adjusted delta.
+    this.latestDeltaX = event.deltaX / this.zoom
+    this.latestDeltaY = event.deltaY / this.zoom
+
+    // Get current position from last position and delta.
+    let x = this.prevX + this.latestDeltaX
+    let y = this.prevY + this.latestDeltaY
+
+    if (this.angle === 90) {
+      const tmp = x;
+      x = y;
+      y = tmp;
+      y = y * -1;
+    } else if (this.angle === 180) {
+      y = y * -1;
+      x = x * -1;
+    } else if (this.angle === 270) {
+      const tmp = x;
+      x = y;
+      y = tmp;
+      x = x * -1;
+    }
+
+    if (img !== null) {
+      img.style.transform = 'rotate(' + this.angle + 'deg) scale(' + this.zoom + ') translate3d(' + x + 'px, ' + y + 'px, 0px)';
+    }
+  }
+
+  onMouseUp(e) {
+    // Update the previous position on desktop by adding the latest delta.
+    this.prevX += this.latestDeltaX
+    this.prevY += this.latestDeltaY
+  }
+
+  onMouseWheel(e) {
+    const img = e.target;
+    if (e.deltaY > 0) {
+      this.zoomIn();
+      img.style.transform = 'rotate(' + this.angle + 'deg) scale(' + this.zoom + ') translate3d(' + this.prevX + 'px, ' +
+        this.prevY + 'px, 0px)';
+    } else {
+      this.zoomOut();
+      img.style.transform = 'rotate(' + this.angle + 'deg) scale(' + this.zoom + ') translate3d(' + this.prevX + 'px, ' +
+        this.prevY + 'px, 0px)';
+    }
   }
 }

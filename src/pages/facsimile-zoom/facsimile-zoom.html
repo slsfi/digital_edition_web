@@ -1,5 +1,5 @@
 <ion-content>
-    <ion-scroll scrollX="true" scrollY="true" zoom="true" class="scroll">
+    <ion-scroll scrollX="false" scrollY="false" zoom="true" class="scroll">
         <div middle class="facsimile_button_group">
             <div class="buttons">
                 <div class="action_buttons">
@@ -55,13 +55,29 @@
                 <div class="div_img">
                     <div *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()">
                         <img *ngIf="!facsimilePagesInfinite && (!backside || !backsides[activeImage])"
-                            [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg)'}" [src]="images[activeImage]"
-                            class="facsimile-zoom-image">
+                          [src]="images[activeImage]"
+                          class="facsimile-zoom-image"
+                          [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
+                          (wheel)="onMouseWheel($event)"
+                          (pan)="handlePanEvent($event)"
+                          (mouseup)="onMouseUp($event)"
+                        >
                         <img *ngIf="!facsimilePagesInfinite && backside && backsides[activeImage]"
-                            [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg)'}" [src]="backSide(images[activeImage])"
-                            class="facsimile-zoom-image">
-                        <img *ngIf="facsimilePagesInfinite && facsNumber" [ngStyle]="{'transform':'scale('+zoom+')'}"
-                            [src]="facsUrl + facsNumber" class="facsimile-zoom-image">
+                          [src]="backSide(images[activeImage])"
+                          class="facsimile-zoom-image"
+                          [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
+                          (wheel)="onMouseWheel($event)"
+                          (pan)="handlePanEvent($event)"
+                          (mouseup)="onMouseUp($event)"
+                        >
+                        <img *ngIf="facsimilePagesInfinite && facsNumber"
+                          [src]="facsUrl + facsNumber"
+                          class="facsimile-zoom-image"
+                          [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
+                          (wheel)="onMouseWheel($event)"
+                          (pan)="handlePanEvent($event)"
+                          (mouseup)="onMouseUp($event)"
+                        >
                     </div>
                     <div *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet())">
                         <div *ngIf="!facsimilePagesInfinite">
