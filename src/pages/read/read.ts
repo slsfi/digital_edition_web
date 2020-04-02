@@ -877,7 +877,12 @@ export class ReadPage /*implements OnDestroy*/ {
           }
         }
       }).bind(this);
-      const toolTipsSettings = this.config.getSettings("settings.toolTips");
+      let toolTipsSettings;
+      try {
+        toolTipsSettings = this.config.getSettings("settings.toolTips");
+      } catch (e) {
+        console.error(e);
+      }
       this.renderer.listen(nElement, 'mouseover', (event) => {
         let eventTarget = this.getEventTarget(event);
         let elem = event.target;
