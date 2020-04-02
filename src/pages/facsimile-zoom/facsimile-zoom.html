@@ -81,12 +81,12 @@
                     </div>
                     <div *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet())">
                         <div *ngIf="!facsimilePagesInfinite">
-                            <pinch-zoom (swipe)="handleSwipeEvent($event)">
+                            <pinch-zoom overflow="visible" backgroundColor="transparent" [limit-zoom]="40" [minPanScale]="0"(swipe)="handleSwipeEvent($event)">
                                 <img [src]="images[activeImage]" class="facsimile-zoom-image">
                             </pinch-zoom>
                         </div>
                         <div *ngIf="facsimilePagesInfinite && facsNumber">
-                            <pinch-zoom (swipe)="handleSwipeEvent($event)">
+                            <pinch-zoom overflow="visible" backgroundColor="transparent" [limit-zoom]="40" [minPanScale]="0" (swipe)="handleSwipeEvent($event)">
                                 <img [src]="facsUrl + facsNumber" class="facsimile-zoom-image">
                             </pinch-zoom>
                         </div>
