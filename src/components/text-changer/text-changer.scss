@@ -4,13 +4,13 @@ text-changer {
     }
     .forwardBackward {
       max-width: 80%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      display: grid;
+      grid-template-columns: [first] 30% auto [last] 30%;
       margin: auto;
     .forwardBackward__currentpage-name {
-      margin: 0;
+      margin: 0 auto;
       font-weight: bold;
+      text-align: center;
     }
     .forwardBackward__previouspage-name,
     .forwardBackward__nextpage-name {
@@ -22,11 +22,18 @@ text-changer {
     }
     .forwardButton,
     .backwardButton {
+      hyphens: auto;
       background: transparent;
       &:hover .forwardBackward__previouspage-name,
       &:hover .forwardBackward__nextpage-name  {
         text-shadow: 1px 0 0 currentColor;
       }
     }
+    }
+    @media screen and (max-width: 800px) {
+      .forwardBackward {
+        max-width: 100%;
+        padding: 0;
+      }
     }
 }
