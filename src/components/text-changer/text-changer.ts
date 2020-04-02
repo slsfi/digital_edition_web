@@ -117,13 +117,22 @@ export class TextChangerComponent {
     } else if (toc.children) {
       const childs = toc.children;
       for (let j = 0; j < childs.length; j ++) {
-        if (childs[j] && childs[j].itemId === this.legacyId) {
-          this.nextItemTitle = childs[j + 1].text;
-          this.prevItemTitle = childs[j - 1].text;
+        if (childs[j] && childs[j].itemId && childs[j].itemId === this.legacyId) {
           this.currentItemTitle = childs[j].text;
+          this.nextItemTitle = (childs[j + 1]) ? childs[j + 1].text : '';
+          this.prevItemTitle = (childs[j - 1]) ? childs[j - 1].text : '';
 
-          this.nextItem = childs[j + 1];
-          this.prevItem = childs[j - 1];
+          if ( childs[j + 1].itemId == '') {
+            this.nextItem = childs[j + 2];
+          } else {
+            this.nextItem = childs[j + 1];
+          }
+
+          if (childs[j - 1].itemId == '') {
+            this.prevItem = childs[j - 2];
+          } else {
+            this.prevItem = childs[j - 1];
+          }
         }
         if (childs[j] && childs[j].children) {
           this.findItem(childs[j].children, type);
