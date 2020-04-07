@@ -206,7 +206,6 @@ export class ReadPage /*implements OnDestroy*/ {
   ) {
     this.isCached();
     this.searchResult = null;
-    this.toolTipPosition = { top: 40 + 'px', left: 100 + 'px' };
 
     try {
       this.appUsesAccordionToc = this.config.getSettings('AccordionTOC');
@@ -884,14 +883,19 @@ export class ReadPage /*implements OnDestroy*/ {
         console.error(e);
       }
       this.renderer.listen(nElement, 'mouseover', (event) => {
+        const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
         let eventTarget = this.getEventTarget(event);
         let elem = event.target;
-
         if ( eventTarget['classList'].contains('tooltiptrigger')) {
+          var x = ((elem.getBoundingClientRect().x + vw) - vw) + 20;
+          var y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
           this.toolTipPosition = {
-            top: (elem['offsetTop'] - (elem['offsetHeight'] / 2) + 4) + 'px',
-            left: (elem['offsetLeft'] + elem['offsetWidth'] + 14) + 'px'
+            top: y + 'px',
+            left: x + 'px'
           };
+
           this.showToolTip = true;
           clearTimeout(window["reload_timer"]);
           this.hideToolTip();
@@ -899,8 +903,6 @@ export class ReadPage /*implements OnDestroy*/ {
           if (eventTarget.hasAttribute('data-id')) {
             if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
               this.showPersonTooltip(eventTarget.getAttribute('data-id'), event);
-            } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
-              this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
             } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
               this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
             } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
@@ -1078,18 +1080,8 @@ export class ReadPage /*implements OnDestroy*/ {
     }
     if (elem['nextSibling'] !== null && elem['nextSibling'] !== undefined) {
       if (elem['nextSibling'].className !== undefined && String(elem['nextSibling'].className).includes('tooltip')) {
-        this.toolTipPosition = {
-          top: (elem['offsetTop'] - (elem['offsetHeight'] / 2) + 4) +
-            'px', left: (elem['offsetLeft'] + elem['offsetWidth'] + 4) + 'px'
-        };
         this.showToolTip = true;
         this.toolTipText = elem['nextSibling'].textContent;
-        if ((elem['offsetParent'].clientWidth) < ((elem['offsetLeft'] + elem['offsetWidth'] + 70))) {
-          this.toolTipPosition = {
-            top: (elem['offsetTop'] - (elem['offsetHeight'] / 2) + 40) +
-              'px', left: (elem['offsetLeft'] + elem['offsetWidth'] - 100) + 'px'
-          };
-        }
       }
     }
   }
