@@ -129,7 +129,8 @@ page-facsimile-zoom {
   }
   .facsimile-zoom-image {
     max-width: 100%;
-    max-height: 100vh;
+    // 72px is the height of the toolbar
+    max-height: calc(100vh - 72px);
     margin: auto;
   }
 
@@ -179,5 +180,11 @@ page-facsimile-zoom {
     justify-content: center;
     flex-direction: row;
     padding-bottom: 1rem;
+  }
+
+  img {
+      cursor: move;
+      // https://github.com/hammerjs/hammer.js/issues/1050#issuecomment-267595556
+      touch-action: none;
   }
 }
