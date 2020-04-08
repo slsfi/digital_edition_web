@@ -124,6 +124,27 @@ export class ReadPage /*implements OnDestroy*/ {
     instagram: false
   };
 
+  show = 'established'; // Mobile tabs
+
+  availableViewModes = [
+    'manuscripts',
+    'variations',
+    'comments',
+    'established',
+    'facsimiles',
+    'introduction',
+    'songexample'
+  ];
+
+  appUsesAccordionToc = false;
+
+  tooltips = {
+    'persons' : {},
+    'comments': {},
+    'places': {},
+    'abbreviations': {}
+  };
+
   shareFacebook() {
     //
   }
@@ -156,27 +177,6 @@ export class ReadPage /*implements OnDestroy*/ {
       console.log('Sharing via email is not possible');
     });
   }
-
-  show = 'established'; // Mobile tabs
-
-  availableViewModes = [
-    'manuscripts',
-    'variations',
-    'comments',
-    'established',
-    'facsimiles',
-    'introduction',
-    'songexample'
-  ];
-
-  appUsesAccordionToc = false;
-
-  tooltips = {
-    'persons' : {},
-    'comments': {},
-    'places': {},
-    'abbreviations': {}
-  };
 
   constructor(private app: App,
     public viewCtrl: ViewController,
@@ -829,7 +829,7 @@ export class ReadPage /*implements OnDestroy*/ {
     // We must do it like this since we want to trigger an event on a dynamically loaded innerhtml.
     const nElement: any = this.elementRef.nativeElement;
       this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
-        let eventTarget = this.getEventTarget(event);
+        const eventTarget = this.getEventTarget(event);
 
         if ( eventTarget['classList'].contains('tooltiptrigger')) {
           if (eventTarget.hasAttribute('data-id')) {
@@ -880,7 +880,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
       let toolTipsSettings;
       try {
-        toolTipsSettings = this.config.getSettings("settings.toolTips");
+        toolTipsSettings = this.config.getSettings('settings.toolTips');
       } catch (e) {
         console.error(e);
       }
@@ -889,11 +889,11 @@ export class ReadPage /*implements OnDestroy*/ {
         const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
         const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
 
-        let eventTarget = this.getEventTarget(event);
-        let elem = event.target;
+        const eventTarget = this.getEventTarget(event);
+        const elem = event.target;
         if ( eventTarget['classList'].contains('tooltiptrigger')) {
-          var x = ((elem.getBoundingClientRect().x + vw) - vw) + (elem.offsetWidth + 10);
-          var y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
+          const x = ((elem.getBoundingClientRect().x + vw) - vw) + (elem.offsetWidth + 10);
+          const y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
           if (sidePaneIsOpen) {
             this.toolTipPosition = {
               top: y + 'px',
@@ -905,7 +905,7 @@ export class ReadPage /*implements OnDestroy*/ {
               left: x + 'px'
             };
           }
-          if(event.target.classList.contains('ttVariant') && this.readPopoverService.show.comments) {
+          if (event.target.classList.contains('ttVariant') && this.readPopoverService.show.comments) {
             if (event.target !== undefined) {
             this.showVariationTooltip(event);
             }
@@ -913,17 +913,19 @@ export class ReadPage /*implements OnDestroy*/ {
           if (eventTarget.hasAttribute('data-id')) {
             if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
               this.showToolTip = true;
-              clearTimeout(window["reload_timer"]);
+              clearTimeout(window['reload_timer']);
               this.hideToolTip();
               this.showPersonTooltip(eventTarget.getAttribute('data-id'), event);
-            } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
-              this.showToolTip = true;
-              clearTimeout(window["reload_timer"]);
-              this.hideToolTip();
-              this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
+            } else if (toolTipsSettings.placeInfo
+              && eventTarget['classList'].contains('placeName')
+              && this.readPopoverService.show.placeInfo) {
+                this.showToolTip = true;
+                clearTimeout(window['reload_timer']);
+                this.hideToolTip();
+                this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
             } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
               this.showToolTip = true;
-              clearTimeout(window["reload_timer"]);
+              clearTimeout(window['reload_timer']);
               this.hideToolTip();
               this.showCommentTooltip(eventTarget.getAttribute('data-id'), event);
             }
@@ -956,7 +958,7 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   hideToolTip() {
-    window["reload_timer"] = setTimeout(() => {
+    window['reload_timer'] = setTimeout(() => {
       this.showToolTip = false;
     }, 4000);
   }
@@ -1091,7 +1093,7 @@ export class ReadPage /*implements OnDestroy*/ {
     if ( origin.target.nextSibling.className !== undefined && String(origin.target.nextSibling.className).includes('tooltip') ) {
       this.showToolTip = true;
       this.toolTipText = origin.target.nextSibling.textContent;
-      clearTimeout(window["reload_timer"]);
+      clearTimeout(window['reload_timer']);
       this.hideToolTip();
     }
   }
