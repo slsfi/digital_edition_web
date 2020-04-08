@@ -124,8 +124,12 @@ export class CommentsComponent {
             }
           }.bind(this), 500);
         } else if ( elem.classList !== undefined && elem.classList.contains('ext') ) {
+<<<<<<< HEAD
           const anchor = <HTMLAnchorElement>elem;
           const ref = window.open(anchor.href, '_blank', 'location=no');
+=======
+          const ref = window.open(elem.getAttribute('href'), '_blank', 'location=no');
+>>>>>>> origin
         }
       } catch ( e ) {}
 
