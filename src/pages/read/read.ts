@@ -435,31 +435,6 @@ export class ReadPage /*implements OnDestroy*/ {
         error => { this.errorMessage = <any>error });
   }
 
-  private scrollToElement(element: string) {
-    try {
-      element = element.replace(/#/g, '');
-      const elementStart = 'start' + element.replace(/en/g, '');
-      // scroll to element
-      if (this.elementRef.nativeElement.querySelector('.' + element) != null) {
-        const scrollTarget = this.elementRef.nativeElement.querySelector('.' + element);
-        const yOffset = scrollTarget.offsetTop;
-        if (scrollTarget.parentElement.parentElement !== null) {
-          scrollTarget.parentElement.parentElement.scrollIntoView(true);
-        }
-      }
-      // show start arrow
-      if (this.elementRef.nativeElement.querySelector('.anchor_lemma[data-id="' + elementStart + '"]') != null) {
-        const targetArrow = this.elementRef.nativeElement.querySelector('.anchor_lemma[data-id="' + elementStart + '"]');
-        targetArrow.style.display = 'initial';
-        setTimeout(() => { targetArrow.style.display = 'none' }, 3000);
-      }
-    } catch (e) {
-      console.log(element);
-      console.log(document.getElementById(element));
-      console.log(e);
-    }
-  }
-
   setTocCache() {
     const id = this.params.get('collectionID');
     this.tocService.getTableOfContents(id)
@@ -875,7 +850,34 @@ export class ReadPage /*implements OnDestroy*/ {
             this.scrollToElement(eventTarget.getAttribute('href'));
           }
         }
+        if (event.target.classList.contains('variantScrollTarget') && this.readPopoverService.show.comments ) {
+          if (event.target !== undefined) {
+            event.target.style.fontWeight = 'bold';
+            this.showVariationTooltip(event);
+            this.scrollToElement(event.target);
+          }
+          setTimeout(function() {
+            if (event.target !== undefined) {
+              event.target.style.fontWeight = 'normal';
+            }
+          }, 1000);
+        }
+        if (event.target.classList.contains('tooltiptrigger') && this.readPopoverService.show.comments ) {
+          if (event.target !== undefined) {
+            event.target.style.fontWeight = 'bold';
+          }
+          setTimeout(function() {
+            if (event.target !== undefined) {
+              event.target.style.fontWeight = 'normal';
+            }
+          }, 1000);
+        }
       }).bind(this);
+
+      this.renderer.listen(nElement, 'mousewheel', (event) => {
+        this.showToolTip = false;
+      }).bind(this)
+
       let toolTipsSettings;
       try {
         toolTipsSettings = this.config.getSettings("settings.toolTips");
@@ -885,30 +887,45 @@ export class ReadPage /*implements OnDestroy*/ {
       this.renderer.listen(nElement, 'mouseover', (event) => {
         const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
         const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+        const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
 
         let eventTarget = this.getEventTarget(event);
         let elem = event.target;
         if ( eventTarget['classList'].contains('tooltiptrigger')) {
-          var x = ((elem.getBoundingClientRect().x + vw) - vw) + 20;
+          var x = ((elem.getBoundingClientRect().x + vw) - vw) + (elem.offsetWidth + 10);
           var y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
-          this.toolTipPosition = {
-            top: y + 'px',
-            left: x + 'px'
-          };
-
-          this.showToolTip = true;
-          clearTimeout(window["reload_timer"]);
-          this.hideToolTip();
-
+          if (sidePaneIsOpen) {
+            this.toolTipPosition = {
+              top: y + 'px',
+              left: (x - 269) + 'px'
+            };
+          } else {
+            this.toolTipPosition = {
+              top: y + 'px',
+              left: x + 'px'
+            };
+          }
+          if(event.target.classList.contains('ttVariant') && this.readPopoverService.show.comments) {
+            if (event.target !== undefined) {
+            this.showVariationTooltip(event);
+            }
+          }
           if (eventTarget.hasAttribute('data-id')) {
             if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
+              this.showToolTip = true;
+              clearTimeout(window["reload_timer"]);
+              this.hideToolTip();
               this.showPersonTooltip(eventTarget.getAttribute('data-id'), event);
             } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
+              this.showToolTip = true;
+              clearTimeout(window["reload_timer"]);
+              this.hideToolTip();
               this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
             } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
+              this.showToolTip = true;
+              clearTimeout(window["reload_timer"]);
+              this.hideToolTip();
               this.showCommentTooltip(eventTarget.getAttribute('data-id'), event);
-            } else if (toolTipsSettings.variations && eventTarget['classList'].contains('ttVariant') && this.readPopoverService.show.placeInfo) {
-              this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
             }
           } else {
 
@@ -1069,6 +1086,16 @@ export class ReadPage /*implements OnDestroy*/ {
       }
     );
   }
+
+  showVariationTooltip(origin: any) {
+    if ( origin.target.nextSibling.className !== undefined && String(origin.target.nextSibling.className).includes('tooltip') ) {
+      this.showToolTip = true;
+      this.toolTipText = origin.target.nextSibling.textContent;
+      clearTimeout(window["reload_timer"]);
+      this.hideToolTip();
+    }
+  }
+
 
   showChangesTooltip(origin: any) {
     let elem = [];
@@ -1323,6 +1350,21 @@ export class ReadPage /*implements OnDestroy*/ {
 
   }
 
+  private scrollToElement(element: HTMLElement) {
+    element.scrollIntoView();
+    this.showToolTip = false;
+    try {
+      const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span');
+      for (let i = 0; i < elems.length; i++) {
+        if ( elems[i].id === element.id ) {
+          elems[i].scrollIntoView();
+        }
+      }
+    } catch ( e ) {
+
+    }
+  }
+
   keyPress(event) {
     console.log(event);
   }
@@ -1380,3 +1422,4 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 }
+
