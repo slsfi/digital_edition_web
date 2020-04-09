@@ -49,7 +49,7 @@ export class TooltipService {
    * <img src=".." data-id="en5929">
    * <span class="tooltip"></span>
    */
-  getCommentTooltip(id: string) {
+  getCommentTooltip(id: string): Observable<any> {
 
       const parts = id.split(';');
       const htmlId = parts[0];
@@ -58,10 +58,10 @@ export class TooltipService {
         data => {
           const range = document.createRange();
           const doc = range.createContextualFragment(data);
-          const element = doc.querySelector('#' + elementId).nextElementSibling;
+          const element = doc.querySelector('.' + elementId);
           return {
             'name': 'Comment',
-            'description': element.innerHTML.replace(/(<([^>]+)>)/ig, '').replace(/^p\d+/gi, '') }
+            'description': element.innerHTML.replace(/(<([^>]+)>)/gi, '').replace(/^p\d+/gi, '') }
             || {'name': 'Error', 'description': element.innerHTML};
         },
         error => {
