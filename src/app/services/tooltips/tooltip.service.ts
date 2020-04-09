@@ -44,6 +44,13 @@ export class TooltipService {
         .catch(this.handleError);
   }
 
+  decodeHtmlEntity(str: string) {
+    return str.replace(/&#(\d+);/g, function(match, dec) {
+      return String.fromCharCode(dec);
+    });
+  }
+
+
   /**
    * Can be used to fetch tooltip in situations like these:
    * <img src=".." data-id="en5929">
@@ -59,9 +66,11 @@ export class TooltipService {
           const range = document.createRange();
           const doc = range.createContextualFragment(data);
           const element = doc.querySelector('.' + elementId);
+          const formatedCommentData = element.innerHTML.replace(/(<([^>]+)>)/gi, '').replace(/^p\d+/gi, '').replace(/\/?p?&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});/ig, ' ');
+
           return {
             'name': 'Comment',
-            'description': element.innerHTML.replace(/(<([^>]+)>)/gi, '').replace(/^p\d+/gi, '') }
+            'description': element.innerHTML = formatedCommentData }
             || {'name': 'Error', 'description': element.innerHTML};
         },
         error => {
