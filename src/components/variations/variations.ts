@@ -31,9 +31,6 @@ export class VariationsComponent {
   errorMessage: string;
   normalized = true;
   varID: string;
-  showToolTip: boolean;
-  toolTipPosition: object;
-  toolTipText: string;
 
   constructor(
     protected sanitizer: DomSanitizer,
@@ -45,14 +42,11 @@ export class VariationsComponent {
     private toastCtrl: ToastController
   ) {
     this.text = '';
-    this.toolTipText = '';
     this.variations = [];
-    this.toolTipPosition = {top: 40 + 'px', left: 100 + 'px'};
   }
 
   ngOnInit() {
     this.varID = this.itemId + '_var';
-    this.showToolTip = false;
     this.setText();
   }
 
@@ -84,73 +78,6 @@ export class VariationsComponent {
       }
       this.doAnalytics();
     });
-  }
-
-  ngAfterViewInit() {
-    this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
-      if (event.target.classList.contains('variantScrollTarget') && this.readPopoverService.show.comments ) {
-        if (event.target !== undefined) {
-          event.target.style.fontWeight = 'bold';
-          this.showTooltip(event);
-          this.scrollToElement(event.target);
-        }
-        setTimeout(function() {
-          if (event.target !== undefined) {
-            event.target.style.fontWeight = 'normal';
-          }
-        }, 1000);
-      }
-      if (event.target.classList.contains('tooltiptrigger') && this.readPopoverService.show.comments ) {
-        if (event.target !== undefined) {
-          event.target.style.fontWeight = 'bold';
-        }
-        setTimeout(function() {
-          if (event.target !== undefined) {
-            event.target.style.fontWeight = 'normal';
-          }
-        }, 1000);
-      }
-    });
-    this.renderer.listen(this.elementRef.nativeElement, 'mouseover', (event) => {
-      if (event.target.classList.contains('tooltiptrigger') && this.readPopoverService.show.comments ) {
-        if (event.target !== undefined) {
-          event.target.style.fontWeight = 'bold';
-          this.showTooltip(event);
-        }
-        setTimeout(function() {
-          if (event.target !== undefined) {
-            event.target.style.fontWeight = 'normal';
-          }
-        }, 1000);
-      }
-    });
-  }
-
-  private scrollToElement(element: HTMLElement) {
-    element.scrollIntoView();
-    try {
-      const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span');
-      for (let i = 0; i < elems.length; i++) {
-        if ( elems[i].id === element.id ) {
-          elems[i].scrollIntoView();
-        }
-      }
-    } catch ( e ) {
-
-    }
-  }
-
-  showTooltip(origin: any) {
-    if ( origin.target.nextSibling.className !== undefined && String(origin.target.nextSibling.className).includes('tooltip') ) {
-      this.toolTipPosition = {top: (origin.target.offsetTop - ( origin.target.offsetHeight / 2 ) + 4) +
-        'px', left: (origin.target.offsetLeft + origin.target.offsetWidth + 4) + 'px'};
-      this.showToolTip = true;
-      this.toolTipText = origin.target.nextSibling.textContent;
-      setTimeout(() => {
-      this.showToolTip = false;
-      this.toolTipText = '';
-      }, 5000);
-    }
   }
 
   getVariation() {
