@@ -192,7 +192,6 @@ This is a dirty hack only because of the pending refactor. -->
       </div>
       <div [ngSwitch]="show">
         <div *ngSwitchCase="'established'">
-          <text-changer [legacyId]="legacyId"></text-changer>
           <read-text [link]="establishedText.link" [matches]="matches"></read-text>
         </div>
         <div *ngSwitchCase="'manuscripts'">
@@ -213,18 +212,7 @@ This is a dirty hack only because of the pending refactor. -->
         </div>
       </div>
 
-      <div class="forwardBackward" *ngIf="prevnext">
-        <div class="backwardButtonDiv" *ngIf="prevnext.prev">
-          <button class="backwardButton" ion-fab mini (click)="prevPage()">
-            <ion-icon name="arrow-dropleft"></ion-icon>
-          </button>
-        </div>
-        <div class="forwardButtonDiv" *ngIf="prevnext.next">
-          <button class="forwardButton" ion-fab mini (click)="nextPage()">
-            <ion-icon name="arrow-dropright"></ion-icon>
-          </button>
-        </div>
-      </div>
+      <text-changer [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
       <div class="" *ngIf="!prevnext && displayToggle === true && show != 'facsimile'">
         <button ion-button round icon-end (click)="firstPage()">{{"Read.ReadFromBeginning" | translate }}</button>
       </div>
