@@ -13,13 +13,13 @@
             <div class="twitter-icon" *ngIf="showSocial.twitter" shareButton="twitter"><ion-icon name="logo-twitter" (click)="shareTwitter()"></ion-icon></div>
           </ion-col>
           <ion-col>
-            <div name="download" (click)="download()">
+            <div name="download" id="download-icon" (click)="download()">
               <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
               <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
             </div>
           </ion-col>
           <ion-col>
-            <div (click)="showPopover($event)">
+            <div (click)="showPopover($event)" id="settings-icon">
               <ion-icon class="settings-icon" name="settings"></ion-icon>
             </div>
           </ion-col>
@@ -118,7 +118,7 @@ This is a dirty hack only because of the pending refactor. -->
     </div>
 
     <!-- Add view -->
-    <ion-fab *ngIf="!isTablet && displayToggle" middle right #fab>
+    <ion-fab id="readFabMenu" *ngIf="!isTablet && displayToggle" middle right #fab>
       <button ion-fab>
         <ion-icon name="add"></ion-icon>
       </button>

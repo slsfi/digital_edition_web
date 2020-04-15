@@ -1,4 +1,4 @@
-<div class="tab-container" *ngIf="platform.is('core')">
+<div class="tab-container" id="tabs-text-container" *ngIf="platform.is('core')">
   <div *ngFor="let facsimile of facsimiles; let i = index" (click)="changeFacsimile(facsimile)"
     [ngClass]="(selectedFacsimile.title === facsimile.title)?'firts-tab':'tab'">
     {{facsimile.title}}
@@ -18,7 +18,7 @@
     type="number"></ion-input>
 </ion-item>
 
-<div>
+<div id="facsimilies-image">
   <img *ngIf="!facsimilePagesInfinite"
     [src]="images ? images[activeImage] : ''"
     style="width: 100%;"
