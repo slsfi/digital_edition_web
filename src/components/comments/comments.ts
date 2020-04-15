@@ -24,6 +24,10 @@ export class CommentsComponent {
   public text: any;
   protected errorMessage: string;
   listenFunc: Function;
+  manuscript: any;
+  sender: any;
+  receiver: any;
+  letter: any;
 
   constructor(
     protected readPopoverService: ReadPopoverService,
@@ -49,6 +53,7 @@ export class CommentsComponent {
     } else {
       this.setText();
     }
+    this.getCorrespondanceMetadata();
   }
 
   setText() {
@@ -272,5 +277,25 @@ export class CommentsComponent {
     } catch ( e ) {
       console.log(e);
     }
+  }
+
+  getCorrespondanceMetadata() {
+    this.commentService.getCorrespondanceMetadata(String(this.link).split('_')[1]).subscribe(
+      text => {
+          text['subjects'].forEach(subject => {
+            if ( subject['avsändare'] ) {
+              this.sender = subject['avsändare'];
+            }
+            if ( subject['mottagare'] ) {
+              this.receiver = subject['mottagare'];
+            }
+          });
+          this.letter = text['letter'];
+          this.doAnalytics();
+        },
+      error =>  {
+        this.errorMessage = <any>error
+      }
+    );
   }
 }
