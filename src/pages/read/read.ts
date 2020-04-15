@@ -133,7 +133,8 @@ export class ReadPage /*implements OnDestroy*/ {
     'established',
     'facsimiles',
     'introduction',
-    'songexample'
+    'songexample',
+    'illustrations'
   ];
 
   appUsesAccordionToc = false;
@@ -499,6 +500,8 @@ export class ReadPage /*implements OnDestroy*/ {
     } else if (viewmode === 'introduction' && !this.displayToggles['introduction']) {
       return false;
     } else if (viewmode === 'songexample' && !this.displayToggles['songexample']) {
+      return false;
+    } else if (viewmode === 'illustrations' && !this.displayToggles['illustrations']) {
       return false;
     }
 
@@ -1240,7 +1243,8 @@ export class ReadPage /*implements OnDestroy*/ {
         manuscripts: { show: (type === 'manuscripts'), id: id },
         variations: { show: (type === 'variations'), id: id },
         introduction: { show: (type === 'introduction'), id: id },
-        songexample: { show: (type === 'songexample'), id: id }
+        songexample: { show: (type === 'songexample'), id: id },
+        illustrations: { show: (type === 'illustrations'), id: id }
       });
 
       this.updateURL();
