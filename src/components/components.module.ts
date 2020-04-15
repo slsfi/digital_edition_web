@@ -21,6 +21,7 @@ import { DigitalEditionListChildrenComponent } from './digital-edition-list-chil
 import { TableOfContentsAccordionComponent } from './table-of-contents-accordion/table-of-contents-accordion';
 import { ListOfSongsComponent } from './list-of-songs/list-of-songs';
 import { NgxExtendedPdfViewerComponent } from './ngx-extended-pdf-viewer/ngx-extended-pdf-viewer.component';
+import { IllustrationsComponent } from './illustrations/illustrations';
 
 
 export function createTranslateLoader(http: HttpClient) {
@@ -43,7 +44,8 @@ export function createTranslateLoader(http: HttpClient) {
     DigitalEditionListChildrenComponent,
     TableOfContentsAccordionComponent,
     ListOfSongsComponent,
-    NgxExtendedPdfViewerComponent
+    NgxExtendedPdfViewerComponent,
+    IllustrationsComponent
   ],
   imports: [
     IonicModule,
@@ -72,7 +74,8 @@ export function createTranslateLoader(http: HttpClient) {
     DigitalEditionListChildrenComponent,
     TableOfContentsAccordionComponent,
     ListOfSongsComponent,
-    NgxExtendedPdfViewerComponent
+    NgxExtendedPdfViewerComponent,
+    IllustrationsComponent
   ],
   providers: [
     UserSettingsService
