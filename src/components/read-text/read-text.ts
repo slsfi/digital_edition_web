@@ -58,6 +58,12 @@ export class ReadTextComponent {
 
   ngAfterViewInit() {
     this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
+      if (event.target.classList.contains('est_figure_graphic')) {
+        let image = event.target.src.replace(`${window.location.origin}/assets/images/verk/`, '');
+        image = `http://api.sls.fi/digitaledition/topelius/gallery/get/19/${image}`;
+        this.textService.giveIllustrationsImage(image);
+      }
+
       if (event.target.parentNode.classList.contains('ref_illustration')) {
         const hashNumber = event.target.parentNode.hash;
         const imageNumber = hashNumber.split('#')[1];

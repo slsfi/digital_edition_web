@@ -1,5 +1,5 @@
-<button ion-button (click)="this.viewAll = !this.viewAll">Visa alla</button>
-<div *ngIf="viewAll">
+<button ion-button (click)="toggleViewAll()">Visa alla</button>
+<div *ngIf="viewAll || showOne">
   <div *ngFor="let image of images" style="margin: 10px 0;">
     <img src="{{ image }}" (click)="zoomImage(image)" alt="illustration">
     <p (click)="scrollToPlaceInText(image)">Gå till position i lästext</p>

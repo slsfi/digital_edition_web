@@ -19,23 +19,38 @@ export class IllustrationsComponent {
   imgPath: any;
   images: any = [];
   viewAll = false;
+  showOne = false;
   constructor(
     public navParams: NavParams,
     private textService: TextService,
     private modalCtrl: ModalController
   ) { }
   ngOnInit() {
-    this.textService.getEstablishedText(this.itemId).subscribe(text => {
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(text, 'text/html');
-      const images: any = xmlDoc.querySelectorAll('img.est_figure_graphic');
-      for (let i = 0; i < images.length ; i++) {
-        let image = images[i].src;
-        image = image.replace(`${window.location.origin}/images/verk/`, '');
-        image = 'http://api.sls.fi/digitaledition/topelius/gallery/get/19/' + image;
-        this.images.push(image);
+    this.getIllustrationImages();
+  }
+
+  ngAfterViewInit() {
+    document.body.addEventListener('click', (event: any) => {
+      if (event.target.classList.contains('est_figure_graphic')) {
+        const image = this.textService.getIllustrationsImage();
+        if (image) {
+          this.showOne = true;
+          this.viewAll = false;
+          this.images = [image];
+        } else {
+          this.showOne = false;
+        }
       }
     });
+  }
+
+  toggleViewAll() {
+    this.viewAll = !this.viewAll;
+    this.showOne = false;
+
+    if (this.viewAll === true) {
+      this.getIllustrationImages();
+    }
   }
 
   zoomImage(image) {
@@ -47,5 +62,20 @@ export class IllustrationsComponent {
     image = image.replace('http://api.sls.fi/digitaledition/topelius/gallery/get/19/', '');
     const target = document.querySelector(`[src="assets/images/verk/${image}"]`);
     target.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
+  }
+
+  private getIllustrationImages() {
+    this.images = [];
+    this.textService.getEstablishedText(this.itemId).subscribe(text => {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(text, 'text/html');
+      const images: any = xmlDoc.querySelectorAll('img.est_figure_graphic');
+      for (let i = 0; i < images.length ; i++) {
+        let image = images[i].src;
+        image = image.replace(`${window.location.origin}/images/verk/`, '');
+        image = 'http://api.sls.fi/digitaledition/topelius/gallery/get/19/' + image;
+        this.images.push(image);
+      }
+    });
   }
 }

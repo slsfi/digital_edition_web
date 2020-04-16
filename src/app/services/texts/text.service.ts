@@ -13,6 +13,7 @@ export class TextService {
   private titlePageUrl = '/text/tit/';
   private variationsUrl = '/text/var/';
   private manuscriptsUrl = '/text/ms/';
+  private illustrationsImage: string;
 
   textCache: any;
 
@@ -137,6 +138,14 @@ export class TextService {
           return res.json();
         })
         .catch(this.handleError);
+  }
+
+  giveIllustrationsImage(url: string) {
+    this.illustrationsImage = url;
+  }
+
+  getIllustrationsImage() {
+    return this.illustrationsImage;
   }
 
   private handleError (error: Response | any) {
