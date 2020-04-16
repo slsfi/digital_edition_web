@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { NavParams } from 'ionic-angular';
 import { TextService } from '../../app/services/texts/text.service';
+import { ModalController } from 'ionic-angular';
+import { IllustrationsZoomModalPage } from '../../pages/illustrations-zoom-modal/illustrations-zoom-modal';
 /**
  * Generated class for the IllustrationsComponent component.
  *
@@ -19,7 +21,8 @@ export class IllustrationsComponent {
   viewAll = false;
   constructor(
     public navParams: NavParams,
-    private textService: TextService
+    private textService: TextService,
+    private modalCtrl: ModalController
   ) { }
   ngOnInit() {
     this.textService.getEstablishedText(this.itemId).subscribe(text => {
@@ -33,5 +36,10 @@ export class IllustrationsComponent {
         this.images.push(image);
       }
     });
+  }
+
+  zoomImage(image) {
+    const profileModal = this.modalCtrl.create(IllustrationsZoomModalPage, { image: image }, { cssClass: 'illustrations-zoom-modal' });
+    profileModal.present();
   }
 }
