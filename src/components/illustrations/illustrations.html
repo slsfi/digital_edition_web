@@ -1,4 +1,4 @@
-<button ion-button>Visa alla</button>
-<div>
-  <img src="{{imgPath}}" alt="illustration">
+<button ion-button (click)="this.viewAll = !this.viewAll">Visa alla</button>
+<div *ngIf="viewAll">
+  <img *ngFor="let image of images" style="margin: 10px 0;" src="{{ image }}" alt="illustration">
 </div>

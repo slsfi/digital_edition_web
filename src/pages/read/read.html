@@ -112,7 +112,7 @@ This is a dirty hack only because of the pending refactor. -->
                 <song-example [songDatafile]="song_id" [legacyId]="legacyId"></song-example>
               </div>
               <div *ngIf="view.illustrations.show">
-                <illustrations></illustrations>
+                <illustrations [itemId]="establishedText.link"></illustrations>
               </div>
             </ion-scroll>
           </ion-card-content>
@@ -221,7 +221,7 @@ This is a dirty hack only because of the pending refactor. -->
           <introduction [itemId]="establishedText.link" [matches]="matches"></introduction>
         </div>
         <div *ngSwitchCase="'illustrations'">
-          <illustrations></illustrations>
+            <illustrations [itemId]="establishedText.link"></illustrations>
         </div>
       </div>
 

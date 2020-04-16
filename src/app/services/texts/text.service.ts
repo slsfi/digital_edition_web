@@ -22,7 +22,6 @@ export class TextService {
 
 
   getEstablishedText(id: string): Observable<any> {
-    console.log(id);
     const id2 = id.replace('_est', '');
     const parts = id2.split(';');
     const c_id = `${id}`.split('_')[0];
@@ -41,10 +40,6 @@ export class TextService {
             return this.cache.getHtml(id);
           })
           .catch(this.handleError);
-  }
-
-  getEstablishedImages(id: string) {
-    console.log(this.getEstablishedText('167_13642'));
   }
 
   getIntroduction(id: string, lang: string): Observable<any> {
