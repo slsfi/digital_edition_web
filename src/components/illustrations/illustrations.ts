@@ -42,4 +42,10 @@ export class IllustrationsComponent {
     const profileModal = this.modalCtrl.create(IllustrationsZoomModalPage, { image: image }, { cssClass: 'illustrations-zoom-modal' });
     profileModal.present();
   }
+
+  scrollToPlaceInText(image) {
+    image = image.replace('http://api.sls.fi/digitaledition/topelius/gallery/get/19/', '');
+    const target = document.querySelector(`[src="assets/images/verk/${image}"]`);
+    target.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
+  }
 }
