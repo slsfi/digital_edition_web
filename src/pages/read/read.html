@@ -72,6 +72,7 @@ This is a dirty hack only because of the pending refactor. -->
                 <ion-icon *ngIf="view.variations.show" name="menu"></ion-icon>
                 <ion-icon *ngIf="view.songexample.show" name="menu"></ion-icon>
                 <ion-icon *ngIf="view.introduction.show" name="menu"></ion-icon>
+                <ion-icon *ngIf="view.illustrations.show" name="menu"></ion-icon>
               </button>
               <ion-fab-list *ngIf="views.length>1">
                 <button ion-fab *ngIf="displayToggle" (click)="removeSlide(i)">
@@ -111,6 +112,9 @@ This is a dirty hack only because of the pending refactor. -->
               <div *ngIf="view.songexample.show">
                 <song-example [songDatafile]="song_id" [legacyId]="legacyId"></song-example>
               </div>
+              <div *ngIf="view.illustrations.show">
+                <illustrations [itemId]="establishedText.link"></illustrations>
+              </div>
             </ion-scroll>
           </ion-card-content>
         </ion-card>
@@ -118,7 +122,7 @@ This is a dirty hack only because of the pending refactor. -->
     </div>
 
     <!-- Add view -->
-    <ion-fab id="readFabMenu" *ngIf="!isTablet && displayToggle" middle right #fab>
+    <ion-fab id="readFabMenu" *ngIf="!isTablet && displayToggle" margin-top top right #fab>
       <button ion-fab>
         <ion-icon name="add"></ion-icon>
       </button>
@@ -144,7 +148,7 @@ This is a dirty hack only because of the pending refactor. -->
           <ion-label>{{ "Read.Variations.AddButtonText" | translate }}</ion-label>
         </button>
         <button ion-fab (click)="addView('facsimiles', fab)" *ngIf="displayToggles['facsimiles']">
-          <ion-icon name="images"></ion-icon>
+          <ion-icon name="image"></ion-icon>
           <ion-label>{{ "Read.Facsimiles.AddButtonText" | translate }}</ion-label>
         </button>
         <button ion-fab (click)="addView('songexample', fab)" *ngIf="displayToggles['song-example']">
@@ -154,6 +158,10 @@ This is a dirty hack only because of the pending refactor. -->
         <button ion-fab (click)="addView('introduction', fab)" *ngIf="displayToggles['introduction']">
           <ion-icon name="information-circle"></ion-icon>
           <ion-label>{{ "Read.Introduction.AddButtonText" | translate }}</ion-label>
+        </button>
+        <button ion-fab (click)="addView('illustrations', fab)" *ngIf="displayToggles['illustrations']">
+          <ion-icon name="images"></ion-icon>
+          <ion-label>{{ "Read.Illustrations.AddButtonText" | translate }}</ion-label>
         </button>
       </ion-fab-list>
     </ion-fab>
@@ -188,6 +196,9 @@ This is a dirty hack only because of the pending refactor. -->
           <ion-segment-button value="introduction" *ngIf="displayToggles['introduction']">
             {{ "Read.Introduction.Title" | translate }}
           </ion-segment-button>
+          <ion-segment-button value="illustrations" *ngIf="displayToggles['illustrations']">
+            {{ "Read.Illustrations.AddButtonText" | translate }}
+          </ion-segment-button>
         </ion-segment>
       </div>
       <div [ngSwitch]="show">
@@ -209,6 +220,9 @@ This is a dirty hack only because of the pending refactor. -->
         </div>
         <div *ngSwitchCase="'introduction'">
           <introduction [itemId]="establishedText.link" [matches]="matches"></introduction>
+        </div>
+        <div *ngSwitchCase="'illustrations'">
+            <illustrations [itemId]="establishedText.link"></illustrations>
         </div>
       </div>
 

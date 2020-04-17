@@ -13,8 +13,11 @@ export class TextService {
   private titlePageUrl = '/text/tit/';
   private variationsUrl = '/text/var/';
   private manuscriptsUrl = '/text/ms/';
+  private illustrationsImage: string;
 
   textCache: any;
+  apiEndPoint: string;
+  appMachineName: string;
 
   constructor(private http: Http, private config: ConfigService, private cache: TextCacheService) {
 
@@ -22,7 +25,8 @@ export class TextService {
 
 
   getEstablishedText(id: string): Observable<any> {
-
+    this.appMachineName = this.config.getSettings('app.machineName');
+    this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     const id2 = id.replace('_est', '');
     const parts = id2.split(';');
     const c_id = `${id}`.split('_')[0];
@@ -33,11 +37,10 @@ export class TextService {
     }
     const textId = parts[0];
 
-    return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
-          this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/est' + ((ch_id === null) ? '' : '/' + ch_id))
+    return this.http.get(  `${this.apiEndPoint}/${this.appMachineName}/text/${c_id}/${pub_id}/est${((ch_id === null) ? '' : '/' + ch_id)}`)
           .map(res => {
             const body = res.json();
-            this.cache.setHtmlCache(textId, body.content);
+            this.cache.setHtmlCache(textId, body.content.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/19/`));
             return this.cache.getHtml(id);
           })
           .catch(this.handleError);
@@ -138,6 +141,14 @@ export class TextService {
           return res.json();
         })
         .catch(this.handleError);
+  }
+
+  giveIllustrationsImage(url: string) {
+    this.illustrationsImage = url;
+  }
+
+  getIllustrationsImage() {
+    return this.illustrationsImage;
   }
 
   private handleError (error: Response | any) {

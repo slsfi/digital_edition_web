@@ -102,6 +102,9 @@
             "Title": "Inledning",
             "AddButtonText": "Inledning"
         },
+        "Illustrations": {
+          "AddButtonText": "Illustrations view"
+        },
         "ShowAll": "Visa alla",
         "ShowSearchResults": "Förekomster"
     },

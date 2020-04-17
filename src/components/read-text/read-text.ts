@@ -26,6 +26,8 @@ export class ReadTextComponent {
   public text: any;
   protected errorMessage: string;
   defaultView: string;
+  apiEndPoint: string;
+  appMachineName: string;
 
   constructor(
     public events: Events,
@@ -39,6 +41,8 @@ export class ReadTextComponent {
     private config: ConfigService,
     protected modalController: ModalController
   ) {
+    this.appMachineName = this.config.getSettings('app.machineName');
+    this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.defaultView = this.config.getSettings('defaults.ReadModeView');
   }
 
@@ -58,6 +62,11 @@ export class ReadTextComponent {
 
   ngAfterViewInit() {
     this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
+      if (event.target.classList.contains('est_figure_graphic')) {
+        const image = event.target.src;
+        this.textService.giveIllustrationsImage(image);
+      }
+
       if (event.target.parentNode.classList.contains('ref_illustration')) {
         const hashNumber = event.target.parentNode.hash;
         const imageNumber = hashNumber.split('#')[1];
@@ -84,7 +93,7 @@ export class ReadTextComponent {
     this.storage.get(id).then((content) => {
       this.text = content;
       this.text = this.sanitizer.bypassSecurityTrustHtml(
-        content.replace(/images\//g, 'assets/images/')
+        content.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/19/`)
           .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"')
       );
       this.matches.forEach(function (val) {
@@ -111,7 +120,7 @@ export class ReadTextComponent {
     this.textService.getEstablishedText(this.link).subscribe(
       text => {
         this.text = this.sanitizer.bypassSecurityTrustHtml(
-          text.replace(/images\//g, 'assets/images/')
+          text.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/19/`)
             .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"')
         );
         if (this.matches instanceof Array) {

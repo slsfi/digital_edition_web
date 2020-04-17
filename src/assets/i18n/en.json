@@ -79,6 +79,9 @@
             "Of": "av",
             "OpenManuscript": "Open manuscript"
         },
+        "Illustrations": {
+            "AddButtonText": "Illustrations view"
+        },
         "TitlePage": {
             "Title": "Titel page"
         },
