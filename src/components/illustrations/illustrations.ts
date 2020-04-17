@@ -2,8 +2,8 @@ import { Component, Input } from '@angular/core';
 import { NavParams } from 'ionic-angular';
 import { TextService } from '../../app/services/texts/text.service';
 import { ModalController } from 'ionic-angular';
-import { IllustrationsZoomModalPage } from '../../pages/illustrations-zoom-modal/illustrations-zoom-modal';
 import { ConfigService } from '@ngx-config/core';
+import { FacsimileZoomModalPage } from '../../pages/facsimile-zoom/facsimile-zoom';
 /**
  * Generated class for the IllustrationsComponent component.
  *
@@ -19,6 +19,7 @@ export class IllustrationsComponent {
   illustrationsPath = 'assets/images/illustrations/2/';
   imgPath: any;
   images: Array<string> = [];
+  selectedImage: Array<string> = [];
   viewAll = false;
   showOne = false;
   apiEndPoint: string;
@@ -61,10 +62,11 @@ export class IllustrationsComponent {
   }
 
   zoomImage(image) {
+    this.selectedImage = [image];
     const illustrationZoomModal = this.modalCtrl.create(
-      IllustrationsZoomModalPage,
-      { image: image },
-      { cssClass: 'illustrations-zoom-modal' }
+      FacsimileZoomModalPage,
+      { 'images': this.selectedImage, 'activeImage': 0  },
+      { cssClass: 'facsimile-zoom-modal' }
     );
     illustrationZoomModal.present();
   }

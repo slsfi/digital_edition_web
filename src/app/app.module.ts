@@ -56,8 +56,6 @@ import { ReadPopoverPageModule } from '../pages/read-popover/read-popover.module
 import { TutorialService } from './services/tutorial/tutorial.service';
 import * as Sentry from '@sentry/browser';
 import { GalleryService } from './services/gallery/gallery.service';
-import { IllustrationsZoomModalPage } from '../pages/illustrations-zoom-modal/illustrations-zoom-modal';
-import { IllustrationsZoomModalPageModule } from '../pages/illustrations-zoom-modal/illustrations-zoom-modal.module';
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
 });
@@ -122,8 +120,7 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
     ReadPopoverPageModule,
     UserSettingsPopoverPageModule,
     IllustrationPageModule,
-    SearchAppPageModule,
-    IllustrationsZoomModalPageModule
+    SearchAppPageModule
     // PdfViewerModule,
   ],
   providers: [
@@ -160,8 +157,7 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
     ReferenceDataModalPage,
     FacsimileZoomModalPage,
     IllustrationPage,
-    SearchAppPage,
-    IllustrationsZoomModalPage
+    SearchAppPage
   ]
 })
 export class AppModule { }
