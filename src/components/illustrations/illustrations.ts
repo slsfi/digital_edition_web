@@ -3,6 +3,7 @@ import { NavParams } from 'ionic-angular';
 import { TextService } from '../../app/services/texts/text.service';
 import { ModalController } from 'ionic-angular';
 import { IllustrationsZoomModalPage } from '../../pages/illustrations-zoom-modal/illustrations-zoom-modal';
+import { ConfigService } from '@ngx-config/core';
 /**
  * Generated class for the IllustrationsComponent component.
  *
@@ -17,21 +18,27 @@ export class IllustrationsComponent {
   @Input() itemId: string;
   illustrationsPath = 'assets/images/illustrations/2/';
   imgPath: any;
-  images: any = [];
+  images: Array<string> = [];
   viewAll = false;
   showOne = false;
+  apiEndPoint: string;
+  projectMachineName: string;
   constructor(
     public navParams: NavParams,
     private textService: TextService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private config: ConfigService
   ) { }
   ngOnInit() {
     this.getIllustrationImages();
+    this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
+    this.projectMachineName = this.config.getSettings('app.machineName');
   }
 
   ngAfterViewInit() {
     document.body.addEventListener('click', (event: any) => {
-      if (event.target.classList.contains('est_figure_graphic')) {
+      const isReadTextThumbnail = event.target.classList.contains('est_figure_graphic');
+      if (isReadTextThumbnail) {
         const image = this.textService.getIllustrationsImage();
         if (image) {
           this.showOne = true;
@@ -48,18 +55,22 @@ export class IllustrationsComponent {
     this.viewAll = !this.viewAll;
     this.showOne = false;
 
-    if (this.viewAll === true) {
+    if (this.viewAll) {
       this.getIllustrationImages();
     }
   }
 
   zoomImage(image) {
-    const profileModal = this.modalCtrl.create(IllustrationsZoomModalPage, { image: image }, { cssClass: 'illustrations-zoom-modal' });
-    profileModal.present();
+    const illustrationZoomModal = this.modalCtrl.create(
+      IllustrationsZoomModalPage,
+      { image: image },
+      { cssClass: 'illustrations-zoom-modal' }
+    );
+    illustrationZoomModal.present();
   }
 
-  scrollToPlaceInText(image) {
-    image = image.replace('http://api.sls.fi/digitaledition/topelius/gallery/get/19/', '');
+  scrollToPositionInText(image) {
+    image = image.replace(`${this.apiEndPoint}/${this.projectMachineName}/gallery/get/19/`, '');
     const target = document.querySelector(`[src="assets/images/verk/${image}"]`);
     target.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
   }
@@ -73,7 +84,7 @@ export class IllustrationsComponent {
       for (let i = 0; i < images.length ; i++) {
         let image = images[i].src;
         image = image.replace(`${window.location.origin}/images/verk/`, '');
-        image = 'http://api.sls.fi/digitaledition/topelius/gallery/get/19/' + image;
+        image = `${this.apiEndPoint}/${this.projectMachineName}/gallery/get/19/${image}`;
         this.images.push(image);
       }
     });
