@@ -72,8 +72,8 @@ export class IllustrationsComponent {
   }
 
   scrollToPositionInText(image) {
-    image = image.replace(`${this.apiEndPoint}/${this.projectMachineName}/gallery/get/19/`, '');
-    const target = document.querySelector(`[src="assets/images/verk/${image}"]`);
+    image = image.replace('http:', '');
+    const target = document.querySelector(`[src="${image}"]`);
     target.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
   }
 
