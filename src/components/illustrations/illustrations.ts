@@ -84,9 +84,7 @@ export class IllustrationsComponent {
       const xmlDoc = parser.parseFromString(text, 'text/html');
       const images: any = xmlDoc.querySelectorAll('img.est_figure_graphic');
       for (let i = 0; i < images.length ; i++) {
-        let image = images[i].src;
-        image = image.replace(`${window.location.origin}/images/verk/`, '');
-        image = `${this.apiEndPoint}/${this.projectMachineName}/gallery/get/19/${image}`;
+        const image = images[i].src;
         this.images.push(image);
       }
     });
