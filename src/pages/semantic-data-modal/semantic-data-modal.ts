@@ -73,18 +73,54 @@ export class SemanticDataModalPage {
     }
 
     if (this.type === 'tag') {
-      this.getPerson(id);
+      this.getTag(id);
       this.getTagOccurrencesById(id);
     }
 
     if (this.type === 'work') {
-      this.getPerson(id);
-      this.getWorkOccurrencesById(id);
+      this.getWork(params.get('id'));
+      this.getWorkOccurrencesById(params.get('id'));
     }
   }
 
   ionViewDidLoad() {
 
+  }
+
+  getTag(id: string) {
+    this.semanticDataService.getTag(id).subscribe(
+        data => {
+            // in order to get id attributes for tooltips
+            this.title = data.name;
+            this.description = data.description;
+            this.semanticData = this.sanitizer.bypassSecurityTrustHtml(
+              String(data).replace(/images\//g, 'assets/images/')
+                  .replace(/\.png/g, '.svg')
+            );
+
+          },
+        error =>  {
+            this.semanticData = 'Unable to get semanticData';
+        }
+      );
+  }
+
+  getWork(id: string) {
+    this.semanticDataService.getWork(id).subscribe(
+        data => {
+            // in order to get id attributes for tooltips
+            this.title = data.title;
+            this.description = data.description;
+            this.semanticData = this.sanitizer.bypassSecurityTrustHtml(
+              String(data).replace(/images\//g, 'assets/images/')
+                  .replace(/\.png/g, '.svg')
+            );
+
+          },
+        error =>  {
+            this.semanticData = 'Unable to get semanticData';
+        }
+      );
   }
 
   getPlace(id: string) {
@@ -195,31 +231,29 @@ export class SemanticDataModalPage {
 
   openText(text: any) {
     const params = {};
-    const nav = this.app.getActiveNavs();
-    const col_id = text.collection_id;
-    const pub_id = text.publication_id;
+    const col_id = (text.collection_id !== undefined ) ? text.collection_id : text.publication_collection_id;
+    const pub_id = (text.publication_id !== undefined) ? text.publication_id : text.id;
     let text_type: string;
 
-    if (text.publication_facsimile_id !== null) {
+    if (text.publication_facsimile_id !== undefined && text.publication_facsimile_id !== null) {
       text_type = 'facsimiles';
-    } else if (text.publication_comment_id !== null) {
+    } else if (text.publication_comment_id !== undefined && text.publication_comment_id !== null) {
       text_type = 'comments';
-    } else if (text.publication_version_id !== null) {
+    } else if (text.publication_version_id !== undefined && text.publication_version_id !== null) {
       text_type = 'variations'
-    } else if (text.publication_manuscript_id !== null) {
+    } else if (text.publication_manuscript_id !== undefined && text.publication_manuscript_id !== null) {
       text_type = 'manuscripts'
     } else {
       text_type = 'established';
     }
 
-    params['tocLinkId'] = text.collection_id;
+    if (this.type === 'work') {
+      text_type = 'established';
+    }
+
+    params['tocLinkId'] = col_id;
     params['collectionID'] = col_id;
     params['publicationID'] = pub_id;
-    /*if ( text.facsimilePage ) {
-      params['facsimilePage'] = text.facsimile_page;
-    } else {
-      params['facsimilePage'] = null;
-    }*/
 
     params['views'] = [
       {
@@ -234,16 +268,11 @@ export class SemanticDataModalPage {
       params['showOccurrencesModalOnRead'] = true;
     }
 
-    if (this.platform.is('mobile')) {
-      this.viewCtrl.dismiss();
-      this.app.getRootNav().push('read', params);
-    } else {
-      this.viewCtrl.dismiss();
-      this.app.getRootNav().push('read', params);
-    }
+    this.viewCtrl.dismiss();
+    this.app.getRootNav().push('read', params);
   }
 
-   dismiss() {
-     this.viewCtrl.dismiss();
-   }
+  dismiss() {
+   this.viewCtrl.dismiss();
+  }
 }
