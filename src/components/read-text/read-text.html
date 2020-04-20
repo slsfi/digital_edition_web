@@ -1,3 +1,5 @@
+<div *ngIf="showToolTip" class="toolTip" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}">{{toolTipText}}</div>
+
 <div class="tei" [innerHTML]="text"
   [class.show_comments]="readPopoverService.show.comments"
   [class.show_personInfo]="readPopoverService.show.personInfo"

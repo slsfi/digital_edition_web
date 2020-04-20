@@ -120,7 +120,7 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
     ReadPopoverPageModule,
     UserSettingsPopoverPageModule,
     IllustrationPageModule,
-    SearchAppPageModule
+    SearchAppPageModule,
     // PdfViewerModule,
   ],
   providers: [

@@ -6,7 +6,6 @@
     "scripts": {
         "build": "ionic-app-scripts build",
         "watch": "ionic-app-scripts watch",
-        "start": "ionic-app-scripts serve --wwwDir",
         "serve:before": "watch",
         "emulate:before": "build",
         "deploy:before": "build",
@@ -55,7 +54,7 @@
         "ionicons": "~3.0.0",
         "leaflet": "^1.4.0",
         "ngx-drag-scroll": "1.7.9",
-        "ngx-pinch-zoom": "^2.4.4",
+        "ngx-pinch-zoom": "^1.2.3",
         "ngx-sharebuttons": "^3.0.0",
         "rev-hash": "^3.0.0",
         "rxjs": "5.5.11",

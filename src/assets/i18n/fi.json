@@ -38,27 +38,7 @@
         },
         "Comments": {
             "Title": "Kommentarer",
-            "AddButtonText": "Kommentarvy",
-            "Manuscript": {
-              "Title": "Manuskriptbeskrivning",
-              "LegacyId": "Brevsignum",
-              "Sender": "Avsändare",
-              "Receiver": "Mottagare",
-              "Archive": "Arkiv",
-              "Collection": "Samling, signum",
-              "Type": "Form",
-              "Status": "Status",
-              "Format": "Format",
-              "Leafs": "Lägg",
-              "Sheets": "Antal blad",
-              "Pages": "Sidor brevtext",
-              "Color": "Färg",
-              "Quality": "Kvalitet",
-              "Pattern": "Mönster",
-              "State": "Tillstånd",
-              "Material": "Skrivmaterial",
-              "Other": "Övrigt"
-            }
+            "AddButtonText": "Kommentarvy"
         },
         "Manuscripts": {
             "Title": "Manuskript",
@@ -90,9 +70,6 @@
         "Introduction": {
             "Title": "Inledning",
             "AddButtonText": "Inledning"
-        },
-        "Illustrations": {
-          "AddButtonText": "Illustrations view"
         },
         "ShowAll": "Visa alla",
         "ShowSearchResults": "Förekomster"

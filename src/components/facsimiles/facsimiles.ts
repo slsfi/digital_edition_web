@@ -9,7 +9,6 @@ import { ConfigService } from '@ngx-config/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SongService } from '../../app/services/song/song.service';
 import { IfObservable } from 'rxjs/observable/IfObservable';
-
 /**
  * Generated class for the FacsimilesComponent component.
  *
@@ -42,10 +41,8 @@ export class FacsimilesComponent {
   manualPageNumber: number;
   zoom = 1.0;
   angle = 0;
-  latestDeltaX = 0
-  latestDeltaY = 0
-  prevX = 0
-  prevY = 0
+  latestDeltaX = null;
+  latestDeltaY = null;
 
   facsUrl = '';
   facsimilePagesInfinite = false;
@@ -345,14 +342,14 @@ export class FacsimilesComponent {
 
   handleSwipeEvent(event) {
     const img = event.target;
-    // Store latest zoom adjusted delta.
-    this.latestDeltaX = event.deltaX / this.zoom
-    this.latestDeltaY = event.deltaY / this.zoom
-
-    // Get current position from last position and delta.
-    let x = this.prevX + this.latestDeltaX
-    let y = this.prevY + this.latestDeltaY
-
+    let x = event.deltaX;
+    let y = event.deltaY;
+    if ( this.latestDeltaX !== null ) {
+      x = this.latestDeltaX;
+      y = this.latestDeltaY;
+      this.latestDeltaX = null;
+      this.latestDeltaY = null;
+    }
     if ( this.angle === 90 ) {
       const tmp = x;
       x = y;
@@ -367,34 +364,28 @@ export class FacsimilesComponent {
       y = tmp;
       x = x * -1;
     }
-
     if (img !== null) {
       img.style.transform = 'rotate(' + this.angle + 'deg) scale(' + this.zoom + ') translate3d(' + x + 'px, ' + y + 'px, 0px)';
     }
   }
 
-  onMouseUp(e) {
-    // Update the previous position on desktop by adding the latest delta.
-    this.prevX += this.latestDeltaX
-    this.prevY += this.latestDeltaY
-  }
-
-  onTouchEnd(e) {
-    // Update the previous position on mobile by adding the latest delta.
-    this.prevX += this.latestDeltaX
-    this.prevY += this.latestDeltaY
+  setLatestPos(e) {
+    this.latestDeltaX = e.clientX - e.offsetX;
+    this.latestDeltaY = e.clientY - e.offsetY;
   }
 
   onMouseWheel(e) {
     const img = e.target;
+    this.latestDeltaY = e.clientY - e.offsetY;
+    this.latestDeltaX = e.clientX - e.offsetX;
     if ( e.deltaY > 0 ) {
       this.zoomIn();
-      img.style.transform = 'rotate(' + this.angle + 'deg) scale(' + this.zoom + ') translate3d(' + this.prevX + 'px, ' +
-       this.prevY + 'px, 0px)';
+      img.style.transform = 'rotate(' + this.angle + 'deg) scale(' + this.zoom + ') translate3d(' + this.latestDeltaX + 'px, ' +
+       this.latestDeltaY + 'px, 0px)';
     } else {
       this.zoomOut();
-      img.style.transform = 'rotate(' + this.angle + 'deg) scale(' + this.zoom + ') translate3d(' + this.prevX + 'px, ' +
-       this.prevY + 'px, 0px)';
+      img.style.transform = 'rotate(' + this.angle + 'deg) scale(' + this.zoom + ') translate3d(' + this.latestDeltaX + 'px, ' +
+       this.latestDeltaY + 'px, 0px)';
     }
   }
 
