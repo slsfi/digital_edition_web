@@ -18,7 +18,6 @@ export class SemanticDataService {
     }
   }
 
-
   getFilterCollections(): Observable<any[]> {
     return this.http.get('assets/filterCollections.json')
       .map(this.extractData)

@@ -40,13 +40,7 @@ export class TutorialService {
         setTimeout(() => {
           this.storage.get('tutorial-done').then((seen) => {
             if (!seen) {
-              try {
-                if (this.config.getSettings('showTutorial')) {
-                  this.intro();
-                }
-              } catch (e) {
-                console.log('Missing showTutorial from config.json');
-              }
+              this.intro();
             }
           });
         }, 1000);
