@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Events, App, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 
 /**
  * Generated class for the TextChangerComponent component.
@@ -30,7 +31,8 @@ export class TextChangerComponent {
     public events: Events,
     public storage: Storage,
     public app: App,
-    public params: NavParams
+    public params: NavParams,
+    private userSettingsService: UserSettingsService
   ) {
     this.next(true).then(function(val) {
       this.displayNext = val;
