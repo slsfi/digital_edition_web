@@ -1,10 +1,18 @@
-<button ion-button (click)="toggleViewAll()">Visa alla</button>
-<div *ngIf="viewAll || showOne">
-  <div class="illustration-image-wrapper" *ngFor="let image of images">
-    <img src="{{ image }}" (click)="zoomImage(image)" alt="illustration">
-    <button class="scroll-to-illustration-button" ion-button icon-start (click)="scrollToPositionInText(image)">
-      <ion-icon name="image"></ion-icon>
-      Gå till position i lästext
-    </button>
+<ng-container *ngIf="images.length > 0; then illustrations; else none"></ng-container>
+
+<ng-template #illustrations>
+  <button ion-button (click)="toggleViewAll()">Visa alla</button>
+  <div *ngIf="viewAll || showOne">
+    <div class="illustration-image-wrapper" *ngFor="let image of images">
+      <img src="{{ image }}" (click)="zoomImage(image)" alt="illustration">
+      <button class="scroll-to-illustration-button" ion-button icon-start (click)="scrollToPositionInText(image)">
+        <ion-icon name="image"></ion-icon>
+        Gå till position i lästext
+      </button>
+    </div>
   </div>
-</div>
+</ng-template>
+
+<ng-template #none>
+  <h1>Inga illustationer</h1>
+</ng-template>
