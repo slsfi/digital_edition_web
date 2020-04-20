@@ -2,13 +2,13 @@
   <div class="backwardButtonDiv">
     <button class="backwardButton" (click)="previous()">
       <ion-icon name="arrow-round-back"></ion-icon>
-      <span class="forwardBackward__previouspage-name">{{prevItemTitle}}</span>
+      <p class="forwardBackward__previouspage-name">{{prevItemTitle}}</p>
     </button>
   </div>
   <p class="forwardBackward__currentpage-name">{{currentItemTitle}}</p>
   <div class="forwardButtonDiv">
-    <button class="forwardButton" (click)="next()">
-      <span class="forwardBackward__nextpage-name">{{nextItemTitle}}</span>
+    <button [disabled]="lastItem" class="forwardButton" (click)="next()">
+      <p class="forwardBackward__nextpage-name">{{nextItemTitle}} </p>
       <ion-icon name="arrow-round-forward"></ion-icon>
     </button>
   </div>

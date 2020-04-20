@@ -22,12 +22,27 @@ text-changer {
     }
     .forwardButton,
     .backwardButton {
+      display: flex;
+      align-items: center;
       hyphens: auto;
       background: transparent;
+      overflow: hidden;
       &:hover .forwardBackward__previouspage-name,
       &:hover .forwardBackward__nextpage-name  {
         text-shadow: 1px 0 0 currentColor;
       }
+      .forwardBackward__nextpage-name,
+      .forwardBackward__previouspage-name {
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+    .forwardButtonDiv {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .backwardButtonDiv {
+      display: flex;
     }
     }
     @media screen and (max-width: 800px) {

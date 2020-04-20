@@ -20,6 +20,7 @@ export class TextChangerComponent {
   nextItem: any;
   prevItemTitle: string;
   nextItemTitle: string;
+  lastItem: boolean;
   currentItemTitle: string;
 
   displayNext: Boolean = true;
@@ -40,6 +41,8 @@ export class TextChangerComponent {
   }
 
   ngOnInit() {
+    console.log(this.nextItem, 'nextitem');
+
   }
 
   async previous(test?: boolean) {
@@ -121,14 +124,17 @@ export class TextChangerComponent {
           this.currentItemTitle = childs[j].text;
           this.nextItemTitle = (childs[j + 1]) ? childs[j + 1].text : '';
           this.prevItemTitle = (childs[j - 1]) ? childs[j - 1].text : '';
+          this.lastItem = (childs[j + 1]) ? false : true;
 
-          if ( childs[j + 1].itemId == '') {
-            this.nextItem = childs[j + 2];
-          } else {
-            this.nextItem = childs[j + 1];
+          if (childs[j + 1]) {
+            if ( childs[j + 1].itemId === '') {
+              this.nextItem = childs[j + 2];
+            } else {
+              this.nextItem = childs[j + 1];
+            }
           }
 
-          if (childs[j - 1].itemId == '') {
+          if (childs[j - 1].itemId === '') {
             this.prevItem = childs[j - 2];
           } else {
             this.prevItem = childs[j - 1];
