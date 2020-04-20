@@ -105,7 +105,7 @@
     .bottomMargin {
         margin-bottom: 1em;
     }
-    p.dateline 
+    p.dateline
     {
         margin-top: 1.0em;
         margin-bottom: 1.0em;
@@ -196,11 +196,11 @@
         margin-top: 0;
         margin-bottom: 0;
     }
-    p.lIndent 
+    p.lIndent
     {
         text-indent:-9px !important;
     }
-    .tei_indent 
+    .tei_indent
     {
         padding-left:30px !important;
         display: inline-block;
@@ -395,7 +395,7 @@
         padding-left: 30px !important;
         text-indent: -30px !important;
     }
-    p.noteLegend 
+    p.noteLegend
     {
         text-indent: 0px !important;
         margin-bottom: 1em;
@@ -417,7 +417,7 @@
         content:" – ";
     }
     .noteText {
-        
+
     }
 
     /* MANUSCRIPT */
@@ -808,6 +808,9 @@
     .highlightForeign {
         background-color: #cae4eb !important;
     }
+    .highlightWork {
+      background-color: #cae4eb !important;
+    }
 
     // these will be svg
     img.tooltiptrigger {
@@ -841,6 +844,9 @@
 
 .tei.show_placeInfo    span.placeName {background-color: color($colors, location);}
 .tei.show_placeInfo    span.placeName[id] {cursor:pointer;}
+
+.tei.show_workInfo    span.title {background-color: color($colors, work);}
+.tei.show_workInfo    span.title[id] {cursor:pointer;}
 
 .tei                     span.corr_hide {display: none;}
 .tei.show_choiceStyle    span.corr_hide {display: inherit;}

@@ -5,11 +5,14 @@
   </div>
 </div>
 
+<div *ngIf="showToolTip" class="toolTip" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}">{{toolTipText}}</div>
+
 
 <div class="tei" [innerHTML]="text"
 [class.show_comments]="readPopoverService.show.comments"
 [class.show_personInfo]="readPopoverService.show.personInfo"
 [class.show_abbreviations]="readPopoverService.show.abbreviations"
+[class.show_workInfo]="readPopoverService.show.workInfo"
 [class.show_pageNumbering]="readPopoverService.show.pageNumbering"
 [class.show_pageBreakOriginal]="readPopoverService.show.pageBreakOriginal"
 [class.show_pageBreakEdition]="readPopoverService.show.pageBreakEdition"

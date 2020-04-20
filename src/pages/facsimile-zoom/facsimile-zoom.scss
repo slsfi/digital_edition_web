@@ -1,7 +1,7 @@
-page-facsimile-zoom {
+page-facsimile-zoom {  
   .facsimile-zoom-image{
     position: relative !important;
-    transform-origin: center center;
+    transform-origin: center top;
     top: 5em;
   }
   /*ion-fab{
@@ -29,8 +29,8 @@ page-facsimile-zoom {
   }
 
   .scroll{
-    height:100%;
-    width:100%;
+    height:100%; 
+    width:100%; 
     position: relative;
   }
 
@@ -90,13 +90,13 @@ page-facsimile-zoom {
     width: 40%;
   }
   .div_arrow_left{
-
+    
   }
   .div_plus_minus{
-
+    
   }
   .div_arrow_right{
-
+    
   }
   background-color: rgba(2,2,2,0.5);
 
@@ -129,8 +129,7 @@ page-facsimile-zoom {
   }
   .facsimile-zoom-image {
     max-width: 100%;
-    // 72px is the height of the toolbar
-    max-height: calc(100vh - 72px);
+    max-height: 100vh;
     margin: auto;
   }
 
@@ -180,11 +179,5 @@ page-facsimile-zoom {
     justify-content: center;
     flex-direction: row;
     padding-bottom: 1rem;
-  }
-
-  img {
-      cursor: move;
-      // https://github.com/hammerjs/hammer.js/issues/1050#issuecomment-267595556
-      touch-action: none;
   }
 }

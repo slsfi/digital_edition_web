@@ -29,7 +29,6 @@
       "en": "Zacharias Topeliuksen Kirjoitukset"
     }
   },
-  "showTutorial" : false,
   "TutorialSteps": [
     {
       "id": "welcome",
@@ -76,6 +75,7 @@
       "comments": true,
       "personInfo": true,
       "placeInfo": true,
+      "workInfo": true,
       "changes": true,
       "abbreviations": true,
       "pageNumbering": true,
@@ -91,6 +91,11 @@
       "facsimiles": true,
       "introduction": true,
       "songexample": false
+    },
+    "toolTips": {
+      "personInfo": true,
+      "placeInfo": true,
+      "workInfo": true
     },
     "enableModeToggle": true,
     "getFacsimilePagesInfinite": false

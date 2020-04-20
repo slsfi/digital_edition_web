@@ -1,31 +1,8 @@
 <div class="tei" [innerHTML]="text"
   [class.show_comments]="readPopoverService.show.comments"
   [class.show_personInfo]="readPopoverService.show.personInfo"
+  [class.show_workInfo]="readPopoverService.show.workInfo"
   [class.show_abbreviations]="readPopoverService.show.abbreviations"
   [class.show_pageNumbering]="readPopoverService.show.pageNumbering"
   [ngClass]="(readPopoverService.fontsize==0)?'smallFont':(readPopoverService.fontsize==1)?'mediumFont':'largeFont'"
 ></div>
-<div class="ms" *ngIf="letter">
-  <h3>{{ "Read.Comments.Manuscript.Title" | translate }}</h3>
-  <ul>
-    <li>{{ "Read.Comments.Manuscript.LegacyId" | translate }}: {{letter['legacy_id']}}</li>
-    <li>{{ "Read.Comments.Manuscript.Sender" | translate }}: {{sender}}</li>
-    <li>{{ "Read.Comments.Manuscript.Receiver" | translate }}: {{receiver}}</li>
-    <li>{{ "Read.Comments.Manuscript.Archive" | translate }}: {{letter['source_archive']}}</li>
-    <li>{{ "Read.Comments.Manuscript.Collection" | translate }}: {{letter['source_collection_id']}}</li>
-  </ul>
-  <ul>
-    <li *ngIf="letter['material_type']">{{ "Read.Comments.Manuscript.Type" | translate }}: {{letter['material_type']}}</li>
-    <li *ngIf="letter['material_source']">{{ "Read.Comments.Manuscript.Status" | translate }}: {{letter['material_source']}}</li>
-    <li *ngIf="letter['material_format']">{{ "Read.Comments.Manuscript.Format" | translate }}: {{letter['material_format']}}</li>
-    <li *ngIf="letter['leaf_count']">{{ "Read.Comments.Manuscript.Leafs" | translate }}: {{letter['leaf_count']}}</li>
-    <li *ngIf="letter['material_state']">{{ "Read.Comments.Manuscript.Sheets" | translate }}: {{letter['sheet_count']}}</li>
-    <li *ngIf="letter['page_count']">{{ "Read.Comments.Manuscript.Pages" | translate }}: {{letter['page_count']}}</li>
-    <li *ngIf="letter['material_color']">{{ "Read.Comments.Manuscript.Color" | translate }}: {{letter['material_color']}}</li>
-    <li *ngIf="letter['material_quality']">{{ "Read.Comments.Manuscript.Quality" | translate }}: {{letter['material_quality']}}</li>
-    <li *ngIf="letter['material_pattern']">{{ "Read.Comments.Manuscript.Pattern" | translate }}: {{letter['material_pattern']}}</li>
-    <li *ngIf="letter['material_state']">{{ "Read.Comments.Manuscript.State" | translate }}: {{letter['material_state']}}</li>
-    <li *ngIf="letter['material']">{{ "Read.Comments.Manuscript.Material" | translate }}: {{letter['material']}}</li>
-    <li *ngIf="letter['material_notes']">{{ "Read.Comments.Manuscript.Other" | translate }}: {{letter['material_notes']}}</li>
-  </ul>
-</div>
