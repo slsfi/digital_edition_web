@@ -7,8 +7,8 @@
   </div>
   <p class="forwardBackward__currentpage-name">{{currentItemTitle}}</p>
   <div class="forwardButtonDiv">
-    <button class="forwardButton" (click)="next()">
-      <p class="forwardBackward__nextpage-name">{{nextItemTitle}}</p>
+    <button [disabled]="lastItem" class="forwardButton" (click)="next()">
+      <p class="forwardBackward__nextpage-name">{{nextItemTitle}} </p>
       <ion-icon name="arrow-round-forward"></ion-icon>
     </button>
   </div>
