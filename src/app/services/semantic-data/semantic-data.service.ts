@@ -18,7 +18,6 @@ export class SemanticDataService {
     }
   }
 
-
   getFilterCollections(): Observable<any[]> {
     return this.http.get('assets/filterCollections.json')
       .map(this.extractData)
@@ -32,10 +31,9 @@ export class SemanticDataService {
   }
 
   getPlace(id: string): Observable<any> {
-    // return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
-    //   this.config.getSettings('app.machineName') + '/tooltips/location/' + id +
-    //   ((this.useLegacy) ? '/' + this.useLegacy + '/' : '/'))
-    return this.http.get('http://api.sls.fi/digitaledition/fsfd/subject/11354')
+    return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
+      this.config.getSettings('app.machineName') + '/tooltips/location/' + id +
+      ((this.useLegacy) ? '/' + this.useLegacy + '/' : '/'))
       .map(res => {
         const body = res.json();
 
@@ -45,10 +43,9 @@ export class SemanticDataService {
   }
 
   getPerson(id: string): Observable<any> {
-    // return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
-    //   this.config.getSettings('app.machineName') + '/tooltips/subject/' + id +
-    //   ((this.useLegacy) ? '/' + this.useLegacy + '/' : '/'))
-    return this.http.get('http://api.sls.fi/digitaledition/fsfd/subject/11354')
+    return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
+      this.config.getSettings('app.machineName') + '/tooltips/subject/' + id +
+      ((this.useLegacy) ? '/' + this.useLegacy + '/' : '/'))
       .map(res => {
         const body = res.json();
 

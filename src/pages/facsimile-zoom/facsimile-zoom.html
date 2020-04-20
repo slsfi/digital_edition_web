@@ -1,5 +1,5 @@
 <ion-content>
-    <ion-scroll scrollX="false" scrollY="false" zoom="true" class="scroll">
+    <ion-scroll scrollX="true" scrollY="true" zoom="true" class="scroll">
         <div middle class="facsimile_button_group">
             <div class="buttons">
                 <div class="action_buttons">
@@ -12,9 +12,6 @@
                     </button>
                     <button style="display: inline-block;" ion-fab color="primary" mini (click)="next()">
                         <ion-icon name="arrow-forward"></ion-icon>
-                    </button>
-                    <button ion-fab mini (click)="rotate()">
-                      <ion-icon name="refresh"></ion-icon>
                     </button>
                     <button *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()"
                         style="display: inline-block;" ion-fab color="primary" mini (click)="zoomIn()">
@@ -55,38 +52,22 @@
                 <div class="div_img">
                     <div *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()">
                         <img *ngIf="!facsimilePagesInfinite && (!backside || !backsides[activeImage])"
-                          [src]="images[activeImage]"
-                          class="facsimile-zoom-image"
-                          [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
-                          (wheel)="onMouseWheel($event)"
-                          (pan)="handlePanEvent($event)"
-                          (mouseup)="onMouseUp($event)"
-                        >
+                            [ngStyle]="{'transform':'scale('+zoom+')'}" [src]="images[activeImage]"
+                            class="facsimile-zoom-image">
                         <img *ngIf="!facsimilePagesInfinite && backside && backsides[activeImage]"
-                          [src]="backSide(images[activeImage])"
-                          class="facsimile-zoom-image"
-                          [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
-                          (wheel)="onMouseWheel($event)"
-                          (pan)="handlePanEvent($event)"
-                          (mouseup)="onMouseUp($event)"
-                        >
-                        <img *ngIf="facsimilePagesInfinite && facsNumber"
-                          [src]="facsUrl + facsNumber"
-                          class="facsimile-zoom-image"
-                          [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
-                          (wheel)="onMouseWheel($event)"
-                          (pan)="handlePanEvent($event)"
-                          (mouseup)="onMouseUp($event)"
-                        >
+                            [ngStyle]="{'transform':'scale('+zoom+')'}" [src]="backSide(images[activeImage])"
+                            class="facsimile-zoom-image">
+                        <img *ngIf="facsimilePagesInfinite && facsNumber" [ngStyle]="{'transform':'scale('+zoom+')'}"
+                            [src]="facsUrl + facsNumber" class="facsimile-zoom-image">
                     </div>
                     <div *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet())">
                         <div *ngIf="!facsimilePagesInfinite">
-                            <pinch-zoom overflow="visible" backgroundColor="transparent" [limit-zoom]="40" [minPanScale]="0"(swipe)="handleSwipeEvent($event)">
+                            <pinch-zoom (swipe)="handleSwipeEvent($event)">
                                 <img [src]="images[activeImage]" class="facsimile-zoom-image">
                             </pinch-zoom>
                         </div>
                         <div *ngIf="facsimilePagesInfinite && facsNumber">
-                            <pinch-zoom overflow="visible" backgroundColor="transparent" [limit-zoom]="40" [minPanScale]="0" (swipe)="handleSwipeEvent($event)">
+                            <pinch-zoom (swipe)="handleSwipeEvent($event)">
                                 <img [src]="facsUrl + facsNumber" class="facsimile-zoom-image">
                             </pinch-zoom>
                         </div>

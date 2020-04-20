@@ -35,7 +35,6 @@ import { ReferenceDataModalPage } from '../reference-data-modal/reference-data-m
 import { OccurrencesPage } from '../occurrences/occurrences';
 import { OccurrenceResult } from '../../app/models/occurrence.model';
 import { SearchAppPage } from '../search-app/search-app';
-import { SocialSharing } from '@ionic-native/social-sharing';
 
 /**
  * A page used for reading publications.
@@ -74,15 +73,13 @@ export class ReadPage /*implements OnDestroy*/ {
   appName: string;
   tocRoot: TableOfContentsCategory[];
   popover: ReadPopoverPage;
+  tooltipContent: any;
   subTitle: string;
   cacheItem = false;
   collectionTitle: string;
   hasOccurrenceResults = false;
   showOccurrencesModal = false;
   searchResult: string;
-  showToolTip: boolean;
-  toolTipPosition: object;
-  toolTipText: string;
 
   divWidth = '100px';
 
@@ -133,51 +130,10 @@ export class ReadPage /*implements OnDestroy*/ {
     'established',
     'facsimiles',
     'introduction',
-    'songexample',
-    'illustrations'
+    'songexample'
   ];
 
   appUsesAccordionToc = false;
-
-  tooltips = {
-    'persons' : {},
-    'comments': {},
-    'places': {},
-    'abbreviations': {}
-  };
-
-  shareFacebook() {
-    //
-  }
-
-  shareTwitter() {
-    //
-  }
-
-  shareInstagram() {
-    //
-  }
-
-  shareEmail() {
-    //
-  }
-
-  nativeEmail() {
-    // Check if sharing via email is supported
-    this.socialSharing.canShareViaEmail().then(() => {
-      console.log('Sharing via email is possible');
-
-      // Share via email
-      this.socialSharing.shareViaEmail('Body', 'Subject', ['recipient@example.org']).then(() => {
-        // Success!
-      }).catch(() => {
-        // Error!
-        console.log('Email error')
-      });
-    }).catch(() => {
-      console.log('Sharing via email is not possible');
-    });
-  }
 
   constructor(private app: App,
     public viewCtrl: ViewController,
@@ -202,8 +158,7 @@ export class ReadPage /*implements OnDestroy*/ {
     private platform: Platform,
     private storage: Storage,
     private userSettingsService: UserSettingsService,
-    public publicationCacheService: PublicationCacheService,
-    private socialSharing: SocialSharing
+    public publicationCacheService: PublicationCacheService
   ) {
     this.isCached();
     this.searchResult = null;
@@ -436,6 +391,31 @@ export class ReadPage /*implements OnDestroy*/ {
         error => { this.errorMessage = <any>error });
   }
 
+  private scrollToElement(element: string) {
+    try {
+      element = element.replace(/#/g, '');
+      const elementStart = 'start' + element.replace(/en/g, '');
+      // scroll to element
+      if (this.elementRef.nativeElement.querySelector('.' + element) != null) {
+        const scrollTarget = this.elementRef.nativeElement.querySelector('.' + element);
+        const yOffset = scrollTarget.offsetTop;
+        if (scrollTarget.parentElement.parentElement !== null) {
+          scrollTarget.parentElement.parentElement.scrollIntoView(true);
+        }
+      }
+      // show start arrow
+      if (this.elementRef.nativeElement.querySelector('.anchor_lemma[data-id="' + elementStart + '"]') != null) {
+        const targetArrow = this.elementRef.nativeElement.querySelector('.anchor_lemma[data-id="' + elementStart + '"]');
+        targetArrow.style.display = 'initial';
+        setTimeout(() => { targetArrow.style.display = 'none' }, 3000);
+      }
+    } catch (e) {
+      console.log(element);
+      console.log(document.getElementById(element));
+      console.log(e);
+    }
+  }
+
   setTocCache() {
     const id = this.params.get('collectionID');
     this.tocService.getTableOfContents(id)
@@ -500,8 +480,6 @@ export class ReadPage /*implements OnDestroy*/ {
     } else if (viewmode === 'introduction' && !this.displayToggles['introduction']) {
       return false;
     } else if (viewmode === 'songexample' && !this.displayToggles['songexample']) {
-      return false;
-    } else if (viewmode === 'illustrations' && !this.displayToggles['illustrations']) {
       return false;
     }
 
@@ -793,15 +771,6 @@ export class ReadPage /*implements OnDestroy*/ {
         console.log(e);
       }
     }.bind(this), 1000);
-    this.renderer.listen(this.elementRef.nativeElement, 'mouseover', (event) => {
-      if ((event.target.parentNode.classList.contains('tooltiptrigger') || event.target.classList.contains('tooltiptrigger')) &&
-        this.readPopoverService.show.changes) {
-        if (event.target !== undefined) {
-          this.showChangesTooltip(event);
-        }
-      }
-    });
-
   }
 
   scrollToTOC(element: HTMLElement) {
@@ -814,25 +783,19 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 
-  private getEventTarget(event) {
-    let eventTarget: any = document.createElement('div');
-    eventTarget['classList'] = [];
-
-    if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
-      eventTarget = event['target']['parentNode'];
-    } else if ( event.target !== undefined && event['target']['classList'].contains('tooltiptrigger') ) {
-      eventTarget = event.target;
-    } else if ( event.target !== undefined && eventTarget['classList'].contains('anchor') ) {
-      eventTarget = event.target;
-    }
-    return eventTarget;
-  }
-
   private setUpTextListeners() {
     // We must do it like this since we want to trigger an event on a dynamically loaded innerhtml.
     const nElement: any = this.elementRef.nativeElement;
       this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
-        const eventTarget = this.getEventTarget(event);
+        let eventTarget: any = document.createElement('div');
+        eventTarget['classList'] = [];
+        if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
+          eventTarget = event['target']['parentNode'];
+        } else if ( event.target !== undefined && event['target']['classList'].contains('tooltiptrigger') ) {
+          eventTarget = event.target;
+        } else if ( event.target !== undefined && eventTarget['classList'].contains('anchor') ) {
+          eventTarget = event.target;
+        }
 
         if ( eventTarget['classList'].contains('tooltiptrigger')) {
           if (eventTarget.hasAttribute('data-id')) {
@@ -853,96 +816,7 @@ export class ReadPage /*implements OnDestroy*/ {
             this.scrollToElement(eventTarget.getAttribute('href'));
           }
         }
-        if (event.target.classList.contains('variantScrollTarget') && this.readPopoverService.show.comments ) {
-          if (event.target !== undefined) {
-            event.target.style.fontWeight = 'bold';
-            this.showVariationTooltip(event);
-            this.scrollToElement(event.target);
-          }
-          setTimeout(function() {
-            if (event.target !== undefined) {
-              event.target.style.fontWeight = 'normal';
-            }
-          }, 1000);
-        }
-        if (event.target.classList.contains('tooltiptrigger') && this.readPopoverService.show.comments ) {
-          if (event.target !== undefined) {
-            event.target.style.fontWeight = 'bold';
-          }
-          setTimeout(function() {
-            if (event.target !== undefined) {
-              event.target.style.fontWeight = 'normal';
-            }
-          }, 1000);
-        }
       }).bind(this);
-
-      this.renderer.listen(nElement, 'mousewheel', (event) => {
-        this.showToolTip = false;
-      }).bind(this)
-
-      let toolTipsSettings;
-      try {
-        toolTipsSettings = this.config.getSettings('settings.toolTips');
-      } catch (e) {
-        console.error(e);
-      }
-      this.renderer.listen(nElement, 'mouseover', (event) => {
-        const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-        const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-        const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
-
-        const eventTarget = this.getEventTarget(event);
-        const elem = event.target;
-        if ( eventTarget['classList'].contains('tooltiptrigger')) {
-          const x = ((elem.getBoundingClientRect().x + vw) - vw) + (elem.offsetWidth + 10);
-          const y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
-          if (sidePaneIsOpen) {
-            this.toolTipPosition = {
-              top: y + 'px',
-              left: (x - 269) + 'px'
-            };
-          } else {
-            this.toolTipPosition = {
-              top: y + 'px',
-              left: x + 'px'
-            };
-          }
-          if (event.target.classList.contains('ttVariant') && this.readPopoverService.show.comments) {
-            if (event.target !== undefined) {
-            this.showVariationTooltip(event);
-            }
-          }
-          if (eventTarget.hasAttribute('data-id')) {
-            if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
-              this.showToolTip = true;
-              clearTimeout(window['reload_timer']);
-              this.hideToolTip();
-              this.showPersonTooltip(eventTarget.getAttribute('data-id'), event);
-            } else if (toolTipsSettings.placeInfo
-              && eventTarget['classList'].contains('placeName')
-              && this.readPopoverService.show.placeInfo) {
-                this.showToolTip = true;
-                clearTimeout(window['reload_timer']);
-                this.hideToolTip();
-                this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
-            } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
-              this.showToolTip = true;
-              clearTimeout(window['reload_timer']);
-              this.hideToolTip();
-              this.showCommentTooltip(eventTarget.getAttribute('data-id'), event);
-            }
-          } else {
-
-          }
-        } else if ( eventTarget['classList'].contains('anchor')) {
-          if (eventTarget.hasAttribute('href')) {
-            this.scrollToElement(eventTarget.getAttribute('href'));
-          }
-        }
-      }).bind(this);
-
-
   }
   public get isIntroduction() {
     return this.textType === TextType.Introduction;
@@ -958,12 +832,6 @@ export class ReadPage /*implements OnDestroy*/ {
     this.textType = TextType.Introduction;
     this.establishedText.content = '';
     this.getIntroduction(this.params.get('collectionID'), this.translate.currentLang);
-  }
-
-  hideToolTip() {
-    window['reload_timer'] = setTimeout(() => {
-      this.showToolTip = false;
-    }, 4000);
   }
 
 
@@ -1075,88 +943,26 @@ export class ReadPage /*implements OnDestroy*/ {
     );
   }
 
-  showPersonTooltip(id: string, origin: any) {
-    if (this.tooltips.persons[id]) {
-      this.setToolTipText(this.tooltips.persons[id]);
-      return;
-    }
-
+  showPersonTooltip(id: string) {
     this.tooltipService.getPersonTooltip(id).subscribe(
       tooltip => {
-        this.setToolTipText(tooltip.description);
-        this.tooltips.persons[id] = tooltip.description;
+        this.showTooltip(tooltip.description);
       },
       error => {
-        this.setToolTipText('Could not get person information');
+        this.showTooltip('Could not get person information');
       }
     );
   }
 
-  showVariationTooltip(origin: any) {
-    if ( origin.target.nextSibling.className !== undefined && String(origin.target.nextSibling.className).includes('tooltip') ) {
-      this.showToolTip = true;
-      this.toolTipText = origin.target.nextSibling.textContent;
-      clearTimeout(window['reload_timer']);
-      this.hideToolTip();
-    }
-  }
-
-
-  showChangesTooltip(origin: any) {
-    let elem = [];
-    if (origin.target.nextSibling !== null && origin.target.nextSibling !== undefined &&
-      !String(origin.target.nextSibling.className).includes('tooltiptrigger')) {
-      elem = origin.target;
-    } else if (origin.target.parentNode.nextSibling !== null && origin.target.parentNode.nextSibling !== undefined) {
-      elem = origin.target.parentNode;
-    }
-    if (elem['nextSibling'] !== null && elem['nextSibling'] !== undefined) {
-      if (elem['nextSibling'].className !== undefined && String(elem['nextSibling'].className).includes('tooltip')) {
-        this.showToolTip = true;
-        this.toolTipText = elem['nextSibling'].textContent;
-      }
-    }
-  }
-
-  showPlaceTooltip(id: string, origin: any) {
-    if (this.tooltips.places[id]) {
-      this.setToolTipText(this.tooltips.places[id]);
-      return;
-    }
-
+  showPlaceTooltip(id: string) {
     this.tooltipService.getPlaceTooltip(id).subscribe(
       tooltip => {
-        this.setToolTipText(tooltip.description);
-        this.tooltips.places[id] = tooltip.description;
+        this.showTooltip(tooltip.description);
       },
       error => {
-        this.setToolTipText('Could not get place information');
+        this.showTooltip('Could not get place information');
       }
     );
-  }
-
-  showCommentTooltip(id: string, origin: any) {
-    if (this.tooltips.comments[id]) {
-      this.setToolTipText(this.tooltips.comments[id]);
-      return;
-    }
-
-    id = this.establishedText.link + ';' + id;
-    this.tooltipService.getCommentTooltip(id).subscribe(
-      tooltip => {
-        this.setToolTipText(tooltip.description);
-        this.tooltips.comments[id] = tooltip.description
-      },
-      error => {
-        this.setToolTipText('Could not get comment');
-      }
-    );
-  }
-
-
-
-  setToolTipText(text: string) {
-      this.toolTipText = text;
   }
 
   showCommentModal(id: string) {
@@ -1164,6 +970,7 @@ export class ReadPage /*implements OnDestroy*/ {
     id = this.establishedText.link + ';' + id;
     const modal = this.modalCtrl.create(CommentModalPage, { id: id, title: this.texts.CommentsFor + ' ' + this.establishedText.title });
     modal.present();
+
   }
 
   showPersonModal(id: string) {
@@ -1174,6 +981,26 @@ export class ReadPage /*implements OnDestroy*/ {
   showPlaceModal(id: string) {
     const modal = this.modalCtrl.create(SemanticDataModalPage, { id: id, type: 'place' });
     modal.present();
+  }
+
+
+
+
+
+  showCommentTooltip(id: string) {
+
+    id = this.establishedText.link + ';' + id;
+    this.tooltipService.getCommentTooltip(id).subscribe(
+      tooltip => {
+        this.showTooltip(tooltip.description);
+      },
+      error => {
+        this.showTooltip('Could not get comment');
+      }
+    );
+  }
+
+  showTooltip(text: string) {
   }
 
   showPopover(myEvent) {
@@ -1243,8 +1070,7 @@ export class ReadPage /*implements OnDestroy*/ {
         manuscripts: { show: (type === 'manuscripts'), id: id },
         variations: { show: (type === 'variations'), id: id },
         introduction: { show: (type === 'introduction'), id: id },
-        songexample: { show: (type === 'songexample'), id: id },
-        illustrations: { show: (type === 'illustrations'), id: id }
+        songexample: { show: (type === 'songexample'), id: id }
       });
 
       this.updateURL();
@@ -1356,21 +1182,6 @@ export class ReadPage /*implements OnDestroy*/ {
 
   }
 
-  private scrollToElement(element: HTMLElement) {
-    element.scrollIntoView();
-    this.showToolTip = false;
-    try {
-      const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span');
-      for (let i = 0; i < elems.length; i++) {
-        if ( elems[i].id === element.id ) {
-          elems[i].scrollIntoView();
-        }
-      }
-    } catch ( e ) {
-
-    }
-  }
-
   keyPress(event) {
     console.log(event);
   }
@@ -1428,4 +1239,3 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 }
-
