@@ -80,4 +80,16 @@ export class CommentService {
     return Observable.throw(errMsg);
   }
 
+  getCorrespondanceMetadata(pub_id) {
+    return this.http.get(  this.config.getSettings('app.apiEndpoint')  + '/' +
+                          this.config.getSettings('app.machineName') +
+                          '/correspondence/publication/metadata/' + pub_id + '')
+        .map(res => {
+          const body = res.json();
+
+          return body || ' - no content - ';
+        })
+        .catch(this.handleError);
+  }
+
 }

@@ -35,11 +35,6 @@
         <ion-toggle [(ngModel)]="show.placeInfo" (ionChange)="togglePlaceInfo()"></ion-toggle>
       </ion-item>
 
-      <ion-item *ngIf="readToggles.workInfo">
-        <ion-label class="show_workInfo">{{'Read.Popover.WorkInfo' | translate}}</ion-label>
-        <ion-toggle [(ngModel)]="show.workInfo" (ionChange)="toggleWorkInfo()"></ion-toggle>
-      </ion-item>
-
       <ion-item *ngIf="readToggles.abbreviations">
         <ion-label class="show_abbreviations">{{'Read.Popover.Abbreviations' | translate}}</ion-label>
         <ion-toggle [(ngModel)]="show.abbreviations" (ionChange)="toggleAbbreviations()"></ion-toggle>

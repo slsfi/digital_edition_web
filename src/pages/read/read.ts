@@ -143,8 +143,7 @@ export class ReadPage /*implements OnDestroy*/ {
     'persons' : {},
     'comments': {},
     'places': {},
-    'abbreviations': {},
-    'works': {}
+    'abbreviations': {}
   };
 
   shareFacebook() {
@@ -843,8 +842,6 @@ export class ReadPage /*implements OnDestroy*/ {
               this.showPlaceModal(eventTarget.getAttribute('data-id'));
             } else if (eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
               this.showCommentModal(eventTarget.getAttribute('data-id'));
-            } else if (eventTarget['classList'].contains('title') && this.readPopoverService.show.workInfo) {
-              this.showWorkModal(eventTarget.getAttribute('data-id'));
             } else if (eventTarget['classList'].contains('ttVariant') && this.readPopoverService.show.comments) {
               this.showCommentModal(eventTarget.getAttribute('data-id'));
             }
@@ -929,13 +926,6 @@ export class ReadPage /*implements OnDestroy*/ {
                 clearTimeout(window['reload_timer']);
                 this.hideToolTip();
                 this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
-            } else if (toolTipsSettings.workInfo
-              && eventTarget['classList'].contains('title')
-              && this.readPopoverService.show.workInfo) {
-                this.showToolTip = true;
-                clearTimeout(window['reload_timer']);
-                this.hideToolTip();
-                this.showWorkTooltip(eventTarget.getAttribute('data-id'), event);
             } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
               this.showToolTip = true;
               clearTimeout(window['reload_timer']);
@@ -974,23 +964,6 @@ export class ReadPage /*implements OnDestroy*/ {
     window['reload_timer'] = setTimeout(() => {
       this.showToolTip = false;
     }, 4000);
-  }
-
-  showWorkTooltip(id: string, origin: any) {
-    if (this.tooltips.works[id]) {
-      this.setToolTipText(this.tooltips.works[id]);
-      return;
-    }
-
-    this.tooltipService.getWorkTooltip(id).subscribe(
-      tooltip => {
-        this.setToolTipText(tooltip.description);
-        this.tooltips.works[id] = tooltip.description;
-      },
-      error => {
-        this.setToolTipText('Could not get work information');
-      }
-    );
   }
 
 
@@ -1200,11 +1173,6 @@ export class ReadPage /*implements OnDestroy*/ {
 
   showPlaceModal(id: string) {
     const modal = this.modalCtrl.create(SemanticDataModalPage, { id: id, type: 'place' });
-    modal.present();
-  }
-
-  showWorkModal(id: string) {
-    const modal = this.modalCtrl.create(SemanticDataModalPage, { id: id, type: 'work' });
     modal.present();
   }
 
@@ -1460,3 +1428,4 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 }
+

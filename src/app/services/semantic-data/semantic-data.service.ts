@@ -18,6 +18,7 @@ export class SemanticDataService {
     }
   }
 
+
   getFilterCollections(): Observable<any[]> {
     return this.http.get('assets/filterCollections.json')
       .map(this.extractData)
@@ -31,8 +32,10 @@ export class SemanticDataService {
   }
 
   getPlace(id: string): Observable<any> {
-    return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
-       this.config.getSettings('app.machineName') + '/location/' + id)
+    // return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
+    //   this.config.getSettings('app.machineName') + '/tooltips/location/' + id +
+    //   ((this.useLegacy) ? '/' + this.useLegacy + '/' : '/'))
+    return this.http.get('http://api.sls.fi/digitaledition/fsfd/subject/11354')
       .map(res => {
         const body = res.json();
 
@@ -42,8 +45,10 @@ export class SemanticDataService {
   }
 
   getPerson(id: string): Observable<any> {
-    return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
-       this.config.getSettings('app.machineName') + '/subject/' + id)
+    // return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
+    //   this.config.getSettings('app.machineName') + '/tooltips/subject/' + id +
+    //   ((this.useLegacy) ? '/' + this.useLegacy + '/' : '/'))
+    return this.http.get('http://api.sls.fi/digitaledition/fsfd/subject/11354')
       .map(res => {
         const body = res.json();
 
@@ -54,18 +59,8 @@ export class SemanticDataService {
 
   getTag(id: string): Observable<any> {
     return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
-      this.config.getSettings('app.machineName') + '/tag/' + id)
-      .map(res => {
-        const body = res.json();
-
-        return body || ' - no content - ';
-      })
-      .catch(this.handleError);
-  }
-
-  getWork(id: string): Observable<any> {
-    return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
-      this.config.getSettings('app.machineName') + '/work/' + id)
+      this.config.getSettings('app.machineName') + '/tooltips/tag/' + id +
+      ((this.useLegacy) ? '/' + this.useLegacy + '/' : '/'))
       .map(res => {
         const body = res.json();
 
@@ -76,7 +71,7 @@ export class SemanticDataService {
 
   getSemanticData(id: string): Observable<any> {
     return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
-      this.config.getSettings('app.machineName') + '/tag/' + id)
+      this.config.getSettings('app.machineName') + 'tooltips/tag/' + id)
       .map(res => {
         const body = res.json();
 
@@ -87,7 +82,7 @@ export class SemanticDataService {
   }
 
   getAllPerson(): Observable<any> {
-    return this.http.get(this.config.getSettings('app.apiEndpoint') + '/subjects')
+    return this.http.get(this.config.getSettings('app.apiEndpoint') + '/tooltips/subjects')
       .map(res => {
         const body = res.json();
 
@@ -171,7 +166,7 @@ export class SemanticDataService {
 
   getWorkOccurrencesById(id: string): Observable<any> {
 
-    return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' + this.config.getSettings('app.machineName') + '/workregister/work/project/occurrences/' + id)
+    return this.http.get(this.config.getSettings('app.apiEndpoint') + '/occurrences/work/' + id)
       .map(res => {
         const body = res.json();
 
@@ -207,7 +202,7 @@ export class SemanticDataService {
   getWorkOccurrences(): Observable<any> {
 
     return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
-      this.config.getSettings('app.machineName') + '/workregister/manifestations/')
+      this.config.getSettings('app.machineName') + '/tag/occurrences/')
       .map(res => {
         const body = res.json();
 
