@@ -3,14 +3,14 @@
         <div middle class="facsimile_button_group">
             <div class="buttons">
                 <div class="action_buttons">
-                    <button style="display: inline-block;" ion-fab color="primary" mini (click)="previous()">
+                    <button *ngIf="images.length > 1" style="display: inline-block;" ion-fab color="primary" mini (click)="previous()">
                         <ion-icon name="arrow-back"></ion-icon>
                     </button>
                     <button *ngIf="backsides.length" style="display: inline-block;" ion-fab color="primary" mini
                         (click)="backside = !backside">
                         <ion-icon name="refresh-circle"></ion-icon>
                     </button>
-                    <button style="display: inline-block;" ion-fab color="primary" mini (click)="next()">
+                    <button *ngIf="images.length > 1" style="display: inline-block;" ion-fab color="primary" mini (click)="next()">
                         <ion-icon name="arrow-forward"></ion-icon>
                     </button>
                     <button ion-fab mini (click)="rotate()">
@@ -33,7 +33,7 @@
                         <ion-icon name="close" class="close_button"></ion-icon>
                     </button>
                     <div class="page_nubering"
-                        *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()">
+                        *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet() && images.length > 1">
                         <ion-item>
                             <ion-label position="floating">{{"Read.Facsimiles.Page" | translate}}
                                 ({{"Read.Facsimiles.Of" | translate}} {{(images)?images.length:0}}):</ion-label>
