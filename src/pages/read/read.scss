@@ -1,4 +1,22 @@
 page-read {
+    .toolbar-content {
+        display: grid;
+            grid-template-columns: max-content auto max-content;
+
+        ion-buttons {
+            order: 0;
+				}
+				.bar-buttons:last-child {
+					margin-left:36px;
+				}
+		}
+		@media screen and (max-width: 800px) {
+			.secondary .toolbar-content {
+				display: flex;
+				justify-content: space-between;
+			}
+		}
+
   .toolTip{
     z-index: 1000;
     position: absolute;
@@ -163,7 +181,8 @@ page-read {
 	}
 
 	.forwardBackward {
-		vertical-align:bottom;
+		height: 100%;
+		align-items: center;
 		padding-left: 1em;
 		padding-right: 1em;
 	}
