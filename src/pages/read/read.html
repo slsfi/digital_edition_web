@@ -16,7 +16,7 @@
             </ion-grid>
         </ion-buttons>
         
-        <text-changer [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
+        <text-changer *ngIf="!(userSettingsService.isMobile() || userSettingsService.isTablet())" [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
         
         <ion-buttons *ngIf="!(splitPaneMobile && userSettingsService.isMobile())">
             <ion-grid>
