@@ -1,4 +1,13 @@
 page-read {
+    .toolbar-content {
+        display: grid;
+        grid-template-columns: max-content auto max-content;
+
+        ion-buttons {
+            order: 0;
+        }
+    }
+
   .toolTip{
     z-index: 1000;
     position: absolute;
@@ -163,7 +172,8 @@ page-read {
 	}
 
 	.forwardBackward {
-		vertical-align:bottom;
+		height: 100%;
+		align-items: center;
 		padding-left: 1em;
 		padding-right: 1em;
 	}

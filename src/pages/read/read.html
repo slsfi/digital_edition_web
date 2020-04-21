@@ -1,31 +1,40 @@
 <ion-header no-border>
   <ion-toolbar color="secondary" class="secondary">
-    <ion-buttons end *ngIf="!(splitPaneMobile && userSettingsService.isMobile())">
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <div class="mail-icon" *ngIf="showSocial.email" shareButton="email" (click)="shareEmail()"><ion-icon name="mail"></ion-icon></div>
-          </ion-col>
-          <ion-col>
-            <div class="facebook-icon" *ngIf="showSocial.facebook" shareButton="facebook" (click)="shareFacebook()"><ion-icon name="logo-facebook"></ion-icon></div>
-          </ion-col>
-          <ion-col>
-            <div class="twitter-icon" *ngIf="showSocial.twitter" shareButton="twitter"><ion-icon name="logo-twitter" (click)="shareTwitter()"></ion-icon></div>
-          </ion-col>
-          <ion-col>
-            <div name="download" id="download-icon" (click)="download()">
-              <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
-              <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
-            </div>
-          </ion-col>
-          <ion-col>
-            <div (click)="showPopover($event)" id="settings-icon">
-              <ion-icon class="settings-icon" name="settings"></ion-icon>
-            </div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-buttons>
+          <ion-buttons class="toolbar-ion-buttons" *ngIf="!(splitPaneMobile && userSettingsService.isMobile())">
+              <ion-grid>
+                <ion-row>
+                    <ion-col>
+                        <div class="mail-icon" *ngIf="showSocial.email" shareButton="email" (click)="shareEmail()"><ion-icon name="mail"></ion-icon></div>
+                    </ion-col>
+                    <ion-col>
+                        <div class="facebook-icon" *ngIf="showSocial.facebook" shareButton="facebook" (click)="shareFacebook()"><ion-icon name="logo-facebook"></ion-icon></div>
+                    </ion-col>
+                    <ion-col>
+                        <div class="twitter-icon" *ngIf="showSocial.twitter" shareButton="twitter"><ion-icon name="logo-twitter" (click)="shareTwitter()"></ion-icon></div>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-buttons>
+        
+        <text-changer [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
+        
+        <ion-buttons *ngIf="!(splitPaneMobile && userSettingsService.isMobile())">
+            <ion-grid>
+                <ion-row>
+                <ion-col>
+                    <div name="download" id="download-icon" (click)="download()">
+                    <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
+                    <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
+                    </div>
+                </ion-col>
+                <ion-col>
+                    <div (click)="showPopover($event)" id="settings-icon">
+                    <ion-icon class="settings-icon" name="settings"></ion-icon>
+                    </div>
+                </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -57,7 +66,6 @@ This is a dirty hack only because of the pending refactor. -->
     <div class="read-columns" dragScroll drag-scroll-y-disabled scrollbar-hidden="true" reachesRightBound="true"
       snap-disabled="true" snap-offset="0" [ngClass]="views.length > 1 ? 'multiple-columns' : 'single-column'">
       <div *ngIf="showToolTip" class="toolTip" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}">{{toolTipText}}</div>
-      <text-changer [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
       <div class="read-column" *ngFor="let view of views; let i = index;" id="read_div_{{i}}" scrollY="true"
         [ngStyle]="{'position': 'relative','max-width':(95/((views.length>1)?views.length:2))+'%','min-width':'25%'}"
         #readColumn>
