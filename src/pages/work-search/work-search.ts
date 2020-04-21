@@ -51,7 +51,6 @@ export class WorkSearchPage {
   cacheItem = false;
   showLoading = false;
   showFilter = true;
-  objectType = 'work';
 
   selectedLinkID: string;
 
@@ -113,31 +112,10 @@ export class WorkSearchPage {
     this.semanticDataService.getWorkOccurrences().subscribe(
       works => {
 
-        const tmpWorks = [];
         works.forEach(element => {
-          if ( element.json_data !== undefined ) {
-            element = element.json_data;
-          }
-          if ( element.name === undefined && element.title !== undefined ) {
-            element.name = element.title;
-          }
-          this.semanticDataService.getWorkOccurrencesById(element.id).subscribe(
-            occurrences => {
-              occurrences.forEach(occ => {
-                occ.publication_id = occ.id;
-                occ.publication_name = occ.name;
-                occ.publication_comment_id = null;
-                occ.collection_id = occ.publication_collection_id;
-              });
-              element.occurrences = occurrences;
-            },
-            err => {console.error(err); this.showLoading = false; },
-            () => console.log(this.works)
-          );
           element.name = String(element.name).toLocaleLowerCase()
-          tmpWorks.push(element);
         });
-        works = tmpWorks;
+
         this.allData = works;
         this.cacheData = works;
         this.showLoading = false;
@@ -232,42 +210,8 @@ export class WorkSearchPage {
   }
 
   async openWork(occurrenceResult: OccurrenceResult) {
-    let showOccurrencesModalOnRead = false;
-    if (this.config.getSettings('showOccurencesModalOnReadPageAfterSearch.tagSearch')) {
-      showOccurrencesModalOnRead = true;
-    }
-
-    let openOccurrencesAndInfoOnNewPage = false;
-
-    try {
-      openOccurrencesAndInfoOnNewPage = this.config.getSettings('OpenOccurrencesAndInfoOnNewPage');
-    } catch (e) {
-      openOccurrencesAndInfoOnNewPage = false;
-    }
-
-    if (openOccurrencesAndInfoOnNewPage) {
-      const nav = this.app.getActiveNavs();
-
-      const params = {
-        id: occurrenceResult.id,
-        objectType: this.objectType
-      }
-
-      if ((this.platform.is('mobile') || this.userSettingsService.isMobile()) && !this.userSettingsService.isDesktop()) {
-        nav[0].push('occurrences-result', params);
-      } else {
-        nav[0].setRoot('occurrences-result', params);
-      }
-
-    } else {
-      const occurrenceModal = this.modalCtrl.create(OccurrencesPage, {
-        occurrenceResult: occurrenceResult,
-        showOccurrencesModalOnRead: showOccurrencesModalOnRead,
-        objectType: this.objectType
-      });
-
-      occurrenceModal.present();
-    }
+    const occurrenceModal = this.modalCtrl.create(OccurrencesPage, { occurrenceResult: occurrenceResult });
+    occurrenceModal.present();
   }
 
   async download() {
@@ -396,7 +340,16 @@ export class WorkSearchPage {
     const pub_id = text.collectionID.split('_')[1];
     let text_type: string;
 
-    text_type = 'established';
+    if (text.textType === 'ms') {
+      text_type = 'manuscripts';
+    } else if (text.textType === 'var') {
+      text_type = 'variations';
+    } else if (text.textType === 'facs') {
+      text_type = 'facsimiles'
+    } else {
+      text_type = 'comments';
+    }
+
     params['tocLinkId'] = text.collectionID;
     params['collectionID'] = col_id;
     params['publicationID'] = pub_id;
@@ -406,7 +359,12 @@ export class WorkSearchPage {
         id: text.linkID
       }
     ];
-    this.app.getRootNav().push('read', params);
+
+    if (this.platform.is('mobile')) {
+      this.app.getRootNav().push('read', params);
+    } else {
+      this.app.getRootNav().push('read', params);
+    }
   }
 
   openFilterModal() {

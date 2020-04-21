@@ -72,8 +72,8 @@
             <ion-item *ngIf="p?.firstOfItsKind">
               <ion-item-divider color="light">{{p.firstOfItsKind}}</ion-item-divider>
             </ion-item>
-            <ion-item *ngIf="p['title'].length > 1" (click)="openWork(p)">
-              <p>{{p['title']}}</p>
+            <ion-item *ngIf="p?.name.length > 1" (click)="openTag(p)">
+              <p>{{p.name}}</p>
             </ion-item>
           </div>
         </ion-list>
