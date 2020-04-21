@@ -22,6 +22,7 @@ export class ReadPopoverPage {
       'comments': boolean,
       'personInfo': boolean,
       'placeInfo': boolean,
+      'workInfo': boolean,
       'changes': boolean,
       'abbreviations': boolean,
       'pageNumbering': boolean,
@@ -33,6 +34,7 @@ export class ReadPopoverPage {
       'comments': false,
       'personInfo': false,
       'placeInfo': false,
+      'workInfo': false,
       'changes': false,
       'abbreviations': false,
       'pageNumbering': false,
@@ -70,6 +72,7 @@ export class ReadPopoverPage {
       this.show.comments = true;
       this.show.personInfo = true;
       this.show.placeInfo = true;
+      this.show.workInfo = true;
       this.show.changes = true;
       this.show.abbreviations = true;
       this.show.pageNumbering = true;
@@ -79,6 +82,7 @@ export class ReadPopoverPage {
       this.show.comments = false;
       this.show.personInfo = false;
       this.show.placeInfo = false;
+      this.show.workInfo = false;
       this.show.changes = false;
       this.show.abbreviations = false;
       this.show.pageNumbering = false;
@@ -88,6 +92,7 @@ export class ReadPopoverPage {
     this.toggleComments();
     this.togglePersonInfo();
     this.togglePlaceInfo();
+    this.toggleWorkInfo();
     this.toggleChanges();
     this.toggleAbbreviations();
     this.togglePageNumbering();
@@ -105,6 +110,10 @@ export class ReadPopoverPage {
 
   togglePlaceInfo() {
     this.readPopoverService.show.placeInfo = this.show.placeInfo;
+  }
+
+  toggleWorkInfo() {
+    this.readPopoverService.show.workInfo = this.show.workInfo;
   }
 
   toggleChanges() {

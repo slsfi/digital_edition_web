@@ -19,8 +19,9 @@ export class TooltipService {
 
   getPersonTooltip(id: string): Observable<any> {
     let url = '';
-    // url = `${this.apiEndPoint}/${this.projectMachineName}/subject/${id}`
-    url = 'http://api.sls.fi/digitaledition/fsfd/subject/11354';
+    const legacyPrefix = this.config.getSettings('app.legacyIdPrefix');
+
+    url = `${this.apiEndPoint}/${this.projectMachineName}/subject/${legacyPrefix}${id}`
 
     return this.http.get(url)
         .map(res => {
@@ -33,13 +34,40 @@ export class TooltipService {
 
   getPlaceTooltip(id: string): Observable<any> {
     let url = '';
-    // url = this.config.getSettings('app.apiEndpoint') + this.placeTooltipUrl + id
-    url = 'http://api.sls.fi/digitaledition/fsfd/subject/11354';
+    const legacyPrefix = this.config.getSettings('app.legacyIdPrefix');
+
+    url = `${this.apiEndPoint}/${this.projectMachineName}/location/${legacyPrefix}${id}`
 
     return this.http.get( url )
         .map(res => {
           const body = res.json();
-          return body[0] || {'name': 'Plae', 'description': body.description};
+          return body[0] || {'name': 'Place', 'description': body.description};
+        })
+        .catch(this.handleError);
+  }
+
+  getTagTooltip(id: string): Observable<any> {
+    let url = '';
+    const legacyPrefix = this.config.getSettings('app.legacyIdPrefix');
+
+    url = `${this.apiEndPoint}/${this.projectMachineName}/tag/${legacyPrefix}${id}`
+
+    return this.http.get( url )
+        .map(res => {
+          const body = res.json();
+          return body[0] || {'name': 'Tag', 'description': body.description};
+        })
+        .catch(this.handleError);
+  }
+
+  getWorkTooltip(id: string): Observable<any> {
+    let url = '';
+    url = `${this.apiEndPoint}/${this.projectMachineName}/work/${id}`
+
+    return this.http.get( url )
+        .map(res => {
+          const body = res.json();
+          return body[0] || {'name': 'Work', 'description': body.title};
         })
         .catch(this.handleError);
   }

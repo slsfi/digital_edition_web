@@ -142,6 +142,7 @@ export class ReadPage /*implements OnDestroy*/ {
   tooltips = {
     'persons' : {},
     'comments': {},
+    'works': {},
     'places': {},
     'abbreviations': {}
   };
@@ -840,6 +841,8 @@ export class ReadPage /*implements OnDestroy*/ {
               this.showPersonModal(eventTarget.getAttribute('data-id'));
             } else if (eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
               this.showPlaceModal(eventTarget.getAttribute('data-id'));
+            } else if (eventTarget['classList'].contains('title') && this.readPopoverService.show.workInfo) {
+              this.showWorkModal(eventTarget.getAttribute('data-id'));
             } else if (eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
               this.showCommentModal(eventTarget.getAttribute('data-id'));
             } else if (eventTarget['classList'].contains('ttVariant') && this.readPopoverService.show.comments) {
@@ -908,7 +911,7 @@ export class ReadPage /*implements OnDestroy*/ {
               left: x + 'px'
             };
           }
-          if (event.target.classList.contains('ttVariant') && this.readPopoverService.show.comments) {
+          if (eventTarget['classList'].contains('ttVariant') && this.readPopoverService.show.comments) {
             if (event.target !== undefined) {
             this.showVariationTooltip(event);
             }
@@ -926,6 +929,13 @@ export class ReadPage /*implements OnDestroy*/ {
                 clearTimeout(window['reload_timer']);
                 this.hideToolTip();
                 this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
+            } else if (toolTipsSettings.workInfo
+              && eventTarget['classList'].contains('title')
+              && this.readPopoverService.show.workInfo) {
+                this.showToolTip = true;
+                clearTimeout(window['reload_timer']);
+                this.hideToolTip();
+                this.showWorkTooltip(eventTarget.getAttribute('data-id'), event);
             } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
               this.showToolTip = true;
               clearTimeout(window['reload_timer']);
@@ -1135,6 +1145,23 @@ export class ReadPage /*implements OnDestroy*/ {
     );
   }
 
+  showWorkTooltip(id: string, origin: any) {
+    if (this.tooltips.works[id]) {
+      this.setToolTipText(this.tooltips.works[id]);
+      return;
+    }
+
+    this.tooltipService.getWorkTooltip(id).subscribe(
+      tooltip => {
+        this.setToolTipText(tooltip.description);
+        this.tooltips.works[id] = tooltip.description;
+      },
+      error => {
+        this.setToolTipText('Could not get work information');
+      }
+    );
+  }
+
   showCommentTooltip(id: string, origin: any) {
     if (this.tooltips.comments[id]) {
       this.setToolTipText(this.tooltips.comments[id]);
@@ -1173,6 +1200,11 @@ export class ReadPage /*implements OnDestroy*/ {
 
   showPlaceModal(id: string) {
     const modal = this.modalCtrl.create(SemanticDataModalPage, { id: id, type: 'place' });
+    modal.present();
+  }
+
+  showWorkModal(id: string) {
+    const modal = this.modalCtrl.create(SemanticDataModalPage, { id: id, type: 'work' });
     modal.present();
   }
 
