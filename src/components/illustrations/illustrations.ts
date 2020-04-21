@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { NavParams } from 'ionic-angular';
+import { Component, Input, OnDestroy } from '@angular/core';
+import { NavParams, Events } from 'ionic-angular';
 import { TextService } from '../../app/services/texts/text.service';
 import { ModalController } from 'ionic-angular';
 import { ConfigService } from '@ngx-config/core';
@@ -28,7 +28,8 @@ export class IllustrationsComponent {
     public navParams: NavParams,
     private textService: TextService,
     private modalCtrl: ModalController,
-    private config: ConfigService
+    private config: ConfigService,
+    private events: Events
   ) { }
   ngOnInit() {
     this.getIllustrationImages();
@@ -36,18 +37,23 @@ export class IllustrationsComponent {
     this.projectMachineName = this.config.getSettings('app.machineName');
   }
 
+  ngOnDestroy() {
+    this.events.unsubscribe('give:illustration');
+  }
+
   ngAfterViewInit() {
     document.body.addEventListener('click', (event: any) => {
       const isReadTextThumbnail = event.target.classList.contains('est_figure_graphic');
       if (isReadTextThumbnail) {
-        const image = this.textService.getIllustrationsImage();
-        if (image) {
-          this.showOne = true;
-          this.viewAll = false;
-          this.images = [image];
-        } else {
-          this.showOne = false;
-        }
+        this.events.subscribe('give:illustration', (image) => {
+          if (image) {
+            this.showOne = true;
+            this.viewAll = false;
+            this.images = [image];
+          } else {
+            this.showOne = false;
+          }
+        });
       }
     });
   }
