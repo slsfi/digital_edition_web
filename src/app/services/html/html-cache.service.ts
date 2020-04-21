@@ -25,7 +25,7 @@ export class HtmlCacheService {
     } else {
 
     }
-    this.docFrags[id] = range.createContextualFragment(html);
+    this.docFrags[id] = range.createContextualFragment(html.replace(/images\//g, 'assets/images/'));
   }
 
   getHtml(id) {
