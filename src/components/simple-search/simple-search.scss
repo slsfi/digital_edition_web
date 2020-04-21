@@ -58,6 +58,11 @@ simple-search {
         white-space: normal;
     }
 
+    .textType.title{
+        color: rgba(color($colors, work), 0.7);
+        display: inline;
+        font-size: 0.9rem !important;
+    }
     .textType.person{
         color: rgba(color($colors, person), 0.7);
         display: inline;

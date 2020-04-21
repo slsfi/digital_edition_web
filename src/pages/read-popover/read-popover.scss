@@ -32,6 +32,10 @@ read-popover-page {
 		display: inline;
 		background-color: color($colors, person);
 	}
+	.show_workInfo{
+		display: inline;
+		background-color: color($colors, work);
+	}
 	.show_placeInfo{
 		display: inline;
 		background-color: color($colors, location);
