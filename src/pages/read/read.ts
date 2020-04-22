@@ -64,6 +64,7 @@ export class ReadPage /*implements OnDestroy*/ {
   @ViewChild('readColumn') readColumn: ElementRef;
   @ViewChild('scrollBar') scrollBar: ElementRef;
   @ViewChild(Navbar) navBar: Navbar;
+  @ViewChild('fab') fabList: FabContainer;
 
   listenFunc: Function;
   textType: TextType = TextType.ReadText;
