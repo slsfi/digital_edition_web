@@ -25,6 +25,8 @@ page-read {
     box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
     padding: 0.5rem;
     white-space: normal;
+    max-width: 400px;
+    text-align: left;
 }
 .toolTip:after, .toolTip:before {
     right: 100%;
@@ -308,4 +310,16 @@ ion-fab .fab-list-active .fab-backdrop {
   left: 0;
   background: rgba(0, 0, 0, 0.90);
   z-index: -1;
+}
+@media(max-width: 800px) {
+    ion-backdrop {
+        visibility: visible !important;
+        z-index: -2;
+    }
+    
+    .modal-wrapper {
+        width: 90%;
+        height: 70%;
+        margin: 25px auto;
+    }
 }
