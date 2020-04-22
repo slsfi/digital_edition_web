@@ -301,3 +301,16 @@ page-read {
     overflow: hidden;
   }
 }
+
+@media(max-width: 800px) {
+    ion-backdrop {
+        visibility: visible !important;
+        z-index: -2;
+    }
+    
+    .modal-wrapper {
+        width: 90%;
+        height: 70%;
+        margin: 25px auto;
+    }
+}
