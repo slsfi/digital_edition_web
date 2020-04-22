@@ -135,7 +135,7 @@ This is a dirty hack only because of the pending refactor. -->
         <ion-icon name="add"></ion-icon>
       </button>
       <ion-fab-list side="bottom">
-      <div class="fab-backdrop"></div>
+      <div class="fab-backdrop" (click)="fab.close()"></div>
         <button ion-fab (click)="showAllViews()" *ngIf="displayToggles['showAll']">
           <ion-icon name="albums"></ion-icon>
           <ion-label>{{ "Read.ShowAll" | translate }}</ion-label>

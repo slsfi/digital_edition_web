@@ -222,9 +222,6 @@ page-read {
       top: -4px;
 			right: 40px;
 			padding-right: 5px;
-      background-color: red;
-      padding: 10px;
-      border-radius: 10px;
       color: #f1f1f1;
 			line-height: 24px;
       transition: right 0.5s;
@@ -309,5 +306,6 @@ ion-fab .fab-list-active .fab-backdrop {
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(100, 100, 100, 0.95);
+  background: rgba(0, 0, 0, 0.90);
+  z-index: -1;
 }
