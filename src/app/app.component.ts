@@ -306,6 +306,22 @@ export class DigitalEditionsApp {
 
   showSplitPane() {
     this.splitPaneOpen = true;
+
+    this.closeSplitPane();
+  }
+
+  closeSplitPane() {
+    setTimeout(() => {
+        const shadow = document.querySelector('.shadow');
+
+        if (shadow !== null) {
+            shadow.addEventListener('click', () => {
+                if (this.splitPaneOpen) {
+                    this.splitPaneOpen = false;
+                }
+            });
+        }
+    }, 1);
   }
 
   disableSplitPane() {
