@@ -213,19 +213,22 @@ page-read {
 		}
 	}
     button[ion-fab] {
-        overflow: visible;
-        position: relative;
-		contain: layout;
+      overflow: visible;
+      position: relative;
+      contain: layout;
 
-        ion-label {
-            position: absolute;
-            top: -4px;
+    ion-label {
+      position: absolute;
+      top: -4px;
 			right: 40px;
 			padding-right: 5px;
-
-            color: rgba(0,0,0,0.7);
+      background-color: red;
+      padding: 10px;
+      border-radius: 10px;
+      color: #f1f1f1;
 			line-height: 24px;
-			transition: right 0.5s;
+      transition: right 0.5s;
+      font-weight: bold;
 		}
 		&:hover ion-label {
 			right: 35px;
@@ -298,4 +301,13 @@ page-read {
   .scroll-content {
     overflow: hidden;
   }
+}
+
+ion-fab .fab-list-active .fab-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(100, 100, 100, 0.95);
 }
