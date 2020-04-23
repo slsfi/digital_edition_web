@@ -94,7 +94,7 @@ export class ReadTextComponent {
       this.text = content;
       this.text = this.sanitizer.bypassSecurityTrustHtml(
         content.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/19/`)
-          .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"')
+          .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"').replace(/images\//g, 'assets/images/')
       );
       this.matches.forEach(function (val) {
         const re = new RegExp('(' + val + ')', 'g');
@@ -121,7 +121,7 @@ export class ReadTextComponent {
       text => {
         this.text = this.sanitizer.bypassSecurityTrustHtml(
           text.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/19/`)
-            .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"')
+            .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"').replace(/images\//g, 'assets/images/')
         );
         if (this.matches instanceof Array) {
           this.matches.forEach(function (val) {

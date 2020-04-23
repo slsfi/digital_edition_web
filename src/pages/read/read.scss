@@ -1,4 +1,22 @@
 page-read {
+    .toolbar-content {
+        display: grid;
+            grid-template-columns: max-content auto max-content;
+
+        ion-buttons {
+            order: 0;
+				}
+				.bar-buttons:last-child {
+					margin-left:36px;
+				}
+		}
+		@media screen and (max-width: 800px) {
+			.secondary .toolbar-content {
+				display: flex;
+				justify-content: space-between;
+			}
+		}
+
   .toolTip{
     z-index: 1000;
     position: absolute;
@@ -7,6 +25,8 @@ page-read {
     box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
     padding: 0.5rem;
     white-space: normal;
+    max-width: 400px;
+    text-align: left;
 }
 .toolTip:after, .toolTip:before {
     right: 100%;
@@ -163,7 +183,8 @@ page-read {
 	}
 
 	.forwardBackward {
-		vertical-align:bottom;
+		height: 100%;
+		align-items: center;
 		padding-left: 1em;
 		padding-right: 1em;
 	}
@@ -194,19 +215,19 @@ page-read {
 		}
 	}
     button[ion-fab] {
-        overflow: visible;
-        position: relative;
-		contain: layout;
+      overflow: visible;
+      position: relative;
+      contain: layout;
 
-        ion-label {
-            position: absolute;
-            top: -4px;
+    ion-label {
+      position: absolute;
+      top: -4px;
 			right: 40px;
 			padding-right: 5px;
-
-            color: rgba(0,0,0,0.7);
+      color: #f1f1f1;
 			line-height: 24px;
-			transition: right 0.5s;
+      transition: right 0.5s;
+      font-weight: bold;
 		}
 		&:hover ion-label {
 			right: 35px;
@@ -279,4 +300,26 @@ page-read {
   .scroll-content {
     overflow: hidden;
   }
+}
+
+ion-fab .fab-list-active .fab-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.90);
+  z-index: -1;
+}
+@media(max-width: 800px) {
+    ion-backdrop {
+        visibility: visible !important;
+        z-index: -2;
+    }
+    
+    .modal-wrapper {
+        width: 90%;
+        height: 70%;
+        margin: 25px auto;
+    }
 }

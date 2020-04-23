@@ -1,31 +1,40 @@
 <ion-header no-border>
   <ion-toolbar color="secondary" class="secondary">
-    <ion-buttons end *ngIf="!(splitPaneMobile && userSettingsService.isMobile())">
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <div class="mail-icon" *ngIf="showSocial.email" shareButton="email" (click)="shareEmail()"><ion-icon name="mail"></ion-icon></div>
-          </ion-col>
-          <ion-col>
-            <div class="facebook-icon" *ngIf="showSocial.facebook" shareButton="facebook" (click)="shareFacebook()"><ion-icon name="logo-facebook"></ion-icon></div>
-          </ion-col>
-          <ion-col>
-            <div class="twitter-icon" *ngIf="showSocial.twitter" shareButton="twitter"><ion-icon name="logo-twitter" (click)="shareTwitter()"></ion-icon></div>
-          </ion-col>
-          <ion-col>
-            <div name="download" id="download-icon" (click)="download()">
-              <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
-              <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
-            </div>
-          </ion-col>
-          <ion-col>
-            <div (click)="showPopover($event)" id="settings-icon">
-              <ion-icon class="settings-icon" name="settings"></ion-icon>
-            </div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-buttons>
+          <ion-buttons class="toolbar-ion-buttons" *ngIf="!(splitPaneMobile && userSettingsService.isMobile())">
+              <ion-grid>
+                <ion-row>
+                    <ion-col>
+                        <div class="mail-icon" *ngIf="showSocial.email" shareButton="email" (click)="shareEmail()"><ion-icon name="mail"></ion-icon></div>
+                    </ion-col>
+                    <ion-col>
+                        <div class="facebook-icon" *ngIf="showSocial.facebook" shareButton="facebook" (click)="shareFacebook()"><ion-icon name="logo-facebook"></ion-icon></div>
+                    </ion-col>
+                    <ion-col>
+                        <div class="twitter-icon" *ngIf="showSocial.twitter" shareButton="twitter"><ion-icon name="logo-twitter" (click)="shareTwitter()"></ion-icon></div>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-buttons>
+
+        <text-changer *ngIf="!(userSettingsService.isMobile() || userSettingsService.isTablet())" [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
+
+        <ion-buttons *ngIf="!(splitPaneMobile && userSettingsService.isMobile())">
+            <ion-grid>
+                <ion-row>
+                <ion-col>
+                    <div name="download" id="download-icon" (click)="download()">
+                    <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
+                    <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
+                    </div>
+                </ion-col>
+                <ion-col>
+                    <div (click)="showPopover($event)" id="settings-icon">
+                    <ion-icon class="settings-icon" name="settings"></ion-icon>
+                    </div>
+                </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -57,7 +66,6 @@ This is a dirty hack only because of the pending refactor. -->
     <div class="read-columns" dragScroll drag-scroll-y-disabled scrollbar-hidden="true" reachesRightBound="true"
       snap-disabled="true" snap-offset="0" [ngClass]="views.length > 1 ? 'multiple-columns' : 'single-column'">
       <div *ngIf="showToolTip" class="toolTip" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}">{{toolTipText}}</div>
-      <text-changer [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
       <div class="read-column" *ngFor="let view of views; let i = index;" id="read_div_{{i}}" scrollY="true"
         [ngStyle]="{'position': 'relative','max-width':(95/((views.length>1)?views.length:2))+'%','min-width':'25%'}"
         #readColumn>
@@ -127,6 +135,7 @@ This is a dirty hack only because of the pending refactor. -->
         <ion-icon name="add"></ion-icon>
       </button>
       <ion-fab-list side="bottom">
+      <div class="fab-backdrop" (click)="fab.close()"></div>
         <button ion-fab (click)="showAllViews()" *ngIf="displayToggles['showAll']">
           <ion-icon name="albums"></ion-icon>
           <ion-label>{{ "Read.ShowAll" | translate }}</ion-label>
@@ -181,23 +190,8 @@ This is a dirty hack only because of the pending refactor. -->
           <ion-segment-button value="established" *ngIf="displayToggles['established']">
             {{ "Read.Established.Title" | translate }}
           </ion-segment-button>
-          <ion-segment-button value="manuscripts" *ngIf="displayToggles['manuscripts']">
-            {{ "Read.Manuscripts.Title" | translate }}
-          </ion-segment-button>
-          <ion-segment-button value="comments" *ngIf="displayToggles['comments']">
-            {{ "Read.Comments.Title" | translate }}
-          </ion-segment-button>
-          <ion-segment-button value="variations" *ngIf="displayToggles['variations']">
-            {{ "Read.Variations.Title" | translate }}
-          </ion-segment-button>
           <ion-segment-button value="facsimiles" *ngIf="displayToggles['facsimiles']">
             {{ "Read.Facsimiles.Title" | translate }}
-          </ion-segment-button>
-          <ion-segment-button value="introduction" *ngIf="displayToggles['introduction']">
-            {{ "Read.Introduction.Title" | translate }}
-          </ion-segment-button>
-          <ion-segment-button value="illustrations" *ngIf="displayToggles['illustrations']">
-            {{ "Read.Illustrations.AddButtonText" | translate }}
           </ion-segment-button>
         </ion-segment>
       </div>
@@ -205,33 +199,17 @@ This is a dirty hack only because of the pending refactor. -->
         <div *ngSwitchCase="'established'">
           <read-text [link]="establishedText.link" [matches]="matches"></read-text>
         </div>
-        <div *ngSwitchCase="'manuscripts'">
-          <manuscripts [linkID]="typeVersion" [itemId]="establishedText.link" [matches]="matches"></manuscripts>
-        </div>
-        <div *ngSwitchCase="'comments'">
-          <comments [link]="establishedText.link" [matches]="matches"></comments>
-        </div>
-        <div *ngSwitchCase="'variations'">
-          <variations [linkID]="typeVersion" [itemId]="establishedText.link" [matches]="matches"></variations>
-        </div>
         <div *ngSwitchCase="'facsimiles'">
           <facsimiles [itemId]="establishedText.link" [matches]="matches" [facsID]="facs_id" [facsNr]="facs_nr"
             [songID]="song_id"></facsimiles>
         </div>
-        <div *ngSwitchCase="'introduction'">
-          <introduction [itemId]="establishedText.link" [matches]="matches"></introduction>
-        </div>
-        <div *ngSwitchCase="'illustrations'">
-            <illustrations [itemId]="establishedText.link"></illustrations>
-        </div>
       </div>
-
-      <text-changer [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
       <div class="" *ngIf="!prevnext && displayToggle === true && show != 'facsimile'">
         <button ion-button round icon-end (click)="firstPage()">{{"Read.ReadFromBeginning" | translate }}</button>
       </div>
     </div>
-  </ng-container>
+</ng-container>
 
 </ion-content>
+<text-changer *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet())" class="text-changer-mobile-view" [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
 </ng-template>

@@ -64,6 +64,7 @@ export class ReadPage /*implements OnDestroy*/ {
   @ViewChild('readColumn') readColumn: ElementRef;
   @ViewChild('scrollBar') scrollBar: ElementRef;
   @ViewChild(Navbar) navBar: Navbar;
+  @ViewChild('fab') fabList: FabContainer;
 
   listenFunc: Function;
   textType: TextType = TextType.ReadText;
@@ -1189,7 +1190,10 @@ export class ReadPage /*implements OnDestroy*/ {
   showCommentModal(id: string) {
     id = id.replace('end', 'en');
     id = this.establishedText.link + ';' + id;
-    const modal = this.modalCtrl.create(CommentModalPage, { id: id, title: this.texts.CommentsFor + ' ' + this.establishedText.title });
+    const modal = this.modalCtrl.create(
+        CommentModalPage,
+        { id: id, title: this.texts.CommentsFor + ' ' + this.establishedText.title },
+        { showBackdrop: true });
     modal.present();
   }
 
