@@ -65,6 +65,7 @@ export class ReadPage /*implements OnDestroy*/ {
   @ViewChild('scrollBar') scrollBar: ElementRef;
   @ViewChild(Navbar) navBar: Navbar;
   @ViewChild('fab') fabList: FabContainer;
+  @ViewChild('settingsIconElement') settingsIconElement: ElementRef;
 
   listenFunc: Function;
   textType: TextType = TextType.ReadText;
@@ -787,6 +788,11 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   ngAfterViewInit() {
+    if (!localStorage.getItem('firstTime')) {
+        this.settingsIconElement.nativeElement.click();
+        localStorage.setItem('firstTime', 'true');
+    }
+
     setTimeout(function () {
       try {
         const itemId = 'toc_' + this.legacyId;
@@ -803,7 +809,6 @@ export class ReadPage /*implements OnDestroy*/ {
         }
       }
     });
-
   }
 
   scrollToTOC(element: HTMLElement) {
