@@ -22,6 +22,11 @@
             <ion-grid>
                 <ion-row>
                 <ion-col>
+                    <div id="share-icon" (click)="showSharePopover($event)">
+                      <ion-icon class="share-icon" name="share" ios="ios-share-outline" md="md-share"></ion-icon>
+                    </div>
+                </ion-col>
+                <ion-col>
                     <div name="download" id="download-icon" (click)="download()">
                     <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
                     <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>

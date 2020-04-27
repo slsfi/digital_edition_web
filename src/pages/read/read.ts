@@ -9,6 +9,7 @@ import { TranslateModule, LangChangeEvent, TranslateService, TranslatePipe } fro
 import { ConfigService } from '@ngx-config/core';
 
 import { ReadPopoverPage } from '../read-popover/read-popover';
+import { SharePopoverPage } from '../share-popover/share-popover';
 
 import { CommentModalPage } from '../comment-modal/comment-modal';
 import { SemanticDataModalPage } from '../semantic-data-modal/semantic-data-modal';
@@ -76,6 +77,7 @@ export class ReadPage /*implements OnDestroy*/ {
   appName: string;
   tocRoot: TableOfContentsCategory[];
   popover: ReadPopoverPage;
+  sharePopover: SharePopoverPage;
   subTitle: string;
   cacheItem = false;
   collectionTitle: string;
@@ -1227,6 +1229,13 @@ export class ReadPage /*implements OnDestroy*/ {
     });
   }
 
+  showSharePopover(myEvent) {
+    const popover = this.popoverCtrl.create(SharePopoverPage, {}, { cssClass: 'share-popover' });
+    popover.present({
+      ev: myEvent
+    });
+  }
+
   presentDownloadActionSheet() {
     const actionSheet = this.actionSheetCtrl.create({
       title: 'Ladda ner digital version',
@@ -1298,9 +1307,9 @@ export class ReadPage /*implements OnDestroy*/ {
       }
 
       // Always open two variations if no variation is yet open
-      if (type === 'variations' && this.hasKey('variations', this.views) === false) {
-        this.addView('variations');
-      }
+      // if (type === 'variations' && this.hasKey('variations', this.views) === false) {
+      //   this.addView('variations');
+      // }
     }
   }
 
