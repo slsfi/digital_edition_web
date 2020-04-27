@@ -124,13 +124,6 @@ export class ReadPage /*implements OnDestroy*/ {
     pager: false
   };
 
-  showSocial = {
-    facebook: true,
-    email: true,
-    twitter: true,
-    instagram: false
-  };
-
   show = 'established'; // Mobile tabs
 
   availableViewModes = [
@@ -153,22 +146,6 @@ export class ReadPage /*implements OnDestroy*/ {
     'places': {},
     'abbreviations': {}
   };
-
-  shareFacebook() {
-    //
-  }
-
-  shareTwitter() {
-    //
-  }
-
-  shareInstagram() {
-    //
-  }
-
-  shareEmail() {
-    //
-  }
 
   nativeEmail() {
     // Check if sharing via email is supported

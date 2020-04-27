@@ -1,24 +1,28 @@
 <ion-list>
   <ion-item-group>
-    <ion-item-divider color="light">najnting annat</ion-item-divider>
-    <ion-item (click)="shareLink()">
+    <ion-item-divider color="light">Hänvisa</ion-item-divider>
+    <ion-item (click)="shareURI()">
       <ion-icon item-start name="ios-link"></ion-icon>
       <p>Link</p>
     </ion-item>
   </ion-item-group>
   <ion-item-group>
-    <ion-item-divider color="light">najnting</ion-item-divider>
-    <ion-item (click)="shareEmail()">
+    <ion-item-divider color="light">Dela</ion-item-divider>
+    <ion-item *ngIf="showSocial.email" (click)="shareEmail()">
       <ion-icon item-start name="mail"></ion-icon>
       <p>Mail</p>
     </ion-item>
-    <ion-item (click)="shareFacebook()">
+    <ion-item *ngIf="showSocial.facebook" (click)="shareFacebook()">
       <ion-icon item-start name="logo-facebook"></ion-icon>
       <p>Facebook</p>
     </ion-item>
-    <ion-item (click)="shareTwitter()">
+    <ion-item *ngIf="showSocial.twitter" (click)="shareTwitter()">
       <ion-icon item-start name="logo-twitter"></ion-icon>
       <p>Twitter</p>
+    </ion-item>
+    <ion-item *ngIf="showSocial.instagram" (click)="shareInstagram()">
+      <ion-icon item-start name="logo-instagram"></ion-icon>
+      <p>Instagram</p>
     </ion-item>
   </ion-item-group>
 </ion-list>

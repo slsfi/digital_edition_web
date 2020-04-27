@@ -14,7 +14,12 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'share-popover.html',
 })
 export class SharePopoverPage {
-
+  showSocial = {
+    facebook: true,
+    email: true,
+    twitter: true,
+    instagram: false
+  };
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
@@ -22,4 +27,23 @@ export class SharePopoverPage {
     console.log('ionViewDidLoad SharePopoverPage');
   }
 
+  shareURI() {
+    //
+  }
+
+  shareFacebook() {
+    //
+  }
+
+  shareTwitter() {
+    //
+  }
+
+  shareInstagram() {
+    //
+  }
+
+  shareEmail() {
+    //
+  }
 }
