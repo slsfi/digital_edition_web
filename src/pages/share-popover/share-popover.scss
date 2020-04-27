@@ -1,0 +1,23 @@
+page-share-popover {
+  ion-list {
+    margin: 0 !important;
+  }
+
+  ion-label {
+    overflow: visible;
+  }
+
+  ion-item {
+    cursor: pointer;
+
+    ion-icon {
+      display: flex;
+      align-items: center;
+      font-size: 1em !important;
+    }
+
+    p {
+      font-weight: 700;
+    }
+  }
+}

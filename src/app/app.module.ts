@@ -48,6 +48,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { ShareButtonsModule } from 'ngx-sharebuttons';
 import { GenericSettingsService } from './services/settings/generic-settings.service';
 import { SongService } from './services/song/song.service';
+import { SharePopoverPage } from '../pages/share-popover/share-popover';
+import { SharePopoverPageModule } from '../pages/share-popover/share-popover.module';
 import { PinchZoomModule } from 'ngx-pinch-zoom';
 import { FacsimileZoomPageModule } from '../pages/facsimile-zoom/facsimile-zoom.module';
 import { PersonSearchPageModule } from '../pages/person-search/person-search.module';
@@ -85,7 +87,7 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
     ReferenceDataModalPage
   ],
   imports: [
-    BrowserModule,
+  BrowserModule,
     HttpModule,
     HttpClientModule,
     PinchZoomModule,
@@ -120,7 +122,8 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
     ReadPopoverPageModule,
     UserSettingsPopoverPageModule,
     IllustrationPageModule,
-    SearchAppPageModule
+    SearchAppPageModule,
+    SharePopoverPageModule
     // PdfViewerModule,
   ],
   providers: [
@@ -157,7 +160,8 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
     ReferenceDataModalPage,
     FacsimileZoomModalPage,
     IllustrationPage,
-    SearchAppPage
+    SearchAppPage,
+    SharePopoverPage
   ]
 })
 export class AppModule { }

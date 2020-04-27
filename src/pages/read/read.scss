@@ -1,13 +1,17 @@
 page-read {
+  .read-fab-menu {
+    bottom: 50px;
+  }
+
     .toolbar-content {
         display: grid;
-            grid-template-columns: max-content auto max-content;
+            grid-template-columns: auto max-content;
 
         ion-buttons {
             order: 0;
 				}
 				.bar-buttons:last-child {
-					margin-left:36px;
+					margin-left: -118px;
 				}
 		}
 		@media screen and (max-width: 800px) {
@@ -316,10 +320,11 @@ ion-fab .fab-list-active .fab-backdrop {
         visibility: visible !important;
         z-index: -2;
     }
-    
+
     .modal-wrapper {
         width: 90%;
         height: 70%;
         margin: 25px auto;
     }
 }
+
