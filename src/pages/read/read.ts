@@ -86,6 +86,9 @@ export class ReadPage /*implements OnDestroy*/ {
   toolTipPosition: object;
   toolTipText: string;
 
+  prevItem: any;
+  nextItem: any;
+
   divWidth = '100px';
 
   // Used for infinite facsimile
@@ -142,7 +145,7 @@ export class ReadPage /*implements OnDestroy*/ {
   appUsesAccordionToc = false;
 
   tooltips = {
-    'persons' : {},
+    'persons': {},
     'comments': {},
     'works': {},
     'places': {},
@@ -482,7 +485,7 @@ export class ReadPage /*implements OnDestroy*/ {
   showAllViews() {
     this.availableViewModes.forEach(function (viewmode) {
       const viewTypesShown = this.getViewTypesShown();
-      if ( viewmode !== 'showAll' && this.viewModeShouldBeShown(viewmode) && viewTypesShown.indexOf(viewmode) === -1 ) {
+      if (viewmode !== 'showAll' && this.viewModeShouldBeShown(viewmode) && viewTypesShown.indexOf(viewmode) === -1) {
         this.show = viewmode;
         this.addView(viewmode);
       }
@@ -789,8 +792,8 @@ export class ReadPage /*implements OnDestroy*/ {
 
   ngAfterViewInit() {
     if (!localStorage.getItem('firstTime')) {
-        this.settingsIconElement.nativeElement.click();
-        localStorage.setItem('firstTime', 'true');
+      this.settingsIconElement.nativeElement.click();
+      localStorage.setItem('firstTime', 'true');
     }
 
     setTimeout(function () {
@@ -827,9 +830,9 @@ export class ReadPage /*implements OnDestroy*/ {
 
     if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
       eventTarget = event['target']['parentNode'];
-    } else if ( event.target !== undefined && event['target']['classList'].contains('tooltiptrigger') ) {
+    } else if (event.target !== undefined && event['target']['classList'].contains('tooltiptrigger')) {
       eventTarget = event.target;
-    } else if ( event.target !== undefined && eventTarget['classList'].contains('anchor') ) {
+    } else if (event.target !== undefined && eventTarget['classList'].contains('anchor')) {
       eventTarget = event.target;
     }
     return eventTarget;
@@ -838,125 +841,125 @@ export class ReadPage /*implements OnDestroy*/ {
   private setUpTextListeners() {
     // We must do it like this since we want to trigger an event on a dynamically loaded innerhtml.
     const nElement: any = this.elementRef.nativeElement;
-      this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
-        const eventTarget = this.getEventTarget(event);
+    this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
+      const eventTarget = this.getEventTarget(event);
 
-        if ( eventTarget['classList'].contains('tooltiptrigger')) {
-          if (eventTarget.hasAttribute('data-id')) {
-            if (eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
-              this.showPersonModal(eventTarget.getAttribute('data-id'));
-            } else if (eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
-              this.showPlaceModal(eventTarget.getAttribute('data-id'));
-            } else if (eventTarget['classList'].contains('title') && this.readPopoverService.show.workInfo) {
-              this.showWorkModal(eventTarget.getAttribute('data-id'));
-            } else if (eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
-              this.showCommentModal(eventTarget.getAttribute('data-id'));
-            } else if (eventTarget['classList'].contains('ttVariant') && this.readPopoverService.show.comments) {
-              this.showCommentModal(eventTarget.getAttribute('data-id'));
-            }
-          } else {
+      if (eventTarget['classList'].contains('tooltiptrigger')) {
+        if (eventTarget.hasAttribute('data-id')) {
+          if (eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
+            this.showPersonModal(eventTarget.getAttribute('data-id'));
+          } else if (eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
+            this.showPlaceModal(eventTarget.getAttribute('data-id'));
+          } else if (eventTarget['classList'].contains('title') && this.readPopoverService.show.workInfo) {
+            this.showWorkModal(eventTarget.getAttribute('data-id'));
+          } else if (eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
+            this.showCommentModal(eventTarget.getAttribute('data-id'));
+          } else if (eventTarget['classList'].contains('ttVariant') && this.readPopoverService.show.comments) {
+            this.showCommentModal(eventTarget.getAttribute('data-id'));
+          }
+        } else {
 
-          }
-        } else if ( eventTarget['classList'].contains('anchor')) {
-          if (eventTarget.hasAttribute('href')) {
-            this.scrollToElement(eventTarget.getAttribute('href'));
-          }
         }
-        if (event.target.classList.contains('variantScrollTarget') && this.readPopoverService.show.comments ) {
-          if (event.target !== undefined) {
-            event.target.style.fontWeight = 'bold';
-            this.showVariationTooltip(event);
-            this.scrollToElement(event.target);
-          }
-          setTimeout(function() {
-            if (event.target !== undefined) {
-              event.target.style.fontWeight = 'normal';
-            }
-          }, 1000);
+      } else if (eventTarget['classList'].contains('anchor')) {
+        if (eventTarget.hasAttribute('href')) {
+          this.scrollToElement(eventTarget.getAttribute('href'));
         }
-        if (event.target.classList.contains('tooltiptrigger') && this.readPopoverService.show.comments ) {
-          if (event.target !== undefined) {
-            event.target.style.fontWeight = 'bold';
-          }
-          setTimeout(function() {
-            if (event.target !== undefined) {
-              event.target.style.fontWeight = 'normal';
-            }
-          }, 1000);
-        }
-      }).bind(this);
-
-      this.renderer.listen(nElement, 'mousewheel', (event) => {
-        this.showToolTip = false;
-      }).bind(this)
-
-      let toolTipsSettings;
-      try {
-        toolTipsSettings = this.config.getSettings('settings.toolTips');
-      } catch (e) {
-        console.error(e);
       }
-      this.renderer.listen(nElement, 'mouseover', (event) => {
-        const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-        const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-        const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
-
-        const eventTarget = this.getEventTarget(event);
-        const elem = event.target;
-        if ( eventTarget['classList'].contains('tooltiptrigger')) {
-          const x = ((elem.getBoundingClientRect().x + vw) - vw) + (elem.offsetWidth + 10);
-          const y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
-          if (sidePaneIsOpen) {
-            this.toolTipPosition = {
-              top: y + 'px',
-              left: (x - 269) + 'px'
-            };
-          } else {
-            this.toolTipPosition = {
-              top: y + 'px',
-              left: x + 'px'
-            };
+      if (event.target.classList.contains('variantScrollTarget') && this.readPopoverService.show.comments) {
+        if (event.target !== undefined) {
+          event.target.style.fontWeight = 'bold';
+          this.showVariationTooltip(event);
+          this.scrollToElement(event.target);
+        }
+        setTimeout(function () {
+          if (event.target !== undefined) {
+            event.target.style.fontWeight = 'normal';
           }
-          if (eventTarget['classList'].contains('ttVariant') && this.readPopoverService.show.comments) {
-            if (event.target !== undefined) {
+        }, 1000);
+      }
+      if (event.target.classList.contains('tooltiptrigger') && this.readPopoverService.show.comments) {
+        if (event.target !== undefined) {
+          event.target.style.fontWeight = 'bold';
+        }
+        setTimeout(function () {
+          if (event.target !== undefined) {
+            event.target.style.fontWeight = 'normal';
+          }
+        }, 1000);
+      }
+    }).bind(this);
+
+    this.renderer.listen(nElement, 'mousewheel', (event) => {
+      this.showToolTip = false;
+    }).bind(this)
+
+    let toolTipsSettings;
+    try {
+      toolTipsSettings = this.config.getSettings('settings.toolTips');
+    } catch (e) {
+      console.error(e);
+    }
+    this.renderer.listen(nElement, 'mouseover', (event) => {
+      const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+      const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+      const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
+
+      const eventTarget = this.getEventTarget(event);
+      const elem = event.target;
+      if (eventTarget['classList'].contains('tooltiptrigger')) {
+        const x = ((elem.getBoundingClientRect().x + vw) - vw) + (elem.offsetWidth + 10);
+        const y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
+        if (sidePaneIsOpen) {
+          this.toolTipPosition = {
+            top: y + 'px',
+            left: (x - 269) + 'px'
+          };
+        } else {
+          this.toolTipPosition = {
+            top: y + 'px',
+            left: x + 'px'
+          };
+        }
+        if (eventTarget['classList'].contains('ttVariant') && this.readPopoverService.show.comments) {
+          if (event.target !== undefined) {
             this.showVariationTooltip(event);
-            }
-          }
-          if (eventTarget.hasAttribute('data-id')) {
-            if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
-              this.showToolTip = true;
-              clearTimeout(window['reload_timer']);
-              this.hideToolTip();
-              this.showPersonTooltip(eventTarget.getAttribute('data-id'), event);
-            } else if (toolTipsSettings.placeInfo
-              && eventTarget['classList'].contains('placeName')
-              && this.readPopoverService.show.placeInfo) {
-                this.showToolTip = true;
-                clearTimeout(window['reload_timer']);
-                this.hideToolTip();
-                this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
-            } else if (toolTipsSettings.workInfo
-              && eventTarget['classList'].contains('title')
-              && this.readPopoverService.show.workInfo) {
-                this.showToolTip = true;
-                clearTimeout(window['reload_timer']);
-                this.hideToolTip();
-                this.showWorkTooltip(eventTarget.getAttribute('data-id'), event);
-            } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
-              this.showToolTip = true;
-              clearTimeout(window['reload_timer']);
-              this.hideToolTip();
-              this.showCommentTooltip(eventTarget.getAttribute('data-id'), event);
-            }
-          } else {
-
-          }
-        } else if ( eventTarget['classList'].contains('anchor')) {
-          if (eventTarget.hasAttribute('href')) {
-            this.scrollToElement(eventTarget.getAttribute('href'));
           }
         }
-      }).bind(this);
+        if (eventTarget.hasAttribute('data-id')) {
+          if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
+            this.showToolTip = true;
+            clearTimeout(window['reload_timer']);
+            this.hideToolTip();
+            this.showPersonTooltip(eventTarget.getAttribute('data-id'), event);
+          } else if (toolTipsSettings.placeInfo
+            && eventTarget['classList'].contains('placeName')
+            && this.readPopoverService.show.placeInfo) {
+            this.showToolTip = true;
+            clearTimeout(window['reload_timer']);
+            this.hideToolTip();
+            this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
+          } else if (toolTipsSettings.workInfo
+            && eventTarget['classList'].contains('title')
+            && this.readPopoverService.show.workInfo) {
+            this.showToolTip = true;
+            clearTimeout(window['reload_timer']);
+            this.hideToolTip();
+            this.showWorkTooltip(eventTarget.getAttribute('data-id'), event);
+          } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
+            this.showToolTip = true;
+            clearTimeout(window['reload_timer']);
+            this.hideToolTip();
+            this.showCommentTooltip(eventTarget.getAttribute('data-id'), event);
+          }
+        } else {
+
+        }
+      } else if (eventTarget['classList'].contains('anchor')) {
+        if (eventTarget.hasAttribute('href')) {
+          this.scrollToElement(eventTarget.getAttribute('href'));
+        }
+      }
+    }).bind(this);
 
 
   }
@@ -1109,7 +1112,7 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   showVariationTooltip(origin: any) {
-    if ( origin.target.nextSibling.className !== undefined && String(origin.target.nextSibling.className).includes('tooltip') ) {
+    if (origin.target.nextSibling.className !== undefined && String(origin.target.nextSibling.className).includes('tooltip')) {
       this.showToolTip = true;
       this.toolTipText = origin.target.nextSibling.textContent;
       clearTimeout(window['reload_timer']);
@@ -1189,16 +1192,16 @@ export class ReadPage /*implements OnDestroy*/ {
 
 
   setToolTipText(text: string) {
-      this.toolTipText = text;
+    this.toolTipText = text;
   }
 
   showCommentModal(id: string) {
     id = id.replace('end', 'en');
     id = this.establishedText.link + ';' + id;
     const modal = this.modalCtrl.create(
-        CommentModalPage,
-        { id: id, title: this.texts.CommentsFor + ' ' + this.establishedText.title },
-        { showBackdrop: true });
+      CommentModalPage,
+      { id: id, title: this.texts.CommentsFor + ' ' + this.establishedText.title },
+      { showBackdrop: true });
     modal.present();
   }
 
@@ -1269,7 +1272,7 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   addView(type: string, id?: string, fab?: FabContainer, external?: boolean) {
-    if ( external === true ) {
+    if (external === true) {
       this.external = id;
     } else {
       this.external = null;
@@ -1348,53 +1351,128 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 
-  firstPage() {
-    this.tocService.getFirst(this.params.get('collectionID')).subscribe(
-      first => {
-        this.openAnother(first[0], 'forward');
-      },
-      error => { this.errorMessage = <any>error }
-    );
-  }
-
-  nextPage() {
-    if (this.prevnext !== undefined) {
-      this.openAnother(this.prevnext.next, 'forward');
-    }
-  }
-
-  prevPage() {
-    if (this.prevnext !== undefined) {
-      this.openAnother(this.prevnext.prev, 'back');
-    }
-  }
-
   swipePrevNext(myEvent) {
-    if (myEvent['offsetDirection'] !== undefined) {
-      if (myEvent['offsetDirection'] === 2) {
-        this.nextPage();
-      } else if (myEvent['offsetDirection'] === 4) {
-        this.prevPage();
+    if (myEvent.direction !== undefined) {
+      if (myEvent.direction === 2) {
+        this.next();
+      } else if (myEvent.direction === 4) {
+        this.previous();
       }
     }
   }
 
-  openAnother(tocItem: any, direction = 'forward') {
-    const params = { root: this.tocRoot, tocItem: tocItem, fetch: false, collection: { title: tocItem.title } };
-    params['collectionID'] = tocItem.collection_id;
-    params['publicationID'] = tocItem.link_id;
-
-    const nav = this.app.getActiveNavs();
-    nav[0].push('read', params, { animate: true, direction: direction, animation: 'ios-transition' }).then(() => {
-      // This is so that we can always hace only one text in the stack, so that
-      // when we press the back button i nav menu, we go to the table of contents
-      // instead of the previous text we read.
-      // this allows us to go to previous/next texts with the custom arrows
-      const index = nav[0].getActive().index;
-      nav[0].remove(index - 1); // we remove the last text we read from the stack.
-      // so that "back" is always the table of contents.
+  async previous(test?: boolean) {
+    if (this.legacyId === undefined) {
+      this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID');
+    }
+    const c_id = this.legacyId.split('_')[0];
+    await this.storage.get('toc_' + c_id).then((toc) => {
+      this.findTocItem(toc, 'prev');
     });
 
+    if (this.prevItem !== undefined && test !== true) {
+      await this.open(this.prevItem);
+    } else if (test && this.prevItem !== undefined) {
+      return true;
+    } else if (test && this.prevItem === undefined) {
+      return false;
+    }
+  }
+
+  async next(test?: boolean) {
+    if (this.legacyId === undefined) {
+      this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID');
+    }
+    const c_id = this.legacyId.split('_')[0];
+    await this.storage.get('toc_' + c_id).then((toc) => {
+      this.findTocItem(toc, 'next');
+    });
+    if (this.nextItem !== undefined && test !== true) {
+      await this.open(this.nextItem);
+    } else if (test && this.nextItem !== undefined) {
+      return true;
+    } else if (test && this.nextItem === undefined) {
+      return false;
+    }
+  }
+
+  findTocItem(toc, type?: string) {
+    if (!toc) {
+      return;
+    }
+
+    if (!toc.children && toc instanceof Array) {
+      for (let i = 0; i < toc.length; i++) {
+        if (toc[i].itemId && toc[i].itemId === this.legacyId) {
+          if (type === 'next' && toc[i + 1]) {
+            if (toc[i + 1].type === 'subtitle') {
+              i = i + 1;
+            }
+            if (toc[i + 1] === undefined || i + 1 === toc.length) {
+              if ((i + 1) === toc.length) {
+                this.nextItem = null;
+                break;
+              }
+            } else {
+              this.nextItem = toc[i + 1];
+              break;
+            }
+          } else if (type === 'prev' && toc[i - 1]) {
+            if (toc[i - 1].type === 'subtitle') {
+              i = i - 1;
+            }
+            if (toc[i - 1] === undefined || i === 0) {
+              if (i === 0) {
+                this.prevItem = null;
+                break;
+              }
+            } else {
+              this.prevItem = toc[i - 1];
+              break;
+            }
+          }
+        }
+      }
+    } else if (toc.children) {
+      const childs = toc.children;
+      for (let j = 0; j < childs.length; j++) {
+        if (childs[j] && childs[j].itemId && childs[j].itemId === this.legacyId) {
+
+          if (childs[j + 1]) {
+            if (childs[j + 1].itemId === '') {
+              this.nextItem = childs[j + 2];
+            } else {
+              this.nextItem = childs[j + 1];
+            }
+          }
+
+          if (childs[j - 1].itemId === '') {
+            this.prevItem = childs[j - 2];
+          } else {
+            this.prevItem = childs[j - 1];
+          }
+        }
+        if (childs[j] && childs[j].children) {
+          this.findTocItem(childs[j].children, type);
+        }
+      }
+    }
+  }
+
+  open(item) {
+    const params = { tocItem: item, collection: { title: item.itemId } };
+    const nav = this.app.getActiveNavs();
+
+    params['tocLinkId'] = item.itemId;
+    const parts = item.itemId.split('_');
+    params['collectionID'] = parts[0];
+    params['publicationID'] = parts[1];
+
+    // if (this.recentlyOpenViews !== undefined && this.recentlyOpenViews.length > 0) {
+    //   params['recentlyOpenViews'] = this.recentlyOpenViews;
+    // }
+
+    nav[0].setRoot('read', params);
   }
 
   private scrollToElement(element: HTMLElement) {
@@ -1403,11 +1481,11 @@ export class ReadPage /*implements OnDestroy*/ {
     try {
       const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span');
       for (let i = 0; i < elems.length; i++) {
-        if ( elems[i].id === element.id ) {
+        if (elems[i].id === element.id) {
           elems[i].scrollIntoView();
         }
       }
-    } catch ( e ) {
+    } catch (e) {
 
     }
   }
