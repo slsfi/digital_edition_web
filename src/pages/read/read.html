@@ -1,21 +1,5 @@
 <ion-header no-border>
   <ion-toolbar color="secondary" class="secondary">
-          <ion-buttons class="toolbar-ion-buttons" *ngIf="!(splitPaneMobile && userSettingsService.isMobile())">
-              <ion-grid>
-                <ion-row>
-                    <ion-col>
-                        <div class="mail-icon" *ngIf="showSocial.email" shareButton="email" (click)="shareEmail()"><ion-icon name="mail"></ion-icon></div>
-                    </ion-col>
-                    <ion-col>
-                        <div class="facebook-icon" *ngIf="showSocial.facebook" shareButton="facebook" (click)="shareFacebook()"><ion-icon name="logo-facebook"></ion-icon></div>
-                    </ion-col>
-                    <ion-col>
-                        <div class="twitter-icon" *ngIf="showSocial.twitter" shareButton="twitter"><ion-icon name="logo-twitter" (click)="shareTwitter()"></ion-icon></div>
-                    </ion-col>
-                </ion-row>
-            </ion-grid>
-        </ion-buttons>
-
         <text-changer *ngIf="!(userSettingsService.isMobile() || userSettingsService.isTablet())" [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
 
         <ion-buttons *ngIf="!(splitPaneMobile && userSettingsService.isMobile())">
@@ -46,14 +30,14 @@
 <!-- Main content without scroll. The mobile facsimile requires a no scrolling content to function correctly.
 This is a dirty hack only because of the pending refactor. -->
 <div *ngIf="userSettingsService.isMobile() && show === 'facsimiles'; else mainContent" class="no-scroll">
-  <ion-content padding (swipe)="swipePrevNext($event)" color="secondary">
+  <ion-content padding color="secondary">
     <facsimiles [itemId]="establishedText.link" [matches]="matches" [facsID]="facs_id" [facsNr]="facs_nr" [songID]="song_id"></facsimiles>
   </ion-content>
 </div>
 
 <!-- Main content with scroll -->
 <ng-template #mainContent>
-<ion-content padding (swipe)="swipePrevNext($event)" color="secondary">
+<ion-content padding color="secondary">
   <div *ngIf="userSettingsService.isDesktop() && !userSettingsService.isTablet()" class="column-container">
 
     <ion-fab
@@ -135,11 +119,11 @@ This is a dirty hack only because of the pending refactor. -->
     </div>
 
     <!-- Add view -->
-    <ion-fab id="readFabMenu" *ngIf="!isTablet && displayToggle" margin-top top right #fab>
+    <ion-fab id="readFabMenu" class="read-fab-menu" *ngIf="!isTablet && displayToggle" bottom right margin #fab>
       <button ion-fab>
         <ion-icon name="add"></ion-icon>
       </button>
-      <ion-fab-list side="bottom">
+      <ion-fab-list side="top">
       <div class="fab-backdrop" (click)="fab.close()"></div>
         <button ion-fab (click)="showAllViews()" *ngIf="displayToggles['showAll']">
           <ion-icon name="albums"></ion-icon>
