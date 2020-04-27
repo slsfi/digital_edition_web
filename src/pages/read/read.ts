@@ -129,39 +129,6 @@ export class ReadPage /*implements OnDestroy*/ {
     instagram: false
   };
 
-  shareFacebook() {
-    //
-  }
-
-  shareTwitter() {
-    //
-  }
-
-  shareInstagram() {
-    //
-  }
-
-  shareEmail() {
-    //
-  }
-
-  nativeEmail() {
-    // Check if sharing via email is supported
-    this.socialSharing.canShareViaEmail().then(() => {
-      console.log('Sharing via email is possible');
-
-      // Share via email
-      this.socialSharing.shareViaEmail('Body', 'Subject', ['recipient@example.org']).then(() => {
-        // Success!
-      }).catch(() => {
-        // Error!
-        console.log('Email error')
-      });
-    }).catch(() => {
-      console.log('Sharing via email is not possible');
-    });
-  }
-
   show = 'established'; // Mobile tabs
 
   availableViewModes = [
