@@ -184,7 +184,7 @@ This is a dirty hack only because of the pending refactor. -->
         (click)="openOccurrenceResult()">{{ "Read.ShowSearchResults" | translate }} &nbsp;<ion-icon name="search">
         </ion-icon></button>
     </div>
-    <div *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet())">
+    <div (swipe)="swipePrevNext($event)" *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet())">
       <div>
         <ion-segment [(ngModel)]="show" color="secondary">
           <ion-segment-button value="established" *ngIf="displayToggles['established']">
