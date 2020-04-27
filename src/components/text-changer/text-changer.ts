@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Events, App, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 
 /**
  * Generated class for the TextChangerComponent component.
@@ -20,6 +21,7 @@ export class TextChangerComponent {
   nextItem: any;
   prevItemTitle: string;
   nextItemTitle: string;
+  lastItem: boolean;
   currentItemTitle: string;
 
   displayNext: Boolean = true;
@@ -29,7 +31,8 @@ export class TextChangerComponent {
     public events: Events,
     public storage: Storage,
     public app: App,
-    public params: NavParams
+    public params: NavParams,
+    private userSettingsService: UserSettingsService
   ) {
     this.next(true).then(function(val) {
       this.displayNext = val;
@@ -40,6 +43,8 @@ export class TextChangerComponent {
   }
 
   ngOnInit() {
+    console.log(this.nextItem, 'nextitem');
+
   }
 
   async previous(test?: boolean) {
@@ -121,14 +126,17 @@ export class TextChangerComponent {
           this.currentItemTitle = childs[j].text;
           this.nextItemTitle = (childs[j + 1]) ? childs[j + 1].text : '';
           this.prevItemTitle = (childs[j - 1]) ? childs[j - 1].text : '';
+          this.lastItem = (childs[j + 1]) ? false : true;
 
-          if ( childs[j + 1].itemId == '') {
-            this.nextItem = childs[j + 2];
-          } else {
-            this.nextItem = childs[j + 1];
+          if (childs[j + 1]) {
+            if ( childs[j + 1].itemId === '') {
+              this.nextItem = childs[j + 2];
+            } else {
+              this.nextItem = childs[j + 1];
+            }
           }
 
-          if (childs[j - 1].itemId == '') {
+          if (childs[j - 1].itemId === '') {
             this.prevItem = childs[j - 2];
           } else {
             this.prevItem = childs[j - 1];

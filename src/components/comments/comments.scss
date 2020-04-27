@@ -29,3 +29,10 @@ comments {
       padding-left: 0px;
     }
 }
+
+@media (max-width: 800px) {
+    .tei img.comment {
+        width: 20px;
+        height: 20px;
+    }
+}

@@ -282,6 +282,7 @@ export class CommentsComponent {
   getCorrespondanceMetadata() {
     this.commentService.getCorrespondanceMetadata(String(this.link).split('_')[1]).subscribe(
       text => {
+        if (text.length > 0) {
           text['subjects'].forEach(subject => {
             if ( subject['avsändare'] ) {
               this.sender = subject['avsändare'];
@@ -290,6 +291,7 @@ export class CommentsComponent {
               this.receiver = subject['mottagare'];
             }
           });
+        }
           this.letter = text['letter'];
           this.doAnalytics();
         },
