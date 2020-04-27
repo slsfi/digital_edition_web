@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Events, App, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 
 /**
  * Generated class for the TextChangerComponent component.
@@ -18,6 +19,10 @@ export class TextChangerComponent {
   @Input() recentlyOpenViews?: any;
   prevItem: any;
   nextItem: any;
+  prevItemTitle: string;
+  nextItemTitle: string;
+  lastItem: boolean;
+  currentItemTitle: string;
 
   displayNext: Boolean = true;
   displayPrev: Boolean = true;
@@ -26,7 +31,8 @@ export class TextChangerComponent {
     public events: Events,
     public storage: Storage,
     public app: App,
-    public params: NavParams
+    public params: NavParams,
+    private userSettingsService: UserSettingsService
   ) {
     this.next(true).then(function(val) {
       this.displayNext = val;
@@ -37,6 +43,8 @@ export class TextChangerComponent {
   }
 
   ngOnInit() {
+    console.log(this.nextItem, 'nextitem');
+
   }
 
   async previous(test?: boolean) {
@@ -115,6 +123,24 @@ export class TextChangerComponent {
       const childs = toc.children;
       for (let j = 0; j < childs.length; j ++) {
         if (childs[j] && childs[j].itemId && childs[j].itemId === this.legacyId) {
+          this.currentItemTitle = childs[j].text;
+          this.nextItemTitle = (childs[j + 1]) ? childs[j + 1].text : '';
+          this.prevItemTitle = (childs[j - 1]) ? childs[j - 1].text : '';
+          this.lastItem = (childs[j + 1]) ? false : true;
+
+          if (childs[j + 1]) {
+            if ( childs[j + 1].itemId === '') {
+              this.nextItem = childs[j + 2];
+            } else {
+              this.nextItem = childs[j + 1];
+            }
+          }
+
+          if (childs[j - 1].itemId === '') {
+            this.prevItem = childs[j - 2];
+          } else {
+            this.prevItem = childs[j - 1];
+          }
         }
         if (childs[j] && childs[j].children) {
           this.findItem(childs[j].children, type);
@@ -124,7 +150,7 @@ export class TextChangerComponent {
   }
 
   open(item) {
-    const params = {tocItem: item, collection: {title: item.text}};
+    const params = {tocItem: item, collection: {title: item.itemId}};
     const nav = this.app.getActiveNavs();
 
     params['tocLinkId'] = item.itemId;

@@ -9,52 +9,96 @@ import { CommentService } from '../comments/comment.service';
 @Injectable()
 export class TooltipService {
 
-  private personTooltipUrl = '/tooltips/subject/';
   private placeTooltipUrl = '/tooltips/locations/';
-
-  constructor(private http: Http, private config: ConfigService, private commentService: CommentService) {}
+  private apiEndPoint: string;
+  private projectMachineName: string;
+  constructor(private http: Http, private config: ConfigService, private commentService: CommentService) {
+    this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
+    this.projectMachineName = this.config.getSettings('app.machineName');
+  }
 
   getPersonTooltip(id: string): Observable<any> {
+    let url = '';
+    const legacyPrefix = this.config.getSettings('app.legacyIdPrefix');
 
-    return this.http.get(  this.config.getSettings('app.apiEndpoint') + this.personTooltipUrl + id)
+    url = `${this.apiEndPoint}/${this.projectMachineName}/subject/${legacyPrefix}${id}`
+
+    return this.http.get(url)
         .map(res => {
           const body = res.json();
-          return body[0] || {'name': 'Error', 'description': 'Person data not found'};
+          console.log(body);
+          return body[0] || {'name': 'Person', 'description': body.full_name};
         })
         .catch(this.handleError);
   }
 
   getPlaceTooltip(id: string): Observable<any> {
+    let url = '';
+    const legacyPrefix = this.config.getSettings('app.legacyIdPrefix');
 
-    return this.http.get(  this.config.getSettings('app.apiEndpoint') + this.placeTooltipUrl + id)
+    url = `${this.apiEndPoint}/${this.projectMachineName}/location/${legacyPrefix}${id}`
+
+    return this.http.get( url )
         .map(res => {
           const body = res.json();
-          return body[0] || {'name': 'Error', 'description': 'Place data not found'};
+          return body[0] || {'name': 'Place', 'description': body.description};
         })
         .catch(this.handleError);
   }
+
+  getTagTooltip(id: string): Observable<any> {
+    let url = '';
+    const legacyPrefix = this.config.getSettings('app.legacyIdPrefix');
+
+    url = `${this.apiEndPoint}/${this.projectMachineName}/tag/${legacyPrefix}${id}`
+
+    return this.http.get( url )
+        .map(res => {
+          const body = res.json();
+          return body[0] || {'name': 'Tag', 'description': body.description};
+        })
+        .catch(this.handleError);
+  }
+
+  getWorkTooltip(id: string): Observable<any> {
+    let url = '';
+    url = `${this.apiEndPoint}/${this.projectMachineName}/work/${id}`
+
+    return this.http.get( url )
+        .map(res => {
+          const body = res.json();
+          return body[0] || {'name': 'Work', 'description': body.title};
+        })
+        .catch(this.handleError);
+  }
+
+  decodeHtmlEntity(str: string) {
+    return str.replace(/&#(\d+);/g, function(match, dec) {
+      return String.fromCharCode(dec);
+    });
+  }
+
 
   /**
    * Can be used to fetch tooltip in situations like these:
    * <img src=".." data-id="en5929">
    * <span class="tooltip"></span>
    */
-  getCommentTooltip(id: string) {
+  getCommentTooltip(id: string): Observable<any> {
 
       const parts = id.split(';');
       const htmlId = parts[0];
       const elementId = parts[1].replace('end', 'en');
-
-
       return this.commentService.getComment(parts[0]).map(
         data => {
           const range = document.createRange();
           const doc = range.createContextualFragment(data);
-          const element = doc.querySelector('#' + elementId).nextElementSibling;
+          const element = doc.querySelector('.' + elementId);
+          const formatedCommentData = element.innerHTML.replace(/(<([^>]+)>)/gi, '').replace(/^p\d+/gi, '').replace(/\/?p?&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});/ig, ' ');
 
           return {
             'name': 'Comment',
-            'description': element.innerHTML.replace(/(<([^>]+)>)/ig, '').replace(/^p\d+/gi, '') }
+            'description': element.innerHTML = formatedCommentData }
             || {'name': 'Error', 'description': element.innerHTML};
         },
         error => {

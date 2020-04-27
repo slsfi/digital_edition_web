@@ -808,6 +808,9 @@
     .highlightForeign {
         background-color: #cae4eb !important;
     }
+    .highlightWork {
+      background-color: #cae4eb !important;
+    }
 
     // these will be svg
     img.tooltiptrigger {
@@ -841,6 +844,9 @@
 
 .tei.show_placeInfo    span.placeName {background-color: color($colors, location);}
 .tei.show_placeInfo    span.placeName[id] {cursor:pointer;}
+
+.tei.show_workInfo    span.title {background-color: color($colors, work);}
+.tei.show_workInfo    span.title[id] {cursor:pointer;}
 
 .tei                     span.corr_hide {display: none;}
 .tei.show_choiceStyle    span.corr_hide {display: inherit;}

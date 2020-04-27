@@ -64,6 +64,8 @@ export class ReadPage /*implements OnDestroy*/ {
   @ViewChild('readColumn') readColumn: ElementRef;
   @ViewChild('scrollBar') scrollBar: ElementRef;
   @ViewChild(Navbar) navBar: Navbar;
+  @ViewChild('fab') fabList: FabContainer;
+  @ViewChild('settingsIconElement') settingsIconElement: ElementRef;
 
   listenFunc: Function;
   textType: TextType = TextType.ReadText;
@@ -74,13 +76,18 @@ export class ReadPage /*implements OnDestroy*/ {
   appName: string;
   tocRoot: TableOfContentsCategory[];
   popover: ReadPopoverPage;
-  tooltipContent: any;
   subTitle: string;
   cacheItem = false;
   collectionTitle: string;
   hasOccurrenceResults = false;
   showOccurrencesModal = false;
   searchResult: string;
+  showToolTip: boolean;
+  toolTipPosition: object;
+  toolTipText: string;
+
+  prevItem: any;
+  nextItem: any;
 
   divWidth = '100px';
 
@@ -164,10 +171,52 @@ export class ReadPage /*implements OnDestroy*/ {
     'established',
     'facsimiles',
     'introduction',
-    'songexample'
+    'songexample',
+    'illustrations'
   ];
 
   appUsesAccordionToc = false;
+
+  tooltips = {
+    'persons': {},
+    'comments': {},
+    'works': {},
+    'places': {},
+    'abbreviations': {}
+  };
+
+  shareFacebook() {
+    //
+  }
+
+  shareTwitter() {
+    //
+  }
+
+  shareInstagram() {
+    //
+  }
+
+  shareEmail() {
+    //
+  }
+
+  nativeEmail() {
+    // Check if sharing via email is supported
+    this.socialSharing.canShareViaEmail().then(() => {
+      console.log('Sharing via email is possible');
+
+      // Share via email
+      this.socialSharing.shareViaEmail('Body', 'Subject', ['recipient@example.org']).then(() => {
+        // Success!
+      }).catch(() => {
+        // Error!
+        console.log('Email error')
+      });
+    }).catch(() => {
+      console.log('Sharing via email is not possible');
+    });
+  }
 
   constructor(private app: App,
     public viewCtrl: ViewController,
@@ -426,31 +475,6 @@ export class ReadPage /*implements OnDestroy*/ {
         error => { this.errorMessage = <any>error });
   }
 
-  private scrollToElement(element: string) {
-    try {
-      element = element.replace(/#/g, '');
-      const elementStart = 'start' + element.replace(/en/g, '');
-      // scroll to element
-      if (this.elementRef.nativeElement.querySelector('.' + element) != null) {
-        const scrollTarget = this.elementRef.nativeElement.querySelector('.' + element);
-        const yOffset = scrollTarget.offsetTop;
-        if (scrollTarget.parentElement.parentElement !== null) {
-          scrollTarget.parentElement.parentElement.scrollIntoView(true);
-        }
-      }
-      // show start arrow
-      if (this.elementRef.nativeElement.querySelector('.anchor_lemma[data-id="' + elementStart + '"]') != null) {
-        const targetArrow = this.elementRef.nativeElement.querySelector('.anchor_lemma[data-id="' + elementStart + '"]');
-        targetArrow.style.display = 'initial';
-        setTimeout(() => { targetArrow.style.display = 'none' }, 3000);
-      }
-    } catch (e) {
-      console.log(element);
-      console.log(document.getElementById(element));
-      console.log(e);
-    }
-  }
-
   setTocCache() {
     const id = this.params.get('collectionID');
     this.tocService.getTableOfContents(id)
@@ -494,7 +518,7 @@ export class ReadPage /*implements OnDestroy*/ {
   showAllViews() {
     this.availableViewModes.forEach(function (viewmode) {
       const viewTypesShown = this.getViewTypesShown();
-      if ( viewmode !== 'showAll' && this.viewModeShouldBeShown(viewmode) && viewTypesShown.indexOf(viewmode) === -1 ) {
+      if (viewmode !== 'showAll' && this.viewModeShouldBeShown(viewmode) && viewTypesShown.indexOf(viewmode) === -1) {
         this.show = viewmode;
         this.addView(viewmode);
       }
@@ -515,6 +539,8 @@ export class ReadPage /*implements OnDestroy*/ {
     } else if (viewmode === 'introduction' && !this.displayToggles['introduction']) {
       return false;
     } else if (viewmode === 'songexample' && !this.displayToggles['songexample']) {
+      return false;
+    } else if (viewmode === 'illustrations' && !this.displayToggles['illustrations']) {
       return false;
     }
 
@@ -798,6 +824,11 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   ngAfterViewInit() {
+    if (!localStorage.getItem('firstTime')) {
+      this.settingsIconElement.nativeElement.click();
+      localStorage.setItem('firstTime', 'true');
+    }
+
     setTimeout(function () {
       try {
         const itemId = 'toc_' + this.legacyId;
@@ -806,6 +837,14 @@ export class ReadPage /*implements OnDestroy*/ {
         console.log(e);
       }
     }.bind(this), 1000);
+    this.renderer.listen(this.elementRef.nativeElement, 'mouseover', (event) => {
+      if ((event.target.parentNode.classList.contains('tooltiptrigger') || event.target.classList.contains('tooltiptrigger')) &&
+        this.readPopoverService.show.changes) {
+        if (event.target !== undefined) {
+          this.showChangesTooltip(event);
+        }
+      }
+    });
   }
 
   scrollToTOC(element: HTMLElement) {
@@ -818,40 +857,144 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 
+  private getEventTarget(event) {
+    let eventTarget: any = document.createElement('div');
+    eventTarget['classList'] = [];
+
+    if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
+      eventTarget = event['target']['parentNode'];
+    } else if (event.target !== undefined && event['target']['classList'].contains('tooltiptrigger')) {
+      eventTarget = event.target;
+    } else if (event.target !== undefined && eventTarget['classList'].contains('anchor')) {
+      eventTarget = event.target;
+    }
+    return eventTarget;
+  }
+
   private setUpTextListeners() {
     // We must do it like this since we want to trigger an event on a dynamically loaded innerhtml.
     const nElement: any = this.elementRef.nativeElement;
-      this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
-        let eventTarget: any = document.createElement('div');
-        eventTarget['classList'] = [];
-        if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
-          eventTarget = event['target']['parentNode'];
-        } else if ( event.target !== undefined && event['target']['classList'].contains('tooltiptrigger') ) {
-          eventTarget = event.target;
-        } else if ( event.target !== undefined && eventTarget['classList'].contains('anchor') ) {
-          eventTarget = event.target;
-        }
+    this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
+      const eventTarget = this.getEventTarget(event);
 
-        if ( eventTarget['classList'].contains('tooltiptrigger')) {
-          if (eventTarget.hasAttribute('data-id')) {
-            if (eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
-              this.showPersonModal(eventTarget.getAttribute('data-id'));
-            } else if (eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
-              this.showPlaceModal(eventTarget.getAttribute('data-id'));
-            } else if (eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
-              this.showCommentModal(eventTarget.getAttribute('data-id'));
-            } else if (eventTarget['classList'].contains('ttVariant') && this.readPopoverService.show.comments) {
-              this.showCommentModal(eventTarget.getAttribute('data-id'));
-            }
-          } else {
-
+      if (eventTarget['classList'].contains('tooltiptrigger')) {
+        if (eventTarget.hasAttribute('data-id')) {
+          if (eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
+            this.showPersonModal(eventTarget.getAttribute('data-id'));
+          } else if (eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
+            this.showPlaceModal(eventTarget.getAttribute('data-id'));
+          } else if (eventTarget['classList'].contains('title') && this.readPopoverService.show.workInfo) {
+            this.showWorkModal(eventTarget.getAttribute('data-id'));
+          } else if (eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
+            this.showCommentModal(eventTarget.getAttribute('data-id'));
+          } else if (eventTarget['classList'].contains('ttVariant') && this.readPopoverService.show.comments) {
+            this.showCommentModal(eventTarget.getAttribute('data-id'));
           }
-        } else if ( eventTarget['classList'].contains('anchor')) {
-          if (eventTarget.hasAttribute('href')) {
-            this.scrollToElement(eventTarget.getAttribute('href'));
+        } else {
+
+        }
+      } else if (eventTarget['classList'].contains('anchor')) {
+        if (eventTarget.hasAttribute('href')) {
+          this.scrollToElement(eventTarget.getAttribute('href'));
+        }
+      }
+      if (event.target.classList.contains('variantScrollTarget') && this.readPopoverService.show.comments) {
+        if (event.target !== undefined) {
+          event.target.style.fontWeight = 'bold';
+          this.showVariationTooltip(event);
+          this.scrollToElement(event.target);
+        }
+        setTimeout(function () {
+          if (event.target !== undefined) {
+            event.target.style.fontWeight = 'normal';
+          }
+        }, 1000);
+      }
+      if (event.target.classList.contains('tooltiptrigger') && this.readPopoverService.show.comments) {
+        if (event.target !== undefined) {
+          event.target.style.fontWeight = 'bold';
+        }
+        setTimeout(function () {
+          if (event.target !== undefined) {
+            event.target.style.fontWeight = 'normal';
+          }
+        }, 1000);
+      }
+    }).bind(this);
+
+    this.renderer.listen(nElement, 'mousewheel', (event) => {
+      this.showToolTip = false;
+    }).bind(this)
+
+    let toolTipsSettings;
+    try {
+      toolTipsSettings = this.config.getSettings('settings.toolTips');
+    } catch (e) {
+      console.error(e);
+    }
+    this.renderer.listen(nElement, 'mouseover', (event) => {
+      const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+      const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+      const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
+
+      const eventTarget = this.getEventTarget(event);
+      const elem = event.target;
+      if (eventTarget['classList'].contains('tooltiptrigger')) {
+        const x = ((elem.getBoundingClientRect().x + vw) - vw) + (elem.offsetWidth + 10);
+        const y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
+        if (sidePaneIsOpen) {
+          this.toolTipPosition = {
+            top: y + 'px',
+            left: (x - 269) + 'px'
+          };
+        } else {
+          this.toolTipPosition = {
+            top: y + 'px',
+            left: x + 'px'
+          };
+        }
+        if (eventTarget['classList'].contains('ttVariant') && this.readPopoverService.show.comments) {
+          if (event.target !== undefined) {
+            this.showVariationTooltip(event);
           }
         }
-      }).bind(this);
+        if (eventTarget.hasAttribute('data-id')) {
+          if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
+            this.showToolTip = true;
+            clearTimeout(window['reload_timer']);
+            this.hideToolTip();
+            this.showPersonTooltip(eventTarget.getAttribute('data-id'), event);
+          } else if (toolTipsSettings.placeInfo
+            && eventTarget['classList'].contains('placeName')
+            && this.readPopoverService.show.placeInfo) {
+            this.showToolTip = true;
+            clearTimeout(window['reload_timer']);
+            this.hideToolTip();
+            this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
+          } else if (toolTipsSettings.workInfo
+            && eventTarget['classList'].contains('title')
+            && this.readPopoverService.show.workInfo) {
+            this.showToolTip = true;
+            clearTimeout(window['reload_timer']);
+            this.hideToolTip();
+            this.showWorkTooltip(eventTarget.getAttribute('data-id'), event);
+          } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
+            this.showToolTip = true;
+            clearTimeout(window['reload_timer']);
+            this.hideToolTip();
+            this.showCommentTooltip(eventTarget.getAttribute('data-id'), event);
+          }
+        } else {
+
+        }
+      } else if (eventTarget['classList'].contains('anchor')) {
+        if (eventTarget.hasAttribute('href')) {
+          this.scrollToElement(eventTarget.getAttribute('href'));
+        }
+      }
+    }).bind(this);
+
+
   }
   public get isIntroduction() {
     return this.textType === TextType.Introduction;
@@ -867,6 +1010,12 @@ export class ReadPage /*implements OnDestroy*/ {
     this.textType = TextType.Introduction;
     this.establishedText.content = '';
     this.getIntroduction(this.params.get('collectionID'), this.translate.currentLang);
+  }
+
+  hideToolTip() {
+    window['reload_timer'] = setTimeout(() => {
+      this.showToolTip = false;
+    }, 4000);
   }
 
 
@@ -978,34 +1127,115 @@ export class ReadPage /*implements OnDestroy*/ {
     );
   }
 
-  showPersonTooltip(id: string) {
+  showPersonTooltip(id: string, origin: any) {
+    if (this.tooltips.persons[id]) {
+      this.setToolTipText(this.tooltips.persons[id]);
+      return;
+    }
+
     this.tooltipService.getPersonTooltip(id).subscribe(
       tooltip => {
-        this.showTooltip(tooltip.description);
+        this.setToolTipText(tooltip.description);
+        this.tooltips.persons[id] = tooltip.description;
       },
       error => {
-        this.showTooltip('Could not get person information');
+        this.setToolTipText('Could not get person information');
       }
     );
   }
 
-  showPlaceTooltip(id: string) {
+  showVariationTooltip(origin: any) {
+    if (origin.target.nextSibling.className !== undefined && String(origin.target.nextSibling.className).includes('tooltip')) {
+      this.showToolTip = true;
+      this.toolTipText = origin.target.nextSibling.textContent;
+      clearTimeout(window['reload_timer']);
+      this.hideToolTip();
+    }
+  }
+
+
+  showChangesTooltip(origin: any) {
+    let elem = [];
+    if (origin.target.nextSibling !== null && origin.target.nextSibling !== undefined &&
+      !String(origin.target.nextSibling.className).includes('tooltiptrigger')) {
+      elem = origin.target;
+    } else if (origin.target.parentNode.nextSibling !== null && origin.target.parentNode.nextSibling !== undefined) {
+      elem = origin.target.parentNode;
+    }
+    if (elem['nextSibling'] !== null && elem['nextSibling'] !== undefined) {
+      if (elem['nextSibling'].className !== undefined && String(elem['nextSibling'].className).includes('tooltip')) {
+        this.showToolTip = true;
+        this.toolTipText = elem['nextSibling'].textContent;
+      }
+    }
+  }
+
+  showPlaceTooltip(id: string, origin: any) {
+    if (this.tooltips.places[id]) {
+      this.setToolTipText(this.tooltips.places[id]);
+      return;
+    }
+
     this.tooltipService.getPlaceTooltip(id).subscribe(
       tooltip => {
-        this.showTooltip(tooltip.description);
+        this.setToolTipText(tooltip.description);
+        this.tooltips.places[id] = tooltip.description;
       },
       error => {
-        this.showTooltip('Could not get place information');
+        this.setToolTipText('Could not get place information');
       }
     );
+  }
+
+  showWorkTooltip(id: string, origin: any) {
+    if (this.tooltips.works[id]) {
+      this.setToolTipText(this.tooltips.works[id]);
+      return;
+    }
+
+    this.tooltipService.getWorkTooltip(id).subscribe(
+      tooltip => {
+        this.setToolTipText(tooltip.description);
+        this.tooltips.works[id] = tooltip.description;
+      },
+      error => {
+        this.setToolTipText('Could not get work information');
+      }
+    );
+  }
+
+  showCommentTooltip(id: string, origin: any) {
+    if (this.tooltips.comments[id]) {
+      this.setToolTipText(this.tooltips.comments[id]);
+      return;
+    }
+
+    id = this.establishedText.link + ';' + id;
+    this.tooltipService.getCommentTooltip(id).subscribe(
+      tooltip => {
+        this.setToolTipText(tooltip.description);
+        this.tooltips.comments[id] = tooltip.description
+      },
+      error => {
+        this.setToolTipText('Could not get comment');
+      }
+    );
+  }
+
+
+
+  setToolTipText(text: string) {
+    this.toolTipText = text;
   }
 
   showCommentModal(id: string) {
     id = id.replace('end', 'en');
     id = this.establishedText.link + ';' + id;
-    const modal = this.modalCtrl.create(CommentModalPage, { id: id, title: this.texts.CommentsFor + ' ' + this.establishedText.title });
+    const modal = this.modalCtrl.create(
+      CommentModalPage,
+      { id: id, title: this.texts.CommentsFor + ' ' + this.establishedText.title },
+      { showBackdrop: true });
     modal.present();
-
   }
 
   showPersonModal(id: string) {
@@ -1018,24 +1248,9 @@ export class ReadPage /*implements OnDestroy*/ {
     modal.present();
   }
 
-
-
-
-
-  showCommentTooltip(id: string) {
-
-    id = this.establishedText.link + ';' + id;
-    this.tooltipService.getCommentTooltip(id).subscribe(
-      tooltip => {
-        this.showTooltip(tooltip.description);
-      },
-      error => {
-        this.showTooltip('Could not get comment');
-      }
-    );
-  }
-
-  showTooltip(text: string) {
+  showWorkModal(id: string) {
+    const modal = this.modalCtrl.create(SemanticDataModalPage, { id: id, type: 'work' });
+    modal.present();
   }
 
   showPopover(myEvent) {
@@ -1090,7 +1305,7 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   addView(type: string, id?: string, fab?: FabContainer, external?: boolean) {
-    if ( external === true ) {
+    if (external === true) {
       this.external = id;
     } else {
       this.external = null;
@@ -1105,7 +1320,8 @@ export class ReadPage /*implements OnDestroy*/ {
         manuscripts: { show: (type === 'manuscripts'), id: id },
         variations: { show: (type === 'variations'), id: id },
         introduction: { show: (type === 'introduction'), id: id },
-        songexample: { show: (type === 'songexample'), id: id }
+        songexample: { show: (type === 'songexample'), id: id },
+        illustrations: { show: (type === 'illustrations'), id: id }
       });
 
       this.updateURL();
@@ -1168,53 +1384,143 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 
-  firstPage() {
-    this.tocService.getFirst(this.params.get('collectionID')).subscribe(
-      first => {
-        this.openAnother(first[0], 'forward');
-      },
-      error => { this.errorMessage = <any>error }
-    );
-  }
-
-  nextPage() {
-    if (this.prevnext !== undefined) {
-      this.openAnother(this.prevnext.next, 'forward');
-    }
-  }
-
-  prevPage() {
-    if (this.prevnext !== undefined) {
-      this.openAnother(this.prevnext.prev, 'back');
-    }
-  }
-
   swipePrevNext(myEvent) {
-    if (myEvent['offsetDirection'] !== undefined) {
-      if (myEvent['offsetDirection'] === 2) {
-        this.nextPage();
-      } else if (myEvent['offsetDirection'] === 4) {
-        this.prevPage();
+    if (myEvent.direction !== undefined) {
+      if (myEvent.direction === 2) {
+        this.next();
+      } else if (myEvent.direction === 4) {
+        this.previous();
       }
     }
   }
 
-  openAnother(tocItem: any, direction = 'forward') {
-    const params = { root: this.tocRoot, tocItem: tocItem, fetch: false, collection: { title: tocItem.title } };
-    params['collectionID'] = tocItem.collection_id;
-    params['publicationID'] = tocItem.link_id;
-
-    const nav = this.app.getActiveNavs();
-    nav[0].push('read', params, { animate: true, direction: direction, animation: 'ios-transition' }).then(() => {
-      // This is so that we can always hace only one text in the stack, so that
-      // when we press the back button i nav menu, we go to the table of contents
-      // instead of the previous text we read.
-      // this allows us to go to previous/next texts with the custom arrows
-      const index = nav[0].getActive().index;
-      nav[0].remove(index - 1); // we remove the last text we read from the stack.
-      // so that "back" is always the table of contents.
+  async previous(test?: boolean) {
+    if (this.legacyId === undefined) {
+      this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID');
+    }
+    const c_id = this.legacyId.split('_')[0];
+    await this.storage.get('toc_' + c_id).then((toc) => {
+      this.findTocItem(toc, 'prev');
     });
 
+    if (this.prevItem !== undefined && test !== true) {
+      await this.open(this.prevItem);
+    } else if (test && this.prevItem !== undefined) {
+      return true;
+    } else if (test && this.prevItem === undefined) {
+      return false;
+    }
+  }
+
+  async next(test?: boolean) {
+    if (this.legacyId === undefined) {
+      this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID');
+    }
+    const c_id = this.legacyId.split('_')[0];
+    await this.storage.get('toc_' + c_id).then((toc) => {
+      this.findTocItem(toc, 'next');
+    });
+    if (this.nextItem !== undefined && test !== true) {
+      await this.open(this.nextItem);
+    } else if (test && this.nextItem !== undefined) {
+      return true;
+    } else if (test && this.nextItem === undefined) {
+      return false;
+    }
+  }
+
+  findTocItem(toc, type?: string) {
+    if (!toc) {
+      return;
+    }
+
+    if (!toc.children && toc instanceof Array) {
+      for (let i = 0; i < toc.length; i++) {
+        if (toc[i].itemId && toc[i].itemId === this.legacyId) {
+          if (type === 'next' && toc[i + 1]) {
+            if (toc[i + 1].type === 'subtitle') {
+              i = i + 1;
+            }
+            if (toc[i + 1] === undefined || i + 1 === toc.length) {
+              if ((i + 1) === toc.length) {
+                this.nextItem = null;
+                break;
+              }
+            } else {
+              this.nextItem = toc[i + 1];
+              break;
+            }
+          } else if (type === 'prev' && toc[i - 1]) {
+            if (toc[i - 1].type === 'subtitle') {
+              i = i - 1;
+            }
+            if (toc[i - 1] === undefined || i === 0) {
+              if (i === 0) {
+                this.prevItem = null;
+                break;
+              }
+            } else {
+              this.prevItem = toc[i - 1];
+              break;
+            }
+          }
+        }
+      }
+    } else if (toc.children) {
+      const childs = toc.children;
+      for (let j = 0; j < childs.length; j++) {
+        if (childs[j] && childs[j].itemId && childs[j].itemId === this.legacyId) {
+
+          if (childs[j + 1]) {
+            if (childs[j + 1].itemId === '') {
+              this.nextItem = childs[j + 2];
+            } else {
+              this.nextItem = childs[j + 1];
+            }
+          }
+
+          if (childs[j - 1].itemId === '') {
+            this.prevItem = childs[j - 2];
+          } else {
+            this.prevItem = childs[j - 1];
+          }
+        }
+        if (childs[j] && childs[j].children) {
+          this.findTocItem(childs[j].children, type);
+        }
+      }
+    }
+  }
+
+  open(item) {
+    const params = { tocItem: item, collection: { title: item.itemId } };
+    const nav = this.app.getActiveNavs();
+
+    params['tocLinkId'] = item.itemId;
+    const parts = item.itemId.split('_');
+    params['collectionID'] = parts[0];
+    params['publicationID'] = parts[1];
+
+    // if (this.recentlyOpenViews !== undefined && this.recentlyOpenViews.length > 0) {
+    //   params['recentlyOpenViews'] = this.recentlyOpenViews;
+    // }
+
+    nav[0].setRoot('read', params);
+  }
+
+  private scrollToElement(element: HTMLElement) {
+    element.scrollIntoView();
+    this.showToolTip = false;
+    try {
+      const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span');
+      for (let i = 0; i < elems.length; i++) {
+        if (elems[i].id === element.id) {
+          elems[i].scrollIntoView();
+        }
+      }
+    } catch (e) {
+
+    }
   }
 
   keyPress(event) {
@@ -1274,3 +1580,4 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 }
+

@@ -24,6 +24,10 @@ export class CommentsComponent {
   public text: any;
   protected errorMessage: string;
   listenFunc: Function;
+  manuscript: any;
+  sender: any;
+  receiver: any;
+  letter: any;
 
   constructor(
     protected readPopoverService: ReadPopoverService,
@@ -49,6 +53,7 @@ export class CommentsComponent {
     } else {
       this.setText();
     }
+    this.getCorrespondanceMetadata();
   }
 
   setText() {
@@ -97,9 +102,9 @@ export class CommentsComponent {
       event.preventDefault();
       // This is tagging in href to another page e.g. introduction
       try {
-        const elem: HTMLElement = event.target as HTMLElement;
+        const elem: HTMLAnchorElement = event.target as HTMLAnchorElement;
         const targetId = String(elem.getAttribute('href')).split('#')[1];
-        let target = document.getElementsByName(targetId)[0] as HTMLElement;
+        let target = document.getElementsByName(targetId)[0] as HTMLAnchorElement;
         if ( target !== null && target !== undefined ) {
           this.scrollToHTMLElement(target, true);
         } else if ( targetId !== null && targetId !== undefined ) {
@@ -118,13 +123,14 @@ export class CommentsComponent {
           }
           // Some other text, open in new window
           setTimeout(function() {
-            target = document.getElementsByName(targetId)[0] as HTMLElement;
+            target = document.getElementsByName(targetId)[0] as HTMLAnchorElement;
             if ( target !== null && target !== undefined ) {
               this.scrollToHTMLElement(target, false);
             }
           }.bind(this), 500);
         } else if ( elem.classList !== undefined && elem.classList.contains('ext') ) {
-          const ref = window.open(elem.href, '_blank', 'location=no');
+          const anchor = <HTMLAnchorElement>elem;
+          const ref = window.open(anchor.href, '_blank', 'location=no');
         }
       } catch ( e ) {}
 
@@ -271,5 +277,27 @@ export class CommentsComponent {
     } catch ( e ) {
       console.log(e);
     }
+  }
+
+  getCorrespondanceMetadata() {
+    this.commentService.getCorrespondanceMetadata(String(this.link).split('_')[1]).subscribe(
+      text => {
+        if (text.length > 0) {
+          text['subjects'].forEach(subject => {
+            if ( subject['avsändare'] ) {
+              this.sender = subject['avsändare'];
+            }
+            if ( subject['mottagare'] ) {
+              this.receiver = subject['mottagare'];
+            }
+          });
+        }
+          this.letter = text['letter'];
+          this.doAnalytics();
+        },
+      error =>  {
+        this.errorMessage = <any>error
+      }
+    );
   }
 }

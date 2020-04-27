@@ -15,6 +15,7 @@ export class ReadPopoverService {
     'personInfo': false,
     'abbreviations': false,
     'placeInfo': false,
+    'workInfo': false,
     'changes': false,
     'pageNumbering': false,
     'pageBreakOriginal': false,

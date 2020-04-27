@@ -22,6 +22,7 @@
             "Comments": "Comments",
             "PersonInfo": "People",
             "PlaceInfo": "Places",
+            "WorkInfo": "Works",
             "Changes": "Changes",
             "Abbreviations": "Abbreviations",
             "PageNumbering": "Page Numbering",
@@ -37,7 +38,27 @@
         },
         "Comments": {
             "Title": "Comments",
-            "AddButtonText": "Comments view"
+            "AddButtonText": "Comments view",
+            "Manuscript": {
+              "Title": "Manuskriptbeskrivning",
+              "LegacyId": "Brevsignum",
+              "Sender": "Avsändare",
+              "Receiver": "Mottagare",
+              "Archive": "Arkiv",
+              "Collection": "Samling, signum",
+              "Type": "Form",
+              "Status": "Status",
+              "Format": "Format",
+              "Leafs": "Lägg",
+              "Sheets": "Antal blad",
+              "Pages": "Sidor brevtext",
+              "Color": "Färg",
+              "Quality": "Kvalitet",
+              "Pattern": "Mönster",
+              "State": "Tillstånd",
+              "Material": "Skrivmaterial",
+              "Other": "Övrigt"
+            }
         },
         "Manuscripts": {
             "Title": "Manuscript",
@@ -58,6 +79,9 @@
             "Page": "Sida",
             "Of": "av",
             "OpenManuscript": "Open manuscript"
+        },
+        "Illustrations": {
+            "AddButtonText": "Illustrations view"
         },
         "TitlePage": {
             "Title": "Titel page"

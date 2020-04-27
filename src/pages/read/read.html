@@ -1,34 +1,53 @@
 <ion-header no-border>
   <ion-toolbar color="secondary" class="secondary">
-    <ion-buttons end *ngIf="!(splitPaneMobile && userSettingsService.isMobile())">
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <div class="mail-icon" *ngIf="showSocial.email" shareButton="email" (click)="shareEmail()"><ion-icon name="mail"></ion-icon></div>
-          </ion-col>
-          <ion-col>
-            <div class="facebook-icon" *ngIf="showSocial.facebook" shareButton="facebook" (click)="shareFacebook()"><ion-icon name="logo-facebook"></ion-icon></div>
-          </ion-col>
-          <ion-col>
-            <div class="twitter-icon" *ngIf="showSocial.twitter" shareButton="twitter"><ion-icon name="logo-twitter" (click)="shareTwitter()"></ion-icon></div>
-          </ion-col>
-          <ion-col>
-            <div name="download" (click)="download()">
-              <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
-              <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
-            </div>
-          </ion-col>
-          <ion-col>
-            <div (click)="showPopover($event)">
-              <ion-icon class="settings-icon" name="settings"></ion-icon>
-            </div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-buttons>
+          <ion-buttons class="toolbar-ion-buttons" *ngIf="!(splitPaneMobile && userSettingsService.isMobile())">
+              <ion-grid>
+                <ion-row>
+                    <ion-col>
+                        <div class="mail-icon" *ngIf="showSocial.email" shareButton="email" (click)="shareEmail()"><ion-icon name="mail"></ion-icon></div>
+                    </ion-col>
+                    <ion-col>
+                        <div class="facebook-icon" *ngIf="showSocial.facebook" shareButton="facebook" (click)="shareFacebook()"><ion-icon name="logo-facebook"></ion-icon></div>
+                    </ion-col>
+                    <ion-col>
+                        <div class="twitter-icon" *ngIf="showSocial.twitter" shareButton="twitter"><ion-icon name="logo-twitter" (click)="shareTwitter()"></ion-icon></div>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-buttons>
+
+        <text-changer *ngIf="!(userSettingsService.isMobile() || userSettingsService.isTablet())" [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
+
+        <ion-buttons *ngIf="!(splitPaneMobile && userSettingsService.isMobile())">
+            <ion-grid>
+                <ion-row>
+                <ion-col>
+                    <div name="download" id="download-icon" (click)="download()">
+                    <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
+                    <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
+                    </div>
+                </ion-col>
+                <ion-col>
+                    <div #settingsIconElement (click)="showPopover($event)" id="settings-icon">
+                    <ion-icon class="settings-icon" name="settings"></ion-icon>
+                    </div>
+                </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
+<!-- Main content without scroll. The mobile facsimile requires a no scrolling content to function correctly.
+This is a dirty hack only because of the pending refactor. -->
+<div *ngIf="userSettingsService.isMobile() && show === 'facsimiles'; else mainContent" class="no-scroll">
+  <ion-content padding (swipe)="swipePrevNext($event)" color="secondary">
+    <facsimiles [itemId]="establishedText.link" [matches]="matches" [facsID]="facs_id" [facsNr]="facs_nr" [songID]="song_id"></facsimiles>
+  </ion-content>
+</div>
+
+<!-- Main content with scroll -->
+<ng-template #mainContent>
 <ion-content padding (swipe)="swipePrevNext($event)" color="secondary">
   <div *ngIf="userSettingsService.isDesktop() && !userSettingsService.isTablet()" class="column-container">
 
@@ -46,7 +65,7 @@
 
     <div class="read-columns" dragScroll drag-scroll-y-disabled scrollbar-hidden="true" reachesRightBound="true"
       snap-disabled="true" snap-offset="0" [ngClass]="views.length > 1 ? 'multiple-columns' : 'single-column'">
-      <text-changer [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
+      <div *ngIf="showToolTip" class="toolTip" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}">{{toolTipText}}</div>
       <div class="read-column" *ngFor="let view of views; let i = index;" id="read_div_{{i}}" scrollY="true"
         [ngStyle]="{'position': 'relative','max-width':(95/((views.length>1)?views.length:2))+'%','min-width':'25%'}"
         #readColumn>
@@ -61,6 +80,7 @@
                 <ion-icon *ngIf="view.variations.show" name="menu"></ion-icon>
                 <ion-icon *ngIf="view.songexample.show" name="menu"></ion-icon>
                 <ion-icon *ngIf="view.introduction.show" name="menu"></ion-icon>
+                <ion-icon *ngIf="view.illustrations.show" name="menu"></ion-icon>
               </button>
               <ion-fab-list *ngIf="views.length>1">
                 <button ion-fab *ngIf="displayToggle" (click)="removeSlide(i)">
@@ -71,7 +91,8 @@
                 </button>
               </ion-fab-list>
             </ion-fab>
-            <ion-scroll scrollY="true" style="height:100vh;" class="card" #scrollBar>
+            <!-- Don't scroll in facsimile view -->
+            <ion-scroll [scrollY]="!view.facsimiles.show" style="height:100vh;" class="card" #scrollBar>
               <div *ngIf="view.established.show">
                 <read-text [link]="establishedText.link" [matches]="matches" [external]="external"></read-text>
               </div>
@@ -99,6 +120,9 @@
               <div *ngIf="view.songexample.show">
                 <song-example [songDatafile]="song_id" [legacyId]="legacyId"></song-example>
               </div>
+              <div *ngIf="view.illustrations.show">
+                <illustrations [itemId]="establishedText.link"></illustrations>
+              </div>
             </ion-scroll>
           </ion-card-content>
         </ion-card>
@@ -106,11 +130,12 @@
     </div>
 
     <!-- Add view -->
-    <ion-fab *ngIf="!isTablet && displayToggle" middle right #fab>
+    <ion-fab id="readFabMenu" *ngIf="!isTablet && displayToggle" margin-top top right #fab>
       <button ion-fab>
         <ion-icon name="add"></ion-icon>
       </button>
       <ion-fab-list side="bottom">
+      <div class="fab-backdrop" (click)="fab.close()"></div>
         <button ion-fab (click)="showAllViews()" *ngIf="displayToggles['showAll']">
           <ion-icon name="albums"></ion-icon>
           <ion-label>{{ "Read.ShowAll" | translate }}</ion-label>
@@ -132,7 +157,7 @@
           <ion-label>{{ "Read.Variations.AddButtonText" | translate }}</ion-label>
         </button>
         <button ion-fab (click)="addView('facsimiles', fab)" *ngIf="displayToggles['facsimiles']">
-          <ion-icon name="images"></ion-icon>
+          <ion-icon name="image"></ion-icon>
           <ion-label>{{ "Read.Facsimiles.AddButtonText" | translate }}</ion-label>
         </button>
         <button ion-fab (click)="addView('songexample', fab)" *ngIf="displayToggles['song-example']">
@@ -142,6 +167,10 @@
         <button ion-fab (click)="addView('introduction', fab)" *ngIf="displayToggles['introduction']">
           <ion-icon name="information-circle"></ion-icon>
           <ion-label>{{ "Read.Introduction.AddButtonText" | translate }}</ion-label>
+        </button>
+        <button ion-fab (click)="addView('illustrations', fab)" *ngIf="displayToggles['illustrations']">
+          <ion-icon name="images"></ion-icon>
+          <ion-label>{{ "Read.Illustrations.AddButtonText" | translate }}</ion-label>
         </button>
       </ion-fab-list>
     </ion-fab>
@@ -155,68 +184,32 @@
         (click)="openOccurrenceResult()">{{ "Read.ShowSearchResults" | translate }} &nbsp;<ion-icon name="search">
         </ion-icon></button>
     </div>
-    <div *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet())">
+    <div (swipe)="swipePrevNext($event)" *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet())">
       <div>
         <ion-segment [(ngModel)]="show" color="secondary">
           <ion-segment-button value="established" *ngIf="displayToggles['established']">
             {{ "Read.Established.Title" | translate }}
           </ion-segment-button>
-          <ion-segment-button value="manuscripts" *ngIf="displayToggles['manuscripts']">
-            {{ "Read.Manuscripts.Title" | translate }}
-          </ion-segment-button>
-          <ion-segment-button value="comments" *ngIf="displayToggles['comments']">
-            {{ "Read.Comments.Title" | translate }}
-          </ion-segment-button>
-          <ion-segment-button value="variations" *ngIf="displayToggles['variations']">
-            {{ "Read.Variations.Title" | translate }}
-          </ion-segment-button>
           <ion-segment-button value="facsimiles" *ngIf="displayToggles['facsimiles']">
             {{ "Read.Facsimiles.Title" | translate }}
-          </ion-segment-button>
-          <ion-segment-button value="introduction" *ngIf="displayToggles['introduction']">
-            {{ "Read.Introduction.Title" | translate }}
           </ion-segment-button>
         </ion-segment>
       </div>
       <div [ngSwitch]="show">
         <div *ngSwitchCase="'established'">
-          <text-changer [legacyId]="legacyId"></text-changer>
           <read-text [link]="establishedText.link" [matches]="matches"></read-text>
-        </div>
-        <div *ngSwitchCase="'manuscripts'">
-          <manuscripts [linkID]="typeVersion" [itemId]="establishedText.link" [matches]="matches"></manuscripts>
-        </div>
-        <div *ngSwitchCase="'comments'">
-          <comments [link]="establishedText.link" [matches]="matches"></comments>
-        </div>
-        <div *ngSwitchCase="'variations'">
-          <variations [linkID]="typeVersion" [itemId]="establishedText.link" [matches]="matches"></variations>
         </div>
         <div *ngSwitchCase="'facsimiles'">
           <facsimiles [itemId]="establishedText.link" [matches]="matches" [facsID]="facs_id" [facsNr]="facs_nr"
             [songID]="song_id"></facsimiles>
-        </div>
-        <div *ngSwitchCase="'introduction'">
-          <introduction [itemId]="establishedText.link" [matches]="matches"></introduction>
-        </div>
-      </div>
-
-      <div class="forwardBackward" *ngIf="prevnext">
-        <div class="backwardButtonDiv" *ngIf="prevnext.prev">
-          <button class="backwardButton" ion-fab mini (click)="prevPage()">
-            <ion-icon name="arrow-dropleft"></ion-icon>
-          </button>
-        </div>
-        <div class="forwardButtonDiv" *ngIf="prevnext.next">
-          <button class="forwardButton" ion-fab mini (click)="nextPage()">
-            <ion-icon name="arrow-dropright"></ion-icon>
-          </button>
         </div>
       </div>
       <div class="" *ngIf="!prevnext && displayToggle === true && show != 'facsimile'">
         <button ion-button round icon-end (click)="firstPage()">{{"Read.ReadFromBeginning" | translate }}</button>
       </div>
     </div>
-  </ng-container>
+</ng-container>
 
 </ion-content>
+<text-changer *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet())" class="text-changer-mobile-view" [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
+</ng-template>
