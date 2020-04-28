@@ -1,4 +1,20 @@
 read-text {
+      img.est_figure_graphic {
+        display: none;
+      & ~ p.tei:first-of-type::after {
+          content: '';
+          cursor: pointer;
+          background-image: url('/assets/images/img_placeholder.png');
+          height: 18px;
+          width: 20px;
+          margin-left: 5px;
+          margin-bottom: -3px;
+          display: inline-block;
+          background-repeat: no-repeat;
+          background-size: cover;
+        }
+    }
+
     a.xreference.ref_illustration {
         img {
             max-width: 12px;
@@ -38,7 +54,7 @@ read-text {
         position: absolute;
         pointer-events: none;
     }
-    
+
     .toolTip:after {
         border-color: rgba(136, 183, 213, 0);
         border-right-color: #88b7d5;

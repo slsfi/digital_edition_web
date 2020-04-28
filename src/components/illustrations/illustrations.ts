@@ -43,7 +43,7 @@ export class IllustrationsComponent {
 
   ngAfterViewInit() {
     document.body.addEventListener('click', (event: any) => {
-      const isReadTextThumbnail = event.target.classList.contains('est_figure_graphic');
+      const isReadTextThumbnail = event.target.previousElementSibling.classList.contains('est_figure_graphic');
       if (isReadTextThumbnail) {
         this.events.subscribe('give:illustration', (image) => {
           if (image) {
