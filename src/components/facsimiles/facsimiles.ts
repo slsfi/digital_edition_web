@@ -83,7 +83,7 @@ export class FacsimilesComponent {
   openNewFacs(event: Event, id: any) {
     event.preventDefault();
     event.stopPropagation();
-    id.viewType = 'facsimile';
+    id.viewType = 'facsimiles';
     this.openNewFacsimileView.emit(id);
   }
 

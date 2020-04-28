@@ -1246,12 +1246,12 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   openNewView(event: any) {
-    if (event.viewType === 'facsimile') {
+    if (event.viewType === 'facsimiles') {
       this.addView(event.viewType, event.id);
     } else if (event.viewType === 'manuscriptFacsimile') {
-      this.addView('facsimile', event.id);
+      this.addView('facsimiles', event.id);
     } else if (event.viewType === 'facsimileManuscript') {
-      this.addView('manuscript', event.id);
+      this.addView('manuscripts', event.id);
     } else {
       this.addView(event.viewType, event.id);
     }
