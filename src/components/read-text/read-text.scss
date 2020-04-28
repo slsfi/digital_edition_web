@@ -1,6 +1,7 @@
 read-text {
       img.hide-illustration {
-        display: none;
+        visibility: hidden;
+        height: 10px;
       & ~ p.tei:first-of-type::after {
           content: '';
           cursor: pointer;

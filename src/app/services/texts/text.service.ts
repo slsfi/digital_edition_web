@@ -42,6 +42,7 @@ export class TextService {
             const body = res.json();
 
             const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
+
             for (let i = 0; i < showIllustration.length; i++) {
               if (showIllustration[i] !== pub_id) {
                 const parser = new DOMParser();
@@ -53,6 +54,8 @@ export class TextService {
 
                 const s = new XMLSerializer();
                 body.content = s.serializeToString(body.content);
+                this.cache.setHtmlCache(textId, body.content.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/19/`));
+                return this.cache.getHtml(id);
               }
             }
 
