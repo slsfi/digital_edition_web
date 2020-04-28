@@ -1,6 +1,7 @@
 read-text {
-      img.est_figure_graphic {
-        display: none;
+      img.hide-illustration {
+        visibility: hidden;
+        height: 10px;
       & ~ p.tei:first-of-type::after {
           content: '';
           cursor: pointer;

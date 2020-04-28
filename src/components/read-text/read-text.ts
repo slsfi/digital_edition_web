@@ -1,3 +1,4 @@
+
 import { Component, Input, ElementRef, Renderer } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
@@ -62,15 +63,42 @@ export class ReadTextComponent {
 
   ngAfterViewInit() {
     this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
-      if (event.target.previousElementSibling.classList.contains('est_figure_graphic')) {
-        const image = event.target.previousElementSibling.src;
-        this.events.publish('give:illustration', image);
+    try {
+      if (this.config.getSettings('settings.showReadTextIllustrations')) {
+        const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
+
+        if ( showIllustration.includes(this.link.split('_')[1])) {
+          if (event.target.classList.contains('est_figure_graphic')) {
+            const image = event.target.src;
+            this.events.publish('give:illustration', image);
+          }
+        } else {
+          if (event.target.previousElementSibling.classList.contains('est_figure_graphic')) {
+            const image = event.target.previousElementSibling.src;
+            this.events.publish('give:illustration', image);
+          }
+        }
       }
+    } catch (e) {
+      console.error(e);
+    }
+
 
       if (event.target.parentNode.classList.contains('ref_illustration')) {
         const hashNumber = event.target.parentNode.hash;
         const imageNumber = hashNumber.split('#')[1];
         this.openIllustration(imageNumber);
+      }
+    });
+  }
+
+  private setIllustrationImages() {
+    this.textService.getEstablishedText(this.link).subscribe(text => {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(text, 'text/html');
+      const images: any = xmlDoc.querySelectorAll('img.est_figure_graphic');
+      for (let i = 0; i < images.length ; i++) {
+        images[i].classList.add('show-illustration');
       }
     });
   }
