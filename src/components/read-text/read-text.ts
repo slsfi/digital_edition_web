@@ -1,3 +1,4 @@
+
 import { Component, Input, ElementRef, Renderer } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
@@ -65,17 +66,16 @@ export class ReadTextComponent {
     try {
       if (this.config.getSettings('settings.showReadTextIllustrations')) {
         const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
-        for (let i = 0; i <= showIllustration.length; i++) {
-          if ( showIllustration[i] === this.link.split('_')[1]) {
-            if (event.target.classList.contains('est_figure_graphic')) {
-              const image = event.target.src;
-              this.events.publish('give:illustration', image);
-            }
-          } else {
-            if (event.target.previousElementSibling.classList.contains('est_figure_graphic')) {
-              const image = event.target.previousElementSibling.src;
-              this.events.publish('give:illustration', image);
-            }
+
+        if ( showIllustration.includes(this.link.split('_')[1])) {
+          if (event.target.classList.contains('est_figure_graphic')) {
+            const image = event.target.src;
+            this.events.publish('give:illustration', image);
+          }
+        } else {
+          if (event.target.previousElementSibling.classList.contains('est_figure_graphic')) {
+            const image = event.target.previousElementSibling.src;
+            this.events.publish('give:illustration', image);
           }
         }
       }

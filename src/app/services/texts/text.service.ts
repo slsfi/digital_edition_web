@@ -45,20 +45,18 @@ export class TextService {
             if (this.config.getSettings('settings.showReadTextIllustrations')) {
               const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
 
-              for (let i = 0; i < showIllustration.length; i++) {
-                if (showIllustration[i] !== pub_id) {
-                  const parser = new DOMParser();
-                  body.content = parser.parseFromString(body.content, 'text/html');
-                  const images: any = body.content.querySelectorAll('img.est_figure_graphic');
-                  for (let i = 0; i < images.length; i++) {
-                    images[i].classList.add('hide-illustration');
-                  }
-
-                  const s = new XMLSerializer();
-                  body.content = s.serializeToString(body.content);
-                  this.cache.setHtmlCache(textId, body.content.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/19/`));
-                  return this.cache.getHtml(id);
+              if (!showIllustration.includes(pub_id)) {
+                const parser = new DOMParser();
+                body.content = parser.parseFromString(body.content, 'text/html');
+                const images: any = body.content.querySelectorAll('img.est_figure_graphic');
+                for (let i = 0; i < images.length; i++) {
+                  images[i].classList.add('hide-illustration');
                 }
+
+                const s = new XMLSerializer();
+                body.content = s.serializeToString(body.content);
+                this.cache.setHtmlCache(textId, body.content.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/19/`));
+                return this.cache.getHtml(id);
               }
             }
           } catch (e) {
