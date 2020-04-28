@@ -43,34 +43,41 @@ export class IllustrationsComponent {
 
   ngAfterViewInit() {
     document.body.addEventListener('click', (event: any) => {
-      if (event.target.previousElementSibling) {
-        const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
-        for (let i = 0; i < showIllustration.length; i++) {
-          if ( showIllustration[i] === this.itemId.split('_')[1] ) {
-            if (event.target.classList.contains('est_figure_graphic')) {
-              this.events.subscribe('give:illustration', (image) => {
-                if (image) {
-                  this.showOne = true;
-                  this.viewAll = false;
-                  this.images = [image];
-                } else {
-                  this.showOne = false;
+      if (event.target.previousElementSibling || event.target.nodeName === 'IMG') {
+        try {
+          if (this.config.getSettings('settings.showReadTextIllustrations')) {
+            const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
+            for (let i = 0; i < showIllustration.length; i++) {
+              if ( showIllustration[i] === this.itemId.split('_')[1] || showIllustration === []) {
+            console.log('hiiåhåå?')
+                if (event.target.classList.contains('est_figure_graphic')) {
+                  this.events.subscribe('give:illustration', (image) => {
+                    if (image) {
+                      this.showOne = true;
+                      this.viewAll = false;
+                      this.images = [image];
+                    } else {
+                      this.showOne = false;
+                    }
+                  });
                 }
-              });
-            }
-          } else {
-            if (event.target.previousElementSibling.classList.contains('est_figure_graphic')) {
-              this.events.subscribe('give:illustration', (image) => {
-                if (image) {
-                  this.showOne = true;
-                  this.viewAll = false;
-                  this.images = [image];
-                } else {
-                  this.showOne = false;
+              } else {
+                if (event.target.previousElementSibling.classList.contains('est_figure_graphic')) {
+                  this.events.subscribe('give:illustration', (image) => {
+                    if (image) {
+                      this.showOne = true;
+                      this.viewAll = false;
+                      this.images = [image];
+                    } else {
+                      this.showOne = false;
+                    }
+                  });
                 }
-              });
+              }
             }
           }
+        } catch (e) {
+          console.error(e)
         }
       }
     });

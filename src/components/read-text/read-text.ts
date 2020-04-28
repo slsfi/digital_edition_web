@@ -62,21 +62,27 @@ export class ReadTextComponent {
 
   ngAfterViewInit() {
     this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
-
-      const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
-      for (let i = 0; i < showIllustration.length; i++) {
-        if ( showIllustration[i] === this.link.split('_')[1] ) {
-          if (event.target.classList.contains('est_figure_graphic')) {
-            const image = event.target.src;
-            this.events.publish('give:illustration', image);
-          }
-        } else {
-          if (event.target.previousElementSibling.classList.contains('est_figure_graphic')) {
-            const image = event.target.previousElementSibling.src;
-            this.events.publish('give:illustration', image);
+    try {
+      if (this.config.getSettings('settings.showReadTextIllustrations')) {
+        const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
+        for (let i = 0; i <= showIllustration.length; i++) {
+          if ( showIllustration[i] === this.link.split('_')[1]) {
+            if (event.target.classList.contains('est_figure_graphic')) {
+              const image = event.target.src;
+              this.events.publish('give:illustration', image);
+            }
+          } else {
+            if (event.target.previousElementSibling.classList.contains('est_figure_graphic')) {
+              const image = event.target.previousElementSibling.src;
+              this.events.publish('give:illustration', image);
+            }
           }
         }
       }
+    } catch (e) {
+      console.error(e);
+    }
+
 
       if (event.target.parentNode.classList.contains('ref_illustration')) {
         const hashNumber = event.target.parentNode.hash;
