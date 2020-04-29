@@ -43,8 +43,20 @@ export class TextChangerComponent {
   }
 
   ngOnInit() {
-    console.log(this.nextItem, 'nextitem');
+      const c_id = this.legacyId.split('_')[0];
+      const toc = this.storage.get('toc_' + c_id)
 
+      toc.then(val => {
+        if (val.children) {
+          for (let i = 0; i < val.children.length; i++) {
+            if (val.children[i].itemId.split('_')[1] === c_id) {
+              this.currentItemTitle = val.children[i].text;
+              this.nextItemTitle = val.children[i + 1].text;
+              this.prevItemTitle =  val.children[i - 1].text;
+            }
+          }
+        }
+      }).catch(err => console.error(err));
   }
 
   async previous(test?: boolean) {
