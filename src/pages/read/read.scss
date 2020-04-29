@@ -17,7 +17,11 @@ page-read {
 		@media screen and (max-width: 800px) {
 			.secondary .toolbar-content {
 				display: flex;
-				justify-content: space-between;
+        justify-content: flex-end;
+
+        .bar-buttons:last-child {
+					margin-left: 0;
+				}
 			}
 		}
 
