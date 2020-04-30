@@ -573,7 +573,7 @@ export class DigitalEditionsApp {
         'tablet',
         'windows',
       ]
-      platforms.map(p => console.log(`${p}: ${this.platform.is(p)}`));
+      // platforms.map(p => console.log(`${p}: ${this.platform.is(p)}`));
       this.splashScreen.hide();
       this.languageService.getLanguage().subscribe((lang: string) => {
         this.language = lang;

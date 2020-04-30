@@ -32,7 +32,6 @@ export class TutorialService {
       tutorialTexts => {
         this.tutorialTexts = tutorialTexts;
         this.tutorialSteps = this.config.getSettings('TutorialSteps');
-        console.log(this.tutorialSteps);
         for (const i in this.tutorialSteps) {
           const str = this.tutorialSteps[i].intro;
           this.tutorialSteps[i].intro = tutorialTexts[str] || `${str} Untranslated text`;
@@ -45,7 +44,7 @@ export class TutorialService {
                   this.intro();
                 }
               } catch (e) {
-                console.log('Missing showTutorial from config.json');
+                console.error('Missing showTutorial from config.json');
               }
             }
           });
@@ -62,7 +61,6 @@ export class TutorialService {
     const intro = introJs();
     const steps = this.tutorialSteps.filter((step) => {return this.canBeSeen(step, this.currentPage)});
 
-    console.log(steps);
     intro.setOptions({
       steps: steps,
       disableInteraction: false,
@@ -78,7 +76,7 @@ export class TutorialService {
     });
     this.canBeSeen = this.canBeSeen.bind(this);
     intro.onbeforechange((elem) => {
-      console.log('step', elem.selector);
+      // console.log('step', elem.selector);
     });
 
     intro.onchange((elem) => {
@@ -94,11 +92,9 @@ export class TutorialService {
 
   iHaveSeen(selector) {
     const i = this.getStep(selector, true);
-    console.log(`i have seen ${selector} : ${i}`);
     if (i) {
       this.tutorialSteps[i].alreadySeen = true;
     }
-    console.log(this.tutorialSteps);
   }
 
   canBeSeen(step, page) {
@@ -126,7 +122,6 @@ export class TutorialService {
     }
     for (const i in this.tutorialSteps) {
       const step = this.tutorialSteps[i];
-      console.log(i, selector, step.element);
       if (step.element && '#' + step.element === selector) {
         if (returnIndex) {
           return i;

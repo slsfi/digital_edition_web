@@ -68,7 +68,7 @@ export class CommentsComponent {
           this.doAnalytics();
         },
       error =>  {
-        console.log('Error loading comments...', this.link);
+        console.error('Error loading comments...', this.link);
         this.errorMessage = <any>error
       }
     );
@@ -275,7 +275,7 @@ export class CommentsComponent {
         }, timeOut);
       }
     } catch ( e ) {
-      console.log(e);
+      console.error(e);
     }
   }
 

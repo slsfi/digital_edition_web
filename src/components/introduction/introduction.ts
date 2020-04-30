@@ -70,7 +70,7 @@ export class IntroductionComponent {
     try {
       element.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
     } catch ( e ) {
-      console.log(e);
+      console.error(e);
     }
   }
 }
