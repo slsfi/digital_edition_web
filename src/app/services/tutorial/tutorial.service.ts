@@ -87,6 +87,11 @@ export class TutorialService {
     intro.oncomplete((elem) => {
       this.storage.set('tutorial-done', true);
     });
+
+    intro.onexit(() => {
+      this.storage.set('tutorial-done', true);
+    });
+
     intro.start();
   }
 
