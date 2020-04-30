@@ -183,7 +183,7 @@
             [songID]="song_id"></facsimiles>
         </div>
       </div>
-      <div class="" *ngIf="!prevnext && displayToggle === true && show != 'facsimile'">
+      <div class="read-from-beginning-button" *ngIf="!prevnext && displayToggle === true && show != 'facsimile'">
         <button ion-button round icon-end (click)="firstPage()">{{"Read.ReadFromBeginning" | translate }}</button>
       </div>
     </div>

@@ -290,6 +290,9 @@ page-read {
 		font-size: 1.0rem;
 		color: #78756f;
   }
+  .read-from-beginning-button {
+    margin-bottom: 74px;
+  }
 }
 
 .md,
@@ -324,11 +327,16 @@ ion-fab .fab-list-active .fab-backdrop {
         visibility: visible !important;
         z-index: -2;
     }
-
+    page-read .scroll-content {
+      padding: 0!important;
+    }
     .modal-wrapper {
         width: 90%;
         height: 70%;
         margin: 25px auto;
+        .scroll-content {
+          padding: 16px;
+        }
     }
 }
 
