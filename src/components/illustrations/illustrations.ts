@@ -43,7 +43,7 @@ export class IllustrationsComponent {
 
   ngAfterViewInit() {
     document.body.addEventListener('click', (event: any) => {
-      if (event.target.previousElementSibling || event.target.nodeName === 'IMG') {
+      if (event.target.previousElementSibling || event.target.classList.contains('est_figure_graphic')) {
         try {
           if (this.config.getSettings('settings.showReadTextIllustrations')) {
             const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');

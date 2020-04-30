@@ -338,9 +338,11 @@ export class FacsimilesComponent {
     }
   }
 
-  zoomReset() {
+  resetFacsimile() {
     this.zoom = 1 + (Math.random() * (0.00001 - 0.00000001) + 0.00000001);
     this.angle = 0;
+    this.prevX = 0;
+    this.prevY = 0;
   }
 
   handleSwipeEvent(event) {
