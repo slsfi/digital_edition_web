@@ -97,7 +97,7 @@ export class ManuscriptsComponent {
       },
       err => console.error(err),
       () => {
-        console.log('fetched manuscripts');
+        console.error('fetched manuscripts');
       }
     );
   }

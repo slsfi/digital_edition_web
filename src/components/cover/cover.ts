@@ -42,7 +42,7 @@ export class CoverComponent {
           },
         error =>  {
           this.errorMessage = <any>error;
-          console.log(this.errorMessage);
+          console.error(this.errorMessage);
         }
       );
     }

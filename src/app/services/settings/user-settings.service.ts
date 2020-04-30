@@ -124,7 +124,7 @@ export class UserSettingsService {
 
   set splitPaneOpen(maybe: boolean) {
     this._splitPaneOpen = maybe;
-    console.log(this._splitPaneOpen);
+    // console.log(this._splitPaneOpen);
     this.storage.set('splitPane', maybe);
   }
 

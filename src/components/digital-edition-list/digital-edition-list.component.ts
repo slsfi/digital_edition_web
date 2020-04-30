@@ -119,7 +119,7 @@ export class DigitalEditionList implements OnInit {
         this.editionShortTexts[lang].default;
       return textData.split('\n');
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
     return textData.split('\n');
   }
@@ -148,7 +148,6 @@ export class DigitalEditionList implements OnInit {
   }
 
   setPDF(de) {
-    console.log(de);
     let tresh = false;
     for (let i = 0; i < de.length; i++) {
       if (i === (de.length / 2) && de.length % 2 === 0) {

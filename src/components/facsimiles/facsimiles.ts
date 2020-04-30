@@ -152,7 +152,7 @@ export class FacsimilesComponent {
         this.facsNumber = facs['page_number'];
       },
       error => {
-        console.log('Error loading facsimiles...');
+        console.error('Error loading facsimiles...');
         this.errorMessage = <any>error
       }
     );
@@ -210,7 +210,7 @@ export class FacsimilesComponent {
         this.doAnalytics();
       },
       error => {
-        console.log('Error loading facsimiles...', this.itemId);
+      console.error('Error loading facsimiles...', this.itemId);
         this.errorMessage = <any>error
       }
     )
@@ -317,7 +317,7 @@ export class FacsimilesComponent {
 
     modal.present();
     modal.onDidDismiss(data => {
-      console.log('dismissed', data);
+      console.error('dismissed', data);
     });
   }
 

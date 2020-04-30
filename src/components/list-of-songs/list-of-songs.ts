@@ -197,7 +197,7 @@ export class ListOfSongsComponent {
         this.cdRef.detectChanges();
       },
       error =>  {
-        console.log('ListOfSongsComponent', error);
+        console.error('ListOfSongsComponent', error);
         this.isLoading = false;
       }
     );

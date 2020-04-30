@@ -26,7 +26,6 @@ export class TooltipService {
     return this.http.get(url)
         .map(res => {
           const body = res.json();
-          console.log(body);
           return body[0] || {'name': 'Person', 'description': body.full_name};
         })
         .catch(this.handleError);
