@@ -1532,5 +1532,27 @@ export class ReadPage /*implements OnDestroy*/ {
       return includePrevNext ? returnData : returnData.item;
     }
   }
-}
 
+
+  firstPage() {
+    const c_id = this.legacyId.split('_')[0];
+    const toc = this.storage.get('toc_' + c_id)
+    let firstItemOfCollection;
+    toc.then(val => {
+      if (val.children) {
+        firstItemOfCollection = val.children[1];
+        console.log(firstItemOfCollection);
+
+        const params = {tocItem: firstItemOfCollection, collection: {title: firstItemOfCollection.itemId}};
+        const nav = this.app.getActiveNavs();
+
+        params['tocLinkId'] = firstItemOfCollection.itemId;
+        const parts = firstItemOfCollection.itemId.split('_');
+        params['collectionID'] = parts[0];
+        params['publicationID'] = parts[1];
+
+        nav[0].setRoot('read', params);
+      }
+    }).catch(err => console.error(err));
+  }
+}
