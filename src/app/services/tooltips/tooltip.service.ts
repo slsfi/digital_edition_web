@@ -93,7 +93,7 @@ export class TooltipService {
           const range = document.createRange();
           const doc = range.createContextualFragment(data);
           const element = doc.querySelector('.' + elementId);
-          const formatedCommentData = element.innerHTML.replace(/(<([^>]+)>)/gi, '').replace(/^p\d+/gi, '').replace(/\/?p?&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});/ig, ' ');
+          const formatedCommentData = element.innerHTML.replace(/(&lt;)/g, '<').replace(/(&gt;)/g, '>');
 
           return {
             'name': 'Comment',
