@@ -41,7 +41,7 @@ export class CommentService {
     }
 
     if ( section_id !== undefined ) {
-      url += '/' + section_id;
+      url = introURL + '/' + section_id + '/' + section_id;
     }
 
     if (this.cache.hasHtml(commentId)) {
