@@ -30,6 +30,16 @@ export class TableOfContentsDrilldownMenuComponent {
   coverSelected: boolean;
   titleSelected: boolean;
 
+  @Input('tocData')
+  set tocData(data: any) {
+    //console.log('getting the tocData', data);
+    if (data) {
+      //this.constructToc(data);
+    }
+  }
+
+
+
   constructor(
     private events: Events,
     private tableOfContentsService: TableOfContentsService,
@@ -38,6 +48,7 @@ export class TableOfContentsDrilldownMenuComponent {
     protected storage: Storage,
     public translate: TranslateService
   ) {
+    console.log('drilldown constructor');
     // this.open = this.action === 'open' ? true : false;
     this.registerEventListeners();
     const nav = this.app.getActiveNavs();
@@ -56,98 +67,102 @@ export class TableOfContentsDrilldownMenuComponent {
     });
   }
 
-  registerEventListeners() {
-    this.events.subscribe('tableOfContents:loaded', (data) => {
-      this.getTOCItem();
-      this.root = data.tocItems.children;
-      this.menuStack = [];
+  constructToc(data) {
+    console.log("getting datat", data);
+    this.getTOCItem();
+    this.root = data.tocItems.children;
+    this.menuStack = [];
 
-      if ( data.tocItems.children !== undefined ) {
-        this.menuStack.push(data.tocItems.children);
-      } else {
-        this.menuStack.push(data.tocItems);
-      }
+    if ( data.tocItems.children !== undefined ) {
+      this.menuStack.push(data.tocItems.children);
+    } else {
+      this.menuStack.push(data.tocItems);
+    }
 
-      this.collectionId = data.tocItems.collectionId;
-      this.collectionName = data.tocItems.text;
+    this.collectionId = data.tocItems.collectionId;
+    this.collectionName = data.tocItems.text;
 
-      this.titleStack = [];
-      this.titleStack.push(data.tocItems.text || '');
+    this.titleStack = [];
+    this.titleStack.push(data.tocItems.text || '');
 
-      this.titleText = '';
-      this.introText = '';
+    this.titleText = '';
+    this.introText = '';
 
-      let pushToMenu = true;
-      for (let menuItemIndex = 0; menuItemIndex <= (this.menuStack[0].length - 1); menuItemIndex++) {
-        const menuItem = this.menuStack[0][menuItemIndex];
-        if ( menuItem.children !== undefined ) {
-          for (let menuSubitemIndex = 0; menuSubitemIndex <= (menuItem.children.length - 1); menuSubitemIndex++) {
-            const menuSubitem = menuItem.children[menuSubitemIndex];
-            if ( this.menuStack[0][menuItemIndex].children[menuSubitemIndex].children !== undefined ) {
-              for (let menuSubSubitemIndex = 0;
-                menuSubSubitemIndex <= (this.menuStack[0][menuItemIndex].children[menuSubitemIndex].children.length - 1);
-                menuSubSubitemIndex++) {
-                const menuSubSubitem = menuSubitem.children[menuSubSubitemIndex];
-                if ( menuSubSubitem.itemId === data.tocItems.selectedCollId + '_' + data.tocItems.selectedPubId) {
-                  this.menuStack[0][menuItemIndex].children[menuSubitemIndex].children[menuSubSubitemIndex].selected = true;
-                  if ( pushToMenu ) {
-                    this.menuStack.push(this.menuStack[0][menuItemIndex].children);
-                    this.menuStack.push(this.menuStack[0][menuItemIndex].children[menuSubitemIndex].children);
-                    this.titleStack.push(this.menuStack[0][menuItemIndex].children[menuSubitemIndex].text);
-                    pushToMenu = false;
-                  }
-                }
-              }
-            } else {
-              if ( menuSubitem.itemId === data.tocItems.selectedCollId + '_' + data.tocItems.selectedPubId) {
-                this.menuStack[0][menuItemIndex].children[menuSubitemIndex].selected = true;
+    let pushToMenu = true;
+    for (let menuItemIndex = 0; menuItemIndex <= (this.menuStack[0].length - 1); menuItemIndex++) {
+      const menuItem = this.menuStack[0][menuItemIndex];
+      if ( menuItem.children !== undefined ) {
+        for (let menuSubitemIndex = 0; menuSubitemIndex <= (menuItem.children.length - 1); menuSubitemIndex++) {
+          const menuSubitem = menuItem.children[menuSubitemIndex];
+          if ( this.menuStack[0][menuItemIndex].children[menuSubitemIndex].children !== undefined ) {
+            for (let menuSubSubitemIndex = 0;
+              menuSubSubitemIndex <= (this.menuStack[0][menuItemIndex].children[menuSubitemIndex].children.length - 1);
+              menuSubSubitemIndex++) {
+              const menuSubSubitem = menuSubitem.children[menuSubSubitemIndex];
+              if ( menuSubSubitem.itemId === data.tocItems.selectedCollId + '_' + data.tocItems.selectedPubId) {
+                this.menuStack[0][menuItemIndex].children[menuSubitemIndex].children[menuSubSubitemIndex].selected = true;
                 if ( pushToMenu ) {
                   this.menuStack.push(this.menuStack[0][menuItemIndex].children);
-                  this.titleStack.push(this.menuStack[0][menuItemIndex].text);
+                  this.menuStack.push(this.menuStack[0][menuItemIndex].children[menuSubitemIndex].children);
+                  this.titleStack.push(this.menuStack[0][menuItemIndex].children[menuSubitemIndex].text);
                   pushToMenu = false;
                 }
               }
             }
-          }
-        } else {
-          if ( menuItem.itemId === data.tocItems.selectedCollId + '_' + data.tocItems.selectedPubId) {
-            this.menuStack[0][menuItemIndex].selected = true;
-            if ( pushToMenu ) {
-              this.menuStack.push(this.menuStack[0]);
-              this.titleStack.push(this.menuStack[0][menuItemIndex].text);
-              pushToMenu = false;
+          } else {
+            if ( menuSubitem.itemId === data.tocItems.selectedCollId + '_' + data.tocItems.selectedPubId) {
+              this.menuStack[0][menuItemIndex].children[menuSubitemIndex].selected = true;
+              if ( pushToMenu ) {
+                this.menuStack.push(this.menuStack[0][menuItemIndex].children);
+                this.titleStack.push(this.menuStack[0][menuItemIndex].text);
+                pushToMenu = false;
+              }
             }
           }
         }
-      }
-
-      if ( data.tocItems.coverSelected !== undefined ) {
-        this.coverSelected = true;
       } else {
-        this.coverSelected = false;
-      }
-
-      if ( data.tocItems.titleSelected !== undefined ) {
-        this.titleSelected = true;
-      } else {
-        this.titleSelected = false;
-      }
-
-      this.translate.get('Read.TitlePage.Title').subscribe(
-        retData => {
-          this.titleText = retData;
-        }, error => {
-
+        if ( menuItem.itemId === data.tocItems.selectedCollId + '_' + data.tocItems.selectedPubId) {
+          this.menuStack[0][menuItemIndex].selected = true;
+          if ( pushToMenu ) {
+            this.menuStack.push(this.menuStack[0]);
+            this.titleStack.push(this.menuStack[0][menuItemIndex].text);
+            pushToMenu = false;
+          }
         }
-      );
-      this.translate.get('Read.Introduction.Title').subscribe(
-        retData => {
-          this.introText = retData;
-        }, error => {
+      }
+    }
 
-        }
-      );
-    });
+    if ( data.tocItems.coverSelected !== undefined ) {
+      this.coverSelected = true;
+    } else {
+      this.coverSelected = false;
+    }
+
+    if ( data.tocItems.titleSelected !== undefined ) {
+      this.titleSelected = true;
+    } else {
+      this.titleSelected = false;
+    }
+
+    this.translate.get('Read.TitlePage.Title').subscribe(
+      retData => {
+        this.titleText = retData;
+      }, error => {
+
+      }
+    );
+    this.translate.get('Read.Introduction.Title').subscribe(
+      retData => {
+        this.introText = retData;
+      }, error => {
+
+      }
+    );
+  };
+
+
+  registerEventListeners() {
+    this.events.subscribe('tableOfContents:loaded', this.constructToc);
   }
 
   drillDown(item) {
@@ -283,3 +298,4 @@ export class TableOfContentsDrilldownMenuComponent {
     nav[0].setRoot('EditionsPage', [], {animate: false, direction: 'back', animation: 'ios-transition'});
   }
 }
+

@@ -28,6 +28,7 @@
                         {{"TOC.About" | translate }}
                     </p>
                 </ion-item>
+               <!-- TOC READ ACCORDION  -->
                 <ion-list *ngIf="genericSettingsService.show('TOC.Read') && accordionTOC" class="accordion-menu">
                     <ion-item class="header" (tap)="simpleAccordionsExpanded.collectionsAccordion = !simpleAccordionsExpanded.collectionsAccordion;" tappable id="readTocItem">
                         <ion-icon [class.rotate]="simpleAccordionsExpanded.collectionsAccordion" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
@@ -36,9 +37,10 @@
                     <div [style.height]="simpleAccordionsExpanded.collectionsAccordion ? '100%' : '0px'" class="simple-accordion-options options">
                         <ng-container *ngFor="let collection of collectionsListWithTOC">
                             <ion-list *ngIf="collection.toc_exists" class="accordion-menu">
+                              <!-- toggleSingleCollectionAccordion öppnar accordion  -->
                                 <ion-item [ngClass]="collection.highlight ? 'selected-toc-item' : ''" class="header" (tap)="toggleSingleCollectionAccordion(collection)" tappable>
                                     <ion-icon [class.rotate]="collection.expanded" *ngIf="!collection.isDownload && !collection.has_children_pdfs" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
-                                    <p>{{ collection.title }}</p>
+                                    <p>{{ collection.title }} </p>
                                     <ion-icon item-right size="small" class="menu-download" *ngIf="collection.isDownload" name="cloud-download"></ion-icon>
                                 </ion-item>
                                 <div *ngIf="collection.loading && !collection.has_children_pdfs" text-center>
@@ -243,7 +245,7 @@
     <ion-menu [content]="content" id="tableOfContentsMenu">
         <ion-content class="outer-content list-item-spacing">
             <!-- TOC Type:  Drilldown -->
-            <table-of-contents-drilldown-menu *ngIf="!accordionTOC"></table-of-contents-drilldown-menu>
+            <table-of-contents-drilldown-menu *ngIf="!accordionTOC" [tocData]=""></table-of-contents-drilldown-menu>
 
             <!-- TOC Type: Accordion -->
             <table-of-contents-accordion *ngIf="accordionTOC && options && false" [showBackButton]="true" [options]="options" [collectionId]="currentCollectionId" [collectionName]="currentCollectionName" [settings]="sideMenuSettings">
