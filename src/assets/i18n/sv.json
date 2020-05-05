@@ -205,6 +205,10 @@
         "download": "ladda ner pdf",
         "articles": "Artiklar"
     },
+    "ElasticSearch": {
+      "NoHits": "Din sökning matchade inga dokument",
+      "Found": "Hittades"
+    },
     "est": "Lästext",
     "ms": "Manuskript",
     "com": "Kommentar",

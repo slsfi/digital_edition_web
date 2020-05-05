@@ -43,7 +43,9 @@
 	tag:		#0fa14c,
 	abbreviations: #D3DD9F,
   changes: #c0c0c0,
-  work: #e6572c
+  work: #e6572c,
+  blackish: #363636,
+  grey: #666666
 );
 
 
@@ -182,10 +184,10 @@ p{
 	font-size: 1.1rem;
 }
 
-.popover_settings .popover-content{ width: min-content !important; } 
+.popover_settings .popover-content{ width: min-content !important; }
 
 .selected-toc-item {
 	p {
 		font-weight: bold;
-	}	
+	}
 }

@@ -1,0 +1,81 @@
+page-elastic-search {
+  .fixed-content,
+  .scroll-content {
+    margin-top: 40px !important;
+  }
+
+  ion-icon.settings-icon.icon {
+    font-size: 1.8em;
+  }
+
+  ul {
+    list-style-type: none;
+  }
+
+  .filter-button {
+    font-size: 2.8rem;
+  }
+
+  .searchbar {
+    color: white;
+  }
+
+  .segment-md .segment-button {
+    font-size: 1rem;
+    text-transform: none;
+  }
+
+  .searchInfo {
+    color: color($colors, grey);
+  }
+
+  ion-item {
+    cursor: pointer;
+
+    .item-inner {
+      padding: 10px 0;
+    }
+
+    .itemHeading {
+      font-weight: bold;
+      color: color($colors, blackish);
+    }
+
+    .highlight {
+      color: color($colors, blackish);
+
+      em {
+        background-color: color($colors, primary);
+        color: white;
+        padding: 0.2rem 6px;
+        line-height: 2.4rem;
+        font-style: normal;
+      }
+    }
+
+    // List of facets
+    ion-list.facets {
+      ion-item.facet {
+        min-height: 1rem;
+        padding: 0;
+
+        .item-inner {
+          padding: 0;
+        }
+
+        ion-label {
+          margin: 0;
+          padding: 5px;
+        }
+        ion-checkbox.checkbox-md {
+          margin: 10px;
+        }
+      }
+    }
+  }
+
+  .searchContainer{
+    display: flex;
+    align-items: stretch;
+  }
+}

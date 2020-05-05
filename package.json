@@ -54,6 +54,7 @@
         "ionic-plugin-deeplinks": "1.0.19",
         "ionicons": "~3.0.0",
         "leaflet": "^1.4.0",
+        "lodash": "^4.17.15",
         "ngx-drag-scroll": "1.7.9",
         "ngx-pinch-zoom": "^2.4.4",
         "ngx-sharebuttons": "^3.0.0",
@@ -72,8 +73,7 @@
     "description": "Generic Platform for Digital Editions",
     "config": {
         "ionic_bundler": "webpack",
-        "ionic_generate_source_map": "true",
-        "ionic_webpack": "./config/webpack.config.js"
+        "ionic_generate_source_map": "true"
     },
     "cordova": {
         "plugins": {

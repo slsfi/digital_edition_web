@@ -24,6 +24,9 @@
                 <button ion-button class="top-menu-button" (click)="searchApp()" id="searchIcon">
                   <ion-icon name="search"></ion-icon>
                 </button>
+                <button ion-button class="top-menu-button" (click)="elasticSearch()" id="searchIcon">
+                  <ion-icon name="search"></ion-icon>
+                </button>
                 <button *ngIf="showHelpButton" ion-button class="top-menu-button" (click)="help()">
                   <ion-icon name="help"></ion-icon>
                 </button>
@@ -69,7 +72,7 @@
                 <button *ngIf="showTopMusicButton" ion-button class="top-menu-button" (click)="music()">
                   {{'TopMenu.Music' | translate }}
                 </button>
-                <button ion-button class="top-menu-button" (click)="searchApp()" id="searchIcon">
+                <button ion-button class="top-menu-button" (click)="elasticSearch()" id="searchIcon">
                   <ion-icon name="search"></ion-icon>
                 </button>
                 <button *ngIf="showHelpButton" ion-button class="top-menu-button" (click)="help()">

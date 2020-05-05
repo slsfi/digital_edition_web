@@ -1,0 +1,103 @@
+<!--
+  Generated template for the PersonSearchPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-toolbar color="secondary" class="secondary" *ngIf="userSettingsService.isDesktop()">
+    <ion-title>
+      <div class="page-title"></div>
+      <div class="page-subtitle"></div>
+    </ion-title>
+    <ion-buttons end>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div name="download" (click)="download()" id="downloadPerson">
+              <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
+              <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="tei">
+  <ion-grid>
+    <ion-row>
+      <ion-searchbar class="searchbar" [(ngModel)]="query" (ionChange)=onQueryChanged($event)></ion-searchbar>
+    </ion-row>
+
+    <!-- <ion-row>
+      <ion-segment color="primary">
+        <ion-segment-button value="" (ionSelect)="selectedType()">
+          {{'TOC.All' | translate}}
+        </ion-segment-button>
+        <ion-segment-button *ngFor="let type of types" value="{{type}}" (ionSelect)="selectedType(type)">
+          {{type | translate}}
+        </ion-segment-button>
+      </ion-segment>
+    </ion-row> -->
+
+    <ion-row>
+      <!-- Facets column -->
+      <ion-col col-3>
+        <!-- List of facet groups -->
+        <ion-list>
+          <div *ngFor="let facetGroupKey of objectKeys(facetGroups)">
+            <ion-item>
+              <ion-label>
+                <p class="itemHeading">{{facetGroupKey}}</p>
+                <!-- List of facetGroups for each facetGroupKey TODO: Turn into accordion or something like that -->
+                <ion-list class="facets">
+                  <ion-item *ngFor="let facet of objectValues(facetGroups[facetGroupKey])" class="facet">
+                    <ion-label text-wrap>{{facet.key | translate}} ({{facet.doc_count}})</ion-label>
+                    <ion-checkbox [(ngModel)]="facet.selected" (click)="toggleFacet(facetGroupKey, facet)" [disabled]="facet.doc_count === 0"></ion-checkbox>
+                  </ion-item>
+                </ion-list>
+              </ion-label>
+            </ion-item>
+          </div>
+        </ion-list>
+      </ion-col>
+
+      <!-- Hits column -->
+      <ion-col col-7>
+        <div *ngIf="loading" padding>
+          <ion-spinner class="loading" name="dots"></ion-spinner>
+        </div>
+
+        <div *ngIf="total > 0">
+          <div *ngIf="query && !loading && total === 0" class="searchInfo" padding>
+            {{'ElasticSearch.NoHits' | translate}}
+          </div>
+
+          <div *ngIf="query && !loading && total > 0" class="searchInfo" padding>
+            {{'ElasticSearch.Found' | translate}} {{total}}
+          </div>
+
+          <ion-list>
+            <div *ngFor="let hit of hits">
+              <ion-item (click)="console.log(hit)">
+                <ion-label>
+                  <p class="itemHeading">{{getHeading(hit.source)}}</p>
+                  <p>{{hit.type | translate}}, {{getSubHeading(hit.source)}}</p>
+                  <p *ngFor="let highlight of hit.highlight?.textDataIndexed" [innerHTML]="'...' + highlight + '...'" class="highlight"></p>
+                </ion-label>
+              </ion-item>
+            </div>
+          </ion-list>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-infinite-scroll *ngIf="hasMore()" (ionInfinite)="loadMore($event)" threshold="100px">
+        <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </ion-row>
+  </ion-grid>
+</ion-content>
