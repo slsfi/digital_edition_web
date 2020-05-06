@@ -22,6 +22,7 @@ import { TableOfContentsAccordionComponent } from './table-of-contents-accordion
 import { ListOfSongsComponent } from './list-of-songs/list-of-songs';
 import { NgxExtendedPdfViewerComponent } from './ngx-extended-pdf-viewer/ngx-extended-pdf-viewer.component';
 import { IllustrationsComponent } from './illustrations/illustrations';
+import { TableOfContentLetterFilterComponent } from './table-of-content-letter-filter/table-of-content-letter-filter';
 
 
 export function createTranslateLoader(http: HttpClient) {
@@ -45,7 +46,8 @@ export function createTranslateLoader(http: HttpClient) {
     TableOfContentsAccordionComponent,
     ListOfSongsComponent,
     NgxExtendedPdfViewerComponent,
-    IllustrationsComponent
+    IllustrationsComponent,
+    TableOfContentLetterFilterComponent
   ],
   imports: [
     IonicModule,
@@ -75,7 +77,8 @@ export function createTranslateLoader(http: HttpClient) {
     TableOfContentsAccordionComponent,
     ListOfSongsComponent,
     NgxExtendedPdfViewerComponent,
-    IllustrationsComponent
+    IllustrationsComponent,
+    TableOfContentLetterFilterComponent
   ],
   providers: [
     UserSettingsService

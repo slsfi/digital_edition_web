@@ -6,6 +6,7 @@ import { IntroductionPage } from '../../pages/introduction/introduction';
 import { Storage } from '@ionic/storage';
 import { TableOfContentsCategory, GeneralTocItem } from '../../app/models/table-of-contents.model';
 import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
+import { ConfigService,  } from '@ngx-config/core';
 
 /**
  * Class for the TableOfContentsDrilldownMenuComponent component.
@@ -19,8 +20,15 @@ import { TableOfContentsService } from '../../app/services/toc/table-of-contents
 })
 export class TableOfContentsDrilldownMenuComponent {
   root: TableOfContentsCategory[] | any;
+  visibleMenuStack: any[];
   menuStack: any[];
+  thematicMenuStack: any[];
+  chronologicalMenuStack: any[];
+
   titleStack: string[];
+  thematicTitleStack: any[];
+  chronologicalTitleStack: any[];
+
   errorMessage: string;
   currentItem: GeneralTocItem;
   collectionId: string;
@@ -29,6 +37,9 @@ export class TableOfContentsDrilldownMenuComponent {
   introText: string;
   coverSelected: boolean;
   titleSelected: boolean;
+
+  sortableLetters = [];
+  letterView = false;
 
   @Input('tocData')
   set tocData(data: any) {
@@ -46,7 +57,8 @@ export class TableOfContentsDrilldownMenuComponent {
     private app: App,
     public platform: Platform,
     protected storage: Storage,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private config: ConfigService
   ) {
     console.log('drilldown constructor');
     // this.open = this.action === 'open' ? true : false;
@@ -67,6 +79,49 @@ export class TableOfContentsDrilldownMenuComponent {
     });
   }
 
+  constructThematicTOC(data) {
+    // same as chronological, but with the person who he is corresponding with instead.
+    // [person]-ZT [date]
+    // ZT-[person] [date]
+
+    //flatten
+    // loop
+    // extract person
+    // create if not exisintg link for [person]
+    // add link to persons children
+
+  }
+
+  constructChronologialTOC(data) {
+    this.chronologicalMenuStack = [];
+    this.chronologicalTitleStack = [];
+
+    const list = flattenList(data);
+
+
+    // loop though children
+    // get Year from title of link
+    // check if whe have created a link for that year
+      // -yes, add this link as children to that item
+      // -no create that link, and add this link to its children
+
+
+
+
+    console.log(list);
+  }
+
+  flattenList(data) {
+    if (!data.children) {
+      return [data];
+    }
+    const list = [];
+    for (const child of data.children) {
+      list.concat(this.flattenList(child));
+    }
+    return list;
+  }
+
   constructToc(data) {
     console.log("getting datat", data);
     this.getTOCItem();
@@ -77,6 +132,17 @@ export class TableOfContentsDrilldownMenuComponent {
       this.menuStack.push(data.tocItems.children);
     } else {
       this.menuStack.push(data.tocItems);
+    }
+
+
+    console.log(this.menuStack, "menystackaren");
+    try {
+      this.sortableLetters = this.config.getSettings('settings.sortableLetters');
+      console.log("sortable letters ", this.sortableLetters);
+    } catch (e) {
+      this.sortableLetters = null;
+      console.log("sortable letters IS  NULLLLLLLLLL", this.sortableLetters);
+      console.log(e);
     }
 
     this.collectionId = data.tocItems.collectionId;
@@ -162,20 +228,25 @@ export class TableOfContentsDrilldownMenuComponent {
 
 
   registerEventListeners() {
-    this.events.subscribe('tableOfContents:loaded', this.constructToc);
+    this.events.subscribe('tableOfContents:loaded', (data) => {
+      this.constructToc(data);
+      this.constructChronologialTOC(data);
+
+      this.visibleMenuStack = this.menuStack;
+    });
   }
 
   drillDown(item) {
-    this.menuStack.push(item.children);
-    this.titleStack.push(item.text);
+    this.visibleMenuStack.push(item.children);
+    this.visibleTitleStack.push(item.text);
   }
 
   unDrill() {
-    if ( this.menuStack.length === 2 && this.menuStack[0] === this.menuStack[1] ) {
+    if ( this.visibleMenuStack.length === 2 && this.visibleMenuStack[0] === this.visibleMenuStack[1] ) {
       this.exit();
     }
-    this.menuStack.pop();
-    this.titleStack.pop();
+    this.visibleMenuStack.pop();
+    this.visibleTitleStack.pop();
   }
 
   open(item, type?, html?) {
@@ -188,17 +259,17 @@ export class TableOfContentsDrilldownMenuComponent {
     this.coverSelected = false;
     this.titleSelected = false;
 
-    for (let menuItemIndex = 0; menuItemIndex < this.menuStack.length; menuItemIndex++) {
-      const menuItem = this.menuStack[menuItemIndex];
+    for (let menuItemIndex = 0; menuItemIndex < this.visibleMenuStack.length; menuItemIndex++) {
+      const menuItem = this.visibleMenuStack[menuItemIndex];
       for (let menuSubitemIndex = 0; menuSubitemIndex < menuItem.length; menuSubitemIndex++) {
         const menuSubitem = menuItem[menuSubitemIndex];
-        this.menuStack[menuItemIndex].selected = false;
+        this.visibleMenuStack[menuItemIndex].selected = false;
         if ( menuSubitem.itemId === item.itemId) {
-          this.menuStack[menuItemIndex].selected = true;
-          this.menuStack[menuItemIndex][menuSubitemIndex].selected = true;
+          this.visibleMenuStack[menuItemIndex].selected = true;
+          this.visibleMenuStack[menuItemIndex][menuSubitemIndex].selected = true;
         } else {
-          this.menuStack[menuItemIndex].selected = false;
-          this.menuStack[menuItemIndex][menuSubitemIndex].selected = false;
+          this.visibleMenuStack[menuItemIndex].selected = false;
+          this.visibleMenuStack[menuItemIndex][menuSubitemIndex].selected = false;
         }
       }
     }
@@ -290,8 +361,8 @@ export class TableOfContentsDrilldownMenuComponent {
   }
 
   private exit() {
-    this.menuStack = [];
-    this.titleStack = [];
+    this.visibleMenuStack = [];
+    this.visibleTitleStack = [];
     this.collectionId = null;
     this.collectionName = null;
     const nav = this.app.getActiveNavs();
