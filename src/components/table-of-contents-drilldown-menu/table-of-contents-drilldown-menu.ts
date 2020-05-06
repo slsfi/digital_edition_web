@@ -7,6 +7,8 @@ import { Storage } from '@ionic/storage';
 import { TableOfContentsCategory, GeneralTocItem } from '../../app/models/table-of-contents.model';
 import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
 import { ConfigService,  } from '@ngx-config/core';
+import { TocItem } from '../../app/models/toc-item.model';
+
 
 /**
  * Class for the TableOfContentsDrilldownMenuComponent component.
@@ -20,15 +22,16 @@ import { ConfigService,  } from '@ngx-config/core';
 })
 export class TableOfContentsDrilldownMenuComponent {
   root: TableOfContentsCategory[] | any;
-  visibleMenuStack: any[];
-  menuStack: any[];
-  thematicMenuStack: any[];
-  chronologicalMenuStack: any[];
+  visibleMenuStack = [];
+  menuStack = [];
+  thematicMenuStack = [];
+  chronologicalMenuStack = [];
+  chronologicalTitleStack = [];
+  alphabeticalMenuStack: any[];
 
   titleStack: string[];
   thematicTitleStack: any[];
-  chronologicalTitleStack: any[];
-
+  alphabeticalTitleStack: any[];
   errorMessage: string;
   currentItem: GeneralTocItem;
   collectionId: string;
@@ -40,6 +43,7 @@ export class TableOfContentsDrilldownMenuComponent {
 
   sortableLetters = [];
   letterView = false;
+  visibleTitleStack = [];
 
   constructor(
     private events: Events,
@@ -48,7 +52,7 @@ export class TableOfContentsDrilldownMenuComponent {
     public platform: Platform,
     protected storage: Storage,
     public translate: TranslateService,
-    private config: ConfigService
+    private config: ConfigService,
   ) {
     // this.open = this.action === 'open' ? true : false;
     this.registerEventListeners();
@@ -68,36 +72,50 @@ export class TableOfContentsDrilldownMenuComponent {
     });
   }
 
-  constructThematicTOC(data) {
-    // same as chronological, but with the person who he is corresponding with instead.
-    // [person]-ZT [date]
-    // ZT-[person] [date]
+  constructAlphabeticalTOC(data) {
+    this.alphabeticalMenuStack = [];
+    this.alphabeticalTitleStack = [];
+    console.log('ALPHABETICAL');
 
-    //flatten
-    // loop
-    // extract person
-    // create if not exisintg link for [person]
-    // add link to persons children
+    let list = data.tocItems.children;
+    console.log(list, 'alphabetical');
 
+    list = list.sort((a, b) => a.title > b.title);
+    console.log(list, 'alphabetical after sorting');
+
+    for (const child of list) {
+      if (child.date && child.type !== 'section_title') {
+        this.alphabeticalMenuStack.push(child);
+      }
+    }
   }
+
+/**
+ Hej,
+    tematiskt betyder alltså så som de nu är i json-filen, där är de i den ordning de ska vara, kalla den tematisk i brist på bättre.
+    Kronologiskt betyder sen att alla mellanrubriker ska bort ur visningen (alltså de som inte har itemId eller date), och allt som har en itemId/date sätts i den rätta date-ordningen, kronologiskt. Så att brev från alla möjliga korrespondenter kommer huller om buller i fall det är den sanna kronologiska ordningen; sen ska det finnas ett sätt att få tillbaka den tematiska ordningen dvs. tillbaka till utgångsläget där olika personers brev är grupperade enligt person, inte enligt en allmän kronologisk ordning.
+    Denna kronologisortering behövs för deß två olika brevutgåvorna samt för Publicistik, för alla andra utgåvor är den irrelevant eftersom de antingen redan är i kronologisk ordning per default eller inte har datum att tillämpa. Men däremot kunde vi också ha nytta av alfabetisk sortering i vissa utgåvor, alltså möjlighet att ta värdet för text i json och sortera det i alfabetisk ordning.
+    - Anna
+ */
 
   constructChronologialTOC(data) {
     this.chronologicalMenuStack = [];
     this.chronologicalTitleStack = [];
-
-    const list = flattenList(data);
-
-
-    // loop though children
-    // get Year from title of link
-    // check if whe have created a link for that year
-      // -yes, add this link as children to that item
-      // -no create that link, and add this link to its children
+    console.log('CHRONOLOGICAL');
+    console.dir(data);
 
 
+    let list = data.tocItems.children;
+    console.log(list, 'chronological');
 
+    list = list.sort((a, b) => a.date > b.date);
+    console.log(list, 'chronological after sorting');
 
-    console.log(list);
+    for (const child of list) {
+      if (child.date && child.type !== 'section_title') {
+        this.chronologicalMenuStack.push(child);
+      }
+    }
   }
 
   flattenList(data) {
@@ -112,7 +130,6 @@ export class TableOfContentsDrilldownMenuComponent {
   }
 
   constructToc(data) {
-    console.log("getting datat", data);
     this.getTOCItem();
     this.root = data.tocItems.children;
     this.menuStack = [];
@@ -125,10 +142,10 @@ export class TableOfContentsDrilldownMenuComponent {
 
     try {
       this.sortableLetters = this.config.getSettings('settings.sortableLetters');
-      console.log("sortable letters ", this.sortableLetters);
+      console.log('sortable letters', this.sortableLetters);
     } catch (e) {
       this.sortableLetters = null;
-      console.log("sortable letters IS  NULLLLLLLLLL", this.sortableLetters);
+      console.log('sortable letters IS  NULLLLLLLLLL', this.sortableLetters);
       console.log(e);
     }
 
@@ -216,10 +233,14 @@ export class TableOfContentsDrilldownMenuComponent {
 
   registerEventListeners() {
     this.events.subscribe('tableOfContents:loaded', (data) => {
-      this.constructToc(data);
+
+      this.constructToc(data); // this is thematic...
       this.constructChronologialTOC(data);
+      this.constructAlphabeticalTOC(data);
 
       this.visibleMenuStack = this.menuStack;
+
+
     });
   }
 

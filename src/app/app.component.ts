@@ -1155,6 +1155,7 @@ export class DigitalEditionsApp {
       } else {
         this.currentContentName = collection.title;
         const params = { collection: collection, fetch: false, id: collection.id };
+console.log('jihppp');
 
         this.nav.setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
       }

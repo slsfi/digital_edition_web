@@ -32,7 +32,7 @@
                 <ion-list *ngIf="genericSettingsService.show('TOC.Read') && accordionTOC" class="accordion-menu">
                     <ion-item class="header" (tap)="simpleAccordionsExpanded.collectionsAccordion = !simpleAccordionsExpanded.collectionsAccordion;" tappable id="readTocItem">
                         <ion-icon [class.rotate]="simpleAccordionsExpanded.collectionsAccordion" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
-                        <p>{{"TOC.Read" | translate }} ghjgjhg</p>
+                        <p>{{"TOC.Read" | translate }}</p>
                     </ion-item>
                     <div [style.height]="simpleAccordionsExpanded.collectionsAccordion ? '100%' : '0px'" class="simple-accordion-options options">
                         <ng-container *ngFor="let collection of collectionsListWithTOC">
@@ -40,7 +40,7 @@
                               <!-- toggleSingleCollectionAccordion öppnar accordion  -->
                                 <ion-item [ngClass]="collection.highlight ? 'selected-toc-item' : ''" class="header" (tap)="toggleSingleCollectionAccordion(collection)" tappable>
                                     <ion-icon [class.rotate]="collection.expanded" *ngIf="!collection.isDownload && !collection.has_children_pdfs" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
-                                    <p>{{ collection.title }} tesr</p>
+                                    <p>{{ collection.title }}</p>
                                     <ion-icon item-right size="small" class="menu-download" *ngIf="collection.isDownload" name="cloud-download"></ion-icon>
                                 </ion-item>
                                 <div *ngIf="collection.loading && !collection.has_children_pdfs" text-center>
@@ -191,7 +191,7 @@
                 </ion-item>
                 <ng-container>
                     <ng-container *ngFor="let collection of collectionsList">
-                        <ion-item *ngIf="accordionTOC" (click)="openCollection(collection);">
+                        <ion-item *ngIf="!accordionTOC" (click)="openCollection(collection);">
                             <p>{{collection.title}}</p>
                             <ion-icon item-right size="small" class="menu-download" *ngIf="collection.isDownload" name="cloud-download">
                             </ion-icon>
