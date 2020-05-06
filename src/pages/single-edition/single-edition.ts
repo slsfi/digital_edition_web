@@ -256,12 +256,9 @@ export class SingleEditionPage {
     if (this.platform.is('core') || this.platform.is('tablet')) {
       const nav = this.app.getActiveNavs();
       const params = { collection: this.collection, fetch: true, collectionID: this.collection.id };
-      console.log('i might go to the title page instead...');
-      console.log('willl use these params', params);
 
       nav[0].setRoot('cover', params);
     } else {
-      console.log('nah, i am fine, lets stay here.');
       this.showPage = true;
     }
   }

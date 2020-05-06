@@ -41,16 +41,6 @@ export class TableOfContentsDrilldownMenuComponent {
   sortableLetters = [];
   letterView = false;
 
-  @Input('tocData')
-  set tocData(data: any) {
-    //console.log('getting the tocData', data);
-    if (data) {
-      //this.constructToc(data);
-    }
-  }
-
-
-
   constructor(
     private events: Events,
     private tableOfContentsService: TableOfContentsService,
@@ -60,7 +50,6 @@ export class TableOfContentsDrilldownMenuComponent {
     public translate: TranslateService,
     private config: ConfigService
   ) {
-    console.log('drilldown constructor');
     // this.open = this.action === 'open' ? true : false;
     this.registerEventListeners();
     const nav = this.app.getActiveNavs();
@@ -134,8 +123,6 @@ export class TableOfContentsDrilldownMenuComponent {
       this.menuStack.push(data.tocItems);
     }
 
-
-    console.log(this.menuStack, "menystackaren");
     try {
       this.sortableLetters = this.config.getSettings('settings.sortableLetters');
       console.log("sortable letters ", this.sortableLetters);

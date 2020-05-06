@@ -38,7 +38,7 @@ export class DigitalEditionsApp {
   @ViewChild('aboutMenuMarkdownAccordion') aboutMenuMarkdownAccordion: TableOfContentsAccordionComponent
 
   rootPage = 'HomePage';
-  aboutPages: any[];t
+  aboutPages: any[];
   language = 'sv';
   languages = [];
   appName: string;
@@ -373,9 +373,6 @@ export class DigitalEditionsApp {
               if (String(tocItems.collectionId) === String(collection.id)) {
                 collection.accordionToc.toc = tocItems.children;
                 collection.loading = false;
-              } else {
-                console.log();
-
               }
             },
             error => {
@@ -389,7 +386,6 @@ export class DigitalEditionsApp {
   openCollectionPage(collection) {
     this.currentContentName = collection.title;
     const params = { collection: collection, fetch: false, id: collection.id };
-    console.log('oprn collecito2esdvsdvdn');
 
     this.nav.setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
   }
@@ -437,7 +433,6 @@ export class DigitalEditionsApp {
         }
       });
       this.collectionsListWithTOC = collectionsTmp;
-      console.log(this.collectionsListWithTOC, ' tocccc');
 
       if (this.showBooks) {
         this.pdfCollections = pdfCollections;
@@ -715,7 +710,6 @@ export class DigitalEditionsApp {
     });
     this.events.subscribe('tableOfContents:loaded', (data) => {
       this.tocData = data;
-      console.log("getting drilled g", data);
       if (data.searchTocItem) {
 
         for (const collection of this.collectionsListWithTOC) {
@@ -883,7 +877,6 @@ export class DigitalEditionsApp {
 
     this.doFor(p, pagesWith.tocMenuIfNotAccordion, () => {
       if (!this.accordionTOC) {
-        console.log('enabling toc menu');
         this.enableTableOfContentsMenu();
       }
     });
@@ -1162,7 +1155,7 @@ export class DigitalEditionsApp {
       } else {
         this.currentContentName = collection.title;
         const params = { collection: collection, fetch: false, id: collection.id };
-        console.log('oprn colleciton');
+
         this.nav.setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
       }
       this.cdRef.detectChanges();

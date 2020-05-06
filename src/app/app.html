@@ -250,7 +250,7 @@
     <ion-menu [content]="content" id="tableOfContentsMenu">
         <ion-content class="outer-content list-item-spacing">
             <!-- TOC Type:  Drilldown -->
-            <table-of-contents-drilldown-menu *ngIf="!accordionTOC" [tocData]=""></table-of-contents-drilldown-menu>
+            <table-of-contents-drilldown-menu *ngIf="!accordionTOC"></table-of-contents-drilldown-menu>
 
             <!-- TOC Type: Accordion -->
             <table-of-contents-accordion *ngIf="accordionTOC && options && false" [showBackButton]="true" [options]="options" [collectionId]="currentCollectionId" [collectionName]="currentCollectionName" [settings]="sideMenuSettings">
