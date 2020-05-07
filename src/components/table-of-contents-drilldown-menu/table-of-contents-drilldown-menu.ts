@@ -78,44 +78,36 @@ export class TableOfContentsDrilldownMenuComponent {
     console.log('ALPHABETICAL');
 
     let list = data.tocItems.children;
-    console.log(list, 'alphabetical');
 
-    list = list.sort((a, b) => a.title > b.title);
-    console.log(list, 'alphabetical after sorting');
+    list = list.sort((a, b) => {
+        const textA = a.text.toUpperCase();
+        const textB = b.text.toUpperCase();
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    });
 
     for (const child of list) {
-      if (child.date && child.type !== 'section_title') {
-        this.alphabeticalMenuStack.push(child);
-      }
+        if (child.date && child.type !== 'section_title') {
+            this.alphabeticalMenuStack.push(child);
+        }
     }
+    console.log(this.alphabeticalMenuStack, 'alphabetical after sorting');
   }
-
-/**
- Hej,
-    tematiskt betyder alltså så som de nu är i json-filen, där är de i den ordning de ska vara, kalla den tematisk i brist på bättre.
-    Kronologiskt betyder sen att alla mellanrubriker ska bort ur visningen (alltså de som inte har itemId eller date), och allt som har en itemId/date sätts i den rätta date-ordningen, kronologiskt. Så att brev från alla möjliga korrespondenter kommer huller om buller i fall det är den sanna kronologiska ordningen; sen ska det finnas ett sätt att få tillbaka den tematiska ordningen dvs. tillbaka till utgångsläget där olika personers brev är grupperade enligt person, inte enligt en allmän kronologisk ordning.
-    Denna kronologisortering behövs för deß två olika brevutgåvorna samt för Publicistik, för alla andra utgåvor är den irrelevant eftersom de antingen redan är i kronologisk ordning per default eller inte har datum att tillämpa. Men däremot kunde vi också ha nytta av alfabetisk sortering i vissa utgåvor, alltså möjlighet att ta värdet för text i json och sortera det i alfabetisk ordning.
-    - Anna
- */
 
   constructChronologialTOC(data) {
     this.chronologicalMenuStack = [];
     this.chronologicalTitleStack = [];
     console.log('CHRONOLOGICAL');
-    console.dir(data);
-
 
     let list = data.tocItems.children;
-    console.log(list, 'chronological');
 
     list = list.sort((a, b) => a.date > b.date);
-    console.log(list, 'chronological after sorting');
 
     for (const child of list) {
-      if (child.date && child.type !== 'section_title') {
-        this.chronologicalMenuStack.push(child);
-      }
+        if (child.date && child.type !== 'section_title') {
+            this.chronologicalMenuStack.push(child);
+        }
     }
+    console.log(this.chronologicalMenuStack, 'chronological after sorting');
   }
 
   flattenList(data) {
@@ -139,6 +131,8 @@ export class TableOfContentsDrilldownMenuComponent {
     } else {
       this.menuStack.push(data.tocItems);
     }
+
+    console.log(this.menuStack, 'Menu stack');
 
     try {
       this.sortableLetters = this.config.getSettings('settings.sortableLetters');
@@ -233,14 +227,11 @@ export class TableOfContentsDrilldownMenuComponent {
 
   registerEventListeners() {
     this.events.subscribe('tableOfContents:loaded', (data) => {
-
       this.constructToc(data); // this is thematic...
       this.constructChronologialTOC(data);
       this.constructAlphabeticalTOC(data);
 
       this.visibleMenuStack = this.menuStack;
-
-
     });
   }
 
