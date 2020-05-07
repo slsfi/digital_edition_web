@@ -29,6 +29,10 @@ export class TableOfContentsDrilldownMenuComponent {
   chronologicalTitleStack = [];
   alphabeticalMenuStack: any[];
 
+  chronologicalOrderActive: boolean;
+  thematicOrderActive = true;
+  alphabethicOrderActive: boolean;
+
   titleStack: string[];
   thematicTitleStack: any[];
   alphabeticalTitleStack: any[];
@@ -62,6 +66,10 @@ export class TableOfContentsDrilldownMenuComponent {
     this.titleSelected = false;
   }
 
+  ionViewWillEnter() {
+    this.registerEventListeners();
+  }
+
   getTOCItem() {
     this.storage.get('currentTOCItem').then((tocItem) => {
       if (tocItem) {
@@ -72,12 +80,31 @@ export class TableOfContentsDrilldownMenuComponent {
     });
   }
 
+  setActiveSortingType(e) {
+    const thematic = e.target.id === 'thematic' || e.target.parentElement.parentElement.id === 'thematic';
+    const alphabetic = e.target.id === 'alphabetical' || e.target.parentElement.parentElement.id === 'alphabetical';
+    const chronological = e.target.id === 'chronological' || e.target.parentElement.parentElement.id === 'chronological';
+    if (thematic) {
+        this.alphabethicOrderActive = false;
+        this.chronologicalOrderActive = false;
+        this.thematicOrderActive = true;
+    } else if (alphabetic) {
+        this.alphabethicOrderActive = true;
+        this.chronologicalOrderActive = false;
+        this.thematicOrderActive = false;
+    } else if (chronological) {
+        this.alphabethicOrderActive = false;
+        this.chronologicalOrderActive = true;
+        this.thematicOrderActive = false;
+    }
+  }
+
   constructAlphabeticalTOC(data) {
     this.alphabeticalMenuStack = [];
     this.alphabeticalTitleStack = [];
-    let list = data.tocItems.children;
+    const list = data.tocItems.children;
 
-    list = list.sort((a, b) => {
+    list.sort((a, b) => {
         const textA = a.text.toUpperCase();
         const textB = b.text.toUpperCase();
         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
@@ -130,7 +157,6 @@ export class TableOfContentsDrilldownMenuComponent {
 
     try {
       this.sortableLetters = this.config.getSettings('settings.sortableLetters');
-      console.log('sortable letters', this.sortableLetters);
     } catch (e) {
       this.sortableLetters = null;
       console.log('sortable letters IS  NULLLLLLLLLL', this.sortableLetters);
@@ -221,9 +247,9 @@ export class TableOfContentsDrilldownMenuComponent {
 
   registerEventListeners() {
     this.events.subscribe('tableOfContents:loaded', (data) => {
-      this.constructChronologialTOC(data);
+      this.constructToc(data);
       this.constructAlphabeticalTOC(data);
-      this.constructToc(data); // this is thematic...
+      this.constructChronologialTOC(data);
 
 
       this.visibleMenuStack = this.menuStack;
@@ -239,6 +265,9 @@ export class TableOfContentsDrilldownMenuComponent {
     if ( this.visibleMenuStack.length === 2 && this.visibleMenuStack[0] === this.visibleMenuStack[1] ) {
       this.exit();
     }
+    document.getElementById('contentMenu').classList.add('menu-enabled');
+    document.getElementById('tableOfContentsMenu').classList.remove('menu-enabled');
+
     this.visibleMenuStack.pop();
     this.visibleTitleStack.pop();
   }
@@ -357,6 +386,7 @@ export class TableOfContentsDrilldownMenuComponent {
   private exit() {
     this.visibleMenuStack = [];
     this.visibleTitleStack = [];
+    this.menuStack = [];
     this.collectionId = null;
     this.collectionName = null;
     const nav = this.app.getActiveNavs();

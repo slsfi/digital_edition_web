@@ -1,20 +1,23 @@
 <ion-list *ngIf="menuStack">
-  <ion-item *ngIf="menuStack.length > 1" (click)="unDrill()" class="back-to-list-button" no-lines>
-    <div style="padding-left:2rem; white-space: normal;">{{titleStack[0]}}</div><ion-icon name="ios-arrow-back" item-left small></ion-icon>
-  </ion-item>
-  <ion-item *ngIf="menuStack.length === 1" (click)="exit()" class="back-to-list-button collections" no-lines>
+  <ion-item *ngIf="!sortableLetters.includes(collectionId) && menuStack.length === 1" (click)="unDrill()" class="back-to-list-button collections" no-lines>
     <ion-icon name="ios-arrow-back" item-left small></ion-icon>
     <div style="padding-left:2rem; white-space: normal;" *ngIf="titleStack.length > 0">{{titleStack[0]}}</div>
   </ion-item>
   <!-- *ngIf="this collection id is in the sortableLetters array" -->
-  <ng-container>
+  <ng-container *ngIf="sortableLetters.includes(collectionId)">
     <ion-item (click)="unDrill()" class="back-to-list-button" no-lines>
       <div style="padding-left:2rem; white-space: normal;">{{ "Read.Back" | translate }}</div><ion-icon name="ios-arrow-back" item-left small></ion-icon>
     </ion-item>
-    <ion-item>
-      <ion-icon name="ios-pricetags-outline" item-left small (click)="visibleMenuStack = menuStack"></ion-icon>
-      <ion-icon name="ios-time-outline" item-left small (click)="visibleMenuStack = [chronologicalMenuStack]"></ion-icon>
-      <ion-icon name="ios-swap-outline" item-left small (click)="visibleMenuStack = [alphabeticalMenuStack]"></ion-icon>
+    <ion-item class="collection-filters">
+        <button id="thematic" ion-button [ngClass]="{active: thematicOrderActive}" (click)="visibleMenuStack = menuStack; setActiveSortingType($event)">
+            <ion-icon name="ios-pricetags-outline"></ion-icon>
+        </button>
+        <button id="chronological" ion-button [ngClass]="{active: chronologicalOrderActive}" (click)="visibleMenuStack = [chronologicalMenuStack]; setActiveSortingType($event)">
+            <ion-icon name="ios-calendar-outline"></ion-icon>
+        </button>
+        <button id="alphabetical" ion-button [ngClass]="{active: alphabethicOrderActive}" (click)="visibleMenuStack = [alphabeticalMenuStack]; setActiveSortingType($event)">
+            <ion-icon name="ios-swap-outline"></ion-icon>
+        </button>
     </ion-item>
 </ng-container>
 
