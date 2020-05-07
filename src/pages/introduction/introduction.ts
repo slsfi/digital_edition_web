@@ -1,9 +1,10 @@
 import { Component, Renderer, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, Platform } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { TextService } from '../../app/services/texts/text.service';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
+import { ConfigService } from '@ngx-config/core';
 
 /**
  * Generated class for the IntroductionPage page.
@@ -27,7 +28,10 @@ export class IntroductionPage {
   errorMessage: any;
   protected id: string;
   protected text: any;
+  protected textMenu: any;
   protected collection: any;
+  public tocMenuOpen: boolean;
+  public hasSeparateIntroToc: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -39,10 +43,23 @@ export class IntroductionPage {
     private renderer: Renderer,
     private elementRef: ElementRef,
     private userSettingsService: UserSettingsService,
-    private events: Events
+    private events: Events,
+    private platform: Platform,
+    private config: ConfigService
   ) {
     this.id = this.params.get('collectionID');
     this.collection = this.params.get('collection');
+    this.tocMenuOpen = true;
+    if (this.platform.is('mobile')) {
+      this.tocMenuOpen = false;
+    }
+
+    try {
+      this.hasSeparateIntroToc = this.config.getSettings('separeateIntroductionToc');
+    } catch (error) {
+      this.hasSeparateIntroToc = false;
+    }
+
   }
 
   ionViewDidLoad() {
@@ -54,9 +71,29 @@ export class IntroductionPage {
               res.content.replace(/images\//g, 'assets/images/')
                   .replace(/\.png/g, '.svg')
             );
+            const pattern = /<div id="content">(.*?)<\/div>/;
+            const matches = String(this.text).match(pattern);
+            const the_string = matches[0];
+            this.textMenu = the_string;
           },
         error =>  {this.errorMessage = <any>error}
       );
+    });
+
+    this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
+      try {
+        event.stopPropagation();
+        event.preventDefault();
+        const elem: HTMLElement = event.target as HTMLElement;
+        let targetId = elem.getAttribute('href');
+        if ( targetId === null ) {
+          targetId = elem.parentElement.getAttribute('href');
+        }
+        const target = elem.ownerDocument.getElementById(String(targetId).replace('#', '')) as HTMLElement;
+        if ( target !== null ) {
+           this.scrollToElement(target, event);
+        }
+      } catch ( e ) {}
     });
   }
 
@@ -67,19 +104,6 @@ export class IntroductionPage {
     this.events.publish('ionViewWillEnter', this.constructor.name);
   }
 
-  ngAfterViewInit() {
-    this.renderer.listen(this.elementRef.nativeElement, 'click', (event: Event) => {
-      try {
-        const elem: HTMLElement = event.target as HTMLElement;
-        const targetId = elem.getAttribute('href');
-        const target = document.getElementById(targetId) as HTMLElement;
-        if ( target !== null ) {
-          this.scrollToElement(target, event);
-        }
-      } catch ( e ) {}
-    });
-  }
-
   private scrollToElement(element: HTMLElement, event: Event) {
     try {
       element.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
@@ -88,4 +112,11 @@ export class IntroductionPage {
     }
   }
 
+ private toggleTocMenu() {
+   if ( this.tocMenuOpen ) {
+    this.tocMenuOpen = false;
+   } else {
+    this.tocMenuOpen = true;
+   }
+ }
 }
