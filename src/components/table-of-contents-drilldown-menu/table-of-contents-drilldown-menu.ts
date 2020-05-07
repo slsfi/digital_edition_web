@@ -75,8 +75,6 @@ export class TableOfContentsDrilldownMenuComponent {
   constructAlphabeticalTOC(data) {
     this.alphabeticalMenuStack = [];
     this.alphabeticalTitleStack = [];
-    console.log('ALPHABETICAL');
-
     let list = data.tocItems.children;
 
     list = list.sort((a, b) => {
@@ -90,24 +88,22 @@ export class TableOfContentsDrilldownMenuComponent {
             this.alphabeticalMenuStack.push(child);
         }
     }
-    console.log(this.alphabeticalMenuStack, 'alphabetical after sorting');
   }
 
   constructChronologialTOC(data) {
     this.chronologicalMenuStack = [];
     this.chronologicalTitleStack = [];
-    console.log('CHRONOLOGICAL');
 
     let list = data.tocItems.children;
-
-    list = list.sort((a, b) => a.date > b.date);
+    list = list.sort((a, b) => {
+     return (a.date < b.date) ? -1 : (a.date > b.date) ? 1 : 0;
+    });
 
     for (const child of list) {
         if (child.date && child.type !== 'section_title') {
             this.chronologicalMenuStack.push(child);
         }
     }
-    console.log(this.chronologicalMenuStack, 'chronological after sorting');
   }
 
   flattenList(data) {
@@ -131,8 +127,6 @@ export class TableOfContentsDrilldownMenuComponent {
     } else {
       this.menuStack.push(data.tocItems);
     }
-
-    console.log(this.menuStack, 'Menu stack');
 
     try {
       this.sortableLetters = this.config.getSettings('settings.sortableLetters');
@@ -227,9 +221,10 @@ export class TableOfContentsDrilldownMenuComponent {
 
   registerEventListeners() {
     this.events.subscribe('tableOfContents:loaded', (data) => {
-      this.constructToc(data); // this is thematic...
       this.constructChronologialTOC(data);
       this.constructAlphabeticalTOC(data);
+      this.constructToc(data); // this is thematic...
+
 
       this.visibleMenuStack = this.menuStack;
     });

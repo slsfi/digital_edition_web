@@ -1137,7 +1137,6 @@ export class DigitalEditionsApp {
   }
 
   openCollection(collection: any) {
-
     if (this.hasCover === false) {
       this.getTocRoot(collection);
     } else {
