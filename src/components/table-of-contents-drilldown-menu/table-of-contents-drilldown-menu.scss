@@ -17,4 +17,26 @@ table-of-contents-drilldown-menu {
         white-space: normal;
         font-size: 1rem !important;
     }
+
+    .collection-filters {
+        ion-label {
+            display: flex;
+            justify-content: space-around;
+
+            button {
+                .button-inner ion-icon {
+                    color: #ddd;
+                }
+
+                &.active {
+                    background-color:#4a6770;
+                    color: #fff;
+
+                    &:hover {
+                        background-color: #547a86;
+                    }
+                }
+            }
+        }
+    }
 }

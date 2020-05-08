@@ -190,9 +190,11 @@ export class SingleEditionPage {
     this.events.publish('ionViewWillEnter', this.constructor.name);
     this.events.publish('tableOfContents:unSelectSelectedTocItem', true);
     this.events.publish('musicAccordion:reset', true);
-    if (this.collection.id && this.collection.isDownloadOnly === false) {
+    if (this.collection.id && !this.collection.isDownloadOnly) {
       this.getTocRoot(this.collection.id);
       this.maybeLoadTitlePage(this.collection.id);
+    } else {
+      console.log(this.collection.id, 'perhaps maybe');
     }
     this.viewCtrl.setBackButtonText('');
     console.log('single collection ion will enter...');
@@ -254,6 +256,7 @@ export class SingleEditionPage {
     if (this.platform.is('core') || this.platform.is('tablet')) {
       const nav = this.app.getActiveNavs();
       const params = { collection: this.collection, fetch: true, collectionID: this.collection.id };
+
       nav[0].setRoot('cover', params);
     } else {
       this.showPage = true;

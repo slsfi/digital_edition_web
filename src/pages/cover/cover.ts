@@ -118,12 +118,13 @@ export class CoverPage {
 
   getTocRoot(id: string) {
     this.tableOfContentsService.getTableOfContents(id)
-        .subscribe(
-            tocItems => {
-              tocItems.coverSelected = this.coverSelected;
-              this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId});
-            },
-            error =>  {this.errorMessage = <any>error});
+    .subscribe(
+        tocItems => {
+          console.log(tocItems, ' hola')
+          tocItems.coverSelected = this.coverSelected;
+          this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId});
+        },
+      error =>  {this.errorMessage = <any>error});
   }
 
   ionViewDidLoad() {

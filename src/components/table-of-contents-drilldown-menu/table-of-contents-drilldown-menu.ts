@@ -6,6 +6,9 @@ import { IntroductionPage } from '../../pages/introduction/introduction';
 import { Storage } from '@ionic/storage';
 import { TableOfContentsCategory, GeneralTocItem } from '../../app/models/table-of-contents.model';
 import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
+import { ConfigService,  } from '@ngx-config/core';
+import { TocItem } from '../../app/models/toc-item.model';
+
 
 /**
  * Class for the TableOfContentsDrilldownMenuComponent component.
@@ -19,8 +22,20 @@ import { TableOfContentsService } from '../../app/services/toc/table-of-contents
 })
 export class TableOfContentsDrilldownMenuComponent {
   root: TableOfContentsCategory[] | any;
-  menuStack: any[];
+  visibleMenuStack = [];
+  menuStack = [];
+  thematicMenuStack = [];
+  chronologicalMenuStack = [];
+  chronologicalTitleStack = [];
+  alphabeticalMenuStack: any[];
+
+  chronologicalOrderActive: boolean;
+  thematicOrderActive = true;
+  alphabethicOrderActive: boolean;
+
   titleStack: string[];
+  thematicTitleStack: any[];
+  alphabeticalTitleStack: any[];
   errorMessage: string;
   currentItem: GeneralTocItem;
   collectionId: string;
@@ -30,13 +45,18 @@ export class TableOfContentsDrilldownMenuComponent {
   coverSelected: boolean;
   titleSelected: boolean;
 
+  sortableLetters = [];
+  letterView = false;
+  visibleTitleStack = [];
+
   constructor(
     private events: Events,
     private tableOfContentsService: TableOfContentsService,
     private app: App,
     public platform: Platform,
     protected storage: Storage,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private config: ConfigService,
   ) {
     // this.open = this.action === 'open' ? true : false;
     this.registerEventListeners();
@@ -44,6 +64,10 @@ export class TableOfContentsDrilldownMenuComponent {
     this.getTOCItem();
     this.coverSelected = false;
     this.titleSelected = false;
+  }
+
+  ionViewWillEnter() {
+    this.registerEventListeners();
   }
 
   getTOCItem() {
@@ -56,111 +80,192 @@ export class TableOfContentsDrilldownMenuComponent {
     });
   }
 
-  registerEventListeners() {
-    this.events.subscribe('tableOfContents:loaded', (data) => {
-      this.getTOCItem();
-      this.root = data.tocItems.children;
-      this.menuStack = [];
+  setActiveSortingType(e) {
+    const thematic = e.target.id === 'thematic' || e.target.parentElement.parentElement.id === 'thematic';
+    const alphabetic = e.target.id === 'alphabetical' || e.target.parentElement.parentElement.id === 'alphabetical';
+    const chronological = e.target.id === 'chronological' || e.target.parentElement.parentElement.id === 'chronological';
+    if (thematic) {
+        this.alphabethicOrderActive = false;
+        this.chronologicalOrderActive = false;
+        this.thematicOrderActive = true;
+    } else if (alphabetic) {
+        this.alphabethicOrderActive = true;
+        this.chronologicalOrderActive = false;
+        this.thematicOrderActive = false;
+    } else if (chronological) {
+        this.alphabethicOrderActive = false;
+        this.chronologicalOrderActive = true;
+        this.thematicOrderActive = false;
+    }
+  }
 
-      if ( data.tocItems.children !== undefined ) {
-        this.menuStack.push(data.tocItems.children);
-      } else {
-        this.menuStack.push(data.tocItems);
-      }
+  constructAlphabeticalTOC(data) {
+    this.alphabeticalMenuStack = [];
+    this.alphabeticalTitleStack = [];
+    const list = data.tocItems.children;
 
-      this.collectionId = data.tocItems.collectionId;
-      this.collectionName = data.tocItems.text;
+    for (const child of list) {
+        if (child.date && child.type !== 'section_title') {
+            this.alphabeticalMenuStack.push(child);
+        }
+    }
 
-      this.titleStack = [];
-      this.titleStack.push(data.tocItems.text || '');
+    this.alphabeticalMenuStack.sort((a, b) =>
+      (a.text.toUpperCase() < b.text.toUpperCase()) ? -1 : (a.text.toUpperCase() > b.text.toUpperCase()) ? 1 : 0);
+  }
 
-      this.titleText = '';
-      this.introText = '';
+  constructChronologialTOC(data) {
+    this.chronologicalMenuStack = [];
+    this.chronologicalTitleStack = [];
+    const list = data.tocItems.children;
 
-      let pushToMenu = true;
-      for (let menuItemIndex = 0; menuItemIndex <= (this.menuStack[0].length - 1); menuItemIndex++) {
-        const menuItem = this.menuStack[0][menuItemIndex];
-        if ( menuItem.children !== undefined ) {
-          for (let menuSubitemIndex = 0; menuSubitemIndex <= (menuItem.children.length - 1); menuSubitemIndex++) {
-            const menuSubitem = menuItem.children[menuSubitemIndex];
-            if ( this.menuStack[0][menuItemIndex].children[menuSubitemIndex].children !== undefined ) {
-              for (let menuSubSubitemIndex = 0;
-                menuSubSubitemIndex <= (this.menuStack[0][menuItemIndex].children[menuSubitemIndex].children.length - 1);
-                menuSubSubitemIndex++) {
-                const menuSubSubitem = menuSubitem.children[menuSubSubitemIndex];
-                if ( menuSubSubitem.itemId === data.tocItems.selectedCollId + '_' + data.tocItems.selectedPubId) {
-                  this.menuStack[0][menuItemIndex].children[menuSubitemIndex].children[menuSubSubitemIndex].selected = true;
-                  if ( pushToMenu ) {
-                    this.menuStack.push(this.menuStack[0][menuItemIndex].children);
-                    this.menuStack.push(this.menuStack[0][menuItemIndex].children[menuSubitemIndex].children);
-                    this.titleStack.push(this.menuStack[0][menuItemIndex].children[menuSubitemIndex].text);
-                    pushToMenu = false;
-                  }
-                }
-              }
-            } else {
-              if ( menuSubitem.itemId === data.tocItems.selectedCollId + '_' + data.tocItems.selectedPubId) {
-                this.menuStack[0][menuItemIndex].children[menuSubitemIndex].selected = true;
+    for (const child of list) {
+        if (child.date && child.type !== 'section_title') {
+            this.chronologicalMenuStack.push(child);
+        }
+    }
+
+    this.chronologicalMenuStack.sort((a, b) => (a.date < b.date) ? -1 : (a.date > b.date) ? 1 : 0);
+
+  }
+
+  flattenList(data) {
+    if (!data.children) {
+      return [data];
+    }
+    const list = [];
+    for (const child of data.children) {
+      list.concat(this.flattenList(child));
+    }
+    return list;
+  }
+
+  constructToc(data) {
+    this.getTOCItem();
+    this.root = data.tocItems.children;
+    this.menuStack = [];
+
+    if ( data.tocItems.children !== undefined ) {
+      this.menuStack.push(data.tocItems.children);
+    } else {
+      this.menuStack.push(data.tocItems);
+    }
+
+    try {
+      this.sortableLetters = this.config.getSettings('settings.sortableLetters');
+    } catch (e) {
+      this.sortableLetters = null;
+      console.log('sortable letters IS  NULLLLLLLLLL', this.sortableLetters);
+      console.log(e);
+    }
+
+    this.collectionId = data.tocItems.collectionId;
+    this.collectionName = data.tocItems.text;
+
+    this.titleStack = [];
+    this.titleStack.push(data.tocItems.text || '');
+
+    this.titleText = '';
+    this.introText = '';
+
+    let pushToMenu = true;
+    for (let menuItemIndex = 0; menuItemIndex <= (this.menuStack[0].length - 1); menuItemIndex++) {
+      const menuItem = this.menuStack[0][menuItemIndex];
+      if ( menuItem.children !== undefined ) {
+        for (let menuSubitemIndex = 0; menuSubitemIndex <= (menuItem.children.length - 1); menuSubitemIndex++) {
+          const menuSubitem = menuItem.children[menuSubitemIndex];
+          if ( this.menuStack[0][menuItemIndex].children[menuSubitemIndex].children !== undefined ) {
+            for (let menuSubSubitemIndex = 0;
+              menuSubSubitemIndex <= (this.menuStack[0][menuItemIndex].children[menuSubitemIndex].children.length - 1);
+              menuSubSubitemIndex++) {
+              const menuSubSubitem = menuSubitem.children[menuSubSubitemIndex];
+              if ( menuSubSubitem.itemId === data.tocItems.selectedCollId + '_' + data.tocItems.selectedPubId) {
+                this.menuStack[0][menuItemIndex].children[menuSubitemIndex].children[menuSubSubitemIndex].selected = true;
                 if ( pushToMenu ) {
                   this.menuStack.push(this.menuStack[0][menuItemIndex].children);
-                  this.titleStack.push(this.menuStack[0][menuItemIndex].text);
+                  this.menuStack.push(this.menuStack[0][menuItemIndex].children[menuSubitemIndex].children);
+                  this.titleStack.push(this.menuStack[0][menuItemIndex].children[menuSubitemIndex].text);
                   pushToMenu = false;
                 }
               }
             }
-          }
-        } else {
-          if ( menuItem.itemId === data.tocItems.selectedCollId + '_' + data.tocItems.selectedPubId) {
-            this.menuStack[0][menuItemIndex].selected = true;
-            if ( pushToMenu ) {
-              this.menuStack.push(this.menuStack[0]);
-              this.titleStack.push(this.menuStack[0][menuItemIndex].text);
-              pushToMenu = false;
+          } else {
+            if ( menuSubitem.itemId === data.tocItems.selectedCollId + '_' + data.tocItems.selectedPubId) {
+              this.menuStack[0][menuItemIndex].children[menuSubitemIndex].selected = true;
+              if ( pushToMenu ) {
+                this.menuStack.push(this.menuStack[0][menuItemIndex].children);
+                this.titleStack.push(this.menuStack[0][menuItemIndex].text);
+                pushToMenu = false;
+              }
             }
           }
         }
-      }
-
-      if ( data.tocItems.coverSelected !== undefined ) {
-        this.coverSelected = true;
       } else {
-        this.coverSelected = false;
-      }
-
-      if ( data.tocItems.titleSelected !== undefined ) {
-        this.titleSelected = true;
-      } else {
-        this.titleSelected = false;
-      }
-
-      this.translate.get('Read.TitlePage.Title').subscribe(
-        retData => {
-          this.titleText = retData;
-        }, error => {
-
+        if ( menuItem.itemId === data.tocItems.selectedCollId + '_' + data.tocItems.selectedPubId) {
+          this.menuStack[0][menuItemIndex].selected = true;
+          if ( pushToMenu ) {
+            this.menuStack.push(this.menuStack[0]);
+            this.titleStack.push(this.menuStack[0][menuItemIndex].text);
+            pushToMenu = false;
+          }
         }
-      );
-      this.translate.get('Read.Introduction.Title').subscribe(
-        retData => {
-          this.introText = retData;
-        }, error => {
+      }
+    }
 
-        }
-      );
+    if ( data.tocItems.coverSelected !== undefined ) {
+      this.coverSelected = true;
+    } else {
+      this.coverSelected = false;
+    }
+
+    if ( data.tocItems.titleSelected !== undefined ) {
+      this.titleSelected = true;
+    } else {
+      this.titleSelected = false;
+    }
+
+    this.translate.get('Read.TitlePage.Title').subscribe(
+      retData => {
+        this.titleText = retData;
+      }, error => {
+
+      }
+    );
+    this.translate.get('Read.Introduction.Title').subscribe(
+      retData => {
+        this.introText = retData;
+      }, error => {
+
+      }
+    );
+  };
+
+
+  registerEventListeners() {
+    this.events.subscribe('tableOfContents:loaded', (data) => {
+      this.constructToc(data);
+      this.constructAlphabeticalTOC(data);
+      this.constructChronologialTOC(data);
+
+
+      this.visibleMenuStack = this.menuStack;
     });
   }
 
   drillDown(item) {
-    this.menuStack.push(item.children);
-    this.titleStack.push(item.text);
+    this.visibleMenuStack.push(item.children);
+    this.visibleTitleStack.push(item.text);
   }
 
   unDrill() {
-    if ( this.menuStack.length === 2 && this.menuStack[0] === this.menuStack[1] ) {
+    if ( this.visibleMenuStack.length === 2 && this.visibleMenuStack[0] === this.visibleMenuStack[1] ) {
       this.exit();
     }
-    this.menuStack.pop();
-    this.titleStack.pop();
+    document.getElementById('contentMenu').classList.add('menu-enabled');
+    document.getElementById('tableOfContentsMenu').classList.remove('menu-enabled');
+
+    this.visibleMenuStack.pop();
+    this.visibleTitleStack.pop();
   }
 
   open(item, type?, html?) {
@@ -173,17 +278,17 @@ export class TableOfContentsDrilldownMenuComponent {
     this.coverSelected = false;
     this.titleSelected = false;
 
-    for (let menuItemIndex = 0; menuItemIndex < this.menuStack.length; menuItemIndex++) {
-      const menuItem = this.menuStack[menuItemIndex];
+    for (let menuItemIndex = 0; menuItemIndex < this.visibleMenuStack.length; menuItemIndex++) {
+      const menuItem = this.visibleMenuStack[menuItemIndex];
       for (let menuSubitemIndex = 0; menuSubitemIndex < menuItem.length; menuSubitemIndex++) {
         const menuSubitem = menuItem[menuSubitemIndex];
-        this.menuStack[menuItemIndex].selected = false;
+        this.visibleMenuStack[menuItemIndex].selected = false;
         if ( menuSubitem.itemId === item.itemId) {
-          this.menuStack[menuItemIndex].selected = true;
-          this.menuStack[menuItemIndex][menuSubitemIndex].selected = true;
+          this.visibleMenuStack[menuItemIndex].selected = true;
+          this.visibleMenuStack[menuItemIndex][menuSubitemIndex].selected = true;
         } else {
-          this.menuStack[menuItemIndex].selected = false;
-          this.menuStack[menuItemIndex][menuSubitemIndex].selected = false;
+          this.visibleMenuStack[menuItemIndex].selected = false;
+          this.visibleMenuStack[menuItemIndex][menuSubitemIndex].selected = false;
         }
       }
     }
@@ -275,11 +380,13 @@ export class TableOfContentsDrilldownMenuComponent {
   }
 
   private exit() {
+    this.visibleMenuStack = [];
+    this.visibleTitleStack = [];
     this.menuStack = [];
-    this.titleStack = [];
     this.collectionId = null;
     this.collectionName = null;
     const nav = this.app.getActiveNavs();
     nav[0].setRoot('EditionsPage', [], {animate: false, direction: 'back', animation: 'ios-transition'});
   }
 }
+

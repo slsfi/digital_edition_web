@@ -28,6 +28,7 @@
                         {{"TOC.About" | translate }}
                     </p>
                 </ion-item>
+               <!-- TOC READ ACCORDION  -->
                 <ion-list *ngIf="genericSettingsService.show('TOC.Read') && accordionTOC" class="accordion-menu">
                     <ion-item class="header" (tap)="simpleAccordionsExpanded.collectionsAccordion = !simpleAccordionsExpanded.collectionsAccordion;" tappable id="readTocItem">
                         <ion-icon [class.rotate]="simpleAccordionsExpanded.collectionsAccordion" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
@@ -36,6 +37,7 @@
                     <div [style.height]="simpleAccordionsExpanded.collectionsAccordion ? '100%' : '0px'" class="simple-accordion-options options">
                         <ng-container *ngFor="let collection of collectionsListWithTOC">
                             <ion-list *ngIf="collection.toc_exists" class="accordion-menu">
+                              <!-- toggleSingleCollectionAccordion öppnar accordion  -->
                                 <ion-item [ngClass]="collection.highlight ? 'selected-toc-item' : ''" class="header" (tap)="toggleSingleCollectionAccordion(collection)" tappable>
                                     <ion-icon [class.rotate]="collection.expanded" *ngIf="!collection.isDownload && !collection.has_children_pdfs" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
                                     <p>{{ collection.title }}</p>
@@ -187,11 +189,16 @@
                     <div style="padding-left:2rem; white-space: normal;">{{"TOC.Collections" | translate }}</div>
                     <ion-icon name="ios-arrow-back" item-left small></ion-icon>
                 </ion-item>
-                <ion-item *ngFor="let collection of collectionsList" (click)="openCollection(collection);">
-                    <p>{{collection.title}}</p>
-                    <ion-icon item-right size="small" class="menu-download" *ngIf="collection.isDownload" name="cloud-download">
-                    </ion-icon>
-                </ion-item>
+                <ng-container>
+                    <ng-container *ngFor="let collection of collectionsList">
+                        <ion-item *ngIf="!accordionTOC" (click)="openCollection(collection);">
+                            <p>{{collection.title}}</p>
+                            <ion-icon item-right size="small" class="menu-download" *ngIf="collection.isDownload" name="cloud-download">
+                            </ion-icon>
+                        </ion-item>
+                    </ng-container>
+                </ng-container>
+
             </ng-container>
             <!-- ./Read Menu -->
             <!-- Gallery Menu -->
@@ -248,6 +255,7 @@
             <!-- TOC Type: Accordion -->
             <table-of-contents-accordion *ngIf="accordionTOC && options && false" [showBackButton]="true" [options]="options" [collectionId]="currentCollectionId" [collectionName]="currentCollectionName" [settings]="sideMenuSettings">
             </table-of-contents-accordion>
+
         </ion-content>
     </ion-menu>
     <!-- ./TOC Menu -->

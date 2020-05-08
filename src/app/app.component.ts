@@ -48,6 +48,7 @@ export class DigitalEditionsApp {
   splitPane = false;
   collectionsList: any[];
   collectionsListWithTOC: any[];
+  tocData: any;
   pdfCollections: any[];
   currentContentName: string;
   showBackButton = true;
@@ -385,6 +386,7 @@ export class DigitalEditionsApp {
   openCollectionPage(collection) {
     this.currentContentName = collection.title;
     const params = { collection: collection, fetch: false, id: collection.id };
+
     this.nav.setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
   }
 
@@ -431,6 +433,7 @@ export class DigitalEditionsApp {
         }
       });
       this.collectionsListWithTOC = collectionsTmp;
+
       if (this.showBooks) {
         this.pdfCollections = pdfCollections;
         this.pdfCollections.sort(function (a, b) {
@@ -706,6 +709,7 @@ export class DigitalEditionsApp {
       }
     });
     this.events.subscribe('tableOfContents:loaded', (data) => {
+      this.tocData = data;
       if (data.searchTocItem) {
 
         for (const collection of this.collectionsListWithTOC) {
@@ -1133,7 +1137,6 @@ export class DigitalEditionsApp {
   }
 
   openCollection(collection: any) {
-
     if (this.hasCover === false) {
       this.getTocRoot(collection);
     } else {
@@ -1151,6 +1154,11 @@ export class DigitalEditionsApp {
       } else {
         this.currentContentName = collection.title;
         const params = { collection: collection, fetch: false, id: collection.id };
+
+        document.getElementById('contentMenu').classList.remove('menu-enabled');
+        document.getElementById('tableOfContentsMenu').classList.add('menu-enabled');
+        console.log('jihppp');
+
         this.nav.setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
       }
       this.cdRef.detectChanges();
