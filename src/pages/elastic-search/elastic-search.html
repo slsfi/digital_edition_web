@@ -47,23 +47,33 @@
       <ion-col col-3>
         <!-- List of facet groups -->
         <ion-list>
-          <div *ngFor="let facetGroupKey of objectKeys(facetGroups)">
+          <div *ngFor="let facetGroupKey of objectKeys(facetGroups) let i = index">
             <ion-item>
               <ion-label>
-                <p class="itemHeading">{{facetGroupKey}}</p>
-                <!-- List of facetGroups for each facetGroupKey TODO: Turn into accordion or something like that -->
-                <ion-list class="facets">
-                  <ion-item *ngFor="let facet of objectValues(facetGroups[facetGroupKey])" class="facet">
-                    <ion-label text-wrap>{{facet.key | translate}} ({{facet.doc_count}})</ion-label>
-                    <ion-checkbox [(ngModel)]="facet.selected" (click)="toggleFacet(facetGroupKey, facet)" [disabled]="facet.doc_count === 0"></ion-checkbox>
-                  </ion-item>
+                <ion-item (click)="openAccordion($event, i)">
+                  <ion-label>{{facetGroupKey}}</ion-label>
+                  <ion-icon id="arrow-{{i}}" name="ios-arrow-forward" item-right small></ion-icon>
+                </ion-item>
+                <ion-list id="facetList-{{i}}" style="height: 0;">
+                  <ng-container *ngIf="objectValues(facetGroups[facetGroupKey]).length > 0; then facets else nofacet"></ng-container>
+                  <ng-template #facets>
+                    <ion-item *ngFor="let facet of objectValues(facetGroups[facetGroupKey])">
+                        <ion-label text-wrap>{{facet.key | translate}} ({{facet.doc_count}})</ion-label>
+                        <ion-checkbox [(ngModel)]="facet.selected" (click)="toggleFacet(facetGroupKey, facet)" [disabled]="facet.doc_count === 0"></ion-checkbox>
+                    </ion-item>
+                  </ng-template>
+
+                  <ng-template #nofacet>
+                    <ion-item>
+                      <p>No results</p>
+                    </ion-item>
+                  </ng-template>
                 </ion-list>
               </ion-label>
             </ion-item>
           </div>
         </ion-list>
       </ion-col>
-
       <!-- Hits column -->
       <ion-col col-7>
         <div *ngIf="loading" padding>

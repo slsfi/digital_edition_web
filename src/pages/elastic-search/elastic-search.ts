@@ -41,7 +41,6 @@ export class ElasticSearchPage {
   hits: object[] = []
   hitsPerPage = 10
   aggregations: object = {}
-
   facetGroups: FacetGroups = {}
 
   // -1 when there a search hasn't returned anything yet.
@@ -254,4 +253,20 @@ export class ElasticSearchPage {
     return [this.getGenre(source), this.getDate(source)].filter(str => str).join(', ')
   }
 
+  openAccordion(e, group) {
+      const facet = document.getElementById('facetList-' + group);
+      const arrow = document.getElementById('arrow-' + group);
+
+      arrow.classList.toggle('rotate');
+
+      if (facet.style.height === '100%') {
+          facet.style.height = '0';
+          arrow.classList.add('closed');
+          arrow.classList.remove('open');
+      } else {
+        facet.style.height = '100%';
+        arrow.classList.add('open');
+        arrow.classList.remove('closed');
+      }
+  }
 }

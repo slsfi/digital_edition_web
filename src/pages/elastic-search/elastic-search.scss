@@ -78,4 +78,11 @@ page-elastic-search {
     display: flex;
     align-items: stretch;
   }
+  ion-icon.rotate.open {
+    transform: rotate(90deg);
+    transition: transform ease-in-out .15s;
+  }
+  ion-icon.closed {
+    transition: transform ease-in-out .15s;
+  }
 }
