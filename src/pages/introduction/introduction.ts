@@ -106,7 +106,7 @@ export class IntroductionPage {
 
   private scrollToElement(element: HTMLElement, event: Event) {
     try {
-      element.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
+      element.scrollIntoView({'behavior': 'smooth', 'block': 'start'});
     } catch ( e ) {
       console.log(e);
     }
