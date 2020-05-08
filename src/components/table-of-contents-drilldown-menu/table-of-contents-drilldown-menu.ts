@@ -104,33 +104,29 @@ export class TableOfContentsDrilldownMenuComponent {
     this.alphabeticalTitleStack = [];
     const list = data.tocItems.children;
 
-    list.sort((a, b) => {
-        const textA = a.text.toUpperCase();
-        const textB = b.text.toUpperCase();
-        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-    });
-
     for (const child of list) {
         if (child.date && child.type !== 'section_title') {
             this.alphabeticalMenuStack.push(child);
         }
     }
+
+    this.alphabeticalMenuStack.sort((a, b) =>
+      (a.text.toUpperCase() < b.text.toUpperCase()) ? -1 : (a.text.toUpperCase() > b.text.toUpperCase()) ? 1 : 0);
   }
 
   constructChronologialTOC(data) {
     this.chronologicalMenuStack = [];
     this.chronologicalTitleStack = [];
-
-    let list = data.tocItems.children;
-    list = list.sort((a, b) => {
-     return (a.date < b.date) ? -1 : (a.date > b.date) ? 1 : 0;
-    });
+    const list = data.tocItems.children;
 
     for (const child of list) {
         if (child.date && child.type !== 'section_title') {
             this.chronologicalMenuStack.push(child);
         }
     }
+
+    this.chronologicalMenuStack.sort((a, b) => (a.date < b.date) ? -1 : (a.date > b.date) ? 1 : 0);
+
   }
 
   flattenList(data) {
