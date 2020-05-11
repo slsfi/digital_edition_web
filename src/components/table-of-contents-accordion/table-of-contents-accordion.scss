@@ -20,6 +20,18 @@ table-of-contents-accordion {
         will-change: transform;
         transition: transform 0.3s ease;
     }
+
+    .item.item-block.item-md.option {
+        margin: 0 !important;
+    }
+
+    .options.recursive-suboptions {
+        margin-left: 20px;
+    }
+
+    .accordion-menu .list .list-md {
+        background-color: #ecece4;
+    }
     
     ion-list.accordion-menu ion-item.header ion-icon.header-icon.rotate {
         -webkit-transform: rotate(90deg);

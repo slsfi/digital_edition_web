@@ -646,6 +646,11 @@ export class DigitalEditionsApp {
         }
       }
     });
+
+    this.events.subscribe('exitActiveCollection', () => {
+        this.enableContentMenu();
+    });
+
     // Unselect accordion items that doesn't belong to current menu
     this.events.subscribe('SelectedItemInMenu', (menu) => {
       if (menu.component === 'table-of-contents-accordion-component' || this.currentAccordionMenu !== menu.menuID) {
@@ -883,9 +888,6 @@ export class DigitalEditionsApp {
   }
 
   setupPageSettings(currentPage) {
-
-    alert(currentPage);
-
     const p = currentPage;
     const pagesWith = this.pagesThatShallShow;
 

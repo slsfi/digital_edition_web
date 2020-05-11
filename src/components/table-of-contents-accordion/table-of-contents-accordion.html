@@ -1,83 +1,86 @@
-<ion-item *ngIf="hasCover && collectionName != 'About'" [ngClass]="coverSelected?'selected-toc-item':''">
-    <p class="justLevel" (click)="openTitlePage()">{{ "Read.TitlePage.Title" | translate }}</p>
+<ion-item *ngIf="showBackButton" (click)="exit()" class="back-to-list-button collections" no-lines>
+    <ion-icon name="ios-arrow-back" item-left small></ion-icon>
+    <ion-label>Back</ion-label>
 </ion-item>
-<ion-item *ngIf="hasIntro && collectionName != 'About' && collectionId != 'mediaCollections'" [ngClass]="titleSelected?'selected-toc-item':''">
-    <p class="justLevel" (click)="openIntroduction()">{{ "Read.Introduction.Title" | translate }}</p>
-</ion-item>
-<ion-list *ngIf="collectionId !== 'songtypes'" no-margin>
-    <ng-template #recursiveList let-list>
-        <ng-template ngFor let-option [ngForOf]="list" let-i="index">
-            <ng-template
-                [ngIf]="!option.childrenCount && !(playmanTraditionPageInMusicAccordion && option.markdownID && option.markdownID == playmanTraditionPageID)">
-                <ion-item [style.marginLeft]="option.is_child ? 20 + 'px' : '0px'" id="toc_{{option.itemId}}"
-                    class="option type-{{option.type}}"
-                    [ngClass]="menuSettings?.showSelectedOption && option.selected ? menuSettings.selectedOptionClass : null"
-                    (tap)="select(option)" tappable>
-                    <p>{{ option.text }}</p>
-                </ion-item>
-            </ng-template>
-            <ng-template
-                [ngIf]="(option.childrenCount && option.subOptions.length) || option.children_id || option.search_children_id">
-                <ion-list no-margin class="accordion-menu" [style.marginLeft]="option.is_child ? 20 + 'px' : '0px'">
-                    <ion-item class="header type-{{option.type}}"
+
+<div *ngIf="open">
+    <ion-item *ngIf="hasCover && collectionName != 'About'" [ngClass]="coverSelected?'selected-toc-item':''">
+        <p class="justLevel" (click)="openTitlePage()">{{ "Read.TitlePage.Title" | translate }}</p>
+    </ion-item>
+    <ion-item *ngIf="hasIntro && collectionName != 'About' && collectionId != 'mediaCollections'" [ngClass]="titleSelected?'selected-toc-item':''">
+        <p class="justLevel" (click)="openIntroduction()">{{ "Read.Introduction.Title" | translate }}</p>
+    </ion-item>
+    <ion-list *ngIf="collectionId !== 'songtypes'" no-margin>
+        <ng-template #recursiveList let-list>
+            <ng-template ngFor let-option [ngForOf]="list" let-i="index">
+                <ng-template
+                    [ngIf]="!option.childrenCount && !(playmanTraditionPageInMusicAccordion && option.markdownID && option.markdownID == playmanTraditionPageID)">
+                    <ion-item [style.marginLeft]="option.is_child ? 20 + 'px' : '0px'" id="toc_{{option.itemId}}"
+                        class="option type-{{option.type}}"
                         [ngClass]="menuSettings?.showSelectedOption && option.selected ? menuSettings.selectedOptionClass : null"
-                        (tap)="toggleItemOptions(option)" tappable>
-                        <ion-icon [class.rotate]="option.expanded" class="header-icon" [name]="'ios-arrow-forward'"
-                            small item-right></ion-icon>
+                        (tap)="select(option)" tappable>
                         <p>{{ option.text }}</p>
                     </ion-item>
-                    <div [style.height]="option.expanded ? '100%' : '0px'" class="options recursive-suboptions">
-                        <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: option.subOptions }">
-                        </ng-container>
-                    </div>
-                </ion-list>
+                </ng-template>
+                <ng-template
+                    [ngIf]="(option.childrenCount && option.subOptions.length) || option.children_id || option.search_children_id">
+                    <ion-list no-margin class="accordion-menu" [style.marginLeft]="option.is_child ? 20 + 'px' : '0px'">
+                        <ion-item class="header type-{{option.type}}"
+                            [ngClass]="menuSettings?.showSelectedOption && option.selected ? menuSettings.selectedOptionClass : null"
+                            (tap)="toggleItemOptions(option)" tappable>
+                            <ion-icon [class.rotate]="option.expanded" class="header-icon" [name]="'ios-arrow-forward'"
+                                small item-right></ion-icon>
+                            <p>{{ option.text }}</p>
+                        </ion-item>
+                        <div [style.height]="option.expanded ? '100%' : '0px'" class="options recursive-suboptions">
+                            <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: option.subOptions }">
+                            </ng-container>
+                        </div>
+                    </ion-list>
+                </ng-template>
             </ng-template>
         </ng-template>
-    </ng-template>
 
-    <ion-item *ngIf="showBackButton" (click)="exit()" class="back-to-list-button collections" no-lines>
-        <ion-icon name="ios-arrow-back" item-left small></ion-icon>
-    </ion-item>
+        <ng-container *ngIf="!searchingForTocItem">
+            <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: collapsableItems }"></ng-container>
+        </ng-container>
+    </ion-list>
 
-    <ng-container *ngIf="!searchingForTocItem">
-        <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: collapsableItems }"></ng-container>
-    </ng-container>
-</ion-list>
-
-<ng-container *ngIf="collectionId == 'songtypes'">
-    <ng-template #recursiveList let-list>
-        <ng-template ngFor let-option [ngForOf]="list" let-i="index">
-            <ng-template [ngIf]="!option.childrenCount && option.type != 'heading1'">
-                <ion-item [style.marginLeft]="option.is_child ? 20 + 'px' : '0px'" class="option type-{{option.type}}"
-                    [ngClass]="menuSettings?.showSelectedOption && option.selected ? menuSettings.selectedOptionClass : null"
-                    (tap)="select(option)" tappable>
-                    <p>{{ option.text }}</p>
-                </ion-item>
-            </ng-template>
-            <ng-template [ngIf]="option.childrenCount && option.subOptions.length">
-                <ion-list no-margin class="accordion-menu" [style.marginLeft]="option.is_child ? 20 + 'px' : '0px'">
-                    <ion-item class="header type-{{option.type}}"
+    <ng-container *ngIf="collectionId == 'songtypes'">
+        <ng-template #recursiveList let-list>
+            <ng-template ngFor let-option [ngForOf]="list" let-i="index">
+                <ng-template [ngIf]="!option.childrenCount && option.type != 'heading1'">
+                    <ion-item [style.marginLeft]="option.is_child ? 20 + 'px' : '0px'" class="option type-{{option.type}}"
                         [ngClass]="menuSettings?.showSelectedOption && option.selected ? menuSettings.selectedOptionClass : null"
-                        (click)="toggleItemOptions(option)" tappable>
-                        <ion-icon [class.rotate]="option.expanded" class="header-icon" [name]="'ios-arrow-forward'"
-                            small item-right></ion-icon>
-                        <p *ngIf="option.text !== 'songs'">{{ option.text }}</p>
-                        <p *ngIf="option.text === 'songs'">{{"TOC.SongTypes" | translate }}</p>
+                        (tap)="select(option)" tappable>
+                        <p>{{ option.text }}</p>
                     </ion-item>
-                    <div [style.height]="option.expanded ? '100%' : '0px'" class="options recursive-suboptions">
-                        <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: option.subOptions }">
-                        </ng-container>
-                    </div>
-                </ion-list>
+                </ng-template>
+                <ng-template [ngIf]="option.childrenCount && option.subOptions.length">
+                    <ion-list no-margin class="accordion-menu" [style.marginLeft]="option.is_child ? 20 + 'px' : '0px'">
+                        <ion-item class="header type-{{option.type}}"
+                            [ngClass]="menuSettings?.showSelectedOption && option.selected ? menuSettings.selectedOptionClass : null"
+                            (click)="toggleItemOptions(option)" tappable>
+                            <ion-icon [class.rotate]="option.expanded" class="header-icon" [name]="'ios-arrow-forward'"
+                                small item-right></ion-icon>
+                            <p *ngIf="option.text !== 'songs'">{{ option.text }}</p>
+                            <p *ngIf="option.text === 'songs'">{{"TOC.SongTypes" | translate }}</p>
+                        </ion-item>
+                        <div [style.height]="option.expanded ? '100%' : '0px'" class="options recursive-suboptions">
+                            <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: option.subOptions }">
+                            </ng-container>
+                        </div>
+                    </ion-list>
+                </ng-template>
             </ng-template>
         </ng-template>
-    </ng-template>
 
-    <ion-item *ngIf="showBackButton" (click)="exit()" class="back-to-list-button collections" no-lines>
-        <ion-icon name="ios-arrow-back" item-left small></ion-icon>
-    </ion-item>
+        <ion-item *ngIf="showBackButton" (click)="exit()" class="back-to-list-button collections" no-lines>
+            <ion-icon name="ios-arrow-back" item-left small></ion-icon>
+        </ion-item>
 
-    <ng-container *ngIf="!searchingForTocItem">
-        <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: collapsableItems }"></ng-container>
+        <ng-container *ngIf="!searchingForTocItem">
+            <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: collapsableItems }"></ng-container>
+        </ng-container>
     </ng-container>
-</ng-container>
+</div>

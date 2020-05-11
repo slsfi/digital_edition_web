@@ -257,6 +257,7 @@ export class TableOfContentsAccordionComponent {
   @Input() showBackButton?: Boolean;
   @Input() isMarkdown?: Boolean;
   @Input() isGallery?: Boolean;
+  @Input() open: Boolean;
   @Output() selectOption = new EventEmitter<any>();
 
   currentItem: GeneralTocItem;
@@ -701,6 +702,9 @@ export class TableOfContentsAccordionComponent {
   exit() {
     this.collectionId = null;
     this.collectionName = null;
+
+    this.events.publish('exitActiveCollection');
+
     const nav = this.app.getActiveNavs();
     nav[0].setRoot('EditionsPage', [], {animate: false, direction: 'back', animation: 'ios-transition'});
   }

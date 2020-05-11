@@ -18,7 +18,7 @@
                     </ion-item>
                     <div [style.height]="simpleAccordionsExpanded.aboutMenuAccordion ? '100%' : '0px'" class="simple-accordion-options options">
                         <div class="sub-option" tappable>
-                            <table-of-contents-accordion #aboutMenuMarkdownAccordion *ngIf="aboutOptionsMarkdown.toc.length" [isMarkdown]="true" [showBackButton]="false" [options]="aboutOptionsMarkdown" [collectionId]="'aboutMarkdown'" [collectionName]="'About'" [settings]="sideMenuSettings">
+                            <table-of-contents-accordion #aboutMenuMarkdownAccordion *ngIf="aboutOptionsMarkdown.toc.length" [isMarkdown]="true" [showBackButton]="false" [options]="aboutOptionsMarkdown" [collectionId]="'aboutMarkdown'" [collectionName]="'About'" [settings]="sideMenuSettings" [open]="true">
                             </table-of-contents-accordion>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                             <ion-list *ngIf="collection.toc_exists" class="accordion-menu">
                               <!-- toggleSingleCollectionAccordion öppnar accordion  -->
                                 <ion-item [ngClass]="collection.highlight ? 'selected-toc-item' : ''" class="header" (tap)="openCollectionFromToc ? openCollection(collection) : toggleSingleCollectionAccordion(collection)" tappable>
-                                    <ion-icon [class.rotate]="collection.expanded" *ngIf="!collection.isDownload && !collection.has_children_pdfs" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
+                                    <ion-icon *ngIf="!collection.isDownload && !collection.has_children_pdfs" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
                                     <p>{{ collection.title }}</p>
                                     <ion-icon item-right size="small" class="menu-download" *ngIf="collection.isDownload" name="cloud-download"></ion-icon>
                                 </ion-item>
@@ -252,11 +252,12 @@
             <!-- TOC Type:  Drilldown -->
             <table-of-contents-drilldown-menu *ngIf="!accordionTOC"></table-of-contents-drilldown-menu>
 
+            
             <!-- TOC Type: Accordion -->
-            <table-of-contents-accordion *ngIf="accordionTOC && options && !openCollectionFromToc" [showBackButton]="true" [options]="options" [collectionId]="currentCollectionId" [collectionName]="currentCollectionName" [settings]="sideMenuSettings">
+            <table-of-contents-accordion [open]="true" *ngIf="accordionTOC && options && !openCollectionFromToc" [showBackButton]="true" [options]="options" [collectionId]="currentCollectionId" [collectionName]="currentCollectionName" [settings]="sideMenuSettings">
             </table-of-contents-accordion>
 
-            <table-of-contents-accordion *ngIf="currentCollection && accordionTOC && openCollectionFromToc" [showBackButton]="true" [options]="currentCollection.accordionToc" [collectionId]="currentCollection.id" [collectionName]="currentCollection.title" [settings]="sideMenuSettings"></table-of-contents-accordion>
+            <table-of-contents-accordion *ngIf="currentCollection && accordionTOC && openCollectionFromToc" [open]="true" [showBackButton]="true" [options]="currentCollection.accordionToc" [collectionId]="currentCollection.id" [collectionName]="currentCollection.title" [settings]="sideMenuSettings"></table-of-contents-accordion>
 
 
         </ion-content>

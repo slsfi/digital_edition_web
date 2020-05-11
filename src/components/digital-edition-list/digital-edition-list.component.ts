@@ -222,7 +222,6 @@ export class DigitalEditionList implements OnInit {
             this.events.publish('tableOfContents:loaded', { tocItems: tocItems });
         });
 
-
         params = { collection: collection, fetch: true, collectionID: collection.id };
         nav[0].setRoot('title-page', params);
       }
