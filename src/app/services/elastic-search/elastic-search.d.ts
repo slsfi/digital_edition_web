@@ -6,6 +6,12 @@ interface Query {
   from: number
   size: number
   facetGroups?: FacetGroups
+  range?: TimeRange
+}
+
+interface TimeRange {
+  from?: string | number
+  to?: string | number
 }
 
 interface FacetGroups {
@@ -18,15 +24,18 @@ interface Facets {
 
 interface Facet {
   doc_count: number
-  key: string
+  key: string | number
+  key_as_string?: string
   selected?: boolean
 }
 
 interface Aggregations {
-  [key: string]: Aggregation
+  [key: string]: {
+    terms: Terms
+  }
 }
 
-interface Aggregation {
+interface Terms {
   size: number
   field: string
 }

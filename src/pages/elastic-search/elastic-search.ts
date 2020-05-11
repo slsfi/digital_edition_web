@@ -4,6 +4,7 @@ import { IonicPage, NavController, NavParams, ModalController, App, Platform,
   LoadingController, ToastController, Content, Events, ViewController } from 'ionic-angular'
 import get from 'lodash/get'
 import debounce from 'lodash/debounce'
+import size from 'lodash/size'
 
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service'
 import { LanguageService } from '../../app/services/languages/language.service'
@@ -14,9 +15,46 @@ import { Storage } from '@ionic/storage'
 import { UserSettingsService } from '../../app/services/settings/user-settings.service'
 import { ElasticSearchService } from '../../app/services/elastic-search/elastic-search.service'
 
+/*
+
+Specs:
+
+- To the left (probably): all the filters, so the user can decide what filters to use before
+actually performing the search, in order to avoid getting results not relevant.
+
+- Since the filters are always visible, they could simply be updated with the number of results
+in the different categories after the search is finished?
+
+- Results are shown in different tabs according to the following categories:
+  texts by the author ZT (reading texts, variants, manuscripts);
+  texts by editors (introductions, comments, title pages, other info material on the site);
+  results from the indexes (persons, places, literary works (results both from the name fields and the description fields)).
+
+- Filters include:
+  genre -> edition;
+  text type (reading text, variant, manuscript, comment, introduction, index);
+  time period -> decade -> year -> month -> date;
+  sender - receiver (for letters)
+
+
+Use cases:
+
+The user might want to look at the word ‘snömos’, but only in prose and reading texts (to find out how it was used by the author in the
+19th century). From the results she sees it occurs throughout the decades 1840-1880, so she can take a look directly at the one from 1881.
+The user can then decide to look at only comments containing (i.e. explaining) this word; there are 5 of them (and they are all different).
+
+Another user searches for the name Ulla as free text, only in prose, and gets 2 results (one person).
+Ulla as an index search in prose returns 3 different persons, occurring in total 8 times, because they are mentioned
+in other ways than by their first name in the texts, but connected to index posts containing this first name.
+
+In general, the user of the advanced search might want to use some filters from the start, or at least later choose between the
+results according to their different categorization, so it’s important to always keep an overview of what categories the results belong to.
+
+*/
+
 
 /**
- * Simple elastic search page.
+ * Elastic search page.
  */
 @IonicPage({
   name: 'elastic-search',
@@ -46,6 +84,8 @@ export class ElasticSearchPage {
   // -1 when there a search hasn't returned anything yet.
   total = -1
   from = 0
+
+  range: TimeRange
 
   type: string = null
   types: string[] = []
@@ -111,6 +151,7 @@ export class ElasticSearchPage {
     this.cf.detectChanges()
     this.reset()
     this.facetGroups = {}
+    this.range = null
     this.debouncedSearch()
   }
 
@@ -120,15 +161,42 @@ export class ElasticSearchPage {
   onFacetsChanged() {
     this.cf.detectChanges()
     this.reset()
+    this.range = null
     this.debouncedSearch()
   }
 
-  selectedType(type: string) {
-    this.type = type
-    console.log(type)
-    this.reset()
-    this.search()
+  /**
+   * Triggers a new search with selected years.
+   */
+  onRangeChange(from: number, to: number) {
+    if (from && to) {
+      // Certain date range
+      this.range = {from, to}
+
+      this.cf.detectChanges()
+      this.reset()
+      this.debouncedSearch()
+
+    } else if (!from && !to) {
+      // All time
+      this.range = null
+      this.cf.detectChanges()
+      this.reset()
+      this.debouncedSearch()
+
+    } else {
+      // Only one year selected, so do nothing
+      this.range = null
+    }
   }
+
+
+  // selectedType(type: string) {
+  //   this.type = type
+  //   console.log(type)
+  //   this.reset()
+  //   this.search()
+  // }
 
   /**
    * Resets search results.
@@ -168,6 +236,7 @@ export class ElasticSearchPage {
       from: this.from,
       size: this.hitsPerPage,
       facetGroups: this.facetGroups,
+      range: this.range,
     })
       .subscribe((data: any) => {
         console.log('search data', data)
@@ -227,6 +296,15 @@ export class ElasticSearchPage {
     const facets = {}
     buckets.forEach((facet: Facet) => facets[facet.key] = facet)
     return facets
+  }
+
+  hasFacets(facetGroupKey: string) {
+    return size(this.facetGroups[facetGroupKey]) > 0
+  }
+
+  getFacets(facetGroupKey: string): Facet[] {
+    const facets = this.facetGroups[facetGroupKey]
+    return facets ? Object.values(facets) : []
   }
 
   getPublicationName(source: any) {

@@ -29,7 +29,7 @@ export class ElasticSearchService {
   executeQuery(options: Query): Observable<any> {
     const payload = this.generateQueryPayload(options)
 
-    this.injectAggregations(payload)
+    this.injectAggregationsToPayload(payload)
 
     return this.http.post(this.getSearchUrl(), payload)
       .map(this.extractData)
@@ -42,6 +42,7 @@ export class ElasticSearchService {
     from,
     size,
     type,
+    range,
     facetGroups,
   }: Query): object {
     const payload: any = {
@@ -68,6 +69,17 @@ export class ElasticSearchService {
       }})
     }
 
+    if (range) {
+      payload.query.bool.must.push({
+        range: {
+          orig_date_certain: {
+            gte: range.from,
+            lte: range.to,
+          }
+        }
+      })
+    }
+
     if (facetGroups) {
       this.injectFacetsToPayload(payload, facetGroups)
     }
@@ -84,24 +96,27 @@ export class ElasticSearchService {
         payload.query.bool.filter = payload.query.bool.filter || []
         payload.query.bool.filter.push({
           terms: {
-            [this.aggregations[facetGroupKey].field]: terms,
+            [this.aggregations[facetGroupKey].terms.field]: terms,
           }
         })
       }
     })
   }
 
-  private injectAggregations(payload: any) {
+  private injectAggregationsToPayload(payload: any) {
     payload.aggs = {}
     for (const [key, aggregation] of Object.entries(this.aggregations)) {
-      payload.aggs[key] = {
-        terms: {
-          field: aggregation.field,
-          size: aggregation.size || 20,
-        }
-      }
+      payload.aggs[key] = aggregation
     }
     return payload
+  }
+
+  isDateHistogramAggregation(aggregationKey: string): boolean {
+    return !!this.aggregations[aggregationKey]['date_histogram']
+  }
+
+  isTermsAggregation(aggregationKey: string): boolean {
+    return !!this.aggregations[aggregationKey]['terms']
   }
 
   private getSearchUrl(): string {

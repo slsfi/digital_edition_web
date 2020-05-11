@@ -55,6 +55,8 @@ page-elastic-search {
 
     // List of facets
     ion-list.facets {
+      margin: 0;
+
       ion-item.facet {
         min-height: 1rem;
         padding: 0;

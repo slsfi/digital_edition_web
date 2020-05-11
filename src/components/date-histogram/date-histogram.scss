@@ -1,0 +1,55 @@
+date-histogram {
+  .years {
+    position: relative;
+    margin: 20px 0 0 50px;
+    cursor: crosshair;
+  }
+
+  .year {
+    position: relative;
+    height: 3px;
+  }
+  .yearIsDecade {
+    height: 4px;
+    border-bottom: 1px solid #aaaaaa;
+  }
+  .yearBar {
+    position: relative;
+    height: 100%;
+    width: 0;
+    background-color: #538393;
+  }
+  .yearNumber {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: -14px;
+    font-size: 12px !important;
+    color: color($colors, grey);
+  }
+
+  .year:hover {
+    background-color: color($colors, secondary);
+  }
+  .year:hover > .yearBar, .yearBarInRange {
+    background-color: color($colors, location);
+  }
+  .year:hover .yearNumber {
+    display: block;
+  }
+
+  .decadeMarker {
+    position: relative;
+    height: 0px;
+  }
+
+  .decade {
+    position: absolute;
+    left: -55px;
+    top: -7px;
+    width: 50px;
+    font-size: 12px !important;
+    color: color($colors, grey);
+    text-align: right;
+  }
+}

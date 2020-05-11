@@ -23,6 +23,7 @@ import { ListOfSongsComponent } from './list-of-songs/list-of-songs';
 import { NgxExtendedPdfViewerComponent } from './ngx-extended-pdf-viewer/ngx-extended-pdf-viewer.component';
 import { IllustrationsComponent } from './illustrations/illustrations';
 import { TableOfContentLetterFilterComponent } from './table-of-content-letter-filter/table-of-content-letter-filter';
+import { DateHistogram } from './date-histogram/date-histogram'
 
 
 export function createTranslateLoader(http: HttpClient) {
@@ -47,7 +48,8 @@ export function createTranslateLoader(http: HttpClient) {
     ListOfSongsComponent,
     NgxExtendedPdfViewerComponent,
     IllustrationsComponent,
-    TableOfContentLetterFilterComponent
+    TableOfContentLetterFilterComponent,
+    DateHistogram,
   ],
   imports: [
     IonicModule,
@@ -77,8 +79,11 @@ export function createTranslateLoader(http: HttpClient) {
     TableOfContentsAccordionComponent,
     ListOfSongsComponent,
     NgxExtendedPdfViewerComponent,
+    TableOfContentLetterFilterComponent,
+    DateHistogram,
     IllustrationsComponent,
-    TableOfContentLetterFilterComponent
+    TableOfContentLetterFilterComponent,
+    DateHistogram,
   ],
   providers: [
     UserSettingsService

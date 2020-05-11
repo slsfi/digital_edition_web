@@ -1,0 +1,29 @@
+
+<ion-grid>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-input type="number" placeholder="From" [(ngModel)]="from" (keydown.enter)="onChange()"></ion-input>
+        <ion-input type="number" placeholder="To" [(ngModel)]="to"(keydown.enter)="onChange()"></ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col col-auto>
+      <ion-item>
+          <ion-icon name="refresh-circle" (click)="onChange()"></ion-icon>
+          <ion-icon name="close-circle" (click)="reset()"></ion-icon>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+<div class="years">
+  <div *ngFor="let year of years">
+    <div class="year" [ngClass]="{'yearIsDecade': isDecade(year)}" (click)="selectYear(year)" >
+      <div class="yearBar" [ngClass]="{'yearBarInRange': isYearInRange(year)}" [style.width]="getYearRelativeToMax(year)"></div>
+      <div class="yearNumber">{{year.key_as_string}}</div>
+    </div>
+    <div class="decadeMarker" *ngIf="isDecade(year)">
+      <div class="decade">{{year.key_as_string}}</div>
+    </div>
+  </div>
+</div>
