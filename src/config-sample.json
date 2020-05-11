@@ -389,6 +389,13 @@
       "Genre": {
         "field": "publication_data[0].genre.keyword",
         "size": 40
+      },
+      "Years": {
+        "date_histogram": {
+          "field": "orig_date_certain",
+          "calendar_interval": "year",
+          "format": "yyyy"
+        }
       }
     }
   }
