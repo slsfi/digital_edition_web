@@ -68,7 +68,9 @@ export class DigitalEditionsApp {
 
   currentCollectionId = '';
   currentCollectionName = '';
+  currentCollection: any;
   currentMarkdownId = null;
+  openCollectionFromToc = false;
 
   accordionTOC = false;
   accordionMusic = false;
@@ -99,7 +101,7 @@ export class DigitalEditionsApp {
 
   pagesThatShallShow = {
     tocMenu: ['FeaturedFacsimilePage'],
-    tocMenuIfNotAccordion: ['SingleEditionPage', 'TitleMenu'],
+    tableOfContentsMenu: ['SingleEditionPage', 'CoverPage'],
     aboutMenu: ['AboutPage'],
     contentMenu: ['HomePage', 'EditionsPage', 'ContentPage', 'MusicPage', 'FeaturedFacsimilePage']
   }
@@ -235,6 +237,14 @@ export class DigitalEditionsApp {
     } catch (e) {
       this.accordionTOC = false;
     }
+
+    try {
+      this.openCollectionFromToc = this.config.getSettings('OpenCollectionFromToc');
+    } catch (e) {
+      this.openCollectionFromToc = false;
+    }
+
+    console.log('openCollectionFromToc', this.openCollectionFromToc);
 
     try {
       this.accordionMusic = this.config.getSettings('AccordionMusic');
@@ -731,8 +741,13 @@ export class DigitalEditionsApp {
         }
       }
       this.options = data.tocItems.children;
+      console.log(this.options);
       this.currentCollectionId = data.tocItems.collectionId;
       this.currentCollectionName = data.tocItems.text;
+    });
+
+    this.events.subscribe('exitedTo', (page) => {
+      this.setupPageSettings(page);
     });
 
     this.events.subscribe('ionViewWillEnter', (currentPage) => {
@@ -868,6 +883,9 @@ export class DigitalEditionsApp {
   }
 
   setupPageSettings(currentPage) {
+
+    alert(currentPage);
+
     const p = currentPage;
     const pagesWith = this.pagesThatShallShow;
 
@@ -875,8 +893,9 @@ export class DigitalEditionsApp {
       this.enableTableOfContentsMenu();
     });
 
-    this.doFor(p, pagesWith.tocMenuIfNotAccordion, () => {
-      if (!this.accordionTOC) {
+    this.doFor(p, pagesWith.tableOfContentsMenu, () => {
+      console.log('Enabling TOC Menu', p, this.openCollectionFromToc, pagesWith.tableOfContentsMenu);
+      if (this.openCollectionFromToc) {
         this.enableTableOfContentsMenu();
       }
     });
@@ -1137,6 +1156,8 @@ export class DigitalEditionsApp {
   }
 
   openCollection(collection: any) {
+
+    console.log(collection, '<<-- open this...');
     if (this.hasCover === false) {
       this.getTocRoot(collection);
     } else {
@@ -1155,12 +1176,14 @@ export class DigitalEditionsApp {
         this.currentContentName = collection.title;
         const params = { collection: collection, fetch: false, id: collection.id };
 
-        document.getElementById('contentMenu').classList.remove('menu-enabled');
-        document.getElementById('tableOfContentsMenu').classList.add('menu-enabled');
-
         this.nav.setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
       }
       this.cdRef.detectChanges();
+    }
+    if (this.openCollectionFromToc) {
+      this.currentCollection = collection;
+      console.log(this.options, 'options of the fn');
+      this.enableTableOfContentsMenu();
     }
   }
 

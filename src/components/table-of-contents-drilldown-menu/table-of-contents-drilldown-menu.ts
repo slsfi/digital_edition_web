@@ -260,8 +260,8 @@ export class TableOfContentsDrilldownMenuComponent {
     if ( this.visibleMenuStack.length === 2 && this.visibleMenuStack[0] === this.visibleMenuStack[1] ) {
       this.exit();
     }
-    document.getElementById('contentMenu').classList.add('menu-enabled');
-    document.getElementById('tableOfContentsMenu').classList.remove('menu-enabled');
+    // document.getElementById('contentMenu').classList.add('menu-enabled');
+    // document.getElementById('tableOfContentsMenu').classList.remove('menu-enabled');
 
     this.visibleMenuStack.pop();
     this.visibleTitleStack.pop();
@@ -389,6 +389,7 @@ export class TableOfContentsDrilldownMenuComponent {
     this.collectionName = null;
     const nav = this.app.getActiveNavs();
     nav[0].setRoot('EditionsPage', [], {animate: false, direction: 'back', animation: 'ios-transition'});
+    this.events.publish('exitedTo', 'EditionsPage');
   }
 }
 
