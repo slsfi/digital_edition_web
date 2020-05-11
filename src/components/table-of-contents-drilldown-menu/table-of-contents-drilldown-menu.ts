@@ -155,7 +155,6 @@ export class TableOfContentsDrilldownMenuComponent {
       this.sortableLetters = this.config.getSettings('settings.sortableLetters');
     } catch (e) {
       this.sortableLetters = null;
-      console.log('sortable letters IS  NULLLLLLLLLL', this.sortableLetters);
       console.log(e);
     }
 

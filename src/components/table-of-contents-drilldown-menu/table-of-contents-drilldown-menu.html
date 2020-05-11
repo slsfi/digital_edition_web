@@ -35,7 +35,7 @@
       </ion-item>
     </ng-container>
     <ng-container *ngIf="!item.children">
-      <ion-item-divider *ngIf="item.type==='subtitle'">
+      <ion-item-divider *ngIf="item.type==='subtitle'" class="{{item.type}}">
         {{item.text}}
       </ion-item-divider>
       <ion-item *ngIf="item.type==='est'" (click)="open(item, null, 'toc_'+item.itemId)" id="toc_{{item.itemId}}" [ngClass]="(item.selected)?'selected':''">
