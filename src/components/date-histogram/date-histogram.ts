@@ -3,6 +3,9 @@ import { Events } from 'ionic-angular'
 
 /**
  * Visualize and select time ranges using from elastic search date histogram data.
+ *
+ * TODO: Add drag to select range.
+ * TODO: Add more granular months selection.
  */
 @Component({
   selector: 'date-histogram',

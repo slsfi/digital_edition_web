@@ -20,7 +20,7 @@
   <div *ngFor="let year of years">
     <div class="year" [ngClass]="{'yearIsDecade': isDecade(year)}" (click)="selectYear(year)" >
       <div class="yearBar" [ngClass]="{'yearBarInRange': isYearInRange(year)}" [style.width]="getYearRelativeToMax(year)"></div>
-      <div class="yearNumber">{{year.key_as_string}}</div>
+      <div class="yearDetails">{{year.doc_count}} : {{year.key_as_string}}</div>
     </div>
     <div class="decadeMarker" *ngIf="isDecade(year)">
       <div class="decade">{{year.key_as_string}}</div>

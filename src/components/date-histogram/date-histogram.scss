@@ -19,13 +19,15 @@ date-histogram {
     width: 0;
     background-color: #538393;
   }
-  .yearNumber {
+  .yearDetails {
     display: none;
     position: absolute;
     right: 0;
-    top: -14px;
+    top: -20px;
+    padding: 2px;
     font-size: 12px !important;
     color: color($colors, grey);
+    background-color: rgba(255,255,255,0.5);
   }
 
   .year:hover {
@@ -34,7 +36,7 @@ date-histogram {
   .year:hover > .yearBar, .yearBarInRange {
     background-color: color($colors, location);
   }
-  .year:hover .yearNumber {
+  .year:hover .yearDetails {
     display: block;
   }
 
