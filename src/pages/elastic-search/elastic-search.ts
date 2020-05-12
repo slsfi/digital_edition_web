@@ -161,7 +161,6 @@ export class ElasticSearchPage {
   onFacetsChanged() {
     this.cf.detectChanges()
     this.reset()
-    this.range = null
     this.debouncedSearch()
   }
 
@@ -189,14 +188,6 @@ export class ElasticSearchPage {
       this.range = null
     }
   }
-
-
-  // selectedType(type: string) {
-  //   this.type = type
-  //   console.log(type)
-  //   this.reset()
-  //   this.search()
-  // }
 
   /**
    * Resets search results.
@@ -241,7 +232,7 @@ export class ElasticSearchPage {
       .subscribe((data: any) => {
         console.log('search data', data)
         this.loading = false
-        this.total = this.query || this.hasSelectedFacets() ? data.hits.total.value : 0
+        this.total = data.hits.total.value
 
         // Append new hits to this.hits array.
         Array.prototype.push.apply(this.hits, data.hits.hits.map((hit: any) => ({
@@ -257,6 +248,10 @@ export class ElasticSearchPage {
           done()
         }
       })
+  }
+
+  showHits() {
+    return this.query || this.range || this.hasSelectedFacets()
   }
 
   hasSelectedFacets() {

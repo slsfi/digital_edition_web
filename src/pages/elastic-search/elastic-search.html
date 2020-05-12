@@ -90,16 +90,16 @@
           <ion-spinner class="loading" name="dots"></ion-spinner>
         </div>
 
-        <div *ngIf="total > 0">
-          <div *ngIf="query && !loading && total === 0" class="searchInfo" padding>
+        <div>
+          <div *ngIf="showHits() && !loading && total === 0" class="searchInfo" padding>
             {{'ElasticSearch.NoHits' | translate}}
           </div>
 
-          <div *ngIf="query && !loading && total > 0" class="searchInfo" padding>
+          <div *ngIf="showHits() && !loading && total > 0" class="searchInfo" padding>
             {{'ElasticSearch.Found' | translate}} {{total}}
           </div>
 
-          <ion-list>
+          <ion-list *ngIf="showHits() && total > 0">
             <div *ngFor="let hit of hits">
               <ion-item (click)="console.log(hit)">
                 <ion-label>
