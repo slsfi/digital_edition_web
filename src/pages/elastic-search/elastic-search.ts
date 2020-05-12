@@ -39,7 +39,7 @@ in the different categories after the search is finished?
 
 Use cases:
 
-The user might want to look at the word ‘snömos’, but only in prose and reading texts (to find out how it was used by the author in the
+The user might want to look at the word 'snömos', but only in prose and reading texts (to find out how it was used by the author in the
 19th century). From the results she sees it occurs throughout the decades 1840-1880, so she can take a look directly at the one from 1881.
 The user can then decide to look at only comments containing (i.e. explaining) this word; there are 5 of them (and they are all different).
 
@@ -74,6 +74,7 @@ export class ElasticSearchPage {
   objectValues = Object.values
 
   loading = false
+  infiniteLoading = false
   showFilter = true
   query: string
   hits: object[] = []
@@ -148,11 +149,12 @@ export class ElasticSearchPage {
    * Triggers a new search and clears selected facets.
    */
   onQueryChanged() {
-    this.cf.detectChanges()
     this.reset()
     this.facetGroups = {}
     this.range = null
+    this.loading = true
     this.debouncedSearch()
+    this.cf.detectChanges()
   }
 
   /**
@@ -161,7 +163,7 @@ export class ElasticSearchPage {
   onFacetsChanged() {
     this.cf.detectChanges()
     this.reset()
-    this.debouncedSearch()
+    this.search()
   }
 
   /**
@@ -174,14 +176,14 @@ export class ElasticSearchPage {
 
       this.cf.detectChanges()
       this.reset()
-      this.debouncedSearch()
+      this.search()
 
     } else if (!from && !to) {
       // All time
       this.range = null
       this.cf.detectChanges()
       this.reset()
-      this.debouncedSearch()
+      this.search()
 
     } else {
       // Only one year selected, so do nothing
@@ -198,21 +200,11 @@ export class ElasticSearchPage {
     this.total = -1
   }
 
-  hasMore() {
-    return this.total > this.from + this.hitsPerPage
-  }
-
   /**
-   * TODO: Make infinite scroll should work with the super long facets column.
+   * Immediately execute a search.
+   * Use debouncedSearch to wait for additional key presses when use types.
    */
-  loadMore(e) {
-    this.from += this.hitsPerPage
-
-    // Search and let ion-infinite-scroll know that it can re-enable itself.
-    this.search(() => e.complete())
-  }
-
-  search(done?: Function) {
+  private search(done?: Function) {
     console.log(`search from ${this.from} to ${this.from + this.hitsPerPage}`)
 
     this.loading = true
@@ -250,8 +242,27 @@ export class ElasticSearchPage {
       })
   }
 
-  showHits() {
-    return this.query || this.range || this.hasSelectedFacets()
+  hasMore() {
+    return this.total > this.from + this.hitsPerPage
+  }
+
+  /**
+   * TODO: Make infinite scroll should work with the super long facets column.
+   * Current workaround for this is to increate hitsPerPage to 20.
+   */
+  loadMore(e) {
+    this.infiniteLoading = true
+    this.from += this.hitsPerPage
+
+    // Search and let ion-infinite-scroll know that it can re-enable itself.
+    this.search(() => {
+      this.infiniteLoading = false
+      e.complete()
+    })
+  }
+
+  canShowHits() {
+    return (!this.loading || this.infiniteLoading) && (this.query || this.range || this.hasSelectedFacets())
   }
 
   hasSelectedFacets() {

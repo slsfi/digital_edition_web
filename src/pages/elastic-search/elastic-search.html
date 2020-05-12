@@ -91,15 +91,15 @@
         </div>
 
         <div>
-          <div *ngIf="showHits() && !loading && total === 0" class="searchInfo" padding>
+          <div *ngIf="canShowHits() && total === 0" class="searchInfo" padding>
             {{'ElasticSearch.NoHits' | translate}}
           </div>
 
-          <div *ngIf="showHits() && !loading && total > 0" class="searchInfo" padding>
+          <div *ngIf="canShowHits() && total > 0" class="searchInfo" padding>
             {{'ElasticSearch.Found' | translate}} {{total}}
           </div>
 
-          <ion-list *ngIf="showHits() && total > 0">
+          <ion-list *ngIf="canShowHits() && total > 0">
             <div *ngFor="let hit of hits">
               <ion-item (click)="console.log(hit)">
                 <ion-label>
