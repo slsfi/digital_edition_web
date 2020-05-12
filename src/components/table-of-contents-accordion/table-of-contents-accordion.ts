@@ -47,7 +47,6 @@ class InnerMenuOptionModel {
   song_id?: any;
   amountOfParents?: any;
   openByDefault?: boolean;
-  collectionId?: any;
   loading?: boolean;
   children_id?: any;
   search_children_id?: any;
@@ -273,6 +272,24 @@ export class TableOfContentsAccordionComponent {
   hasIntro: boolean;
   playmanTraditionPageInMusicAccordion = false;
   playmanTraditionPageID = '03-03';
+
+  chronologicalOrderActive: boolean;
+  thematicOrderActive = true;
+  alphabethicOrderActive: boolean;
+
+  visibleMenuStack = [];
+  visibleTitleStack = [];
+
+  chronologicalMenuStack = [];
+  chronologicalTitleStack = [];
+
+  alphabeticalMenuStack: any[];
+  alphabeticalTitleStack: any[];
+
+  menuStack = [];
+
+  sortableLetters = [];
+
   constructor(
     public platform: Platform,
     public events: Events,
@@ -285,6 +302,9 @@ export class TableOfContentsAccordionComponent {
     public userSettingsService: UserSettingsService,
     public translate: TranslateService
   ) {
+    this.collectionId = JSON.stringify(this.collectionId);
+
+    this.registerEventListeners();
     this.setConfigs();
     // Handle the redirect event
     this.events.subscribe(SideMenuRedirectEvent, (data: SideMenuRedirectEventData) => {
@@ -350,6 +370,79 @@ export class TableOfContentsAccordionComponent {
     });
 
     this.unSelectSelectedTocItemEventListener();
+  }
+
+  constructAlphabeticalTOC(data) {
+    this.alphabeticalMenuStack = [];
+    this.alphabeticalTitleStack = [];
+    const list = data.tocItems.children;
+
+    for (const child of list) {
+        if (child.date && child.type !== 'section_title') {
+            this.alphabeticalMenuStack.push(child);
+        }
+    }
+
+    this.alphabeticalMenuStack.sort((a, b) =>
+      (a.text.toUpperCase() < b.text.toUpperCase()) ? -1 : (a.text.toUpperCase() > b.text.toUpperCase()) ? 1 : 0);
+  }
+
+  constructChronologialTOC(data) {
+    this.chronologicalMenuStack = [];
+    this.chronologicalTitleStack = [];
+    const list = data.tocItems.children;
+
+    for (const child of list) {
+        if (child.date && child.type !== 'section_title') {
+            this.chronologicalMenuStack.push(child);
+        }
+    }
+
+    this.chronologicalMenuStack.sort((a, b) => (a.date < b.date) ? -1 : (a.date > b.date) ? 1 : 0);
+  }
+
+  registerEventListeners() {
+    this.events.subscribe('tableOfContents:loaded', (data) => {
+
+      try {
+        this.sortableLetters = this.config.getSettings('settings.sortableLetters');
+      } catch (e) {
+        this.sortableLetters = null;
+      }
+
+      this.menuStack = [data.tocItems.children];
+
+      this.constructAlphabeticalTOC(data);
+      this.constructChronologialTOC(data);
+
+      this.visibleMenuStack = this.menuStack;
+
+      console.log(this.visibleMenuStack, 'visible menu stack');
+    });
+  }
+
+  setActiveSortingType(e) {
+    const thematic = e.target.id === 'thematic' || e.target.parentElement.parentElement.id === 'thematic';
+    const alphabetic = e.target.id === 'alphabetical' || e.target.parentElement.parentElement.id === 'alphabetical';
+    const chronological = e.target.id === 'chronological' || e.target.parentElement.parentElement.id === 'chronological';
+
+    if (thematic) {
+        this.alphabethicOrderActive = false;
+        this.chronologicalOrderActive = false;
+        this.thematicOrderActive = true;
+    } else if (alphabetic) {
+        this.alphabethicOrderActive = true;
+        this.chronologicalOrderActive = false;
+        this.thematicOrderActive = false;
+    } else if (chronological) {
+        this.alphabethicOrderActive = false;
+        this.chronologicalOrderActive = true;
+        this.thematicOrderActive = false;
+    }
+  }
+
+  log(x) {
+      console.log(x, 'dsdasddsa');
   }
 
   ngOnChanges(about) {
@@ -540,6 +633,8 @@ export class TableOfContentsAccordionComponent {
     } else if (this.isGallery) {
       this.selectGallery(item);
     } else {
+      console.log(this.options, 'får vi naa nu då???');
+
       this.storage.set('currentTOCItem', item);
       const params = {root: this.options, tocItem: item, collection: {title: item.text}};
       const nav = this.app.getActiveNavs();

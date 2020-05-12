@@ -84,6 +84,7 @@ export class TableOfContentsDrilldownMenuComponent {
     const thematic = e.target.id === 'thematic' || e.target.parentElement.parentElement.id === 'thematic';
     const alphabetic = e.target.id === 'alphabetical' || e.target.parentElement.parentElement.id === 'alphabetical';
     const chronological = e.target.id === 'chronological' || e.target.parentElement.parentElement.id === 'chronological';
+
     if (thematic) {
         this.alphabethicOrderActive = false;
         this.chronologicalOrderActive = false;

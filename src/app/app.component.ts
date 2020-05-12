@@ -746,7 +746,6 @@ export class DigitalEditionsApp {
         }
       }
       this.options = data.tocItems.children;
-      console.log(this.options);
       this.currentCollectionId = data.tocItems.collectionId;
       this.currentCollectionName = data.tocItems.text;
     });
