@@ -269,7 +269,8 @@ export class ElasticSearchPage {
    * Populate facets data using the search results aggregation data.
    */
   private populateFacets(aggregations: Object) {
-    Object.keys(aggregations).forEach(facetKey => {
+    // Get aggregation keys that are ordered in config.json.
+    this.elastic.getAggregationKeys().forEach(facetKey => {
       const latestFacets = this.convertBucketsToFacets(aggregations[facetKey].buckets)
       if (this.facetGroups[facetKey]) {
         Object.entries(this.facetGroups[facetKey]).forEach(([key, facet]: [string, any]) => {

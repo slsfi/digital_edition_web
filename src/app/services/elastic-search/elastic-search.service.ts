@@ -119,6 +119,10 @@ export class ElasticSearchService {
     return !!this.aggregations[aggregationKey]['terms']
   }
 
+  getAggregationKeys(): string[] {
+    return Object.keys(this.aggregations)
+  }
+
   private getSearchUrl(): string {
     return this.apiEndpoint + '/' + this.machineName + this.searchApiPath + this.indices.join(',')
   }
