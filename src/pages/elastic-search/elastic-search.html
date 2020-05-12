@@ -68,7 +68,7 @@
                           {{facet.key_as_string || facet.key}}
                           ({{facet.doc_count}})
                         </ion-label>
-                        <ion-checkbox [(ngModel)]="facet.selected" (click)="toggleFacet(facetGroupKey, facet)" [disabled]="facet.doc_count === 0"></ion-checkbox>
+                        <ion-checkbox [(ngModel)]="facet.selected" (click)="toggleFacet(facetGroupKey, facet)" [disabled]="facet.doc_count === 0 && facetGroupKey !== 'Type'"></ion-checkbox>
                     </ion-item>
                   </ng-template>
 

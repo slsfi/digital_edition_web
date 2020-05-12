@@ -269,6 +269,18 @@ export class ElasticSearchPage {
     return Object.values(this.facetGroups).some(facets => Object.values(facets).some(facet => facet.selected))
   }
 
+  hasSelectedFacetGroup(key: string) {
+    return Object.keys(this.facetGroups).some(facetGroupKey =>
+      facetGroupKey === key && Object.values(this.facetGroups[facetGroupKey]).some(facet => facet.selected)
+    )
+  }
+
+  hasSelectedNormalFacets() {
+    return Object.keys(this.facetGroups).some(facetGroupKey =>
+      facetGroupKey !== 'Type' && facetGroupKey !== 'Years' && Object.values(this.facetGroups[facetGroupKey]).some(facet => facet.selected)
+    )
+  }
+
   toggleFacet(facetGroupKey: string, facet: Facet) {
     const facets = this.facetGroups[facetGroupKey] || {}
     facets[facet.key] = facet
@@ -281,17 +293,28 @@ export class ElasticSearchPage {
    */
   private populateFacets(aggregations: Object) {
     // Get aggregation keys that are ordered in config.json.
-    this.elastic.getAggregationKeys().forEach(facetKey => {
-      const latestFacets = this.convertBucketsToFacets(aggregations[facetKey].buckets)
-      if (this.facetGroups[facetKey]) {
-        Object.entries(this.facetGroups[facetKey]).forEach(([key, facet]: [string, any]) => {
-          const latestFacet = latestFacets[key]
+    this.elastic.getAggregationKeys().forEach(facetGroupKey => {
+      const latestFacets = this.convertBucketsToFacets(aggregations[facetGroupKey].buckets)
+      if (this.facetGroups[facetGroupKey]) {
+        Object.entries(this.facetGroups[facetGroupKey]).forEach(([facetKey, facet]: [string, any]) => {
+          const latestFacet = latestFacets[facetKey]
 
-          // TODO: Don't set count to 0 for type.
-          facet.doc_count = latestFacet ? latestFacet.doc_count : 0
+          if (facetGroupKey === 'Type') {
+            // Don't set count to 0 for Type facet group.
+            if (latestFacet) {
+              // TODO: Explain this
+              facet.doc_count = latestFacet.doc_count
+            } else {
+              // TODO: Explain this
+              facet.doc_count = (this.range || this.hasSelectedFacetGroup('Type')) && !this.hasSelectedNormalFacets() ? facet.doc_count : 0
+            }
+          } else {
+            // TODO: Explain this
+            facet.doc_count = latestFacet ? latestFacet.doc_count : (this.hasSelectedFacetGroup(facetGroupKey) ? facet.doc_count : 0)
+          }
         })
       } else {
-        this.facetGroups[facetKey] = latestFacets
+        this.facetGroups[facetGroupKey] = latestFacets
       }
     })
   }
