@@ -361,7 +361,7 @@
       "tit",
       "ms"
     ],
-    "hitsPerPage": 10,
+    "hitsPerPage": 20,
     "source": [
       "xml_type",
       "TitleIndexed",

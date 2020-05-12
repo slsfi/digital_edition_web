@@ -77,7 +77,7 @@ export class ElasticSearchPage {
   showFilter = true
   query: string
   hits: object[] = []
-  hitsPerPage = 10
+  hitsPerPage = 20
   aggregations: object = {}
   facetGroups: FacetGroups = {}
 
