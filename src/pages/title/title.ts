@@ -9,23 +9,22 @@ import { ConfigService } from '@ngx-config/core';
 import { MdContentService } from '../../app/services/md/md-content.service';
 
 /**
- * Generated class for the CoverPage page.
- *
- * Collection cover/title page.
+ * Generated class for the TitlePage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
 
 @IonicPage({
-  name: 'cover',
-  segment: 'publication/:collectionID/cover/'
+  name: 'title-page',
+  segment: 'publication-title/:collectionID',
+  priority: 'high'
 })
 @Component({
-  selector: 'page-cover',
-  templateUrl: 'cover.html',
+  selector: 'page-title',
+  templateUrl: 'title.html',
 })
-export class CoverPage {
+export class TitlePage {
 
   errorMessage: any;
   mdContent: string;
@@ -55,6 +54,8 @@ export class CoverPage {
   ) {
     this.coverSelected = true;
     this.id = this.params.get('collectionID');
+    console.log(`Coverpage id is ${this.id}`);
+
     this.collection = this.params.get('collection');
     if ( this.params.get('publicationID') === undefined ) {
       this.coverSelected = true;
@@ -165,4 +166,5 @@ export class CoverPage {
       }
     }
   }
+
 }

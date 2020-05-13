@@ -13,7 +13,7 @@ import { TableOfContentsService } from '../../app/services/toc/table-of-contents
 
 @IonicPage({
   name: 'single-edition-part',
-  segment: 'publication/:collectionID/table-of-contents/:id/'
+  segment: 'publication-part-toc/:collectionID/:id/'
 })
 @Component({
   selector: 'page-single-edition-part',
