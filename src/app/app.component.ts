@@ -99,7 +99,7 @@ export class DigitalEditionsApp {
 
   pagesThatShallShow = {
     tocMenu: ['FeaturedFacsimilePage'],
-    tocMenuIfNotAccordion: ['SingleEditionPage', 'CoverPage'],
+    tocMenuIfNotAccordion: ['SingleEditionPage', 'TitleMenu'],
     aboutMenu: ['AboutPage'],
     contentMenu: ['HomePage', 'EditionsPage', 'ContentPage', 'MusicPage', 'FeaturedFacsimilePage']
   }
@@ -1157,7 +1157,6 @@ export class DigitalEditionsApp {
 
         document.getElementById('contentMenu').classList.remove('menu-enabled');
         document.getElementById('tableOfContentsMenu').classList.add('menu-enabled');
-        console.log('jihppp');
 
         this.nav.setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
       }

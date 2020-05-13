@@ -26,7 +26,8 @@ import { PdfService } from '../../app/services/pdf/pdf.service';
 
 @IonicPage({
   name: 'single-edition',
-  segment: 'publication/:id/table-of-contents'
+  segment: 'publication-toc/:id',
+  priority: 'high'
 })
 @Component({
   selector: 'page-single-edition',
@@ -257,7 +258,7 @@ export class SingleEditionPage {
       const nav = this.app.getActiveNavs();
       const params = { collection: this.collection, fetch: true, collectionID: this.collection.id };
 
-      nav[0].setRoot('cover', params);
+      nav[0].setRoot('title-page', params);
     } else {
       this.showPage = true;
     }

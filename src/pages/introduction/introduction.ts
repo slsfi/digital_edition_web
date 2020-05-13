@@ -17,7 +17,7 @@ import { ConfigService } from '@ngx-config/core';
 
 @IonicPage({
   name: 'introduction',
-  segment: 'publication/:collectionID/introduction/'
+  segment: 'publication-introduction/:collectionID/'
 })
 @Component({
   selector: 'page-introduction',

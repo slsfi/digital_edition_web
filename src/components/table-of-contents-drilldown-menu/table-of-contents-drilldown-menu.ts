@@ -43,7 +43,7 @@ export class TableOfContentsDrilldownMenuComponent {
   titleText: string;
   introText: string;
   coverSelected: boolean;
-  titleSelected: boolean;
+  introductionSelected: boolean;
 
   sortableLetters = [];
   letterView = false;
@@ -63,7 +63,7 @@ export class TableOfContentsDrilldownMenuComponent {
     const nav = this.app.getActiveNavs();
     this.getTOCItem();
     this.coverSelected = false;
-    this.titleSelected = false;
+    this.introductionSelected = false;
   }
 
   ionViewWillEnter() {
@@ -217,10 +217,10 @@ export class TableOfContentsDrilldownMenuComponent {
       this.coverSelected = false;
     }
 
-    if ( data.tocItems.titleSelected !== undefined ) {
-      this.titleSelected = true;
+    if ( data.tocItems.introductionSelected !== undefined ) {
+      this.introductionSelected = true;
     } else {
-      this.titleSelected = false;
+      this.introductionSelected = false;
     }
 
     this.translate.get('Read.TitlePage.Title').subscribe(
@@ -275,7 +275,7 @@ export class TableOfContentsDrilldownMenuComponent {
     const nav = this.app.getActiveNavs();
 
     this.coverSelected = false;
-    this.titleSelected = false;
+    this.introductionSelected = false;
 
     for (let menuItemIndex = 0; menuItemIndex < this.visibleMenuStack.length; menuItemIndex++) {
       const menuItem = this.visibleMenuStack[menuItemIndex];
@@ -364,9 +364,9 @@ export class TableOfContentsDrilldownMenuComponent {
      params['firstItem'] = '1';
      const nav = this.app.getActiveNavs();
      if (this.platform.is('mobile')) {
-      nav[0].push('cover', params);
+      nav[0].push('title-page', params);
     } else {
-      nav[0].setRoot('cover', params);
+      nav[0].setRoot('title-page', params);
     }
   }
 

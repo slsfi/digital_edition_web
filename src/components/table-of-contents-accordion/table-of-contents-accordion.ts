@@ -670,9 +670,9 @@ export class TableOfContentsAccordionComponent {
     this.titleSelected = false;
     const nav = this.app.getActiveNavs();
     if (this.platform.is('mobile')) {
-      nav[0].push('cover', params);
+      nav[0].push('title-page', params);
     } else {
-      nav[0].setRoot('cover', params);
+      nav[0].setRoot('title-page', params);
     }
   }
 

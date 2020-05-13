@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { CoverPage } from './cover';
+import { TitlePage } from './title';
+
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ComponentsModule } from '../../components/components.module';
@@ -11,13 +12,12 @@ export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
-
 @NgModule({
   declarations: [
-    CoverPage,
+    TitlePage,
   ],
   imports: [
-    IonicPageModule.forChild(CoverPage),
+    IonicPageModule.forChild(TitlePage),
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
@@ -29,4 +29,4 @@ export function createTranslateLoader(http: HttpClient) {
     MarkdownModule.forRoot(),
   ],
 })
-export class CoverPageModule {}
+export class TitlePageModule {}
