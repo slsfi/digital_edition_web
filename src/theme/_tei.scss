@@ -105,7 +105,7 @@
     .bottomMargin {
         margin-bottom: 1em;
     }
-    p.dateline 
+    p.dateline
     {
         margin-top: 1.0em;
         margin-bottom: 1.0em;
@@ -196,11 +196,11 @@
         margin-top: 0;
         margin-bottom: 0;
     }
-    p.lIndent 
+    p.lIndent
     {
         text-indent:-9px !important;
     }
-    .tei_indent 
+    .tei_indent
     {
         padding-left:30px !important;
         display: inline-block;
@@ -395,7 +395,7 @@
         padding-left: 30px !important;
         text-indent: -30px !important;
     }
-    p.noteLegend 
+    p.noteLegend
     {
         text-indent: 0px !important;
         margin-bottom: 1em;
@@ -417,7 +417,7 @@
         content:" – ";
     }
     .noteText {
-        
+
     }
 
     /* MANUSCRIPT */
@@ -895,3 +895,6 @@
 .tei.smallFont              p { font-size: 1rem; line-height: 1.5rem;}
 .tei.largeFont              p { font-size: 1.6rem; line-height: 2rem;}
 .tei.mediumFont              p { font-size: 1.2rem; line-height: 1.8rem;}
+
+@media only screen and (max-width: 600px) { div.tei{ max-width: 300px; } }
+@media only screen and (min-width: 800px) { div.tei{ max-width: 670px; } }
