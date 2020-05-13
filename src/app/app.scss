@@ -28,8 +28,11 @@ ion-split-pane {
 
 .tei {
   font-family: $font-app-tei;
-  user-select: text !important;
+  // user-select: text !important;
+
 }
+
+.selectable { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
 
 ion-app, ion-app.md {
   font-family: $font-family-base;

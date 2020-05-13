@@ -28,6 +28,7 @@ export class ManuscriptsComponent {
   normalized = true;
   errorMessage: string;
   msID: string;
+  chapter: string;
 
   constructor(
     protected sanitizer: DomSanitizer,
@@ -45,6 +46,11 @@ export class ManuscriptsComponent {
   }
 
   ngOnInit() {
+    const parts = String(this.itemId).split('_')
+    this.chapter = null;
+    if ( parts[2] !== undefined ) {
+      this.chapter = parts[2];
+    }
     this.msID = this.itemId + '_ms';
     this.setText();
   }
@@ -88,7 +94,7 @@ export class ManuscriptsComponent {
   }
 
   getManuscript() {
-    this.textService.getManuscripts(this.itemId).subscribe(
+    this.textService.getManuscripts(this.itemId, this.chapter).subscribe(
       res => {
         // in order to get id attributes for tooltips
         console.log('recieved manuscript ,..,', res.manuscripts);

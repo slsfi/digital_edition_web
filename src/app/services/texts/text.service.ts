@@ -33,7 +33,7 @@ export class TextService {
     const pub_id = `${id}`.split('_')[1];
     let ch_id = null;
     if ( `${id}`.split('_')[2] !== undefined ) {
-      ch_id = `${id}`.split('_')[2];
+      ch_id = String(`${id}`.split('_')[2]).split(';')[0];
     }
     const textId = parts[0];
 
@@ -118,12 +118,16 @@ export class TextService {
         .catch(this.handleError);
   }
 
-  getManuscripts(id: string): Observable<any> {
+  getManuscripts(id: string, chapter?: string): Observable<any> {
     const c_id = `${id}`.split('_')[0];
     const pub_id = `${id}`.split('_')[1];
 
+    if ( chapter !== undefined ) {
+      chapter = String(chapter).split(';')[0];
+    }
+
     return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
-        this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/ms')
+        this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/ms' + ((chapter) ? '/' + chapter + '' : ''))
         .map(res => {
           return res.json();
         })
