@@ -366,35 +366,76 @@
       "xml_type",
       "TitleIndexed",
       "publication_data",
+      "publication_locations",
       "name",
-      "collection_name"
+      "collection_name",
+      "orig_date_year_uncertain",
+      "orig_date_certain",
+      "receiver_subject_name",
+      "sender_subject_name",
+      "receiver_location_name",
+      "sender_location_name"
     ],
     "aggregations": {
-      "Type": {
-        "field": "xml_type.keyword",
-        "size": 40
-      },
-      "Location": {
-        "field": "receiver_location_name.keyword",
-        "size": 40
-      },
-      "Person": {
-        "field": "persName.keyword",
-        "size": 40
-      },
-      "Collection": {
-        "field": "collection_name.keyword",
-        "size": 40
-      },
-      "Genre": {
-        "field": "publication_data[0].genre.keyword",
-        "size": 40
-      },
       "Years": {
         "date_histogram": {
           "field": "orig_date_certain",
           "calendar_interval": "year",
           "format": "yyyy"
+        }
+      },
+      "Type": {
+        "terms": {
+          "field": "xml_type.keyword",
+          "size": 40
+        }
+      },
+      "Location": {
+        "terms": {
+          "field": "publication_locations.keyword",
+          "size": 40
+        }
+      },
+      "Collection": {
+        "terms": {
+          "field": "publication_data.colname.keyword",
+          "size": 40
+        }
+      },
+      "Genre": {
+        "terms": {
+          "field": "publication_data.genre.keyword",
+          "size": 40
+        }
+      },
+      "Person": {
+        "terms": {
+          "field": "persName.keyword",
+          "size": 40
+        }
+      },
+      "LetterSenderName": {
+        "terms": {
+          "field": "sender_subject_name.keyword",
+          "size": 40
+        }
+      },
+      "LetterReceiverName": {
+        "terms": {
+          "field": "receiver_subject_name.keyword",
+          "size": 40
+        }
+      },
+      "LetterSenderLocation": {
+        "terms": {
+          "field": "sender_location_name.keyword",
+          "size": 40
+        }
+      },
+      "LetterReceiverLocation": {
+        "terms": {
+          "field": "receiver_location_name.keyword",
+          "size": 40
         }
       }
     }
