@@ -24,7 +24,7 @@
   <ion-item *ngIf="menuStack.length === 1 && titleText.length>0" shwoWen="core, mobile" [ngClass]="this.coverSelected?'selected':''">
     <p class="justLevel" (click)="openTitlePage()">{{ "Read.TitlePage.Title" | translate }}</p>
   </ion-item>
-  <ion-item *ngIf="menuStack.length === 1 && introText.length>0" [ngClass]="this.titleSelected?'selected':''">
+  <ion-item *ngIf="menuStack.length === 1 && introText.length>0" [ngClass]="this.introductionSelected?'selected':''">
     <p class="justLevel" (click)="openIntroduction()">{{ "Read.Introduction.Title" | translate }}</p>
   </ion-item>
   <ng-container *ngFor="let item of visibleMenuStack[visibleMenuStack.length -1]; let i = index;">

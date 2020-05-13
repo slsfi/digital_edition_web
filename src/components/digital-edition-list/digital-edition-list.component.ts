@@ -216,7 +216,7 @@ export class DigitalEditionList implements OnInit {
         const nav = this.app.getActiveNavs();
         let params;
         params = { collection: collection, fetch: true, collectionID: collection.id };
-        nav[0].setRoot('cover', params);
+        nav[0].setRoot('title-page', params);
       }
     } else {
       this.downloadPDF(collection);
