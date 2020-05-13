@@ -305,6 +305,9 @@ export class TableOfContentsDrilldownMenuComponent {
       const parts = item.itemId.split('_');
       params['collectionID'] = parts[0];
       params['publicationID'] = parts[1];
+      if ( parts[2] !== undefined ) {
+        params['chapterID'] = parts[2];
+      }
     }
 
     if ( this.currentItem['facsimilePage'] ) {

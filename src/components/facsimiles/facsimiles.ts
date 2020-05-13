@@ -52,6 +52,7 @@ export class FacsimilesComponent {
 
   facsPage: any;
   facsNumber = 0;
+  chapter: string;
 
   constructor(
     protected sanitizer: DomSanitizer,
@@ -71,6 +72,13 @@ export class FacsimilesComponent {
     this.manualPageNumber = 1;
     this.text = '';
     this.facsimiles = [];
+
+    const parts = String(this.itemId).split('_')
+    this.chapter = null;
+    if ( parts[2] !== undefined ) {
+      this.chapter = parts[2];
+    }
+
     if (this.params.get('facsimilePage') !== undefined) {
       this.facsimilePage = this.params.get('facsimilePage');
       // To account for index at 0
@@ -173,7 +181,7 @@ export class FacsimilesComponent {
     if (itemId) {
       this.itemId = itemId
     }
-    this.facsimileService.getFacsimiles(this.itemId).subscribe(
+    this.facsimileService.getFacsimiles(this.itemId, this.chapter).subscribe(
       facs => {
         // in order to get id attributes for tooltips
         this.facsimiles = [];
