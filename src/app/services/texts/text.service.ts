@@ -122,7 +122,7 @@ export class TextService {
     const c_id = `${id}`.split('_')[0];
     const pub_id = `${id}`.split('_')[1];
 
-    if ( chapter !== undefined ) {
+    if ( chapter !== undefined && chapter !== null ) {
       chapter = String(chapter).split(';')[0];
     }
 
