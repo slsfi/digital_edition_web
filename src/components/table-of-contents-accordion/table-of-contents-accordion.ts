@@ -47,7 +47,6 @@ class InnerMenuOptionModel {
   song_id?: any;
   amountOfParents?: any;
   openByDefault?: boolean;
-  collectionId?: any;
   loading?: boolean;
   children_id?: any;
   search_children_id?: any;
@@ -239,9 +238,9 @@ export class TableOfContentsAccordionComponent {
           }
         }
       }
-
       this.searchingForTocItem = false;
     }
+    this.activeMenuTree = this.collapsableItems;
   }
 
   @Input('settings')
@@ -257,6 +256,7 @@ export class TableOfContentsAccordionComponent {
   @Input() showBackButton?: Boolean;
   @Input() isMarkdown?: Boolean;
   @Input() isGallery?: Boolean;
+  @Input() open: Boolean;
   @Output() selectOption = new EventEmitter<any>();
 
   currentItem: GeneralTocItem;
@@ -272,6 +272,24 @@ export class TableOfContentsAccordionComponent {
   hasIntro: boolean;
   playmanTraditionPageInMusicAccordion = false;
   playmanTraditionPageID = '03-03';
+
+  chronologicalOrderActive: boolean;
+  thematicOrderActive = true;
+  alphabethicOrderActive: boolean;
+
+  visibleactiveMenuTree = [];
+  visibleTitleStack = [];
+
+  chronologicalactiveMenuTree = [];
+  chronologicalTitleStack = [];
+
+  alphabeticalactiveMenuTree: any[];
+  alphabeticalTitleStack: any[];
+
+  activeMenuTree = [];
+
+  sortableLetters = [];
+
   constructor(
     public platform: Platform,
     public events: Events,
@@ -284,6 +302,9 @@ export class TableOfContentsAccordionComponent {
     public userSettingsService: UserSettingsService,
     public translate: TranslateService
   ) {
+    this.collectionId = JSON.stringify(this.collectionId);
+
+    this.registerEventListeners();
     this.setConfigs();
     // Handle the redirect event
     this.events.subscribe(SideMenuRedirectEvent, (data: SideMenuRedirectEventData) => {
@@ -351,6 +372,92 @@ export class TableOfContentsAccordionComponent {
     this.unSelectSelectedTocItemEventListener();
   }
 
+  constructAlphabeticalTOC(data) {
+    this.alphabeticalactiveMenuTree = [];
+    this.alphabeticalTitleStack = [];
+    const list = this.flattenList(data.tocItems);
+
+console.log(list, ' alphas');
+
+
+    for (const child of list) {
+        if (child.type !== 'section_title') {
+            this.alphabeticalactiveMenuTree.push(child);
+        }
+    }
+
+    this.alphabeticalactiveMenuTree.sort((a, b) =>
+      (a.text.toUpperCase() < b.text.toUpperCase()) ? -1 : (a.text.toUpperCase() > b.text.toUpperCase()) ? 1 : 0);
+
+    console.log(this.alphabeticalactiveMenuTree, ' alpha');
+
+  }
+
+  constructChronologialTOC(data) {
+    this.chronologicalactiveMenuTree = [];
+    this.chronologicalTitleStack = [];
+
+    const list = this.flattenList(data.tocItems);
+
+    for (const child of list) {
+        if (child.date && child.type !== 'section_title') {
+            this.chronologicalactiveMenuTree.push(child);
+        }
+    }
+
+    this.chronologicalactiveMenuTree.sort((a, b) => (a.date < b.date) ? -1 : (a.date > b.date) ? 1 : 0);
+    console.log(this.chronologicalactiveMenuTree, 'chrono');
+  }
+
+  flattenList(data) {
+    data.childrenCount = 0;
+    let list = [data];
+    if (!data.children) {
+      return list;
+    }
+    for (const child of data.children) {
+      list = list.concat(this.flattenList(child));
+    }
+    return list;
+  }
+
+  registerEventListeners() {
+    this.events.subscribe('tableOfContents:loaded', (data) => {
+      try {
+        this.sortableLetters = this.config.getSettings('settings.sortableLetters');
+      } catch (e) {
+        this.sortableLetters = null;
+      }
+
+      this.constructAlphabeticalTOC(data);
+      this.constructChronologialTOC(data);
+    });
+  }
+
+  setActiveSortingType(e) {
+    const thematic = e.target.id === 'thematic' || e.target.parentElement.parentElement.id === 'thematic';
+    const alphabetic = e.target.id === 'alphabetical' || e.target.parentElement.parentElement.id === 'alphabetical';
+    const chronological = e.target.id === 'chronological' || e.target.parentElement.parentElement.id === 'chronological';
+
+    if (thematic) {
+        this.alphabethicOrderActive = false;
+        this.chronologicalOrderActive = false;
+        this.thematicOrderActive = true;
+    } else if (alphabetic) {
+        this.alphabethicOrderActive = true;
+        this.chronologicalOrderActive = false;
+        this.thematicOrderActive = false;
+    } else if (chronological) {
+        this.alphabethicOrderActive = false;
+        this.chronologicalOrderActive = true;
+        this.thematicOrderActive = false;
+    }
+  }
+
+  log(x) {
+      console.log(x, 'dsdasddsa');
+  }
+
   ngOnChanges(about) {
     if ( Array.isArray(about) ) {
       this.menuOptions = about;
@@ -361,6 +468,7 @@ export class TableOfContentsAccordionComponent {
       this.menuOptions.forEach(option => {
         const innerMenuOption = InnerMenuOptionModel.fromMenuOptionModel(option, null, false, false);
         this.collapsableItems.push(innerMenuOption);
+        this.activeMenuTree.push(innerMenuOption);
 
         // Check if there's any option marked as selected
         if (option.selected) {
@@ -539,6 +647,8 @@ export class TableOfContentsAccordionComponent {
     } else if (this.isGallery) {
       this.selectGallery(item);
     } else {
+      console.log(this.options, 'får vi naa nu då???');
+
       this.storage.set('currentTOCItem', item);
       const params = {root: this.options, tocItem: item, collection: {title: item.text}};
       const nav = this.app.getActiveNavs();
@@ -701,8 +811,18 @@ export class TableOfContentsAccordionComponent {
   exit() {
     this.collectionId = null;
     this.collectionName = null;
+
+    this.events.publish('exitActiveCollection');
+
+    this.activeMenuTree = [];
+    this.collapsableItems = [];
+
     const nav = this.app.getActiveNavs();
     nav[0].setRoot('EditionsPage', [], {animate: false, direction: 'back', animation: 'ios-transition'});
+
+    this.alphabethicOrderActive = false;
+    this.chronologicalOrderActive = false;
+    this.thematicOrderActive = false;
   }
 
   /**

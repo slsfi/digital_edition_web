@@ -84,6 +84,7 @@ export class TableOfContentsDrilldownMenuComponent {
     const thematic = e.target.id === 'thematic' || e.target.parentElement.parentElement.id === 'thematic';
     const alphabetic = e.target.id === 'alphabetical' || e.target.parentElement.parentElement.id === 'alphabetical';
     const chronological = e.target.id === 'chronological' || e.target.parentElement.parentElement.id === 'chronological';
+
     if (thematic) {
         this.alphabethicOrderActive = false;
         this.chronologicalOrderActive = false;
@@ -130,10 +131,11 @@ export class TableOfContentsDrilldownMenuComponent {
   }
 
   flattenList(data) {
+    const list = [data];
     if (!data.children) {
-      return [data];
+      return list;
     }
-    const list = [];
+
     for (const child of data.children) {
       list.concat(this.flattenList(child));
     }
@@ -260,8 +262,8 @@ export class TableOfContentsDrilldownMenuComponent {
     if ( this.visibleMenuStack.length === 2 && this.visibleMenuStack[0] === this.visibleMenuStack[1] ) {
       this.exit();
     }
-    document.getElementById('contentMenu').classList.add('menu-enabled');
-    document.getElementById('tableOfContentsMenu').classList.remove('menu-enabled');
+    // document.getElementById('contentMenu').classList.add('menu-enabled');
+    // document.getElementById('tableOfContentsMenu').classList.remove('menu-enabled');
 
     this.visibleMenuStack.pop();
     this.visibleTitleStack.pop();
@@ -389,6 +391,7 @@ export class TableOfContentsDrilldownMenuComponent {
     this.collectionName = null;
     const nav = this.app.getActiveNavs();
     nav[0].setRoot('EditionsPage', [], {animate: false, direction: 'back', animation: 'ios-transition'});
+    this.events.publish('exitedTo', 'EditionsPage');
   }
 }
 

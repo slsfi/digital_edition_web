@@ -1,5 +1,27 @@
 table-of-contents-accordion {
 
+    .collection-filters {
+        ion-label {
+            display: flex;
+            justify-content: space-around;
+
+            button {
+                .button-inner ion-icon {
+                    color: #ddd;
+                }
+
+                &.active {
+                    background-color:#4a6770;
+                    color: #fff;
+
+                    &:hover {
+                        background-color: #547a86;
+                    }
+                }
+            }
+        }
+    }
+
     ion-item.item-ios [item-left], ion-item.item-ios [item-right],
     ion-item.item-md [item-left],
     ion-item.item-md [item-right],
@@ -19,6 +41,18 @@ table-of-contents-accordion {
     ion-list.accordion-menu ion-item.header ion-icon.header-icon {
         will-change: transform;
         transition: transform 0.3s ease;
+    }
+
+    .item.item-block.item-md.option {
+        margin: 0 !important;
+    }
+
+    .options.recursive-suboptions {
+        margin-left: 20px;
+    }
+
+    .accordion-menu .list .list-md {
+        background-color: #ecece4;
     }
     
     ion-list.accordion-menu ion-item.header ion-icon.header-icon.rotate {
