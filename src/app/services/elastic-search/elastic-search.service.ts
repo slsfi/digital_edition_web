@@ -44,6 +44,7 @@ export class ElasticSearchService {
     type,
     range,
     facetGroups,
+    sort,
   }: Query): object {
     const payload: any = {
       from,
@@ -53,7 +54,8 @@ export class ElasticSearchService {
         bool: {
           must: []
         }
-      }
+      },
+      sort,
     }
 
     if (query) {

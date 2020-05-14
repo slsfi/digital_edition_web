@@ -85,6 +85,7 @@ export class ElasticSearchPage {
   // -1 when there a search hasn't returned anything yet.
   total = -1
   from = 0
+  sort = ''
 
   range: TimeRange
 
@@ -192,6 +193,14 @@ export class ElasticSearchPage {
   }
 
   /**
+   * Sorting changed so trigger new query.
+   */
+  onSortByChanged() {
+    this.reset()
+    this.search()
+  }
+
+  /**
    * Resets search results.
    */
   reset() {
@@ -220,6 +229,7 @@ export class ElasticSearchPage {
       size: this.hitsPerPage,
       facetGroups: this.facetGroups,
       range: this.range,
+      sort: this.parseSortForQuery(),
     })
       .subscribe((data: any) => {
         console.log('search data', data)
@@ -240,6 +250,15 @@ export class ElasticSearchPage {
           done()
         }
       })
+  }
+
+  private parseSortForQuery() {
+    if (!this.sort) {
+      return
+    }
+
+    const [key, direction] = this.sort.split('.')
+    return [{ [key]: direction }]
   }
 
   hasMore() {
@@ -349,16 +368,33 @@ export class ElasticSearchPage {
     return get(source, 'publication_data[0].genre', source.collection_name)
   }
 
-  getDate(source: any) {
-    return get(source, 'publication_data[0].original_publication_date')
+  private formatISO8601DateToLocale(date: string) {
+    return date && new Date(date).toLocaleDateString('fi-FI')
   }
 
-  getHeading(source) {
-    return [this.getTitle(source), this.getPublicationName(source)].filter(str => str).join(', ')
+  private getDate(source: any) {
+    return get(source, 'publication_data[0].original_publication_date', this.formatISO8601DateToLocale(source.orig_date_certain))
+  }
+
+  private filterEmpty(array: any[]) {
+    return array.filter(str => str).join(', ')
+  }
+
+  getHeading(source: any) {
+    switch (source.type) {
+      case 'brev':
+        return this.filterEmpty([this.getTitle(source), this.getPublicationName(source)])
+
+      default:
+        return this.filterEmpty([this.getTitle(source), this.getPublicationName(source)])
+    }
   }
 
   getSubHeading(source) {
-    return [this.getGenre(source), this.getDate(source)].filter(str => str).join(', ')
+    return this.filterEmpty([
+      this.getGenre(source),
+      source.type !== 'brev' && this.getDate(source)
+    ])
   }
 
   openAccordion(e, group) {

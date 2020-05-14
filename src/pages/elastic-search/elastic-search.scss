@@ -25,16 +25,18 @@ page-elastic-search {
     text-transform: none;
   }
 
-  .searchInfo {
+  .searchStatus {
     color: color($colors, grey);
   }
 
-  ion-item {
-    cursor: pointer;
-
+  ion-item.item.item-block.item-md {
     .item-inner {
-      padding: 10px 0;
+      border-bottom: none;
     }
+  }
+
+  ion-item.item.item-block.item-md {
+    cursor: pointer;
 
     .itemHeading {
       font-weight: bold;
@@ -55,22 +57,13 @@ page-elastic-search {
 
     // List of facets
     ion-list.facets {
-      margin: 0;
+      margin: 0 0 0 20px;
 
-      ion-item.facet {
+      ion-item.item.item-block.item-md.facet {
         min-height: 1rem;
-        padding: 0;
 
-        .item-inner {
-          padding: 0;
-        }
-
-        ion-label {
-          margin: 0;
-          padding: 5px;
-        }
         ion-checkbox.checkbox-md {
-          margin: 10px;
+          margin: 5px;
         }
       }
     }

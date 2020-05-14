@@ -7,6 +7,7 @@ interface Query {
   size: number
   facetGroups?: FacetGroups
   range?: TimeRange
+  sort?: object[]
 }
 
 interface TimeRange {
