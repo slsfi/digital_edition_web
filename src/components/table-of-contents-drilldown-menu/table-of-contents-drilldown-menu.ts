@@ -131,10 +131,11 @@ export class TableOfContentsDrilldownMenuComponent {
   }
 
   flattenList(data) {
+    const list = [data];
     if (!data.children) {
-      return [data];
+      return list;
     }
-    const list = [];
+
     for (const child of data.children) {
       list.concat(this.flattenList(child));
     }

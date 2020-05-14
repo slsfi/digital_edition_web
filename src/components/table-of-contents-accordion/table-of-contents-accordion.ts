@@ -238,9 +238,9 @@ export class TableOfContentsAccordionComponent {
           }
         }
       }
-
       this.searchingForTocItem = false;
     }
+    this.menuStack = this.collapsableItems;
   }
 
   @Input('settings')
@@ -375,22 +375,29 @@ export class TableOfContentsAccordionComponent {
   constructAlphabeticalTOC(data) {
     this.alphabeticalMenuStack = [];
     this.alphabeticalTitleStack = [];
-    const list = data.tocItems.children;
+    const list = this.flattenList(data.tocItems);
+
+console.log(list, ' alphas');
+
 
     for (const child of list) {
-        if (child.date && child.type !== 'section_title') {
+        if (child.type !== 'section_title') {
             this.alphabeticalMenuStack.push(child);
         }
     }
 
     this.alphabeticalMenuStack.sort((a, b) =>
       (a.text.toUpperCase() < b.text.toUpperCase()) ? -1 : (a.text.toUpperCase() > b.text.toUpperCase()) ? 1 : 0);
+
+    console.log(this.alphabeticalMenuStack, ' alpha');
+
   }
 
   constructChronologialTOC(data) {
     this.chronologicalMenuStack = [];
     this.chronologicalTitleStack = [];
-    const list = data.tocItems.children;
+
+    const list = this.flattenList(data.tocItems);
 
     for (const child of list) {
         if (child.date && child.type !== 'section_title') {
@@ -399,25 +406,31 @@ export class TableOfContentsAccordionComponent {
     }
 
     this.chronologicalMenuStack.sort((a, b) => (a.date < b.date) ? -1 : (a.date > b.date) ? 1 : 0);
+    console.log(this.chronologicalMenuStack, 'chrono');
+  }
+
+  flattenList(data) {
+    data.childrenCount = 0;
+    let list = [data];
+    if (!data.children) {
+      return list;
+    }
+    for (const child of data.children) {
+      list = list.concat(this.flattenList(child));
+    }
+    return list;
   }
 
   registerEventListeners() {
     this.events.subscribe('tableOfContents:loaded', (data) => {
-
       try {
         this.sortableLetters = this.config.getSettings('settings.sortableLetters');
       } catch (e) {
         this.sortableLetters = null;
       }
 
-      this.menuStack = [data.tocItems.children];
-
       this.constructAlphabeticalTOC(data);
       this.constructChronologialTOC(data);
-
-      this.visibleMenuStack = this.menuStack;
-
-      console.log(this.visibleMenuStack, 'visible menu stack');
     });
   }
 
@@ -455,6 +468,7 @@ export class TableOfContentsAccordionComponent {
       this.menuOptions.forEach(option => {
         const innerMenuOption = InnerMenuOptionModel.fromMenuOptionModel(option, null, false, false);
         this.collapsableItems.push(innerMenuOption);
+        this.menuStack.push(innerMenuOption);
 
         // Check if there's any option marked as selected
         if (option.selected) {
