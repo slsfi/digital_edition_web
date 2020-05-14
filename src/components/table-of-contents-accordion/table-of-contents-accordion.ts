@@ -240,7 +240,7 @@ export class TableOfContentsAccordionComponent {
       }
       this.searchingForTocItem = false;
     }
-    this.menuStack = this.collapsableItems;
+    this.activeMenuTree = this.collapsableItems;
   }
 
   @Input('settings')
@@ -277,16 +277,16 @@ export class TableOfContentsAccordionComponent {
   thematicOrderActive = true;
   alphabethicOrderActive: boolean;
 
-  visibleMenuStack = [];
+  visibleactiveMenuTree = [];
   visibleTitleStack = [];
 
-  chronologicalMenuStack = [];
+  chronologicalactiveMenuTree = [];
   chronologicalTitleStack = [];
 
-  alphabeticalMenuStack: any[];
+  alphabeticalactiveMenuTree: any[];
   alphabeticalTitleStack: any[];
 
-  menuStack = [];
+  activeMenuTree = [];
 
   sortableLetters = [];
 
@@ -373,7 +373,7 @@ export class TableOfContentsAccordionComponent {
   }
 
   constructAlphabeticalTOC(data) {
-    this.alphabeticalMenuStack = [];
+    this.alphabeticalactiveMenuTree = [];
     this.alphabeticalTitleStack = [];
     const list = this.flattenList(data.tocItems);
 
@@ -382,31 +382,31 @@ console.log(list, ' alphas');
 
     for (const child of list) {
         if (child.type !== 'section_title') {
-            this.alphabeticalMenuStack.push(child);
+            this.alphabeticalactiveMenuTree.push(child);
         }
     }
 
-    this.alphabeticalMenuStack.sort((a, b) =>
+    this.alphabeticalactiveMenuTree.sort((a, b) =>
       (a.text.toUpperCase() < b.text.toUpperCase()) ? -1 : (a.text.toUpperCase() > b.text.toUpperCase()) ? 1 : 0);
 
-    console.log(this.alphabeticalMenuStack, ' alpha');
+    console.log(this.alphabeticalactiveMenuTree, ' alpha');
 
   }
 
   constructChronologialTOC(data) {
-    this.chronologicalMenuStack = [];
+    this.chronologicalactiveMenuTree = [];
     this.chronologicalTitleStack = [];
 
     const list = this.flattenList(data.tocItems);
 
     for (const child of list) {
         if (child.date && child.type !== 'section_title') {
-            this.chronologicalMenuStack.push(child);
+            this.chronologicalactiveMenuTree.push(child);
         }
     }
 
-    this.chronologicalMenuStack.sort((a, b) => (a.date < b.date) ? -1 : (a.date > b.date) ? 1 : 0);
-    console.log(this.chronologicalMenuStack, 'chrono');
+    this.chronologicalactiveMenuTree.sort((a, b) => (a.date < b.date) ? -1 : (a.date > b.date) ? 1 : 0);
+    console.log(this.chronologicalactiveMenuTree, 'chrono');
   }
 
   flattenList(data) {
@@ -468,7 +468,7 @@ console.log(list, ' alphas');
       this.menuOptions.forEach(option => {
         const innerMenuOption = InnerMenuOptionModel.fromMenuOptionModel(option, null, false, false);
         this.collapsableItems.push(innerMenuOption);
-        this.menuStack.push(innerMenuOption);
+        this.activeMenuTree.push(innerMenuOption);
 
         // Check if there's any option marked as selected
         if (option.selected) {
@@ -814,8 +814,15 @@ console.log(list, ' alphas');
 
     this.events.publish('exitActiveCollection');
 
+    this.activeMenuTree = [];
+    this.collapsableItems = [];
+
     const nav = this.app.getActiveNavs();
     nav[0].setRoot('EditionsPage', [], {animate: false, direction: 'back', animation: 'ios-transition'});
+
+    this.alphabethicOrderActive = false;
+    this.chronologicalOrderActive = false;
+    this.thematicOrderActive = false;
   }
 
   /**
