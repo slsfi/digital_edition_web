@@ -20,7 +20,7 @@ RUN mkdir www
 RUN npm install
 RUN npm install cheerio
 RUN npm install rev-hash
-RUN npm install -g ionic
+RUN npm i -g @ionic/cli
 RUN npm i -g cordova
 RUN npm i -g native-run
 RUN npm i -g @sentry/browser
