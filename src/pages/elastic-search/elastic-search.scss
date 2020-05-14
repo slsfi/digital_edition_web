@@ -1,0 +1,83 @@
+page-elastic-search {
+  .fixed-content,
+  .scroll-content {
+    margin-top: 40px !important;
+  }
+
+  ion-icon.settings-icon.icon {
+    font-size: 1.8em;
+  }
+
+  ul {
+    list-style-type: none;
+  }
+
+  .filter-button {
+    font-size: 2.8rem;
+  }
+
+  .searchbar {
+    color: white;
+  }
+
+  .segment-md .segment-button {
+    font-size: 1rem;
+    text-transform: none;
+  }
+
+  .searchStatus {
+    color: color($colors, grey);
+  }
+
+  ion-item.item.item-block.item-md {
+    .item-inner {
+      border-bottom: none;
+    }
+  }
+
+  ion-item.item.item-block.item-md {
+    cursor: pointer;
+
+    .itemHeading {
+      font-weight: bold;
+      color: color($colors, blackish);
+    }
+
+    .highlight {
+      color: color($colors, blackish);
+
+      em {
+        background-color: color($colors, primary);
+        color: white;
+        padding: 0.2rem 6px;
+        line-height: 2.4rem;
+        font-style: normal;
+      }
+    }
+
+    // List of facets
+    ion-list.facets {
+      margin: 0 0 0 20px;
+
+      ion-item.item.item-block.item-md.facet {
+        min-height: 1rem;
+
+        ion-checkbox.checkbox-md {
+          margin: 5px;
+        }
+      }
+    }
+  }
+
+  .searchContainer{
+    display: flex;
+    align-items: stretch;
+  }
+  ion-icon.rotate.open {
+    transform: rotate(90deg);
+    transition: transform ease-in-out .15s;
+  }
+  ion-icon.closed {
+    transition: transform ease-in-out .15s;
+  }
+}

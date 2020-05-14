@@ -838,6 +838,16 @@ export class DigitalEditionsApp {
         this.getMediaCollections();
       });
     });
+
+    this.events.subscribe('topMenu:elasticSearch', () => {
+      this.events.publish('SelectedItemInMenu', {
+        menuID: 'topMenu',
+        component: 'app-component'
+      });
+      // this.openPage('ElasticSearchPage');
+      // this.openPage('elastic-search');
+      this.nav.push('elastic-search')
+    });
   }
 
   mobileSplitPaneDetector() {

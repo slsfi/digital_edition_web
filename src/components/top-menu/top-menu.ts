@@ -94,6 +94,11 @@ export class TopMenuComponent {
     });
   }
 
+  public elasticSearch() {
+    this.events.publish('topMenu:elasticSearch');
+    this.storage.set('showLogo', false);
+  }
+
   public front() {
     this.events.publish('topMenu:front');
     this.storage.set('showLogo', true);

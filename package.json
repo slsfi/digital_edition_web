@@ -54,6 +54,7 @@
         "ionic-plugin-deeplinks": "1.0.19",
         "ionicons": "~3.0.0",
         "leaflet": "^1.4.0",
+        "lodash": "^4.17.15",
         "ngx-drag-scroll": "1.7.9",
         "ngx-pinch-zoom": "^2.4.4",
         "ngx-sharebuttons": "^3.0.0",

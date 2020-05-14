@@ -175,6 +175,10 @@
         "download": "download pdf",
         "articles": "Articles"
     },
+    "ElasticSearch": {
+      "NoHits": "Your search did not match any documents",
+      "Found": "Found"
+    },
     "est": "Established text",
     "ms": "Manuscript",
     "com": "Commentary",

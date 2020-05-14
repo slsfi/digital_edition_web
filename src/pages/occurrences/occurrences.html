@@ -7,7 +7,7 @@
           </button>
         </ion-buttons>
       </ion-toolbar>
-  
+
   </ion-header>
 
 
@@ -100,7 +100,7 @@
                       </ion-row>
                       <ion-row *ngIf="articleData.length>0">
                         <ion-col *ngFor="let article of articleData; let i = index" col-12>
-                          <div class="article_count">{{i+1}}. </div>  
+                          <div class="article_count">{{i+1}}. </div>
                           <div class="article_description">{{article.description}}</div>
                           <div class="article_link"><a href="{{article.pdf_path}}" target="_blank">{{"Occurrences.download" | translate}}</a></div>
                         </ion-col>

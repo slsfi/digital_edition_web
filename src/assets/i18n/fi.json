@@ -188,6 +188,10 @@
         "download": "ladda ner pdf",
         "articles": "Artiklar"
     },
+    "ElasticSearch": {
+      "NoHits": "Haku ei vastannut yhtään asiakirjaa",
+      "Found": "Löytyi"
+    },
     "est": "Lästext",
     "ms": "Manuskript",
     "com": "Kommentar",
