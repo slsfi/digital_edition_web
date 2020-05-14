@@ -31,7 +31,7 @@
                     <ion-item [style.marginLeft]="menuItem.is_child ? 20 + 'px' : '0px'" id="toc_{{menuItem.itemId}}"
                         class="option type-{{menuItem.type}}"
                         [ngClass]="menuSettings?.showSelectedOption && menuItem.selected ? menuSettings.selectedOptionClass : null"
-                        (tap)="select(option)" tappable>
+                        (tap)="select(menuItem)" tappable>
                         <p>{{ menuItem.text }}</p>
                     </ion-item>
                 </ng-template>
