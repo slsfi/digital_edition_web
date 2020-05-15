@@ -349,7 +349,6 @@
   "separeateIntroductionToc": false,
   "ElasticSearch": {
     "indices": [
-      "location",
       "topelius"
     ],
     "types": [
