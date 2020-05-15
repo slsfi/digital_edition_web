@@ -68,16 +68,24 @@ export class ElasticSearchService {
     }
 
     if (query) {
-      payload.query.bool.must.push({query_string: {
-        query,
-      }})
+      // Add free text query.
+      payload.query.bool.must.push({
+        query_string: {
+          query,
+        }
+      })
+
+      // Include highlighted text matches to hits.
       payload.highlight = highlight
     }
 
+    // Filter with given types.
     if (type) {
-      payload.query.bool.must.push({prefix: {
-        texttype: type,
-      }})
+      payload.query.bool.must.push({
+        terms: {
+          texttype: type,
+        }
+      })
     }
 
     // Add date range filter.

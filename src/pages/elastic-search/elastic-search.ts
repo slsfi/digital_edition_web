@@ -242,7 +242,7 @@ export class ElasticSearchPage {
 
         // Append new hits to this.hits array.
         Array.prototype.push.apply(this.hits, data.hits.hits.map((hit: any) => ({
-          type: Array.isArray(hit._source.xml_type) ? hit._source.xml_type[0] : hit._source.xml_type,
+          type: hit._source.xml_type,
           source: hit._source,
           highlight: hit.highlight,
         })))
