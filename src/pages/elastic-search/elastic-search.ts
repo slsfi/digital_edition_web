@@ -52,6 +52,10 @@ results according to their different categorization, so it’s important to alwa
 
 */
 
+interface SearchOptions {
+  done?: Function
+  initialSearch?: boolean
+}
 
 /**
  * Elastic search page.
@@ -128,7 +132,7 @@ export class ElasticSearchPage {
   }
 
   ionViewDidLoad() {
-    this.search()
+    this.search({initialSearch: true})
   }
 
   ionViewDidEnter() {
@@ -213,7 +217,7 @@ export class ElasticSearchPage {
    * Immediately execute a search.
    * Use debouncedSearch to wait for additional key presses when use types.
    */
-  private search(done?: Function) {
+  private search({ done, initialSearch }: SearchOptions = {}) {
     console.log(`search from ${this.from} to ${this.from + this.hitsPerPage}`)
 
     this.loading = true
@@ -226,7 +230,7 @@ export class ElasticSearchPage {
         },
       },
       from: this.from,
-      size: this.hitsPerPage,
+      size: initialSearch ? 0 : this.hitsPerPage,
       facetGroups: this.facetGroups,
       range: this.range,
       sort: this.parseSortForQuery(),
@@ -274,9 +278,11 @@ export class ElasticSearchPage {
     this.from += this.hitsPerPage
 
     // Search and let ion-infinite-scroll know that it can re-enable itself.
-    this.search(() => {
-      this.infiniteLoading = false
-      e.complete()
+    this.search({
+      done: () => {
+        this.infiniteLoading = false
+        e.complete()
+      },
     })
   }
 
