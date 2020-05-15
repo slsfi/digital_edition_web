@@ -346,8 +346,7 @@
   "MusicPage": {
     "collectionsToShow": []
   },
-  "separeateIntroductionToc": false
-  },
+  "separeateIntroductionToc": false,
   "ElasticSearch": {
     "indices": [
       "location",
