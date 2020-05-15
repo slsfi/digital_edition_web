@@ -351,6 +351,17 @@
     "indices": [
       "topelius"
     ],
+    "fixedFilters": [
+      {
+        "terms": {
+          "publication_data.published": [
+            0,
+            1,
+            2
+          ]
+        }
+      }
+    ],
     "types": [
       "est",
       "com",
