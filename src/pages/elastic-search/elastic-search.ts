@@ -85,6 +85,7 @@ export class ElasticSearchPage {
   hitsPerPage = 20
   aggregations: object = {}
   facetGroups: FacetGroups = {}
+  selectedFacetGroups: FacetGroups = {}
 
   // -1 when there a search hasn't returned anything yet.
   total = -1
@@ -306,11 +307,41 @@ export class ElasticSearchPage {
     )
   }
 
-  toggleFacet(facetGroupKey: string, facet: Facet) {
+  /**
+   * Toggles facet on/off. Note that the selected state is controlled by the ion-checkbox
+   * so it should not be modified here.
+   */
+  updateFacet(facetGroupKey: string, facet: Facet) {
     const facets = this.facetGroups[facetGroupKey] || {}
     facets[facet.key] = facet
     this.facetGroups[facetGroupKey] = facets
+
+    this.updateSelectedFacets(facetGroupKey, facet)
+
     this.onFacetsChanged()
+  }
+
+  unselectFacet(facetGroupKey: string, facet: Facet) {
+    facet.selected = false
+    this.updateFacet(facetGroupKey, facet)
+  }
+
+  private updateSelectedFacets(facetGroupKey: string, facet: Facet) {
+    const facetGroup = this.selectedFacetGroups[facetGroupKey] || {}
+
+    // Set or delete facet from selected facets
+    if (facet.selected) {
+      facetGroup[facet.key] = facet
+    } else {
+      delete facetGroup[facet.key]
+    }
+
+    // Set or delete facet group from selected facet groups
+    if (size(facetGroup) === 0) {
+      delete this.selectedFacetGroups[facetGroupKey]
+    } else {
+      this.selectedFacetGroups[facetGroupKey] = facetGroup
+    }
   }
 
   /**
@@ -401,6 +432,14 @@ export class ElasticSearchPage {
       this.getGenre(source),
       source.type !== 'brev' && this.getDate(source)
     ])
+  }
+
+  getEllipsisString(str: string, max = 15) {
+    if (!str || str.length <= max) {
+      return str
+    } else {
+      return str.substr(0, max) + '...'
+    }
   }
 
   openAccordion(e, group) {

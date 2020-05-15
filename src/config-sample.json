@@ -355,8 +355,6 @@
       {
         "terms": {
           "publication_data.published": [
-            0,
-            1,
             2
           ]
         }
