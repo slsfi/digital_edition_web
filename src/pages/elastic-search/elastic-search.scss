@@ -69,7 +69,7 @@ page-elastic-search {
     }
   }
 
-  .searchContainer{
+  .searchContainer {
     display: flex;
     align-items: stretch;
   }
@@ -79,5 +79,15 @@ page-elastic-search {
   }
   ion-icon.closed {
     transition: transform ease-in-out .15s;
+  }
+
+  // Selected facets toolbar
+  ion-toolbar.toolbar {
+    max-height: 200px !important;
+    padding-top: 10px;
+
+    .selectedFacetButton {
+      text-transform: none;
+    }
   }
 }

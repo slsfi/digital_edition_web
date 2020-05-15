@@ -68,7 +68,7 @@
                           {{facet.key_as_string || facet.key}}
                           ({{facet.doc_count}})
                         </ion-label>
-                        <ion-checkbox [(ngModel)]="facet.selected" (click)="toggleFacet(facetGroupKey, facet)" [disabled]="facet.doc_count === 0 && facetGroupKey !== 'Type'"></ion-checkbox>
+                        <ion-checkbox [(ngModel)]="facet.selected" (click)="updateFacet(facetGroupKey, facet)" [disabled]="facet.doc_count === 0 && facetGroupKey !== 'Type'"></ion-checkbox>
                     </ion-item>
                   </ng-template>
 
@@ -85,8 +85,27 @@
       </ion-col>
 
       <!-- Hits column -->
-      <ion-col col-7>
+      <ion-col>
 
+        <!-- Selected facets row -->
+        <ion-row class="selectedFacetGroups">
+          <div *ngFor="let groupKey of objectKeys(selectedFacetGroups)">
+            <ion-toolbar>
+              <ion-title>{{groupKey | translate}}</ion-title>
+              <button
+                class="selectedFacetButton"
+                *ngFor="let facet of objectValues(selectedFacetGroups[groupKey])"
+                (click)="unselectFacet(groupKey, facet)"
+                ion-button icon-end small
+              >
+                {{getEllipsisString(facet.key | translate)}}
+                <ion-icon name="close"></ion-icon>
+              </button>
+            </ion-toolbar>
+          </div>
+        </ion-row>
+
+        <!-- Search status row -->
         <ion-row class="searchStatus">
           <!-- Search status -->
           <ion-col>
@@ -118,7 +137,7 @@
           </ion-col>
         </ion-row>
 
-        <!-- Hits -->
+        <!-- Hits row -->
         <ion-row>
           <ion-list *ngIf="canShowHits() && total > 0">
             <div *ngFor="let hit of hits">
