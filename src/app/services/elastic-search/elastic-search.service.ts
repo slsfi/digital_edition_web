@@ -13,8 +13,10 @@ export class ElasticSearchService {
   private machineName: string
   private source = []
   private aggregations: Aggregations = {}
+  private fixedFilters: object[]
 
   constructor(private http: Http, private config: ConfigService) {
+    // Should fail if config is missing.
     try {
       this.apiEndpoint = this.config.getSettings('app.apiEndpoint')
       this.machineName = this.config.getSettings('app.machineName')
@@ -22,7 +24,14 @@ export class ElasticSearchService {
       this.source = this.config.getSettings('ElasticSearch.source')
       this.aggregations = this.config.getSettings('ElasticSearch.aggregations')
     } catch (e) {
-      console.error('Failed to load Elastic Search Service. Configuration error.', e)
+      console.error('Failed to load Elastic Search Service. Configuration error.', e.message)
+      throw e
+    }
+    // Should not fail if config is missing.
+    try {
+      this.fixedFilters = this.config.getSettings('ElasticSearch.fixedFilters')
+    } catch (e) {
+      console.error('Failed to load Elastic Search Service. Configuration error.', e.message)
     }
   }
 
@@ -59,18 +68,27 @@ export class ElasticSearchService {
     }
 
     if (query) {
-      payload.query.bool.must.push({query_string: {
-        query,
-      }})
+      // Add free text query.
+      payload.query.bool.must.push({
+        query_string: {
+          query,
+        }
+      })
+
+      // Include highlighted text matches to hits.
       payload.highlight = highlight
     }
 
+    // Filter with given types.
     if (type) {
-      payload.query.bool.must.push({prefix: {
-        texttype: type,
-      }})
+      payload.query.bool.must.push({
+        terms: {
+          texttype: type,
+        }
+      })
     }
 
+    // Add date range filter.
     if (range) {
       payload.query.bool.must.push({
         range: {
@@ -79,6 +97,13 @@ export class ElasticSearchService {
             lte: range.to,
           }
         }
+      })
+    }
+
+    // Add fixed filters that apply to all queries.
+    if (this.fixedFilters) {
+      this.fixedFilters.forEach(filter => {
+        payload.query.bool.must.push(filter)
       })
     }
 
