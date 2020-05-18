@@ -156,8 +156,6 @@ export class ElasticSearchPage {
    */
   onQueryChanged() {
     this.reset()
-    this.facetGroups = {}
-    this.range = null
     this.loading = true
     this.debouncedSearch()
     this.cf.detectChanges()
@@ -295,7 +293,7 @@ export class ElasticSearchPage {
     return Object.values(this.facetGroups).some(facets => Object.values(facets).some(facet => facet.selected))
   }
 
-  hasSelectedFacetGroup(key: string) {
+  hasSelectedFacetInGroup(key: string) {
     return Object.keys(this.facetGroups).some(facetGroupKey =>
       facetGroupKey === key && Object.values(this.facetGroups[facetGroupKey]).some(facet => facet.selected)
     )
@@ -350,27 +348,24 @@ export class ElasticSearchPage {
   private populateFacets(aggregations: Object) {
     // Get aggregation keys that are ordered in config.json.
     this.elastic.getAggregationKeys().forEach(facetGroupKey => {
-      const latestFacets = this.convertBucketsToFacets(aggregations[facetGroupKey].buckets)
+      const newFacets = this.convertAggregationsToFacets(aggregations[facetGroupKey])
       if (this.facetGroups[facetGroupKey]) {
-        Object.entries(this.facetGroups[facetGroupKey]).forEach(([facetKey, facet]: [string, any]) => {
-          const latestFacet = latestFacets[facetKey]
+        Object.entries(this.facetGroups[facetGroupKey]).forEach(([facetKey, existingFacet]: [string, any]) => {
+          const newFacet = newFacets[facetKey]
 
-          if (facetGroupKey === 'Type') {
-            // Don't set count to 0 for Type facet group.
-            if (latestFacet) {
-              // TODO: Explain this
-              facet.doc_count = latestFacet.doc_count
-            } else {
-              // TODO: Explain this
-              facet.doc_count = (this.range || this.hasSelectedFacetGroup('Type')) && !this.hasSelectedNormalFacets() ? facet.doc_count : 0
-            }
+
+          if (newFacet) {
+            existingFacet.doc_count = newFacet.doc_count
+          } else if (this.hasSelectedFacetInGroup(facetGroupKey)) {
+            // Unselected facets aren't updating because the terms bool.filter in the query
+            // prevents unselected aggregations from appearing in the results.
+            // TODO: Fix this by separating search and aggregation query.
           } else {
-            // TODO: Explain this
-            facet.doc_count = latestFacet ? latestFacet.doc_count : (this.hasSelectedFacetGroup(facetGroupKey) ? facet.doc_count : 0)
+            existingFacet.doc_count = 0
           }
         })
       } else {
-        this.facetGroups[facetGroupKey] = latestFacets
+        this.facetGroups[facetGroupKey] = newFacets
       }
     })
   }
@@ -378,9 +373,14 @@ export class ElasticSearchPage {
   /**
    * Convert aggregation data to facets data.
    */
-  private convertBucketsToFacets(buckets): Facets {
+  private convertAggregationsToFacets(aggregation): Facets {
     const facets = {}
-    buckets.forEach((facet: Facet) => facets[facet.key] = facet)
+    // Get buckets from either unfiltered or filtered aggregation.
+    const buckets = aggregation.buckets || aggregation.filtered.buckets
+
+    buckets.forEach((facet: Facet) => {
+      facets[facet.key] = facet
+    })
     return facets
   }
 

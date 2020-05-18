@@ -31,12 +31,21 @@ interface Facet {
 }
 
 interface Aggregations {
-  [key: string]: {
-    terms: Terms
-  }
+  [key: string]: Aggregation
+}
+
+interface Aggregation {
+  terms?: Terms
+  date_histogram?: DateHistogram
 }
 
 interface Terms {
   size: number
   field: string
+}
+
+interface DateHistogram {
+  field: string
+  calendar_interval: string,
+  format: string
 }
