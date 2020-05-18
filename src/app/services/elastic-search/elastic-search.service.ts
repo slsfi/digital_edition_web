@@ -38,8 +38,6 @@ export class ElasticSearchService {
   executeQuery(options: Query): Observable<any> {
     const payload = this.generateQueryPayload(options)
 
-    this.injectAggregationsToPayload(payload)
-
     return this.http.post(this.getSearchUrl(), payload)
       .map(this.extractData)
       .catch(this.handleError)
@@ -109,6 +107,9 @@ export class ElasticSearchService {
 
     if (facetGroups) {
       this.injectFacetsToPayload(payload, facetGroups)
+      this.injectFilteredAggregationsToPayload(payload, facetGroups)
+    } else {
+      this.injectUnfilteredAggregationsToPayload(payload)
     }
 
     console.log('search payload', payload)
@@ -118,7 +119,7 @@ export class ElasticSearchService {
 
   private injectFacetsToPayload(payload: any, facetGroups: FacetGroups) {
     Object.entries(facetGroups).forEach(([facetGroupKey, facets]: [string, Facets]) => {
-      const terms = Object.values(facets).filter(facet => facet.selected).map((facet: any) => facet.key)
+      const terms = this.filterSelectedFacetKeys(facets)
       if (terms.length > 0) {
         payload.query.bool.filter = payload.query.bool.filter || []
         payload.query.bool.filter.push({
@@ -130,13 +131,73 @@ export class ElasticSearchService {
     })
   }
 
-  private injectAggregationsToPayload(payload: any) {
+  private filterSelectedFacetKeys(facets: Facets): string[] {
+    return Object.values(facets).filter(facet => facet.selected).map((facet: any) => facet.key)
+  }
+
+  private injectUnfilteredAggregationsToPayload(payload: any) {
     payload.aggs = {}
     for (const [key, aggregation] of Object.entries(this.aggregations)) {
       payload.aggs[key] = aggregation
     }
     return payload
   }
+
+  /**
+   * Inspired by an article that uses an old version of elastic:
+   * https://madewithlove.com/faceted-search-using-elasticsearch/
+   *
+   * Up to date documentation:
+   * https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-filter-aggregation.html
+   */
+  private injectFilteredAggregationsToPayload(payload: any, facetGroups: FacetGroups) {
+    payload.aggs = {}
+    for (const [key, aggregation] of Object.entries(this.aggregations)) {
+      const filteredAggregation = this.generateFilteredAggregation(key, aggregation, facetGroups)
+
+      // If filtered aggregation doesn't have filters, then use an unfiltered aggregation.
+      payload.aggs[key] = filteredAggregation || aggregation
+    }
+    return payload
+  }
+
+  private generateFilteredAggregation(aggregationKey: string, aggregation: Aggregation, facetGroups: FacetGroups) {
+
+    const filtered = {
+      filter: {
+        bool: {
+          // Selected facets go here as filters.
+          filter: []
+        }
+      },
+      aggs: {
+        // Aggregation goes here.
+        filtered: aggregation,
+      }
+    }
+
+    // Add filters
+    Object.entries(facetGroups).forEach(([groupKey, facets]: [string, Facets]) => {
+      // Don't filter itself.
+      if (aggregationKey !== groupKey) {
+        const selectedFacetKeys = this.filterSelectedFacetKeys(facets)
+        if (selectedFacetKeys.length > 0) {
+          filtered.filter.bool.filter.push({
+            terms: {
+              [this.getAggregationField(groupKey)]: selectedFacetKeys,
+            }
+          })
+        }
+      }
+    })
+
+    if (filtered.filter.bool.filter.length > 0) {
+      return filtered
+    } else {
+      return null
+    }
+  }
+
 
   isDateHistogramAggregation(aggregationKey: string): boolean {
     return !!this.aggregations[aggregationKey]['date_histogram']
@@ -148,6 +209,11 @@ export class ElasticSearchService {
 
   getAggregationKeys(): string[] {
     return Object.keys(this.aggregations)
+  }
+
+  getAggregationField(key: string): string {
+    const agg = this.aggregations[key]
+    return (agg.terms || agg.date_histogram).field
   }
 
   private getSearchUrl(): string {

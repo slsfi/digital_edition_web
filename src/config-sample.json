@@ -374,6 +374,8 @@
       "TitleIndexed",
       "publication_data",
       "publication_locations",
+      "publication_subjects",
+      "publication_tags",
       "name",
       "collection_name",
       "orig_date_year_uncertain",
@@ -397,21 +399,33 @@
           "size": 40
         }
       },
+      "Genre": {
+        "terms": {
+          "field": "publication_data.genre.keyword",
+          "size": 40
+        }
+      },
       "Location": {
         "terms": {
           "field": "publication_locations.keyword",
           "size": 40
         }
       },
-      "Collection": {
+      "Subjects": {
         "terms": {
-          "field": "publication_data.colname.keyword",
+          "field": "publication_subjects.keyword",
           "size": 40
         }
       },
-      "Genre": {
+      "Tags": {
         "terms": {
-          "field": "publication_data.genre.keyword",
+          "field": "publication_tags.keyword",
+          "size": 40
+        }
+      },
+      "Collection": {
+        "terms": {
+          "field": "publication_data.colname.keyword",
           "size": 40
         }
       },
