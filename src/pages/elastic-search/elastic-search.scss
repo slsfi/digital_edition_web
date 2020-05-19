@@ -80,4 +80,29 @@ page-elastic-search {
   ion-icon.closed {
     transition: transform ease-in-out .15s;
   }
+
+  ion-icon[name="refresh"],
+  ion-icon[name="close"] {
+    padding-bottom: 0!important;
+  }
+
+  #searchbar-wrapper {
+    position: relative;
+    padding: 8px;
+    #myInput {
+      text-indent: 25px;
+      line-height: 1.3rem;
+      width: 100%;
+      border-radius: 2px;
+      padding: 6px 8px;
+      box-shadow: rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
+      border: none !important;
+    }
+    ion-icon {
+      font-size: 1.2rem!important;
+      position: absolute;
+      top: 14.5px;
+      left: 18px;
+    }
+  }
 }

@@ -72,6 +72,7 @@ interface SearchOptions {
 export class ElasticSearchPage {
 
   @ViewChild(Content) content: Content
+  @ViewChild('myInput') myInput;
 
   // Helper to loop objects
   objectKeys = Object.keys
@@ -85,6 +86,16 @@ export class ElasticSearchPage {
   hitsPerPage = 20
   aggregations: object = {}
   facetGroups: FacetGroups = {}
+  showAllFacets = false;
+  showFacetGroup = [
+    {'Type': false},
+    {'Location': false},
+    {'Collection': false},
+    {'Genre': false},
+    {'Person': false},
+    {'LetterSenderName': false}
+  ];
+  facetGroupType = '';
 
   // -1 when there a search hasn't returned anything yet.
   total = -1
@@ -133,6 +144,14 @@ export class ElasticSearchPage {
 
   ionViewDidLoad() {
     this.search({initialSearch: true})
+
+    // Open type by default
+    setTimeout(() => {
+      const facetListElement = <HTMLElement>document.querySelector('.facetList-Type');
+      facetListElement.style.height = '100%';
+      const facetArrowElement = <HTMLElement>document.querySelector('#arrow-1');
+      facetArrowElement.classList.add('open', 'rotate');
+    }, 1000);
   }
 
   ionViewDidEnter() {
@@ -418,5 +437,51 @@ export class ElasticSearchPage {
         arrow.classList.add('open');
         arrow.classList.remove('closed');
       }
+  }
+  revealFacets(facet) {
+    console.log(this.showFacetGroup[0]);
+  }
+
+  resize() {
+    const element = this.myInput['_elementRef'].nativeElement.getElementsByClassName('searchbar-input-container')[0]
+    console.log(element);
+
+    const scrollHeight = element.scrollHeight;
+    element.style.height = scrollHeight + 'px';
+    this.myInput['_elementRef'].nativeElement.style.height = (scrollHeight + 16) + 'px';
+}
+
+autoExpand(selector, direction) {
+  const tag = document.querySelectorAll(selector)
+
+  for (let i = 0; i < tag.length; i++) {
+
+    if (direction === 'height' || direction === 'both') {
+
+      const borderTop = measure(tag[i], 'border-top-width')
+      const borderBottom = measure(tag[i], 'border-bottom-width')
+      const paddingTop = measure(tag[i], 'padding-top')
+      const paddingBottom = measure(tag[i], 'padding-bottom')
+
+      tag[i].style.height = ''
+      tag[i].style.height = borderTop + paddingBottom
+                           + tag[i].scrollHeight
+                           + paddingTop + borderBottom + 'px'
+
+    }
+
+  }
+
+    function measure(tag, property) {
+
+      return parseInt(
+              window.getComputedStyle(tag, null)
+                .getPropertyValue(property)
+                  .replace(/px$/, ''))
+
+    }
+
+    return '\n/* ' + selector + ' { ' + direction + ': auto-expand; } */\n'
+
   }
 }
