@@ -176,7 +176,8 @@ export class ElasticSearchPage {
   /**
    * Triggers a new search and clears selected facets.
    */
-  onQueryChanged() {
+  onQueryChange() {
+    this.autoExpand('#myInput', 'height')
     this.reset()
     this.loading = true
     this.debouncedSearch()
@@ -371,12 +372,10 @@ export class ElasticSearchPage {
 
   selectSuggestedFacet(facetGroupKey: string, facet: Facet) {
     this.suggestedFacetGroups = {}
+    this.query = ''
 
     facet.selected = true
     this.updateFacet(facetGroupKey, facet)
-
-    this.query = ''
-    // this.onQueryChanged()
   }
 
   unselectFacet(facetGroupKey: string, facet: Facet) {
