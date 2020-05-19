@@ -88,9 +88,8 @@ export class ElasticSearchPage {
   facetGroups: FacetGroups = {}
   selectedFacetGroups: FacetGroups = {}
   suggestedFacetGroups: FacetGroups = {}
-  
+
   showAllFacets = false;
-  selectedFacetGroups: FacetGroups = {};
   showFacetGroup = [
     {'Type': false},
     {'Location': false},
