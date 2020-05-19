@@ -87,6 +87,7 @@ export class ElasticSearchPage {
   aggregations: object = {}
   facetGroups: FacetGroups = {}
   showAllFacets = false;
+  selectedFacetGroups: FacetGroups = {};
   showFacetGroup = [
     {'Type': false},
     {'Location': false},
