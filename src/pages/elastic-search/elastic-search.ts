@@ -86,6 +86,9 @@ export class ElasticSearchPage {
   hitsPerPage = 20
   aggregations: object = {}
   facetGroups: FacetGroups = {}
+  selectedFacetGroups: FacetGroups = {}
+  suggestedFacetGroups: FacetGroups = {}
+  
   showAllFacets = false;
   selectedFacetGroups: FacetGroups = {};
   showFacetGroup = [
@@ -230,6 +233,7 @@ export class ElasticSearchPage {
     this.hits = []
     this.from = 0
     this.total = -1
+    this.suggestedFacetGroups = {}
   }
 
   /**
@@ -240,7 +244,7 @@ export class ElasticSearchPage {
     console.log(`search from ${this.from} to ${this.from + this.hitsPerPage}`)
 
     this.loading = true
-    this.elastic.executeQuery({
+    this.elastic.executeSearchQuery({
       query: this.query,
       type: this.type,
       highlight: {
@@ -254,25 +258,37 @@ export class ElasticSearchPage {
       range: this.range,
       sort: this.parseSortForQuery(),
     })
-      .subscribe((data: any) => {
-        console.log('search data', data)
-        this.loading = false
-        this.total = data.hits.total.value
+    .subscribe((data: any) => {
+      console.log('search data', data)
+      this.loading = false
+      this.total = data.hits.total.value
 
-        // Append new hits to this.hits array.
-        Array.prototype.push.apply(this.hits, data.hits.hits.map((hit: any) => ({
-          type: hit._source.xml_type,
-          source: hit._source,
-          highlight: hit.highlight,
-        })))
-        console.log('search hits', this.hits)
+      // Append new hits to this.hits array.
+      Array.prototype.push.apply(this.hits, data.hits.hits.map((hit: any) => ({
+        type: hit._source.xml_type,
+        source: hit._source,
+        highlight: hit.highlight,
+      })))
+      console.log('search hits', this.hits)
 
-        this.populateFacets(data.aggregations)
+      this.populateFacets(data.aggregations)
 
-        if (done) {
-          done()
-        }
+      if (done) {
+        done()
+      }
+    })
+
+
+    // Fetch suggestions
+    if (this.query && this.query.length > 3) {
+      this.elastic.executeSuggestionsQuery({
+        query: this.query,
       })
+      .subscribe((data: any) => {
+        console.log('suggestions data', data)
+        this.populateSuggestions(data.aggregations)
+      })
+    }
   }
 
   private parseSortForQuery() {
@@ -313,16 +329,31 @@ export class ElasticSearchPage {
     return Object.values(this.facetGroups).some(facets => Object.values(facets).some(facet => facet.selected))
   }
 
-  hasSelectedFacetInGroup(key: string) {
-    return Object.keys(this.facetGroups).some(facetGroupKey =>
-      facetGroupKey === key && Object.values(this.facetGroups[facetGroupKey]).some(facet => facet.selected)
-    )
+  hasSelectedFacetsByGroup(groupKey: string) {
+    return size(this.selectedFacetGroups[groupKey]) > 0
   }
 
   hasSelectedNormalFacets() {
     return Object.keys(this.facetGroups).some(facetGroupKey =>
       facetGroupKey !== 'Type' && facetGroupKey !== 'Years' && Object.values(this.facetGroups[facetGroupKey]).some(facet => facet.selected)
     )
+  }
+
+  hasFacets(facetGroupKey: string) {
+    return size(this.facetGroups[facetGroupKey]) > 0
+  }
+
+  hasSuggestedFacetsByGroup(groupKey: string) {
+    return size(this.suggestedFacetGroups[groupKey]) > 0
+  }
+
+  hasSuggestedFacets() {
+    return Object.values(this.suggestedFacetGroups).some(facets => size(facets) > 0)
+  }
+
+  getFacets(facetGroupKey: string): Facet[] {
+    const facets = this.facetGroups[facetGroupKey]
+    return facets ? Object.values(facets) : []
   }
 
   /**
@@ -337,6 +368,16 @@ export class ElasticSearchPage {
     this.updateSelectedFacets(facetGroupKey, facet)
 
     this.onFacetsChanged()
+  }
+
+  selectSuggestedFacet(facetGroupKey: string, facet: Facet) {
+    this.suggestedFacetGroups = {}
+
+    facet.selected = true
+    this.updateFacet(facetGroupKey, facet)
+
+    this.query = ''
+    // this.onQueryChanged()
   }
 
   unselectFacet(facetGroupKey: string, facet: Facet) {
@@ -365,7 +406,7 @@ export class ElasticSearchPage {
   /**
    * Populate facets data using the search results aggregation data.
    */
-  private populateFacets(aggregations: Object) {
+  private populateFacets(aggregations: AggregationsData) {
     // Get aggregation keys that are ordered in config.json.
     this.elastic.getAggregationKeys().forEach(facetGroupKey => {
       const newFacets = this.convertAggregationsToFacets(aggregations[facetGroupKey])
@@ -376,7 +417,7 @@ export class ElasticSearchPage {
 
           if (newFacet) {
             existingFacet.doc_count = newFacet.doc_count
-          } else if (this.hasSelectedFacetInGroup(facetGroupKey)) {
+          } else if (this.hasSelectedFacetsByGroup(facetGroupKey)) {
             // Unselected facets aren't updating because the terms bool.filter in the query
             // prevents unselected aggregations from appearing in the results.
             // TODO: Fix this by separating search and aggregation query.
@@ -391,9 +432,18 @@ export class ElasticSearchPage {
   }
 
   /**
+   * Populate suggestions data using the search results aggregation data.
+   */
+  private populateSuggestions(aggregations: AggregationsData) {
+    Object.entries(aggregations).forEach(([aggregationKey, value]: [string, any]) => {
+      this.suggestedFacetGroups[aggregationKey] = this.convertAggregationsToFacets(value)
+    })
+  }
+
+  /**
    * Convert aggregation data to facets data.
    */
-  private convertAggregationsToFacets(aggregation): Facets {
+  private convertAggregationsToFacets(aggregation: AggregationData): Facets {
     const facets = {}
     // Get buckets from either unfiltered or filtered aggregation.
     const buckets = aggregation.buckets || aggregation.filtered.buckets
@@ -402,15 +452,6 @@ export class ElasticSearchPage {
       facets[facet.key] = facet
     })
     return facets
-  }
-
-  hasFacets(facetGroupKey: string) {
-    return size(this.facetGroups[facetGroupKey]) > 0
-  }
-
-  getFacets(facetGroupKey: string): Facet[] {
-    const facets = this.facetGroups[facetGroupKey];
-    return facets ? Object.values(facets) : []
   }
 
   getPublicationName(source: any) {

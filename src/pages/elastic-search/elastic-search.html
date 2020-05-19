@@ -38,6 +38,23 @@
           <ion-icon name="search"></ion-icon>
         </ion-row>
 
+        <!-- Suggested facets -->
+        <ion-row *ngIf="hasSuggestedFacets()" class="selectedFacetGroups">
+          <ion-col>
+            <p class="itemHeading">{{'Suggestions' | translate}}</p>
+            <div *ngFor="let groupKey of objectKeys(suggestedFacetGroups)">
+              <ion-toolbar *ngIf="hasSuggestedFacetsByGroup(groupKey)">
+                <ion-title>{{groupKey | translate}}</ion-title>
+                <button *ngFor="let facet of objectValues(suggestedFacetGroups[groupKey])"
+                  (click)="selectSuggestedFacet(groupKey, facet)" class="selectedFacetButton" ion-button icon-end small>
+                  {{getEllipsisString(facet.key | translate)}}
+                  <ion-icon name="add"></ion-icon>
+                </button>
+              </ion-toolbar>
+            </div>
+          </ion-col>
+        </ion-row>
+
         <!-- List of facet groups -->
         <ion-list>
 
@@ -96,12 +113,12 @@
         <!-- Selected facets row -->
         <ion-row class="selectedFacetGroups">
           <div *ngFor="let groupKey of objectKeys(selectedFacetGroups)">
-            <ion-toolbar>
+            <ion-toolbar *ngIf="hasSelectedFacetsByGroup(groupKey)">
               <ion-title>{{groupKey | translate}}</ion-title>
               <button
-                class="selectedFacetButton"
                 *ngFor="let facet of objectValues(selectedFacetGroups[groupKey])"
                 (click)="unselectFacet(groupKey, facet)"
+                class="selectedFacetButton"
                 ion-button icon-end small
               >
                 {{getEllipsisString(facet.key | translate)}}

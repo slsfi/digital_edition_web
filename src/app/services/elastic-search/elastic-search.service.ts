@@ -13,6 +13,7 @@ export class ElasticSearchService {
   private machineName: string
   private source = []
   private aggregations: Aggregations = {}
+  private suggestions: SuggestionsConfig = {}
   private fixedFilters: object[]
 
   constructor(private http: Http, private config: ConfigService) {
@@ -23,6 +24,7 @@ export class ElasticSearchService {
       this.indices = this.config.getSettings('ElasticSearch.indices')
       this.source = this.config.getSettings('ElasticSearch.source')
       this.aggregations = this.config.getSettings('ElasticSearch.aggregations')
+      this.suggestions = this.config.getSettings('ElasticSearch.suggestions')
     } catch (e) {
       console.error('Failed to load Elastic Search Service. Configuration error.', e.message)
       throw e
@@ -35,15 +37,23 @@ export class ElasticSearchService {
     }
   }
 
-  executeQuery(options: Query): Observable<any> {
-    const payload = this.generateQueryPayload(options)
+  executeSearchQuery(options: SearchQuery): Observable<any> {
+    const payload = this.generateSearchQueryPayload(options)
 
     return this.http.post(this.getSearchUrl(), payload)
       .map(this.extractData)
       .catch(this.handleError)
   }
 
-  private generateQueryPayload({
+  executeSuggestionsQuery(options: SuggestionsQuery): Observable<any> {
+    const payload = this.generateSuggestionsQueryPayload(options)
+
+    return this.http.post(this.getSearchUrl(), payload)
+      .map(this.extractData)
+      .catch(this.handleError)
+  }
+
+  private generateSearchQueryPayload({
     query,
     highlight,
     from,
@@ -52,7 +62,7 @@ export class ElasticSearchService {
     range,
     facetGroups,
     sort,
-  }: Query): object {
+  }: SearchQuery): object {
     const payload: any = {
       from,
       size,
@@ -198,6 +208,54 @@ export class ElasticSearchService {
     }
   }
 
+  private generateSuggestionsQueryPayload({
+    query,
+  }: SuggestionsQuery): object {
+    const payload: any = {
+      from: 0,
+      size: 0,
+      _source: this.source,
+      aggs: {},
+    }
+
+    for (const [aggregationKey, suggestion] of Object.entries(this.suggestions)) {
+      const aggregation = this.aggregations[aggregationKey]
+      if (aggregation.terms) {
+        payload.aggs[aggregationKey] = {
+          filter: {
+            bool: {
+              should: [
+                {
+                  wildcard: {
+                    [suggestion.field]: {
+                      value: `*${query}*`,
+                    }
+                  }
+                },
+                {
+                  fuzzy: {
+                    [suggestion.field]: {
+                      value: query,
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          aggs: {
+            filtered: {
+              terms: {
+                field: aggregation.terms.field,
+                size: suggestion.size,
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return payload
+  }
 
   isDateHistogramAggregation(aggregationKey: string): boolean {
     return !!this.aggregations[aggregationKey]['date_histogram']

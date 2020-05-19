@@ -1,5 +1,5 @@
 
-interface Query {
+interface SearchQuery {
   type?: string
   query: string
   highlight: object
@@ -49,3 +49,26 @@ interface DateHistogram {
   calendar_interval: string,
   format: string
 }
+
+interface SuggestionsQuery {
+  query: string
+}
+
+interface SuggestionsConfig {
+  [aggregationKey: string]: {
+    field: string
+    size: number
+  }
+}
+
+interface AggregationsData {
+  [aggregationKey: string]: AggregationData
+}
+
+interface AggregationData {
+  buckets?: Facet[]
+  filtered?: {
+    buckets: Facet[]
+  }
+}
+
