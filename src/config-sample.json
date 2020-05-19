@@ -405,6 +405,12 @@
           "size": 40
         }
       },
+      "Collection": {
+        "terms": {
+          "field": "publication_data.colname.keyword",
+          "size": 40
+        }
+      },
       "Location": {
         "terms": {
           "field": "publication_locations.keyword",
@@ -420,12 +426,6 @@
       "Tags": {
         "terms": {
           "field": "publication_tags.keyword",
-          "size": 40
-        }
-      },
-      "Collection": {
-        "terms": {
-          "field": "publication_data.colname.keyword",
           "size": 40
         }
       },
@@ -458,6 +458,16 @@
           "field": "receiver_location_name.keyword",
           "size": 40
         }
+      }
+    },
+    "suggestions": {
+      "LetterSenderName": {
+        "field": "sender_subject_name",
+        "size": 3
+      },
+      "LetterSenderLocation": {
+        "field": "sender_location_name",
+        "size": 3
       }
     }
   }
