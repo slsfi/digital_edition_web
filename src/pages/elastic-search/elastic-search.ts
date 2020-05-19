@@ -90,16 +90,7 @@ export class ElasticSearchPage {
   suggestedFacetGroups: FacetGroups = {}
 
   showAllFacets = false;
-  showFacetGroup = [
-    {'Type': false},
-    {'Location': false},
-    {'Collection': false},
-    {'Genre': false},
-    {'Person': false},
-    {'LetterSenderName': false}
-  ];
   showAllFor = {};
-  facetGroupType = '';
 
   // -1 when there a search hasn't returned anything yet.
   total = -1
@@ -177,7 +168,7 @@ export class ElasticSearchPage {
    * Triggers a new search and clears selected facets.
    */
   onQueryChange() {
-    this.autoExpand('#myInput', 'height')
+    this.autoExpand('#myInput')
     this.reset()
     this.loading = true
     this.debouncedSearch()
@@ -517,50 +508,25 @@ export class ElasticSearchPage {
         arrow.classList.remove('closed');
       }
   }
-  revealFacets(facet) {
-    console.log(this.showFacetGroup[0]);
-  }
 
-  resize() {
-    const element = this.myInput['_elementRef'].nativeElement.getElementsByClassName('searchbar-input-container')[0]
-    console.log(element);
-
-    const scrollHeight = element.scrollHeight;
-    element.style.height = scrollHeight + 'px';
-    this.myInput['_elementRef'].nativeElement.style.height = (scrollHeight) + 'px';
-}
-
-autoExpand(selector, direction) {
+autoExpand(selector) {
   const tag = document.querySelectorAll(selector)
 
   for (let i = 0; i < tag.length; i++) {
-
-    if (direction === 'height' || direction === 'both') {
-
       const borderTop = measure(tag[i], 'border-top-width')
       const borderBottom = measure(tag[i], 'border-bottom-width')
-      const paddingTop = measure(tag[i], 'padding-top')
-      const paddingBottom = measure(tag[i], 'padding-bottom')
 
       tag[i].style.height = ''
-      tag[i].style.height = borderTop + paddingBottom
-                           + tag[i].scrollHeight
-                           + paddingTop + borderBottom + 'px'
-
-    }
-
+      tag[i].style.height = borderTop + tag[i].scrollHeight + borderBottom + 'px'
   }
 
-    function measure(tag, property) {
+  function measure(tag, property) {
+    return parseInt(
+            window.getComputedStyle(tag, null)
+              .getPropertyValue(property)
+                .replace(/px$/, ''))
 
-      return parseInt(
-              window.getComputedStyle(tag, null)
-                .getPropertyValue(property)
-                  .replace(/px$/, ''))
-
-    }
-
-    return '\n/* ' + selector + ' { ' + direction + ': auto-expand; } */\n'
-
+  }
+    return '\n/* ' + selector + ' { ' +  ': auto-expand; } */\n'
   }
 }
