@@ -34,7 +34,7 @@
 
         <!--  Searchbar -->
         <ion-row id="searchbar-wrapper">
-          <textarea placeholder="Search" id="myInput" (keyup)="autoExpand('#myInput', 'height')" [(ngModel)]="query" (change)="onQueryChanged($event)"></textarea>
+          <textarea placeholder="Search" id="myInput" [(ngModel)]="query" (keyup)="onQueryChange()"></textarea>
           <ion-icon name="search"></ion-icon>
         </ion-row>
 
