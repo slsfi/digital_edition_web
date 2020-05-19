@@ -95,6 +95,7 @@ export class ElasticSearchPage {
     {'Person': false},
     {'LetterSenderName': false}
   ];
+  showAllFor = {};
   facetGroupType = '';
 
   // -1 when there a search hasn't returned anything yet.
@@ -377,7 +378,7 @@ export class ElasticSearchPage {
   }
 
   getFacets(facetGroupKey: string): Facet[] {
-    const facets = this.facetGroups[facetGroupKey]
+    const facets = this.facetGroups[facetGroupKey];
     return facets ? Object.values(facets) : []
   }
 
@@ -448,7 +449,7 @@ export class ElasticSearchPage {
 
     const scrollHeight = element.scrollHeight;
     element.style.height = scrollHeight + 'px';
-    this.myInput['_elementRef'].nativeElement.style.height = (scrollHeight + 16) + 'px';
+    this.myInput['_elementRef'].nativeElement.style.height = (scrollHeight) + 'px';
 }
 
 autoExpand(selector, direction) {

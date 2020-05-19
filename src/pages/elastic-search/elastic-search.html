@@ -59,13 +59,11 @@
                 </ion-item>
                 <ion-list id="facetList-{{i}}" style="height: 0;" class="facets facetList-{{facetGroupKey}}">
                   <ng-container *ngIf="hasFacets(facetGroupKey); then facets else nofacet"></ng-container>
-
                   <ng-template #facets>
-                    <ng-container *ngFor="let facet of getFacets(facetGroupKey); let facetAmount = index">
-                      <ion-item id="facet-{{facetGroupKey}}" *ngIf="facetAmount < 5" class="facet">
+                    <ng-container *ngFor="let facet of getFacets(facetGroupKey); let j = index;">
+                      <ion-item id="facet-{{facetGroupKey}}" *ngIf="showAllFor[facetGroupKey] || j < 3" class="facet">
                           <ion-label text-wrap *ngIf="facetGroupKey === 'Type'">
                             {{facet.key | translate}} ({{facet.doc_count}})
-                      {{showFacetGroup[facetAmount].Type}}
                           </ion-label>
                           <ion-label text-wrap *ngIf="facetGroupKey !== 'Type'">
                             {{facet.key_as_string || facet.key}}
@@ -74,8 +72,9 @@
                           <ion-checkbox [(ngModel)]="facet.selected" (click)="toggleFacet(facetGroupKey, facet)" [disabled]="facet.doc_count === 0 && facetGroupKey !== 'Type'"></ion-checkbox>
                       </ion-item>
                     </ng-container>
-                    <button ion-button *ngIf="getFacets(facetGroupKey).length > 5" (click)="showFacetGroup[0].facetGroupKey = !showFacetGroup[0].facetGroupKey">
-                      <span>Show more</span>
+                    <button ion-button *ngIf="getFacets(facetGroupKey).length > 3" (click)="showAllFor[facetGroupKey] = !showAllFor[facetGroupKey]">
+                        <span *ngIf="!showAllFor[facetGroupKey]">Show more</span>
+                        <span *ngIf="showAllFor[facetGroupKey]">Show less</span>
                     </button>
                   </ng-template>
 

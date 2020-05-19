@@ -89,6 +89,9 @@ page-elastic-search {
   #searchbar-wrapper {
     position: relative;
     padding: 8px;
+    textarea {
+    height: 32px;
+    }
     #myInput {
       text-indent: 25px;
       line-height: 1.3rem;
