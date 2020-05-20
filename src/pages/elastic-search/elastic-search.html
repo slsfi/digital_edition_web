@@ -64,10 +64,10 @@
       </ion-col>
 
       <!-- Sort by -->
-      <ion-col *ngIf="canShowHits() && total > 0" col-auto>
+      <ion-col class="sort-by-wrapper" *ngIf="canShowHits() && total > 0" col-auto>
         <ion-item>
-          <ion-label>{{'Sort by' | translate}}</ion-label>
-          <ion-select [(ngModel)]="sort" (ionChange)="onSortByChanged($event)">
+          <ion-label class="sort-by-label">{{'Sort by' | translate}}</ion-label>
+          <ion-select class="sort-by-select" [(ngModel)]="sort" (ionChange)="onSortByChanged($event)">
             <ion-option value="">{{'relevance' | translate}}</ion-option>
             <ion-option value="orig_date_certain.asc">{{'time ascending' | translate}}</ion-option>
             <ion-option value="orig_date_certain.desc">{{'time decending' | translate}}</ion-option>
@@ -78,8 +78,7 @@
 
     <ion-row>
       <!-- Facets column -->
-      <ion-col col-3>
-
+      <ion-col class="facets-col" col-3>
         <!-- Suggested facets -->
         <ion-row *ngIf="hasSuggestedFacets()" class="selectedFacetGroups">
           <ion-col>
@@ -88,7 +87,7 @@
               <ion-toolbar *ngIf="hasSuggestedFacetsByGroup(groupKey)">
                 <ion-title>{{groupKey | translate}}</ion-title>
                 <button *ngFor="let facet of objectValues(suggestedFacetGroups[groupKey])"
-                  (click)="selectSuggestedFacet(groupKey, facet)" class="selectedFacetButton" ion-button icon-end small>
+                  (click)="selectSuggestedFacet(groupKey, facet)" class="selectedFacetButton" small ion-button icon-end>
                   {{getEllipsisString(facet.key | translate)}}
                   <ion-icon name="add-circle"></ion-icon>
                 </button>
@@ -114,7 +113,7 @@
               <ion-label class="accordion-item">
                 <ion-item (click)="openAccordion($event, i)">
                   <ion-label>{{facetGroupKey}}</ion-label>
-                  <ion-icon  id="arrow-{{i}}" name="ios-arrow-forward" item-right small></ion-icon>
+                  <ion-icon class="accordion-arrow" id="arrow-{{i}}" name="ios-arrow-forward" item-right small></ion-icon>
                 </ion-item>
                 <ion-list id="facetList-{{i}}" style="height: 0;" class="facets facetList-{{facetGroupKey}}">
                   <ng-container *ngIf="hasFacets(facetGroupKey); then facets else nofacet"></ng-container>
@@ -131,7 +130,7 @@
                           <ion-checkbox [(ngModel)]="facet.selected" (click)="updateFacet(facetGroupKey, facet)" [disabled]="facet.doc_count === 0 && facetGroupKey !== 'Type'"></ion-checkbox>
                       </ion-item>
                     </ng-container>
-                    <button ion-button *ngIf="getFacets(facetGroupKey).length > 3" (click)="showAllFor[facetGroupKey] = !showAllFor[facetGroupKey]">
+                    <button class="show-more-button" small ion-button *ngIf="getFacets(facetGroupKey).length > 3" (click)="showAllFor[facetGroupKey] = !showAllFor[facetGroupKey]">
                         <span *ngIf="!showAllFor[facetGroupKey]">Show more</span>
                         <span *ngIf="showAllFor[facetGroupKey]">Show less</span>
                     </button>

@@ -20,6 +20,33 @@ page-elastic-search {
     color: white;
   }
 
+  .searchbar-col {
+    border-right: 1px solid #aaa;
+  }
+
+  .facets-col {
+    border-right: 1px solid #aaa;
+  }
+
+  .sort-by-wrapper {
+
+    .input-wrapper {
+      justify-content: flex-end;
+    }
+
+    .sort-by-label {
+      flex: 0;
+    }
+  
+    .sort-by-select {
+      width: 300px;
+    }
+  }
+
+  .hits-heading {
+    text-decoration: underline;
+  }
+
   .segment-md .segment-button {
     font-size: 1rem;
     text-transform: none;
@@ -86,9 +113,45 @@ page-elastic-search {
     padding-bottom: 0!important;
   }
 
+  .selectedFacetGroups {
+    .toolbar-background {
+      background-color: transparent;
+    }
+
+    .toolbar-content {
+      margin: 25px 0;
+    }
+
+    .toolbar-title {
+      color: #000;
+    }
+
+    .selectedFacetButton {
+      font-size: 0.9rem !important;
+      height: 28px !important;
+
+      ion-icon {
+        font-size: 1.5em !important;
+      }
+    }
+  }
+
   .facet-group-wrapper {
     .accordion-item {
       margin: 0!important;
+
+      ion-label {
+        font-weight: 600;
+      }
+
+      .accordion-arrow {
+        font-size: 1.5em;
+      }
+
+      .show-more-button {
+        font-size: .9rem !important;
+        height: 2rem !important;
+      }
     }
   }
 
@@ -143,4 +206,12 @@ page-elastic-search {
       font-size: 1.4rem !important;
     }
   }
+}
+
+.alert-title {
+  font-size: 1rem !important;
+}
+
+.alert-md .alert-tappable {
+  min-height: 3.4rem;
 }

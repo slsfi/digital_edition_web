@@ -4,19 +4,19 @@
     <ion-col>
       <ion-item>
         <ion-label floating>From</ion-label>
-        <ion-input type="number" placeholder="From" [(ngModel)]="from" (keydown.enter)="onChange()"></ion-input>
+        <ion-input type="number" [(ngModel)]="from" (keydown.enter)="onChange()"></ion-input>
       </ion-item>
     </ion-col>
     <ion-col>
       <ion-item>
         <ion-label floating>To</ion-label>
-        <ion-input type="number" placeholder="To" [(ngModel)]="to" (keydown.enter)="onChange()"></ion-input>
+        <ion-input type="number" [(ngModel)]="to" (keydown.enter)="onChange()"></ion-input>
       </ion-item>
     </ion-col>
     <ion-col col-auto>
-      <div>
+      <div class="reset-buttons">
           <ion-icon name="refresh" (click)="onChange()" padding-right padding-bottom></ion-icon>
-          <ion-icon name="close" (click)="reset()"  padding-bottom></ion-icon>
+          <ion-icon name="close" (click)="reset()" padding-bottom></ion-icon>
       </div>
     </ion-col>
   </ion-row>
