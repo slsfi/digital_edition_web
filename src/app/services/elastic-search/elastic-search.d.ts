@@ -1,7 +1,7 @@
 
 interface SearchQuery {
   type?: string
-  query: string
+  queries: string[]
   highlight: object
   from: number
   size: number

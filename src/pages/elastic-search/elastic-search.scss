@@ -20,6 +20,33 @@ page-elastic-search {
     color: white;
   }
 
+  .searchbar-col {
+    border-right: 1px solid #aaa;
+  }
+
+  .facets-col {
+    border-right: 1px solid #aaa;
+  }
+
+  .sort-by-wrapper {
+
+    .input-wrapper {
+      justify-content: flex-end;
+    }
+
+    .sort-by-label {
+      flex: 0;
+    }
+  
+    .sort-by-select {
+      width: 300px;
+    }
+  }
+
+  .hits-heading {
+    text-decoration: underline;
+  }
+
   .segment-md .segment-button {
     font-size: 1rem;
     text-transform: none;
@@ -86,13 +113,69 @@ page-elastic-search {
     padding-bottom: 0!important;
   }
 
-  #searchbar-wrapper {
+  .selectedFacetGroups {
+    .toolbar-background {
+      background-color: transparent;
+    }
+
+    .toolbar-content {
+      margin: 25px 0;
+    }
+
+    .toolbar-title {
+      color: #000;
+    }
+
+    .selectedFacetButton {
+      font-size: 0.9rem !important;
+      height: 28px !important;
+
+      ion-icon {
+        font-size: 1.5em !important;
+      }
+    }
+  }
+
+  .facet-group-wrapper {
+    .accordion-item {
+      margin: 0!important;
+
+      ion-label {
+        font-weight: 600;
+      }
+
+      .accordion-arrow {
+        font-size: 1.5em;
+      }
+
+      .show-more-button {
+        font-size: .9rem !important;
+        height: 2rem !important;
+      }
+    }
+  }
+
+  .hits-heading {
+    padding-left: 32px;
+  }
+
+  .hits-scroll-content {
+    margin-top: 0;
+    height: 100%!important;
+    .scroll-content::-webkit-scrollbar {
+      display: none!important;
+    }
+    .scroll-content {
+      margin-top: 0!important;
+    }
+  }
+
+  .searchbar-wrapper {
     position: relative;
     padding: 8px;
-    textarea {
-    height: 32px;
-    }
-    #myInput {
+
+    .searchInput {
+      height: 32px;
       text-indent: 25px;
       line-height: 1.3rem;
       width: 100%;
@@ -101,11 +184,34 @@ page-elastic-search {
       box-shadow: rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
       border: none !important;
     }
+    .removableSearchInput {
+      width: calc(100% - 40px);
+    }
+
     ion-icon {
-      font-size: 1.2rem!important;
       position: absolute;
+    }
+
+    ion-icon.searchIcon {
+      font-size: 1.2rem!important;
       top: 14.5px;
       left: 18px;
     }
+
+    ion-icon.removeIcon {
+      cursor: pointer;
+      top: 7px;
+      right: 10px;
+      padding: 6px;
+      font-size: 1.4rem !important;
+    }
   }
+}
+
+.alert-title {
+  font-size: 1rem !important;
+}
+
+.alert-md .alert-tappable {
+  min-height: 3.4rem;
 }

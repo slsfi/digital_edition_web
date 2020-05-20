@@ -26,6 +26,10 @@ ion-split-pane {
   }
 }
 
+ion-label {
+  overflow: visible!important;
+}
+
 .tei {
   font-family: $font-app-tei;
   // user-select: text !important;

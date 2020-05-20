@@ -54,7 +54,7 @@ export class ElasticSearchService {
   }
 
   private generateSearchQueryPayload({
-    query,
+    queries,
     highlight,
     from,
     size,
@@ -75,15 +75,19 @@ export class ElasticSearchService {
       sort,
     }
 
-    if (query) {
-      // Add free text query.
-      payload.query.bool.must.push({
-        query_string: {
-          query,
-        }
-      })
+    // Add free text query.
+    queries.forEach(query => {
+      if (query) {
+        payload.query.bool.must.push({
+          query_string: {
+            query,
+          }
+        })
+      }
+    })
 
-      // Include highlighted text matches to hits.
+    // Include highlighted text matches to hits if a query is present.
+    if (queries.some(query => !!query)) {
       payload.highlight = highlight
     }
 

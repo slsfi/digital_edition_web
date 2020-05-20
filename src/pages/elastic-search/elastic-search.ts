@@ -81,7 +81,7 @@ export class ElasticSearchPage {
   loading = false
   infiniteLoading = false
   showFilter = true
-  query: string
+  queries: string[] = ['']
   hits: object[] = []
   hitsPerPage = 20
   aggregations: object = {}
@@ -133,7 +133,7 @@ export class ElasticSearchPage {
   private getParamsData() {
     const query = this.navParams.get('query')
     if (query !== ':query') {
-      this.query = query
+      this.queries[0] = query
     }
   }
 
@@ -165,10 +165,17 @@ export class ElasticSearchPage {
   }
 
   /**
+   * https://stackoverflow.com/questions/46991497/how-properly-bind-an-array-with-ngmodel-in-angular-4
+   */
+  trackByIdx(index: number): number {
+    return index
+  }
+
+  /**
    * Triggers a new search and clears selected facets.
    */
   onQueryChange() {
-    this.autoExpand('#myInput')
+    this.autoExpandSearchfields()
     this.reset()
     this.loading = true
     this.debouncedSearch()
@@ -236,7 +243,7 @@ export class ElasticSearchPage {
 
     this.loading = true
     this.elastic.executeSearchQuery({
-      query: this.query,
+      queries: this.queries,
       type: this.type,
       highlight: {
         fields: {
@@ -271,9 +278,9 @@ export class ElasticSearchPage {
 
 
     // Fetch suggestions
-    if (this.query && this.query.length > 3) {
+    if (this.queries[0] && this.queries[0].length > 3) {
       this.elastic.executeSuggestionsQuery({
-        query: this.query,
+        query: this.queries[0],
       })
       .subscribe((data: any) => {
         console.log('suggestions data', data)
@@ -313,7 +320,7 @@ export class ElasticSearchPage {
   }
 
   canShowHits() {
-    return (!this.loading || this.infiniteLoading) && (this.query || this.range || this.hasSelectedFacets())
+    return (!this.loading || this.infiniteLoading) && (this.queries[0] || this.range || this.hasSelectedFacets())
   }
 
   hasSelectedFacets() {
@@ -363,7 +370,7 @@ export class ElasticSearchPage {
 
   selectSuggestedFacet(facetGroupKey: string, facet: Facet) {
     this.suggestedFacetGroups = {}
-    this.query = ''
+    this.queries = ['']
 
     facet.selected = true
     this.updateFacet(facetGroupKey, facet)
@@ -493,40 +500,46 @@ export class ElasticSearchPage {
   }
 
   openAccordion(e, group) {
-      const facet = document.getElementById('facetList-' + group);
-      const arrow = document.getElementById('arrow-' + group);
+    const facet = document.getElementById('facetList-' + group);
+    const arrow = document.getElementById('arrow-' + group);
 
-      arrow.classList.toggle('rotate');
+    arrow.classList.toggle('rotate');
 
-      if (facet.style.height === '100%') {
-          facet.style.height = '0';
-          arrow.classList.add('closed');
-          arrow.classList.remove('open');
-      } else {
-        facet.style.height = '100%';
-        arrow.classList.add('open');
-        arrow.classList.remove('closed');
-      }
+    if (facet.style.height === '100%') {
+      facet.style.height = '0';
+      arrow.classList.add('closed');
+      arrow.classList.remove('open');
+    } else {
+      facet.style.height = '100%';
+      arrow.classList.add('open');
+      arrow.classList.remove('closed');
+    }
   }
 
-autoExpand(selector) {
-  const tag = document.querySelectorAll(selector)
-
-  for (let i = 0; i < tag.length; i++) {
-      const borderTop = measure(tag[i], 'border-top-width')
-      const borderBottom = measure(tag[i], 'border-bottom-width')
-
-      tag[i].style.height = ''
-      tag[i].style.height = borderTop + tag[i].scrollHeight + borderBottom + 'px'
+  addSearchField() {
+    this.queries.push('')
   }
 
-  function measure(tag, property) {
-    return parseInt(
-            window.getComputedStyle(tag, null)
-              .getPropertyValue(property)
-                .replace(/px$/, ''))
-
+  removeSearchField(i) {
+    this.queries.splice(i, 1)
   }
-    return '\n/* ' + selector + ' { ' +  ': auto-expand; } */\n'
+
+  autoExpandSearchfields() {
+    const inputs = document.querySelectorAll('.searchInput')
+
+    for (let i = 0; i < inputs.length; i++) {
+      const borderTop = measure(inputs[i], 'border-top-width')
+      const borderBottom = measure(inputs[i], 'border-bottom-width')
+
+      inputs[i].style.height = ''
+      inputs[i].style.height = borderTop + inputs[i].scrollHeight + borderBottom + 'px'
+    }
+
+    function measure(elem: Element, property) {
+      return parseInt(
+        window.getComputedStyle(elem, null)
+          .getPropertyValue(property)
+          .replace(/px$/, ''))
+    }
   }
 }
