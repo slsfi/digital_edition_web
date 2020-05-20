@@ -86,6 +86,27 @@ page-elastic-search {
     padding-bottom: 0!important;
   }
 
+  .facet-group-wrapper {
+    .accordion-item {
+      margin: 0!important;
+    }
+  }
+
+  .hits-heading {
+    padding-left: 32px;
+  }
+
+  .hits-scroll-content {
+    margin-top: 0;
+    height: 100%!important;
+    .scroll-content::-webkit-scrollbar {
+      display: none!important;
+    }
+    .scroll-content {
+      margin-top: 0!important;
+    }
+  }
+
   #searchbar-wrapper {
     position: relative;
     padding: 8px;
