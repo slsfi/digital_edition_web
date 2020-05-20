@@ -102,6 +102,11 @@
           </ion-row>
         </ion-grid>
       </ion-col>
+
+      <ion-col class="beta-wrapper">
+        <h5>BETA</h5>
+      </ion-col>
+
       <ion-col *ngIf="userSettingsService.isMobile() && !userSettingsService.isDesktop() && !userSettingsService.isTablet()">
         <ion-title float-right>
           <title-logo></title-logo>
