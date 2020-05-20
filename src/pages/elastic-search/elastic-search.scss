@@ -20,12 +20,29 @@ page-elastic-search {
     color: white;
   }
 
-  .searchbar-col {
-    border-right: 1px solid #aaa;
+  .info-toolbar {
+      width: calc(100% - 25%);
+      position: absolute;
+      right: 0;
   }
 
-  .facets-col {
-    border-right: 1px solid #aaa;
+  .hits-column {
+    width: calc(100% - 25%);
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 75px;
+  }
+
+  .infinite-scroll-wrapper {
+      width: calc(100% - 25%);
+      position: absolute;
+      right: 0;
+      bottom: 0;
+  }
+
+  .date-histogram-wrapper {
+      border: 1px solid #333;
   }
 
   .sort-by-wrapper {
@@ -149,7 +166,7 @@ page-elastic-search {
       }
 
       .show-more-button {
-        font-size: .9rem !important;
+        font-size: .8rem !important;
         height: 2rem !important;
       }
     }
@@ -160,6 +177,7 @@ page-elastic-search {
   }
 
   .hits-scroll-content {
+    overflow: auto;
     margin-top: 0;
     height: 100%!important;
     .scroll-content::-webkit-scrollbar {
@@ -175,6 +193,7 @@ page-elastic-search {
     padding: 8px;
 
     .searchInput {
+      resize: none;
       height: 32px;
       text-indent: 25px;
       line-height: 1.3rem;
@@ -205,6 +224,14 @@ page-elastic-search {
       padding: 6px;
       font-size: 1.4rem !important;
     }
+  }
+
+  .add-search-bar-wrapper {
+      button {
+          height: 32px !important;
+          padding: 0 16px;
+          font-size: .9rem !important;
+      }
   }
 }
 
