@@ -525,7 +525,7 @@ export class ElasticSearchPage {
   }
 
   autoExpandSearchfields() {
-    const inputs = document.querySelectorAll('.searchInput')
+    const inputs: NodeListOf<HTMLElement> = document.querySelectorAll('.searchInput')
 
     for (let i = 0; i < inputs.length; i++) {
       const borderTop = measure(inputs[i], 'border-top-width')
