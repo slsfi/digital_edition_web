@@ -28,10 +28,27 @@
 <ion-content padding class="tei">
   <ion-grid>
     <ion-row>
-      <!--  Searchbar -->
-      <ion-col id="searchbar-wrapper" col-3>
-        <textarea placeholder="Search" id="myInput" [(ngModel)]="query" (keyup)="onQueryChange()"></textarea>
-        <ion-icon name="search"></ion-icon>
+
+      <!--  Search fields -->
+      <ion-col col-3>
+        <ion-row *ngFor="let query of queries; let i = index; trackBy:trackByIdx" class="searchbar-wrapper">
+          <textarea
+            placeholder="{{i > 0 ? 'AND search' : 'Search' | translate}}"
+            class="searchInput {{i > 0 ? 'removableSearchInput' : ''}}"
+            [(ngModel)]="queries[i]"
+            (keyup)="onQueryChange()"
+          ></textarea>
+          <ion-icon class="searchIcon" name="search"></ion-icon>
+          <ion-icon *ngIf="i > 0" (click)="removeSearchField(i)" class="removeIcon" name="remove-circle"></ion-icon>
+        </ion-row>
+
+        <!-- Add search field -->
+        <ion-row>
+          <button (click)="addSearchField()" ion-button icon-start>
+            <ion-icon name="add-circle"></ion-icon>
+            {{'Add search field' | translate}}
+          </button>
+        </ion-row>
       </ion-col>
 
       <!-- Show search results  -->
@@ -62,6 +79,7 @@
     <ion-row>
       <!-- Facets column -->
       <ion-col col-3>
+
         <!-- Suggested facets -->
         <ion-row *ngIf="hasSuggestedFacets()" class="selectedFacetGroups">
           <ion-col>
@@ -72,7 +90,7 @@
                 <button *ngFor="let facet of objectValues(suggestedFacetGroups[groupKey])"
                   (click)="selectSuggestedFacet(groupKey, facet)" class="selectedFacetButton" ion-button icon-end small>
                   {{getEllipsisString(facet.key | translate)}}
-                  <ion-icon name="add"></ion-icon>
+                  <ion-icon name="add-circle"></ion-icon>
                 </button>
               </ion-toolbar>
             </div>
@@ -132,8 +150,8 @@
       </ion-col>
 
       <!-- Hits column -->
-        <ion-col>
-          <ion-scroll scrollY="true" class="hits-scroll-content">
+      <ion-col>
+        <ion-scroll scrollY="true" class="hits-scroll-content">
 
           <!-- Selected facets row -->
           <ion-row class="selectedFacetGroups">
