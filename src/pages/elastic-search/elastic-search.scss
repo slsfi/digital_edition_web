@@ -20,12 +20,36 @@ page-elastic-search {
     color: white;
   }
 
-  .searchbar-col {
-    border-right: 1px solid #aaa;
+  .info-toolbar {
+    width: calc(100% - 27%);
+    position: absolute;
+    right: 0;
   }
 
-  .facets-col {
-    border-right: 1px solid #aaa;
+  .hits-column {
+    width: calc(100% - 27%);
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 75px;
+  }
+
+  .infinite-scroll-wrapper {
+    width: calc(100% - 27%);
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+
+  .date-histogram-wrapper {
+    border: 0.5px solid rgba(190, 183, 155, 0.4);
+    border-radius: 3px;
+    margin: 20px 0;
+    padding: 10px;
+
+    .years-heading {
+      margin-bottom: -14px;
+    }
   }
 
   .sort-by-wrapper {
@@ -37,7 +61,7 @@ page-elastic-search {
     .sort-by-label {
       flex: 0;
     }
-  
+
     .sort-by-select {
       width: 300px;
     }
@@ -66,6 +90,7 @@ page-elastic-search {
     cursor: pointer;
 
     .itemHeading {
+      padding-left: 20px;
       font-weight: bold;
       color: color($colors, blackish);
     }
@@ -100,17 +125,19 @@ page-elastic-search {
     display: flex;
     align-items: stretch;
   }
+
   ion-icon.rotate.open {
     transform: rotate(90deg);
     transition: transform ease-in-out .15s;
   }
+
   ion-icon.closed {
     transition: transform ease-in-out .15s;
   }
 
   ion-icon[name="refresh"],
   ion-icon[name="close"] {
-    padding-bottom: 0!important;
+    padding-bottom: 0 !important;
   }
 
   .selectedFacetGroups {
@@ -137,8 +164,37 @@ page-elastic-search {
   }
 
   .facet-group-wrapper {
+    .facet-item {
+      margin: 10px 0;
+      padding-bottom: 10px;
+      padding-top: 10px;
+
+      &.Type {
+        border: 0.5px solid rgba(190, 183, 155, 0.4);
+        border-radius: 3px;
+      }
+
+      &.Genre {
+        border: 0.5px solid rgba(190, 183, 155, 0.4);
+        border-radius: 3px;
+      }
+
+      &.Collection {
+        border: 0.5px solid rgba(190, 183, 155, 0.4);
+        border-radius: 3px;
+      }
+    }
+
     .accordion-item {
-      margin: 0!important;
+      margin: 0 !important;
+
+      .facet {
+        padding: 0;
+
+        ion-checkbox {
+          margin-right: 15px !important;
+        }
+      }
 
       ion-label {
         font-weight: 600;
@@ -149,8 +205,9 @@ page-elastic-search {
       }
 
       .show-more-button {
-        font-size: .9rem !important;
+        font-size: .8rem !important;
         height: 2rem !important;
+        letter-spacing: 1px;
       }
     }
   }
@@ -160,21 +217,25 @@ page-elastic-search {
   }
 
   .hits-scroll-content {
+    overflow: auto;
     margin-top: 0;
-    height: 100%!important;
+    height: 100% !important;
+
     .scroll-content::-webkit-scrollbar {
-      display: none!important;
+      display: none !important;
     }
+
     .scroll-content {
-      margin-top: 0!important;
+      margin-top: 0 !important;
     }
   }
 
   .searchbar-wrapper {
     position: relative;
-    padding: 8px;
+    margin: 10px 0;
 
     .searchInput {
+      resize: none;
       height: 32px;
       text-indent: 25px;
       line-height: 1.3rem;
@@ -184,8 +245,9 @@ page-elastic-search {
       box-shadow: rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
       border: none !important;
     }
+
     .removableSearchInput {
-      width: calc(100% - 40px);
+      width: calc(100% - 25px);
     }
 
     ion-icon {
@@ -193,17 +255,26 @@ page-elastic-search {
     }
 
     ion-icon.searchIcon {
-      font-size: 1.2rem!important;
-      top: 14.5px;
-      left: 18px;
+      font-size: 1.2rem !important;
+      top: 7px;
+      left: 14px;
     }
 
     ion-icon.removeIcon {
       cursor: pointer;
-      top: 7px;
-      right: 10px;
-      padding: 6px;
+      top: 6px;
+      right: 0;
       font-size: 1.4rem !important;
+    }
+  }
+
+  .add-search-bar-wrapper {
+    button {
+      height: 32px !important;
+      padding: 0 16px;
+      margin: auto 0;
+      font-size: .8rem !important;
+      letter-spacing: 1px;
     }
   }
 }
@@ -214,4 +285,8 @@ page-elastic-search {
 
 .alert-md .alert-tappable {
   min-height: 3.4rem;
+}
+
+.alert-radio-group {
+  padding: 16px;
 }
