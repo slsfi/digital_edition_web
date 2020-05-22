@@ -190,7 +190,12 @@
     },
     "ElasticSearch": {
       "NoHits": "Haku ei vastannut yhtään asiakirjaa",
-      "Found": "Löytyi"
+      "Found": "Löytyi",
+      "SearchField": "Lisä hakukenttä",
+      "From": "From",
+      "To": "To",
+      "Search": "Hae",
+      "Years": "Vuosi"
     },
     "est": "Lästext",
     "ms": "Manuskript",

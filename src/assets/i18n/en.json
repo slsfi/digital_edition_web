@@ -177,7 +177,12 @@
     },
     "ElasticSearch": {
       "NoHits": "Your search did not match any documents",
-      "Found": "Found"
+      "Found": "Found",
+      "SearchField": "Add search field",
+      "From": "From",
+      "To": "To",
+      "Search": "Search",
+      "Years": "Years"
     },
     "est": "Established text",
     "ms": "Manuscript",
