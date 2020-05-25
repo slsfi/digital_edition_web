@@ -376,10 +376,6 @@ export class TableOfContentsAccordionComponent {
     this.alphabeticalactiveMenuTree = [];
     this.alphabeticalTitleStack = [];
     const list = this.flattenList(data.tocItems);
-
-console.log(list, ' alphas');
-
-
     for (const child of list) {
         if (child.type !== 'section_title') {
             this.alphabeticalactiveMenuTree.push(child);
@@ -388,9 +384,6 @@ console.log(list, ' alphas');
 
     this.alphabeticalactiveMenuTree.sort((a, b) =>
       (a.text.toUpperCase() < b.text.toUpperCase()) ? -1 : (a.text.toUpperCase() > b.text.toUpperCase()) ? 1 : 0);
-
-    console.log(this.alphabeticalactiveMenuTree, ' alpha');
-
   }
 
   constructChronologialTOC(data) {
@@ -406,7 +399,6 @@ console.log(list, ' alphas');
     }
 
     this.chronologicalactiveMenuTree.sort((a, b) => (a.date < b.date) ? -1 : (a.date > b.date) ? 1 : 0);
-    console.log(this.chronologicalactiveMenuTree, 'chrono');
   }
 
   flattenList(data) {
@@ -452,10 +444,6 @@ console.log(list, ' alphas');
         this.chronologicalOrderActive = true;
         this.thematicOrderActive = false;
     }
-  }
-
-  log(x) {
-      console.log(x, 'dsdasddsa');
   }
 
   ngOnChanges(about) {
@@ -647,7 +635,6 @@ console.log(list, ' alphas');
     } else if (this.isGallery) {
       this.selectGallery(item);
     } else {
-      console.log(this.options, 'får vi naa nu då???');
 
       this.storage.set('currentTOCItem', item);
       const params = {root: this.options, tocItem: item, collection: {title: item.text}};
