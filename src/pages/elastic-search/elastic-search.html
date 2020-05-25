@@ -91,7 +91,7 @@
                 <ng-container *ngIf="hasFacets(facetGroupKey); then facets else nofacet"></ng-container>
                 <ng-template #facets>
                   <ng-container *ngFor="let facet of getFacets(facetGroupKey); let j = index;">
-                    <ion-item id="facet-{{facetGroupKey}}" *ngIf="showAllFor[facetGroupKey] || j < 3" class="facet">
+                    <ion-item id="facet-{{facetGroupKey}}" *ngIf="showAllFor[facetGroupKey] || j < 10" class="facet">
                         <ion-label text-wrap *ngIf="facetGroupKey === 'Type'">
                           {{facet.key | translate}} ({{facet.doc_count}})
                         </ion-label>
@@ -102,7 +102,7 @@
                         <ion-checkbox [(ngModel)]="facet.selected" (click)="updateFacet(facetGroupKey, facet)" [disabled]="facet.doc_count === 0 && facetGroupKey !== 'Type'"></ion-checkbox>
                     </ion-item>
                   </ng-container>
-                  <button class="show-more-button" small ion-button *ngIf="getFacets(facetGroupKey).length > 3" (click)="showAllFor[facetGroupKey] = !showAllFor[facetGroupKey]">
+                  <button class="show-more-button" small ion-button *ngIf="getFacets(facetGroupKey).length > 10" (click)="showAllFor[facetGroupKey] = !showAllFor[facetGroupKey]">
                       <span *ngIf="!showAllFor[facetGroupKey]">{{'ElasticSearch.ShowMore' | translate}}</span>
                       <span *ngIf="showAllFor[facetGroupKey]">{{'ElasticSearch.ShowLess' | translate}}</span>
                   </button>
