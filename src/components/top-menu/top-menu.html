@@ -23,9 +23,12 @@
                 </button>
                 <button ion-button class="top-menu-button" (click)="searchApp()" id="searchIcon">
                   <ion-icon name="search"></ion-icon>
+                  <span class="side-title">{{'TopMenu.SimpleSearch' | translate }}</span>
                 </button>
                 <button ion-button class="top-menu-button" (click)="elasticSearch()" id="searchIcon">
-                  <ion-icon name="search"></ion-icon>
+                    <ion-icon name="search"></ion-icon>
+                    <span class="side-title">{{'TopMenu.AdvancedSearch' | translate }}
+                    <strong>(BETA)</strong></span>
                 </button>
                 <button *ngIf="showHelpButton" ion-button class="top-menu-button" (click)="help()">
                   <ion-icon name="help"></ion-icon>
@@ -101,10 +104,6 @@
             </ion-col>
           </ion-row>
         </ion-grid>
-      </ion-col>
-
-      <ion-col class="beta-wrapper">
-        <h5>BETA</h5>
       </ion-col>
 
       <ion-col *ngIf="userSettingsService.isMobile() && !userSettingsService.isDesktop() && !userSettingsService.isTablet()">
