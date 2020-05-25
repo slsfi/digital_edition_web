@@ -4,19 +4,19 @@
 </ion-item>
 
 <div *ngIf="open">
+  <ng-container *ngIf="sortableLetters.includes(collectionId)">
     <ion-item class="collection-filters">
         <button id="thematic" ion-button [ngClass]="{active: thematicOrderActive}" (click)="activeMenuTree = collapsableItems; setActiveSortingType($event)">
             <ion-icon name="ios-pricetags-outline"></ion-icon>
         </button>
-      <ng-container *ngIf="sortableLetters.includes(collectionId)">
         <button id="chronological" ion-button [ngClass]="{active: chronologicalOrderActive}" (click)="activeMenuTree = chronologicalactiveMenuTree; setActiveSortingType($event)">
             <ion-icon name="ios-calendar-outline"></ion-icon>
         </button>
-      </ng-container>
         <button id="alphabetical" ion-button [ngClass]="{active: alphabethicOrderActive}" (click)="activeMenuTree = alphabeticalactiveMenuTree; setActiveSortingType($event)">
             <ion-icon name="ios-swap-outline"></ion-icon>
         </button>
     </ion-item>
+  </ng-container>
     <ion-item *ngIf="hasCover && collectionName != 'About'" [ngClass]="coverSelected?'selected-toc-item':''">
         <p class="justLevel" (click)="openTitlePage()">{{ "Read.TitlePage.Title" | translate }}</p>
     </ion-item>
