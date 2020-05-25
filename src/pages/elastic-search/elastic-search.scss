@@ -166,6 +166,7 @@ page-elastic-search {
   .facet-group-wrapper {
     .facet-item {
       margin: 5px 0;
+      padding-bottom: 1rem;
 
       &.Type,
       &.Genre,
@@ -198,7 +199,6 @@ page-elastic-search {
         font-size: .8rem !important;
         height: 2rem !important;
         letter-spacing: 1px;
-        margin-bottom: 1rem;
       }
     }
   }
