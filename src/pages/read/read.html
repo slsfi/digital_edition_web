@@ -49,6 +49,9 @@
         [ngStyle]="{'position': 'relative','max-width':(95/((views.length>1)?views.length:2))+'%','min-width':'25%'}"
         #readColumn>
         <ion-card>
+          <ion-card-header class="read-columns__title">
+            {{ view.type | translate }}
+          </ion-card-header>
           <ion-card-content>
             <ion-fab top left [ngClass]="(views.length>1)?'close-button-many':'close-button-one'">
               <button ion-fab mini>

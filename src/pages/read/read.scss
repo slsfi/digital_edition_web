@@ -116,7 +116,12 @@ page-read {
 		-webkit-overflow-scrolling: touch;
 		overflow-x: scroll;
 		overflow-y: hidden;
-		white-space: nowrap;
+    white-space: nowrap;
+    &__title {
+      background: #E4DCCB!important;
+      font-size: 0.8rem!important;
+      font-weight: bold!important;
+    }
 
 		&.single-column .read-column {
 			max-width: 50%;
