@@ -142,10 +142,18 @@ export class ElasticSearchPage {
 
     // Open type by default
     setTimeout(() => {
-      const facetListElement = <HTMLElement>document.querySelector('.facetList-Type');
-      facetListElement.style.height = '100%';
-      const facetArrowElement = <HTMLElement>document.querySelector('#arrow-1');
-      facetArrowElement.classList.add('open', 'rotate');
+      const facetListType = <HTMLElement>document.querySelector('.facetList-Type');
+      facetListType.style.height = '100%';
+      const facetArrowType = <HTMLElement>document.querySelector('#arrow-1');
+      facetArrowType.classList.add('open', 'rotate');
+      const facetListGenre = <HTMLElement>document.querySelector('.facetList-Genre');
+      facetListGenre.style.height = '100%';
+      const facetArrowGenre = <HTMLElement>document.querySelector('#arrow-2');
+      facetArrowGenre.classList.add('open', 'rotate');
+      const facetListCollections = <HTMLElement>document.querySelector('.facetList-Collection');
+      facetListCollections.style.height = '100%';
+      const facetArrowCollections = <HTMLElement>document.querySelector('#arrow-3');
+      facetArrowCollections.classList.add('open', 'rotate');
     }, 1000);
   }
 
