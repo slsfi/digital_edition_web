@@ -239,6 +239,13 @@
         "Comments": "Kommentarer",
         "SongText": "Sångtext",
         "Download": "Ladda ner"
-
-    }
+    },
+    "established": "Lukuteksti",
+    "comments": "Kommentaari",
+    "facsimiles": "Faksimilet",
+    "manuscripts": "Käsikirjoitukset",
+    "variations": "Variantit",
+    "introduction": "Introduktio",
+    "songexample": "Sång",
+    "illustrations": "Kuvitukset"
 }

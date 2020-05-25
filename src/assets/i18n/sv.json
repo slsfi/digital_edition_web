@@ -26,6 +26,7 @@
         "Info": "Mer information"
     },
     "Read": {
+      "illustrations": "iskdfo0",
         "DigitalEditions": "Digitala utgåvor",
         "OpenInTab": "Öppna i ny flik",
         "Popover": {
@@ -280,5 +281,13 @@
         "Title": "Musik",
         "PageTitle": "Musikvolymerna",
         "SubTitle": "FSFD"
-    }
+    },
+    "established": "Lästext",
+    "comments": "Kommentarer",
+    "facsimiles": "Faksimil",
+    "manuscripts": "Manuskript",
+    "variations": "Varianter",
+    "introduction": "Introduktion",
+    "songexample": "Sång",
+    "illustrations": "Illustrationer"
 }
