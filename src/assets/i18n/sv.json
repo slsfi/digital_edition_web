@@ -16,7 +16,9 @@
         "Home": "Startsida",
         "Read": "Innehåll",
         "Info": "Om",
-        "Music": "Musik"
+        "Music": "Musik",
+        "SimpleSearch": "Enkel sökning",
+        "AdvancedSearch": "Avancerad sökning"
     },
     "Tabs": {
         "Home": "Hem",

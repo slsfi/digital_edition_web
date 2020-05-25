@@ -5,7 +5,9 @@
     "TopMenu": {
         "Home": "Startsida",
         "Read": "Innehåll",
-        "Info": "Om"
+        "Info": "Om",
+        "SimpleSearch": "Haku",
+        "AdvancedSearch": "Tarkennettu haku"
     },
     "Tabs": {
         "Home": "Hem",

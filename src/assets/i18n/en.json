@@ -5,7 +5,9 @@
     "TopMenu": {
         "Home": "Home",
         "Read": "Content",
-        "Info": "About"
+        "Info": "About",
+        "SimpleSearch": "Simple Search",
+        "AdvancedSearch": "Advanced Search"
     },
     "Tabs": {
         "Home": "Home",
