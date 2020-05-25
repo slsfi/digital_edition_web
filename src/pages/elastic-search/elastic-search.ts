@@ -101,6 +101,7 @@ export class ElasticSearchPage {
 
   type: string = null
   types: string[] = []
+  groupsOpenByDefault: any;
 
   debouncedSearch = debounce(this.search, 500)
 
@@ -128,6 +129,11 @@ export class ElasticSearchPage {
     } catch (e) {
       console.error('Failed to load Elastic Search Page. Configuration error.', e)
     }
+    try {
+      this.groupsOpenByDefault = this.config.getSettings('ElasticSearch.groupOpenByDefault')
+    } catch (e) {
+      console.error('Failed to load set facet groups open by default. Configuration error.', e)
+    }
   }
 
   private getParamsData() {
@@ -139,22 +145,41 @@ export class ElasticSearchPage {
 
   ionViewDidLoad() {
     this.search({initialSearch: true})
-
     // Open type by default
     setTimeout(() => {
-      const facetListType = <HTMLElement>document.querySelector('.facetList-Type');
-      facetListType.style.height = '100%';
-      const facetArrowType = <HTMLElement>document.querySelector('#arrow-1');
-      facetArrowType.classList.add('open', 'rotate');
-      const facetListGenre = <HTMLElement>document.querySelector('.facetList-Genre');
-      facetListGenre.style.height = '100%';
-      const facetArrowGenre = <HTMLElement>document.querySelector('#arrow-2');
-      facetArrowGenre.classList.add('open', 'rotate');
-      const facetListCollections = <HTMLElement>document.querySelector('.facetList-Collection');
-      facetListCollections.style.height = '100%';
-      const facetArrowCollections = <HTMLElement>document.querySelector('#arrow-3');
-      facetArrowCollections.classList.add('open', 'rotate');
-    }, 1000);
+      const facetGroups = Object.keys(this.facetGroups);
+      facetGroups.forEach(facetGroup => {
+        const openGroup = facetGroup.toLowerCase();
+        switch (openGroup) {
+          case 'type':
+            if (this.groupsOpenByDefault.type) {
+              const facetListType = <HTMLElement>document.querySelector('.facetList-' + facetGroup);
+              facetListType.style.height = '100%';
+              const facetArrowType = <HTMLElement>document.querySelector('#arrow-1');
+              facetArrowType.classList.add('open', 'rotate');
+            }
+            break;
+          case 'genre':
+            if (this.groupsOpenByDefault.genre) {
+              const facetListGenre = <HTMLElement>document.querySelector('.facetList-' + facetGroup);
+              facetListGenre.style.height = '100%';
+              const facetArrowGenre = <HTMLElement>document.querySelector('#arrow-2');
+              facetArrowGenre.classList.add('open', 'rotate');
+            }
+            break;
+          case 'collection':
+            if (this.groupsOpenByDefault.collection) {
+              const facetListCollection = <HTMLElement>document.querySelector('.facetList-' + facetGroup);
+              facetListCollection.style.height = '100%';
+              const facetArrowCollection = <HTMLElement>document.querySelector('#arrow-3');
+              facetArrowCollection.classList.add('open', 'rotate');
+            }
+            break;
+          default:
+            break;
+        }
+      })
+    }, 300);
   }
 
   ionViewDidEnter() {
