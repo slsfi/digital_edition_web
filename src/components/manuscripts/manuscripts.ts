@@ -25,7 +25,7 @@ export class ManuscriptsComponent {
   selection: 0;
   manuscripts: any;
   selectedManuscript: any;
-  normalized = true;
+  normalized = false;
   errorMessage: string;
   msID: string;
   chapter: string;
