@@ -37,6 +37,9 @@ export class ElasticSearchService {
     }
   }
 
+  /**
+   * Returns hits.
+   */
   executeSearchQuery(options: SearchQuery): Observable<any> {
     const payload = this.generateSearchQueryPayload(options)
 
@@ -45,6 +48,20 @@ export class ElasticSearchService {
       .catch(this.handleError)
   }
 
+  /**
+   * Returns aggregations that are used for faceted search.
+   */
+  executeAggregationQuery(options: AggregationQuery): Observable<any> {
+    const payload = this.generateAggregationQueryPayload(options)
+
+    return this.http.post(this.getSearchUrl(), payload)
+      .map(this.extractData)
+      .catch(this.handleError)
+  }
+
+  /**
+   * Returns facet suggestions.
+   */
   executeSuggestionsQuery(options: SuggestionsQuery): Observable<any> {
     const payload = this.generateSuggestionsQueryPayload(options)
 
@@ -58,7 +75,6 @@ export class ElasticSearchService {
     highlight,
     from,
     size,
-    type,
     range,
     facetGroups,
     sort,
@@ -91,15 +107,6 @@ export class ElasticSearchService {
       payload.highlight = highlight
     }
 
-    // Filter with given types.
-    if (type) {
-      payload.query.bool.must.push({
-        terms: {
-          texttype: type,
-        }
-      })
-    }
-
     // Add date range filter.
     if (range) {
       payload.query.bool.must.push({
@@ -121,9 +128,6 @@ export class ElasticSearchService {
 
     if (facetGroups) {
       this.injectFacetsToPayload(payload, facetGroups)
-      this.injectFilteredAggregationsToPayload(payload, facetGroups)
-    } else {
-      this.injectUnfilteredAggregationsToPayload(payload)
     }
 
     console.log('search payload', payload)
@@ -131,85 +135,49 @@ export class ElasticSearchService {
     return payload
   }
 
-  private injectFacetsToPayload(payload: any, facetGroups: FacetGroups) {
-    Object.entries(facetGroups).forEach(([facetGroupKey, facets]: [string, Facets]) => {
-      const terms = this.filterSelectedFacetKeys(facets)
-      if (terms.length > 0) {
-        payload.query.bool.filter = payload.query.bool.filter || []
-        payload.query.bool.filter.push({
-          terms: {
-            [this.aggregations[facetGroupKey].terms.field]: terms,
+  private generateAggregationQueryPayload({
+    queries,
+    range,
+    facetGroups,
+  }: AggregationQuery): object {
+    const payload: any = {
+      from: 0,
+      size: 0,
+      _source: this.source,
+      query: {
+        bool: {
+          must: []
+        }
+      },
+    }
+
+    // Add free text query.
+    queries.forEach(query => {
+      if (query) {
+        payload.query.bool.must.push({
+          query_string: {
+            query,
           }
         })
       }
     })
-  }
 
-  private filterSelectedFacetKeys(facets: Facets): string[] {
-    return Object.values(facets).filter(facet => facet.selected).map((facet: any) => facet.key)
-  }
-
-  private injectUnfilteredAggregationsToPayload(payload: any) {
-    payload.aggs = {}
-    for (const [key, aggregation] of Object.entries(this.aggregations)) {
-      payload.aggs[key] = aggregation
-    }
-    return payload
-  }
-
-  /**
-   * Inspired by an article that uses an old version of elastic:
-   * https://madewithlove.com/faceted-search-using-elasticsearch/
-   *
-   * Up to date documentation:
-   * https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-filter-aggregation.html
-   */
-  private injectFilteredAggregationsToPayload(payload: any, facetGroups: FacetGroups) {
-    payload.aggs = {}
-    for (const [key, aggregation] of Object.entries(this.aggregations)) {
-      const filteredAggregation = this.generateFilteredAggregation(key, aggregation, facetGroups)
-
-      // If filtered aggregation doesn't have filters, then use an unfiltered aggregation.
-      payload.aggs[key] = filteredAggregation || aggregation
-    }
-    return payload
-  }
-
-  private generateFilteredAggregation(aggregationKey: string, aggregation: Aggregation, facetGroups: FacetGroups) {
-
-    const filtered = {
-      filter: {
-        bool: {
-          // Selected facets go here as filters.
-          filter: []
-        }
-      },
-      aggs: {
-        // Aggregation goes here.
-        filtered: aggregation,
-      }
+    // Add fixed filters that apply to all queries.
+    if (this.fixedFilters) {
+      this.fixedFilters.forEach(filter => {
+        payload.query.bool.must.push(filter)
+      })
     }
 
-    // Add filters
-    Object.entries(facetGroups).forEach(([groupKey, facets]: [string, Facets]) => {
-      // Don't filter itself.
-      if (aggregationKey !== groupKey) {
-        const selectedFacetKeys = this.filterSelectedFacetKeys(facets)
-        if (selectedFacetKeys.length > 0) {
-          filtered.filter.bool.filter.push({
-            terms: {
-              [this.getAggregationField(groupKey)]: selectedFacetKeys,
-            }
-          })
-        }
-      }
-    })
-
-    if (filtered.filter.bool.filter.length > 0) {
-      return filtered
+    if (facetGroups || range) {
+      this.injectFilteredAggregationsToPayload(payload, facetGroups, range)
     } else {
-      return null
+      this.injectUnfilteredAggregationsToPayload(payload)
     }
+
+    console.log('aggregation payload', payload)
+
+    return payload
   }
 
   private generateSuggestionsQueryPayload({
@@ -258,7 +226,109 @@ export class ElasticSearchService {
       }
     }
 
+    console.log('suggestions payload', payload)
+
     return payload
+  }
+
+  private injectFacetsToPayload(payload: any, facetGroups: FacetGroups) {
+    Object.entries(facetGroups).forEach(([facetGroupKey, facets]: [string, Facets]) => {
+      const terms = this.filterSelectedFacetKeys(facets)
+      if (terms.length > 0) {
+        payload.query.bool.filter = payload.query.bool.filter || []
+        payload.query.bool.filter.push({
+          terms: {
+            [this.aggregations[facetGroupKey].terms.field]: terms,
+          }
+        })
+      }
+    })
+  }
+
+  private filterSelectedFacetKeys(facets: Facets): string[] {
+    return Object.values(facets).filter(facet => facet.selected).map((facet: any) => facet.key)
+  }
+
+  private injectUnfilteredAggregationsToPayload(payload: any) {
+    payload.aggs = {}
+    for (const [key, aggregation] of Object.entries(this.aggregations)) {
+      payload.aggs[key] = aggregation
+    }
+    return payload
+  }
+
+  /**
+   * Inspired by an article that uses an old version of elastic:
+   * https://madewithlove.com/faceted-search-using-elasticsearch/
+   *
+   * Up to date documentation:
+   * https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-filter-aggregation.html
+   */
+  private injectFilteredAggregationsToPayload(payload: any, facetGroups?: FacetGroups, range?: TimeRange) {
+    payload.aggs = {}
+    for (const [key, aggregation] of Object.entries(this.aggregations)) {
+      const filteredAggregation = this.generateFilteredAggregation(key, aggregation, facetGroups, range)
+
+      // If filtered aggregation doesn't have filters, then use an unfiltered aggregation.
+      payload.aggs[key] = filteredAggregation || aggregation
+    }
+    return payload
+  }
+
+  private generateFilteredAggregation(
+    aggregationKey: string,
+    aggregation: Aggregation,
+    facetGroups?: FacetGroups,
+    range?: TimeRange
+  ) {
+
+    const filtered = {
+      filter: {
+        bool: {
+          // Selected facets go here as filters.
+          filter: []
+        }
+      },
+      aggs: {
+        // Aggregation goes here.
+        filtered: aggregation,
+      }
+    }
+
+    // Add term filters.
+    if (facetGroups) {
+      Object.entries(facetGroups).forEach(([groupKey, facets]: [string, Facets]) => {
+        // Don't filter itself.
+        if (aggregationKey !== groupKey) {
+          const selectedFacetKeys = this.filterSelectedFacetKeys(facets)
+          if (selectedFacetKeys.length > 0) {
+            filtered.filter.bool.filter.push({
+              terms: {
+                [this.getAggregationField(groupKey)]: selectedFacetKeys,
+              }
+            })
+          }
+        }
+      })
+    }
+
+    // Add date range filter.
+    if (range && !aggregation.date_histogram) {
+      filtered.filter.bool.filter.push({
+        range: {
+          orig_date_certain: {
+            gte: range.from,
+            lte: range.to,
+          }
+        }
+      })
+    }
+
+    if (filtered.filter.bool.filter.length > 0) {
+      return filtered
+    } else {
+      return null
+    }
   }
 
   isDateHistogramAggregation(aggregationKey: string): boolean {

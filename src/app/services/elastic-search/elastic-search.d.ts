@@ -1,6 +1,4 @@
-
 interface SearchQuery {
-  type?: string
   queries: string[]
   highlight: object
   from: number
@@ -8,6 +6,12 @@ interface SearchQuery {
   facetGroups?: FacetGroups
   range?: TimeRange
   sort?: object[]
+}
+
+interface AggregationQuery {
+  queries: string[]
+  facetGroups?: FacetGroups
+  range?: TimeRange
 }
 
 interface TimeRange {

@@ -99,8 +99,6 @@ export class ElasticSearchPage {
 
   range: TimeRange
 
-  type: string = null
-  types: string[] = []
   groupsOpenByDefault: any;
 
   debouncedSearch = debounce(this.search, 500)
@@ -124,7 +122,6 @@ export class ElasticSearchPage {
     private cf: ChangeDetectorRef
   ) {
     try {
-      this.types = this.config.getSettings('ElasticSearch.types')
       this.hitsPerPage = this.config.getSettings('ElasticSearch.hitsPerPage')
     } catch (e) {
       console.error('Failed to load Elastic Search Page. Configuration error.', e)
@@ -275,9 +272,10 @@ export class ElasticSearchPage {
     console.log(`search from ${this.from} to ${this.from + this.hitsPerPage}`)
 
     this.loading = true
+
+    // Fetch hits
     this.elastic.executeSearchQuery({
       queries: this.queries,
-      type: this.type,
       highlight: {
         fields: {
           textDataIndexed: { number_of_fragments: 2 },
@@ -302,15 +300,25 @@ export class ElasticSearchPage {
       })))
       console.log('search hits', this.hits)
 
-      this.populateFacets(data.aggregations)
-
       if (done) {
         done()
       }
     })
 
+    // Fetch aggregation data for facets.
+    this.elastic.executeAggregationQuery({
+      queries: this.queries,
+      facetGroups: this.facetGroups,
+      range: this.range,
+    })
+    .subscribe((data: any) => {
+      console.log('aggregation data', data)
+
+      this.populateFacets(data.aggregations)
+    })
 
     // Fetch suggestions
+    // TODO: Currently only works with the first search field.
     if (this.queries[0] && this.queries[0].length > 3) {
       this.elastic.executeSuggestionsQuery({
         query: this.queries[0],
