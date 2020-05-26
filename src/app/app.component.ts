@@ -400,8 +400,8 @@ export class DigitalEditionsApp {
   openCollectionPage(collection) {
     this.currentContentName = collection.title;
     const params = { collection: collection, fetch: false, id: collection.id };
-
-    this.nav.setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
+    const nav = this.app.getActiveNavs();
+    nav[0].setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
   }
 
   getCollectionsWithTOC() {
@@ -800,7 +800,8 @@ export class DigitalEditionsApp {
       });
       this.currentContentName = 'Digital Publications';
       const params = {};
-      this.nav.setRoot('EditionsPage', params, { animate: false });
+      const nav = this.app.getActiveNavs();
+      nav[0].setRoot('EditionsPage', params, { animate: false });
     });
     this.events.subscribe('topMenu:about', () => {
       this.events.publish('SelectedItemInMenu', {
@@ -829,7 +830,8 @@ export class DigitalEditionsApp {
       // Open music accordion as well
       this.simpleAccordionsExpanded.musicAccordion = true;
       const params = {};
-      this.nav.setRoot('music', params, { animate: false });
+      const nav = this.app.getActiveNavs();
+      nav[0].setRoot('music', params, { animate: false });
     });
     this.events.subscribe('topMenu:front', () => {
       this.events.publish('SelectedItemInMenu', {
@@ -872,7 +874,9 @@ export class DigitalEditionsApp {
       });
       // this.openPage('ElasticSearchPage');
       // this.openPage('elastic-search');
-      this.nav.push('elastic-search')
+      const nav = this.app.getActiveNavs();
+      console.log('opening elastic search page');
+      nav[0].setRoot('elastic-search')
     });
   }
 
@@ -1130,7 +1134,8 @@ export class DigitalEditionsApp {
 
   openStaticPage(id: string) {
     const params = { id: id };
-    this.nav.setRoot('content', params);
+    const nav = this.app.getActiveNavs();
+    nav[0].setRoot('content', params);
   }
 
   openPage(page, selectedMenu?) {
@@ -1148,7 +1153,8 @@ export class DigitalEditionsApp {
     /*if ( this.platform.is('mobile') ) {
       this.events.publish('splitPaneToggle:disable');
     }*/
-    this.nav.setRoot(page);
+    const nav = this.app.getActiveNavs();
+    nav[0].setRoot(page);
   }
 
   openPersonSearchPage(searchPage, selectedMenu?) {
@@ -1165,8 +1171,8 @@ export class DigitalEditionsApp {
       type: searchPage.object_type,
       subtype: searchPage.object_subtype
     };
-
-    this.nav.setRoot('person-search', params);
+    const nav = this.app.getActiveNavs();
+    nav[0].setRoot('person-search', params);
   }
 
   openFirstPage(collection: DigitalEdition) {
@@ -1231,13 +1237,15 @@ export class DigitalEditionsApp {
   /* Legacy code */
   openGalleries() {
     const params = { fetch: true };
-    this.nav.setRoot('galleries', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
+    const nav = this.app.getActiveNavs();
+    nav[0].setRoot('galleries', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
   }
 
   /* Legacy code */
   openGalleryPage(galleryPage: string) {
     const params = { galleryPage: galleryPage, fetch: false };
-    this.nav.setRoot('image-gallery', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
+    const nav = this.app.getActiveNavs();
+    nav[0].setRoot('image-gallery', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
   }
 
   getMediaCollections() {
@@ -1279,7 +1287,8 @@ export class DigitalEditionsApp {
 
   openMediaCollections() {
     const params = {};
-    this.nav.setRoot('media-collections', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
+    const nav = this.app.getActiveNavs();
+    nav[0].setRoot('media-collections', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
   }
 
   openMediaCollection(gallery) {
