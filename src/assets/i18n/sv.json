@@ -26,7 +26,6 @@
         "Info": "Mer information"
     },
     "Read": {
-      "illustrations": "iskdfo0",
         "DigitalEditions": "Digitala utgåvor",
         "OpenInTab": "Öppna i ny flik",
         "Popover": {
@@ -107,7 +106,10 @@
             "AddButtonText": "Inledning"
         },
         "Illustrations": {
-          "AddButtonText": "Illustrations view"
+          "AddButtonText": "Illustrations view",
+          "Goto": "Gå till position i lästext",
+          "Nothing": "Inga illustationer",
+          "Showall": "Visa alla"
         },
         "ShowAll": "Visa alla",
         "ShowSearchResults": "Förekomster"

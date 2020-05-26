@@ -95,7 +95,10 @@
             "AddButtonText": "Inledning"
         },
         "Illustrations": {
-          "AddButtonText": "Illustrations view"
+          "AddButtonText": "Illustrations view",
+          "Goto": "Gå till position i lästext",
+          "Nothing": "Inga illustationer",
+          "Showall": "Visa alla"
         },
         "ShowAll": "Visa alla",
         "ShowSearchResults": "Förekomster"
