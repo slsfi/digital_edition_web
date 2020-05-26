@@ -101,7 +101,7 @@ export class DigitalEditionsApp {
 
   pagesThatShallShow = {
     tocMenu: ['FeaturedFacsimilePage'],
-    tableOfContentsMenu: ['SingleEditionPage', 'CoverPage'],
+    tableOfContentsMenu: ['SingleEditionPage', 'CoverPage', 'TitlePage'],
     aboutMenu: ['AboutPage'],
     contentMenu: ['HomePage', 'EditionsPage', 'ContentPage', 'MusicPage', 'FeaturedFacsimilePage']
   }
