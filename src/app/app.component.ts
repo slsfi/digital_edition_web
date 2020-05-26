@@ -656,6 +656,9 @@ export class DigitalEditionsApp {
   }
 
   registerEventListeners() {
+    this.events.subscribe('digital-edition-list:open', (collection) => {
+      this.openCollection(collection);
+    });
     this.events.subscribe('CollectionWithChildrenPdfs:highlight', (collectionID) => {
       for (const collection of this.collectionsListWithTOC) {
         if (String(collection.id) === String(collectionID)) {
