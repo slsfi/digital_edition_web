@@ -127,7 +127,6 @@ export class TitlePage {
     this.tableOfContentsService.getTableOfContents(id)
     .subscribe(
         tocItems => {
-          console.log(tocItems, ' hola')
           tocItems.coverSelected = this.coverSelected;
           this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId});
         },
