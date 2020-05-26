@@ -440,6 +440,7 @@ export class PlaceSearchPage {
     if (this.platform.is('mobile')) {
       nav[0].push('read', params);
     } else {
+      console.log('Opening read from PlaceSearch.openText()');
       nav[0].setRoot('read', params);
     }
   }
