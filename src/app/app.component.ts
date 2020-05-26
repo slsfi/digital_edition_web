@@ -753,6 +753,7 @@ export class DigitalEditionsApp {
       }
     });
     this.events.subscribe('tableOfContents:loaded', (data) => {
+      console.log('tableOfContents:loaded in app.component.ts');
       this.tocData = data;
       if (data.searchTocItem) {
 
@@ -1188,6 +1189,7 @@ export class DigitalEditionsApp {
     }
 
     const nav = this.app.getActiveNavs();
+    console.log('Opening read from App.openFirstPage()');
     nav[0].setRoot('read', params);
   }
 
@@ -1222,12 +1224,14 @@ export class DigitalEditionsApp {
         this.currentContentName = collection.title;
         const params = { collection: collection, fetch: false, id: collection.id };
 
-        this.nav.setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
+        const nav = this.app.getActiveNavs();
+        nav[0].setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
       }
       this.cdRef.detectChanges();
     }
     if (this.openCollectionFromToc) {
       this.currentCollection = collection;
+      console.log('currentCollection');
       console.log(this.options, 'options of the fn');
       this.enableTableOfContentsMenu();
     }
