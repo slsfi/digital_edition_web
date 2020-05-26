@@ -245,7 +245,7 @@ export class DigitalEditionsApp {
     }
 
     try {
-      this.openCollectionFromToc = this.config.getSettings('app.OpenCollectionFromToc');
+      this.openCollectionFromToc = this.config.getSettings('OpenCollectionFromToc');
     } catch (e) {
       this.openCollectionFromToc = false;
     }
