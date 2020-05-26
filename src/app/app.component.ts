@@ -77,7 +77,7 @@ export class DigitalEditionsApp {
 
   storageCollections = {};
 
-
+  collectionSortOrder: any;
 
   browserWarning: string;
   browserWarningInfo: string;
@@ -229,6 +229,12 @@ export class DigitalEditionsApp {
     } catch (e) {
       this.showBooks = false;
     }
+
+    try {
+      this.collectionSortOrder = this.config.getSettings('app.CollectionSortOrder');
+    } catch (e) {
+      this.collectionSortOrder = undefined;
+    }
     this.sideMenuMobileConfig();
     this.songTypesMenuMarkdownConfig();
     this.aboutMenuMarkdownConfig();
@@ -239,12 +245,10 @@ export class DigitalEditionsApp {
     }
 
     try {
-      this.openCollectionFromToc = this.config.getSettings('OpenCollectionFromToc');
+      this.openCollectionFromToc = this.config.getSettings('app.OpenCollectionFromToc');
     } catch (e) {
       this.openCollectionFromToc = false;
     }
-
-    console.log('openCollectionFromToc', this.openCollectionFromToc);
 
     try {
       this.accordionMusic = this.config.getSettings('AccordionMusic');
@@ -407,7 +411,12 @@ export class DigitalEditionsApp {
         return;
       }
 
-      collections = this.sortListRoman(collections);
+      if ( this.collectionSortOrder === undefined ) {
+        collections = this.sortListRoman(collections);
+      } else {
+        collections = this.sortListDefined(collections, this.collectionSortOrder);
+      }
+
       const collectionsTmp = [];
       const pdfCollections = [];
       collections.forEach(collection => {
@@ -476,6 +485,23 @@ export class DigitalEditionsApp {
     for (const coll of list) {
       const romanNumeral = coll.title.split(' ')[0];
       const order = this.romanToInt(romanNumeral);
+      coll['order'] = order;
+    }
+
+    list.sort((a, b) => {
+      if (typeof a['order'] === 'number') {
+        return (a['order'] - b['order']);
+      } else {
+        return ((a['order'] < b['order']) ? -1 : ((a['order'] > b['order']) ? 1 : 0));
+      }
+    });
+
+    return list;
+  }
+
+  sortListDefined(list, sort) {
+    for (const coll of list) {
+      const order = sort[coll.id];
       coll['order'] = order;
     }
 
