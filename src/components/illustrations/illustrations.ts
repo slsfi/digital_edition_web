@@ -49,7 +49,7 @@ export class IllustrationsComponent {
             const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
 
             if ( showIllustration.includes(this.itemId.split('_')[1])) {
-              if (event.target.classList.contains('est_figure_graphic')) {
+              if (event.target.classList.contains('est_figure_graphic') || event.target.classList.contains('doodle')) {
                 this.events.subscribe('give:illustration', (image) => {
                   if (image) {
                     this.showOne = true;
@@ -61,7 +61,8 @@ export class IllustrationsComponent {
                 });
               }
             } else {
-              if (event.target.previousElementSibling.classList.contains('est_figure_graphic')) {
+              if (event.target.previousElementSibling.classList.contains('est_figure_graphic') ||
+              event.target.classList.contains('doodle')) {
                 this.events.subscribe('give:illustration', (image) => {
                   if (image) {
                     this.showOne = true;
@@ -112,8 +113,13 @@ export class IllustrationsComponent {
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(text, 'text/html');
       const images: any = xmlDoc.querySelectorAll('img.est_figure_graphic');
+      const doodles: any = xmlDoc.querySelectorAll('img.doodle');
       for (let i = 0; i < images.length ; i++) {
         const image = images[i].src;
+        this.images.push(image);
+      }
+      for (let i = 0; i < doodles.length ; i++) {
+        const image = doodles[i].src;
         this.images.push(image);
       }
     });
