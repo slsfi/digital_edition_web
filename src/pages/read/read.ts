@@ -1469,6 +1469,7 @@ export class ReadPage /*implements OnDestroy*/ {
     //   params['recentlyOpenViews'] = this.recentlyOpenViews;
     // }
 
+    console.log('Opening read from ReadPage.open()');
     nav[0].setRoot('read', params);
   }
 
@@ -1562,6 +1563,7 @@ export class ReadPage /*implements OnDestroy*/ {
         params['collectionID'] = parts[0];
         params['publicationID'] = parts[1];
 
+        console.log('Opening read from ReadPage.firstPage()');
         nav[0].setRoot('read', params);
       }
     }).catch(err => console.error(err));
