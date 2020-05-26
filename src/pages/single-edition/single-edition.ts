@@ -250,6 +250,7 @@ export class SingleEditionPage {
     }
 
     const nav = this.app.getActiveNavs();
+    console.log('Opening read from SingleEdition.openFirstPage()');
     nav[0].setRoot('read', params);
   }
 
