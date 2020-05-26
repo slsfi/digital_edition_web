@@ -119,7 +119,7 @@ export class IllustrationsComponent {
         this.images.push(image);
       }
       for (let i = 0; i < doodles.length ; i++) {
-        const image = doodles[i].src;
+        const image = '/assets/images/verk/' + String(doodles[i].dataset.id).replace('tag_', '') + '.jpg';
         this.images.push(image);
       }
     });

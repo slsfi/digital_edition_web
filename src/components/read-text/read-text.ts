@@ -69,7 +69,6 @@ export class ReadTextComponent {
 
         if (event.target.classList.contains('doodle')) {
           const image = '/assets/images/verk/' + String(event.target.dataset.id).replace('tag_', '') + '.jpg';
-          console.log(image);
           this.events.publish('give:illustration', image);
         }
         if ( showIllustration.includes(this.link.split('_')[1])) {
