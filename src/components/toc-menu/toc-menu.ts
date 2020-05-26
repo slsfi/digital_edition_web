@@ -76,6 +76,7 @@ export class TocMenuComponent {
     params['legacyId'] = item.id;
 
     const nav = this.app.getActiveNavs();
+    console.log('Opening read from TocMenu.openRead()');
     nav[0].setRoot('read', params);
   }
 

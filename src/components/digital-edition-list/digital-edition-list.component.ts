@@ -235,6 +235,7 @@ export class DigitalEditionList implements OnInit {
     }
 
     const nav = this.app.getActiveNavs();
+    console.log('Opening read from DigitalEditionList.openFirstPage()');
     nav[0].setRoot('read', params);
   }
 

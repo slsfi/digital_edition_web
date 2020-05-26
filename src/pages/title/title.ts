@@ -107,6 +107,12 @@ export class TitlePage {
     this.events.publish('ionViewWillEnter', this.constructor.name);
     this.events.publish('musicAccordion:reset', true);
     this.events.publish('tableOfContents:unSelectSelectedTocItem', true);
+
+    this.events.publish('SelectedItemInMenu', {
+      menuID: this.params.get('collectionID'),
+      component: 'title-page'
+    });
+
   }
 
   getMdContent(fileID: string) {
