@@ -4,8 +4,8 @@
   <button ion-button (click)="toggleViewAll()">Visa alla</button>
   <div *ngIf="viewAll || showOne">
     <div class="illustration-image-wrapper" *ngFor="let image of images">
-      <img src="{{ image }}" (click)="zoomImage(image)" alt="illustration">
-      <button class="scroll-to-illustration-button" ion-button icon-start (click)="scrollToPositionInText(image)">
+      <img src="{{ image.src }}" (click)="zoomImage(image.src)" alt="illustration" [ngClass]="image.class?image.class:''">
+      <button class="scroll-to-illustration-button" ion-button icon-start (click)="scrollToPositionInText(image.src)">
         <ion-icon name="image"></ion-icon>
         Gå till position i lästext
       </button>

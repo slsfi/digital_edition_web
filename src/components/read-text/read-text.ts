@@ -68,17 +68,17 @@ export class ReadTextComponent {
         const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
 
         if (event.target.classList.contains('doodle')) {
-          const image = '/assets/images/verk/' + String(event.target.dataset.id).replace('tag_', '') + '.jpg';
+          const image = {src: '/assets/images/verk/' + String(event.target.dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
           this.events.publish('give:illustration', image);
         }
         if ( showIllustration.includes(this.link.split('_')[1])) {
           if (event.target.classList.contains('est_figure_graphic')) {
-            const image = event.target.src;
+            const image = {src: event.target.src, class: 'illustration'};
             this.events.publish('give:illustration', image);
           }
         } else {
           if (event.target.previousElementSibling.classList.contains('est_figure_graphic')) {
-            const image = event.target.previousElementSibling.src;
+            const image = {src: event.target.previousElementSibling.src, class: 'illustration'};
             this.events.publish('give:illustration', image);
           }
         }

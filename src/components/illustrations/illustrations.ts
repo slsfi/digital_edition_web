@@ -18,7 +18,7 @@ export class IllustrationsComponent {
   @Input() itemId: string;
   illustrationsPath = 'assets/images/illustrations/2/';
   imgPath: any;
-  images: Array<string> = [];
+  images: Array<Object> = [];
   selectedImage: Array<string> = [];
   viewAll = false;
   showOne = false;
@@ -115,11 +115,12 @@ export class IllustrationsComponent {
       const images: any = xmlDoc.querySelectorAll('img.est_figure_graphic');
       const doodles: any = xmlDoc.querySelectorAll('img.doodle');
       for (let i = 0; i < images.length ; i++) {
-        const image = images[i].src;
+        const image = {src: images[i].src, class: 'illustration'};
         this.images.push(image);
       }
       for (let i = 0; i < doodles.length ; i++) {
-        const image = '/assets/images/verk/' + String(doodles[i].dataset.id).replace('tag_', '') + '.jpg';
+        const image = {src: '/assets/images/verk/' + String(doodles[i].dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
+        console.log(image);
         this.images.push(image);
       }
     });
