@@ -509,7 +509,7 @@ export class ReadPage /*implements OnDestroy*/ {
     } catch (e) {
       console.log(e);
     }
-    const views = urlViews.split('&');
+    const views = (urlViews + '').split('&');
     if (this.params.get('views') !== undefined) {
       this.setViewsFromSearchResults();
     } else {
@@ -563,21 +563,21 @@ export class ReadPage /*implements OnDestroy*/ {
         this.addView(v.type, v.id);
       }
 
-      if (v.type === 'manuscripts') {
+      if (v.type === 'manuscripts' || v.type === 'ms') {
         this.show = 'manuscripts';
         this.typeVersion = v.id;
-      } else if (v.type === 'variation') {
+      } else if (v.type === 'variation' || v.type === 'var') {
         this.show = 'variations';
         this.typeVersion = v.id;
-      } else if ((v.type === 'comments')) {
+      } else if ((v.type === 'comments' || v.type === 'com')) {
         this.show = 'comments';
-      } else if (v.type === 'established') {
+      } else if (v.type === 'established' || v.type === 'est') {
         this.show = 'established';
-      } else if (v.type === 'facsimiles') {
+      } else if (v.type === 'facsimiles' || v.type === 'facs') {
         this.show = 'facsimiles';
       } else if (v.type === 'song-example') {
         this.show = 'song-example';
-      } else if (v.type === 'introduction') {
+      } else if (v.type === 'introduction' || v.type === 'int') {
         this.show = 'introduction';
       }
     }
@@ -647,7 +647,10 @@ export class ReadPage /*implements OnDestroy*/ {
 
     const viewModes = this.getViewTypesShown();
 
-    window.history.replaceState('', '', url.concat(viewModes.join('&')));
+    // this causes problems with back, thus this check.
+    // if (!this.navCtrl.canGoBack() ) {
+      window.history.replaceState('', '', url.concat(viewModes.join('&')));
+    // }
   }
 
   viewsExistInAvailableViewModes(viewmodes) {
@@ -1040,6 +1043,9 @@ export class ReadPage /*implements OnDestroy*/ {
     });
   }
 
+  back() {
+    this.viewCtrl.dismiss();
+  }
 
   setText(id, data) {
 
