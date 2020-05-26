@@ -413,7 +413,7 @@ export class DigitalEditionsApp {
 
       if ( this.collectionSortOrder === undefined ) {
         collections = this.sortListRoman(collections);
-      } else {
+      } else if ( Object.keys(this.collectionSortOrder).length > 0 )  {
         collections = this.sortListDefined(collections, this.collectionSortOrder);
       }
 

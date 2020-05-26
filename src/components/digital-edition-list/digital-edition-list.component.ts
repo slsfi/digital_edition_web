@@ -30,6 +30,7 @@ export class DigitalEditionList implements OnInit {
   tocItems: GeneralTocItem[];
   hasCover = true;
   hideBooks = false;
+  collectionSortOrder: any;
 
   @Input() layoutType: string;
   @Input() collectionsToShow?: Array<any>;
@@ -54,6 +55,11 @@ export class DigitalEditionList implements OnInit {
       this.hasCover = this.config.getSettings('HasCover');
     } catch (e) {
       this.hasCover = true;
+    }
+    try {
+      this.collectionSortOrder = this.config.getSettings('app.CollectionSortOrder');
+    } catch (e) {
+      this.collectionSortOrder = undefined;
     }
   }
 
@@ -100,9 +106,12 @@ export class DigitalEditionList implements OnInit {
       .subscribe(
         digitalEditions => {
           this.digitalEditions = digitalEditions;
-          const de = digitalEditions;
+          let de = digitalEditions;
           this.events.publish('DigitalEditionList:recieveData', { digitalEditions });
           this.setPDF(de);
+          if ( this.collectionSortOrder !== undefined && Object.keys(this.collectionSortOrder).length > 0 )  {
+            de = this.sortListDefined(de, this.collectionSortOrder);
+          }
           if (this.collectionsToShow !== undefined && this.collectionsToShow.length > 0) {
             this.filterCollectionsToShow(de);
           }
@@ -111,15 +120,36 @@ export class DigitalEditionList implements OnInit {
       );
   }
 
+  sortListDefined(list, sort) {
+    for (const coll of list) {
+      const order = sort[coll.id];
+      coll['order'] = order;
+    }
+
+    list.sort((a, b) => {
+      if (typeof a['order'] === 'number') {
+        return (a['order'] - b['order']);
+      } else {
+        return ((a['order'] < b['order']) ? -1 : ((a['order'] > b['order']) ? 1 : 0));
+      }
+    });
+
+    return list;
+  }
+
   shortText(edition_id: string): Array<string> {
     let textData = '';
     try {
       const lang = this.translate.currentLang;
-      textData = this.editionShortTexts[lang][edition_id] ||
+      if ( this.editionShortTexts[lang][edition_id] !== undefined ) {
+        textData = this.editionShortTexts[lang][edition_id] ||
         this.editionShortTexts[lang].default;
-      return textData.split('\n');
+        return textData.split('\n');
+      } else {
+        return String[''];
+      }
     } catch (e) {
-      console.error(e);
+      // console.error(e);
     }
     return textData.split('\n');
   }
