@@ -195,6 +195,8 @@ export class FacsimileZoomModalPage {
   handlePanEvent(event) {
     const img = event.target;
     // Store latest zoom adjusted delta.
+    // NOTE: img must have touch-action: none !important;
+    // otherwise deltaX and deltaY will give wrong values on mobile.
     this.latestDeltaX = event.deltaX / this.zoom
     this.latestDeltaY = event.deltaY / this.zoom
 

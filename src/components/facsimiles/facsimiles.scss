@@ -98,6 +98,7 @@ facsimiles {
     img{
         cursor: move;
         // https://github.com/hammerjs/hammer.js/issues/1050#issuecomment-267595556
-        touch-action: none;
+        // Need to use !important because something is trying to override the value.
+        touch-action: none !important;
     }
 }
