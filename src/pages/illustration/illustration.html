@@ -27,15 +27,13 @@
       <img *ngIf="showDescription" [src]="imgPath">
       <img [style.zoom]="zoom" *ngIf="zoomImage" class="illustration-img" [src]="imgPath">
       <div *ngIf="showDescription">
-        <p>Foo Bar, <i>Description</i></p>
+        <p><b>{{imgMetadata['full_name']}}, <i>{{imgMetadata['media_title_translation']}}</i></b></p>
+        <p>{{imgMetadata['media_art_technique_translation']}}</p>
+        <p>{{imgMetadata['media_collection_title_translation']}}</p>
+        <p>{{imgMetadata['art_location']}}</p>
         <div>
-          <a>
-            <ion-icon name="book"></ion-icon> Se förlagan
-          </a>
-        </div>
-        <div>
-          <a>
-            <ion-icon name="book"></ion-icon> Gå till bildbanken
+          <a (click)="goToMediaCollection()">
+            <ion-icon name="book"></ion-icon> {{ "MediaCollections.GotoMediaCollection" | translate }}
           </a>
         </div>
       </div>

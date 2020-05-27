@@ -56,7 +56,7 @@ export class MediaCollectionPage {
     private modalController: ModalController,
     private config: ConfigService,
     public translate: TranslateService,
-    public languageService: LanguageService,
+    public languageService: LanguageService
 
   ) {
     this.mediaCollectionId = this.navParams.get('mediaCollectionId');

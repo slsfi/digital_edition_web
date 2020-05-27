@@ -121,7 +121,8 @@
         "Information": "Information"
     },
     "MediaCollections": {
-        "MediaCollections": "Faksimilsamlinar"
+        "MediaCollections": "Faksimilsamlinar",
+        "GotoMediaCollection": "Gå till bildbanken"
     },
     "TOC": {
         "Home": "Till startsidan",
