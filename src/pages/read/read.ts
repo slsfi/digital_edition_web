@@ -807,6 +807,10 @@ export class ReadPage /*implements OnDestroy*/ {
     let eventTarget: any = document.createElement('div');
     eventTarget['classList'] = [];
 
+    if ( event.target.getAttribute('data-id') ) {
+      return event.target;
+    }
+
     if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
       eventTarget = event['target']['parentNode'];
     } else if (event.target !== undefined && event['target']['classList'].contains('tooltiptrigger')) {
@@ -886,6 +890,7 @@ export class ReadPage /*implements OnDestroy*/ {
       const eventTarget = this.getEventTarget(event);
       const elem = event.target;
       if (eventTarget['classList'].contains('tooltiptrigger')) {
+        console.log(elem);
         const x = ((elem.getBoundingClientRect().x + vw) - vw) + (elem.offsetWidth + 10);
         const y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
         if (sidePaneIsOpen) {
@@ -1124,7 +1129,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
     this.tooltipService.getPlaceTooltip(id).subscribe(
       tooltip => {
-        this.setToolTipText(tooltip.description);
+        this.setToolTipText((tooltip.description) ? tooltip.description : tooltip.name);
         this.tooltips.places[id] = tooltip.description;
       },
       error => {

@@ -1,6 +1,6 @@
 <ion-item *ngIf="showBackButton" (click)="exit()" class="back-to-list-button collections" no-lines>
     <ion-icon name="ios-arrow-back" item-left small></ion-icon>
-    <ion-label>Back</ion-label>
+    <ion-label>{{ "BackButton.default" | translate }}</ion-label>
 </ion-item>
 
 <div *ngIf="open">
