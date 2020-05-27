@@ -119,6 +119,10 @@
         "Books": "Books",
         "All": "All"
     },
+    "MediaCollections": {
+        "MediaCollections": "Faksimilsamlinar",
+        "GotoMediaCollection": "Gå till bildbanken"
+    },
     "GalleryPages": {
         "0": "Headline 1",
         "1": "Headline 2",

@@ -109,6 +109,10 @@
         "Language": "Språk",
         "Information": "Information"
     },
+    "MediaCollections": {
+        "MediaCollections": "Faksimilsamlingar",
+        "GotoMediaCollection": "Gå till bildbanken"
+    },
     "TOC": {
         "Home": "Till startsidan",
         "Read": "Läs",
