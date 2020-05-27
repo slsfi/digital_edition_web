@@ -26,7 +26,7 @@ export class TooltipService {
     return this.http.get(url)
         .map(res => {
           const body = res.json();
-          return body[0] || {'name': 'Person', 'description': body.full_name};
+          return body[0] || {'name': body.full_name, 'description': body.description};
         })
         .catch(this.handleError);
   }
@@ -40,7 +40,7 @@ export class TooltipService {
     return this.http.get( url )
         .map(res => {
           const body = res.json();
-          return body[0] || {'name': 'Place', 'description': body.description};
+          return body[0] || {'name': body.name, 'description': body.description};
         })
         .catch(this.handleError);
   }
