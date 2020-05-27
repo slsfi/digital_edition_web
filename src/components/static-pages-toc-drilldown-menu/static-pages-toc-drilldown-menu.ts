@@ -116,14 +116,18 @@ export class StaticPagesTocDrilldownMenuComponent {
    * Find a node by id in a JSON tree
    */
   getNodeById(id, node) {
-    const reduce = [].reduce;
-    function runner(result, rnode) {
-        if (result || !rnode) { return result; }
-        return rnode.id === id && rnode ||
-            runner(null, rnode.children) ||
-            reduce.call(Object(rnode), runner, result);
+    try {
+      return this.runner(null, node);
+    } catch (e) {
+      console.log('error finding node by id (in md-content.service)', id, node);
     }
-    return runner(null, node);
+  }
+
+  private runner(result, rnode) {
+    if (result || !rnode) { return result; }
+    return rnode.id === id && rnode ||
+        this.runner(null, rnode.children) ||
+        [].reduce.call(Object(rnode), this.runner, result);
   }
 
   ngOnInit() {
