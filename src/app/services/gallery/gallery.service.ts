@@ -70,6 +70,15 @@ export class GalleryService {
                     .catch(this.handleError);
   }
 
+  getMediaMetadata (id: string, lang: String): Observable<any> {
+    return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
+                           this.config.getSettings('app.machineName') + '/media/image/metadata/' +
+                           id + '/' + lang
+                           )
+                    .map(this.extractData)
+                    .catch(this.handleError);
+  }
+
   private extractData(res: Response) {
     const body = res.json();
     return body || { };
