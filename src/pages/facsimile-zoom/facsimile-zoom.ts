@@ -188,14 +188,6 @@ export class FacsimileZoomModalPage {
     this.doAnalytics(String(this.images[this.activeImage]));
   }
 
-  handleSwipeEvent(event) {
-    if ( event.direction === 2 ) {
-      this.next();
-    } else if ( event.direction === 4 ) {
-      this.previous();
-    }
-  }
-
   backSide(url) {
     return url.replace('.jpg', 'B.jpg');
   }
@@ -203,6 +195,8 @@ export class FacsimileZoomModalPage {
   handlePanEvent(event) {
     const img = event.target;
     // Store latest zoom adjusted delta.
+    // NOTE: img must have touch-action: none !important;
+    // otherwise deltaX and deltaY will give wrong values on mobile.
     this.latestDeltaX = event.deltaX / this.zoom
     this.latestDeltaY = event.deltaY / this.zoom
 
