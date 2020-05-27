@@ -188,14 +188,6 @@ export class FacsimileZoomModalPage {
     this.doAnalytics(String(this.images[this.activeImage]));
   }
 
-  handleSwipeEvent(event) {
-    if ( event.direction === 2 ) {
-      this.next();
-    } else if ( event.direction === 4 ) {
-      this.previous();
-    }
-  }
-
   backSide(url) {
     return url.replace('.jpg', 'B.jpg');
   }
