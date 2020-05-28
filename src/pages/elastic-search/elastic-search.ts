@@ -82,6 +82,7 @@ export class ElasticSearchPage {
   infiniteLoading = false
   showFilter = true
   queries: string[] = ['']
+  cleanQueries: string[] = ['']
   hits: object[] = []
   termData: object[] = [];
   hitsPerPage = 20
@@ -203,11 +204,8 @@ export class ElasticSearchPage {
   }
 
   open(hit) {
-
     this.events.publish('searchHitOpened', hit)
-
     const params = { tocItem: null, fetch: true, collection: { title: hit.source.TitleIndexed } };
-    console.log(hit);
     const path = hit.source.path;
     const filename = path.split('/').pop();
 
@@ -222,6 +220,7 @@ export class ElasticSearchPage {
     params['facs_nr'] = 'infinite';
     params['song_id'] = 'nosong';
     params['search_title'] = this.queries[0];
+    params['matches'] = this.queries;
     params['views'] = [];
     // : facs_id / : facs_nr / : song_id / : search_title / : urlviews
     // not / infinite / nosong / searchtitle / established & variations & facsimiles
@@ -361,13 +360,19 @@ export class ElasticSearchPage {
         id: hit._id
       })))
 
-      for (const item in data.hits.hits) {
-        this.elastic.executeTermQuery(this.queries, [data.hits.hits[item]['_id']])
-        .subscribe((termData: any) => {
-          this.termData = termData;
-          const elementsIndex = this.hits.findIndex(element => element['id'] === data.hits.hits[item]['_id'] )
-          this.hits[elementsIndex] = {...this.hits[elementsIndex], count: termData}
-        })
+      this.cleanQueries = [];
+      if (this.queries.length > 0) {
+        this.queries.forEach(term => {
+          this.cleanQueries.push(term.toLowerCase().replace(/[^a-zA-ZåäöÅÄÖ[0-9]+/g, ''));
+        });
+        for (const item in data.hits.hits) {
+          this.elastic.executeTermQuery(this.cleanQueries, [data.hits.hits[item]['_id']])
+          .subscribe((termData: any) => {
+            this.termData = termData;
+            const elementsIndex = this.hits.findIndex(element => element['id'] === data.hits.hits[item]['_id'] )
+            this.hits[elementsIndex] = {...this.hits[elementsIndex], count: termData}
+          })
+        }
       }
 
       if (done) {

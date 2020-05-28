@@ -35,7 +35,7 @@ export class IllustrationPage {
     public navParams: NavParams,
     private renderer: Renderer,
     private elementRef: ElementRef,
-    private galleryService: GalleryService,
+    private galleryService: GalleryService,
     protected modalController: ModalController,
     private config: ConfigService,
     private userSettingsService: UserSettingsService,
@@ -50,8 +50,8 @@ export class IllustrationPage {
       this.zoomImage = this.navParams.get('zoomImage');
     }
     this.imgMetadata = [];
-    this.languageService.getLanguage().subscribe((lang: string) => {
-      this.language = lang;
+    this.languageService.getLanguage().subscribe((lang: string) => {
+      this.language = lang;
       this.getImageMetadata();
     });
   }
