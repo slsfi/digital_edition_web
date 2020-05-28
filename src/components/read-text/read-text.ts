@@ -156,12 +156,14 @@ export class ReadTextComponent {
             .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"').replace(/images\//g, 'assets/images/')
         );
         if (this.matches instanceof Array) {
+          let tmpText: any = '';
           this.matches.forEach(function (val) {
-            const re = new RegExp('(' + val + ')', 'g');
-            this.text = this.sanitizer.bypassSecurityTrustHtml(
+            const re = new RegExp('(' + val + ')', 'ig');
+            tmpText = this.sanitizer.bypassSecurityTrustHtml(
               text.replace(re, '<match>$1</match>')
             );
           }.bind(this));
+          this.text = tmpText;
         }
       },
       error => { this.errorMessage = <any>error }

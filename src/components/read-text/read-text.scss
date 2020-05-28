@@ -24,7 +24,7 @@ read-text {
         }
     }
     match{
-        background-color: rgba( yellow, 0.4 );
+        background-color: rgba( yellow, 0.4 ) !important;
     }
     .tei.anchor_lemma img{
         width: 0.9rem;

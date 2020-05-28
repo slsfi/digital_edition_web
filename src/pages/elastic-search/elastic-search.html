@@ -180,11 +180,11 @@
           <ion-row>
             <ion-list *ngIf="canShowHits() && total > 0">
               <div *ngFor="let hit of hits">
-                <ion-item (click)="open(hit)">
+                <ion-item (click)="open(hit)" class="hitItem">
                   <ion-label>
                     <div class="word_count">
                       <label>{{'ElasticSearch.WordCount' | translate}}</label>
-                      <span *ngFor="let query of queries">
+                      <span *ngFor="let query of cleanQueries">
                         <p *ngIf="hit.count && hit.count[query] && hit.count[query][0]">
                           {{query}}: {{hit.count[query][0][hit.id]['term_freq']}}
                         </p>

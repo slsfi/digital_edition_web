@@ -13,6 +13,10 @@ page-elastic-search {
     font-size: 1.8em;
   }
 
+  ion-item.hitItem:hover{
+    background-color: rgba(color($colors, primary), 0.3) !important;
+  }
+
   ul {
     list-style-type: none;
   }
