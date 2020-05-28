@@ -182,6 +182,17 @@
               <div *ngFor="let hit of hits">
                 <ion-item (click)="console.log(hit)">
                   <ion-label>
+                    <div class="word_count">
+                      <label>{{'ElasticSearch.WordCount' | translate}}</label>
+                      <span *ngFor="let query of queries">
+                        <p *ngIf="hit.count && hit.count[query] && hit.count[query][0]">
+                          {{query}}: {{hit.count[query][0][hit.id]['term_freq']}}
+                        </p>
+                        <p *ngIf="!hit.count || !hit.count[query] || !hit.count[query][0]">
+                          {{query}}: {{'ElasticSearch.NoWordHits' | translate}}
+                        </p>
+                      </span>
+                    </div>
                     <p class="itemHeading">{{getHeading(hit.source)}}</p>
                     <p>{{hit.type | translate}}, {{getSubHeading(hit.source)}}</p>
                     <p *ngFor="let highlight of hit.highlight?.textDataIndexed" [innerHTML]="'...' + highlight + '...'" class="highlight"></p>

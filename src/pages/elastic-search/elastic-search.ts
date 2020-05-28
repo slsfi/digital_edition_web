@@ -83,6 +83,7 @@ export class ElasticSearchPage {
   showFilter = true
   queries: string[] = ['']
   hits: object[] = []
+  termData: object[] = [];
   hitsPerPage = 20
   aggregations: object = {}
   facetGroups: FacetGroups = {}
@@ -288,7 +289,6 @@ export class ElasticSearchPage {
       sort: this.parseSortForQuery(),
     })
     .subscribe((data: any) => {
-      console.log('search data', data)
       this.loading = false
       this.total = data.hits.total.value
 
@@ -297,8 +297,17 @@ export class ElasticSearchPage {
         type: hit._source.xml_type,
         source: hit._source,
         highlight: hit.highlight,
+        id: hit._id
       })))
-      console.log('search hits', this.hits)
+
+      for (const item in data.hits.hits) {
+        this.elastic.executeTermQuery(this.queries, [data.hits.hits[item]['_id']])
+        .subscribe((termData: any) => {
+          this.termData = termData;
+          const elementsIndex = this.hits.findIndex(element => element['id'] === data.hits.hits[item]['_id'] )
+          this.hits[elementsIndex] = {...this.hits[elementsIndex], count: termData}
+        })
+      }
 
       if (done) {
         done()

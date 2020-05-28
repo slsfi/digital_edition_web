@@ -191,7 +191,9 @@
       "From": "From",
       "To": "To",
       "Search": "Search",
-      "Years": "Years"
+      "Years": "Years",
+      "WordCount": "Antal träffar (estimat)",
+      "NoWordHits": "inga träffar"
     },
     "est": "Established text",
     "ms": "Manuscript",

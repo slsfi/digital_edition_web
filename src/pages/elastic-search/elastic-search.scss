@@ -1,4 +1,9 @@
 page-elastic-search {
+  .word_count span{
+    display: inline-block;
+    padding-left: 1rem;
+  }
+
   .fixed-content,
   .scroll-content {
     margin-top: 40px !important;

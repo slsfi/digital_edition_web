@@ -204,7 +204,9 @@
       "From": "From",
       "To": "To",
       "Search": "Hae",
-      "Years": "Vuosi"
+      "Years": "Vuosi",
+      "WordCount": "Antal träffar (estimat)",
+      "NoWordHits": "inga träffar"
     },
     "est": "Lästext",
     "ms": "Manuskript",

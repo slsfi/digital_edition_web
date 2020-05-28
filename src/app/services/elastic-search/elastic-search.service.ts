@@ -8,6 +8,7 @@ import { ConfigService } from '@ngx-config/core'
 export class ElasticSearchService {
 
   private searchApiPath = '/search/elastic/'
+  private termApiPath = '/search/mtermvector/'
   private indices = []
   private apiEndpoint: string
   private machineName: string
@@ -35,6 +36,23 @@ export class ElasticSearchService {
     } catch (e) {
       console.error('Failed to load Elastic Search Service. Configuration error.', e.message)
     }
+  }
+
+  executeTermQuery(terms: String[], ids: String[]): Observable<any> {
+    const payload = {
+      'ids' : ids,
+      'parameters': {
+        'fields': [
+             'textDataIndexed'
+          ],
+          'term_statistics': false,
+          'field_statistics' : false
+      }
+    }
+
+    return this.http.post(this.getTermUrl() + '/' + terms, payload)
+      .map(this.extractData)
+      .catch(this.handleError)
   }
 
   /**
@@ -350,6 +368,10 @@ export class ElasticSearchService {
 
   private getSearchUrl(): string {
     return this.apiEndpoint + '/' + this.machineName + this.searchApiPath + this.indices.join(',')
+  }
+
+  private getTermUrl(): string {
+    return this.apiEndpoint + '/' + this.machineName + this.termApiPath + this.indices.join(',')
   }
 
   private extractData(res: Response) {
