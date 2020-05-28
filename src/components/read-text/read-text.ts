@@ -170,7 +170,7 @@ export class ReadTextComponent {
           text.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/19/`)
             .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"').replace(/images\//g, 'assets/images/')
         );
-        if (this.matches instanceof Array) {
+        if (this.matches instanceof Array && this.matches.length > 0) {
           let tmpText: any = '';
           this.matches.forEach(function (val) {
             const re = new RegExp('(' + val + ')', 'ig');

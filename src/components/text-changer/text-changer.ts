@@ -48,7 +48,7 @@ export class TextChangerComponent {
       const toc = this.storage.get('toc_' + c_id)
 
       toc.then(val => {
-        if (val.children) {
+        if (val && val.children) {
           for (let i = 0; i < val.children.length; i++) {
             if (val.children[i].itemId.split('_')[1] === c_id) {
               this.currentItemTitle = val.children[i].text;
