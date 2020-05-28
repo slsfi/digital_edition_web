@@ -54,6 +54,7 @@ export class FacsimilesComponent {
   facsSize: number;
   facsPage: any;
   facsNumber = 0;
+  numberOfPages: number;
   chapter: string;
 
   constructor(
@@ -162,6 +163,7 @@ export class FacsimilesComponent {
       facs => {
         this.facsPage = facs;
         this.manualPageNumber = this.activeImage = this.facsimilePage = this.facsNumber = facs['page_number'];
+        this.numberOfPages = facs['number_of_pages'];
 
         // Set the image url
         this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
@@ -266,8 +268,10 @@ export class FacsimilesComponent {
 
   previous() {
     if (this.facsimilePagesInfinite) {
-      this.prevFacsimileUrl();
-      this.manualPageNumber = Number(this.manualPageNumber) - 1;
+      if (this.manualPageNumber > 1) {
+        this.prevFacsimileUrl();
+        this.manualPageNumber = Number(this.manualPageNumber) - 1;
+      }
       return;
     }
     this.activeImage = (this.activeImage - 1);
@@ -316,6 +320,7 @@ export class FacsimilesComponent {
     let params: object;
 
     if (this.facsimilePagesInfinite) {
+      // TODO: images array contains 0 index that is invalid since page numbers are 1 based.
       const images = []
       for (let i = 0; i < this.facsPage.number_of_pages; i++) {
         images.push(this.facsUrl + i + '/' + this.facsSize)
