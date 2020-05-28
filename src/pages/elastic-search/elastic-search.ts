@@ -221,7 +221,7 @@ export class ElasticSearchPage {
     params['facs_id'] = 'not';
     params['facs_nr'] = 'infinite';
     params['song_id'] = 'nosong';
-    params['search_title'] = this.query;
+    params['search_title'] = this.queries[0];
     params['views'] = [];
     // : facs_id / : facs_nr / : song_id / : search_title / : urlviews
     // not / infinite / nosong / searchtitle / established & variations & facsimiles
@@ -635,7 +635,6 @@ export class ElasticSearchPage {
     this.queries.splice(i, 1)
   }
 
-<<<<<<< HEAD
   autoExpandSearchfields() {
     const inputs: NodeListOf<HTMLElement> = document.querySelectorAll('.searchInput')
 
@@ -653,18 +652,5 @@ export class ElasticSearchPage {
           .getPropertyValue(property)
           .replace(/px$/, ''))
     }
-=======
-  function measure(tag, property) {
-    try {
-      return parseInt(
-              window.getComputedStyle(tag, null)
-                .getPropertyValue(property)
-                  .replace(/px$/, ''))
-    } catch (e) {
-      console.log('Parse int error.');
-    }
-  }
-    return '\n/* ' + selector + ' { ' +  ': auto-expand; } */\n'
->>>>>>> enable opening elastic search hits
   }
 }
