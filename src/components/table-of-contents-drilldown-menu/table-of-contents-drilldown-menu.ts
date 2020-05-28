@@ -244,6 +244,8 @@ export class TableOfContentsDrilldownMenuComponent {
 
   registerEventListeners() {
     this.events.subscribe('tableOfContents:loaded', (data) => {
+      console.log('tableOfContents:loaded in table-of-contents-drilldown.ts');
+
       this.constructToc(data);
       this.constructAlphabeticalTOC(data);
       this.constructChronologialTOC(data);
@@ -251,6 +253,9 @@ export class TableOfContentsDrilldownMenuComponent {
 
       this.visibleMenuStack = this.menuStack;
     });
+  }
+  ngOnDestroy() {
+    this.events.unsubscribe('tableOfContents:loaded');
   }
 
   drillDown(item) {
@@ -343,7 +348,7 @@ export class TableOfContentsDrilldownMenuComponent {
     } else {
       this.events.publish('title-logo:show', false);
     }
-
+    console.log('Opening read from TableOfContentsDrilldownMenuComponent.open()');
     nav[0].setRoot('read', params);
 
     try {

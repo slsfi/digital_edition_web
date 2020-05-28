@@ -265,8 +265,8 @@ export class TableOfContentsAccordionComponent {
   searchTocItemInAccordionByTitle = false;
   tocItemSearchChildrenCounter = 0;
   foundTocItem = false;
-  coverSelected: boolean;
   titleSelected: boolean;
+  introductionSelected: boolean;
   root: any;
   hasCover: boolean;
   hasIntro: boolean;
@@ -316,11 +316,13 @@ export class TableOfContentsAccordionComponent {
         this.currentOption.selected = false;
         this.currentOption = null;
         this.cdRef.detectChanges();
+      } else {
+        console.log('this.collectionId', this.collectionId);
       }
     });
 
-    this.coverSelected = false;
     this.titleSelected = false;
+    this.introductionSelected = false;
 
     try {
       this.hasCover = this.config.getSettings('HasCover');
@@ -335,9 +337,9 @@ export class TableOfContentsAccordionComponent {
     }
 
     if ( this.hasCover ) {
-      this.coverSelected = true;
-    } else if ( this.hasIntro ) {
       this.titleSelected = true;
+    } else if ( this.hasIntro ) {
+      this.introductionSelected = true;
     }
 
     this.events.subscribe('tableOfContents:findMarkdownTocItem', (data) => {
@@ -376,6 +378,7 @@ export class TableOfContentsAccordionComponent {
     this.alphabeticalactiveMenuTree = [];
     this.alphabeticalTitleStack = [];
     const list = this.flattenList(data.tocItems);
+
     for (const child of list) {
         if (child.type !== 'section_title') {
             this.alphabeticalactiveMenuTree.push(child);
@@ -415,6 +418,8 @@ export class TableOfContentsAccordionComponent {
 
   registerEventListeners() {
     this.events.subscribe('tableOfContents:loaded', (data) => {
+      console.log('tableOfContents:loaded in table-of-contents-accordion.ts');
+
       try {
         this.sortableLetters = this.config.getSettings('settings.sortableLetters');
       } catch (e) {
@@ -510,12 +515,12 @@ export class TableOfContentsAccordionComponent {
 
       this.currentOption = null;
       if ( this.hasCover ) {
-        this.coverSelected = true;
-      } else if ( this.hasIntro ) {
         this.titleSelected = true;
+      } else if ( this.hasIntro ) {
+        this.introductionSelected = true;
       }
       this.unSelectAllItems(this.collapsableItems);
-      this.cdRef.detectChanges();
+      // this.cdRef.detectChanges();
     });
   }
 
@@ -609,8 +614,10 @@ export class TableOfContentsAccordionComponent {
 
   ngOnDestroy() {
     this.events.unsubscribe(SideMenuRedirectEvent);
-    this.events.unsubscribe('tableOfContents:unSelectSelectedTocItem');
     this.events.unsubscribe('SelectedItemInMenu');
+    this.events.unsubscribe('tableOfContents:findMarkdownTocItem');
+    this.events.unsubscribe('tableOfContents:loaded');
+    this.events.unsubscribe('tableOfContents:unSelectSelectedTocItem');
   }
 
   // Send the selected option to the caller component
@@ -640,8 +647,8 @@ export class TableOfContentsAccordionComponent {
       const params = {root: this.options, tocItem: item, collection: {title: item.text}};
       const nav = this.app.getActiveNavs();
 
-      this.coverSelected = false;
       this.titleSelected = false;
+      this.introductionSelected = false;
 
       if (item.url) {
         params['url'] = item.url;
@@ -701,6 +708,7 @@ export class TableOfContentsAccordionComponent {
         this.events.publish('title-logo:show', false);
       }
 
+      console.log('Opening read from TableOfContentsAccordionComponent.openFirstPage()');
       nav[0].setRoot('read', params);
     }
   }
@@ -749,8 +757,8 @@ export class TableOfContentsAccordionComponent {
   openIntroduction() {
     const params = {root: this.root, tocItem: null, collection: {title: 'Introduction'}};
     params['collectionID'] = this.collectionId;
-    this.titleSelected = true;
-    this.coverSelected = false;
+    this.introductionSelected = true;
+    this.titleSelected = false;
     const nav = this.app.getActiveNavs();
     if (this.platform.is('mobile')) {
       nav[0].push('introduction', params);
@@ -763,8 +771,8 @@ export class TableOfContentsAccordionComponent {
     const params = {root: this.root, tocItem: null, collection: {title: 'Title Page'}};
     params['collectionID'] = this.collectionId;
     params['firstItem'] = '1';
-    this.coverSelected = true;
-    this.titleSelected = false;
+    this.titleSelected = true;
+    this.introductionSelected = false;
     const nav = this.app.getActiveNavs();
     if (this.platform.is('mobile')) {
       nav[0].push('title-page', params);

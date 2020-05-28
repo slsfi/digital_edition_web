@@ -47,8 +47,8 @@ export class CommentService {
     if (this.cache.hasHtml(commentId)) {
       return this.cache.getHtmlAsObservable(id2);
     } else {
-      return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
-        this.config.getSettings('app.machineName') + url
+      return this.http.get(
+        this.config.getSettings('app.apiEndpoint') + '/' + this.config.getSettings('app.machineName') + url
       )
       .map(res => {
         const body = res.json();

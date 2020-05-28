@@ -252,15 +252,12 @@
             <!-- TOC Type:  Drilldown -->
             <table-of-contents-drilldown-menu *ngIf="!accordionTOC"></table-of-contents-drilldown-menu>
 
-
             <!-- TOC Type: Accordion -->
             <table-of-contents-accordion [open]="true" *ngIf="accordionTOC && options && !openCollectionFromToc" [showBackButton]="true" [options]="options" [collectionId]="currentCollectionId" [collectionName]="currentCollectionName" [settings]="sideMenuSettings">
             </table-of-contents-accordion>
 
             <table-of-contents-accordion *ngIf="currentCollection && accordionTOC && openCollectionFromToc" [open]="true" [showBackButton]="true" [options]="currentCollection.accordionToc" [collectionId]="currentCollectionId" [collectionName]="currentCollection.title" [settings]="sideMenuSettings"></table-of-contents-accordion>
-
-
-        </ion-content>
+          </ion-content>
     </ion-menu>
     <!-- ./TOC Menu -->
 

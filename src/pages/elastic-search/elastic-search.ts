@@ -122,6 +122,8 @@ export class ElasticSearchPage {
     private events: Events,
     private cf: ChangeDetectorRef
   ) {
+    console.log('constructing elastic search');
+
     try {
       this.hitsPerPage = this.config.getSettings('ElasticSearch.hitsPerPage')
     } catch (e) {
@@ -135,9 +137,13 @@ export class ElasticSearchPage {
   }
 
   private getParamsData() {
-    const query = this.navParams.get('query')
-    if (query !== ':query') {
-      this.queries[0] = query
+    try {
+      const query = this.navParams.get('query')
+      if (query !== ':query') {
+        this.queries[0] = query
+      }
+    } catch (e) {
+      console.log('Problems parsing query parameters...');
     }
   }
 
@@ -181,8 +187,8 @@ export class ElasticSearchPage {
   }
 
   ionViewDidEnter() {
-    (<any>window).ga('set', 'page', 'Elastic Search')
-    (<any>window).ga('send', 'pageview')
+    // (<any>window).ga('set', 'page', 'Elastic Search')
+    // (<any>window).ga('send', 'pageview')
   }
 
   ionViewWillLeave() {
@@ -190,9 +196,64 @@ export class ElasticSearchPage {
   }
 
   ionViewWillEnter() {
+    console.log('will enter elastic search');
     this.events.publish('ionViewWillEnter', this.constructor.name)
     this.events.publish('tableOfContents:unSelectSelectedTocItem', true)
     this.getParamsData()
+  }
+
+  open(hit) {
+
+    this.events.publish('searchHitOpened', hit)
+
+    const params = { tocItem: null, fetch: true, collection: { title: hit.source.TitleIndexed } };
+    console.log(hit);
+    const path = hit.source.path;
+    const filename = path.split('/').pop();
+
+    // 199_18434_var_6251.xml This should preferrably be implemented via elastic data instead of path
+    const collection_id = filename.split('_').shift(); // 199
+    const var_ms_id = filename.replace('.xml', '').split('_').pop(); // 6251
+
+    params['collectionID'] = collection_id;
+    params['publicationID'] = hit.source.publication_id;
+
+    params['facs_id'] = 'not';
+    params['facs_nr'] = 'infinite';
+    params['song_id'] = 'nosong';
+    params['search_title'] = this.queries[0];
+    params['views'] = [];
+    // : facs_id / : facs_nr / : song_id / : search_title / : urlviews
+    // not / infinite / nosong / searchtitle / established & variations & facsimiles
+
+
+    switch (hit.source.xml_type) {
+      case 'est': {
+        params['urlviews'] = 'established';
+        break;
+      }
+      case 'ms': {
+        params['urlviews'] = 'manuscripts';
+        params['views'].push({type: 'manuscripts', id: var_ms_id});
+         break;
+      }
+      case 'com': {
+        params['urlviews'] = 'comments';
+         break;
+      }
+      case 'var': {
+        params['urlviews'] = 'variations';
+        params['views'].push({type: 'variations', id: var_ms_id});
+
+        break;
+      }
+      default: {
+         // statements;
+         break;
+      }
+   }
+    const nav = this.app.getActiveNavs();
+    nav[0].setRoot('read', params); // for now.
   }
 
   /**

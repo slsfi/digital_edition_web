@@ -173,7 +173,7 @@ export class TextChangerComponent {
     if (this.recentlyOpenViews !== undefined && this.recentlyOpenViews.length > 0) {
       params['recentlyOpenViews'] = this.recentlyOpenViews;
     }
-
+    console.log('Opening read from TextChanged.open()');
     nav[0].setRoot('read', params);
   }
 

@@ -1,29 +1,34 @@
 <ion-header no-border>
   <ion-toolbar color="secondary" class="secondary">
-        <text-changer *ngIf="!(userSettingsService.isMobile() || userSettingsService.isTablet())" [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
 
-        <ion-buttons>
-            <ion-grid>
-                <ion-row class="secondary-toolbar-icons-wrapper">
-                <ion-col>
-                    <div id="share-icon" (click)="showSharePopover($event)">
-                      <ion-icon class="share-icon" name="ios-share-outline" ios="ios-share-outline"></ion-icon>
-                    </div>
-                </ion-col>
-                <ion-col>
-                    <div name="download" id="download-icon" (click)="download()">
-                    <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
-                    <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
-                    </div>
-                </ion-col>
-                <ion-col>
-                    <div #settingsIconElement (click)="showPopover($event)" id="settings-icon">
-                    <ion-icon class="settings-icon" name="settings"></ion-icon>
-                    </div>
-                </ion-col>
-                </ion-row>
-            </ion-grid>
-        </ion-buttons>
+    <div name="back-to-search" id="back-to-search" class="back-to-search">
+      <button ion-button color="secondary" *ngIf="navCtrl.canGoBack()" (click)="back();">Back to Search</button>
+    </div>
+
+    <text-changer *ngIf="!(userSettingsService.isMobile() || userSettingsService.isTablet())" [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
+
+    <ion-buttons>
+        <ion-grid>
+            <ion-row class="secondary-toolbar-icons-wrapper">
+              <ion-col>
+                  <div id="share-icon" (click)="showSharePopover($event)">
+                    <ion-icon class="share-icon" name="ios-share-outline" ios="ios-share-outline"></ion-icon>
+                  </div>
+              </ion-col>
+              <ion-col>
+                  <div name="download" id="download-icon" (click)="download()">
+                  <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
+                  <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
+                  </div>
+              </ion-col>
+              <ion-col>
+                  <div #settingsIconElement (click)="showPopover($event)" id="settings-icon">
+                  <ion-icon class="settings-icon" name="settings"></ion-icon>
+                  </div>
+              </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

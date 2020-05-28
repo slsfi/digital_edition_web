@@ -73,6 +73,12 @@ export class TopMenuComponent {
     this.getShowLogo();
   }
 
+  ngOnDestroy() {
+    this.events.unsubscribe('title-logo:show');
+    this.events.unsubscribe('title-logo:setTitle');
+    this.events.unsubscribe('title-logo:setSubTitle');
+  }
+
   getShowLogo() {
     this.storage.get('showLogo').then((showLogo) => {
       this.showLogo = showLogo;

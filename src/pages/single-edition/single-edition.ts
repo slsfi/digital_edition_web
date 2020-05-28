@@ -208,7 +208,9 @@ export class SingleEditionPage {
         tocItems => {
           this.tocItems = tocItems;
           console.log('get toc root... --- --- in single edition');
-          this.events.publish('tableOfContents:loaded', { tocItems: tocItems });
+          const tocLoadedParams = { tocItems: tocItems };
+          tocLoadedParams['collectionID'] = this.collection;
+          this.events.publish('tableOfContents:loaded', tocLoadedParams);
         },
         error => { this.errorMessage = <any>error });
   }
@@ -250,6 +252,7 @@ export class SingleEditionPage {
     }
 
     const nav = this.app.getActiveNavs();
+    console.log('Opening read from SingleEdition.openFirstPage()');
     nav[0].setRoot('read', params);
   }
 

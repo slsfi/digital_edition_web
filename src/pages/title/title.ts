@@ -85,6 +85,10 @@ export class TitlePage {
     }
   }
 
+  ngOnDestroy() {
+    this.events.unsubscribe('language:change');
+  }
+
   checkIfCollectionHasChildrenPdfs() {
     this.collectionID = this.params.get('collectionID');
     let configChildrenPdfs = [];
@@ -107,6 +111,12 @@ export class TitlePage {
     this.events.publish('ionViewWillEnter', this.constructor.name);
     this.events.publish('musicAccordion:reset', true);
     this.events.publish('tableOfContents:unSelectSelectedTocItem', true);
+
+    this.events.publish('SelectedItemInMenu', {
+      menuID: this.params.get('collectionID'),
+      component: 'title-page'
+    });
+
   }
 
   getMdContent(fileID: string) {
@@ -121,7 +131,6 @@ export class TitlePage {
     this.tableOfContentsService.getTableOfContents(id)
     .subscribe(
         tocItems => {
-          console.log(tocItems, ' hola')
           tocItems.coverSelected = this.coverSelected;
           this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId});
         },
@@ -147,24 +156,23 @@ export class TitlePage {
             }
           );
         });
-      }
-    } else {
-      if (isNaN(Number(this.id))) {
-        this.langService.getLanguage().subscribe(lang => {
-          const fileID = lang + '-08';
-          this.hasMDCover = true;
-          this.mdService.getMdContent(fileID).subscribe(
-            res => {
-              // in order to get id attributes for tooltips
-              this.mdContent = res.content;
-            },
-            error => {
-              this.errorMessage = <any>error;
-            }
-          );
-        });
+      } else {
+        if (isNaN(Number(this.id))) {
+          this.langService.getLanguage().subscribe(lang => {
+            const fileID = lang + '-08';
+            this.hasMDCover = true;
+            this.mdService.getMdContent(fileID).subscribe(
+              res => {
+                // in order to get id attributes for tooltips
+                this.mdContent = res.content;
+              },
+              error => {
+                this.errorMessage = <any>error;
+              }
+            );
+          });
+        }
       }
     }
   }
-
 }
