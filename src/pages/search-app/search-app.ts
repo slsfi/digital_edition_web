@@ -36,6 +36,10 @@ export class SearchAppPage {
   onInput(event) {
   }
 
+  ngOnDestroy() {
+    this.events.unsubscribe('searchModal:closed');
+  }
+
   ionViewDidEnter() {
     (<any>window).ga('set', 'page', 'Search');
     (<any>window).ga('send', 'pageview');

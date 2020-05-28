@@ -324,7 +324,9 @@ export class ReadPage /*implements OnDestroy*/ {
 
     this.getAdditionalParams();
   }
-
+  ngOnDestroy() {
+    this.events.unsubscribe('show:view');
+  }
   ionViewDidEnter() {
     (<any>window).ga('set', 'page', 'Read');
     (<any>window).ga('send', 'pageview');

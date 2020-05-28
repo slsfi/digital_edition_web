@@ -73,6 +73,9 @@ export class ContentPage /*implements OnDestroy*/ {
     this.songCategoriesConfig();
   }
 
+  ngOnDestroy() {
+    this.events.unsubscribe('language:change');
+  }
   songCategoriesConfig() {
     try {
       this.songCategories = this.config.getSettings(`SongCategories.${this.lang}`);

@@ -85,6 +85,10 @@ export class TitlePage {
     }
   }
 
+  ngOnDestroy() {
+    this.events.unsubscribe('language:change');
+  }
+
   checkIfCollectionHasChildrenPdfs() {
     this.collectionID = this.params.get('collectionID');
     let configChildrenPdfs = [];
@@ -152,24 +156,23 @@ export class TitlePage {
             }
           );
         });
-      }
-    } else {
-      if (isNaN(Number(this.id))) {
-        this.langService.getLanguage().subscribe(lang => {
-          const fileID = lang + '-08';
-          this.hasMDCover = true;
-          this.mdService.getMdContent(fileID).subscribe(
-            res => {
-              // in order to get id attributes for tooltips
-              this.mdContent = res.content;
-            },
-            error => {
-              this.errorMessage = <any>error;
-            }
-          );
-        });
+      } else {
+        if (isNaN(Number(this.id))) {
+          this.langService.getLanguage().subscribe(lang => {
+            const fileID = lang + '-08';
+            this.hasMDCover = true;
+            this.mdService.getMdContent(fileID).subscribe(
+              res => {
+                // in order to get id attributes for tooltips
+                this.mdContent = res.content;
+              },
+              error => {
+                this.errorMessage = <any>error;
+              }
+            );
+          });
+        }
       }
     }
   }
-
 }

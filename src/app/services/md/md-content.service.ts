@@ -68,20 +68,17 @@ export class MdContentService {
   /**
    * Find a node by id in a JSON tree
    */
-  getNodeById(id, node) {
-    try {
-      return this.runner(null, node);
-    } catch (e) {
-      console.log('error finding node by id (in md-content.service)', id, node);
+  getNodeById(id, tree) {
+    const reduce = [].reduce;
+    const runner = (result, node) => {
+        if (result || !node) { return result; }
+        return node.id === id && node ||
+            runner(null, node.children) ||
+            reduce.call(Object(node), runner, result);
     }
+    return runner(null, tree);
   }
 
-  private runner(result, rnode) {
-    if (result || !rnode) { return result; }
-    return rnode.id === id && rnode ||
-        this.runner(null, rnode.children) ||
-        [].reduce.call(Object(rnode), this.runner, result);
-  }
 
   private extractData(res: Response) {
     const body = res.json();

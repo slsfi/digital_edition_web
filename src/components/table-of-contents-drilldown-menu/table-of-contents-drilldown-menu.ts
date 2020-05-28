@@ -254,6 +254,9 @@ export class TableOfContentsDrilldownMenuComponent {
       this.visibleMenuStack = this.menuStack;
     });
   }
+  ngOnDestroy() {
+    this.events.unsubscribe('tableOfContents:loaded');
+  }
 
   drillDown(item) {
     this.visibleMenuStack.push(item.children);

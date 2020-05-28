@@ -56,6 +56,10 @@ export class MusicPage {
     this.collectionsToShowConfig();
   }
 
+  ngOnDestroy() {
+    this.events.unsubscribe('language:change');
+  }
+
   collectionsToShowConfig() {
     try {
       this.collectionsToShow = this.config.getSettings('MusicPage.collectionsToShow');

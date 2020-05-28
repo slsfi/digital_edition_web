@@ -244,17 +244,20 @@ export class DigitalEditionList implements OnInit {
       if (this.hasCover === false) {
         this.getTocRoot(collection);
       } else {
-        const nav = this.app.getActiveNavs();
-        let params;
+        //     const nav = this.app.getActiveNavs();
+        //        let params;
+        this.events.publish('digital-edition-list:open', collection);
 
+        /*
         this.tableOfContentsService.getTableOfContents(collection.id).subscribe(tocItems => {
-            document.getElementById('contentMenu').classList.remove('menu-enabled');
-            document.getElementById('tableOfContentsMenu').classList.add('menu-enabled');
+            // document.getElementById('contentMenu').classList.remove('menu-enabled');
+            // document.getElementById('tableOfContentsMenu').classList.add('menu-enabled');
             this.events.publish('tableOfContents:loaded', { tocItems: tocItems });
-        });
+        });*/
 
-        params = { collection: collection, fetch: true, collectionID: collection.id };
-        nav[0].setRoot('title-page', params);
+        // params = { collection: collection, fetch: true, collectionID: collection.id };
+        // nav[0].setRoot('title-page', params);
+
       }
     } else {
       this.downloadPDF(collection);
