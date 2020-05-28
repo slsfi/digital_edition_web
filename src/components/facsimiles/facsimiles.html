@@ -13,7 +13,7 @@
 
 <ion-item>
   <ion-label position="floating">{{"Read.Facsimiles.Page" | translate}} ({{"Read.Facsimiles.Of" | translate}}
-    {{(images)?images.length:0}}):</ion-label>
+    {{numberOfPages ? numberOfPages : (images ? images.length : 0)}}):</ion-label>
   <ion-input class="page_number_input" type="number" size="12" (change)="setPage($event)" [(ngModel)]="manualPageNumber"
     type="number"></ion-input>
 </ion-item>
