@@ -339,15 +339,6 @@ export class ElasticSearchPage {
     }
   }
 
-  private getHitCount(id) {
-    let count = [];
-    this.elastic.executeTermQuery(this.queries, [id])
-      .subscribe((termData: any) => {
-        count = termData;
-    })
-    return count;
-  }
-
   private parseSortForQuery() {
     if (!this.sort) {
       return
