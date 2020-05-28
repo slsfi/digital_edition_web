@@ -43,6 +43,7 @@ export class TextChangerComponent {
   }
 
   ngOnInit() {
+      console.log(this.legacyId);
       const c_id = this.legacyId.split('_')[0];
       const toc = this.storage.get('toc_' + c_id)
 
@@ -61,7 +62,8 @@ export class TextChangerComponent {
 
   async previous(test?: boolean) {
     if ( this.legacyId === undefined ) {
-      this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID');
+      this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID') +
+      (this.params.get('chapterID') ? '_' + this.params.get('chapterID') : '');
     }
     const c_id = this.legacyId.split('_')[0];
     await this.storage.get('toc_' + c_id).then((toc) => {
@@ -79,7 +81,8 @@ export class TextChangerComponent {
 
   async next(test?: boolean) {
     if ( this.legacyId === undefined ) {
-      this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID');
+      this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID') +
+      (this.params.get('chapterID') ? '_' + this.params.get('chapterID') : '');
     }
     const c_id = this.legacyId.split('_')[0];
     await this.storage.get('toc_' + c_id).then((toc) => {
@@ -101,7 +104,14 @@ export class TextChangerComponent {
 
     if (!toc.children && toc instanceof Array) {
       for (let i = 0; i < toc.length; i ++) {
-        if (toc[i].itemId && toc[i].itemId === this.legacyId) {
+        if (toc[i].itemId && toc[i].itemId === this.legacyId + (this.params.get('chapterID') ? '_' + this.params.get('chapterID') : '') ) {
+          this.currentItemTitle = toc[i].text;
+          if ( toc[i + 1] ) {
+            this.nextItemTitle = toc[i + 1].text;
+          }
+          if ( toc[i - 1] ) {
+            this.prevItemTitle = toc[i - 1].text;
+          }
           if (type === 'next' && toc[i + 1]) {
             if (toc[i + 1].type === 'subtitle') {
               i = i + 1;
@@ -134,7 +144,7 @@ export class TextChangerComponent {
     } else if (toc.children) {
       const childs = toc.children;
       for (let j = 0; j < childs.length; j ++) {
-        if (childs[j] && childs[j].itemId && childs[j].itemId === this.legacyId) {
+        if (childs[j] && childs[j].itemId && childs[j].itemId === this.legacyId + (this.params.get('chapterID') ? '_' + this.params.get('chapterID') : '')) {
           this.currentItemTitle = childs[j].text;
           this.nextItemTitle = (childs[j + 1]) ? childs[j + 1].text : '';
           this.prevItemTitle = (childs[j - 1]) ? childs[j - 1].text : '';

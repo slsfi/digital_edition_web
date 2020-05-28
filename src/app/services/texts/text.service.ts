@@ -56,6 +56,10 @@ export class TextService {
                 const s = new XMLSerializer();
                 body.content = s.serializeToString(body.content);
                 this.cache.setHtmlCache(textId, body.content.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/19/`));
+                const ret = this.cache.getHtml(id);
+                if ( !ret ) {
+                  return body.content;
+                }
                 return this.cache.getHtml(id);
               }
             }

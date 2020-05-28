@@ -94,6 +94,21 @@ export class ReadTextComponent {
         this.openIllustration(imageNumber);
       }
     });
+    setTimeout(function() {
+      const linkData = this.link.split(';');
+        if ( linkData[1] ) {
+          const target = document.getElementsByName('' + linkData[1] + '')[0] as HTMLAnchorElement;
+          if ( target ) {
+            this.scrollToHTMLElement(target, false);
+          } else {
+            const list = document.getElementsByName('' + linkData[1] + '') as NodeList;
+            list.forEach(ele => {
+              console.log(ele);
+            })
+          }
+        }
+    }.bind(this), 500);
+
   }
 
   private setIllustrationImages() {
@@ -166,6 +181,40 @@ export class ReadTextComponent {
       },
       error => { this.errorMessage = <any>error }
     );
+  }
+
+  private scrollToHTMLElement(element: HTMLElement, addTag: boolean, timeOut = 8000) {
+    try {
+      element.scrollIntoView({'behavior': 'smooth', 'block': 'start'});
+      const tmp = element.previousElementSibling as HTMLElement;
+      let addedArrow = false;
+
+      if ( tmp !== null && tmp !== undefined && tmp.classList.contains('anchor_lemma') ) {
+        tmp.style.display = 'inline';
+        setTimeout(function() {
+          tmp.style.display = 'none';
+        }, 2000);
+        addedArrow = true;
+      } else {
+        const tmpImage: HTMLImageElement = new Image();
+        tmpImage.src = 'assets/images/ms_arrow_right.svg';
+        tmpImage.classList.add('inl_ms_arrow');
+        element.parentElement.insertBefore(tmpImage, element);
+        setTimeout(function() {
+          element.parentElement.removeChild(tmpImage);
+        }, timeOut);
+        addedArrow = true;
+      }
+
+      if ( addTag && !addedArrow ) {
+        element.innerHTML = '<img class="inl_ms_arrow" src="assets/images/ms_arrow_right.svg"/>';
+        setTimeout(function() {
+          element.innerHTML = '';
+        }, timeOut);
+      }
+    } catch ( e ) {
+      console.error(e);
+    }
   }
 
   doAnalytics() {
