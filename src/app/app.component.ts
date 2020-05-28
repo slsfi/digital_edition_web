@@ -890,7 +890,7 @@ export class DigitalEditionsApp {
       this.enableContentMenu();
       const nav = this.app.getActiveNavs();
       console.log('opening elastic search page');
-      nav[0].setRoot('elastic-search')
+      nav[0].push('elastic-search');
     });
   }
 

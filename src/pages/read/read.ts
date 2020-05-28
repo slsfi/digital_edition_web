@@ -650,9 +650,9 @@ export class ReadPage /*implements OnDestroy*/ {
     const viewModes = this.getViewTypesShown();
 
     // this causes problems with back, thus this check.
-    // if (!this.navCtrl.canGoBack() ) {
+    if (!this.navCtrl.canGoBack() ) {
       window.history.replaceState('', '', url.concat(viewModes.join('&')));
-    // }
+    }
   }
 
   viewsExistInAvailableViewModes(viewmodes) {
