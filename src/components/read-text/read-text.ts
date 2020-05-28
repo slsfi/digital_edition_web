@@ -100,11 +100,6 @@ export class ReadTextComponent {
           const target = document.getElementsByName('' + linkData[1] + '')[0] as HTMLAnchorElement;
           if ( target ) {
             this.scrollToHTMLElement(target, false);
-          } else {
-            const list = document.getElementsByName('' + linkData[1] + '') as NodeList;
-            list.forEach(ele => {
-              console.log(ele);
-            })
           }
         }
     }.bind(this), 500);
