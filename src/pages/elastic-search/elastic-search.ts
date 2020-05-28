@@ -253,7 +253,7 @@ export class ElasticSearchPage {
       }
    }
     const nav = this.app.getActiveNavs();
-    nav[0].push('read', params);
+    nav[0].setRoot('read', params); // for now.
   }
 
   /**

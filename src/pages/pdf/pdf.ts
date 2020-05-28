@@ -55,6 +55,10 @@ export class PdfPage {
     this.events.publish('pdfview:open', {'isOpen': true});
   }
 
+  ngOnDestroy() {
+    this.events.unsubscribe('open:pdf');
+  }
+
   ionViewWillLeave() {
     this.events.publish('ionViewWillLeave', this.constructor.name);
     this.loading.dismiss();

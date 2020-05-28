@@ -418,6 +418,8 @@ export class TableOfContentsAccordionComponent {
 
   registerEventListeners() {
     this.events.subscribe('tableOfContents:loaded', (data) => {
+      console.log('tableOfContents:loaded in table-of-contents-accordion.ts');
+
       try {
         this.sortableLetters = this.config.getSettings('settings.sortableLetters');
       } catch (e) {
@@ -518,7 +520,7 @@ export class TableOfContentsAccordionComponent {
         this.introductionSelected = true;
       }
       this.unSelectAllItems(this.collapsableItems);
-      this.cdRef.detectChanges();
+      // this.cdRef.detectChanges();
     });
   }
 
@@ -612,8 +614,10 @@ export class TableOfContentsAccordionComponent {
 
   ngOnDestroy() {
     this.events.unsubscribe(SideMenuRedirectEvent);
-    this.events.unsubscribe('tableOfContents:unSelectSelectedTocItem');
     this.events.unsubscribe('SelectedItemInMenu');
+    this.events.unsubscribe('tableOfContents:findMarkdownTocItem');
+    this.events.unsubscribe('tableOfContents:loaded');
+    this.events.unsubscribe('tableOfContents:unSelectSelectedTocItem');
   }
 
   // Send the selected option to the caller component

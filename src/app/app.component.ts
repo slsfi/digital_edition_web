@@ -63,6 +63,7 @@ export class DigitalEditionsApp {
   menuConditionals = {
     songTypesMenuOpen: false
   }
+  tocLoaded = false;
   googleAnalyticsID: string;
   collectionDownloads: Array<String>;
 
@@ -103,11 +104,11 @@ export class DigitalEditionsApp {
     tocMenu: ['FeaturedFacsimilePage'],
     tableOfContentsMenu: ['SingleEditionPage', 'CoverPage', 'TitlePage'],
     aboutMenu: ['AboutPage'],
-    contentMenu: ['HomePage', 'EditionsPage', 'ContentPage', 'MusicPage', 'FeaturedFacsimilePage']
+    contentMenu: ['HomePage', 'EditionsPage', 'ContentPage', 'MusicPage', 'FeaturedFacsimilePage', 'ElasticSearchPage']
   }
 
   pagesWithoutMenu = [];
-  pagesWithClosedMenu = ['HomePage', 'HomePage'];
+  pagesWithClosedMenu = ['HomePage'];
 
   public options: Array<TocAccordionMenuOptionModel>;
   public songTypesOptions: {
@@ -588,6 +589,7 @@ export class DigitalEditionsApp {
   }
 
   getCollectionTOC(collectionID) {
+    console.log('Getting collection TOC in app component');
     this.tableOfContentsService.getTableOfContents(collectionID)
       .subscribe(
         tocItems => {
@@ -657,6 +659,7 @@ export class DigitalEditionsApp {
 
   registerEventListeners() {
     this.events.subscribe('digital-edition-list:open', (collection) => {
+      console.log('listened to digital-edition-list:open');
       this.openCollection(collection);
     });
     this.events.subscribe('CollectionWithChildrenPdfs:highlight', (collectionID) => {
@@ -753,9 +756,12 @@ export class DigitalEditionsApp {
       }
     });
     this.events.subscribe('tableOfContents:loaded', (data) => {
-      console.log('tableOfContents:loaded in app.component.ts');
+      console.log('tableOfContents:loaded in app.component.ts', data);
       this.tocData = data;
+      this.tocLoaded = true;
+
       if (data.searchTocItem) {
+        console.log('finding toc item');
 
         for (const collection of this.collectionsListWithTOC) {
 
@@ -763,14 +769,14 @@ export class DigitalEditionsApp {
             collection.expanded = true;
             this.simpleAccordionsExpanded.collectionsAccordion = true;
 
-            collection.accordionToc.toc = data.tocItems.children;
             collection.accordionToc = {
               toc: data.tocItems.children,
               searchTocItem: true,
               searchPublicationId: Number(data.publicationID),
               searchTitle: data.search_title ? data.search_title : null
             }
-
+            collection.accordionToc.toc = data.tocItems.children;
+            this.currentCollection = collection;
             break;
           }
         }
@@ -778,6 +784,7 @@ export class DigitalEditionsApp {
       this.options = data.tocItems.children;
       this.currentCollectionId = data.tocItems.collectionId;
       this.currentCollectionName = data.tocItems.text;
+      this.enableTableOfContentsMenu();
     });
 
     this.events.subscribe('exitedTo', (page) => {
@@ -785,6 +792,7 @@ export class DigitalEditionsApp {
     });
 
     this.events.subscribe('ionViewWillEnter', (currentPage) => {
+      this.tocLoaded = false;
       const homeUrl = document.URL.indexOf('/#/home');
       if (homeUrl >= 0) {
         this.setupPageSettings(currentPage);
@@ -872,16 +880,25 @@ export class DigitalEditionsApp {
     });
 
     this.events.subscribe('topMenu:elasticSearch', () => {
-      this.events.publish('SelectedItemInMenu', {
+      /*this.events.publish('SelectedItemInMenu', {
         menuID: 'topMenu',
         component: 'app-component'
-      });
+      });*/
       // this.openPage('ElasticSearchPage');
       // this.openPage('elastic-search');
+      this.resetCurrentCollection();
+      this.enableContentMenu();
       const nav = this.app.getActiveNavs();
       console.log('opening elastic search page');
       nav[0].setRoot('elastic-search')
     });
+  }
+
+  resetCurrentCollection() {
+    this.currentCollection = null;
+    this.currentCollectionId = null;
+    this.currentCollectionName = '';
+    this.options = null;
   }
 
   mobileSplitPaneDetector() {
@@ -1118,12 +1135,24 @@ export class DigitalEditionsApp {
   }
 
   enableTableOfContentsMenu() {
-    this.menu.enable(true, 'tableOfContentsMenu');
-    if (this.platform.is('core')) {
-      this.events.publish('title-logo:show', true);
+    if (this.tocLoaded) {
+      console.log('Toc is loaded');
+      try {
+        this.menu.enable(true, 'tableOfContentsMenu');
+        if (this.platform.is('core')) {
+          this.events.publish('title-logo:show', true);
+        } else {
+          this.events.publish('title-logo:show', false);
+        }
+      } catch (e) {
+        console.log('error att App.enableTableOfContentsMenu');
+      }
     } else {
-      this.events.publish('title-logo:show', false);
+      console.log('Toc is not loaded');
     }
+
+
+
   }
 
   openPlaymanTraditionPage() {
@@ -1157,8 +1186,12 @@ export class DigitalEditionsApp {
     /*if ( this.platform.is('mobile') ) {
       this.events.publish('splitPaneToggle:disable');
     }*/
-    const nav = this.app.getActiveNavs();
-    nav[0].setRoot(page);
+    try {
+      const nav = this.app.getActiveNavs();
+      nav[0].setRoot(page);
+    } catch (e) {
+      console.error('Error opening page');
+    }
   }
 
   openPersonSearchPage(searchPage, selectedMenu?) {
@@ -1233,7 +1266,13 @@ export class DigitalEditionsApp {
       this.currentCollection = collection;
       console.log('currentCollection');
       console.log(this.options, 'options of the fn');
-      this.enableTableOfContentsMenu();
+      try {
+        if (this.options) {
+          this.enableTableOfContentsMenu();
+        }
+      } catch (e) {
+        console.log('Error enabling enableTableOfContentsMenu');
+      }
     }
   }
 

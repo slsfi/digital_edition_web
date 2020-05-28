@@ -50,6 +50,10 @@ export class HomePage {
     });
   }
 
+  ngOnDestroy() {
+    this.events.unsubscribe('language:change');
+  }
+
   ionViewWillLeave() {
     this.events.publish('ionViewWillLeave', this.constructor.name);
   }
