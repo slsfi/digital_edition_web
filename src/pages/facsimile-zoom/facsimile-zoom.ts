@@ -18,7 +18,7 @@ import { UserSettingsService } from '../../app/services/settings/user-settings.s
 })
 export class FacsimileZoomModalPage {
 
-  images: any;
+  images: any[] = [];
   backsides: any;
   descriptions: any;
   activeImage: any;
@@ -32,6 +32,7 @@ export class FacsimileZoomModalPage {
   facsUrl = '';
   facsimilePagesInfinite = false;
   backside = false;
+  facsSize: number;
   facsPage: any;
   facsNumber = 0;
   manualPageNumber = 1;
@@ -65,6 +66,8 @@ export class FacsimileZoomModalPage {
   }
 
   ionViewWillLoad() {
+    this.facsSize = this.navParams.get('facsSize');
+
     if (this.navParams.get('facsimilePagesInfinite')) {
       this.facsimilePagesInfinite = true;
       this.facsUrl = this.navParams.get('facsUrl');
@@ -78,8 +81,10 @@ export class FacsimileZoomModalPage {
         this.descriptions = [];
       }
       this.activeImage = this.navParams.get('activeImage');
+      this.manualPageNumber = this.activeImage
       this.doAnalytics(String(this.images[this.activeImage]));
     }
+
     try {
       this.backsides = this.navParams.get('backsides');
       if ( this.backsides === undefined ) {
