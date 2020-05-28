@@ -180,7 +180,7 @@
           <ion-row>
             <ion-list *ngIf="canShowHits() && total > 0">
               <div *ngFor="let hit of hits">
-                <ion-item (click)="console.log(hit)">
+                <ion-item (click)="open(hit)">
                   <ion-label>
                     <div class="word_count">
                       <label>{{'ElasticSearch.WordCount' | translate}}</label>
