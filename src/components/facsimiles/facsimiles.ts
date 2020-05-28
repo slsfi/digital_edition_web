@@ -49,7 +49,9 @@ export class FacsimilesComponent {
 
   facsUrl = '';
   facsimilePagesInfinite = false;
-
+  // If defined, this size will be appended to the image url.
+  // So define only if the image API supports it.
+  facsSize: number;
   facsPage: any;
   facsNumber = 0;
   chapter: string;
@@ -134,15 +136,17 @@ export class FacsimilesComponent {
             this.config.getSettings('app.machineName') +
             `/song-example/page/image/${this.facsID}/`;
           this.facsNumber = this.facsNr;
+          this.facsSize = null
+
         } else if (this.facsID && this.facsNr) {
           this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
             this.config.getSettings('app.machineName') +
             `/facsimile/page/image/${this.facsID}/`;
           this.facsNumber = this.facsNr;
+          this.facsSize = null
+
         } else {
-          this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
-            this.config.getSettings('app.machineName') +
-            `/facsimile/page/image/${this.params.get('collectionID')}/`;
+          this.facsSize = 4
           this.getFacsimilePageInfinite();
         }
       } else {
@@ -158,6 +162,11 @@ export class FacsimilesComponent {
       facs => {
         this.facsPage = facs;
         this.facsNumber = facs['page_number'];
+
+        // Set the image url
+        this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
+          this.config.getSettings('app.machineName') +
+          `/facsimiles/${facs['publication_facsimile_collection_id']}/`;
       },
       error => {
         console.error('Error loading facsimiles...');

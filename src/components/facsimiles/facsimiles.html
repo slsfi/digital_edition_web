@@ -32,7 +32,7 @@
 
 <div>
   <img *ngIf="facsimilePagesInfinite && facsNumber"
-    [src]="facsUrl + facsNumbe"
+    [src]="facsUrl + facsNumber + (facsSize ? '/' + facsSize : '')"
     style="width: 100%;"
     [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
     (wheel)="onMouseWheel($event)"
