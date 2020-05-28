@@ -161,7 +161,7 @@ export class FacsimilesComponent {
     this.facsimileService.getFacsimilePage(this.itemId).subscribe(
       facs => {
         this.facsPage = facs;
-        this.facsNumber = facs['page_number'];
+        this.manualPageNumber = this.activeImage = this.facsimilePage = this.facsNumber = facs['page_number'];
 
         // Set the image url
         this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
@@ -313,24 +313,34 @@ export class FacsimilesComponent {
 
   openZoom() {
     let modal = null;
-    if (this.facsimilePagesInfinite) {
-      const params = {
-        'facsimilePagesInfinite': true,
-        'facsUrl': this.facsUrl,
-        'facsID': this.facsID,
-        'facsNr': this.facsNr
-      };
+    let params: object;
 
-      modal = this.modalController.create(FacsimileZoomModalPage,
-        params,
-        { cssClass: 'facsimile-zoom-modal' }
-      );
+    if (this.facsimilePagesInfinite) {
+      const images = []
+      for (let i = 0; i < this.facsPage.number_of_pages; i++) {
+        images.push(this.facsUrl + i + '/' + this.facsSize)
+      }
+
+      params = {
+        facsimilePagesInfinite: false,
+        facsUrl: this.facsUrl,
+        facsID: this.facsID,
+        facsNr: this.facsNr,
+        facsSize: this.facsSize,
+        images,
+        activeImage: this.manualPageNumber,
+      };
     } else {
-      modal = this.modalController.create(FacsimileZoomModalPage,
-        { 'images': this.selectedFacsimile.zoomedImages, 'activeImage': this.activeImage },
-        { cssClass: 'facsimile-zoom-modal' }
-      );
+      params = {
+        images: this.selectedFacsimile.zoomedImages,
+        activeImage: this.activeImage,
+      };
     }
+
+    modal = this.modalController.create(FacsimileZoomModalPage,
+      params,
+      { cssClass: 'facsimile-zoom-modal' }
+    );
 
     modal.present();
     modal.onDidDismiss(data => {

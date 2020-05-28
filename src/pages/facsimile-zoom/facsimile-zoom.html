@@ -71,7 +71,7 @@
                           (mouseup)="onMouseUp($event)"
                         >
                         <img *ngIf="facsimilePagesInfinite && facsNumber"
-                          [src]="facsUrl + facsNumber"
+                          [src]="facsUrl + facsNumber + '/' + facsSize"
                           class="facsimile-zoom-image"
                           [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
                           (wheel)="onMouseWheel($event)"
