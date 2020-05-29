@@ -155,6 +155,8 @@ export class TextChangerComponent {
               break;
             }
           }
+        } else if ( toc[i].children ) {
+          this.findItem(toc[i].children, type);
         }
       }
     } else if (toc.children) {
