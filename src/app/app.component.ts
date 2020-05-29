@@ -1268,12 +1268,12 @@ export class DigitalEditionsApp {
     }
     if (this.openCollectionFromToc) {
       this.currentCollection = collection;
-      console.log('currentCollection');
+      console.log('currentCollection', collection);
       console.log(this.options, 'options of the fn');
       try {
-        if (this.options) {
+        // if (this.options) {
           this.enableTableOfContentsMenu();
-        }
+        // }
       } catch (e) {
         console.log('Error enabling enableTableOfContentsMenu');
       }
