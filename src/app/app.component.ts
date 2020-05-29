@@ -813,6 +813,7 @@ export class DigitalEditionsApp {
       this.currentContentName = 'Digital Publications';
       const params = {};
       const nav = this.app.getActiveNavs();
+      this.enableContentMenu();
       nav[0].setRoot('EditionsPage', params, { animate: false });
     });
     this.events.subscribe('topMenu:about', () => {
@@ -820,6 +821,7 @@ export class DigitalEditionsApp {
         menuID: 'topMenu',
         component: 'app-component'
       });
+      this.enableAboutMenu();
       this.languageService.getLanguage().subscribe((lang: string) => {
         this.language = lang;
 
@@ -963,11 +965,13 @@ export class DigitalEditionsApp {
     });
 
     this.doFor(p, pagesWith.aboutMenu, () => {
+      console.log('enabling about menu for ' + p);
       this.enableAboutMenu();
 
     });
 
     this.doFor(p, pagesWith.contentMenu, () => {
+      console.log('enabling content menu for ' + p);
       this.enableContentMenu();
     });
 
@@ -1274,6 +1278,7 @@ export class DigitalEditionsApp {
         console.log('Error enabling enableTableOfContentsMenu');
       }
     }
+    this.currentCollectionId = collection.id;
   }
 
   onShowAccordion(show: boolean) {

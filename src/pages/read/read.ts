@@ -562,6 +562,7 @@ export class ReadPage /*implements OnDestroy*/ {
   setViewsFromSearchResults() {
     for (const v of this.params.get('views')) {
       if (v.type) {
+        console.log(`Aading view ${v.type}, ${v.id}`);
         this.addView(v.type, v.id);
       }
 
