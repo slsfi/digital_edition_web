@@ -94,15 +94,6 @@ export class ReadTextComponent {
         this.openIllustration(imageNumber);
       }
     });
-    setTimeout(function() {
-        const linkData = this.link.split(';');
-        if ( linkData[1] ) {
-          const target = document.getElementsByName('' + linkData[1] + '')[0] as HTMLAnchorElement;
-          if ( target ) {
-            this.scrollToHTMLElement(target, false);
-          }
-        }
-    }.bind(this), 5000);
 
     let checkExist = setInterval(function() {
       if ( this.link !== undefined ) {
@@ -113,11 +104,13 @@ export class ReadTextComponent {
             this.scrollToHTMLElement(target, false);
             clearInterval(checkExist);
           }
+        } else {
+          clearInterval(checkExist);
         }
       } else {
         clearInterval(checkExist);
       }
-    }, 100);
+    }.bind(this), 100);
 
   }
 

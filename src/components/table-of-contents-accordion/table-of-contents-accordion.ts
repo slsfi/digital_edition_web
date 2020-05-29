@@ -843,6 +843,10 @@ export class TableOfContentsAccordionComponent {
     }
     // Toggle the selected option
     targetOption.expanded = !targetOption.expanded;
+
+    if ( targetOption.itemId !== undefined ) {
+      this.select(targetOption);
+    }
   }
 
   // Reset the entire menu
