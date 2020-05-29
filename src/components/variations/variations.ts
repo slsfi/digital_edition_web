@@ -95,15 +95,13 @@ export class VariationsComponent {
   setVariation() {
     const inputFilename = this.linkID + '.xml'
     const inputVariation = this.variations.filter(function(item) {
-      return (item.id === this.linkID || item.legacy_id === this.linkID);
+      return (item.id + '' === this.linkID + '' || item.legacy_id + '' === this.linkID + '');
     }.bind(this))[0];
-
     if (this.linkID && this.linkID !== undefined && inputVariation !== undefined ) {
       this.selectedVariation = inputVariation;
     } else {
       this.selectedVariation = this.variations[0];
     }
-
     this.changeVariation();
   }
 
