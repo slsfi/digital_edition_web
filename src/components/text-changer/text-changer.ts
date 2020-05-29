@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectorRef } from '@angular/core';
 import { Events, App, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
@@ -32,7 +32,8 @@ export class TextChangerComponent {
     public storage: Storage,
     public app: App,
     public params: NavParams,
-    private userSettingsService: UserSettingsService
+    private userSettingsService: UserSettingsService,
+    private cf: ChangeDetectorRef
   ) {
     this.next(true).then(function(val) {
       this.displayNext = val;
@@ -62,9 +63,13 @@ export class TextChangerComponent {
 
   async previous(test?: boolean) {
     if ( this.legacyId === undefined ) {
-      this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID') +
-      (this.params.get('chapterID') ? '_' + this.params.get('chapterID') : '');
+      this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID') ;
     }
+
+    if ( this.params.get('chapterID') !== undefined && String(this.legacyId).indexOf(this.params.get('chapterID')) === -1 ) {
+      this.legacyId += '_' + this.params.get('chapterID');
+    }
+
     const c_id = this.legacyId.split('_')[0];
     await this.storage.get('toc_' + c_id).then((toc) => {
       this.findItem(toc, 'prev');
@@ -81,8 +86,11 @@ export class TextChangerComponent {
 
   async next(test?: boolean) {
     if ( this.legacyId === undefined ) {
-      this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID') +
-      (this.params.get('chapterID') ? '_' + this.params.get('chapterID') : '');
+      this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID') ;
+    }
+
+    if ( this.params.get('chapterID') !== undefined && String(this.legacyId).indexOf(this.params.get('chapterID')) === -1 ) {
+      this.legacyId += '_' + this.params.get('chapterID');
     }
     const c_id = this.legacyId.split('_')[0];
     await this.storage.get('toc_' + c_id).then((toc) => {
@@ -102,9 +110,17 @@ export class TextChangerComponent {
       return;
     }
 
+    if ( this.legacyId === undefined ) {
+      this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID') ;
+    }
+
+    if ( this.params.get('chapterID') !== undefined && String(this.legacyId).indexOf(this.params.get('chapterID')) === -1 ) {
+      this.legacyId += '_' + this.params.get('chapterID');
+    }
+
     if (!toc.children && toc instanceof Array) {
       for (let i = 0; i < toc.length; i ++) {
-        if (toc[i].itemId && toc[i].itemId === this.legacyId + (this.params.get('chapterID') ? '_' + this.params.get('chapterID') : '') ) {
+        if (toc[i].itemId && toc[i].itemId === this.legacyId ) {
           this.currentItemTitle = toc[i].text;
           if ( toc[i + 1] ) {
             this.nextItemTitle = toc[i + 1].text;
@@ -144,7 +160,7 @@ export class TextChangerComponent {
     } else if (toc.children) {
       const childs = toc.children;
       for (let j = 0; j < childs.length; j ++) {
-        if (childs[j] && childs[j].itemId && childs[j].itemId === this.legacyId + (this.params.get('chapterID') ? '_' + this.params.get('chapterID') : '')) {
+        if (childs[j] && childs[j].itemId && childs[j].itemId === this.legacyId) {
           this.currentItemTitle = childs[j].text;
           this.nextItemTitle = (childs[j + 1]) ? childs[j + 1].text : '';
           this.prevItemTitle = (childs[j - 1]) ? childs[j - 1].text : '';
@@ -163,6 +179,8 @@ export class TextChangerComponent {
           } else {
             this.prevItem = childs[j - 1];
           }
+          this.cf.detectChanges()
+          break;
         }
         if (childs[j] && childs[j].children) {
           this.findItem(childs[j].children, type);
@@ -179,6 +197,9 @@ export class TextChangerComponent {
     const parts = item.itemId.split('_');
     params['collectionID'] = parts[0];
     params['publicationID'] = parts[1];
+    if ( parts[2] !== undefined ) {
+      params['chapterID'] = parts[2];
+    }
 
     if (this.recentlyOpenViews !== undefined && this.recentlyOpenViews.length > 0) {
       params['recentlyOpenViews'] = this.recentlyOpenViews;

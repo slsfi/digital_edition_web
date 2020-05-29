@@ -396,6 +396,60 @@ export class ReadPage /*implements OnDestroy*/ {
    * @param searchTocItem
    */
   getTocRoot(id: string, searchTocItem?: boolean) {
+
+    this.storage.get('toc_' + id).then((tocItemsC) => {
+      if (tocItemsC) {
+        console.log('get toc root from cache... --- --- in read');
+        tocItemsC.selectedCollId = null;
+        tocItemsC.selectedPubId = null;
+        if (this.params.get('collectionID') && this.params.get('publicationID')) {
+          tocItemsC.selectedCollId = this.params.get('collectionID');
+          tocItemsC.selectedPubId = this.params.get('publicationID');
+        }
+
+        const tocLoadedParams = { tocItems: tocItemsC };
+
+        if (searchTocItem && this.appUsesAccordionToc) {
+          tocLoadedParams['searchTocItem'] = true;
+          tocLoadedParams['collectionID'] = this.params.get('collectionID');
+          tocLoadedParams['publicationID'] = this.params.get('publicationID');
+
+          if (this.search_title) {
+            tocLoadedParams['search_title'] = this.search_title;
+          }
+        }
+        this.events.publish('tableOfContents:loaded', tocLoadedParams);
+        console.log('toc from cache - read');
+      } else {
+        this.tocService.getTableOfContents(id)
+        .subscribe(
+          tocItems => {
+            console.log('get toc root... --- --- in read');
+            tocItems.selectedCollId = null;
+            tocItems.selectedPubId = null;
+            if (this.params.get('collectionID') && this.params.get('publicationID')) {
+              tocItems.selectedCollId = this.params.get('collectionID');
+              tocItems.selectedPubId = this.params.get('publicationID');
+            }
+
+            const tocLoadedParams = { tocItems: tocItems };
+
+            if (searchTocItem && this.appUsesAccordionToc) {
+              tocLoadedParams['searchTocItem'] = true;
+              tocLoadedParams['collectionID'] = this.params.get('collectionID');
+              tocLoadedParams['publicationID'] = this.params.get('publicationID');
+
+              if (this.search_title) {
+                tocLoadedParams['search_title'] = this.search_title;
+              }
+            }
+            this.events.publish('tableOfContents:loaded', tocLoadedParams);
+            this.storage.set('toc_' + id, tocItems);
+          },
+          error => { this.errorMessage = <any>error });
+      }
+    });
+
     this.tocService.getTableOfContents(id)
       .subscribe(
         tocItems => {

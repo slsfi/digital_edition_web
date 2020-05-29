@@ -7,6 +7,7 @@ import { global } from '../../app/global';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { ReadPopoverPage } from '../read-popover/read-popover';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Storage } from '@ionic/storage';
 import { TextService } from '../../app/services/texts/text.service';
 import { HtmlContentService } from '../../app/services/html/html-content.service';
 import { LanguageService } from '../../app/services/languages/language.service';
@@ -66,6 +67,7 @@ export class SingleEditionPage {
     protected htmlService: HtmlContentService,
     protected translate: TranslateService,
     protected app: App,
+    private storage: Storage,
     protected langService: LanguageService,
     protected events: Events,
     protected sanitizer: DomSanitizer,
@@ -203,16 +205,29 @@ export class SingleEditionPage {
   }
 
   getTocRoot(id: string) {
-    this.tableOfContentsService.getTableOfContents(id)
-      .subscribe(
-        tocItems => {
-          this.tocItems = tocItems;
-          console.log('get toc root... --- --- in single edition');
-          const tocLoadedParams = { tocItems: tocItems };
-          tocLoadedParams['collectionID'] = this.collection;
-          this.events.publish('tableOfContents:loaded', tocLoadedParams);
-        },
-        error => { this.errorMessage = <any>error });
+    this.storage.get('toc_' + id).then((tocItemsC) => {
+      if (tocItemsC) {
+        this.tocItems = tocItemsC;
+        console.log('get toc root... --- --- in single edition');
+        const tocLoadedParams = { tocItems: tocItemsC };
+        tocLoadedParams['collectionID'] = this.collection;
+        this.events.publish('tableOfContents:loaded', tocLoadedParams);
+        console.log('toc from cache');
+      } else {
+        this.tableOfContentsService.getTableOfContents(id)
+        .subscribe(
+          tocItems => {
+            this.tocItems = tocItems;
+            console.log('get toc root... --- --- in single edition');
+            const tocLoadedParams = { tocItems: tocItems };
+            tocLoadedParams['collectionID'] = this.collection;
+            this.events.publish('tableOfContents:loaded', tocLoadedParams);
+            this.storage.set('toc_' + id, tocItems);
+          },
+          error => { this.errorMessage = <any>error });
+        }
+    });
+
   }
 
   getTableOfContents(id: string) {

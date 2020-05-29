@@ -418,16 +418,21 @@ export class TableOfContentsAccordionComponent {
 
   registerEventListeners() {
     this.events.subscribe('tableOfContents:loaded', (data) => {
-      console.log('tableOfContents:loaded in table-of-contents-accordion.ts');
-
       try {
         this.sortableLetters = this.config.getSettings('settings.sortableLetters');
       } catch (e) {
         this.sortableLetters = null;
       }
+      this.storage.get('toc_sort_' + data.collectionID).then((dataC) => {
+        if (dataC) {
 
-      this.constructAlphabeticalTOC(data);
-      this.constructChronologialTOC(data);
+        } else {
+          console.log('tableOfContents:loaded in table-of-contents-accordion.ts');
+          this.constructAlphabeticalTOC(data);
+          this.constructChronologialTOC(data);
+          this.storage.set('toc_sort_' + data.collectionID, data);
+        }
+        });
     });
   }
 

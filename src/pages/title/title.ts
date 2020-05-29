@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Storage } from '@ionic/storage';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { TextService } from '../../app/services/texts/text.service';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
@@ -47,6 +48,7 @@ export class TitlePage {
     protected sanitizer: DomSanitizer,
     protected params: NavParams,
     protected events: Events,
+    private storage: Storage,
     private userSettingsService: UserSettingsService,
     protected tableOfContentsService: TableOfContentsService,
     public config: ConfigService,
@@ -128,13 +130,21 @@ export class TitlePage {
   }
 
   getTocRoot(id: string) {
-    this.tableOfContentsService.getTableOfContents(id)
-    .subscribe(
-        tocItems => {
-          tocItems.coverSelected = this.coverSelected;
-          this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId});
-        },
-      error =>  {this.errorMessage = <any>error});
+    this.storage.get('toc_' + id).then((tocItemsC) => {
+      if (tocItemsC) {
+        tocItemsC.coverSelected = this.coverSelected;
+        this.events.publish('tableOfContents:loaded', {tocItems: tocItemsC, searchTocItem: true, collectionID: tocItemsC.collectionId});
+      } else {
+        this.tableOfContentsService.getTableOfContents(id)
+        .subscribe(
+            tocItems => {
+              tocItems.coverSelected = this.coverSelected;
+              this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId});
+              this.storage.set('toc_' + id, tocItems);
+            },
+          error =>  {this.errorMessage = <any>error});
+          }
+    });
   }
 
   ionViewDidLoad() {

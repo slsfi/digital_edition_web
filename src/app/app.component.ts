@@ -756,7 +756,6 @@ export class DigitalEditionsApp {
       }
     });
     this.events.subscribe('tableOfContents:loaded', (data) => {
-      console.log('tableOfContents:loaded in app.component.ts', data);
       this.tocData = data;
       this.tocLoaded = true;
 
