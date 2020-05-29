@@ -229,6 +229,7 @@ export class ElasticSearchPage {
     switch (hit.source.xml_type) {
       case 'est': {
         params['urlviews'] = 'established';
+        params['views'].push({type: 'established'})
         break;
       }
       case 'ms': {
@@ -238,6 +239,7 @@ export class ElasticSearchPage {
       }
       case 'com': {
         params['urlviews'] = 'comments';
+        params['views'].push({type: 'comments'})
          break;
       }
       case 'var': {
@@ -247,6 +249,8 @@ export class ElasticSearchPage {
         break;
       }
       default: {
+        params['urlviews'] = 'established';
+        params['views'].push({type: 'established'})
          // statements;
          break;
       }
@@ -361,7 +365,7 @@ export class ElasticSearchPage {
       })))
 
       this.cleanQueries = [];
-      if (this.queries.length > 0) {
+      if (this.queries.length > 0 && this.queries[0] !== undefined && this.queries[0].length > 0 ) {
         this.queries.forEach(term => {
           this.cleanQueries.push(term.toLowerCase().replace(/[^a-zA-ZåäöÅÄÖ[0-9]+/g, ''));
         });

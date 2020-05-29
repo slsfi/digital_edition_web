@@ -182,7 +182,7 @@
               <div *ngFor="let hit of hits">
                 <ion-item (click)="open(hit)" class="hitItem">
                   <ion-label>
-                    <div class="word_count">
+                    <div class="word_count" *ngIf="cleanQueries.length > 0">
                       <label>{{'ElasticSearch.WordCount' | translate}}</label>
                       <span *ngFor="let query of cleanQueries">
                         <p *ngIf="hit.count && hit.count[query] && hit.count[query][0]">

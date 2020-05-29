@@ -1,5 +1,11 @@
 table-of-contents-accordion {
 
+  .collection-name-top{
+    background-color: rgba(color($colors, primary), $alpha: 0.2) !important;
+  }
+  .collection-name-top ion-label{
+    white-space: pre-wrap !important;
+  }
     .collection-filters {
         ion-label {
             display: flex;
@@ -29,7 +35,7 @@ table-of-contents-accordion {
     ion-item.item-wp [item-right] {
         margin-left: 0;
     }
-  
+
     ion-item.item-ios ion-icon[item-left] + .item-inner, ion-item.item-ios ion-icon[item-left] + .item-input,
     ion-item.item-md ion-icon[item-left] + .item-inner,
     ion-item.item-md ion-icon[item-left] + .item-input,
@@ -37,7 +43,7 @@ table-of-contents-accordion {
     ion-item.item-wp ion-icon[item-left] + .item-input {
         margin-left: 8px;
     }
-    
+
     ion-list.accordion-menu ion-item.header ion-icon.header-icon {
         will-change: transform;
         transition: transform 0.3s ease;
@@ -54,7 +60,7 @@ table-of-contents-accordion {
     .accordion-menu .list .list-md {
         background-color: #ecece4;
     }
-    
+
     ion-list.accordion-menu ion-item.header ion-icon.header-icon.rotate {
         -webkit-transform: rotate(90deg);
         -moz-transform: rotate(90deg);
@@ -62,18 +68,18 @@ table-of-contents-accordion {
         -o-transform: rotate(90deg);
         transform: rotate(90deg);
     }
-    
+
     ion-list.accordion-menu div.options {
         will-change: height;
         transition: height 0.3s ease;
         overflow-y: hidden;
         height: 0;
     }
-    
+
     ion-list.accordion-menu ion-item.item.item-block.item-ios.no-icon .item-inner {
         margin-left: 48px;
     }
-    
+
     ion-list.accordion-menu ion-item.item.item-block.item-md.no-icon .item-inner,
     ion-list.accordion-menu ion-item.item.item-block.item-wp.no-icon .item-inner {
         margin-left: 40px;
