@@ -213,6 +213,7 @@ export class ElasticSearchPage {
     const collection_id = filename.split('_').shift(); // 199
     const var_ms_id = filename.replace('.xml', '').split('_').pop(); // 6251
 
+    params['tocLinkId'] = collection_id + '_' + hit.source.publication_id;
     params['collectionID'] = collection_id;
     params['publicationID'] = hit.source.publication_id;
 
@@ -255,8 +256,7 @@ export class ElasticSearchPage {
          break;
       }
    }
-    const nav = this.app.getActiveNavs();
-    nav[0].setRoot('read', params); // for now.
+    this.app.getRootNav().push('read', params);
   }
 
   /**
