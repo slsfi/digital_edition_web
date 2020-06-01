@@ -30,6 +30,8 @@ export interface TocAccordionMenuOptionModel {
 
     type?: string;
 
+    description?: string;
+
     publication_id?: any;
 
     facsimile_id?: any;
