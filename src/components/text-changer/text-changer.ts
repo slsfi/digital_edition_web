@@ -19,6 +19,8 @@ export class TextChangerComponent {
   @Input() recentlyOpenViews?: any;
   prevItem: any;
   nextItem: any;
+  lastNext: any;
+  lastPrev: any;
   prevItemTitle: string;
   nextItemTitle: string;
   lastItem: boolean;
@@ -53,8 +55,10 @@ export class TextChangerComponent {
           for (let i = 0; i < val.children.length; i++) {
             if (val.children[i].itemId.split('_')[1] === c_id) {
               this.currentItemTitle = val.children[i].text;
-              this.nextItemTitle = val.children[i + 1].text;
-              this.prevItemTitle =  val.children[i - 1].text;
+              this.nextItemTitle = String(val.children[i + 1].text).substring(0, 40) +
+              (String(val.children[i + 1].text).length > 40 ? '...' : '');
+              this.prevItemTitle =  String(val.children[i - 1].text).substring(0, 40) +
+              (String(val.children[i - 1].text).length > 40 ? '...' : '');
             }
           }
         }
@@ -123,10 +127,12 @@ export class TextChangerComponent {
         if (toc[i].itemId && toc[i].itemId === this.legacyId ) {
           this.currentItemTitle = toc[i].text;
           if ( toc[i + 1] ) {
-            this.nextItemTitle = toc[i + 1].text;
+            this.nextItemTitle = String(toc[i + 1].text).substring(0, 40) +
+              (String(toc[i + 1].text).length > 40 ? '...' : '');
           }
           if ( toc[i - 1] ) {
-            this.prevItemTitle = toc[i - 1].text;
+            this.prevItemTitle = String(toc[i - 1].text).substring(0, 40) +
+            (String(toc[i - 1].text).length > 40 ? '...' : '');
           }
           if (type === 'next' && toc[i + 1]) {
             if (toc[i + 1].type === 'subtitle') {
@@ -154,8 +160,21 @@ export class TextChangerComponent {
               this.prevItem = toc[i - 1];
               break;
             }
+          } else if ( type === 'prev' && !toc[i - 1] ) {
+            // last item in other array
+            this.prevItemTitle = String(this.lastPrev[this.lastPrev.length - 1].text).substring(0, 40) +
+            (String(this.lastPrev[this.lastPrev.length - 1].text).length > 40 ? '...' : '' );
+            this.nextItemTitle = String(this.lastNext[0].text).substring(0, 40) + (String(this.lastNext[0].text).length > 40 ? '...' : '' );
+            this.prevItem = this.lastPrev[this.lastPrev.length - 1];
+            this.nextItem = this.lastNext[0];
           }
         } else if ( toc[i].children ) {
+          if ( toc[i - 1] && toc[i - 1].children ) {
+            this.lastPrev = toc[i - 1].children;
+          }
+          if ( toc[i + 1] && toc[i + 1].children ) {
+            this.lastNext = toc[i + 1].children;
+          }
           this.findItem(toc[i].children, type);
         }
       }
@@ -186,6 +205,19 @@ export class TextChangerComponent {
         }
         if (childs[j] && childs[j].children) {
           this.findItem(childs[j].children, type);
+        }
+      }
+    }
+  }
+
+  findPrevTitle(toc, currentIndex, prevChild?) {
+    if ( currentIndex === 0 ) {
+      this.findPrevTitle(prevChild, prevChild.length);
+    }
+    for ( let i = currentIndex; i > 0; i-- ) {
+      if ( toc[i - 1] !== undefined ) {
+        if ( toc[i - 1].title !== 'subtitle' &&  toc[i - 1].title !== 'section_title' ) {
+          return toc[i - 1];
         }
       }
     }
