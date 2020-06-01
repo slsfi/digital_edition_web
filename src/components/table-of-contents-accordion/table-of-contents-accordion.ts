@@ -51,6 +51,7 @@ class InnerMenuOptionModel {
   children_id?: any;
   search_children_id?: any;
   important?: boolean;
+  description: any;
 
   public static fromMenuOptionModel(
                   option: TocAccordionMenuOptionModel,
@@ -75,6 +76,7 @@ class InnerMenuOptionModel {
 
     if (option.text) {
       innerMenuOptionModel.text = option.text;
+      innerMenuOptionModel.description = option.description;
     } else if (option.title) {
       innerMenuOptionModel.text = option.title;
     }
