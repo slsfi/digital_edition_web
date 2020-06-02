@@ -825,11 +825,20 @@ export class DigitalEditionsApp {
         this.language = lang;
 
         if (this.aboutMenuMarkdown && this.aboutOptionsMarkdown.toc && this.aboutOptionsMarkdown.toc.length) {
-          const firstAboutPageID = this.aboutOptionsMarkdown.toc[0].id;
+          let firstAboutPageID = this.aboutOptionsMarkdown.toc[0].id;
+          if ( this.config.getSettings('StaticPagesMenus')[0]['initialAboutPage'] !== undefined ) {
+            firstAboutPageID = this.language + '-' + this.config.getSettings('StaticPagesMenus')[0]['initialAboutPage'];
+          }
           this.openStaticPage(firstAboutPageID);
         } else {
+
           this.enableAboutMenu();
-          this.openStaticPage(this.language + '-03-01');
+          if ( this.config.getSettings('StaticPagesMenus')[0]['initialAboutPage'] === undefined ) {
+            this.staticPagesMenus['initialAboutPage'] = this.language + '-03-01';
+          } else {
+            this.staticPagesMenus['initialAboutPage'] = this.language + '-' + this.config.getSettings('StaticPagesMenus')[0]['initialAboutPage'];
+          }
+          this.openStaticPage(this.staticPagesMenus['initialAboutPage']);
         }
       });
     });

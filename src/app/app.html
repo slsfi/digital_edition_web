@@ -7,7 +7,7 @@
             <ion-list *ngIf="!readMenuOpen && !galleryMenuOpen && !menuConditionals.songTypesMenuOpen">
                 <ion-item *ngIf="genericSettingsService.show('TOC.Home')" menuClose (click)="front()" class="mainMenuItem">
                     <ion-label>
-                        {{"TOC.Home" | translate }}
+                        {{"TOC.Home" | translate }} hej
                     </ion-label>
                     <ion-icon name="home" item-right small></ion-icon>
                 </ion-item>
@@ -18,7 +18,8 @@
                     </ion-item>
                     <div [style.height]="simpleAccordionsExpanded.aboutMenuAccordion ? '100%' : '0px'" class="simple-accordion-options options">
                         <div class="sub-option" tappable>
-                            <table-of-contents-accordion #aboutMenuMarkdownAccordion *ngIf="aboutOptionsMarkdown.toc.length" [isMarkdown]="true" [showBackButton]="false" [options]="aboutOptionsMarkdown" [collectionId]="'aboutMarkdown'" [collectionName]="'About'" [settings]="sideMenuSettings" [open]="true">
+                            <table-of-contents-accordion #aboutMenuMarkdownAccordion *ngIf="aboutOptionsMarkdown.toc.length" [isMarkdown]="true" [showBackButton]="false" [options]="aboutOptionsMarkdown" [collectionId]="'aboutMarkdown'" [collectionName]="'About'" [settings]="sideMenuSettings"
+                                [open]="true">
                             </table-of-contents-accordion>
                         </div>
                     </div>
@@ -28,7 +29,7 @@
                         {{"TOC.About" | translate }}
                     </p>
                 </ion-item>
-               <!-- TOC READ ACCORDION  -->
+                <!-- TOC READ ACCORDION  -->
                 <ion-list *ngIf="genericSettingsService.show('TOC.Read') && accordionTOC" class="accordion-menu">
                     <ion-item class="header" (tap)="simpleAccordionsExpanded.collectionsAccordion = !simpleAccordionsExpanded.collectionsAccordion;" tappable id="readTocItem">
                         <ion-icon [class.rotate]="simpleAccordionsExpanded.collectionsAccordion" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
@@ -37,7 +38,7 @@
                     <div [style.height]="simpleAccordionsExpanded.collectionsAccordion ? '100%' : '0px'" class="simple-accordion-options options">
                         <ng-container *ngFor="let collection of collectionsListWithTOC">
                             <ion-list *ngIf="collection.toc_exists" class="accordion-menu">
-                              <!-- toggleSingleCollectionAccordion öppnar accordion  -->
+                                <!-- toggleSingleCollectionAccordion öppnar accordion  -->
                                 <ion-item [ngClass]="collection.highlight ? 'selected-toc-item' : ''" class="header" (tap)="openCollectionFromToc ? openCollection(collection) : toggleSingleCollectionAccordion(collection)" tappable>
                                     <ion-icon *ngIf="!collection.isDownload && !collection.has_children_pdfs" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
                                     <p>{{ collection.title }}</p>
@@ -256,8 +257,9 @@
             <table-of-contents-accordion [open]="true" *ngIf="accordionTOC && options && !openCollectionFromToc" [showBackButton]="true" [options]="options" [collectionId]="currentCollectionId" [collectionName]="currentCollectionName" [settings]="sideMenuSettings">
             </table-of-contents-accordion>
 
-            <table-of-contents-accordion *ngIf="currentCollection && accordionTOC && openCollectionFromToc" [open]="true" [showBackButton]="true" [options]="currentCollection.accordionToc" [collectionId]="currentCollectionId" [collectionName]="currentCollection.title" [settings]="sideMenuSettings"></table-of-contents-accordion>
-          </ion-content>
+            <table-of-contents-accordion *ngIf="currentCollection && accordionTOC && openCollectionFromToc" [open]="true" [showBackButton]="true" [options]="currentCollection.accordionToc" [collectionId]="currentCollectionId" [collectionName]="currentCollection.title"
+                [settings]="sideMenuSettings"></table-of-contents-accordion>
+        </ion-content>
     </ion-menu>
     <!-- ./TOC Menu -->
 

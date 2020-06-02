@@ -136,8 +136,11 @@ export class StaticPagesTocDrilldownMenuComponent {
   }
 
   unDrill() {
-    this.titleStack.pop();
-    this.menuStack.pop();
+    // don't go to far
+    if ( this.menuStack.length > 1 ) {
+      this.titleStack.pop();
+      this.menuStack.pop();
+    }
   }
 
   open(item: StaticPage) {

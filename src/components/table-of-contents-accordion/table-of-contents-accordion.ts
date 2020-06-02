@@ -143,9 +143,13 @@ class InnerMenuOptionModel {
 
       if (innerSubItem.text) {
         if (storeChildren) {
-          childrenToc[innerMenuOptionModel.children_id].push(innerSubItem);
+          if ( childrenToc[innerMenuOptionModel.children_id].indexOf(innerSubItem) === -1 ) {
+            childrenToc[innerMenuOptionModel.children_id].push(innerSubItem);
+          }
         } else {
-          innerMenuOptionModel.subOptions.push(innerSubItem);
+          if ( innerMenuOptionModel.subOptions.indexOf(innerSubItem) === -1 ) {
+            innerMenuOptionModel.subOptions.push(innerSubItem);
+          }
         }
       }
 
@@ -195,7 +199,9 @@ export class TableOfContentsAccordionComponent {
       // Map the options to our internal models
       this.menuOptions.forEach(option => {
         const innerMenuOption = InnerMenuOptionModel.fromMenuOptionModel(option, null, false, value.searchTocItem);
-        this.collapsableItems.push(innerMenuOption);
+        if ( this.collapsableItems.indexOf(innerMenuOption) === -1 && innerMenuOption.type !== 'folder' ) {
+          this.collapsableItems.push(innerMenuOption);
+        }
 
         // Check if there's any option marked as selected
         if (option.selected) {
@@ -467,8 +473,12 @@ export class TableOfContentsAccordionComponent {
       // Map the options to our internal models
       this.menuOptions.forEach(option => {
         const innerMenuOption = InnerMenuOptionModel.fromMenuOptionModel(option, null, false, false);
-        this.collapsableItems.push(innerMenuOption);
-        this.activeMenuTree.push(innerMenuOption);
+        if ( this.collapsableItems.indexOf(innerMenuOption) === -1 ) {
+          this.collapsableItems.push(innerMenuOption);
+        }
+        if ( this.activeMenuTree.indexOf(innerMenuOption) === -1 ) {
+          this.activeMenuTree.push(innerMenuOption);
+        }
 
         // Check if there's any option marked as selected
         if (option.selected) {
