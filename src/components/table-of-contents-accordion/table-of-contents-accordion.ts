@@ -658,7 +658,7 @@ export class TableOfContentsAccordionComponent {
       this.selectMarkdown(item);
     } else if (this.isGallery) {
       this.selectGallery(item);
-    } else {
+    } else if ( item.itemId !== undefined ) {
 
       this.storage.set('currentTOCItem', item);
       const params = {root: this.options, tocItem: item, collection: {title: item.text}};
@@ -727,6 +727,8 @@ export class TableOfContentsAccordionComponent {
 
       console.log('Opening read from TableOfContentsAccordionComponent.openFirstPage()');
       nav[0].setRoot('read', params);
+    } else {
+      this.storage.set('currentTOCItem', item);
     }
   }
 
