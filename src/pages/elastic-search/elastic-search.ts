@@ -188,8 +188,8 @@ export class ElasticSearchPage {
   }
 
   ionViewDidEnter() {
-    // (<any>window).ga('set', 'page', 'Elastic Search')
-    // (<any>window).ga('send', 'pageview')
+    (<any>window).ga('set', 'page', 'Elastic Search')
+    (<any>window).ga('send', 'pageview')
   }
 
   ionViewWillLeave() {
@@ -368,6 +368,7 @@ export class ElasticSearchPage {
       if (this.queries.length > 0 && this.queries[0] !== undefined && this.queries[0].length > 0 ) {
         this.queries.forEach(term => {
           this.cleanQueries.push(term.toLowerCase().replace(/[^a-zA-ZåäöÅÄÖ[0-9]+/g, ''));
+          this.analyticsEvent('term', term);
         });
         for (const item in data.hits.hits) {
           this.elastic.executeTermQuery(this.cleanQueries, [data.hits.hits[item]['_id']])
@@ -420,6 +421,18 @@ export class ElasticSearchPage {
 
   hasMore() {
     return this.total > this.from + this.hitsPerPage
+  }
+
+  analyticsEvent(type, term) {
+    try {
+      (<any>window).ga('send', 'event', {
+        eventCategory: 'Search',
+        eventLabel: 'ElasticSearch - ' + type,
+        eventAction: String(term),
+        eventValue: 10
+      });
+    } catch ( e ) {
+    }
   }
 
   /**
@@ -486,6 +499,7 @@ export class ElasticSearchPage {
     this.updateSelectedFacets(facetGroupKey, facet)
 
     this.onFacetsChanged()
+    this.analyticsEvent('facet', String(facet.key));
   }
 
   selectSuggestedFacet(facetGroupKey: string, facet: Facet) {

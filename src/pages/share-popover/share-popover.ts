@@ -25,25 +25,38 @@ export class SharePopoverPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SharePopoverPage');
+    this.doAnalytics('click');
   }
 
   shareURI() {
-    //
+    this.doAnalytics('URI');
   }
 
   shareFacebook() {
-    //
+    this.doAnalytics('FB');
   }
 
   shareTwitter() {
-    //
+    this.doAnalytics('Twitter');
   }
 
   shareInstagram() {
-    //
+    this.doAnalytics('Insta');
   }
 
   shareEmail() {
-    //
+    this.doAnalytics('Email');
+  }
+
+  doAnalytics(type) {
+    try {
+      (<any>window).ga('send', 'event', {
+        eventCategory: 'Share-Popover',
+        eventLabel: 'Share-Popover',
+        eventAction: type,
+        eventValue: 10
+      });
+    } catch ( e ) {
+    }
   }
 }

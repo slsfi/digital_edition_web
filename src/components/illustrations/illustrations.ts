@@ -35,6 +35,7 @@ export class IllustrationsComponent {
     this.getIllustrationImages();
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.projectMachineName = this.config.getSettings('app.machineName');
+    this.doAnalytics();
   }
 
   ngOnDestroy() {
@@ -124,5 +125,17 @@ export class IllustrationsComponent {
         this.images.push(image);
       }
     });
+  }
+
+  doAnalytics() {
+    try {
+      (<any>window).ga('send', 'event', {
+        eventCategory: 'Illustration',
+        eventLabel: 'Illustration',
+        eventAction: String(this.itemId),
+        eventValue: 10
+      });
+    } catch ( e ) {
+    }
   }
 }

@@ -102,52 +102,76 @@ export class ReadPopoverPage {
 
   toggleComments() {
     this.readPopoverService.show.comments = this.show.comments;
+    this.doAnalytics('toggleComments - ' + this.show.comments);
   }
 
   togglePersonInfo() {
     this.readPopoverService.show.personInfo = this.show.personInfo;
+    this.doAnalytics('togglePersonInfo - ' + this.show.personInfo);
   }
 
   togglePlaceInfo() {
     this.readPopoverService.show.placeInfo = this.show.placeInfo;
+    this.doAnalytics('togglePlaceInfo - ' + this.show.placeInfo);
   }
 
   toggleWorkInfo() {
     this.readPopoverService.show.workInfo = this.show.workInfo;
+    this.doAnalytics('toggleWorkInfo - ' + this.show.workInfo);
   }
 
   toggleChanges() {
     this.readPopoverService.show.changes = this.show.changes;
+    this.doAnalytics('toggleChanges - ' + this.show.changes);
   }
 
   toggleAbbreviations() {
     this.readPopoverService.show.abbreviations = this.show.abbreviations;
+    this.doAnalytics('toggleAbbreviations - ' + this.show.abbreviations);
   }
 
   togglePageNumbering() {
     this.readPopoverService.show.pageNumbering = this.show.pageNumbering;
+    this.doAnalytics('togglePageNumbering - ' + this.show.pageNumbering);
   }
 
   togglePageBreakOriginal() {
     this.readPopoverService.show.pageBreakOriginal = this.show.pageBreakOriginal;
+    this.doAnalytics('togglePageBreakOriginal - ' + this.show.pageBreakOriginal);
   }
 
   togglePageBreakEdition() {
     this.readPopoverService.show.pageBreakEdition = this.show.pageBreakEdition;
+    this.doAnalytics('togglePageBreakEdition - ' + this.show.pageBreakEdition);
   }
 
   decreaseFontSize() {
     this.fontsize = Fontsize.small;
     this.readPopoverService.fontsize = this.fontsize;
+    this.doAnalytics('decreaseFontSize - ' + this.fontsize);
   }
 
   increaseFontMeduimSize() {
     this.fontsize = Fontsize.medium;
     this.readPopoverService.fontsize = this.fontsize;
+    this.doAnalytics('increaseFontMeduimSize - ' + this.fontsize);
   }
 
   increaseFontSize() {
     this.fontsize = Fontsize.large;
     this.readPopoverService.fontsize = this.fontsize;
+    this.doAnalytics('increaseFontSize - ' + this.fontsize);
+  }
+
+  doAnalytics(type) {
+    try {
+      (<any>window).ga('send', 'event', {
+        eventCategory: 'Read-Settings',
+        eventLabel: 'Read-Settings - ' + type,
+        eventAction: type,
+        eventValue: 10
+      });
+    } catch ( e ) {
+    }
   }
 }

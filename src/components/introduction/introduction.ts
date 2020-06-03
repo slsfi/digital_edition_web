@@ -51,6 +51,7 @@ export class IntroductionComponent {
         error =>  {this.errorMessage = <any>error}
       );
     });
+    this.doAnalytics();
   }
 
   ngAfterViewInit() {
@@ -71,6 +72,18 @@ export class IntroductionComponent {
       element.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
     } catch ( e ) {
       console.error(e);
+    }
+  }
+
+  doAnalytics() {
+    try {
+      (<any>window).ga('send', 'event', {
+        eventCategory: 'Introduction',
+        eventLabel: 'Introduction',
+        eventAction: String(this.itemId),
+        eventValue: 10
+      });
+    } catch ( e ) {
     }
   }
 }

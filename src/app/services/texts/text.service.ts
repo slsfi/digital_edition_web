@@ -45,7 +45,7 @@ export class TextService {
             if (this.config.getSettings('settings.showReadTextIllustrations')) {
               const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
 
-              if (!showIllustration.includes(pub_id)) {
+              if (!showIllustration.includes(c_id)) {
                 const parser = new DOMParser();
                 body.content = parser.parseFromString(body.content, 'text/html');
                 const images: any = body.content.querySelectorAll('img.est_figure_graphic');
