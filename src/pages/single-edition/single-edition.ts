@@ -261,24 +261,17 @@ export class SingleEditionPage {
     params['collectionID'] = this.params.get('id')
     try {
       params['publicationID'] = String(this.tocItems['children'][0]['itemId']).split('_')[1];
+      const nav = this.app.getActiveNavs();
+      console.log('Opening read from SingleEdition.openFirstPage()');
+      nav[0].setRoot('read', params);
     } catch (e) {
-      console.log(e);
-      params['publicationID'] = '1';
+      this.maybeLoadTitlePage(params['collectionID']);
     }
-
-    const nav = this.app.getActiveNavs();
-    console.log('Opening read from SingleEdition.openFirstPage()');
-    nav[0].setRoot('read', params);
   }
 
   maybeLoadTitlePage(collectionID: string) {
-    if (this.platform.is('core') || this.platform.is('tablet')) {
       const nav = this.app.getActiveNavs();
       const params = { collection: this.collection, fetch: true, collectionID: this.collection.id };
-
       nav[0].setRoot('title-page', params);
-    } else {
-      this.showPage = true;
-    }
   }
 }

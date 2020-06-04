@@ -1098,7 +1098,7 @@ export class ReadPage /*implements OnDestroy*/ {
     this.events.publish('ionViewWillEnter', this.constructor.name);
     this.events.publish('musicAccordion:reset', true);
 
-    if (this.userSettingsService.isMobile() || this.userSettingsService.isTablet()) {
+    if (this.userSettingsService.isMobile()) {
       this.viewCtrl.showBackButton(true);
     } else {
       this.viewCtrl.showBackButton(false);

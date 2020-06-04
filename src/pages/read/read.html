@@ -5,7 +5,7 @@
       <button ion-button color="secondary" *ngIf="navCtrl.canGoBack()" (click)="back();">Back to Search</button>
     </div>
 
-    <text-changer *ngIf="!(userSettingsService.isMobile() || userSettingsService.isTablet())" [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
+    <text-changer *ngIf="!(userSettingsService.isMobile())" [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
 
     <ion-buttons>
         <ion-grid>
@@ -34,9 +34,9 @@
 
 <!-- Main content with scroll -->
 <ion-content padding color="secondary">
-  <div *ngIf="userSettingsService.isDesktop() && !userSettingsService.isTablet()" class="column-container">
+  <div *ngIf="userSettingsService.isDesktop()" class="column-container">
     <ion-fab
-      *ngIf="showOccurrencesModal && hasOccurrenceResults && userSettingsService.isDesktop() && !userSettingsService.isTablet()"
+      *ngIf="showOccurrencesModal && hasOccurrenceResults && userSettingsService.isDesktop()"
       class="occurrenceButton">
       <button ion-button small
         (click)="openOccurrenceResult()">{{ (occurrenceResult.name)?occurrenceResult.name:("Read.ShowSearchResults" | translate) }}
