@@ -104,7 +104,8 @@ export class IntroductionPage {
         if ( targetId === null ) {
           targetId = elem.parentElement.getAttribute('href');
         }
-        const target = elem.ownerDocument.getElementById(String(targetId).replace('#', '')) as HTMLElement;
+        const dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
+        const target = elem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
         if ( target !== null ) {
            this.scrollToElementTOC(target, event);
         }
@@ -120,7 +121,8 @@ export class IntroductionPage {
         if ( targetId === null ) {
           targetId = elem.parentElement.getAttribute('href');
         }
-        const target = elem.ownerDocument.getElementById(String(targetId).replace('#', '')) as HTMLElement;
+        const dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
+        const target = elem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
         if ( target !== null ) {
            this.scrollToElementTOC(target, event);
         }
