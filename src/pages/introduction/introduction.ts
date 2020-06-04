@@ -86,7 +86,7 @@ export class IntroductionPage {
               res.content.replace(/images\//g, 'assets/images/')
                   .replace(/\.png/g, '.svg')
             );
-            const pattern = /<div id="content">(.*?)<\/div>/;
+            const pattern = /<div data-id="content">(.*?)<\/div>/;
             const matches = String(this.text).match(pattern);
             const the_string = matches[0];
             this.textMenu = the_string;
