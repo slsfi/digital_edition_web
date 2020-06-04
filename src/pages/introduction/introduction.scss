@@ -1,148 +1,147 @@
 page-introduction {
-
-  .scroll-zoom-wrapper{
-    width: 100%;
-  }
-
-	ion-card {
-    width: 75%;
-    max-width: 830px;
-    background-color: #fff;
-  }
-  .scroll-content{
-    display: flex;
-  }
-
-  .hideIntro.tei #content{
-    display: none !important;
-  }
-
-  #toc_menu{
-    float: left;
-    z-index: 99;
-    width: 100%;
-  }
-
-  #toc_menu ion-icon{
-    margin: 5px;
-  }
-
-  p {
-    font-family: $font-read-column-p;
-  }
-
-  .est_figure_graphic{
-    width: initial;
-  }
-
-  .menuOpen{
-    display: sticky;
-  }
-
-  .menuClosed{
-    display: none;
-  }
-
-  .menuClosedIcon{
-    background-color: transparent;
-  }
-
-  .menuOpenIcon{
-    background-color: color($colors, light);
-  }
-
-/* knappens position i desktop-vy */
-@media (min-width: 650px) {
-    #navbtn {
-        margin-top: 1.5rem;
-        margin-right: -2.5rem;
+    .scroll-zoom-wrapper {
+        width: 100%;
     }
-}
-
-  /* sidenav för mobil */
-  /* menyn */
-  #TOC {
-    margin: 10px;
-    height: 100%;
-    width: 40vh; /* 0-bredd - ändras med JavaScript */
-    max-width: 100%;
-    position: fixed;
-    z-index: 10;
-    overflow-x: hidden; /* ingen horisontell scrollning */
-    transition: 0.25s;
-  }
-
-  #toc_text{
-    margin-top: 2.5rem;
-    position: sticky;
-    background-color: color($colors, light); /* ljusgrön SLS */
-    padding-bottom: 15px;
-  }
-
-  #TOC h2{
-    font-size: 1.1rem;
-    padding-left: 1rem;
-    margin-bottom: 0.8rem;
-  }
-  #TOC h5{
-    font-size: 1rem;
-    padding-left: 2rem;
-    margin-bottom: 0.6rem;
-    margin-top: 0.1rem;
-  }
-
-  /* menylänkarna */
-  #TOC a {
-    text-decoration: none;
-    color: #364930;
-    transition: 0.3s;
-  }
-
-  #TOC br{
-    display: none;
-  }
-
-  #TOC a:hover {
-    color: #538494;
-  }
-
-  /* visning för bred skärm: toc flyter till höger om artikeln */
-  @media (min-width: 1000px) {
-      nav#TOC {
-          position: sticky;
-          position: -webkit-sticky;
-          float: right;
-          height: auto;
-          transition: none;
-          z-index: 1;
-      }
-  }
-
-  /* Gör texten mindre på mycket små skärmar */
-  @media screen and (max-width: 450px) {
+    ion-card {
+        width: 75%;
+        max-width: 830px;
+        background-color: #fff;
+    }
+    .scroll-content {
+        display: flex;
+    }
+    .hideIntro.tei #content {
+        display: none !important;
+    }
+    #toc_menu {
+        float: left;
+        z-index: 99;
+        width: 100%;
+    }
+    #toc_menu ion-icon {
+        margin: 5px;
+    }
+    p {
+        font-family: $font-read-column-p;
+    }
+    .est_figure_graphic {
+        width: initial;
+    }
+    .menuOpen {
+        display: sticky;
+    }
+    .menuClosed {
+        display: none;
+    }
+    .menuClosedIcon {
+        background-color: transparent;
+    }
+    .menuOpenIcon {
+        background-color: color($colors, light);
+    }
+    /* knappens position i desktop-vy */
+    @media (min-width: 650px) {
+        #navbtn {
+            margin-top: 1.5rem;
+            margin-right: -2.5rem;
+        }
+    }
+    /* sidenav för mobil */
+    /* menyn */
     #TOC {
-      width: 65%;
-      opacity: 97%;
+        margin: 10px;
+        height: 100%;
+        width: 40vh;
+        /* 0-bredd - ändras med JavaScript */
+        max-width: 100%;
+        position: fixed;
+        z-index: 10;
+        overflow-x: hidden;
+        /* ingen horisontell scrollning */
+        transition: 0.25s;
     }
-    #TOC h2{
-      font-size: 0.9rem;
-
+    #toc_text {
+        margin-top: 2.5rem;
+        position: sticky;
+        background-color: color($colors, light);
+        /* ljusgrön SLS */
+        padding-bottom: 15px;
     }
-    #TOC h5{
-      font-size: 0.8rem;
+    #TOC h2 {
+        font-size: 1.1rem;
+        padding-left: 1rem;
+        margin-bottom: 0.8rem;
     }
-    p{
-      font-size: 1rem !important;
-      line-height: 1.5rem !important;
+    #TOC h5 {
+        font-size: 1rem;
+        padding-left: 2rem;
+        margin-bottom: 0.6rem;
+        margin-top: 0.1rem;
     }
-    .menuOpenTOC{
-      width: 65%;
+    /* menylänkarna */
+    #TOC a {
+        text-decoration: none;
+        color: #364930;
+        transition: 0.3s;
     }
-
-    .menuClosedTOC{
-      width: 10% !important;
+    #TOC br {
+        display: none;
     }
-
-  }
-
+    #TOC a:hover {
+        color: #538494;
+    }
+    /* visning för bred skärm: toc flyter till höger om artikeln */
+    @media (min-width: 1000px) {
+        nav#TOC {
+            position: sticky;
+            position: -webkit-sticky;
+            float: right;
+            height: auto;
+            transition: none;
+            z-index: 1;
+        }
+    }
+    /* Gör texten mindre på mycket små skärmar */
+    @media screen and (max-width: 450px) {
+        #TOC {
+            width: 65%;
+            opacity: 97%;
+        }
+        #TOC h2 {
+            font-size: 0.9rem;
+        }
+        #TOC h5 {
+            font-size: 0.8rem;
+        }
+        p {
+            font-size: 1rem !important;
+            line-height: 1.5rem !important;
+        }
+        .menuOpenTOC {
+            width: 65%;
+        }
+        .menuClosedTOC {
+            width: 10% !important;
+        }
+    }
+    .toolTip {
+        z-index: 1000;
+        position: absolute;
+        background: #f1f1f1;
+        border: 1px solid #222;
+        box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
+        padding: 0.5rem;
+        white-space: normal;
+        max-width: 400px;
+        text-align: left;
+        p {
+            line-height: 22px;
+        }
+    }
+    .tooltip {
+        display: none;
+    }
+    .tooltiptrigger {
+        cursor: pointer;
+    }
 }

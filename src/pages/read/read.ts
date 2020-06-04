@@ -144,7 +144,8 @@ export class ReadPage /*implements OnDestroy*/ {
     'comments': {},
     'works': {},
     'places': {},
-    'abbreviations': {}
+    'abbreviations': {},
+    'footnotes': {}
   };
 
   nativeEmail() {
@@ -994,6 +995,12 @@ export class ReadPage /*implements OnDestroy*/ {
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
             this.showCommentTooltip(eventTarget.getAttribute('data-id'), event);
+          } else if (toolTipsSettings.footNotes
+            && eventTarget['classList'].contains('ttFoot')) {
+            this.showToolTip = true;
+            clearTimeout(window['reload_timer']);
+            this.hideToolTip();
+            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), event);
           }
         } else {
 
@@ -1028,6 +1035,22 @@ export class ReadPage /*implements OnDestroy*/ {
       this.showToolTip = false;
     }, 4000);
   }
+
+  showFootnoteTooltip(id: string, origin: any) {
+    const target = document.getElementsByClassName('ttFixed');
+    let foundElem: any = '';
+    for (let i = 0; i < target.length; i++) {
+      const elt = target[i] as HTMLElement;
+      if ( elt.getAttribute('data-id') === id ) {
+        foundElem = this.sanitizer.bypassSecurityTrustHtml(elt.innerHTML);
+        break;
+      }
+    }
+    this.setToolTipText(foundElem);
+    this.tooltips.footnotes[id] = foundElem;
+    return foundElem;
+  }
+
 
 
   private showText() {

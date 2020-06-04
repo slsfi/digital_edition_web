@@ -1,17 +1,19 @@
 <ion-content padding>
-  <ion-card>
-    <ion-card-content>
-      <ion-scroll scrollY="true" style="height:80vh;" class="card">
-        <div class="tei" [innerHTML]="text" [ngClass]="hasSeparateIntroToc ? 'hideIntro' : ''"></div>
-      </ion-scroll>
-    </ion-card-content>
-  </ion-card>
-  <nav id="TOC" *ngIf="hasSeparateIntroToc" [ngClass]="tocMenuOpen ? 'menuOpenTOC' : 'menuClosedTOC'">
-    <div id="toc_menu" (click)="toggleTocMenu()" [ngClass]="tocMenuOpen ? 'menuOpenIcon' : 'menuClosedIcon'">
-      <ion-icon name="menu" *ngIf="!tocMenuOpen"></ion-icon>
-      <ion-icon name="close" *ngIf="tocMenuOpen"></ion-icon>
-    </div>
-    <div id="toc_text" [innerHTML]="textMenu" [ngClass]="tocMenuOpen ? 'menuOpen' : 'menuClosed'">
-    </div>
-  </nav>
+    <ion-card>
+        <ion-card-content>
+            <div *ngIf="showToolTip" class="toolTip" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}" [innerHTML]="toolTipText"></div>
+            <ion-scroll scrollY="true" style="height:80vh;" class="card">
+
+                <div class="tei" [innerHTML]="text" [ngClass]="hasSeparateIntroToc ? 'hideIntro' : ''"></div>
+            </ion-scroll>
+        </ion-card-content>
+    </ion-card>
+    <nav id="TOC" *ngIf="hasSeparateIntroToc" [ngClass]="tocMenuOpen ? 'menuOpenTOC' : 'menuClosedTOC'">
+        <div id="toc_menu" (click)="toggleTocMenu()" [ngClass]="tocMenuOpen ? 'menuOpenIcon' : 'menuClosedIcon'">
+            <ion-icon name="menu" *ngIf="!tocMenuOpen"></ion-icon>
+            <ion-icon name="close" *ngIf="tocMenuOpen"></ion-icon>
+        </div>
+        <div id="toc_text" [innerHTML]="textMenu" [ngClass]="tocMenuOpen ? 'menuOpen' : 'menuClosed'">
+        </div>
+    </nav>
 </ion-content>

@@ -94,9 +94,14 @@
             "songexample": false
         },
         "toolTips": {
+            "comments": true,
             "personInfo": true,
             "placeInfo": true,
-            "workInfo": true
+            "changes": true,
+            "variations": true,
+            "abbreviations": true,
+            "workInfo": true,
+            "footNotes": true
         },
         "enableModeToggle": true,
         "getFacsimilePagesInfinite": false
