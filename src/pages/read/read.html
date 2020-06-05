@@ -5,7 +5,7 @@
       <button ion-button color="secondary" *ngIf="navCtrl.canGoBack()" (click)="back();">Back to Search</button>
     </div>
 
-    <text-changer *ngIf="!(userSettingsService.isMobile())" [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
+    <text-changer *ngIf="!(userSettingsService.isMobile())" [recentlyOpenViews]="views" [legacyId]="legacyId" class="text-changer-desktop-view"></text-changer>
 
     <ion-buttons>
         <ion-grid>
@@ -51,7 +51,7 @@
       snap-disabled="true" snap-offset="0" [ngClass]="views.length > 1 ? 'multiple-columns' : 'single-column'">
       <div *ngIf="showToolTip" class="toolTip" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}" [innerHTML]="toolTipText"></div>
       <div class="read-column" *ngFor="let view of views; let i = index;" id="read_div_{{i}}" scrollY="true"
-        [ngStyle]="{'position': 'relative','max-width':(95/((views.length>1)?views.length:2))+'%','min-width':'25%'}"
+        [ngStyle]="{'position': 'relative','max-width':(95/((views.length>1)?views.length:1))+'%','min-width':'25%'}"
         #readColumn>
         <ion-card>
           <ion-card-header class="read-columns__title">
@@ -199,4 +199,4 @@
   </ng-container>
 
 </ion-content>
-<text-changer *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet())" class="text-changer-mobile-view" [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
+<text-changer *ngIf="(userSettingsService.isMobile())" class="text-changer-mobile-view" [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>

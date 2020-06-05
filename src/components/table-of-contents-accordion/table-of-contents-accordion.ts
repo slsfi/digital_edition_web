@@ -393,8 +393,12 @@ export class TableOfContentsAccordionComponent {
         }
     }
 
-    this.alphabeticalactiveMenuTree.sort((a, b) =>
-      (a.text.toUpperCase() < b.text.toUpperCase()) ? -1 : (a.text.toUpperCase() > b.text.toUpperCase()) ? 1 : 0);
+    this.alphabeticalactiveMenuTree.sort(
+      (a, b) =>
+        (a.text !== undefined && b.text !== undefined) ?
+          ((String(a.text).toUpperCase() < String(b.text).toUpperCase()) ? -1 :
+          (String(a.text).toUpperCase() > String(b.text).toUpperCase()) ? 1 : 0) : 0
+      );
   }
 
   constructChronologialTOC(data) {

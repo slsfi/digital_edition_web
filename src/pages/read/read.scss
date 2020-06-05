@@ -297,6 +297,16 @@ page-read {
       cursor: pointer;
     }
   }
+  @media screen and (max-width: 800px) {
+	.text-changer-desktop-view{
+		max-width: 80%;
+	}
+}
+
+	.text-changer-mobile-view{
+
+	}
+
 }
 
 .md,
