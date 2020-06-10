@@ -161,7 +161,20 @@ export class FacsimilesComponent {
   getFacsimilePageInfinite() {
     this.facsimileService.getFacsimilePage(this.itemId).subscribe(
       facs => {
-        this.facsPage = facs[0];
+        if ( String(this.itemId).indexOf('ch') > 0 ) {
+          facs.forEach( fac => {
+            const section = String((String(this.itemId).split('_')[2]).replace('ch', ''));
+            if ( String(fac['section_id']) === section ) {
+              this.facsPage = fac;
+            }
+          });
+          if ( this.facsPage === undefined ) {
+            this.facsPage = facs[0];
+          }
+        } else {
+          this.facsPage = facs[0];
+        }
+
         this.manualPageNumber = this.activeImage = this.facsimilePage = this.facsNumber = (this.facsPage['page_nr'] + this.facsPage['start_page_number']);
         this.numberOfPages = this.facsPage['number_of_pages'];
 
