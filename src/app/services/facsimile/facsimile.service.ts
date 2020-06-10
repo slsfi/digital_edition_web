@@ -56,7 +56,7 @@ export class FacsimileService {
   getFacsimilePage (legacy_id): Observable<any[]> {
     return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
                          this.config.getSettings('app.machineName') +
-                        `/facsimile/page/${legacy_id}`)
+                        `/facsimiles/${legacy_id}`)
                     .map(this.extractData)
                     .catch(this.handleError);
   }

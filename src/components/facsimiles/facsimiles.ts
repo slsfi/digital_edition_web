@@ -161,14 +161,14 @@ export class FacsimilesComponent {
   getFacsimilePageInfinite() {
     this.facsimileService.getFacsimilePage(this.itemId).subscribe(
       facs => {
-        this.facsPage = facs;
-        this.manualPageNumber = this.activeImage = this.facsimilePage = this.facsNumber = facs['page_number'];
-        this.numberOfPages = facs['number_of_pages'];
+        this.facsPage = facs[0];
+        this.manualPageNumber = this.activeImage = this.facsimilePage = this.facsNumber = (this.facsPage['page_nr'] + this.facsPage['start_page_number']);
+        this.numberOfPages = this.facsPage['number_of_pages'];
 
         // Set the image url
         this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
           this.config.getSettings('app.machineName') +
-          `/facsimiles/${facs['publication_facsimile_collection_id']}/`;
+          `/facsimiles/${this.facsPage['publication_facsimile_collection_id']}/`;
       },
       error => {
         console.error('Error loading facsimiles...');
@@ -220,7 +220,7 @@ export class FacsimilesComponent {
               }
             }
           } else {
-            this.selectedFacsimile = this.facsimiles[0];
+            this.selectedFacsimile = this.facsimiles[this.facsimiles.length - 1];
           }
           this.images = this.selectedFacsimile.images;
           this.activeImage = 0;
