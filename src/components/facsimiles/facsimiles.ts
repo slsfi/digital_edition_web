@@ -55,6 +55,7 @@ export class FacsimilesComponent {
   facsSize: number;
   facsPage: any;
   facsNumber = 0;
+  facsimileDefaultZoomLevel = 1;
   numberOfPages: number;
   chapter: string;
 
@@ -89,6 +90,11 @@ export class FacsimilesComponent {
       this.facsimilePage -= 1;
     } else {
       this.facsimilePage = 0;
+    }
+    try {
+      this.facsimileDefaultZoomLevel = this.config.getSettings('settings.facsimileDefaultZoomLevel');
+    } catch (e) {
+      this.facsimileDefaultZoomLevel = 1;
     }
   }
 
@@ -148,7 +154,7 @@ export class FacsimilesComponent {
           this.facsSize = null
 
         } else {
-          this.facsSize = 4
+          this.facsSize = this.facsimileDefaultZoomLevel;
           this.getFacsimilePageInfinite();
         }
       } else {
@@ -178,6 +184,8 @@ export class FacsimilesComponent {
 
         this.manualPageNumber = this.activeImage = this.facsimilePage = this.facsNumber = (this.facsPage['page_nr'] + this.facsPage['start_page_number']);
         this.numberOfPages = this.facsPage['number_of_pages'];
+
+        this.facsPage['title'] = this.sanitizer.bypassSecurityTrustHtml(this.facsPage['title']);
 
         if ( this.facsPage['external_url'] !== null ) {
           this.facsUrlExternal = String(this.facsPage['external_url']).split('|');
@@ -219,7 +227,7 @@ export class FacsimilesComponent {
             if (f.publication_facsimile_collection_id === undefined && f['publication_facsimile_collection_id'] !== undefined) {
               f.publication_facsimile_collection_id = f['publication_facsimile_collection_id'];
             }
-            const f_url = this.facsimileService.getFacsimileImage(f.publication_facsimile_collection_id, i, 1);
+            const f_url = this.facsimileService.getFacsimileImage(f.publication_facsimile_collection_id, i, this.facsimileDefaultZoomLevel);
             facsimile.images.push(f_url);
             const zf_url = this.facsimileService.getFacsimileImage(f.publication_facsimile_collection_id, i, 4);
             facsimile.zoomedImages.push(zf_url);
@@ -335,6 +343,7 @@ export class FacsimilesComponent {
   openZoom() {
     let modal = null;
     let params: object;
+    this.facsSize = 4;
 
     if (this.facsimilePagesInfinite) {
       // TODO: images array contains 0 index that is invalid since page numbers are 1 based.

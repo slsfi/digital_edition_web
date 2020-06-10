@@ -104,7 +104,9 @@
             "footNotes": true
         },
         "enableModeToggle": true,
-        "getFacsimilePagesInfinite": false
+        "getFacsimilePagesInfinite": false,
+        "showReadTextIllustrations": [],
+        "facsimileDefaultZoomLevel": 3
     },
     "i18n": {
         "languages": [

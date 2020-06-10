@@ -29,7 +29,7 @@
     (touchend)="onTouchEnd($event)"
   >
   <span *ngIf="!facsimilePagesInfinite && facsUrlExternal" class="external_url">
-    <a *ngFor="let ext of facsUrlExternal" target="_blank" href="{{ext}}">{{ext}}</a>
+    <a *ngFor="let ext of facsUrlExternal" target="_blank" href="{{ext}}" [innerHTML]="facsPage['title']"></a>
   </span>
 </div>
 
@@ -44,7 +44,7 @@
     (touchend)="onTouchEnd($event)"
   >
   <span *ngIf="facsUrlExternal" class="external_url">
-    <a *ngFor="let ext of facsUrlExternal" target="_blank" href="{{ext}}">{{ext}}</a>
+    <a *ngFor="let ext of facsUrlExternal" target="_blank" href="{{ext}}" [innerHTML]="facsPage['title']"></a>
   </span>
 </div>
 
