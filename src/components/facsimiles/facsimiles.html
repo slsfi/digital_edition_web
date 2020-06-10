@@ -11,7 +11,7 @@
   </div>
 </div>
 
-<ion-item>
+<ion-item *ngIf="!facsUrlExternal">
   <ion-label position="floating">{{"Read.Facsimiles.Page" | translate}} ({{"Read.Facsimiles.Of" | translate}}
     {{numberOfPages ? numberOfPages : (images ? images.length : 0)}}):</ion-label>
   <ion-input class="page_number_input" type="number" size="12" (change)="setPage($event)" [(ngModel)]="manualPageNumber"
@@ -19,7 +19,7 @@
 </ion-item>
 
 <div id="facsimilies-image">
-  <img *ngIf="!facsimilePagesInfinite"
+  <img *ngIf="!facsimilePagesInfinite && facsUrlExternal.length===0"
     [src]="images ? images[activeImage] : ''"
     style="width: 100%;"
     [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
@@ -28,10 +28,13 @@
     (mouseup)="onMouseUp($event)"
     (touchend)="onTouchEnd($event)"
   >
+  <span *ngIf="!facsimilePagesInfinite && facsUrlExternal" class="external_url">
+    <a *ngFor="let ext of facsUrlExternal" target="_blank" href="{{ext}}">{{ext}}</a>
+  </span>
 </div>
 
 <div>
-  <img *ngIf="facsimilePagesInfinite && facsNumber"
+  <img *ngIf="facsimilePagesInfinite && facsNumber && facsUrlExternal.length===0"
     [src]="facsUrl + facsNumber + (facsSize ? '/' + facsSize : '')"
     style="width: 100%;"
     [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
@@ -40,6 +43,9 @@
     (mouseup)="onMouseUp($event)"
     (touchend)="onTouchEnd($event)"
   >
+  <span *ngIf="facsUrlExternal" class="external_url">
+    <a *ngFor="let ext of facsUrlExternal" target="_blank" href="{{ext}}">{{ext}}</a>
+  </span>
 </div>
 
 <ion-fab middle left class="leftFacsimileArrow">

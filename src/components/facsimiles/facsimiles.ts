@@ -48,6 +48,7 @@ export class FacsimilesComponent {
   prevY = 0
 
   facsUrl = '';
+  facsUrlExternal = [];
   facsimilePagesInfinite = false;
   // If defined, this size will be appended to the image url.
   // So define only if the image API supports it.
@@ -178,10 +179,13 @@ export class FacsimilesComponent {
         this.manualPageNumber = this.activeImage = this.facsimilePage = this.facsNumber = (this.facsPage['page_nr'] + this.facsPage['start_page_number']);
         this.numberOfPages = this.facsPage['number_of_pages'];
 
-        // Set the image url
-        this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
+        if ( this.facsPage['external_url'] !== null ) {
+          this.facsUrlExternal = String(this.facsPage['external_url']).split('|');
+        } else {
+          this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
           this.config.getSettings('app.machineName') +
           `/facsimiles/${this.facsPage['publication_facsimile_collection_id']}/`;
+        }
       },
       error => {
         console.error('Error loading facsimiles...');
