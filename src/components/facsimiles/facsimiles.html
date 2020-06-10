@@ -11,7 +11,7 @@
   </div>
 </div>
 
-<ion-item *ngIf="!facsUrlExternal">
+<ion-item *ngIf="facsUrlExternal.length===0">
   <ion-label position="floating">{{"Read.Facsimiles.Page" | translate}} ({{"Read.Facsimiles.Of" | translate}}
     {{numberOfPages ? numberOfPages : (images ? images.length : 0)}}):</ion-label>
   <ion-input class="page_number_input" type="number" size="12" (change)="setPage($event)" [(ngModel)]="manualPageNumber"
