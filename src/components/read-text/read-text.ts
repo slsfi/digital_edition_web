@@ -95,7 +95,7 @@ export class ReadTextComponent {
       }
     });
 
-    let checkExist = setInterval(function() {
+    const checkExist = setInterval(function() {
       if ( this.link !== undefined ) {
         const linkData = this.link.split(';');
         if ( linkData[1] ) {

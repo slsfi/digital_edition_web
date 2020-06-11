@@ -49,7 +49,6 @@ export class TextChangerComponent {
   }
 
   ngOnInit() {
-      console.log(this.legacyId);
       const c_id = this.legacyId.split('_')[0];
       const toc = this.storage.get('toc_' + c_id)
 
@@ -77,6 +76,10 @@ export class TextChangerComponent {
       this.legacyId += '_' + this.params.get('chapterID');
     }
 
+    if ( this.params.get('tocLinkId') !== undefined ) {
+      this.legacyId = this.params.get('tocLinkId');
+    }
+
     const c_id = this.legacyId.split('_')[0];
     await this.storage.get('toc_' + c_id).then((toc) => {
       this.findNext(this.legacyId, toc);
@@ -99,6 +102,11 @@ export class TextChangerComponent {
     if ( this.params.get('chapterID') !== undefined && String(this.legacyId).indexOf(this.params.get('chapterID')) === -1 ) {
       this.legacyId += '_' + this.params.get('chapterID');
     }
+
+    if ( this.params.get('tocLinkId') !== undefined ) {
+      this.legacyId = this.params.get('tocLinkId');
+    }
+
     const c_id = this.legacyId.split('_')[0];
     await this.storage.get('toc_' + c_id).then((toc) => {
       this.findNext(this.legacyId, toc);
@@ -113,7 +121,6 @@ export class TextChangerComponent {
   }
 
   findNext(currentItem, toc) {
-    console.log('find next');
     // flatten the toc structure
     if ( this.flattened.length === 0 ) {
       this.flatten(toc);
