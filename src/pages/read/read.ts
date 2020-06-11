@@ -951,7 +951,6 @@ export class ReadPage /*implements OnDestroy*/ {
       const eventTarget = this.getEventTarget(event);
       const elem = event.target;
       if (eventTarget['classList'].contains('tooltiptrigger')) {
-        console.log(elem);
         const x = ((elem.getBoundingClientRect().x + vw) - vw) + (elem.offsetWidth + 10);
         const y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
         if (sidePaneIsOpen) {

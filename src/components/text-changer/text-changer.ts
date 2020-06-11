@@ -29,6 +29,8 @@ export class TextChangerComponent {
   displayNext: Boolean = true;
   displayPrev: Boolean = true;
 
+  flattened: any;
+
   constructor(
     public events: Events,
     public storage: Storage,
@@ -43,6 +45,7 @@ export class TextChangerComponent {
     this.previous(true).then(function(val) {
       this.displayPrev = val;
     }.bind(this))
+    this.flattened = [];
   }
 
   ngOnInit() {
@@ -76,7 +79,7 @@ export class TextChangerComponent {
 
     const c_id = this.legacyId.split('_')[0];
     await this.storage.get('toc_' + c_id).then((toc) => {
-      this.findItem(toc, 'prev');
+      this.findNext(this.legacyId, toc);
     });
 
     if (this.prevItem !== undefined && test !== true) {
@@ -98,7 +101,7 @@ export class TextChangerComponent {
     }
     const c_id = this.legacyId.split('_')[0];
     await this.storage.get('toc_' + c_id).then((toc) => {
-      this.findItem(toc, 'next');
+      this.findNext(this.legacyId, toc);
     });
     if (this.nextItem !== undefined && test !== true) {
       await this.open(this.nextItem);
@@ -109,103 +112,51 @@ export class TextChangerComponent {
     }
   }
 
-  findItem(toc, type?: string) {
-    if (!toc) {
-      return;
+  findNext(currentItem, toc) {
+    console.log('find next');
+    // flatten the toc structure
+    if ( this.flattened.length === 0 ) {
+      this.flatten(toc);
     }
-
-    if ( this.legacyId === undefined ) {
-      this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID') ;
-    }
-
-    if ( this.params.get('chapterID') !== undefined && String(this.legacyId).indexOf(this.params.get('chapterID')) === -1 ) {
-      this.legacyId += '_' + this.params.get('chapterID');
-    }
-
-    if (!toc.children && toc instanceof Array) {
-      for (let i = 0; i < toc.length; i ++) {
-        if (toc[i].itemId && toc[i].itemId === this.legacyId ) {
-          this.currentItemTitle = toc[i].text;
-          if ( toc[i + 1] ) {
-            this.nextItemTitle = String(toc[i + 1].text).substring(0, 40) +
-              (String(toc[i + 1].text).length > 40 ? '...' : '');
-          }
-          if ( toc[i - 1] ) {
-            this.prevItemTitle = String(toc[i - 1].text).substring(0, 40) +
-            (String(toc[i - 1].text).length > 40 ? '...' : '');
-          }
-          if (type === 'next' && toc[i + 1]) {
-            if (toc[i + 1].type === 'subtitle') {
-              i = i + 1;
-            }
-            if (toc[i + 1] === undefined || i + 1 === toc.length) {
-              if ( (i + 1) === toc.length ) {
-                this.nextItem = null;
-                break;
-              }
-            } else {
-              this.nextItem = toc[i + 1];
-              break;
-            }
-          } else if (type === 'prev' && toc[i - 1]) {
-            if (toc[i - 1].type === 'subtitle') {
-              i = i - 1;
-            }
-            if (toc[i - 1] === undefined || i === 0) {
-              if ( i === 0 ) {
-                this.prevItem = null;
-                break;
-              }
-            } else {
-              this.prevItem = toc[i - 1];
-              break;
-            }
-          } else if ( type === 'prev' && !toc[i - 1] ) {
-            // last item in other array
-            this.prevItemTitle = String(this.lastPrev[this.lastPrev.length - 1].text).substring(0, 40) +
-            (String(this.lastPrev[this.lastPrev.length - 1].text).length > 40 ? '...' : '' );
-            this.nextItemTitle = String(this.lastNext[0].text).substring(0, 40) + (String(this.lastNext[0].text).length > 40 ? '...' : '' );
-            this.prevItem = this.lastPrev[this.lastPrev.length - 1];
-            this.nextItem = this.lastNext[0];
-          }
-        } else if ( toc[i].children ) {
-          if ( toc[i - 1] && toc[i - 1].children ) {
-            this.lastPrev = toc[i - 1].children;
-          }
-          if ( toc[i + 1] && toc[i + 1].children ) {
-            this.lastNext = toc[i + 1].children;
-          }
-          this.findItem(toc[i].children, type);
-        }
+    // get the next id
+    let currentId = 0;
+    for (let i = 0; i < this.flattened.length; i ++) {
+      if ( this.flattened[i].itemId === currentItem ) {
+        currentId = i;
+        break;
       }
-    } else if (toc.children) {
-      const childs = toc.children;
-      for (let j = 0; j < childs.length; j ++) {
-        if (childs[j] && childs[j].itemId && childs[j].itemId === this.legacyId) {
-          this.currentItemTitle = childs[j].text;
-          this.nextItemTitle = (childs[j + 1]) ? childs[j + 1].text : '';
-          this.prevItemTitle = (childs[j - 1]) ? childs[j - 1].text : '';
-          this.lastItem = (childs[j + 1]) ? false : true;
+    }
+    let nextId, prevId = 0;
+    // last item
+    if ((currentId + 1) === this.flattened.length) {
+      nextId = 0;
+    } else {
+      nextId = currentId + 1;
+    }
 
-          if (childs[j + 1]) {
-            if ( childs[j + 1].itemId === '') {
-              this.nextItem = childs[j + 2];
-            } else {
-              this.nextItem = childs[j + 1];
-            }
-          }
+    if (currentId === 0) {
+      prevId = this.flattened.length - 1;
+    } else {
+      prevId = currentId - 1;
+    }
 
-          if (childs[j - 1].itemId === '') {
-            this.prevItem = childs[j - 2];
-          } else {
-            this.prevItem = childs[j - 1];
-          }
-          this.cf.detectChanges()
-          break;
+    this.nextItem = this.flattened[nextId];
+    this.nextItemTitle = String(this.nextItem.text).substring(0, 40) +
+              (String(this.nextItem.text).length > 40 ? '...' : '');
+    this.prevItem = this.flattened[prevId];
+    this.prevItemTitle = String(this.prevItem.text).substring(0, 40) +
+              (String(this.prevItem.text).length > 40 ? '...' : '');
+    this.currentItemTitle = String(this.flattened[currentId].text).substring(0, 40) +
+    (String(this.flattened[currentId].text).length > 40 ? '...' : '');
+  }
+
+  flatten(toc) {
+    if ( toc.children ) {
+      for (let i = 0, count = toc.children.length; i < count; i++) {
+        if ( toc.children[i].itemId !== undefined && toc.children[i].itemId !== '') {
+          this.flattened.push(toc.children[i]);
         }
-        if (childs[j] && childs[j].children) {
-          this.findItem(childs[j].children, type);
-        }
+        this.flatten(toc.children[i]);
       }
     }
   }
