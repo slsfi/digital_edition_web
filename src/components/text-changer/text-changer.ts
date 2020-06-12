@@ -30,6 +30,7 @@ export class TextChangerComponent {
   displayPrev: Boolean = true;
 
   flattened: any;
+  currentToc: any;
 
   constructor(
     public events: Events,
@@ -46,13 +47,14 @@ export class TextChangerComponent {
       this.displayPrev = val;
     }.bind(this))
     this.flattened = [];
+    this.getTocItemId();
   }
 
   ngOnInit() {
       const c_id = this.legacyId.split('_')[0];
-      const toc = this.storage.get('toc_' + c_id)
-
+      const toc = this.storage.get('toc_' + c_id);
       toc.then(val => {
+        this.currentToc = val;
         if (val && val.children) {
           for (let i = 0; i < val.children.length; i++) {
             if (val.children[i].itemId.split('_')[1] === c_id) {
@@ -68,21 +70,10 @@ export class TextChangerComponent {
   }
 
   async previous(test?: boolean) {
-    if ( this.legacyId === undefined ) {
-      this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID') ;
-    }
-
-    if ( this.params.get('chapterID') !== undefined && String(this.legacyId).indexOf(this.params.get('chapterID')) === -1 ) {
-      this.legacyId += '_' + this.params.get('chapterID');
-    }
-
-    if ( this.params.get('tocLinkId') !== undefined ) {
-      this.legacyId = this.params.get('tocLinkId');
-    }
-
+    this.getTocItemId();
     const c_id = this.legacyId.split('_')[0];
     await this.storage.get('toc_' + c_id).then((toc) => {
-      this.findNext(this.legacyId, toc);
+      this.findNext(toc);
     });
 
     if (this.prevItem !== undefined && test !== true) {
@@ -95,6 +86,21 @@ export class TextChangerComponent {
   }
 
   async next(test?: boolean) {
+    this.getTocItemId();
+    const c_id = this.legacyId.split('_')[0];
+    await this.storage.get('toc_' + c_id).then((toc) => {
+      this.findNext(toc);
+    });
+    if (this.nextItem !== undefined && test !== true) {
+      await this.open(this.nextItem);
+    }  else if (test && this.nextItem !== undefined) {
+      return true;
+    } else if (test && this.nextItem === undefined) {
+      return false;
+    }
+  }
+
+  getTocItemId() {
     if ( this.legacyId === undefined ) {
       this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID') ;
     }
@@ -106,21 +112,10 @@ export class TextChangerComponent {
     if ( this.params.get('tocLinkId') !== undefined ) {
       this.legacyId = this.params.get('tocLinkId');
     }
-
-    const c_id = this.legacyId.split('_')[0];
-    await this.storage.get('toc_' + c_id).then((toc) => {
-      this.findNext(this.legacyId, toc);
-    });
-    if (this.nextItem !== undefined && test !== true) {
-      await this.open(this.nextItem);
-    }  else if (test && this.nextItem !== undefined) {
-      return true;
-    } else if (test && this.nextItem === undefined) {
-      return false;
-    }
   }
 
-  findNext(currentItem, toc) {
+  findNext(toc) {
+    this.getTocItemId();
     // flatten the toc structure
     if ( this.flattened.length === 0 ) {
       this.flatten(toc);
@@ -128,7 +123,7 @@ export class TextChangerComponent {
     // get the next id
     let currentId = 0;
     for (let i = 0; i < this.flattened.length; i ++) {
-      if ( this.flattened[i].itemId === currentItem ) {
+      if ( this.flattened[i].itemId === this.legacyId ) {
         currentId = i;
         break;
       }
