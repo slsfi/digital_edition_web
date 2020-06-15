@@ -191,7 +191,7 @@ export class PersonSearchPage {
   }
   getPersons() {
     this.showLoading = true;
-    this.semanticDataService.getSubjectOccurrences().subscribe(
+    this.semanticDataService.getSubjectsElastic().subscribe(
       persons => {
         const personsTmp = [];
         persons.forEach(element => {

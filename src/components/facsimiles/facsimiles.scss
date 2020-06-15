@@ -105,4 +105,9 @@ facsimiles {
         // Need to use !important because something is trying to override the value.
         touch-action: none !important;
     }
+
+    .external_url{
+        display: grid;
+        line-height: 2;
+    }
 }

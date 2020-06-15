@@ -81,7 +81,8 @@
             "SelectFacsimiles": "Välj faksimil",
             "Page": "Sida",
             "Of": "av",
-            "OpenManuscript": "Öppna manuskript"
+            "OpenManuscript": "Öppna manuskript",
+            "ExternalHeading" : "External Facsimiles"
         },
         "SongExample": {
             "Title": "Sång exempel",

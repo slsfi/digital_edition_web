@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ModalController, NavParams, Events, ViewController, Platform } from 'ionic-angular';
 import { FacsimileZoomModalPage } from '../../pages/facsimile-zoom/facsimile-zoom';
@@ -46,9 +46,10 @@ export class FacsimilesComponent {
   latestDeltaY = 0
   prevX = 0
   prevY = 0
+  isExternal = false;
 
   facsUrl = '';
-  facsUrlExternal = [];
+  externalURLs = [];
   facsimilePagesInfinite = false;
   // If defined, this size will be appended to the image url.
   // So define only if the image API supports it.
@@ -168,6 +169,7 @@ export class FacsimilesComponent {
   getFacsimilePageInfinite() {
     this.facsimileService.getFacsimilePage(this.itemId).subscribe(
       facs => {
+        this.facsimiles = [];
         if ( String(this.itemId).indexOf('ch') > 0 ) {
           facs.forEach( fac => {
             const section = String((String(this.itemId).split('_')[2]).replace('ch', ''));
@@ -187,12 +189,29 @@ export class FacsimilesComponent {
 
         this.facsPage['title'] = this.sanitizer.bypassSecurityTrustHtml(this.facsPage['title']);
 
-        if ( this.facsPage['external_url'] !== null ) {
-          this.facsUrlExternal = String(this.facsPage['external_url']).split('|');
-        } else {
+        this.selectedFacsimile = this.facsPage;
+        this.selectedFacsimile.f_col_id = this.facsPage['publication_facsimile_collection_id'];
+        this.selectedFacsimile.title = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(this.facsPage['title']));
+
+        // add all
+        for (const f of facs) {
+          const tmp = f;
+          tmp.title = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(tmp.title));
+          const facsimile = new Facsimile(tmp);
+          facsimile.itemId = this.itemId;
+          facsimile.manuscript_id = f.publication_manuscript_id;
+          this.facsimiles.push(facsimile);
+          if ( f['external_url'] !== null ) {
+            this.isExternal = true;
+            this.externalURLs.push({'title': f['title'], 'url': f['external_url']});
+          }
+        }
+
+        if ( this.facsPage['external_url'] === undefined || this.facsPage['external_url'] === null ) {
           this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
           this.config.getSettings('app.machineName') +
           `/facsimiles/${this.facsPage['publication_facsimile_collection_id']}/`;
+          this.isExternal = false;
         }
       },
       error => {
@@ -282,6 +301,13 @@ export class FacsimilesComponent {
     if (facs) {
       this.selectedFacsimile = facs;
       this.itemId = this.selectedFacsimile.itemId;
+      this.facsNumber = facs.page;
+      this.facsPage = facs.page;
+      this.manualPageNumber = facs.page;
+      this.numberOfPages = facs.number_of_pages;
+      this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
+            this.config.getSettings('app.machineName') +
+            `/facsimiles/${facs.publication_facsimile_collection_id}/`;
     }
     this.text = this.sanitizer.bypassSecurityTrustHtml(
       this.selectedFacsimile.content.replace(/images\//g, 'assets/images/')
@@ -312,8 +338,14 @@ export class FacsimilesComponent {
 
   next() {
     if (this.facsimilePagesInfinite) {
-      this.nextFacsimileUrl();
-      this.manualPageNumber = Number(this.manualPageNumber) + 1;
+      if ( (Number(this.manualPageNumber) + 1) <= this.numberOfPages ) {
+        this.nextFacsimileUrl();
+        this.manualPageNumber = Number(this.manualPageNumber) + 1;
+      } else {
+        this.facsNumber = 1;
+        this.manualPageNumber = 1;
+      }
+      // this.manualPageNumber = Number(this.manualPageNumber) + 1;
       return;
     }
     this.activeImage = (this.activeImage + 1);

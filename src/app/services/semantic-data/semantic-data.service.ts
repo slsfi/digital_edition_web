@@ -9,6 +9,7 @@ export class SemanticDataService {
 
   textCache: any;
   useLegacy: boolean;
+  private indices = []
 
   constructor(private http: Http, private config: ConfigService) {
     try {
@@ -126,7 +127,33 @@ export class SemanticDataService {
       .catch(this.handleError);
   }
 
-  getSubjectOccurrencesById(id: string): Observable<any> {
+  getSubjects(): Observable<any> {
+
+    return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
+      this.config.getSettings('app.machineName') + '/subjects')
+      .map(res => {
+        const body = res.json();
+
+        return body || ' - no content - ';
+      })
+      .catch(this.handleError);
+  }
+
+  getSubjectsElastic() {
+    this.indices.push('subject');
+    const payload = {
+        'query': {
+          'terms': {
+            'project_id': [ '10' ]
+          }
+        }
+      }
+      return this.http.post(this.getSearchUrl + '/', payload)
+      .map(this.extractData)
+      .catch(this.handleError)
+}
+
+getSubjectOccurrencesById(id: string): Observable<any> {
 
     return this.http.get(this.config.getSettings('app.apiEndpoint') + '/occurrences/subject/' + id)
       .map(res => {
@@ -234,6 +261,11 @@ export class SemanticDataService {
         return res.json();
       })
       .catch(this.handleError);
+  }
+
+  private getSearchUrl(): string {
+    return this.config.getSettings('app.apiEndpoint') + '/' +
+     this.config.getSettings('app.machineName') + '/elastic/search/' + this.indices.join(',')
   }
 
   private extractData(res: Response) {

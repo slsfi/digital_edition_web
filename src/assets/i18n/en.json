@@ -80,7 +80,8 @@
             "SelectFacsimiles": "Choose Facsimile",
             "Page": "Sida",
             "Of": "av",
-            "OpenManuscript": "Open manuscript"
+            "OpenManuscript": "Open manuscript",
+            "ExternalHeading" : "External Facsimiles"
         },
         "Illustrations": {
           "AddButtonText": "Illustrations view",
