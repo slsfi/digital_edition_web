@@ -9,7 +9,7 @@ export class SemanticDataService {
 
   textCache: any;
   useLegacy: boolean;
-  private indices = []
+  elasticSubjectIndex: string;
 
   constructor(private http: Http, private config: ConfigService) {
     try {
@@ -17,6 +17,7 @@ export class SemanticDataService {
     } catch (e) {
       this.useLegacy = false;
     }
+    this.elasticSubjectIndex = 'subject';
   }
 
 
@@ -139,16 +140,28 @@ export class SemanticDataService {
       .catch(this.handleError);
   }
 
-  getSubjectsElastic() {
-    this.indices.push('subject');
-    const payload = {
-        'query': {
-          'terms': {
-            'project_id': [ '10' ]
-          }
+  getSubjectsElastic(from, searchText?) {
+    const payload: any = {
+      from: from,
+      size: 30,
+      sort: [
+        { 'full_name.keyword' : 'asc' }
+      ],
+      query: {
+        bool: {
+          must : [{
+            'term' : { 'project_id' : this.config.getSettings('app.projectId') }
+          }],
         }
       }
-      return this.http.post(this.getSearchUrl + '/', payload)
+    }
+    if (searchText !== undefined && searchText !== '') {
+      payload.from = 0;
+      payload.size = 1000;
+      payload.query.bool.must.push({'prefix': {'full_name': String(searchText).toLowerCase()}});
+    }
+
+      return this.http.post(this.getSearchUrl(this.elasticSubjectIndex), payload)
       .map(this.extractData)
       .catch(this.handleError)
 }
@@ -263,9 +276,9 @@ getSubjectOccurrencesById(id: string): Observable<any> {
       .catch(this.handleError);
   }
 
-  private getSearchUrl(): string {
+  private getSearchUrl(index: any): string {
     return this.config.getSettings('app.apiEndpoint') + '/' +
-     this.config.getSettings('app.machineName') + '/elastic/search/' + this.indices.join(',')
+     this.config.getSettings('app.machineName') + '/search/elastic/' + index
   }
 
   private extractData(res: Response) {

@@ -2,6 +2,7 @@
     "app": {
         "readContent": "...",
         "machineName": "topelius",
+        "projectId": 10,
         "useLegacyIdsForSemanticData": false,
         "legacyIdPrefix": "",
         "apiEndpoint": "http://api.sls.fi:8000/digitaledition",

@@ -56,6 +56,7 @@ export class PersonSearchPage {
   showFilter = true;
   type: any;
   subType: any;
+  from = 0;
 
   objectType = 'subject';
 
@@ -161,6 +162,8 @@ export class PersonSearchPage {
     this.setData();
   }
   sortByLetter(letter) {
+    this.searchText = letter;
+    this.getPersons()
     const list = [];
     try {
       for (const p of this.allData) {
@@ -191,10 +194,12 @@ export class PersonSearchPage {
   }
   getPersons() {
     this.showLoading = true;
-    this.semanticDataService.getSubjectsElastic().subscribe(
+    this.semanticDataService.getSubjectsElastic(this.from, this.searchText).subscribe(
       persons => {
         const personsTmp = [];
+        persons = persons.hits.hits;
         persons.forEach(element => {
+          element = element['_source'];
           const sortBy = [];
           if ( element['last_name'] != null ) {
             sortBy.push(String(element['last_name']).toLowerCase().trim().replace(' ', '').replace('ʽ', ''));
@@ -216,7 +221,16 @@ export class PersonSearchPage {
           }
           if ( this.subType !== '' && this.subType !== null && element['object_type'] !== this.subType ) {
           } else {
-            personsTmp.push(element);
+            let found = false;
+            this.persons.forEach(pers => {
+              if ( pers.id === element['id'] ) {
+                found = true;
+              }
+            });
+            if ( !found ) {
+              personsTmp.push(element);
+              this.persons.push(element);
+            }
           }
         });
 
@@ -224,19 +238,8 @@ export class PersonSearchPage {
         this.cacheData = personsTmp;
         this.showLoading = false;
         this.sortListAlphabeticallyAndGroup(this.allData);
-
-        for (let i = 0; i < this.infiniteScrollNumber; i++) {
-          if (i === personsTmp.length) {
-            break;
-          } else {
-            this.persons.push(personsTmp[this.count]);
-            this.personsCopy.push(personsTmp[this.count]);
-            this.count++;
-          }
-        }
       },
-      err => {console.error(err); this.showLoading = false; },
-      () => console.log(this.persons)
+      err => {console.error(err); this.showLoading = false; }
     );
   }
   async download() {
@@ -496,6 +499,8 @@ export class PersonSearchPage {
     if ( !terms || terms === '' ) {
       this.persons = this.personsCopy;
     } else if (terms != null) {
+      this.from = 0;
+      this.getPersons();
       const oldPersons = this.persons;
       this.persons = [];
       terms = String(terms).toLowerCase().replace(' ', '');
@@ -518,13 +523,15 @@ export class PersonSearchPage {
   }
 
   doInfinite(infiniteScroll) {
-    for (let i = 0; i < this.infiniteScrollNumber; i++) {
+    /*for (let i = 0; i < this.infiniteScrollNumber; i++) {
       if ( this.allData !== undefined ) {
         this.persons.push(this.allData[this.count]);
         this.personsCopy.push(this.allData[this.count]);
         this.count++
       }
-    }
+    }*/
+    this.from += this.infiniteScrollNumber;
+    this.getPersons();
     infiniteScroll.complete();
   }
 
