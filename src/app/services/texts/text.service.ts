@@ -35,7 +35,7 @@ export class TextService {
     if ( `${id}`.split('_')[2] !== undefined ) {
       ch_id = String(`${id}`.split('_')[2]).split(';')[0];
     }
-    const textId = parts[0];
+    const textId = id;
 
     return this.http.get(  `${this.apiEndPoint}/${this.appMachineName}/text/${c_id}/${pub_id}/est${((ch_id === null) ? '' : '/' + ch_id)}`)
           .map(res => {
@@ -44,6 +44,12 @@ export class TextService {
           try {
             if (this.config.getSettings('settings.showReadTextIllustrations')) {
               const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
+              let galleryId = 44;
+              try {
+                galleryId = this.config.getSettings('settings.galleryCollectionMapping')[c_id];
+              } catch ( err ) {
+
+              }
 
               if (!showIllustration.includes(c_id)) {
                 const parser = new DOMParser();
@@ -55,7 +61,7 @@ export class TextService {
 
                 const s = new XMLSerializer();
                 body.content = s.serializeToString(body.content);
-                this.cache.setHtmlCache(textId, body.content.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/19/`));
+                this.cache.setHtmlCache(textId, body.content.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/${galleryId}/`));
                 const ret = this.cache.getHtml(id);
                 if ( !ret ) {
                   return body.content;
@@ -67,9 +73,20 @@ export class TextService {
             console.error(e)
           }
 
+          const se = new XMLSerializer();
+          try {
+            body.content = se.serializeToString(body.content);
+            this.cache.setHtmlCache(textId, body.content);
+          } catch ( err ) {
+            console.log(err);
+          }
 
-            this.cache.setHtmlCache(textId, body.content.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/19/`));
-            return this.cache.getHtml(id);
+          const cachedHTML = this.cache.getHtml(id);
+          if ( cachedHTML && cachedHTML !== '' ) {
+            return cachedHTML;
+          } else {
+            return body.content;
+          }
           })
           .catch(this.handleError);
   }

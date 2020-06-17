@@ -107,6 +107,7 @@
         "enableModeToggle": true,
         "getFacsimilePagesInfinite": false,
         "showReadTextIllustrations": [],
+        "galleryCollectionMapping": {"214": 44},
         "facsimileDefaultZoomLevel": 3
     },
     "i18n": {

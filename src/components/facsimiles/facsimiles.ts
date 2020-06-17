@@ -172,7 +172,8 @@ export class FacsimilesComponent {
         this.facsimiles = [];
         if ( String(this.itemId).indexOf('ch') > 0 ) {
           facs.forEach( fac => {
-            const section = String((String(this.itemId).split('_')[2]).replace('ch', ''));
+            let section = String(this.itemId).split(';')[0];
+            section = String((String(section).split('_')[2]).replace('ch', ''));
             if ( String(fac['section_id']) === section ) {
               this.facsPage = fac;
             }

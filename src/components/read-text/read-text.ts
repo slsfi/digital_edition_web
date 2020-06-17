@@ -141,9 +141,16 @@ export class ReadTextComponent {
 
   getCacheText(id: string) {
     this.storage.get(id).then((content) => {
+      const c_id = String(this.link).split('_')[0];
+      let galleryId = 44;
+      try {
+        galleryId = this.config.getSettings('settings.galleryCollectionMapping')[c_id];
+      } catch ( err ) {
+
+      }
       this.text = content;
       this.text = this.sanitizer.bypassSecurityTrustHtml(
-        content.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/19/`)
+        content.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/${galleryId}/`)
           .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"').replace(/images\//g, 'assets/images/')
       );
       this.matches.forEach(function (val) {
@@ -169,8 +176,15 @@ export class ReadTextComponent {
   getEstText() {
     this.textService.getEstablishedText(this.link).subscribe(
       text => {
+        const c_id = String(this.link).split('_')[0];
+        let galleryId = 44;
+        try {
+          galleryId = this.config.getSettings('settings.galleryCollectionMapping')[c_id];
+        } catch ( err ) {
+
+        }
         this.text = this.sanitizer.bypassSecurityTrustHtml(
-          text.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/19/`)
+          text.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/${galleryId}/`)
             .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"').replace(/images\//g, 'assets/images/')
         );
         if (this.matches instanceof Array && this.matches.length > 0) {

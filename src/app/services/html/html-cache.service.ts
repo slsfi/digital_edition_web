@@ -53,7 +53,7 @@ export class HtmlCacheService {
         return this.htmlCache[id] || false;
       }
     } else {
-      return ' - no cached html - ';
+      return '';
     }
   }
 
