@@ -47,7 +47,7 @@
       </button>
     </ion-fab>
 
-    <div class="read-columns" dragScroll drag-scroll-y-disabled scrollbar-hidden="true" reachesRightBound="true"
+    <div class="read-columns" drag-scroll-y-disabled scrollbar-hidden="true" reachesRightBound="true"
       snap-disabled="true" snap-offset="0" [ngClass]="views.length > 1 ? 'multiple-columns' : 'single-column'">
       <div *ngIf="showToolTip" class="toolTip" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}" [innerHTML]="toolTipText"></div>
       <div class="read-column" *ngFor="let view of views; let i = index;" id="read_div_{{i}}" scrollY="true"
