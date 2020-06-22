@@ -552,6 +552,7 @@ export class OccurrencesResultPage {
     params['facs_id'] = 'not';
     params['facs_nr'] = 'infinite';
     params['song_id'] = 'nosong';
+    params['chapterID'] = 'nochapter';
 
     if (text_type === 'facsimile') {
       if (text.publication_facsimile_id) {
@@ -566,7 +567,7 @@ export class OccurrencesResultPage {
     params['tocLinkId'] = col_id + '_' + pub_id;
     params['collectionID'] = col_id;
     params['publicationID'] = pub_id;
-    params['legacyId'] = col_id + '_' + pub_id;
+    // params['legacyId'] = col_id + '_' + pub_id;
     if (text.facsimilePage) {
       params['facsimilePage'] = text.facsimilePage;
     } else {
@@ -589,7 +590,7 @@ export class OccurrencesResultPage {
     if (this.objectType) {
       params['objectType'] = this.objectType;
     }
-
+    params['selectedItemInAccordion'] = false;
     if (this.platform.is('mobile')) {
       this.app.getRootNav().push('read', params);
     } else {

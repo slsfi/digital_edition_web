@@ -53,7 +53,7 @@ enum TextType {
 
 @IonicPage({
   name: 'read',
-  segment: 'publication/:collectionID/text/:publicationID/:facs_id/:facs_nr/:song_id/:search_title/:urlviews'
+  segment: 'publication/:collectionID/text/:publicationID/:chapterID/:facs_id/:facs_nr/:song_id/:search_title/:urlviews'
 })
 @Component({
   selector: 'page-read',
@@ -261,7 +261,7 @@ export class ReadPage /*implements OnDestroy*/ {
       this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID');
       this.establishedText.link = this.params.get('collectionID') + '_' + this.params.get('publicationID');
 
-      if (this.params.get('chapterID') !== undefined) {
+      if (this.params.get('chapterID') !== undefined && this.params.get('chapterID') !== 'nochapter') {
         this.establishedText.link += '_' + this.params.get('chapterID');
       }
 
@@ -409,16 +409,17 @@ export class ReadPage /*implements OnDestroy*/ {
         }
 
         const tocLoadedParams = { tocItems: tocItemsC };
-
         if (searchTocItem && this.appUsesAccordionToc) {
           tocLoadedParams['searchTocItem'] = true;
           tocLoadedParams['collectionID'] = this.params.get('collectionID');
           tocLoadedParams['publicationID'] = this.params.get('publicationID');
+          tocLoadedParams['itemId'] = this.params.get('collectionID') + '_' + this.params.get('publicationID');
 
           if (this.search_title) {
             tocLoadedParams['search_title'] = this.search_title;
           }
         }
+        console.log(tocLoadedParams);
         this.events.publish('tableOfContents:loaded', tocLoadedParams);
         console.log('toc from cache - read');
       } else {
@@ -691,6 +692,11 @@ export class ReadPage /*implements OnDestroy*/ {
       song_id = 'nosong';
     }
 
+    let chapter_id = 'nochapter';
+    if (this.params.get('chapterID') !== undefined && this.params.get('chapterID') !== 'nochapter') {
+      chapter_id = this.params.get('chapterID');
+    }
+
     if (this.params.get('search_title') !== undefined &&
       this.params.get('search_title') !== ':song_id' &&
       this.params.get('search_title') !== 'searchtitle') {
@@ -701,7 +707,7 @@ export class ReadPage /*implements OnDestroy*/ {
     const colID = this.params.get('collectionID');
     const pubID = this.params.get('publicationID');
 
-    const url = `#/publication/${colID}/text/${pubID}/${facs_id}/${facs_nr}/${song_id}/${search_title}/`;
+    const url = `#/publication/${colID}/text/${pubID}/${chapter_id}/${facs_id}/${facs_nr}/${song_id}/${search_title}/`;
 
     const viewModes = this.getViewTypesShown();
 

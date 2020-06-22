@@ -186,6 +186,7 @@ export class TableOfContentsAccordionComponent {
     toc: Array<MenuOptionModel>,
     searchTocItem?: Boolean,
     searchPublicationId?: Number,
+    searchItemId?: String,
     searchTitle?: String
   }) {
     if (value && value.toc && value.toc.length > 0) {
@@ -223,13 +224,13 @@ export class TableOfContentsAccordionComponent {
 
       if (value.searchTocItem) {
         // Find toc item and open its parents
-        if (value.searchPublicationId && value.searchTitle) {
-          this.findTocByPubAndTitle(this.collapsableItems, value.searchPublicationId, value.searchTitle);
+        if (value.searchItemId) {
+          this.findTocByPubOnly(this.collapsableItems, value.searchItemId);
           this.events.publish('typesAccordion:change', {
             expand: true
           });
-        } else if (value.searchPublicationId) {
-          this.findTocByPubOnly(this.collapsableItems, value.searchPublicationId);
+        } else if (value.searchPublicationId && value.searchTitle) {
+          this.findTocByPubAndTitle(this.collapsableItems, value.searchPublicationId, value.searchTitle);
           this.events.publish('typesAccordion:change', {
             expand: true
           });
@@ -622,7 +623,7 @@ export class TableOfContentsAccordionComponent {
         this.findTocByPubOnly(item.subOptions, publicationID);
       } else if (
         item.publication_id &&
-        (String(item.publication_id) === String(publicationID) || Number(item.publication_id) === Number(publicationID))
+        (String(item.itemId) === String(publicationID) || Number(item.publication_id) === Number(publicationID))
       ) {
         item.selected = true;
         this.currentOption = item;

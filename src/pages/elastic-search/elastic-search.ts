@@ -216,6 +216,7 @@ export class ElasticSearchPage {
     params['tocLinkId'] = collection_id + '_' + hit.source.publication_id;
     params['collectionID'] = collection_id;
     params['publicationID'] = hit.source.publication_id;
+    params['chapterID'] = 'nochapter';
 
     params['facs_id'] = 'not';
     params['facs_nr'] = 'infinite';
@@ -256,6 +257,7 @@ export class ElasticSearchPage {
          break;
       }
    }
+    params['selectedItemInAccordion'] = false;
     this.app.getRootNav().push('read', params);
   }
 

@@ -771,8 +771,10 @@ export class DigitalEditionsApp {
             collection.accordionToc = {
               toc: data.tocItems.children,
               searchTocItem: true,
+              searchItemId: data.itemId,
               searchPublicationId: Number(data.publicationID),
-              searchTitle: data.search_title ? data.search_title : null
+              searchCollectionId: Number(data.collectionID),
+              searchTitle:  null
             }
             collection.accordionToc.toc = data.tocItems.children;
             this.currentCollection = collection;
