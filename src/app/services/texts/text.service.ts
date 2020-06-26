@@ -75,6 +75,8 @@ export class TextService {
 
           const se = new XMLSerializer();
           try {
+            const parser = new DOMParser();
+            body.content = parser.parseFromString(body.content, 'text/html');
             body.content = se.serializeToString(body.content);
             this.cache.setHtmlCache(textId, body.content);
           } catch ( err ) {

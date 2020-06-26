@@ -87,7 +87,7 @@ export class TooltipService {
 
       const parts = id.split(';');
       const htmlId = parts[0];
-      const elementId = parts[1].replace('end', 'en');
+      const elementId = parts[parts.length - 1].replace('end', 'en');
       return this.commentService.getComment(parts[0]).map(
         data => {
           const range = document.createRange();
