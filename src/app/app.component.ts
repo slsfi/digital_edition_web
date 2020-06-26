@@ -584,6 +584,7 @@ export class DigitalEditionsApp {
         if (this.aboutMenuMarkdownAccordion !== undefined) {
           this.aboutMenuMarkdownAccordion.ngOnChanges(aboutMarkdownMenu.children);
         }
+        this.cdRef.detectChanges();
       }).bind(this)();
     }
   }

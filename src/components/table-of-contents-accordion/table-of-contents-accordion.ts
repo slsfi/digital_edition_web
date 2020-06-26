@@ -473,6 +473,7 @@ export class TableOfContentsAccordionComponent {
     if ( Array.isArray(about) ) {
       this.menuOptions = about;
       this.collapsableItems = new Array<InnerMenuOptionModel>();
+      this.activeMenuTree = [];
 
       let foundSelected = false;
       // Map the options to our internal models

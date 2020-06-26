@@ -78,6 +78,4 @@ export class UserSettingsPopoverPage {
   togglePageNumbering() {
     // git this.readPopoverService.show.pageNumbering = this.show.pageNumbering;
   }
-
-
 }
