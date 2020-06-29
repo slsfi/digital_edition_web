@@ -438,7 +438,9 @@ export class TableOfContentsAccordionComponent {
       }
       this.storage.get('toc_sort_' + data.collectionID).then((dataC) => {
         if (dataC) {
-
+          this.constructAlphabeticalTOC(dataC);
+          this.constructChronologialTOC(dataC);
+          this.storage.set('toc_sort_' + dataC.collectionID, dataC);
         } else {
           console.log('tableOfContents:loaded in table-of-contents-accordion.ts');
           this.constructAlphabeticalTOC(data);

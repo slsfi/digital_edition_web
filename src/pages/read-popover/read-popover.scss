@@ -23,6 +23,20 @@ read-popover-page {
 		min-height: 1rem !important;
 	}
 
+	.read-popover-header ion-label {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 2px;
+	}
+
+	.close{
+		font-size: 1rem;
+	}
+
+	.appearence{
+		margin-top: 0.8rem;
+	}
+
 	.asterix{
 		height: 0.8em;
 		padding-right: 0.1em;
@@ -51,5 +65,5 @@ read-popover-page {
 }
 
 .popover-content{
-	overflow: hidden !important;
+	overflow-x: hidden !important;
 }

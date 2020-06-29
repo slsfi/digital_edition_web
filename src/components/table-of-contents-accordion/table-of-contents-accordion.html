@@ -50,7 +50,13 @@
                 </ng-template>
             </ng-template>
         </ng-template>
-
+        <ng-template [ngIf]="!collapsableItems">
+            <ion-list no-margin class="accordion-menu">
+                <ion-item class="header">
+                    loading ...
+                </ion-item>
+            </ion-list>
+        </ng-template>
         <ng-container *ngIf="!searchingForTocItem && activeMenuTree">
             <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: activeMenuTree }"></ng-container>
         </ng-container>
