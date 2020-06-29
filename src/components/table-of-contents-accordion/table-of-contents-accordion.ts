@@ -622,9 +622,7 @@ export class TableOfContentsAccordionComponent {
     for (const item of list) {
       if (item.subOptions && item.subOptions.length) {
         this.findTocByPubOnly(item.subOptions, publicationID);
-      } else if (
-        item.publication_id &&
-        (String(item.itemId) === String(publicationID) || Number(item.publication_id) === Number(publicationID))
+      } else if ((String(item.itemId) === String(publicationID) || Number(item.publication_id) === Number(publicationID))
       ) {
         item.selected = true;
         this.currentOption = item;

@@ -409,11 +409,16 @@ export class ReadPage /*implements OnDestroy*/ {
           tocItemsC.selectedPubId = this.params.get('publicationID');
         }
 
+        if ( this.params.get('chapterID') ) {
+          tocItemsC.selectedChapterId = this.params.get('chapterID');
+        }
+
         const tocLoadedParams = { tocItems: tocItemsC };
         if (searchTocItem && this.appUsesAccordionToc) {
           tocLoadedParams['searchTocItem'] = true;
           tocLoadedParams['collectionID'] = this.params.get('collectionID');
           tocLoadedParams['publicationID'] = this.params.get('publicationID');
+          tocLoadedParams['chapterID'] = this.params.get('chapterID');
           tocLoadedParams['itemId'] = this.params.get('collectionID') + '_' + this.params.get('publicationID');
 
           if (this.search_title) {
@@ -435,12 +440,17 @@ export class ReadPage /*implements OnDestroy*/ {
               tocItems.selectedPubId = this.params.get('publicationID');
             }
 
+            if ( this.params.get('chapterID') ) {
+              tocItems.selectedChapterId = this.params.get('chapterID');
+            }
+
             const tocLoadedParams = { tocItems: tocItems };
 
             if (searchTocItem && this.appUsesAccordionToc) {
               tocLoadedParams['searchTocItem'] = true;
               tocLoadedParams['collectionID'] = this.params.get('collectionID');
               tocLoadedParams['publicationID'] = this.params.get('publicationID');
+              tocLoadedParams['chapterID'] = this.params.get('chapterID');
 
               if (this.search_title) {
                 tocLoadedParams['search_title'] = this.search_title;

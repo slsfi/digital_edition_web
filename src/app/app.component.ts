@@ -769,6 +769,10 @@ export class DigitalEditionsApp {
             collection.expanded = true;
             this.simpleAccordionsExpanded.collectionsAccordion = true;
 
+            if ( data.chapterID ) {
+              data.itemId = Number(data.collectionID) + '_' + Number(data.publicationID) + '_' + data.chapterID;
+            }
+
             collection.accordionToc = {
               toc: data.tocItems.children,
               searchTocItem: true,
