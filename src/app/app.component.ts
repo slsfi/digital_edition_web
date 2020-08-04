@@ -761,8 +761,6 @@ export class DigitalEditionsApp {
       this.tocLoaded = true;
 
       if (data.searchTocItem) {
-        console.log('finding toc item');
-
         for (const collection of this.collectionsListWithTOC) {
 
           if (Number(collection.id) === Number(data.collectionID)) {
@@ -771,6 +769,10 @@ export class DigitalEditionsApp {
 
             if ( data.chapterID ) {
               data.itemId = Number(data.collectionID) + '_' + Number(data.publicationID) + '_' + data.chapterID;
+            }
+
+            if ( data.itemId === undefined && data.collectionID !== undefined && data.publicationID !== undefined) {
+              data.itemId = String(data.collectionID) + '_' + String(data.publicationID);
             }
 
             collection.accordionToc = {

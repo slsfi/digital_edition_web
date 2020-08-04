@@ -189,6 +189,7 @@ export class TableOfContentsAccordionComponent {
     searchItemId?: String,
     searchTitle?: String
   }) {
+
     if (value && value.toc && value.toc.length > 0) {
       if (value.searchTocItem) {
         this.searchingForTocItem = true;
@@ -225,6 +226,7 @@ export class TableOfContentsAccordionComponent {
       if (value.searchTocItem) {
         // Find toc item and open its parents
         if (value.searchItemId) {
+          value.searchItemId = String(value.searchItemId).replace('_nochapter', '').replace(':chapterID', '');
           this.findTocByPubOnly(this.collapsableItems, value.searchItemId);
           this.events.publish('typesAccordion:change', {
             expand: true

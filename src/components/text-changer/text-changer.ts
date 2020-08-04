@@ -77,6 +77,7 @@ export class TextChangerComponent {
     });
 
     if (this.prevItem !== undefined && test !== true) {
+      this.storage.set('currentTOCItem', this.prevItem);
       await this.open(this.prevItem);
     } else if (test && this.prevItem !== undefined) {
       return true;
@@ -92,6 +93,7 @@ export class TextChangerComponent {
       this.findNext(toc);
     });
     if (this.nextItem !== undefined && test !== true) {
+      this.storage.set('currentTOCItem', this.nextItem);
       await this.open(this.nextItem);
     }  else if (test && this.nextItem !== undefined) {
       return true;

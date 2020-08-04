@@ -425,7 +425,6 @@ export class ReadPage /*implements OnDestroy*/ {
             tocLoadedParams['search_title'] = this.search_title;
           }
         }
-        console.log(tocLoadedParams);
         this.events.publish('tableOfContents:loaded', tocLoadedParams);
         console.log('toc from cache - read');
       } else {
@@ -467,6 +466,7 @@ export class ReadPage /*implements OnDestroy*/ {
       .subscribe(
         tocItems => {
           console.log('get toc root... --- --- in read');
+          this.storage.set('currentTOCItem', tocItems.children[0][0]);
           tocItems.selectedCollId = null;
           tocItems.selectedPubId = null;
           if (this.params.get('collectionID') && this.params.get('publicationID')) {
@@ -629,7 +629,7 @@ export class ReadPage /*implements OnDestroy*/ {
   setViewsFromSearchResults() {
     for (const v of this.params.get('views')) {
       if (v.type) {
-        console.log(`Aading view ${v.type}, ${v.id}`);
+        // console.log(`Aading view ${v.type}, ${v.id}`);
         this.addView(v.type, v.id);
       }
 
@@ -1171,7 +1171,7 @@ export class ReadPage /*implements OnDestroy*/ {
     this.textService.getIntroduction(id, lang).subscribe(
       res => {
         // in order to get id attributes for tooltips
-        console.log('recieved introduction,..,', res.content);
+        // console.log('recieved introduction,..,', res.content);
         this.establishedText.content = this.sanitizer.bypassSecurityTrustHtml(
           res.content.replace(/images\//g, 'assets/images/')
             .replace(/\.png/g, '.svg')
@@ -1555,6 +1555,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
   open(item) {
     const params = { tocItem: item, collection: { title: item.itemId } };
+    this.storage.set('currentTOCItem', item);
     const nav = this.app.getActiveNavs();
 
     params['tocLinkId'] = item.itemId;
@@ -1650,7 +1651,7 @@ export class ReadPage /*implements OnDestroy*/ {
     toc.then(val => {
       if (val.children) {
         firstItemOfCollection = val.children[1];
-        console.log(firstItemOfCollection);
+        // console.log(firstItemOfCollection);
 
         const params = {tocItem: firstItemOfCollection, collection: {title: firstItemOfCollection.itemId}};
         const nav = this.app.getActiveNavs();
