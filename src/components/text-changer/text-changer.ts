@@ -51,6 +51,7 @@ export class TextChangerComponent {
   }
 
   ngOnInit() {
+    try {
       const c_id = this.legacyId.split('_')[0];
       const toc = this.storage.get('toc_' + c_id);
       toc.then(val => {
@@ -67,6 +68,9 @@ export class TextChangerComponent {
           }
         }
       }).catch(err => console.error(err));
+    } catch ( e ){
+
+    }
   }
 
   async previous(test?: boolean) {
