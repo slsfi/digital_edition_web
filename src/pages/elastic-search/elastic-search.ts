@@ -181,6 +181,14 @@ export class ElasticSearchPage {
             }
             break;
           default:
+            const facetListRest = <HTMLElement>document.querySelector('.facetList-' + facetGroup);
+            console.log(facetListRest);
+            try {
+              facetListRest.style.setProperty('height', '0px');
+              const facetArrowRest = <HTMLElement>document.querySelector('#arrow-' + facetGroup);
+              facetArrowRest.classList.add('closed', 'rotate');
+            } catch (e) {
+            }
             break;
         }
       })
@@ -188,8 +196,12 @@ export class ElasticSearchPage {
   }
 
   ionViewDidEnter() {
-    (<any>window).ga('set', 'page', 'Elastic Search')
-    (<any>window).ga('send', 'pageview')
+    try {
+      (<any>window).ga('set', 'page', 'Elastic Search')
+      (<any>window).ga('send', 'pageview')
+    } catch ( e ) {
+
+    }
   }
 
   ionViewWillLeave() {
@@ -250,6 +262,18 @@ export class ElasticSearchPage {
 
         break;
       }
+      case 'inl': {
+        params['urlviews'] = 'introduction';
+        params['views'].push({type: 'introduction', id: var_ms_id});
+
+        break;
+      }
+      case 'tit': {
+        params['urlviews'] = 'title';
+        params['views'].push({type: 'title', id: var_ms_id});
+
+        break;
+      }
       default: {
         params['urlviews'] = 'established';
         params['views'].push({type: 'established'})
@@ -257,8 +281,12 @@ export class ElasticSearchPage {
          break;
       }
    }
+   if (hit.source.xml_type !== 'tit') {
     params['selectedItemInAccordion'] = false;
     this.app.getRootNav().push('read', params);
+   } else {
+    this.app.getRootNav().push('title-page', params);
+   }
   }
 
   /**
@@ -641,8 +669,8 @@ export class ElasticSearchPage {
 
     arrow.classList.toggle('rotate');
 
-    if (facet.style.height === '100%') {
-      facet.style.height = '0';
+    if (arrow.classList.contains('open')) {
+      facet.style.height = '0px';
       arrow.classList.add('closed');
       arrow.classList.remove('open');
     } else {
@@ -650,6 +678,7 @@ export class ElasticSearchPage {
       arrow.classList.add('open');
       arrow.classList.remove('closed');
     }
+    this.cf.detectChanges();
   }
 
   addSearchField() {

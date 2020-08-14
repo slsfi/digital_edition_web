@@ -164,7 +164,7 @@ export class ElasticSearchService {
       _source: this.source,
       query: {
         bool: {
-          must: []
+          should: []
         }
       },
     }
@@ -172,7 +172,7 @@ export class ElasticSearchService {
     // Add free text query.
     queries.forEach(query => {
       if (query) {
-        payload.query.bool.must.push({
+        payload.query.bool.should.push({
           query_string: {
             query,
           }
@@ -183,7 +183,7 @@ export class ElasticSearchService {
     // Add fixed filters that apply to all queries.
     if (this.fixedFilters) {
       this.fixedFilters.forEach(filter => {
-        payload.query.bool.must.push(filter)
+        payload.query.bool.should.push(filter)
       })
     }
 
