@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, App, Platform, ToastController,
   ModalController, Content, Events, ViewController } from 'ionic-angular';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
@@ -51,6 +51,8 @@ export class TagSearchPage {
   cacheItem = false;
   showLoading = false;
   showFilter = true;
+  from = 0;
+  infiniteScrollNumber = 30;
 
   selectedLinkID: string;
 
@@ -74,7 +76,8 @@ export class TagSearchPage {
               public modalCtrl: ModalController,
               public viewCtrl: ViewController,
               private userSettingsService: UserSettingsService,
-              private events: Events
+              private events: Events,
+              private cf: ChangeDetectorRef
   ) {
     this.langService.getLanguage().subscribe((lang) => {
       this.appName = this.config.getSettings('app.name.' + lang);
@@ -105,32 +108,41 @@ export class TagSearchPage {
 
   gettags() {
     this.showLoading = true;
-    this.semanticDataService.getTagOccurrences().subscribe(
+    this.semanticDataService.getTagElastic(this.from, this.searchText).subscribe(
       tags => {
-
+        const tagsTmp = [];
+        tags = tags.hits.hits;
         tags.forEach(element => {
+          element = element['_source'];
           element.name = String(element.name).toLocaleLowerCase()
+          if ( element.name ) {
+            let found = false;
+            this.tags.forEach(tag => {
+              if ( tag.id === element['id'] ) {
+                found = true;
+              }
+            });
+            if ( !found ) {
+              tagsTmp.push(element);
+              this.tags.push(element);
+            }
+          }
         });
 
-        this.allData = tags;
-        this.cacheData = tags;
+        this.allData = tagsTmp;
+        this.cacheData = tagsTmp;
         this.showLoading = false;
-
         this.sortListAlphabeticallyAndGroup(this.allData);
-
-        for (let i = 0; i < 30; i++) {
-          if (i === tags.length) {
-            break;
-          } else {
-            this.tags.push(tags[this.count]);
-            this.tagsCopy.push(tags[this.count]);
-            this.count++
-          }
-        }
       },
       err => {console.error(err); this.showLoading = false; },
       () => console.log(this.tags)
     );
+  }
+
+  onChanged(obj) {
+    this.cf.detectChanges();
+    console.log('segment changed')
+    this.filter(obj);
   }
 
   loadMoretags() {
@@ -155,6 +167,7 @@ export class TagSearchPage {
   }
 
   sortByLetter(letter) {
+    this.searchText = letter;
     const list = [];
     try {
       for (const p of this.allData) {
@@ -209,11 +222,16 @@ export class TagSearchPage {
   }
 
   filter(terms) {
+    if ( terms._value ) {
+      terms = terms._value;
+    }
     if (!terms) {
       this.tags = this.tagsCopy;
     } else if (terms != null) {
+      this.from = 0;
+      this.gettags();
       this.tags = [];
-      terms = terms.toLocaleLowerCase();
+      terms = String(terms).toLowerCase().replace(' ', '');
       for (const tag of this.allData) {
         if (tag.name) {
           const title = tag.name.toLocaleLowerCase();
@@ -233,13 +251,8 @@ export class TagSearchPage {
   }
 
   doInfinite(infiniteScroll) {
-    for (let i = 0; i < 30; i++) {
-      if ( this.allData !== undefined ) {
-        this.tags.push(this.allData[this.count]);
-        this.tagsCopy.push(this.allData[this.count]);
-        this.count++;
-      }
-    }
+    this.from += this.infiniteScrollNumber;
+    this.gettags();
     infiniteScroll.complete();
   }
 

@@ -501,7 +501,6 @@ export class PersonSearchPage {
     } else if (terms != null) {
       this.from = 0;
       this.getPersons();
-      const oldPersons = this.persons;
       this.persons = [];
       terms = String(terms).toLowerCase().replace(' ', '');
       for (const person of this.allData) {
@@ -523,13 +522,6 @@ export class PersonSearchPage {
   }
 
   doInfinite(infiniteScroll) {
-    /*for (let i = 0; i < this.infiniteScrollNumber; i++) {
-      if ( this.allData !== undefined ) {
-        this.persons.push(this.allData[this.count]);
-        this.personsCopy.push(this.allData[this.count]);
-        this.count++
-      }
-    }*/
     this.from += this.infiniteScrollNumber;
     this.getPersons();
     infiniteScroll.complete();

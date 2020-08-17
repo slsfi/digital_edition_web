@@ -11,6 +11,7 @@ export class SemanticDataService {
   useLegacy: boolean;
   elasticSubjectIndex: string;
   elasticLocationIndex: string;
+  elasticTagIndex: string;
 
   constructor(private http: Http, private config: ConfigService) {
     try {
@@ -20,6 +21,7 @@ export class SemanticDataService {
     }
     this.elasticSubjectIndex = 'subject';
     this.elasticLocationIndex = 'location';
+    this.elasticTagIndex = 'tag';
   }
 
 
@@ -189,6 +191,31 @@ export class SemanticDataService {
       payload.query.bool.must.push({'prefix': {'name': String(searchText).toLowerCase()}});
     }
     return this.http.post(this.getSearchUrl(this.elasticLocationIndex), payload)
+    .map(this.extractData)
+    .catch(this.handleError)
+  }
+
+  getTagElastic(from, searchText?) {
+    const payload: any = {
+      from: from,
+      size: 270,
+      sort: [
+        { 'name.keyword' : 'asc' }
+      ],
+      query: {
+        bool: {
+          must : [{
+            'term' : { 'project_id' : 5 }
+          }],
+        }
+      }
+    }
+    if (searchText !== undefined && searchText !== '') {
+      payload.from = 0;
+      payload.size = 1000;
+      payload.query.bool.must.push({'prefix': {'name': String(searchText).toLowerCase()}});
+    }
+    return this.http.post(this.getSearchUrl(this.elasticTagIndex), payload)
     .map(this.extractData)
     .catch(this.handleError)
   }
