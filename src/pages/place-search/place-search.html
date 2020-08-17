@@ -46,7 +46,7 @@
           <ion-col col-10>
               <ion-row>
                   <ion-col col-10>
-                    <ion-searchbar class="searchbar" [(ngModel)]="searchText" (keyup)="filter($event.target.value)"></ion-searchbar>
+                    <ion-searchbar class="searchbar" [(ngModel)]="searchText" (ionChange)=onChanged($event)></ion-searchbar>
                   </ion-col>
                   <ion-col col-2 *ngIf="showFilter">
                       <button (click)="openFilterModal()" ion-button><ion-icon class="filter-button" ios="ios-options" md="md-options"></ion-icon></button>
@@ -69,7 +69,7 @@
                   </ion-item>
                 </div>
             </ion-list>
-          
+
               <ion-infinite-scroll *ngIf="!searchText" (ionInfinite)="doInfinite($event)">
                 <ion-infinite-scroll-content></ion-infinite-scroll-content>
               </ion-infinite-scroll>

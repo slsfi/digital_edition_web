@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, App, Platform, ToastController,
   ModalController, Content, Events, ViewController } from 'ionic-angular';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
@@ -52,6 +52,9 @@ export class PlaceSearchPage {
   showLoading = false;
   showFilter = true;
 
+  from = 0;
+  infiniteScrollNumber = 30;
+
   selectedLinkID: string;
 
   objectType = 'location';
@@ -74,7 +77,8 @@ export class PlaceSearchPage {
               private toastCtrl: ToastController,
               public modalCtrl: ModalController,
               public viewCtrl: ViewController,
-              private userSettingsService: UserSettingsService
+              private userSettingsService: UserSettingsService,
+              private cf: ChangeDetectorRef
   ) {
     this.langService.getLanguage().subscribe((lang) => {
       this.appName = this.config.getSettings('app.name.' + lang);
@@ -103,16 +107,16 @@ export class PlaceSearchPage {
     (<any>window).ga('send', 'pageview');
   }
 
-  getPlaces() {
+  async getPlaces() {
     this.showLoading = true;
-    this.semanticDataService.getLocationOccurrences().subscribe(
+    this.semanticDataService.getLocationElastic(this.from, this.searchText).subscribe(
       places => {
-        this.allData = places;
-        this.cacheData = places;
+        places = places.hits.hits;
         this.showLoading = false;
 
         const placesTmp = [];
         places.forEach(element => {
+          element = element['_source'];
           element['sortBy'] = String(element['name']).toLowerCase().trim().replace('ʽ', '');
           const ltr = element['sortBy'].charAt(0);
           const mt = ltr.match(/[a-zåäö]/i);
@@ -122,22 +126,21 @@ export class PlaceSearchPage {
             const combining = /[\u0300-\u036F]/g;
             element['sortBy'] = element['sortBy'].normalize('NFKD').replace(combining, '').replace(',', '');
           }
-          placesTmp.push(element);
+          let found = false;
+          this.places.forEach(place => {
+            if ( place.id === element['id'] ) {
+              found = true;
+            }
+          });
+          if ( !found ) {
+            placesTmp.push(element);
+            this.places.push(element);
+          }
         });
 
         this.allData = placesTmp;
         this.cacheData = placesTmp;
         this.sortListAlphabeticallyAndGroup(this.allData);
-
-        for (let i = 0; i < 30; i++) {
-          if (i === places.length) {
-            break;
-          } else {
-            this.places.push(placesTmp[this.count]);
-            this.placesCopy.push(placesTmp[this.count]);
-            this.count++
-          }
-        }
       },
       err => {console.error(err); this.showLoading = false; }
     );
@@ -153,6 +156,12 @@ export class PlaceSearchPage {
         this.count++
       }
     }
+  }
+
+  onChanged(obj) {
+    this.cf.detectChanges();
+    console.log('segment changed')
+    this.filter(obj);
   }
 
   showAll() {
@@ -201,6 +210,8 @@ export class PlaceSearchPage {
   }
 
   sortByLetter(letter: any) {
+    this.searchText = letter;
+    this.getPlaces();
     const list = [];
     try {
       for (const p of this.allData) {
@@ -221,37 +232,38 @@ export class PlaceSearchPage {
   }
 
   filter(terms) {
-    if (!terms) {
-      this.places = this.placesCopy;
-    } else if (terms != null) {
-      this.places = [];
-      terms = terms.toLocaleLowerCase();
-      for (const place of this.allData) {
-        if (place.sortBy) {
-          const title = String(place.name).toLowerCase().replace(' ', '').replace('ʽ', '');
-          if (title.includes(terms)) {
-            const inList = this.places.some(function(p) {
-              return p.sortBy === place.sortBy
-            });
-            if (!inList) {
-              this.places.push(place);
+    if ( terms._value ) {
+      terms = terms._value;
+    }
+    if (terms != null) {
+      this.from = 0;
+      this.getPlaces().then(() => {
+        const oldPersons = this.places;
+        this.places = [];
+        terms = terms.toLocaleLowerCase();
+        for (const place of this.allData) {
+          if (place.sortBy) {
+            const title = String(place.name).toLowerCase().replace(' ', '').replace('ʽ', '');
+            if (title.includes(terms) ) {
+              const inList = this.places.some(function(p) {
+                return p.sortBy === place.sortBy
+              });
+              if (!inList && title.charAt(0) === String(terms).toLowerCase().charAt(0)) {
+                this.places.push(place);
+              }
             }
           }
         }
-      }
+      });
+
     } else {
       this.places = this.placesCopy;
     }
   }
 
-  doInfinite(infiniteScroll: any) {
-    for (let i = 0; i < 30; i++) {
-      if ( this.allData !== undefined ) {
-        this.places.push(this.allData[this.count]);
-        this.placesCopy.push(this.allData[this.count]);
-        this.count++
-      }
-    }
+  doInfinite(infiniteScroll) {
+    this.from += this.infiniteScrollNumber;
+    this.getPlaces();
     infiniteScroll.complete();
   }
 
