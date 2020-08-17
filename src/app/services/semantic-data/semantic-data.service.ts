@@ -198,14 +198,14 @@ export class SemanticDataService {
   getTagElastic(from, searchText?) {
     const payload: any = {
       from: from,
-      size: 270,
+      size: 70,
       sort: [
         { 'name.keyword' : 'asc' }
       ],
       query: {
         bool: {
           must : [{
-            'term' : { 'project_id' : 5 }
+            'term' : { 'project_id' : this.config.getSettings('app.projectId') }
           }],
         }
       }
