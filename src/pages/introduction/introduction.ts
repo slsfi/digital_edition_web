@@ -1,5 +1,5 @@
 import { Component, Renderer, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, Platform, PopoverController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { TextService } from '../../app/services/texts/text.service';
@@ -7,6 +7,7 @@ import { UserSettingsService } from '../../app/services/settings/user-settings.s
 import { ConfigService } from '@ngx-config/core';
 import { TooltipService } from '../../app/services/tooltips/tooltip.service';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
+import { ReadPopoverPage } from '../read-popover/read-popover';
 
 /**
  * Generated class for the IntroductionPage page.
@@ -56,6 +57,7 @@ export class IntroductionPage {
     private renderer: Renderer,
     private tooltipService: TooltipService,
     private elementRef: ElementRef,
+    protected popoverCtrl: PopoverController,
     private userSettingsService: UserSettingsService,
     private events: Events,
     private platform: Platform,
@@ -302,6 +304,13 @@ export class IntroductionPage {
         this.setToolTipText('Could not get person information');
       }
     );
+  }
+
+  showPopover(myEvent) {
+    const popover = this.popoverCtrl.create(ReadPopoverPage, {}, { cssClass: 'popover_settings' });
+    popover.present({
+      ev: myEvent
+    });
   }
 
   setToolTipText(text: string) {

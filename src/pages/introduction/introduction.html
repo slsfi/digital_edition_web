@@ -1,10 +1,40 @@
+<ion-header no-border>
+  <ion-toolbar color="secondary" class="secondary">
+    <ion-buttons>
+        <ion-grid>
+            <ion-row class="secondary-toolbar-icons-wrapper">
+              <ion-col>
+                  <div id="share-icon" (click)="showSharePopover($event)">
+                    <ion-icon class="share-icon" name="ios-share-outline" ios="ios-share-outline"></ion-icon>
+                  </div>
+              </ion-col>
+              <ion-col>
+                  <div #settingsIconElement (click)="showPopover($event)" id="settings-icon">
+                  <ion-icon  class="settings-icon" name="settings"></ion-icon>
+                  </div>
+              </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content padding>
     <ion-card>
         <ion-card-content>
             <div *ngIf="showToolTip" class="toolTip" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}" [innerHTML]="toolTipText"></div>
             <ion-scroll scrollY="true" style="height:80vh;" class="card">
-
-                <div class="tei" [innerHTML]="text" [ngClass]="hasSeparateIntroToc ? 'hideIntro' : ''"></div>
+                <div class="tei"
+                  [class.show_comments]="readPopoverService.show.comments"
+                  [class.show_personInfo]="readPopoverService.show.personInfo"
+                  [class.show_placeInfo]="readPopoverService.show.placeInfo"
+                  [class.show_workInfo]="readPopoverService.show.workInfo"
+                  [class.show_changes]="readPopoverService.show.changes"
+                  [class.show_abbreviations]="readPopoverService.show.abbreviations"
+                  [class.show_pageNumbering]="readPopoverService.show.pageNumbering"
+                  [class.show_pageBreakOriginal]="readPopoverService.show.pageBreakOriginal"
+                  [class.show_pageBreakEdition]="readPopoverService.show.pageBreakEdition"
+                [innerHTML]="text" [ngClass]="hasSeparateIntroToc ? 'hideIntro' : ''"></div>
             </ion-scroll>
         </ion-card-content>
     </ion-card>
