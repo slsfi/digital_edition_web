@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-import { ViewController, Events } from 'ionic-angular';
+import { ViewController, Events, NavParams } from 'ionic-angular';
 import { ConfigService } from '@ngx-config/core';
 import { ReadPopoverService, Fontsize } from '../../app/services/settings/read-popover.service';
 
@@ -49,9 +49,16 @@ export class ReadPopoverPage {
     private config: ConfigService,
     public readPopoverService: ReadPopoverService,
     public translate: TranslateService,
-    private events: Events
+    private events: Events,
+    public params: NavParams
   ) {
+    const toggles = this.params.get('toggles');
     this.readToggles = this.config.getSettings('settings.readToggles');
+
+    if ( toggles !== undefined ) {
+      this.readToggles = toggles;
+    }
+
     this.show = readPopoverService.show;
     this.fontsize = readPopoverService.fontsize;
   }
@@ -146,21 +153,39 @@ export class ReadPopoverPage {
   }
 
   decreaseFontSize() {
-    this.fontsize = Fontsize.small;
-    this.readPopoverService.fontsize = this.fontsize;
-    this.doAnalytics('decreaseFontSize - ' + this.fontsize);
+    try {
+      this.fontsize = Fontsize.small;
+      this.readPopoverService.fontsize = this.fontsize;
+      this.doAnalytics('decreaseFontSize - ' + this.fontsize);
+    } catch ( e ) {
+      this.fontsize = 0;
+      this.readPopoverService.fontsize = this.fontsize;
+      this.doAnalytics('decreaseFontSize - ' + this.fontsize);
+    }
   }
 
   increaseFontMeduimSize() {
-    this.fontsize = Fontsize.medium;
-    this.readPopoverService.fontsize = this.fontsize;
-    this.doAnalytics('increaseFontMeduimSize - ' + this.fontsize);
+    try {
+      this.fontsize = Fontsize.medium;
+      this.readPopoverService.fontsize = this.fontsize;
+      this.doAnalytics('increaseFontMeduimSize - ' + this.fontsize);
+    } catch ( e ) {
+      this.fontsize = 1;
+      this.readPopoverService.fontsize = this.fontsize;
+      this.doAnalytics('increaseFontMeduimSize - ' + this.fontsize);
+    }
   }
 
   increaseFontSize() {
-    this.fontsize = Fontsize.large;
-    this.readPopoverService.fontsize = this.fontsize;
-    this.doAnalytics('increaseFontSize - ' + this.fontsize);
+    try {
+      this.fontsize = Fontsize.large;
+      this.readPopoverService.fontsize = this.fontsize;
+      this.doAnalytics('increaseFontSize - ' + this.fontsize);
+    } catch ( e ) {
+      this.fontsize = 2;
+      this.readPopoverService.fontsize = this.fontsize;
+      this.doAnalytics('increaseFontSize - ' + this.fontsize);
+    }
   }
 
   doAnalytics(type) {

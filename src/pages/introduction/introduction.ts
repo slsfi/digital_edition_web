@@ -307,7 +307,18 @@ export class IntroductionPage {
   }
 
   showPopover(myEvent) {
-    const popover = this.popoverCtrl.create(ReadPopoverPage, {}, { cssClass: 'popover_settings' });
+    const toggles = {
+      'comments': false,
+      'personInfo': true,
+      'placeInfo': true,
+      'workInfo': true,
+      'changes': false,
+      'abbreviations': true,
+      'pageNumbering': false,
+      'pageBreakOriginal': false,
+      'pageBreakEdition': false
+    };
+    const popover = this.popoverCtrl.create(ReadPopoverPage, {toggles}, { cssClass: 'popover_settings' });
     popover.present({
       ev: myEvent
     });

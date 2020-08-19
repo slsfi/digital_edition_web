@@ -95,7 +95,7 @@ export class DigitalEditionsApp {
   sideMenuMobile = false;
   splitPaneMobile = false;
 
-  splitPaneOpen = true;
+  splitPaneOpen = false;
   previousSplitPaneOpenState = true;
   splitPanePossible = true;
   previousSplitPanePossibleState = true;

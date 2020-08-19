@@ -3,7 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { ReadPopoverPage } from './read-popover';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
+import { ReadPopoverService, Fontsize } from '../../app/services/settings/read-popover.service';
 import { HttpClient } from '@angular/common/http';
 
 export function createTranslateLoader(http: HttpClient): TranslateLoader {
