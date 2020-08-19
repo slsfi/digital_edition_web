@@ -804,6 +804,8 @@ export class DigitalEditionsApp {
       const homeUrl = document.URL.indexOf('/#/home');
       if (homeUrl >= 0) {
         this.setupPageSettings(currentPage);
+      } else if ( document.URL.indexOf('/#/') > 0 ) {
+        this.toggleSplitPane();
       }
     });
 
