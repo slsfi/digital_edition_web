@@ -65,4 +65,6 @@ export interface TocAccordionMenuOptionModel {
     search_children_id?: any;
 
     important?: boolean;
+
+    is_gallery?: boolean;
 }

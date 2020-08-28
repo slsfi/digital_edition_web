@@ -133,13 +133,13 @@ export class TitlePage {
     this.storage.get('toc_' + id).then((tocItemsC) => {
       if (tocItemsC) {
         tocItemsC.coverSelected = this.coverSelected;
-        this.events.publish('tableOfContents:loaded', {tocItems: tocItemsC, searchTocItem: true, collectionID: tocItemsC.collectionId});
+        this.events.publish('tableOfContents:loaded', {tocItems: tocItemsC, searchTocItem: true, collectionID: tocItemsC.collectionId, 'caller':  'title'});
       } else {
         this.tableOfContentsService.getTableOfContents(id)
         .subscribe(
             tocItems => {
               tocItems.coverSelected = this.coverSelected;
-              this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId});
+              this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId, 'caller':  'title'});
               this.storage.set('toc_' + id, tocItems);
             },
           error =>  {this.errorMessage = <any>error});

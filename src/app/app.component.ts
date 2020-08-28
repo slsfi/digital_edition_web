@@ -175,6 +175,8 @@ export class DigitalEditionsApp {
   hasCover = true;
   tocItems: GeneralTocItem[];
 
+  galleryInReadMenu = true;
+
   constructor(
     private platform: Platform,
     public translate: TranslateService,
@@ -249,6 +251,12 @@ export class DigitalEditionsApp {
       this.openCollectionFromToc = this.config.getSettings('OpenCollectionFromToc');
     } catch (e) {
       this.openCollectionFromToc = false;
+    }
+
+    try {
+      this.galleryInReadMenu = this.config.getSettings('ImageGallery.ShowInReadMenu');
+    } catch (e) {
+      this.galleryInReadMenu = true;
     }
 
     try {
@@ -763,7 +771,8 @@ export class DigitalEditionsApp {
       if (data.searchTocItem) {
         for (const collection of this.collectionsListWithTOC) {
 
-          if (Number(collection.id) === Number(data.collectionID)) {
+          if ((data.collectionID !== undefined && String(collection.id) === String(data.collectionID.id))
+          || (data.collectionID !== undefined && Number(collection.id) === Number(data.collectionID))) {
             collection.expanded = true;
             this.simpleAccordionsExpanded.collectionsAccordion = true;
 
@@ -805,7 +814,7 @@ export class DigitalEditionsApp {
       if (homeUrl >= 0) {
         this.setupPageSettings(currentPage);
       } else if ( document.URL.indexOf('/#/') > 0 ) {
-        this.toggleSplitPane();
+        this.showSplitPane();
       }
     });
 
@@ -1334,20 +1343,25 @@ export class DigitalEditionsApp {
               t_all = translation;
             }, error => { }
           );
-          mediaCollectionMenu.unshift({ 'id': 'all', 'title': t_all });
+          mediaCollectionMenu.unshift({ 'id': 'all', 'title': t_all, 'highlight': true });
+          mediaCollectionMenu.forEach(item => {
+            item['is_gallery'] = true;
+          });
           this.mediaCollectionOptions['toc_exists'] = true;
           this.mediaCollectionOptions['expanded'] = false;
           this.mediaCollectionOptions['loading'] = false;
           this.mediaCollectionOptions['accordionToc'] = {
             toc: mediaCollectionMenu,
-            searchTocItem: false,
+            searchTocItem: true,
             searchTitle: '', // If toc item has to be searched by unique title also
             currentPublicationId: null
           };
           this.mediaCollectionOptions['has_children_pdfs'] = false;
           this.mediaCollectionOptions['isDownload'] = false;
           this.mediaCollectionOptions['highlight'] = false;
-          this.mediaCollectionOptions['title'] = '';
+          this.mediaCollectionOptions['title'] = 'media';
+          this.mediaCollectionOptions['id'] = 'mediaCollections';
+          this.mediaCollectionOptions['collectionId'] = 'mediaCollections';
         } else {
           this.mediaCollectionOptions = [];
         }
@@ -1355,13 +1369,28 @@ export class DigitalEditionsApp {
     }
   }
 
+
   openMediaCollections() {
+    this.mediaCollectionOptions['accordionToc']['toc'].forEach(element => {
+      if (element.id === 'all') {
+        element.highlight = true;
+      } else {
+        element.highlight = false;
+      }
+    });
     const params = {};
     const nav = this.app.getActiveNavs();
     nav[0].setRoot('media-collections', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
   }
 
   openMediaCollection(gallery) {
+    this.mediaCollectionOptions['accordionToc']['toc'].forEach(element => {
+      if (gallery.id === element.id) {
+        element.highlight = true;
+      } else {
+        element.highlight = false;
+      }
+    });
     const nav = this.app.getActiveNavs();
     const params = { mediaCollectionId: gallery.id, mediaTitle: this.makeTitle(gallery.image_path), fetch: false };
     nav[0].push('media-collection', params, { animate: true, direction: 'forward', animation: 'ios-transition' });

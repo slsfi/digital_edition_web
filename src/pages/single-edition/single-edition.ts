@@ -86,7 +86,7 @@ export class SingleEditionPage {
       this.show = this.config.getSettings('defaults.ReadModeView');
     });
 
-    if (this.collection !== undefined && this.collection.id !== undefined) {
+    if (this.collection !== undefined && this.collection.id !== undefined && this.collection.id !== 'mediaCollections') {
       if (this.collection.title !== undefined) {
         global.setSubtitle(this.collection.title);
       }
@@ -101,7 +101,7 @@ export class SingleEditionPage {
     }
 
     const collectionImages = this.config.getSettings('editionImages');
-    if ( this.collection.id !== undefined ) {
+    if ( this.collection.id !== undefined  && this.collection.id !== 'mediaCollections' ) {
       this.image = collectionImages[this.collection.id];
       this.setCollectionTitle();
       this.events.publish('title-logo:collectionTitle', this.subTitle);
@@ -174,16 +174,18 @@ export class SingleEditionPage {
   }
 
   async setCollectionTitle() {
-    await this.textService.getCollection(this.params.get('id')).subscribe(
-      collection => {
-        this.subTitle = collection[0].name;
-        this.events.publish('title-logo:collectionTitle', collection[0].name);
-      },
-      error => {
-        console.log('could not get collection title');
-      },
-      () => console.log(this.subTitle)
-    );
+    if ( this.params.get('id') !== 'mediaCollections' ) {
+      await this.textService.getCollection(this.params.get('id')).subscribe(
+        collection => {
+          this.subTitle = collection[0].name;
+          this.events.publish('title-logo:collectionTitle', collection[0].name);
+        },
+        error => {
+          console.log('could not get collection title');
+        },
+        () => console.log(this.subTitle)
+      );
+    }
   }
 
   ionViewWillLeave() {
@@ -211,21 +213,33 @@ export class SingleEditionPage {
         console.log('get toc root... --- --- in single edition');
         const tocLoadedParams = { tocItems: tocItemsC };
         tocLoadedParams['collectionID'] = this.collection;
+        tocLoadedParams['searchTocItem'] = true;
         this.events.publish('tableOfContents:loaded', tocLoadedParams);
         console.log('toc from cache');
       } else {
-        this.tableOfContentsService.getTableOfContents(id)
-        .subscribe(
-          tocItems => {
-            this.tocItems = tocItems;
-            console.log('get toc root... --- --- in single edition');
-            const tocLoadedParams = { tocItems: tocItems };
-            tocLoadedParams['collectionID'] = this.collection;
-            this.events.publish('tableOfContents:loaded', tocLoadedParams);
-            this.storage.set('toc_' + id, tocItems);
-          },
-          error => { this.errorMessage = <any>error });
+        if ( id !== 'mediaCollections' ) {
+          this.tableOfContentsService.getTableOfContents(id)
+          .subscribe(
+            tocItems => {
+              this.tocItems = tocItems;
+              console.log('get toc root... --- --- in single edition');
+              const tocLoadedParams = { tocItems: tocItems };
+              tocLoadedParams['collectionID'] = this.collection;
+              tocLoadedParams['searchTocItem'] = true;
+              this.events.publish('tableOfContents:loaded', tocLoadedParams);
+              this.storage.set('toc_' + id, tocItems);
+            },
+            error => { this.errorMessage = <any>error });
+        } else {
+          this.tocItems = this.collection['accordionToc']['toc'];
+          const tocLoadedParams = { tocItems: this.tocItems };
+          tocLoadedParams['collectionID'] = 'mediaCollections';
+          tocLoadedParams['searchTocItem'] = true;
+          this.events.publish('tableOfContents:loaded', tocLoadedParams);
+          this.storage.set('toc_' + id, this.tocItems);
+          console.log('media');
         }
+      }
     });
 
   }

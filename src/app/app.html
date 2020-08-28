@@ -7,7 +7,7 @@
             <ion-list *ngIf="!readMenuOpen && !galleryMenuOpen && !menuConditionals.songTypesMenuOpen">
                 <ion-item *ngIf="genericSettingsService.show('TOC.Home')" menuClose (click)="front()" class="mainMenuItem">
                     <ion-label>
-                        {{"TOC.Home" | translate }} hej
+                        {{"TOC.Home" | translate }}
                     </ion-label>
                     <ion-icon name="home" item-right small></ion-icon>
                 </ion-item>
@@ -52,16 +52,12 @@
                                 </div>
                             </ion-list>
                         </ng-container>
-                        <ng-container *ngIf="mediaCollectionOptions.length > 0">
+                        <ng-container *ngIf="mediaCollectionOptions['accordionToc'] !== undefined && galleryInReadMenu">
                             <ion-list class="accordion-menu">
-                                <ion-item [ngClass]="mediaCollectionOptions.highlight ? 'selected-toc-item' : ''" class="header" (tap)="toggleSingleCollectionAccordion(mediaCollectionOptions)" tappable>
+                                <ion-item [ngClass]="mediaCollectionOptions.highlight ? 'selected-toc-item' : ''" class="header" (tap)="openCollection(mediaCollectionOptions)" tappable>
                                     <ion-icon [class.rotate]="mediaCollectionOptions.expanded" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
                                     <p>{{"TOC.MediaCollections" | translate }}</p>
                                 </ion-item>
-                                <div [style.height]="mediaCollectionOptions.expanded ? '100%' : '0px'" class="simple-accordion-options options">
-                                    <table-of-contents-accordion *ngIf="accordionTOC && mediaCollectionOptions" [showBackButton]="false" [isGallery]="true" [options]="mediaCollectionOptions.accordionToc" [collectionId]="'mediaCollections'" [collectionName]="'media'" [settings]="sideMenuSettings">
-                                    </table-of-contents-accordion>
-                                </div>
                             </ion-list>
                         </ng-container>
                     </div>
@@ -133,16 +129,33 @@
                         </ng-container>
                     </div>
                 </ion-list>
+
+
+                <ion-list no-margin *ngIf="mediaCollectionOptions && genericSettingsService.show('TOC.MediaCollections') && !galleryInReadMenu" class="accordion-menu">
+                    <ion-item class="header" (tap)="simpleAccordionsExpanded.galleryAccordion = !simpleAccordionsExpanded.galleryAccordion;" tappable>
+                        <ion-icon [class.rotate]="simpleAccordionsExpanded.galleryAccordion" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
+                        <p>{{"TOC.MediaCollections" | translate }}</p>
+                    </ion-item>
+                    <div [style.height]="simpleAccordionsExpanded.galleryAccordion ? '100%' : '0px'" class="simple-accordion-options options"
+                    *ngIf="mediaCollectionOptions['accordionToc'] && mediaCollectionOptions['accordionToc']['toc']">
+                        <ng-container *ngFor="let collection of mediaCollectionOptions['accordionToc']['toc']">
+                            <ion-list class="accordion-menu">
+                                <ion-item *ngIf="collection.id !== 'all'" [ngClass]="collection.highlight ? 'selected-toc-item' : ''" class="header" (tap)="openMediaCollection(collection)" tappable>
+                                    <p>{{ collection.title }}</p>
+                                </ion-item>
+                                <ion-item *ngIf="collection.id === 'all'" [ngClass]="collection.highlight ? 'selected-toc-item' : ''" class="header" (tap)="openMediaCollections()" tappable>
+                                    <p>{{ collection.title }}</p>
+                                </ion-item>
+                            </ion-list>
+                        </ng-container>
+                    </div>
+                </ion-list>
+
                 <!-- ./MUSIC -->
 
                 <ion-item *ngIf="genericSettingsService.show('TOC.Facsimiles')" menuClose detail-push (click)="openPage('featured-facsimiles')" class="mainMenuItem">
                     <p>
                         {{"TOC.Facsimiles" | translate }}
-                    </p>
-                </ion-item>
-                <ion-item *ngIf="genericSettingsService.show('TOC.ImageGallery')" menuClose (click)="galleryMenuOpen=true;openGalleries();" class="mainMenuItem">
-                    <p>
-                        {{"TOC.ImageGallery" | translate }}
                     </p>
                 </ion-item>
                 <ng-container *ngIf="genericSettingsService.show('TOC.PersonSearch') && !musicAccordion.personSearchTypes.show">
