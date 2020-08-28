@@ -234,8 +234,8 @@ export class PersonSearchPage {
           }
         });
 
-        this.allData = personsTmp;
-        this.cacheData = personsTmp;
+        this.allData = this.persons;
+        this.cacheData = this.persons;
         this.showLoading = false;
         this.sortListAlphabeticallyAndGroup(this.allData);
       },

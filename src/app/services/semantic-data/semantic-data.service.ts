@@ -147,7 +147,7 @@ export class SemanticDataService {
   getSubjectsElastic(from, searchText?) {
     const payload: any = {
       from: from,
-      size: 30,
+      size: 800,
       sort: [
         { 'full_name.keyword' : 'asc' }
       ],
@@ -173,7 +173,7 @@ export class SemanticDataService {
   getLocationElastic(from, searchText?) {
     const payload: any = {
       from: from,
-      size: 70,
+      size: 800,
       sort: [
         { 'name.keyword' : 'asc' }
       ],
@@ -198,7 +198,7 @@ export class SemanticDataService {
   getTagElastic(from, searchText?) {
     const payload: any = {
       from: from,
-      size: 70,
+      size: 800,
       sort: [
         { 'name.keyword' : 'asc' }
       ],

@@ -129,6 +129,9 @@ export class OccurrencesResultPage {
       this.getSubjectOccurrences();
     } else if (this.objectType === 'location') {
       this.getLocationOccurrences();
+    } else if (this.objectType === 'work') {
+      this.getWork();
+      this.getWorkOccurrences();
     }
   }
 
@@ -390,6 +393,46 @@ export class OccurrencesResultPage {
     );
   }
 
+  getWorkOccurrences() {
+    const currentLocationId = this.id;
+    this.semanticDataService.getWorkOccurrencesById(currentLocationId).subscribe(
+      occurrences => {
+        for (const occurrence of occurrences) {
+          this.setOccurrence(occurrence);
+        }
+        this.loadingInfoData = false;
+        this.loadingOccurrencesData = false
+        this.setWork(occurrences);
+        /*for (const location of locations) {
+          if (Number(location.id) === Number(currentLocationId)) {
+             this.setLocation(location);
+            this.checkHasAnyInfoDataToDisplay();
+
+            this.occurrenceResult = location;
+            const occurrences: Occurrence[] = this.occurrenceResult.occurrences;
+
+            for (const occurence of occurrences) {
+              this.setOccurrence(occurence);
+            }
+            this.loadingInfoData = false;
+            this.loadingOccurrencesData = false
+
+            if (!this.hasInfoDataToDisplay && this.occurrencesToShow && this.occurrencesToShow.length) {
+              this.segments = 'occurrences';
+            }
+            break;
+          }
+        }*/
+      },
+      err => {
+        console.error(err);
+        this.loadingInfoData = false;
+        this.loadingOccurrencesData = false;
+      },
+      () => console.log('Fetched tags...')
+    );
+  }
+
   getTag() {
     if (!this.id) {
       return;
@@ -405,6 +448,40 @@ export class OccurrencesResultPage {
             (<any>window).ga('send', 'event', {
               eventCategory: 'Occurrence',
               eventLabel: 'tag',
+              eventAction: String(title),
+              eventValue: 10
+            });
+          } catch ( e ) {
+          }
+        }
+        // string.charAt(0).toUpperCase() + string.slice(1);
+        this.loadingInfoData = false;
+        this.checkHasAnyInfoDataToDisplay();
+      },
+      err => {
+        console.error(err);
+        this.loadingInfoData = false;
+      },
+      () => console.log('Fetched tags...')
+    );
+  }
+
+  getWork() {
+    if (this.id === undefined) {
+      return;
+    }
+
+    this.loadingInfoData = true;
+    this.semanticDataService.getWork(this.id).subscribe(
+      work => {
+        if (work.title) {
+          let title = work.title;
+          title = title.charAt(0).toUpperCase() + title.slice(1);
+          this.title = title;
+          try {
+            (<any>window).ga('send', 'event', {
+              eventCategory: 'Occurrence',
+              eventLabel: 'work',
               eventAction: String(title),
               eventValue: 10
             });
@@ -463,6 +540,26 @@ export class OccurrencesResultPage {
     this.infoData.latitude = location.latitude;
     this.infoData.longitude = location.longitude;
     this.infoData.region = location.region;
+  }
+
+  setWork(work) {
+    if (work.name) {
+      this.title = work.name;
+      try {
+        (<any>window).ga('send', 'event', {
+          eventCategory: 'Occurrence',
+          eventLabel: 'location',
+          eventAction: String(this.title),
+          eventValue: 10
+        });
+      } catch ( e ) {
+      }
+    }
+
+    this.infoData.city = work.city;
+    this.infoData.latitude = work.latitude;
+    this.infoData.longitude = work.longitude;
+    this.infoData.region = work.region;
   }
 
   /**

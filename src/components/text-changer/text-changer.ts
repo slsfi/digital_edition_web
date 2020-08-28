@@ -68,7 +68,7 @@ export class TextChangerComponent {
           }
         }
       }).catch(err => console.error(err));
-    } catch ( e ){
+    } catch ( e ) {
 
     }
   }

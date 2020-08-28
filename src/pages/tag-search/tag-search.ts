@@ -129,8 +129,8 @@ export class TagSearchPage {
           }
         });
 
-        this.allData = tagsTmp;
-        this.cacheData = tagsTmp;
+        this.allData = this.tags;
+        this.cacheData = this.tags;
         this.showLoading = false;
         this.sortListAlphabeticallyAndGroup(this.allData);
       },

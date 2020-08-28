@@ -138,8 +138,8 @@ export class PlaceSearchPage {
           }
         });
 
-        this.allData = placesTmp;
-        this.cacheData = placesTmp;
+        this.allData = this.places;
+        this.cacheData = this.places;
         this.sortListAlphabeticallyAndGroup(this.allData);
       },
       err => {console.error(err); this.showLoading = false; }
