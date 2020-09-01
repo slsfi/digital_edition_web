@@ -1,10 +1,6 @@
 <ion-header no-border>
   <ion-toolbar color="secondary" class="secondary">
 
-    <div name="back-to-search" id="back-to-search" class="back-to-search">
-      <button ion-button color="secondary" *ngIf="navCtrl.canGoBack()" (click)="back();">Back to Search</button>
-    </div>
-
     <text-changer *ngIf="!(userSettingsService.isMobile())" [recentlyOpenViews]="views" [legacyId]="legacyId" class="text-changer-desktop-view"></text-changer>
 
     <ion-buttons>

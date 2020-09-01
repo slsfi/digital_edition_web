@@ -14,6 +14,7 @@ import { SingleOccurrence } from '../../app/models/single-occurrence.model'
 import { Storage } from '@ionic/storage'
 import { UserSettingsService } from '../../app/services/settings/user-settings.service'
 import { ElasticSearchService } from '../../app/services/elastic-search/elastic-search.service'
+import { noUndefined } from '@angular/compiler/src/util'
 
 /*
 
@@ -573,8 +574,6 @@ export class ElasticSearchPage {
       if (this.facetGroups[facetGroupKey]) {
         Object.entries(this.facetGroups[facetGroupKey]).forEach(([facetKey, existingFacet]: [string, any]) => {
           const newFacet = newFacets[facetKey]
-
-
           if (newFacet) {
             existingFacet.doc_count = newFacet.doc_count
           } else if (this.hasSelectedFacetsByGroup(facetGroupKey)) {
@@ -582,9 +581,15 @@ export class ElasticSearchPage {
             // prevents unselected aggregations from appearing in the results.
             // TODO: Fix this by separating search and aggregation query.
           } else {
-            existingFacet.doc_count = 0
+            delete this.facetGroups[facetGroupKey][facetKey];
+           // existingFacet.doc_count = 0
           }
         })
+        Object.entries(newFacets).forEach(([facetKey, existingFacet]: [string, any]) => {
+          if ( this.facetGroups[facetGroupKey][facetKey] === undefined ) {
+            this.facetGroups[facetGroupKey][facetKey] = existingFacet;
+          }
+        });
       } else {
         this.facetGroups[facetGroupKey] = newFacets
       }
