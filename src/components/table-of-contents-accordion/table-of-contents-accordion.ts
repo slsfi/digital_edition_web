@@ -410,6 +410,7 @@ export class TableOfContentsAccordionComponent {
           ((String(a.text).toUpperCase() < String(b.text).toUpperCase()) ? -1 :
           (String(a.text).toUpperCase() > String(b.text).toUpperCase()) ? 1 : 0) : 0
       );
+      this.storage.set('toc_alfabetical_' + data['collectionID'], this.alphabeticalactiveMenuTree);
   }
 
   constructChronologialTOC(data) {
@@ -425,6 +426,37 @@ export class TableOfContentsAccordionComponent {
     }
 
     this.chronologicalactiveMenuTree.sort((a, b) => (a.date < b.date) ? -1 : (a.date > b.date) ? 1 : 0);
+    let prevYear = '';
+
+    const itemArray = [];
+    let childItems = [];
+    for ( let i = 0; i < this.chronologicalactiveMenuTree.length; i++) {
+      const item = this.chronologicalactiveMenuTree[i];
+      const currentYear = String(item['date']).slice(0, 4);
+      if ( prevYear === '' ) {
+        prevYear = currentYear;
+        itemArray.push({type: 'section_title', text: prevYear, subOptions: []});
+      }
+
+      if ( prevYear !==  currentYear ) {
+        itemArray[itemArray.length - 1].subOptions = childItems;
+        itemArray[itemArray.length - 1].childrenCount = true;
+        childItems = [];
+        prevYear = currentYear;
+        itemArray.push({type: 'section_title', text: prevYear});
+      }
+      childItems.push(this.chronologicalactiveMenuTree[i]);
+    }
+    if ( itemArray.length > 0 ) {
+      itemArray[itemArray.length - 1].subOptions = childItems;
+      itemArray[itemArray.length - 1].childrenCount = true;
+    } else {
+      itemArray[0] = {};
+      itemArray[0].subOptions = childItems;
+      itemArray[0].childrenCount = true;
+    }
+    this.chronologicalactiveMenuTree = itemArray;
+    this.storage.set('toc_chronological_' + data['collectionID'], this.chronologicalactiveMenuTree);
   }
 
   flattenList(data) {
@@ -441,8 +473,20 @@ export class TableOfContentsAccordionComponent {
 
   registerEventListeners() {
     this.events.subscribe('tableOfContents:loaded', (data) => {
-        this.constructAlphabeticalTOC(data);
-        this.constructChronologialTOC(data);
+      this.storage.get('toc_alfabetical_' + data['collectionID']).then((toc) => {
+        if ( toc === null  || data['collectionID'] !== toc['collectionID'] ) {
+          this.constructAlphabeticalTOC(data);
+        } else {
+          this.alphabeticalactiveMenuTree = toc;
+        }
+      });
+      this.storage.get('toc_chronologial_' + data['collectionID']).then((toc) => {
+        if (  toc === null  || data['collectionID'] !== toc['collectionID'] ) {
+          this.constructChronologialTOC(data);
+        } else {
+          this.chronologicalactiveMenuTree = toc;
+        }
+      });
     });
   }
 

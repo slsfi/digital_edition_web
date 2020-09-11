@@ -51,6 +51,10 @@ export class TextChangerComponent {
   }
 
   ngOnInit() {
+   this.setupData();
+  }
+
+  setupData() {
     try {
       const c_id = this.legacyId.split('_')[0];
       const toc = this.storage.get('toc_' + c_id);

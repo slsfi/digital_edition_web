@@ -910,17 +910,12 @@ export class DigitalEditionsApp {
     });
 
     this.events.subscribe('topMenu:elasticSearch', () => {
-      /*this.events.publish('SelectedItemInMenu', {
-        menuID: 'topMenu',
-        component: 'app-component'
-      });*/
-      // this.openPage('ElasticSearchPage');
-      // this.openPage('elastic-search');
-      this.resetCurrentCollection();
+      const params = {};
+      this.nav.push('elastic-search', params, { animate: false }).then(e => {
+      });
+      this.tocLoaded = true;
+      // this.resetCurrentCollection();
       this.enableContentMenu();
-      const nav = this.app.getActiveNavs();
-      console.log('opening elastic search page');
-      nav[0].push('elastic-search');
     });
   }
 

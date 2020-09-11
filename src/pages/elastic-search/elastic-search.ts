@@ -160,30 +160,41 @@ export class ElasticSearchPage {
           case 'type':
             if (this.groupsOpenByDefault.type) {
               const facetListType = <HTMLElement>document.querySelector('.facetList-' + facetGroup);
-              facetListType.style.height = '100%';
-              const facetArrowType = <HTMLElement>document.querySelector('#arrow-1');
-              facetArrowType.classList.add('open', 'rotate');
+              try {
+                facetListType.style.height = '100%';
+                const facetArrowType = <HTMLElement>document.querySelector('#arrow-1');
+                facetArrowType.classList.add('open', 'rotate');
+              } catch ( e ) {
+
+              }
             }
             break;
           case 'genre':
             if (this.groupsOpenByDefault.genre) {
               const facetListGenre = <HTMLElement>document.querySelector('.facetList-' + facetGroup);
-              facetListGenre.style.height = '100%';
-              const facetArrowGenre = <HTMLElement>document.querySelector('#arrow-2');
-              facetArrowGenre.classList.add('open', 'rotate');
+              try {
+                facetListGenre.style.height = '100%';
+                const facetArrowGenre = <HTMLElement>document.querySelector('#arrow-2');
+                facetArrowGenre.classList.add('open', 'rotate');
+              } catch ( e ) {
+
+              }
             }
             break;
           case 'collection':
             if (this.groupsOpenByDefault.collection) {
               const facetListCollection = <HTMLElement>document.querySelector('.facetList-' + facetGroup);
-              facetListCollection.style.height = '100%';
-              const facetArrowCollection = <HTMLElement>document.querySelector('#arrow-3');
-              facetArrowCollection.classList.add('open', 'rotate');
+              try {
+                facetListCollection.style.height = '100%';
+                const facetArrowCollection = <HTMLElement>document.querySelector('#arrow-3');
+                facetArrowCollection.classList.add('open', 'rotate');
+              } catch ( e ) {
+
+              }
             }
             break;
           default:
             const facetListRest = <HTMLElement>document.querySelector('.facetList-' + facetGroup);
-            console.log(facetListRest);
             try {
               facetListRest.style.setProperty('height', '0px');
               const facetArrowRest = <HTMLElement>document.querySelector('#arrow-' + facetGroup);
@@ -213,7 +224,7 @@ export class ElasticSearchPage {
     console.log('will enter elastic search');
     this.events.publish('ionViewWillEnter', this.constructor.name)
     this.events.publish('tableOfContents:unSelectSelectedTocItem', true)
-    this.getParamsData()
+    this.getParamsData();
   }
 
   open(hit) {
