@@ -617,7 +617,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
       if (viewmodes && viewmodes !== undefined) {
         const hasExpired = viewmodes.expires < now;
-        if (viewmodes !== undefined && viewmodes.views.length > 0 && !hasExpired) {
+        if (viewmodes !== undefined && viewmodes.views.length > 0 && !hasExpired && this.viewsExistInAvailableViewModes(viewmodes.views)) {
           this.setViews(viewmodes.views);
         }
       } else {
