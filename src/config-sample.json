@@ -316,6 +316,9 @@
         "hasMenuConditional": false,
         "initialAboutPage": "03-01-01"
     }],
+    "Occurrences": {
+      "HideTypeAndDescription": false
+    },
     "StaticPagesMenusInTOC": [],
     "GoogleAnalyticsId": "UA-1298100167-1",
     "LoadCollectionsFromAssets": false,

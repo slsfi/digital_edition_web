@@ -60,7 +60,7 @@
             <ion-list>
                 <div *ngFor="let p of persons">
                   <ion-item *ngIf="p?.firstOfItsKind">
-                    <ion-item-divider color="light">{{p.firstOfItsKind}}</ion-item-divider>
+                    <ion-item-divider color="light">{{p.firstOfItsKind.toLocaleUpperCase()}}</ion-item-divider>
                   </ion-item>
                   <ion-item *ngIf="p?.sortBy.length > 1" (click)="openPerson(p)">
                     <p>{{p.full_name}} <span *ngIf="p.date_born || p.date_deceased">({{p.date_born}}–{{p.date_deceased}})</span></p>

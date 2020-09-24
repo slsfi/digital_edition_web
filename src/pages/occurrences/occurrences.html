@@ -17,7 +17,7 @@
           <ion-card-header>
             <div class="info">
               <h3>
-                <span *ngIf="occupation" class="occupation">{{occupation}} - </span>
+                <span *ngIf="occupation && !hideTypeAndDescription" class="occupation">{{occupation}} - </span>
                 <span class="title">{{title}}</span>
                 <span *ngIf="date_born!=null||date_deceased!=null" class="date_born">({{date_born}}–{{date_deceased}})</span>
                 <span *ngIf="latitude" class="latitude">({{"Occurrences.latitude" | translate}} {{latitude}}, </span>
@@ -67,7 +67,7 @@
                             <span *ngIf="place_of_birth" class="place_of_birth">{{place_of_birth}}</span>
                         </ion-col>
                       </ion-row>
-                      <ion-row *ngIf="type">
+                      <ion-row *ngIf="type && !hideTypeAndDescription">
                         <ion-col class="header">
                           {{"Occurrences.type" | translate}}
                         </ion-col>
@@ -83,7 +83,7 @@
                             <span *ngIf="source" class="source"><a href="{{source}}" target="_blank">{{source}}</a></span>
                         </ion-col>
                       </ion-row>
-                      <ion-row *ngIf="description" class="description_header">
+                      <ion-row *ngIf="description && !hideTypeAndDescription" class="description_header">
                         <ion-col col-12 class="header">
                           {{"Occurrences.description" | translate}}
                         </ion-col>

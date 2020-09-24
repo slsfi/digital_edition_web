@@ -48,7 +48,7 @@ export class PersonSearchPage {
   personsCopy: any[] = [];
   searchText: string;
   texts: SingleOccurrence[] = [];
-  infiniteScrollNumber = 800;
+  infiniteScrollNumber = 100;
 
   personTitle: string;
   selectedLinkID: string;
@@ -163,24 +163,9 @@ export class PersonSearchPage {
   }
   sortByLetter(letter) {
     this.searchText = letter;
-    this.getPersons()
-    const list = [];
-    try {
-      for (const p of this.allData) {
-        if (p.sortBy && p.sortBy.charCodeAt(0) === String(letter).toLowerCase().charCodeAt(0)) {
-          list.push(p);
-        } else {
-          const combining = /[\u0300-\u036F]/g;
-          const tmpChar = p.sortBy.normalize('NFKD').replace(combining, '').replace(',', '');
-          if ( tmpChar.charCodeAt(0) === String(letter).toLowerCase().charCodeAt(0) ) {
-            list.push(p);
-          }
-        }
-      }
-    } catch ( e ) {
-      this.persons = this.allData;
-    }
-    this.persons = list;
+    this.persons = [];
+    this.cf.detectChanges();
+    this.getPersons();
   }
   setData() {
     this.storage.get(this.personsKey).then((persons) => {
@@ -201,17 +186,7 @@ export class PersonSearchPage {
         persons.forEach(element => {
           element = element['_source'];
           const sortBy = [];
-          if ( element['last_name'] != null ) {
-            sortBy.push(String(element['last_name']).toLowerCase().trim().replace(' ', '').replace('ʽ', ''));
-          }
-          if ( element['first_name'] != null ) {
-            sortBy.push(String(element['first_name']).toLowerCase().trim().replace(' ', '').replace('ʽ', ''));
-          }
-
-          if ( element['last_name'] == null && element['first_name'] == null ) {
-            sortBy.push(String(element['name']).toLowerCase().trim().replace(' ', '').replace('ʽ', ''));
-          }
-
+          sortBy.push(String(element['full_name']).toLowerCase().trim().replace(' ', '').replace('ʽ', ''));
           element['sortBy'] = sortBy.join();
           const ltr = element['sortBy'].charAt(0);
           if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
@@ -504,8 +479,8 @@ export class PersonSearchPage {
       this.persons = [];
       terms = String(terms).toLowerCase().replace(' ', '');
       for (const person of this.allData) {
-        const sortBy = String(person.first_name + '' + person.last_name).toLowerCase().replace(' ', '').replace('ʽ', '');
-        const sortByReverse = String(person.last_name + '' + person.first_name).toLowerCase().replace(' ', '').replace('ʽ', '');
+        const sortBy = String(person.full_name).toLowerCase().replace(' ', '').replace('ʽ', '');
+        const sortByReverse = String(person.full_name).toLowerCase().replace(' ', '').replace('ʽ', '');
         if (sortBy) {
           if (sortBy.includes(terms) || sortByReverse.includes(terms)) {
             const inList = this.persons.some(function(p) {

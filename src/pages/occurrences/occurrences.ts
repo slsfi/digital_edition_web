@@ -47,6 +47,7 @@ export class OccurrencesPage {
   filterToggle: Boolean = true;
   singleOccurrenceType: string = null;
   galleryOccurrenceData: any = [];
+  hideTypeAndDescription = false;
 
   objectType = '';
 
@@ -93,6 +94,12 @@ export class OccurrencesPage {
       this.singleOccurrenceType = this.config.getSettings('SingleOccurrenceType');
     } catch (e) {
       this.singleOccurrenceType = null;
+    }
+
+    try {
+      this.hideTypeAndDescription = this.config.getSettings('Occurrences.HideTypeAndDescription');
+    } catch (e) {
+      this.hideTypeAndDescription = false;
     }
 
     try {

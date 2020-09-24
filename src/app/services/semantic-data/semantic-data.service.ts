@@ -147,9 +147,9 @@ export class SemanticDataService {
   getSubjectsElastic(from, searchText?) {
     const payload: any = {
       from: from,
-      size: 800,
+      size: 100,
       sort: [
-        { 'full_name.keyword' : 'asc' }
+        { 'full_name.keyword' : {'order' : 'asc'} }
       ],
       query: {
         bool: {
@@ -161,8 +161,8 @@ export class SemanticDataService {
     }
     if (searchText !== undefined && searchText !== '') {
       payload.from = 0;
-      payload.size = 1000;
-      payload.query.bool.must.push({'prefix': {'full_name': String(searchText).toLowerCase()}});
+      payload.size = 5000;
+      payload.query.bool.must.push({regexp: {'full_name.keyword': {'value': `${String(searchText)}.*`}}});
     }
 
       return this.http.post(this.getSearchUrl(this.elasticSubjectIndex), payload)
