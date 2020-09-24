@@ -48,7 +48,7 @@ export class PersonSearchPage {
   personsCopy: any[] = [];
   searchText: string;
   texts: SingleOccurrence[] = [];
-  infiniteScrollNumber = 30;
+  infiniteScrollNumber = 800;
 
   personTitle: string;
   selectedLinkID: string;

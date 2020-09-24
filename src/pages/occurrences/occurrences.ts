@@ -31,6 +31,7 @@ export class OccurrencesPage {
   title: string;
   occurrenceResult: OccurrenceResult;
   texts: any[] = [];
+  groupedTexts: any[] = [];
   longitude: Number = null;
   latitude: Number = null;
   city: string = null;
@@ -70,8 +71,9 @@ export class OccurrencesPage {
               public viewCtrl: ViewController,
               private events: Events
   ) {
+    this.groupedTexts = [];
     this.occurrenceResult = navParams.get('occurrenceResult');
-    this.title = this.occurrenceResult.name;
+    this.title = (this.occurrenceResult.name === undefined) ? this.occurrenceResult['full_name'] : this.occurrenceResult.name;
     this.longitude = (Number(this.occurrenceResult.longitude) !== 0 ) ? Number(this.occurrenceResult.longitude) : null;
     this.latitude = (Number(this.occurrenceResult.latitude) !== 0 ) ? Number(this.occurrenceResult.latitude) : null;
     this.city = this.occurrenceResult.city;
@@ -234,10 +236,15 @@ export class OccurrencesPage {
 
   getOccurrenceTexts(occurrenceResult) {
     this.texts = [];
-
-    const occurrences: Occurrence[] = occurrenceResult.occurrences;
-    for (const occurence of occurrences) {
-      this.getOccurrence(occurence);
+    this.groupedTexts = [];
+    let occurrences: Occurrence[] = [];
+    if ( occurrenceResult.occurrences !== undefined ) {
+      occurrences = occurrenceResult.occurrences;
+      for (const occurence of occurrences) {
+        this.getOccurrence(occurence);
+      }
+    } else {
+      this.getSubjectOccurrences(occurrenceResult.id);
     }
   }
 
@@ -300,6 +307,10 @@ export class OccurrencesPage {
     }
   }
 
+  objectKeys(obj) {
+    return Object.keys(obj);
+}
+
   openGallery(data) {
     let type = this.objectType;
     if ( type === 'places' ) {
@@ -356,6 +367,33 @@ export class OccurrencesPage {
       occurrence.collection_id + '_' + occurrence.publication_id : newOccurrence.linkID.split('_' + type)[0];
     newOccurrence.collectionName = occurrence.collection_name;
     newOccurrence.displayName = (occurrence.publication_name !== null) ? occurrence.publication_name : occurrence.collection_name;
+    let foundCollection = false;
+    for ( let i = 0; i < this.groupedTexts.length; i++ ) {
+      if ( this.groupedTexts[i].collection_id === occurrence.collection_id) {
+        foundCollection = true;
+        let foundPublication = false;
+        for ( let j = 0; j < this.groupedTexts[i].publications.length; j++ ) {
+          if ( this.groupedTexts[i].publications[j].publication_id === occurrence.publication_id) {
+            this.groupedTexts[i].publications[j].occurrences.push(newOccurrence);
+            foundPublication = true;
+            break;
+          }
+        }
+        if ( !foundPublication ) {
+          const item = {publication_id: occurrence.publication_id, name: occurrence.publication_name, occurrences: newOccurrence};
+          this.groupedTexts[i].publications.push(item);
+        }
+        break;
+      }
+    }
+
+    if ( !foundCollection ) {
+      const item = {collection_id: occurrence.collection_id, name: occurrence.collection_name, hidden: true,
+        publications: [{publication_id: occurrence.publication_id, name: occurrence.publication_name, occurrences: newOccurrence}]};
+      this.groupedTexts.push(item);
+    }
+
+
     this.texts.push(newOccurrence);
   }
 
@@ -368,6 +406,37 @@ export class OccurrencesPage {
     newOccurrence.facsimilePage = occurrence.publication_facsimile_page
     newOccurrence.displayName = (occurrence.publication_name !== null ) ? occurrence.publication_name : occurrence.collection_name;
     this.texts.push(newOccurrence);
+  }
+
+  getSubjectOccurrences(id) {
+    this.semanticDataService.getSubjectOccurrences(id).subscribe(
+      subjects => {
+        subjects = subjects[0];
+        this.groupedTexts = [];
+        if ( subjects.occurrences !== undefined ) {
+          for (const occurence of subjects.occurrences) {
+            this.getOccurrence(occurence);
+          }
+          console.log(this.groupedTexts)
+        } else {
+        }
+      },
+      err => {
+      },
+      () => console.log('Fetched tags...')
+    );
+  }
+
+  toggleList(id) {
+    for ( let i = 0; i < this.groupedTexts.length; i++ ) {
+      if ( id === this.groupedTexts[i]['collection_id'] ) {
+        if (this.groupedTexts[i].hidden === true) {
+          this.groupedTexts[i].hidden = false;
+        } else {
+          this.groupedTexts[i].hidden = true;
+        }
+      }
+    }
   }
 
   cancel() {

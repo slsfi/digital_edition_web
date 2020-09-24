@@ -3,6 +3,20 @@ page-occurrences {
         background-color: white;
     }
 
+
+
+    .grid{
+      padding: 0%;
+    }
+
+    .grid ion-col{
+      padding-left: 0%;
+    }
+
+    .description {
+      padding-left: 0.3rem;
+    }
+
     .close-button {
         font-size: 5.2rem;
         margin-right: 1.2rem;
@@ -29,7 +43,7 @@ page-occurrences {
         margin-left: 1.2rem;
         div{
             font-size: 1.4rem !important;
-        }        
+        }
     }
 
     .collectionName{
@@ -49,7 +63,7 @@ page-occurrences {
     .map_hidden{
         display: none;
     }
-    
+
     .map_icon{
         position: absolute;
         right: 0.3em;
@@ -79,12 +93,12 @@ page-occurrences {
     .media_image_wrapper img{
         width: auto !important;
     }
-    
+
     .media_description {
         margin-top: 1rem;
         margin-bottom: 2rem;
     }
-    
+
     .toolbar-title{
         text-align: left;
     }
@@ -102,4 +116,37 @@ page-occurrences {
     .article_link{
         margin-bottom: 1rem;
     }
-}
+    .forward-arrow-span{
+      float: right;
+    }
+    .forward-arrow-span ion-icon{
+      font-size: 1.4rem;
+    }
+    .collection_name_label ion-label{
+      white-space: normal;
+      padding-top: 0.8rem;
+    }
+    .publication_name_label ion-label{
+      white-space: normal;
+      margin-top: middle;
+    }
+    .occurrences_list ion-label{
+      margin: auto;
+    }
+    .occurrences_list_group {
+      // padding-bottom: 2rem;
+    }
+    .list_of_occurrences_item ion-label{
+      // margin-top: 0px;
+    }
+
+    .description_header{
+
+    }
+    .row{
+      border-bottom: color($colors, secondary) 1px solid;
+    }
+    ion-label{
+      color: $text-color;
+    }
+  }
