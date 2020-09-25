@@ -88,6 +88,8 @@ export class ReadPage /*implements OnDestroy*/ {
   toolTipPosition: object;
   toolTipText: string;
 
+  maxSingleWindowWidth: Number;
+
   prevItem: any;
   nextItem: any;
 
@@ -211,6 +213,8 @@ export class ReadPage /*implements OnDestroy*/ {
 
     let link = null;
 
+    this.maxSingleWindowWidth = 95;
+
     this.matches = [];
     this.availableViewModes = [];
 
@@ -245,6 +249,10 @@ export class ReadPage /*implements OnDestroy*/ {
     }
 
     this.show = this.config.getSettings('defaults.ReadModeView');
+
+    if ( this.show === 'facsimiles' ) {
+      this.maxSingleWindowWidth = 35;
+    }
 
     this.setDefaultViews();
 

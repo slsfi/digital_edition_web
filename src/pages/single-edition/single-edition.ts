@@ -207,7 +207,7 @@ export class SingleEditionPage {
   }
 
   getTocRoot(id: string) {
-    /* this.storage.get('toc_' + id).then((tocItemsC) => {
+    this.storage.get('toc_' + id).then((tocItemsC) => {
       if (tocItemsC) {
         this.tocItems = tocItemsC;
         console.log('get toc root... --- --- in single edition');
@@ -240,7 +240,7 @@ export class SingleEditionPage {
           console.log('media');
         }
       }
-    }); */
+    });
   }
 
   getTableOfContents(id: string) {

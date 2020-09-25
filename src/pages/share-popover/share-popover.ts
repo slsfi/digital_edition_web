@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
+import { ReferenceDataModalPage } from '../../pages/reference-data-modal/reference-data-modal';
 
 /**
  * Generated class for the SharePopoverPage page.
@@ -20,7 +21,10 @@ export class SharePopoverPage {
     twitter: true,
     instagram: false
   };
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private modalController: ModalController) {
   }
 
   ionViewDidLoad() {
@@ -30,6 +34,7 @@ export class SharePopoverPage {
 
   shareURI() {
     this.doAnalytics('URI');
+    this.showReference();
   }
 
   shareFacebook() {
@@ -58,5 +63,14 @@ export class SharePopoverPage {
       });
     } catch ( e ) {
     }
+  }
+
+  private showReference() {
+    // Get URL of Page and then the URI
+    const modal = this.modalController.create(ReferenceDataModalPage, {id: document.URL, type: 'reference'});
+    modal.present();
+    modal.onDidDismiss(data => {
+      console.log('dismissed', data);
+    });
   }
 }

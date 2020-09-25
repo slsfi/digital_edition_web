@@ -47,7 +47,7 @@
       snap-disabled="true" snap-offset="0" [ngClass]="views.length > 1 ? 'multiple-columns' : 'single-column'">
       <div *ngIf="showToolTip" class="toolTip" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}" [innerHTML]="toolTipText"></div>
       <div class="read-column" *ngFor="let view of views; let i = index;" id="read_div_{{i}}" scrollY="true"
-        [ngStyle]="{'position': 'relative','max-width':(95/((views.length>1)?views.length:1))+'%','min-width':'25%'}"
+        [ngStyle]="{'position': 'relative','max-width':((maxSingleWindowWidth)/((views.length>1)?views.length:1))+'%','min-width':'25%'}"
         #readColumn>
         <ion-card>
           <ion-card-header class="read-columns__title">

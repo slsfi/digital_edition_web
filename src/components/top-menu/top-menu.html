@@ -25,7 +25,7 @@
                   <ion-icon name="search"></ion-icon>
                   <span class="side-title">{{'TopMenu.SimpleSearch' | translate }}</span>
                 </button>
-                <button ion-button class="top-menu-button" (click)="elasticSearch()" id="searchIcon">
+                <button *ngIf="showTopElasticButton" ion-button class="top-menu-button" (click)="elasticSearch()" id="searchIcon">
                   <ion-icon name="search"></ion-icon>
                   <span class="side-title">{{'TopMenu.AdvancedSearch' | translate }}
                     <strong>(BETA)</strong></span>

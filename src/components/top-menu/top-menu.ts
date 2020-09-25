@@ -32,6 +32,7 @@ export class TopMenuComponent {
   public showTopURNButton: boolean;
   public showTopMusicButton: boolean;
   public showColAmount: string;
+  public showTopElasticButton: boolean;
 
   constructor(
     private events: Events,
@@ -59,6 +60,12 @@ export class TopMenuComponent {
       this.showTopURNButton = this.config.getSettings('app.showTopURNButton');
     } catch ( e ) {
       this.showTopURNButton = true;
+    }
+
+    try {
+      this.showTopElasticButton = this.config.getSettings('app.showTopElasticButton');
+    } catch ( e ) {
+      this.showTopElasticButton = true;
     }
 
     try {

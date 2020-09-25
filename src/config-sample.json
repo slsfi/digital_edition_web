@@ -8,6 +8,7 @@
         "apiEndpoint": "http://api.sls.fi:8000/digitaledition",
         "showViewToggle": false,
         "showTopURNButton": false,
+        "showTopElasticButton": false,
         "showTopMusicButton": false,
         "page-title": {
             "sv": "",
@@ -277,6 +278,7 @@
             "Read": true,
             "Facsimiles": true,
             "ImageGallery": true,
+            "MediaCollections": true,
             "PersonSearch": true,
             "PlaceSearch": true,
             "TagSearch": true,
