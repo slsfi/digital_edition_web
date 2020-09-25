@@ -147,7 +147,7 @@ export class SemanticDataService {
   getSubjectsElastic(from, searchText?) {
     const payload: any = {
       from: from,
-      size: 100,
+      size: 200,
       sort: [
         { 'full_name.keyword' : {'order' : 'asc'} }
       ],

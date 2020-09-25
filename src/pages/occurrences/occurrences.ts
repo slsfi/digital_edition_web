@@ -115,9 +115,8 @@ export class OccurrencesPage {
     } catch ( e ) {
 
     }
-
-    this.getOccurrenceTexts(navParams.get('occurrenceResult'));
     this.setObjectType();
+    this.getOccurrenceTexts(navParams.get('occurrenceResult'));
     this.getMediaData();
     this.getArticleData();
     this.getGalleryOccurrences();
@@ -251,7 +250,7 @@ export class OccurrencesPage {
         this.getOccurrence(occurence);
       }
     } else {
-      this.getSubjectOccurrences(occurrenceResult.id);
+      this.getOccurrences(occurrenceResult.id);
     }
   }
 
@@ -374,6 +373,12 @@ export class OccurrencesPage {
       occurrence.collection_id + '_' + occurrence.publication_id : newOccurrence.linkID.split('_' + type)[0];
     newOccurrence.collectionName = occurrence.collection_name;
     newOccurrence.displayName = (occurrence.publication_name !== null) ? occurrence.publication_name : occurrence.collection_name;
+    this.setOccurrenceTree(newOccurrence, occurrence);
+
+    this.texts.push(newOccurrence);
+  }
+
+  setOccurrenceTree(newOccurrence, occurrence) {
     let foundCollection = false;
     for ( let i = 0; i < this.groupedTexts.length; i++ ) {
       if ( this.groupedTexts[i].collection_id === occurrence.collection_id) {
@@ -395,13 +400,13 @@ export class OccurrencesPage {
     }
 
     if ( !foundCollection ) {
+      if ( occurrence.collection_name === undefined ) {
+        occurrence.collection_name = occurrence.publication_collection_name;
+      }
       const item = {collection_id: occurrence.collection_id, name: occurrence.collection_name, hidden: true,
         publications: [{publication_id: occurrence.publication_id, name: occurrence.publication_name, occurrences: newOccurrence}]};
       this.groupedTexts.push(item);
     }
-
-
-    this.texts.push(newOccurrence);
   }
 
   setFacsimileOccurrence(occurrence: Occurrence, type: string) {
@@ -412,16 +417,17 @@ export class OccurrencesPage {
     newOccurrence.collectionName = occurrence.collection_name
     newOccurrence.facsimilePage = occurrence.publication_facsimile_page
     newOccurrence.displayName = (occurrence.publication_name !== null ) ? occurrence.publication_name : occurrence.collection_name;
+    this.setOccurrenceTree(newOccurrence, occurrence);
     this.texts.push(newOccurrence);
   }
 
-  getSubjectOccurrences(id) {
-    this.semanticDataService.getSubjectOccurrences(id).subscribe(
-      subjects => {
-        subjects = subjects[0];
+  getOccurrences(id) {
+    this.semanticDataService.getOccurrences(this.objectType, id).subscribe(
+      occ => {
+        occ = occ[0];
         this.groupedTexts = [];
-        if ( subjects.occurrences !== undefined ) {
-          for (const occurence of subjects.occurrences) {
+        if ( occ.occurrences !== undefined ) {
+          for (const occurence of occ.occurrences) {
             this.getOccurrence(occurence);
           }
           console.log(this.groupedTexts)
