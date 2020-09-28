@@ -38,10 +38,10 @@
                 <ng-template [ngIf]="(menuItem.childrenCount && menuItem.subOptions.length) || menuItem.children_id || menuItem.search_children_id">
                     <ion-list no-margin class="accordion-menu" [style.marginLeft]="menuItem.is_child ? 20 + 'px' : '0px'">
                         <ion-item class="header type-{{menuItem.type}}" [ngClass]="menuSettings?.showSelectedOption && menuItem.selected ? menuSettings.selectedOptionClass : null" (tap)="toggleItemOptions(menuItem)" tappable>
-                            <ion-icon [class.rotate]="menuItem.expanded" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
+                            <ion-icon [class.rotate]="(menuItem.expanded || menuItem.collapsed === false)" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
                             <p>{{ menuItem.text }}</p>
                         </ion-item>
-                        <div [style.height]="menuItem.expanded ? '100%' : '0px'" class="options recursive-suboptions">
+                        <div [style.height]="(menuItem.expanded || menuItem.collapsed === false) ? '100%' : '0px'" class="options recursive-suboptions">
                             <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: menuItem.subOptions }">
                             </ng-container>
                         </div>

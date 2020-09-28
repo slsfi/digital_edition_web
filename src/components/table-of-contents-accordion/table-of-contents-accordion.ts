@@ -53,6 +53,7 @@ class InnerMenuOptionModel {
   search_children_id?: any;
   important?: boolean;
   description: any;
+  collapsed: boolean;
 
   public static fromMenuOptionModel(
                   option: TocAccordionMenuOptionModel,
@@ -143,7 +144,7 @@ class InnerMenuOptionModel {
       option.children.forEach(subItem => {
 
       const innerSubItem = InnerMenuOptionModel.fromMenuOptionModel(subItem, innerMenuOptionModel, true, searchingTocItem);
-
+      innerSubItem.collapsed = subItem.collapsed;
       if (innerSubItem.text) {
         if (storeChildren) {
           if ( childrenToc[innerMenuOptionModel.children_id].indexOf(innerSubItem) === -1 ) {
@@ -162,7 +163,6 @@ class InnerMenuOptionModel {
         innerSubItem.parent.selected = true;
         innerSubItem.parent.expanded = true;
       }
-
       });
     }
 
@@ -900,8 +900,16 @@ export class TableOfContentsAccordionComponent {
         targetOption.subOptions = searchChildrenToc[targetOption.search_children_id];
       }
     }
-    // Toggle the selected option
-    targetOption.expanded = !targetOption.expanded;
+
+    if ( targetOption.collapsed === undefined || String(targetOption.collapsed) === '' ) {
+      // collapsed is inverted expanded
+      targetOption.collapsed = targetOption.expanded;
+      targetOption.expanded = !targetOption.expanded;
+    } else {
+      // Toggle the selected option
+      targetOption.expanded = targetOption.collapsed;
+      targetOption.collapsed = !targetOption.expanded;
+    }
 
     if ( targetOption.itemId !== undefined ) {
       this.select(targetOption);
@@ -913,11 +921,12 @@ export class TableOfContentsAccordionComponent {
     this.collapsableItems.forEach(option => {
       if (!option.selected) {
         option.expanded = false;
+        option.collapsed = true;
       }
 
       if (option.childrenCount) {
         option.subOptions.forEach(subItem => {
-          if (subItem.selected) {
+          if (subItem.selected || subItem['collapsed'] === false) {
             // Expand the parent if any of
             // its childs is selected
             subItem.parent.expanded = true;
