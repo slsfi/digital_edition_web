@@ -1197,8 +1197,21 @@ export class ReadPage /*implements OnDestroy*/ {
 
     this.tooltipService.getPersonTooltip(id).subscribe(
       tooltip => {
-        this.setToolTipText(tooltip.description);
-        this.tooltips.persons[id] = tooltip.description;
+        let text = '';
+        if ( tooltip.date_born !== null || tooltip.date_deceased !== null ) {
+          const date_born =  String(tooltip.date_born).split('-')[0];
+          const date_deceased = String(tooltip.date_deceased).split('-')[0];
+          text = '<b>' + tooltip.name + '</b> (' + date_born + '–' + date_deceased + ')';
+        } else {
+          text = '<b>' + tooltip.name + '</b>';
+        }
+
+        if ( tooltip.description !== null ) {
+          text += ', ' + tooltip.description
+        }
+
+        this.setToolTipText(text);
+        this.tooltips.persons[id] = text;
       },
       error => {
         this.setToolTipText('Could not get person information');
