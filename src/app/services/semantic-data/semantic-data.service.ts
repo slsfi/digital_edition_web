@@ -159,15 +159,23 @@ export class SemanticDataService {
         }
       }
     }
-    if (searchText !== undefined && searchText !== '') {
+    // Seach for first character of name
+    if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
       payload.from = 0;
       payload.size = 5000;
-      payload.query.bool.must.push({regexp: {'full_name.keyword': {'value': `${String(searchText)}.*`}}});
+      payload.query.bool.must.push({regexp: {'full_name.keyword': {
+          'value': `${String(searchText)}.*|${String(searchText).toLowerCase()}.*`}}});
+    } else if ( searchText !== undefined && searchText !== '' ) {
+      payload.from = 0;
+      payload.size = 5000;
+      payload.sort = ['_score'],
+      payload.query.bool.must.push({fuzzy: {'full_name': {
+          'value': `${String(searchText)}`}}});
     }
 
-      return this.http.post(this.getSearchUrl(this.elasticSubjectIndex), payload)
-      .map(this.extractData)
-      .catch(this.handleError)
+    return this.http.post(this.getSearchUrl(this.elasticSubjectIndex), payload)
+    .map(this.extractData)
+    .catch(this.handleError)
   }
 
   getLocationElastic(from, searchText?) {

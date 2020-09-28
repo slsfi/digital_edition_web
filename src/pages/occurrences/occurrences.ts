@@ -48,6 +48,7 @@ export class OccurrencesPage {
   singleOccurrenceType: string = null;
   galleryOccurrenceData: any = [];
   hideTypeAndDescription = false;
+  isLoading: Boolean = true;
 
   objectType = '';
 
@@ -360,7 +361,7 @@ export class OccurrencesPage {
     const newOccurrence = new SingleOccurrence();
     let fileName = occurrence.original_filename;
 
-    if ( occurrence.original_filename === null ) {
+    if ( occurrence.original_filename === undefined || occurrence.original_filename === null ) {
       fileName = occurrence.collection_id + '_' + occurrence['publication_id'] + '.xml';
     }
 
@@ -422,19 +423,22 @@ export class OccurrencesPage {
   }
 
   getOccurrences(id) {
+    this.isLoading = true;
     this.semanticDataService.getOccurrences(this.objectType, id).subscribe(
       occ => {
-        occ = occ[0];
         this.groupedTexts = [];
-        if ( occ.occurrences !== undefined ) {
-          for (const occurence of occ.occurrences) {
-            this.getOccurrence(occurence);
+        occ.forEach(item => {
+          if ( item.occurrences !== undefined ) {
+            for (const occurence of item.occurrences) {
+              this.getOccurrence(occurence);
+            }
+          } else {
           }
-          console.log(this.groupedTexts)
-        } else {
-        }
+        });
+        this.isLoading = false;
       },
       err => {
+        this.isLoading = false;
       },
       () => console.log('Fetched tags...')
     );

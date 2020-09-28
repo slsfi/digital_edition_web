@@ -117,6 +117,7 @@
                 </ion-item>
                 <ion-item-divider>{{"Occurrences.Title" | translate}}</ion-item-divider>
                 <ion-list class="occurrences_list">
+                  <ion-item *ngIf="isLoading"><ion-spinner class="loading" name="dots"></ion-spinner></ion-item>
                   <ion-item *ngFor="let collection of groupedTexts">
                     <ion-item-group class="occurrences_list_group">
                       <ion-item-divider (click)="toggleList(collection.collection_id)" class="collection_name_label">
