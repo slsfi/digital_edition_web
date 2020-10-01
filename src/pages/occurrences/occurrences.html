@@ -128,7 +128,7 @@
                         </span>
                       </ion-item-divider>
                       <ion-list *ngIf="!collection.hidden" class="list_of_occurrences">
-                        <ion-item *ngFor="let publication of collection['publications']" (click)="openText(publication.occurrences)" class="list_of_occurrences_item">
+                        <ion-item *ngFor="let publication of collection['publications']" (click)="openText(publication.occurrences[0])" class="list_of_occurrences_item">
                           <p *ngIf="publication.occurrences.length > 1">{{publication.occurrences[0].displayName}} ({{publication.occurrences.length}} {{"Occurrences.OccurrencesSmall" | translate}})</p>
                           <p *ngIf="publication.occurrences.length < 2">{{publication.occurrences[0].displayName}}</p>
                           <ion-item class="displayName" *ngIf="publication.occurrences[0].publication_facsimile_page">
