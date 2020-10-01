@@ -145,6 +145,12 @@ export class SemanticDataService {
   }
 
   getSubjectsElastic(from, searchText?) {
+    let showPublishedStatus = 2;
+    try {
+      showPublishedStatus = this.config.getSettings('LocationSearch.ShowPublishedStatus');
+    } catch (e) {
+      showPublishedStatus = 2;
+    }
     const payload: any = {
       from: from,
       size: 200,
@@ -155,6 +161,9 @@ export class SemanticDataService {
         bool: {
           must : [{
             'term' : { 'project_id' : this.config.getSettings('app.projectId') }
+          },
+          {
+            'term' : { 'published' : showPublishedStatus }
           }],
         }
       }
@@ -179,9 +188,15 @@ export class SemanticDataService {
   }
 
   getLocationElastic(from, searchText?) {
+    let showPublishedStatus = 2;
+    try {
+      showPublishedStatus = this.config.getSettings('LocationSearch.ShowPublishedStatus');
+    } catch (e) {
+      showPublishedStatus = 2;
+    }
     const payload: any = {
       from: from,
-      size: 800,
+      size: 200,
       sort: [
         { 'name.keyword' : 'asc' }
       ],
@@ -189,14 +204,25 @@ export class SemanticDataService {
         bool: {
           must : [{
             'term' : { 'project_id' : this.config.getSettings('app.projectId') }
+          },
+          {
+            'term' : { 'published' : showPublishedStatus }
           }],
         }
       }
     }
-    if (searchText !== undefined && searchText !== '') {
+    // Seach for first character of name
+    if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
       payload.from = 0;
-      payload.size = 1000;
-      payload.query.bool.must.push({'prefix': {'name': String(searchText).toLowerCase()}});
+      payload.size = 5000;
+      payload.query.bool.must.push({regexp: {'name.keyword': {
+          'value': `${String(searchText)}.*|${String(searchText).toLowerCase()}.*`}}});
+    } else if ( searchText !== undefined && searchText !== '' ) {
+      payload.from = 0;
+      payload.size = 5000;
+      payload.sort = ['_score'],
+      payload.query.bool.must.push({fuzzy: {'name': {
+          'value': `${String(searchText)}`}}});
     }
     return this.http.post(this.getSearchUrl(this.elasticLocationIndex), payload)
     .map(this.extractData)
@@ -204,6 +230,12 @@ export class SemanticDataService {
   }
 
   getTagElastic(from, searchText?) {
+    let showPublishedStatus = 2;
+    try {
+      showPublishedStatus = this.config.getSettings('LocationSearch.ShowPublishedStatus');
+    } catch (e) {
+      showPublishedStatus = 2;
+    }
     const payload: any = {
       from: from,
       size: 800,
@@ -214,6 +246,9 @@ export class SemanticDataService {
         bool: {
           must : [{
             'term' : { 'project_id' : this.config.getSettings('app.projectId') }
+          },
+          {
+            'term' : { 'published' : showPublishedStatus }
           }],
         }
       }

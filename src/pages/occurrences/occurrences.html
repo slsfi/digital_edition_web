@@ -129,23 +129,24 @@
                       </ion-item-divider>
                       <ion-list *ngIf="!collection.hidden" class="list_of_occurrences">
                         <ion-item *ngFor="let publication of collection['publications']" (click)="openText(publication.occurrences)" class="list_of_occurrences_item">
-                          <p>{{publication.occurrences.displayName}}</p>
-                          <ion-item class="displayName" *ngIf="publication.occurrences.publication_facsimile_page">
+                          <p *ngIf="publication.occurrences.length > 1">{{publication.occurrences[0].displayName}} ({{publication.occurrences.length}} {{"Occurrences.OccurrencesSmall" | translate}})</p>
+                          <p *ngIf="publication.occurrences.length < 2">{{publication.occurrences[0].displayName}}</p>
+                          <ion-item class="displayName" *ngIf="publication.occurrences[0].publication_facsimile_page">
                             <div>
-                              {{"Occurrences.Facsimile" | translate}}: {{publication.occurrences.publication_facsimile_page}}
+                              {{"Occurrences.Facsimile" | translate}}: {{publication.occurrences[0].publication_facsimile_page}}
                             </div>
                           </ion-item>
-                          <ion-item class="displayName" *ngIf="publication.occurrences.textType == 'song' && publication.occurrences.description">
+                          <ion-item class="displayName" *ngIf="publication.occurrences[0].textType == 'song' && publication.occurrences[0].description">
                             <div>
-                              {{"Occurrences.Song" | translate}}: {{publication.occurrences.description}}
+                              {{"Occurrences.Song" | translate}}: {{publication.occurrences[0].description}}
                             </div>
                           </ion-item>
-                          <button *ngIf="publication.occurrences.textType == 'ms'" ion-button clear item-end>{{"Occurrences.Manuscript" | translate}}</button>
-                          <button *ngIf="publication.occurrences.textType == 'var'" ion-button clear item-end>{{"Occurrences.Variation" | translate}}</button>
-                          <button *ngIf="publication.occurrences.textType == 'com'" ion-button clear item-end>{{"Occurrences.Commentary" | translate}}</button>
-                          <button *ngIf="publication.occurrences.textType == 'facs'" ion-button clear item-end>{{"Occurrences.Facsimile" | translate}}</button>
-                          <button *ngIf="publication.occurrences.textType == 'est'" ion-button clear item-end>{{"Occurrences.Established" | translate}}</button>
-                          <button *ngIf="publication.occurrences.textType == 'song'" ion-button clear item-end>{{"Occurrences.Song" | translate}}</button>
+                          <button *ngIf="publication.occurrences[0].textType == 'ms'" ion-button clear item-end>{{"Occurrences.Manuscript" | translate}}</button>
+                          <button *ngIf="publication.occurrences[0].textType == 'var'" ion-button clear item-end>{{"Occurrences.Variation" | translate}}</button>
+                          <button *ngIf="publication.occurrences[0].textType == 'com'" ion-button clear item-end>{{"Occurrences.Commentary" | translate}}</button>
+                          <button *ngIf="publication.occurrences[0].textType == 'facs'" ion-button clear item-end>{{"Occurrences.Facsimile" | translate}}</button>
+                          <button *ngIf="publication.occurrences[0].textType == 'est'" ion-button clear item-end>{{"Occurrences.Established" | translate}}</button>
+                          <button *ngIf="publication.occurrences[0].textType == 'song'" ion-button clear item-end>{{"Occurrences.Song" | translate}}</button>
                         </ion-item>
                       </ion-list>
                     </ion-item-group>

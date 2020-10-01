@@ -62,7 +62,7 @@
             <ion-list>
                 <div *ngFor="let p of places">
                   <ion-item *ngIf="p?.firstOfItsKind">
-                    <ion-item-divider color="light">{{p.firstOfItsKind}}</ion-item-divider>
+                    <ion-item-divider color="light">{{p.firstOfItsKind.toLocaleUpperCase()}}</ion-item-divider>
                   </ion-item>
                   <ion-item *ngIf="p?.name.length > 1" (click)="openPlace(p)">
                     <p>{{p.name}}</p>

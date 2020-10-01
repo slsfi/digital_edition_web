@@ -49,6 +49,7 @@ export class OccurrencesPage {
   galleryOccurrenceData: any = [];
   hideTypeAndDescription = false;
   isLoading: Boolean = true;
+  showPublishedStatus: Number = 2;
 
   objectType = '';
 
@@ -101,6 +102,12 @@ export class OccurrencesPage {
       this.hideTypeAndDescription = this.config.getSettings('Occurrences.HideTypeAndDescription');
     } catch (e) {
       this.hideTypeAndDescription = false;
+    }
+
+    try {
+      this.showPublishedStatus = this.config.getSettings('Occurrences.ShowPublishedStatus');
+    } catch (e) {
+      this.showPublishedStatus = 2;
     }
 
     try {
@@ -392,8 +399,8 @@ export class OccurrencesPage {
             break;
           }
         }
-        if ( !foundPublication ) {
-          const item = {publication_id: occurrence.publication_id, name: occurrence.publication_name, occurrences: newOccurrence};
+        if ( !foundPublication && occurrence.publication_published >= this.showPublishedStatus ) {
+          const item = {publication_id: occurrence.publication_id, name: occurrence.publication_name, occurrences: [newOccurrence]};
           this.groupedTexts[i].publications.push(item);
         }
         break;
@@ -404,9 +411,11 @@ export class OccurrencesPage {
       if ( occurrence.collection_name === undefined ) {
         occurrence.collection_name = occurrence.publication_collection_name;
       }
-      const item = {collection_id: occurrence.collection_id, name: occurrence.collection_name, hidden: true,
-        publications: [{publication_id: occurrence.publication_id, name: occurrence.publication_name, occurrences: newOccurrence}]};
-      this.groupedTexts.push(item);
+      if ( occurrence.publication_published >= this.showPublishedStatus ) {
+        const item = {collection_id: occurrence.collection_id, name: occurrence.collection_name, hidden: true,
+          publications: [{publication_id: occurrence.publication_id, name: occurrence.publication_name, occurrences: [newOccurrence]}]};
+        this.groupedTexts.push(item);
+      }
     }
   }
 
@@ -427,6 +436,7 @@ export class OccurrencesPage {
     this.semanticDataService.getOccurrences(this.objectType, id).subscribe(
       occ => {
         this.groupedTexts = [];
+        // Sort alphabetically
         occ.forEach(item => {
           if ( item.occurrences !== undefined ) {
             for (const occurence of item.occurrences) {
@@ -442,6 +452,14 @@ export class OccurrencesPage {
       },
       () => console.log('Fetched tags...')
     );
+  }
+
+  sortList(arrayToSort, fieldToSortOn) {
+    arrayToSort.sort(function(a, b) {
+      if (a[fieldToSortOn].charCodeAt(0) < b[fieldToSortOn].charCodeAt(0)) { return -1; }
+      if (a[fieldToSortOn].charCodeAt(0) > b[fieldToSortOn].charCodeAt(0)) { return 1; }
+      return 0;
+    });
   }
 
   toggleList(id) {

@@ -304,13 +304,16 @@
       "ShowInReadMenu": true
     },
     "PersonSearch": {
-        "ShowFilter": true
+        "ShowFilter": true,
+        "ShowPublishedStatus": 2
     },
     "LocationSearch": {
-        "ShowFilter": true
+        "ShowFilter": true,
+        "ShowPublishedStatus": 2
     },
     "TagSearch": {
-        "ShowFilter": true
+        "ShowFilter": true,
+        "ShowPublishedStatus": 2
     },
     "StaticPagesMenus": [{
         "menuID": "aboutMenu",
@@ -319,7 +322,8 @@
         "initialAboutPage": "03-01-01"
     }],
     "Occurrences": {
-      "HideTypeAndDescription": false
+      "HideTypeAndDescription": false,
+      "ShowPublishedStatus": 2
     },
     "StaticPagesMenusInTOC": [],
     "GoogleAnalyticsId": "UA-1298100167-1",
