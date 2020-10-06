@@ -103,11 +103,16 @@ export class CommentsComponent {
       // This is tagging in href to another page e.g. introduction
       try {
         const elem: HTMLAnchorElement = event.target as HTMLAnchorElement;
-        const targetId = String(elem.getAttribute('href')).split('#')[1];
+        let targetId = '';
+        if ( String(elem.getAttribute('href')).includes('#') === false ) {
+          targetId = String(elem.getAttribute('href'));
+        } else {
+          targetId = String(elem.getAttribute('href')).split('#')[1];
+        }
         let target = document.getElementsByName(targetId)[0] as HTMLAnchorElement;
-        if ( target !== null && target !== undefined ) {
+        if ( target !== null && target !== undefined && elem.classList.contains('ext') === false ) {
           this.scrollToHTMLElement(target, true);
-        } else if ( targetId !== null && targetId !== undefined ) {
+        } else if ( targetId !== null && targetId !== undefined && elem.classList.contains('ext') === false ) {
           // Check if intro or same publication id
           // Check class ref_introduction, readingtext
           // Also check if already open and if same publication?

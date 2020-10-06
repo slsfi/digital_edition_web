@@ -102,31 +102,30 @@ export class IntroductionPage {
         event.stopPropagation();
         event.preventDefault();
         const elem: HTMLElement = event.target as HTMLElement;
-        let targetId = elem.getAttribute('href');
-        if ( targetId === null ) {
-          targetId = elem.parentElement.getAttribute('href');
-        }
-        const dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
-        const target = elem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
-        if ( target !== null ) {
-           this.scrollToElementTOC(target, event);
-        }
-      } catch ( e ) {}
-    });
-
-    this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
-      try {
-        event.stopPropagation();
-        event.preventDefault();
-        const elem: HTMLElement = event.target as HTMLElement;
-        let targetId = elem.getAttribute('href');
-        if ( targetId === null ) {
-          targetId = elem.parentElement.getAttribute('href');
-        }
-        const dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
-        const target = elem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
-        if ( target !== null ) {
-           this.scrollToElementTOC(target, event);
+        if ( event.target.classList.contains('ref_readingtext') || event.target.classList.contains('ref_comment')) {
+          const params = String(decodeURI(event.target.href)).split('/').pop();
+          this.openExternal(params);
+        } else if ( event.target.classList.contains('ref_introduction') ) {
+          let targetId = elem.getAttribute('href');
+          if ( targetId === null ) {
+            targetId = elem.parentElement.getAttribute('href');
+          }
+          targetId = String(targetId).split('#')[1];
+          const dataIdSelector = '[name="' + String(targetId).replace('#', '') + '"]';
+          const target = elem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
+          if ( target !== null ) {
+            this.scrollToElementTOC(target, event);
+          }
+        } else {
+          let targetId = elem.getAttribute('href');
+          if ( targetId === null ) {
+            targetId = elem.parentElement.getAttribute('href');
+          }
+          const dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
+          const target = elem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
+          if ( target !== null ) {
+            this.scrollToElementTOC(target, event);
+          }
         }
       } catch ( e ) {}
     });
@@ -145,7 +144,6 @@ export class IntroductionPage {
       const eventTarget = this.getEventTarget(event);
       const elem = event.target;
       if (eventTarget['classList'].contains('tooltiptrigger')) {
-        console.log(elem);
         const x = ((elem.getBoundingClientRect().x + vw) - vw) + (elem.offsetWidth + 10);
         const y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
         if (sidePaneIsOpen) {
@@ -159,8 +157,6 @@ export class IntroductionPage {
             left: x + 'px'
           };
         }
-
-        console.log(elem.offsetTop )
 
         if (eventTarget.hasAttribute('data-id')) {
           if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
@@ -198,6 +194,22 @@ export class IntroductionPage {
         }
       }
     }).bind(this);
+  }
+
+  openExternal(external) {
+    const extParts = String(external).split(' ');
+    this.textService.getCollectionAndPublicationByLegacyId(extParts[0] + '_' + extParts[1]).subscribe(data => {
+      if ( data[0] !== undefined ) {
+        let link = '/#/publication/' + data[0]['coll_id'] + '/text/' + data[0]['pub_id'];
+        if ( extParts[2] !== undefined ) {
+          link += '/' + extParts[2];
+        }
+        if ( extParts[3] !== undefined && String(extParts[3]).includes('#') !== false ) {
+          link += String(extParts[3]).replace('#', ';');
+        }
+        const ref = window.open(link + '/not/infinite/nosong/searchtitle/established&comments', '_blank', 'location=no');
+      }
+    });
   }
 
   ionViewWillLeave() {
@@ -338,7 +350,6 @@ export class IntroductionPage {
     try {
       element.scrollIntoView({'behavior': 'smooth', 'block': 'start'});
     } catch ( e ) {
-      console.log(e);
     }
   }
 
