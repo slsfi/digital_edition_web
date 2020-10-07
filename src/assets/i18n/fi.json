@@ -228,6 +228,7 @@
     "works": "Verk",
     "Reference": {
         "title": "Hänvisa",
+        "urn": "Länka",
         "thisPage": "Hänvisa till denna sida",
         "established": "Hänvisa till denna lästext",
         "intro": "Hänvisa till denna inledning"

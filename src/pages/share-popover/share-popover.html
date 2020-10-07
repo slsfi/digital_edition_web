@@ -1,9 +1,12 @@
 <ion-list>
   <ion-item-group>
-    <ion-item-divider color="light">Hänvisa</ion-item-divider>
+    <ion-item-divider color="light">
+      {{'Reference.title' | translate }}
+      <div class="close" (click)="dismiss()"><ion-icon name="close"></ion-icon></div>
+    </ion-item-divider>
     <ion-item (click)="shareURI()">
       <ion-icon item-start name="ios-link"></ion-icon>
-      <p>Link</p>
+      <p>{{'Reference.urn' | translate }}</p>
     </ion-item>
   </ion-item-group>
   <ion-item-group>

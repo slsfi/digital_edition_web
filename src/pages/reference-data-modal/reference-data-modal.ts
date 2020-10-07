@@ -44,6 +44,9 @@ export class ReferenceDataModalPage {
     if ( idParts[4] !== undefined ) {
       relevantParts += '/' + idParts[4];
     }
+    if ( idParts[5] !== undefined && idParts[5] !== 'nochapter' && idParts[5] !== 'not') {
+      relevantParts += '/' + idParts[5];
+    }
     this.getReferenceData(relevantParts);
   }
 
@@ -67,5 +70,6 @@ export class ReferenceDataModalPage {
 
    dismiss() {
      this.viewCtrl.dismiss();
+     this.events.publish('share:dismiss');
    }
 }
