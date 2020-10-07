@@ -35,6 +35,11 @@ export class TextService {
     if ( `${id}`.split('_')[2] !== undefined ) {
       ch_id = String(`${id}`.split('_')[2]).split(';')[0];
     }
+
+    if ( ch_id === '' ) {
+      ch_id = null;
+    }
+
     const textId = id;
 
     return this.http.get(  `${this.apiEndPoint}/${this.appMachineName}/text/${c_id}/${pub_id}/est${((ch_id === null) ? '' : '/' + ch_id)}`)

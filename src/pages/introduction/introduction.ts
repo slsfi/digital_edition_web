@@ -116,6 +116,14 @@ export class IntroductionPage {
           if ( target !== null ) {
             this.scrollToElementTOC(target, event);
           }
+        } else if ( event.target.classList.contains('ref_external') ) {
+          let targetId = elem.getAttribute('href');
+          if ( targetId === null ) {
+            targetId = elem.parentElement.getAttribute('href');
+          }
+          if ( targetId !== null ) {
+            window.open(targetId, '_blank', 'location=no');
+          }
         } else {
           let targetId = elem.getAttribute('href');
           if ( targetId === null ) {
@@ -202,7 +210,7 @@ export class IntroductionPage {
       if ( data[0] !== undefined ) {
         let link = '/#/publication/' + data[0]['coll_id'] + '/text/' + data[0]['pub_id'];
         if ( extParts[2] !== undefined ) {
-          link += '/' + extParts[2];
+          link += '/' + String(extParts[2]).replace('#', ';');
         }
         if ( extParts[3] !== undefined && String(extParts[3]).includes('#') !== false ) {
           link += String(extParts[3]).replace('#', ';');
