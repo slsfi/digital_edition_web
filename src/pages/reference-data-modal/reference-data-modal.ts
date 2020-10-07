@@ -61,7 +61,13 @@ export class ReferenceDataModalPage {
       this.referenceDataService.getReferenceData(id).subscribe(
           data => {
               this.referenceData = data;
-            },
+              if ( String(data).length === 0 && id.includes('/') ) {
+                const newId = id.slice(0, id.lastIndexOf('/'));
+                if ( newId.length > 0 ) {
+                  this.getReferenceData(newId);
+                }
+              }
+          },
           error =>  {
               this.referenceData = 'Unable to get referenceData';
           }
