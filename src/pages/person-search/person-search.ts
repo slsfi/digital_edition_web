@@ -27,7 +27,7 @@ import { OccurrencesPage } from '../occurrences/occurrences';
 
 @IonicPage({
   name: 'person-search',
-  segment: 'search/:type/:subtype',
+  segment: 'person-search/:type/:subtype',
   defaultHistory: ['HomePage']
 })
 @Component({
@@ -86,6 +86,7 @@ export class PersonSearchPage {
               private cf: ChangeDetectorRef
   ) {
     const type = this.navParams.get('type') || null;
+
     this.langService.getLanguage().subscribe((lang) => {
       this.appName = this.config.getSettings('app.name.' + lang);
       try {
@@ -104,6 +105,10 @@ export class PersonSearchPage {
   getParamsData() {
     this.type = this.navParams.get('type');
     this.subType = this.navParams.get('subtype');
+
+    if ( String(this.subType).includes('subtype') ) {
+      this.subType = null;
+    }
 
     if (this.subType) {
       this.personsKey += `-${this.subType}`;
@@ -124,8 +129,6 @@ export class PersonSearchPage {
 
   selectMusicAccordionItem() {
     const appHasMusicAccordion = this.appHasMusicAccordionConfig();
-
-    this.subType = this.navParams.get('subtype') || null;
 
     if (!appHasMusicAccordion || !this.subType.length) {
       return;
@@ -161,12 +164,14 @@ export class PersonSearchPage {
     this.selectMusicAccordionItem();
     this.setData();
   }
+
   sortByLetter(letter) {
     this.searchText = letter;
     this.persons = [];
     this.cf.detectChanges();
     this.getPersons();
   }
+
   setData() {
     this.storage.get(this.personsKey).then((persons) => {
       if (persons) {
@@ -177,6 +182,7 @@ export class PersonSearchPage {
       }
     });
   }
+
   getPersons() {
     this.showLoading = true;
     this.semanticDataService.getSubjectsElastic(this.from, this.searchText).subscribe(
@@ -217,6 +223,7 @@ export class PersonSearchPage {
       err => {console.error(err); this.showLoading = false; }
     );
   }
+
   async download() {
     this.cacheItem = !this.cacheItem;
 
@@ -226,14 +233,17 @@ export class PersonSearchPage {
       this.removeFromCache(this.personsKey);
     }
   }
+
   async storeCacheText(id: string, text: any) {
     await this.storage.set(id, text);
     await this.addedToCacheToast(id);
   }
+
   async removeFromCache(id: string) {
     await this.storage.remove(id);
     await this.removedFromCacheToast(id);
   }
+
   getCacheText(id: string) {
     this.storage.get(id).then((persons) => {
       this.allData = persons;
@@ -247,6 +257,7 @@ export class PersonSearchPage {
       }
     });
   }
+
   async addedToCacheToast(id: string) {
     let status = '';
 
@@ -270,6 +281,7 @@ export class PersonSearchPage {
 
     await toast.present();
   }
+
   async removedFromCacheToast(id: string) {
     let status = '';
 
@@ -293,6 +305,7 @@ export class PersonSearchPage {
 
     await toast.present();
   }
+
   sortListAlphabeticallyAndGroup(listOfPersons: any[]) {
     const persons = listOfPersons;
 
@@ -307,6 +320,7 @@ export class PersonSearchPage {
     }
     return persons;
   }
+
   groupPersonsAlphabetically(persons) {
     // Checks when first character changes in order to divide names into alphabetical groups
     for (let i = 0; i < persons.length ; i++) {

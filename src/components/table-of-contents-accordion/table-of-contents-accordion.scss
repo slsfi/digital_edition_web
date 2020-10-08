@@ -1,4 +1,7 @@
 table-of-contents-accordion {
+  ion-label{
+    cursor: pointer;
+  }
 
   .collection-name-top{
     background-color: rgba(color($colors, primary), $alpha: 0.2) !important;

@@ -8,6 +8,9 @@ import { ConfigService } from '@ngx-config/core';
 import { TooltipService } from '../../app/services/tooltips/tooltip.service';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { ReadPopoverPage } from '../read-popover/read-popover';
+import { GeneralTocItem } from '../../app/models/table-of-contents.model';
+import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
+import { Storage } from '@ionic/storage';
 
 /**
  * Generated class for the IntroductionPage page.
@@ -20,7 +23,7 @@ import { ReadPopoverPage } from '../read-popover/read-popover';
 
 @IonicPage({
   name: 'introduction',
-  segment: 'publication-introduction/:collectionID/'
+  segment: 'publication-introduction/:collectionID'
 })
 @Component({
   selector: 'page-introduction',
@@ -47,6 +50,8 @@ export class IntroductionPage {
     'footnotes': {}
   };
 
+  tocItems: GeneralTocItem[];
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -61,6 +66,8 @@ export class IntroductionPage {
     private userSettingsService: UserSettingsService,
     private events: Events,
     private platform: Platform,
+    protected tableOfContentsService: TableOfContentsService,
+    private storage: Storage,
     public readPopoverService: ReadPopoverService,
     private config: ConfigService
   ) {
@@ -76,7 +83,7 @@ export class IntroductionPage {
     } catch (error) {
       this.hasSeparateIntroToc = false;
     }
-
+    this.getTocRoot(this.id);
   }
 
   ionViewDidLoad() {
@@ -324,6 +331,43 @@ export class IntroductionPage {
         this.setToolTipText('Could not get person information');
       }
     );
+  }
+
+  getTocRoot(id: string) {
+    this.storage.get('toc_' + id).then((tocItemsC) => {
+      if (tocItemsC) {
+        this.tocItems = tocItemsC;
+        console.log('get toc root... --- --- in single edition');
+        const tocLoadedParams = { tocItems: tocItemsC };
+        tocLoadedParams['collectionID'] = this.id;
+        tocLoadedParams['searchTocItem'] = true;
+        this.events.publish('tableOfContents:loaded', tocLoadedParams);
+        console.log('toc from cache');
+      } else {
+        if ( id !== 'mediaCollections' ) {
+          this.tableOfContentsService.getTableOfContents(id)
+          .subscribe(
+            tocItems => {
+              this.tocItems = tocItems;
+              console.log('get toc root... --- --- in single edition');
+              const tocLoadedParams = { tocItems: tocItems };
+              tocLoadedParams['collectionID'] = this.collection;
+              tocLoadedParams['searchTocItem'] = true;
+              this.events.publish('tableOfContents:loaded', tocLoadedParams);
+              this.storage.set('toc_' + id, tocItems);
+            },
+            error => { this.errorMessage = <any>error });
+        } else {
+          this.tocItems = this.collection['accordionToc']['toc'];
+          const tocLoadedParams = { tocItems: this.tocItems };
+          tocLoadedParams['collectionID'] = 'mediaCollections';
+          tocLoadedParams['searchTocItem'] = true;
+          this.events.publish('tableOfContents:loaded', tocLoadedParams);
+          this.storage.set('toc_' + id, this.tocItems);
+          console.log('media');
+        }
+      }
+    });
   }
 
   showPopover(myEvent) {

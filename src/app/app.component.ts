@@ -1231,6 +1231,9 @@ export class DigitalEditionsApp {
         component: 'app-component'
       });
     }
+    if ( searchPage.object_subtype === undefined || searchPage.object_subtype === '' ) {
+      searchPage.object_subtype = encodeURI('subtype');
+    }
     const params = {
       type: searchPage.object_type,
       subtype: searchPage.object_subtype

@@ -355,7 +355,7 @@ export class TableOfContentsAccordionComponent {
       this.hasIntro = false;
     }
 
-    if ( this.hasCover ) {
+    if ( this.hasCover && String(window.location.href).includes('publication-introduction') === false) {
       this.titleSelected = true;
     } else if ( this.hasIntro ) {
       this.introductionSelected = true;
