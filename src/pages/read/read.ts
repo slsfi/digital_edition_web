@@ -326,9 +326,9 @@ export class ReadPage /*implements OnDestroy*/ {
       });
     }
 
-    this.events.subscribe('show:view', (view, id) => {
+    this.events.subscribe('show:view', (view, id, chapter) => {
       // user and time are the same arguments passed in `events.publish(user, time)`
-      console.log('Welcome', view, 'at', id);
+      console.log('Welcome', view, 'at', id, 'chapter', chapter);
       this.openNewExternalView(view, id);
     });
 
