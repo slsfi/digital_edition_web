@@ -51,7 +51,7 @@ export class TextChangerComponent {
   }
 
   ngOnInit() {
-   this.setupData();
+    this.setupData();
   }
 
   setupData() {
@@ -115,7 +115,9 @@ export class TextChangerComponent {
       this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID') ;
     }
 
-    if ( this.params.get('chapterID') !== undefined && String(this.legacyId).indexOf(this.params.get('chapterID')) === -1 ) {
+    if ( this.params.get('chapterID') !== undefined &&
+      String(this.legacyId).indexOf(this.params.get('chapterID')) === -1 &&
+      String(this.params.get('chapterID')).indexOf('ch') >= 0  ) {
       this.legacyId += '_' + this.params.get('chapterID');
     }
 
