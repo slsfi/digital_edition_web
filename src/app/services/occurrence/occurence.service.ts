@@ -14,7 +14,6 @@ export class OccurrenceService {
     return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/occurrences/' + object_type + '/' + id)
         .map(res => {
           const body = res.json();
-
           return body || ' - no content - ';
         })
         .catch(this.handleError);

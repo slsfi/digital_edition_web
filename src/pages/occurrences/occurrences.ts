@@ -437,12 +437,17 @@ export class OccurrencesPage {
       occ => {
         this.groupedTexts = [];
         // Sort alphabetically
+        const addedTOCs = [];
         occ.forEach(item => {
           if ( item.occurrences !== undefined ) {
             for (const occurence of item.occurrences) {
               this.getOccurrence(occurence);
             }
-          } else {
+            if ( item.occurrences[0] !== undefined &&
+             addedTOCs.includes(item.occurrences[0]['collection_id']) === false ) {
+              this.getPublicationTOCName(item.occurrences[0], this.groupedTexts);
+              addedTOCs.push(item.occurrences[0]['collection_id']);
+            }
           }
         });
         this.isLoading = false;
@@ -452,6 +457,31 @@ export class OccurrencesPage {
       },
       () => console.log('Fetched tags...')
     );
+  }
+
+  getPublicationTOCName(occ_data, all_data) {
+    const itemId = occ_data['collection_id'] + '_' + occ_data['publication_id'];
+    this.semanticDataService.getPublicationTOC(occ_data['collection_id']).subscribe(
+      toc_data => {
+          this.updatePublicationNames(toc_data, all_data, itemId);
+        },
+      error =>  {
+      }
+    );
+  }
+
+  public updatePublicationNames(tocData, allData, itemId) {
+    tocData.forEach( item => {
+      allData.forEach(data => {
+        data['publications'].forEach(pub => {
+          const id =  data['collection_id'] + '_' + pub['publication_id'];
+          if ( id === item['itemId'] ) {
+            pub.occurrences[0].displayName = item['text'];
+            pub['name'] = item['text'];
+          }
+        });
+      });
+  });
   }
 
   sortList(arrayToSort, fieldToSortOn) {

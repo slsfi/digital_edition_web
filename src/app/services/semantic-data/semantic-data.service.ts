@@ -12,6 +12,7 @@ export class SemanticDataService {
   elasticSubjectIndex: string;
   elasticLocationIndex: string;
   elasticTagIndex: string;
+  flattened: any;
 
   constructor(private http: Http, private config: ConfigService) {
     try {
@@ -22,6 +23,7 @@ export class SemanticDataService {
     this.elasticSubjectIndex = 'subject';
     this.elasticLocationIndex = 'location';
     this.elasticTagIndex = 'tag';
+    this.flattened = [];
   }
 
 
@@ -53,7 +55,6 @@ export class SemanticDataService {
        this.config.getSettings('app.machineName') + '/subject/' + id)
       .map(res => {
         const body = res.json();
-
         return body || ' - no content - ';
       })
       .catch(this.handleError);
@@ -126,7 +127,6 @@ export class SemanticDataService {
       this.config.getSettings('app.machineName') + '/subject/occurrences/' + ((subject_id) ? subject_id + '/' : ''))
       .map(res => {
         const body = res.json();
-
         return body || ' - no content - ';
       })
       .catch(this.handleError);
@@ -268,7 +268,6 @@ export class SemanticDataService {
     return this.http.get(this.config.getSettings('app.apiEndpoint') + '/occurrences/subject/' + id)
       .map(res => {
         const body = res.json();
-
         return body || ' - no content - ';
       })
       .catch(this.handleError);
@@ -279,7 +278,6 @@ export class SemanticDataService {
     return this.http.get(this.config.getSettings('app.apiEndpoint') + '/occurrences/' + type + '/' + id)
       .map(res => {
         const body = res.json();
-
         return body || ' - no content - ';
       })
       .catch(this.handleError);
@@ -371,6 +369,31 @@ export class SemanticDataService {
         return res.json();
       })
       .catch(this.handleError);
+  }
+
+  getPublicationTOC(collection_id) {
+    return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
+                          this.config.getSettings('app.machineName') + '/toc/' + collection_id)
+        .map(res => {
+          const data = res.json();
+          this.flatten(data);
+          return this.flattened;
+        },
+        error => {
+          console.log(error);
+        })
+        .catch(this.handleError);
+  }
+
+  private flatten(toc) {
+    if ( toc.children ) {
+      for (let i = 0, count = toc.children.length; i < count; i++) {
+        if ( toc.children[i].itemId !== undefined && toc.children[i].itemId !== '') {
+          this.flattened.push(toc.children[i]);
+        }
+        this.flatten(toc.children[i]);
+      }
+    }
   }
 
   private getSearchUrl(index: any): string {

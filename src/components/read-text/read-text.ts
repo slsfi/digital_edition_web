@@ -77,7 +77,8 @@ export class ReadTextComponent {
             this.events.publish('give:illustration', image);
           }
         } else {
-          if (event.target.previousElementSibling.classList.contains('est_figure_graphic')) {
+          if (event.target.previousElementSibling !== null &&
+            event.target.previousElementSibling.classList.contains('est_figure_graphic')) {
             const image = {src: event.target.previousElementSibling.src, class: 'illustration'};
             this.events.publish('give:illustration', image);
           }

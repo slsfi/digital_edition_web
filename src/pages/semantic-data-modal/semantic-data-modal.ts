@@ -4,6 +4,7 @@ import { NavController, ViewController, NavParams, App, Platform } from 'ionic-a
 import { DomSanitizer } from '@angular/platform-browser';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Occurrence } from '../../app/models/occurrence.model';
 
 /*
   Generated class for the SemanticDataModal page.
@@ -27,6 +28,7 @@ export class SemanticDataModalPage {
   public tagOccurrences: Array<object>;
   public workOccurrences: Array<object>;
   public type: string;
+  public publicationTOCNames: Array<object>;
 
   constructor(  public navCtrl: NavController,
                 public viewCtrl: ViewController,
@@ -41,6 +43,7 @@ export class SemanticDataModalPage {
 
   ) {
     let id = params.get('id');
+    this.publicationTOCNames = [];
 
     this.legacyPrefix = '';
     try {
@@ -103,6 +106,18 @@ export class SemanticDataModalPage {
             this.semanticData = 'Unable to get semanticData';
         }
       );
+  }
+
+  getPublicationTOCName(occ_data, all_data) {
+    const itemId = occ_data['occurrences'][0]['collection_id'] + '_' + occ_data['occurrences'][0]['publication_id'];
+    this.semanticDataService.getPublicationTOC(occ_data['occurrences'][0]['collection_id']).subscribe(
+      toc_data => {
+          this.updatePublicationNames(toc_data, all_data, itemId);
+        },
+      error =>  {
+          this.semanticData = 'Unable to get semanticData';
+      }
+    );
   }
 
   getWork(id: string) {
@@ -174,6 +189,14 @@ export class SemanticDataModalPage {
     this.semanticDataService.getSubjectOccurrencesById(id).subscribe(
       data => {
         this.subjectOccurrences = data;
+        const addedTOCs = [];
+        this.subjectOccurrences.forEach(element => {
+            if ( element['occurrences'][0]['collection_id'] !== undefined &&
+             addedTOCs.includes(element['occurrences'][0]['collection_id']) === false ) {
+              this.getPublicationTOCName(element, this.subjectOccurrences);
+              addedTOCs.push(element['occurrences'][0]['collection_id']);
+            }
+        });
       },
       error =>  {
           this.semanticData = 'Unable to get semanticData';
@@ -181,10 +204,31 @@ export class SemanticDataModalPage {
     );
   }
 
+  public updatePublicationNames(tocData, allData, itemId) {
+    tocData.forEach( item => {
+        allData.forEach(data => {
+          data['occurrences'].forEach(occ => {
+            const id =  occ['collection_id'] + '_' + occ['publication_id'];
+            if ( id === item['itemId'] ) {
+              occ['publication_name'] = item['text'];
+            }
+          });
+        });
+    });
+  }
+
   public getLocationOccurrencesById(id: string) {
     this.semanticDataService.getLocationOccurrencesById(id).subscribe(
       data => {
         this.locationOccurrences = data;
+        const addedTOCs = [];
+        this.locationOccurrences.forEach(element => {
+          if ( element['occurrences'][0]['collection_id'] !== undefined &&
+             addedTOCs.includes(element['occurrences'][0]['collection_id']) === false ) {
+              this.getPublicationTOCName(element, this.locationOccurrences);
+              addedTOCs.push(element['occurrences'][0]['collection_id']);
+          }
+        });
       },
       error =>  {
           this.semanticData = 'Unable to get semanticData';
@@ -196,6 +240,14 @@ export class SemanticDataModalPage {
     this.semanticDataService.getTagOccurrencesById(id).subscribe(
       data => {
         this.tagOccurrences = data;
+        const addedTOCs = [];
+        this.tagOccurrences.forEach(element => {
+          if ( element['occurrences'][0]['collection_id'] !== undefined &&
+             addedTOCs.includes(element['occurrences'][0]['collection_id']) === false ) {
+              this.getPublicationTOCName(element, this.tagOccurrences);
+              addedTOCs.push(element['occurrences'][0]['collection_id']);
+          }
+        });
       },
       error =>  {
           this.semanticData = 'Unable to get semanticData';
@@ -207,6 +259,14 @@ export class SemanticDataModalPage {
     this.semanticDataService.getWorkOccurrencesById(id).subscribe(
       data => {
         this.workOccurrences = data;
+        const addedTOCs = [];
+        this.workOccurrences.forEach(element => {
+          if ( element['occurrences'][0]['collection_id'] !== undefined &&
+             addedTOCs.includes(element['occurrences'][0]['collection_id']) === false ) {
+              this.getPublicationTOCName(element, this.workOccurrences);
+              addedTOCs.push(element['occurrences'][0]['collection_id']);
+          }
+        });
       },
       error =>  {
           this.semanticData = 'Unable to get semanticData';
