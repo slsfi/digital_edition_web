@@ -73,7 +73,7 @@
               <ion-item-divider color="light">{{p.firstOfItsKind}}</ion-item-divider>
             </ion-item>
             <ion-item *ngIf="p['title'].length > 1" (click)="openWork(p)">
-              <p>{{p['title']}}</p>
+                <span *ngFor="let author of p.author_data; let i = index;" class="author">{{author['full_name']}}{{(i < (p.author_data.length-1))?', ': ''}}</span>, <span class="work_title">{{p['title']}}</span>
             </ion-item>
           </div>
         </ion-list>

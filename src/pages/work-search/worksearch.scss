@@ -7,7 +7,7 @@ page-work-search {
     .scroll-content {
         margin-top: 40px !important;
     }
-    
+
     .occurence {
         background-color: white;
     }
@@ -52,12 +52,18 @@ page-work-search {
     .filter-button {
         font-size: 2.8rem;
     }
-    
+
     .searchbar {
         color: white;
     }
 
     .loading{
         float: right;
+    }
+    .work_title{
+      font-style: italic;
+    }
+    .author{
+      color: color($colors, gray);
     }
 }
