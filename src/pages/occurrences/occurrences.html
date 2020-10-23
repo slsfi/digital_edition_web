@@ -107,7 +107,7 @@
                             <span *ngIf="isbn" class="source">{{isbn}}</span>
                         </ion-col>
                       </ion-row>
-                      <ion-row *ngIf="authors">
+                      <ion-row *ngIf="authors && authors[0].full_name ">
                         <ion-col class="header">
                           {{"Occurrences.authors" | translate}}
                         </ion-col>
