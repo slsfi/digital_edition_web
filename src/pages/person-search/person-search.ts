@@ -67,6 +67,7 @@ export class PersonSearchPage {
   personsKey = 'person-search';
 
   personSearchTypes = [];
+  filterYear: number;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -86,7 +87,7 @@ export class PersonSearchPage {
               private cf: ChangeDetectorRef
   ) {
     const type = this.navParams.get('type') || null;
-
+    this.filterYear = null;
     this.langService.getLanguage().subscribe((lang) => {
       this.appName = this.config.getSettings('app.name.' + lang);
       try {
@@ -185,7 +186,7 @@ export class PersonSearchPage {
 
   getPersons() {
     this.showLoading = true;
-    this.semanticDataService.getSubjectsElastic(this.from, this.searchText).subscribe(
+    this.semanticDataService.getSubjectsElastic(this.from, this.searchText, this.filterYear).subscribe(
       persons => {
         const personsTmp = [];
         persons = persons.hits.hits;
@@ -387,29 +388,8 @@ export class PersonSearchPage {
   }
 
   filterByYear(year: number) {
-    this.count = 0;
-    const newData = [];
-
-    for (const p of this.allData) {
-      if (p.date_born && p.date_deceased) {
-        if (Number(p.date_born.match(/\S+/g)[3]) < year && Number(p.date_deceased.match(/\S+/g)[3]) > year) {
-          newData.push(p);
-        }
-      }
-    }
-
-    this.persons = [];
-    this.allData = newData;
-
-    for (let k = 0; k < this.infiniteScrollNumber; k++) {
-      if (k === this.allData.length) {
-        break;
-      } else {
-        this.persons.push(this.allData[this.count]);
-        this.personsCopy.push(this.allData[this.count]);
-        this.count++
-      }
-    }
+    this.filterYear = year;
+    this.getPersons();
   }
 
   getSubjectsOccurrencesByCollection(filterCollections, callback) {

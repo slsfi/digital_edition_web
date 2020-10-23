@@ -189,7 +189,7 @@ export class SemanticDataModalPage {
     this.semanticDataService.getSubjectOccurrencesById(id).subscribe(
       data => {
         this.subjectOccurrences = data;
-        const addedTOCs = [];
+        const addedTOCs: Array<String> = [];
         this.subjectOccurrences.forEach(element => {
             if ( element['occurrences'][0]['collection_id'] !== undefined &&
              addedTOCs.includes(element['occurrences'][0]['collection_id']) === false ) {
@@ -221,7 +221,7 @@ export class SemanticDataModalPage {
     this.semanticDataService.getLocationOccurrencesById(id).subscribe(
       data => {
         this.locationOccurrences = data;
-        const addedTOCs = [];
+        const addedTOCs: Array<String> = [];
         this.locationOccurrences.forEach(element => {
           if ( element['occurrences'][0]['collection_id'] !== undefined &&
              addedTOCs.includes(element['occurrences'][0]['collection_id']) === false ) {
@@ -240,7 +240,7 @@ export class SemanticDataModalPage {
     this.semanticDataService.getTagOccurrencesById(id).subscribe(
       data => {
         this.tagOccurrences = data;
-        const addedTOCs = [];
+        const addedTOCs: Array<String> = [];
         this.tagOccurrences.forEach(element => {
           if ( element['occurrences'][0]['collection_id'] !== undefined &&
              addedTOCs.includes(element['occurrences'][0]['collection_id']) === false ) {
@@ -259,7 +259,7 @@ export class SemanticDataModalPage {
     this.semanticDataService.getWorkOccurrencesById(id).subscribe(
       data => {
         this.workOccurrences = data;
-        const addedTOCs = [];
+        const addedTOCs: Array<String> = [];
         this.workOccurrences.forEach(element => {
           if ( element['occurrences'][0]['collection_id'] !== undefined &&
              addedTOCs.includes(element['occurrences'][0]['collection_id']) === false ) {

@@ -83,6 +83,48 @@
                             <span *ngIf="source" class="source"><a href="{{source}}" target="_blank">{{source}}</a></span>
                         </ion-col>
                       </ion-row>
+                      <ion-row *ngIf="publisher">
+                        <ion-col class="header">
+                          {{"Occurrences.publisher" | translate}}
+                        </ion-col>
+                        <ion-col>
+                            <span *ngIf="publisher" class="source">{{publisher}}</span>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row *ngIf="published_year">
+                        <ion-col class="header">
+                          {{"Occurrences.published_year" | translate}}
+                        </ion-col>
+                        <ion-col>
+                            <span *ngIf="published_year" class="source">{{published_year}}</span>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row *ngIf="isbn">
+                        <ion-col class="header">
+                          {{"Occurrences.isbn" | translate}}
+                        </ion-col>
+                        <ion-col>
+                            <span *ngIf="isbn" class="source">{{isbn}}</span>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row *ngIf="authors">
+                        <ion-col class="header">
+                          {{"Occurrences.authors" | translate}}
+                        </ion-col>
+                        <ion-col>
+                            <ion-col *ngFor="let author of authors; let i = index" col-12>
+                              <div class="article_description">{{author.full_name}}</div>
+                            </ion-col>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row *ngIf="journal">
+                        <ion-col class="header">
+                          {{"Occurrences.journal" | translate}}
+                        </ion-col>
+                        <ion-col>
+                            <span *ngIf="journal" class="source">{{journal}}</span>
+                        </ion-col>
+                      </ion-row>
                       <ion-row *ngIf="description && !hideTypeAndDescription" class="description_header">
                         <ion-col col-12 class="header">
                           {{"Occurrences.description" | translate}}

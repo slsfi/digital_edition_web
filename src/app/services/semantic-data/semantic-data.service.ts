@@ -11,6 +11,7 @@ export class SemanticDataService {
   useLegacy: boolean;
   elasticSubjectIndex: string;
   elasticLocationIndex: string;
+  elasticWorkIndex: string;
   elasticTagIndex: string;
   flattened: any;
 
@@ -22,6 +23,7 @@ export class SemanticDataService {
     }
     this.elasticSubjectIndex = 'subject';
     this.elasticLocationIndex = 'location';
+    this.elasticWorkIndex = 'work';
     this.elasticTagIndex = 'tag';
     this.flattened = [];
   }
@@ -144,7 +146,7 @@ export class SemanticDataService {
       .catch(this.handleError);
   }
 
-  getSubjectsElastic(from, searchText?) {
+  getSubjectsElastic(from, searchText?, filterYear?) {
     let showPublishedStatus = 2;
     try {
       showPublishedStatus = this.config.getSettings('LocationSearch.ShowPublishedStatus');
@@ -167,6 +169,17 @@ export class SemanticDataService {
           }],
         }
       }
+    }
+
+    // Add date range filter.
+    if (filterYear) {
+      payload.query.bool.must.push({
+        range: {
+          date_born_date: {
+            gte: filterYear,
+          }
+        }
+      })
     }
     // Seach for first character of name
     if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
@@ -225,6 +238,39 @@ export class SemanticDataService {
           'value': `${String(searchText)}`}}});
     }
     return this.http.post(this.getSearchUrl(this.elasticLocationIndex), payload)
+    .map(this.extractData)
+    .catch(this.handleError)
+  }
+
+  getWorksElastic(from, searchText?) {
+    const payload: any = {
+      from: from,
+      size: 200,
+      sort: [
+        { 'title.keyword' : 'asc' }
+      ],
+      query: {
+        bool: {
+          must : [{
+            'term' : { 'project_id' : this.config.getSettings('app.projectId') }
+          }],
+        }
+      }
+    }
+    // Seach for first character of name
+    if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
+      payload.from = 0;
+      payload.size = 5000;
+      payload.query.bool.must.push({regexp: {'title.keyword': {
+          'value': `${String(searchText)}.*|${String(searchText).toLowerCase()}.*`}}});
+    } else if ( searchText !== undefined && searchText !== '' ) {
+      payload.from = 0;
+      payload.size = 5000;
+      payload.sort = ['_score'],
+      payload.query.bool.must.push({fuzzy: {'title': {
+          'value': `${String(searchText)}`}}});
+    }
+    return this.http.post(this.getSearchUrl(this.elasticWorkIndex), payload)
     .map(this.extractData)
     .catch(this.handleError)
   }

@@ -1,262 +1,302 @@
 {
-    "BrowserWarning": "Din webbläsare stöds inte",
-    "BrowserWarningInfo": "Internet Explorer stöds inte av denna sida. Använd Edge, Firefox eller nån annan webbläsare.",
-    "BrowserWarningClose": "Stäng",
-    "TopMenu": {
-        "Home": "Startsida",
-        "Read": "Innehåll",
-        "Info": "Om",
-        "SimpleSearch": "Haku",
-        "AdvancedSearch": "Tarkennettu haku"
-    },
-    "Tabs": {
-        "Home": "Hem",
-        "Read": "Läs digitalt",
-        "Info": "Mer information"
-    },
-    "Read": {
-        "DigitalEditions": "Digitala utgåvor",
-        "OpenInTab": "Öppna i ny flik",
-        "Popover": {
-            "All": "Välj alla",
-            "Appearance": "Utseende",
-            "Show": "Visningsalternativ",
-            "Comments": "Kommentarer",
-            "PersonInfo": "Personupplysningar",
-            "PlaceInfo": "Platsupplysningar",
-            "WorkInfo": "Works",
-            "Changes": "Ändringar",
-            "Abbreviations": "Förkortningar",
-            "PageNumbering": "Stycke-/versnummer",
-            "PageBreakOriginal": "Sidnummer / sidbrytning i orig.",
-            "PageBreakEdition": "Sidnummer i den tryckta utgåvan"
-        },
-        "DownloadDigitalVersion": "Ladda ner digital version",
-        "DownloadPDF": "Ladda ner PDF",
-        "CommentsFor": "Kommentarer till",
-        "ReadFromBeginning": "Läs från början",
-        "Established": {
-            "Title": "Lästext",
-            "AddButtonText": "Lästextvy"
-        },
-        "Comments": {
-            "Title": "Kommentarer",
-            "AddButtonText": "Kommentarvy",
-            "Manuscript": {
-              "Title": "Manuskriptbeskrivning",
-              "LegacyId": "Brevsignum",
-              "Sender": "Avsändare",
-              "Receiver": "Mottagare",
-              "Archive": "Arkiv",
-              "Collection": "Samling, signum",
-              "Type": "Form",
-              "Status": "Status",
-              "Format": "Format",
-              "Leafs": "Lägg",
-              "Sheets": "Antal blad",
-              "Pages": "Sidor brevtext",
-              "Color": "Färg",
-              "Quality": "Kvalitet",
-              "Pattern": "Mönster",
-              "State": "Tillstånd",
-              "Material": "Skrivmaterial",
-              "Other": "Övrigt"
-            }
-        },
-        "Manuscripts": {
-            "Title": "Manuskript",
-            "AddButtonText": "Manuskriptvy",
-            "SelectManuscript": "Välj manuskript",
-            "ShowNormalized": "Visa ändringar inarbetade",
-            "ShowChanges": "Visa ändringar",
-            "OpenFacsimile": "Öppna faksimil"
-        },
-        "Variations": {
-            "Title": "Variationer",
-            "AddButtonText": "Variationsvy"
-        },
-        "Facsimiles": {
-            "Title": "Faksimiler",
-            "AddButtonText": "Faksimilvy",
-            "SelectFacsimiles": "Välj faksimil",
-            "Page": "Sida",
-            "Of": "av",
-            "OpenManuscript": "Öppna manuskript",
-            "ExternalHeading" : "External Facsimiles"
-        },
-        "SongExample": {
-            "Title": "Sång exempel",
-            "AddButtonText": "Sång exempel"
-        },
-        "TitlePage": {
-            "Title": "Titel"
-        },
-        "Introduction": {
-            "Title": "Inledning",
-            "AddButtonText": "Inledning"
-        },
-        "Illustrations": {
-          "AddButtonText": "Illustrations view",
-          "Goto": "Gå till position i lästext",
-          "Nothing": "Inga illustationer",
-          "Showall": "Visa alla"
-        },
-        "ShowAll": "Visa alla",
-        "ShowSearchResults": "Förekomster"
-    },
-    "About": {
-        "Title": "Om utgåvan",
-        "UI": "Användargränssnitt",
-        "Language": "Språk",
-        "Information": "Information"
-    },
-    "MediaCollections": {
-        "MediaCollections": "Faksimilsamlingar",
-        "GotoMediaCollection": "Gå till bildbanken"
-    },
-    "TOC": {
-        "Home": "Till startsidan",
-        "Read": "Läs",
-        "Facsimiles": "Faksimil i urval",
-        "ImageGallery": "Bildgalleri",
-        "PersonSearch": "Personsök",
-        "PlaceSearch": "Platsregister",
-        "TagSearch": "Ämnesord",
-        "WorkSearch": "Verkregister",
-        "MusicianSearch": "Spelmän",
-        "WriterSearch": "Upptecknare",
-        "SongTypes": "Låttyper",
-        "Music": "Musik",
-        "Collections": "Kategorier",
-        "Books": "Kirjat",
-        "All": "kaikki"
-    },
-    "GalleryPages": {
-        "0": "Finland framställdt i teckningar",
-        "1": "En resa i Finland",
-        "2": "Topelius liv och verk"
-    },
-    "MobilePages": {
-        "header": "Sidor"
-    },
-    "BackButton": {
-        "default": "Tillbaka"
-    },
-    "HomePage": {
-        "current": "Aktuellt",
-        "publishedEditions": "Publicerade utgåvor:",
-        "digitalEditionHeading": "Zacharias Topelius verk i digital utgåva",
-        "selectEdition": "Se denna"
-    },
-    "SearchApp": {
-        "simpleSearch": "Sök",
-        "advancedSearch": "Avancerad sökning",
-        "filter": "Filter",
-        "matchesOn": "Sökträff(ar):",
-        "numberOf": "träffar",
-        "pagenumber": "s.",
-        "search-holder": "Söktext",
-        "hitCount": "Antal träffar",
-        "type": "Typ",
-        "timeline": "Tidsperiod",
-        "freetext": "Fritext",
-        "start": "Start",
-        "end": "Slut",
-        "relevance": "Relevans",
-        "alphabetical": "Alfabetet",
-        "oldest": "Äldst",
-        "genre": "Genre",
-        "person-register": "Personregister",
-        "place-register": "Platsregister ",
-        "tag-register": "Ämnesord",
-        "verk": "Verkregister",
-        "sort-by": "Sortera enligt"
-    },
-    "Occurrences": {
-        "Title": "Förekomster",
-        "Manuscript": "Manuskript",
-        "Variation": "Variant",
-        "Commentary": "Kommentar",
-        "Facsimile": "Faksimil",
-        "Established": "Lästext",
-        "Song": "Sång",
-        "Info": "Information",
-        "NoInfoFound": "Ingen information hittades.",
-        "OccurrencesSmall": "förekomster",
-        "Found": "Hittade",
-        "Result": "Resultat",
-        "longitude": "long.",
-        "latitude": "lat.",
-        "city": "Stad",
-        "region": "Region",
-        "country": "Plats",
-        "place_of_birth": "Ort",
-        "type": "Typ",
-        "source": "Källa",
-        "description": "Beskrivning",
-        "no_occurrences": "Inga förekomster",
-        "download": "ladda ner pdf",
-        "articles": "Artiklar"
-    },
-    "ElasticSearch": {
-      "NoHits": "Haku ei vastannut yhtään asiakirjaa",
-      "Found": "Löytyi",
-      "SearchField": "Lisä hakukenttä",
-      "From": "From",
-      "To": "To",
-      "Search": "Hae",
-      "Years": "Vuosi",
-      "WordCount": "Antal träffar (estimat)",
-      "NoWordHits": "inga träffar"
-    },
-    "est": "Lästext",
-    "ms": "Manuskript",
-    "com": "Kommentar",
-    "tit": "Titel",
-    "var": "Variant",
-    "inl": "Inledning",
-    "locations": "Platser",
-    "location": "Plats",
-    "tags": "Ämnesord",
-    "tag": "Ämnesord",
-    "subjects": "Personer",
-    "recorder": "Upptecknare",
-    "playman": "Upptecknare",
-    "collections": "Samlingar",
-    "photos": "kuvaa",
-    "song": "Melodi",
-    "works": "Verk",
-    "Reference": {
-        "title": "Hänvisa",
-        "urn": "Länka",
-        "thisPage": "Hänvisa till denna sida",
-        "established": "Hänvisa till denna lästext",
-        "intro": "Hänvisa till denna inledning"
-    },
-    "Song": {
-        "Playman": "Spelman",
-        "playman": "Spelman",
-        "SongType": "Låttyp",
-        "SongName": "Låtens namn",
-        "Landscape": "Landskap",
-        "Place": "Ort",
-        "Recorder": "Upptecknare",
-        "recorder": "Upptecknare",
-        "Year": "Uppteckningsår",
-        "OCL": "Originalsamlingens placering",
-        "OCS": "Originalsamlingens signum",
-        "Volume": "Volym",
-        "SongNumber": "Sångnummer",
-        "Comments": "Kommentarer",
-        "SongText": "Sångtext",
-        "Download": "Ladda ner"
-    },
-    "established": "Lukuteksti",
-    "comments": "Kommentaari",
-    "facsimiles": "Faksimilet",
-    "manuscripts": "Käsikirjoitukset",
-    "variations": "Variantit",
-    "introduction": "Introduktio",
-    "songexample": "Sång",
-    "illustrations": "Kuvitukset"
+  "BrowserWarning": "Selainta ei tueta",
+  "BrowserWarningInfo": "Tämä sivusto ei tue Internet Exploreria. Käytä Edgeä, Firefoxia, Chromea tai mitä tahansa muu selain.",
+  "BrowserWarningClose": "Sulje",
+  "TutorialTexts": {
+      "nextLabel": "Seuraava",
+      "prevLabel": "Edellinen",
+      "skipLabel": "Ohita",
+      "doneLabel": "Valmis",
+      "WelcomeText": "Tervetuloa, tässä on käyttöliittymän esittely.",
+      "MenuToggleText": "Piilota tai näytä sivuvalikko napsauttamalla tätä.",
+      "ReadTocItemText": "Täällä voit nähdä kaikki digitaaliset julkaisut.",
+      "DownloadCacheText": "Tällä painikkeella voit tallentaa tiedot paikallisesti, niin se on nopeampaa seuraavan kerran."
+  },
+  "TopMenu": {
+      "Home": "Etusivu",
+      "Read": "Lue",
+      "Info": "Topeliuksesta ja editiosta",
+      "Music": "Musik",
+      "SimpleSearch": "Hae",
+      "AdvancedSearch": "Hae"
+  },
+  "Tabs": {
+      "Home": "Koti",
+      "Read": "Lue digitaalisesti",
+      "Info": "Lisää aiheesta"
+  },
+  "Read": {
+      "DigitalEditions": "Digitaaliset julkaisut",
+      "OpenInTab": "Avaa uuteen välilehteen",
+      "Popover": {
+          "All": "Valitse kaikki",
+          "Appearance": "Asetukset",
+          "Show": "Näkymävaihtoehdot",
+          "Comments": "Kommentit",
+          "PersonInfo": "Henkilöt",
+          "PlaceInfo": "Paikannimet",
+          "WorkInfo": "Teokset",
+          "Changes": "Toimittajan tekemät muutokset",
+          "Abbreviations": "Lyhennykset",
+          "PageNumbering": "Kappale-/rivinumerointi",
+          "PageBreakOriginal": "Alkuteoksen sivunumerot/sivunvaihdot",
+          "PageBreakEdition": "Painetun ZTS-edition sivunumerot"
+      },
+      "DownloadDigitalVersion": "Lataa digitaalinen versio",
+      "DownloadPDF": "Lataa PDF",
+      "CommentsFor": "Kommentaari",
+      "ReadFromBeginning": "Lue",
+      "Established": {
+          "Title": "Lukuteksti",
+          "AddButtonText": "Lukuteksti"
+      },
+      "Comments": {
+          "Title": "Kommentaari",
+          "AddButtonText": "Kommentaari",
+          "Manuscript": {
+            "Title": "Manuskriptbeskrivning",
+            "LegacyId": "Brevsignum",
+            "Sender": "Avsändare",
+            "Receiver": "Mottagare",
+            "Archive": "Arkiv",
+            "Collection": "Samling, signum",
+            "Type": "Form",
+            "Status": "Status",
+            "Format": "Format",
+            "Leafs": "Lägg",
+            "Sheets": "Antal blad",
+            "Pages": "Sidor brevtext",
+            "Color": "Färg",
+            "Quality": "Kvalitet",
+            "Pattern": "Mönster",
+            "State": "Tillstånd",
+            "Material": "Skrivmaterial",
+            "Other": "Övrigt"
+          }
+      },
+      "Manuscripts": {
+          "Title": "Käsikirjoitus",
+          "AddButtonText": "Käsikirjoitus",
+          "SelectManuscript": "Valitse käsikirjoitus",
+          "ShowNormalized": "Näytä muutokset toteutettuina",
+          "ShowChanges": "Näytä muutokset",
+          "OpenFacsimile": "Näytä faksimilet"
+      },
+      "Variations": {
+          "Title": "Variantit",
+          "AddButtonText": "Variantit"
+      },
+      "Facsimiles": {
+          "Title": "Faksimile",
+          "AddButtonText": "Faksimilet",
+          "SelectFacsimiles": "Näytä faksimilet",
+          "Page": "Sivu",
+          "Of": "",
+          "OpenManuscript": "Käsikirjoitus",
+          "ExternalHeading" : "Ulkopuoliset faksimilet"
+      },
+      "SongExample": {
+          "Title": "Sång exempel",
+          "AddButtonText": "Sång exempel"
+      },
+      "TitlePage": {
+          "Title": "Kansi/nimiölehti/esipuhe"
+      },
+      "Introduction": {
+          "Title": "Johdanto",
+          "AddButtonText": "Johdanto"
+      },
+      "Illustrations": {
+        "AddButtonText": "Kuvat",
+        "Goto": "Näytä esiintymä",
+        "Nothing": "Ei kuvia",
+        "Showall": "Näytä kaikki"
+      },
+      "ShowAll": "Näytä kaikki",
+      "ShowSearchResults": "Esiintymät"
+  },
+  "About": {
+      "Title": "Topeliuksesta ja editiosta",
+      "UI": "Käyttöliittymä",
+      "Language": "Kieli",
+      "Information": "Tietoa"
+  },
+  "MediaCollections": {
+      "MediaCollections": "Faksimilet"
+  },
+  "TOC": {
+      "Home": "Etusivulle",
+      "About": "Topeliuksesta ja editiosta",
+      "Read": "Lue",
+      "Facsimiles": "Valikoidut faksimilet",
+      "ImageGallery": "Kuvagalleria",
+      "MediaCollections": "Album",
+      "PersonSearch": "Henkilöhakemisto",
+      "PlaceSearch": "Paikkahakemisto",
+      "TagSearch": "Ämnesord",
+      "WorkSearch": "Teoshakemisto",
+      "MusicianSearch": "Spelmän",
+      "WriterSearch": "Upptecknare",
+      "SongTypes": "Låttyper",
+      "Music": "Musik",
+      "Collections": "Kategorier",
+      "PlaymanTradition": "Finlandssvensk spelmanstradition",
+      "Books": "Böcker",
+      "All": "Alla"
+  },
+  "GalleryPages": {
+      "0": "Finland framställdt i teckningar",
+      "1": "En resa i Finland",
+      "2": "Topeliuksen elämä ja teokset"
+  },
+  "MobilePages": {
+      "header": "Sivut"
+  },
+  "BackButton": {
+      "default": "Takaisin"
+  },
+  "HomePage": {
+      "current": "Ajankohtaista",
+      "publishedEditions": "Julkaistut editiot:",
+      "digitalEditionHeading": "Zacharias Topeliuksen teokset",
+      "selectEdition": "Lue"
+  },
+  "SearchApp": {
+      "simpleSearch": "Hae",
+      "advancedSearch": "Tarkennettu haku",
+      "filter": "Rajaukset",
+      "matchesOn": "Osuma(a):",
+      "numberOf": "osumaa",
+      "pagenumber": "s.",
+      "search-holder": "Hakuteksti",
+      "hitCount": "Osumaa",
+      "type": "Tyyppi",
+      "timeline": "Aikajakso",
+      "freetext": "Vapaateksti",
+      "start": "Alku",
+      "end": "Loppu",
+      "relevance": "Relevanssi",
+      "alphabetical": "Aakkostus",
+      "oldest": "Vanhin",
+      "genre": "Tekstilaji",
+      "person-register": "Henkilöhakemisto",
+      "place-register": "Paikkahakemisto",
+      "tag-register": "Ämnesord",
+      "verk": "Teoshakemisto",
+      "sort-by": "Lajittele"
+  },
+  "Occurrences": {
+      "Title": "Esiintymät",
+      "Manuscript": "Käsikirjoitus",
+      "Variation": "Variantti",
+      "Commentary": "Kommentti",
+      "Facsimile": "Faksimile",
+      "Established": "Lukuteksti",
+      "Song": "Sång",
+      "Info": "Infoa",
+      "NoInfoFound": "Ei löydetty.",
+      "OccurrencesSmall": "esiitymää",
+      "Found": "Löydettiin",
+      "Result": "Esiintymää",
+      "longitude": "long.",
+      "latitude": "lat.",
+      "city": "Stad",
+      "region": "Region",
+      "country": "Plats",
+      "place_of_birth": "Ort",
+      "type": "Typ",
+      "source": "Källa",
+      "description": "Beskrivning",
+      "no_occurrences": "Ei esiintymiä",
+      "download": "lataa pdf",
+      "articles": "Artiklar",
+      "publisher": "Kustantaja",
+      "journal": "Journal",
+      "isbn": "ISBN",
+      "published_year": "Julkaisuvuosi",
+      "authors": "Kirjoittaja"
+  },
+  "ElasticSearch": {
+    "NoHits": "Haku ei vastannut yhtään asiakirjaa",
+    "Found": "Löydettiin",
+    "SearchField": "Lisää hakukenttä",
+    "From": "Vuodesta",
+    "To": "Vuoteen",
+    "Search": "Hae",
+    "Years": "Vuodet",
+    "ShowMore": "Näytä enemmän",
+    "ShowLess": "Näytä vähemmän",
+    "SortBy": "Lajittele",
+    "Relevance": "Relevanssi",
+    "OldestFirst": "Vanhimmat ensin",
+    "NewestFirst": "Uusimmat ensin"
+  },
+  "Type": "Tekstityyppi",
+  "Genre": "Tekstilaji",
+  "Collection": "Editio",
+  "Location": "Paikka",
+  "Subjects": "Aihe",
+  "Tags": "Asiansanat",
+  "Person": "Henkilö",
+  "LetterSenderName": "Lähettäjä",
+  "LetterReceiverName": "Vastaanottaja",
+  "LetterSenderLocation": "Lähettäjän paikkakunta",
+  "LetterReceiverLocation": "Vastaanottajan paikkakunta",
+  "est": "Lukuteksti",
+  "ms": "Käsikirjoitus",
+  "com": "Kommentti",
+  "tit": "Nimiölehti/esipuhe",
+  "var": "Variantti",
+  "inl": "Johdanto",
+  "locations": "Paikat",
+  "location": "Paikka",
+  "tags": "Aihesanat",
+  "tag": "Aihesana",
+  "subjects": "Henkilöt",
+  "subject": "Henkilö",
+  "collections": "Samlingar",
+  "works": "Verk",
+  "photos": "foton",
+  "recorder": "Upptecknare",
+  "playman": "Spelman",
+  "song": "Melodi",
+  "Text": "PDF",
+  "Reference": {
+      "title": "Lähdeviittaus",
+      "urn": "Linkitä",
+      "thisPage": "Lähdevittaus",
+      "established": "Lähdevittaus tähän lukutekstiin",
+      "intro": "Lähdevittaus tähän johdantoon"
+  },
+  "Song": {
+      "Playman": "Spelman",
+      "playman": "Spelman",
+      "SongType": "Låttyp",
+      "SongName": "Låtens namn",
+      "Landscape": "Landskap",
+      "Place": "Ort",
+      "Recorder": "Upptecknare",
+      "recorder": "Upptecknare",
+      "Year": "Uppteckningsår",
+      "OCL": "Originalsamlingens placering",
+      "OCS": "Originalsamlingens signum",
+      "Volume": "Volym",
+      "SongNumber": "Sångnummer",
+      "Comments": "Kommentarer",
+      "SongText": "Sångtext",
+      "Download": "Ladda ner"
+  },
+  "MusicPage": {
+      "Title": "Musik",
+      "PageTitle": "Musikvolymerna",
+      "SubTitle": "FSFD"
+  },
+  "established": "Lukuteksti",
+  "comments": "Kommentaari",
+  "facsimiles": "Faksimilet",
+  "manuscripts": "Käsikirjoitukset",
+  "variations": "Variantit",
+  "introduction": "Johdanto",
+  "songexample": "Sång",
+  "illustrations": "Kuvat"
 }

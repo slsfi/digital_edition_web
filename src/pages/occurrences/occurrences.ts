@@ -44,6 +44,11 @@ export class OccurrencesPage {
   country: string = null;
   date_born: string = null;
   date_deceased: string = null;
+  publisher: string = null;
+  published_year: string = null;
+  journal: string = null;
+  isbn: string = null;
+  authors: Array<Object> = [];
   filterToggle: Boolean = true;
   singleOccurrenceType: string = null;
   galleryOccurrenceData: any = [];
@@ -87,6 +92,14 @@ export class OccurrencesPage {
     this.source = this.occurrenceResult.source;
     this.description = this.occurrenceResult.description;
     this.country = this.occurrenceResult.country;
+
+    this.publisher = this.occurrenceResult.publisher;
+    this.published_year = this.occurrenceResult.published_year;
+    this.journal = this.occurrenceResult.journal;
+    this.isbn = this.occurrenceResult.isbn;
+    this.authors = this.occurrenceResult.author_data;
+
+
     this.date_born = (this.occurrenceResult.date_born !== undefined && this.occurrenceResult.date_born !== null) ?
                               String(this.occurrenceResult.date_born).split('-')[0] : null;
     this.date_deceased = (this.occurrenceResult.date_deceased !== undefined && this.occurrenceResult.date_deceased !== null) ?
@@ -433,11 +446,14 @@ export class OccurrencesPage {
 
   getOccurrences(id) {
     this.isLoading = true;
+    if ( this.objectType === 'work' ) {
+      this.objectType = 'work_manifestation';
+    }
     this.semanticDataService.getOccurrences(this.objectType, id).subscribe(
       occ => {
         this.groupedTexts = [];
         // Sort alphabetically
-        const addedTOCs = [];
+        const addedTOCs: Array<String> = [];
         occ.forEach(item => {
           if ( item.occurrences !== undefined ) {
             for (const occurence of item.occurrences) {

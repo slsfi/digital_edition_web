@@ -211,7 +211,6 @@ export class OccurrencesResultPage {
     newOccurrence.song_id = occurrence.song_id;
     newOccurrence.collectionName = occurrence.collection_name;
     newOccurrence.displayName = (occurrence.publication_name !== null) ? occurrence.publication_name : occurrence.collection_name;
-    newOccurrence.publication_name = occurrence.publication_name || null;
 
     if ( newOccurrence.type !== null ) {
       newOccurrence.displayName = String(newOccurrence.type).charAt(0).toUpperCase() + String(newOccurrence.type).slice(1);

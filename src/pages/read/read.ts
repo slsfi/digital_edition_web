@@ -627,6 +627,8 @@ export class ReadPage /*implements OnDestroy*/ {
         const hasExpired = viewmodes.expires < now;
         if (viewmodes !== undefined && viewmodes.views.length > 0 && !hasExpired && this.viewsExistInAvailableViewModes(viewmodes.views)) {
           this.setViews(viewmodes.views);
+        } else {
+          this.setConfigDefaultReadModeViews();
         }
       } else {
         this.setConfigDefaultReadModeViews();
@@ -739,7 +741,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
   viewsExistInAvailableViewModes(viewmodes) {
     viewmodes.forEach(function (viewmode) {
-      if (!(this.availableViewModes.indexOf(viewmode) > -1)) {
+      if ( this.availableViewModes.indexOf(viewmode) === -1 ) {
         return false;
       }
     }.bind(this));
