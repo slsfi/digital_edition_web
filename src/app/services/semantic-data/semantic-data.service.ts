@@ -36,9 +36,49 @@ export class SemanticDataService {
   }
 
   getFilterPersonTypes(): Observable<any[]> {
-    return this.http.get('assets/filterPersonTypes.json')
-      .map(this.extractData)
-      .catch(this.handleError);
+    const payload: any = {
+    size: 0,
+    query: {
+          bool: {
+            must : [{
+              term: { project_id : this.config.getSettings('app.projectId') }
+            }]
+          }
+    },
+    aggs : {
+      types : {
+              terms : {
+                  field : 'type.keyword'
+              }
+          }
+      }
+    }
+    return this.http.post(this.getSearchUrl(this.elasticSubjectIndex), payload)
+    .map(this.extractData)
+    .catch(this.handleError)
+  }
+
+  getFilterCategoryTypes(): Observable<any[]> {
+    const payload: any = {
+    size: 0,
+    query: {
+          bool: {
+            must : [{
+              term: { project_id : this.config.getSettings('app.projectId') }
+            }]
+          }
+    },
+    aggs : {
+          types : {
+              terms : {
+                  field : 'tag_type.keyword'
+              }
+          }
+      }
+    }
+    return this.http.post(this.getSearchUrl(this.elasticTagIndex), payload)
+    .map(this.extractData)
+    .catch(this.handleError)
   }
 
   getPlace(id: string): Observable<any> {
@@ -146,8 +186,11 @@ export class SemanticDataService {
       .catch(this.handleError);
   }
 
-  getSubjectsElastic(from, searchText?, filterYear?) {
+  getSubjectsElastic(from, searchText?, filters?) {
     let showPublishedStatus = 2;
+    if ( filters === null ) {
+      filters = {};
+    }
     try {
       showPublishedStatus = this.config.getSettings('LocationSearch.ShowPublishedStatus');
     } catch (e) {
@@ -171,12 +214,23 @@ export class SemanticDataService {
       }
     }
 
+    if (filters !== undefined && filters['filterPersonTypes'] !== undefined && filters['filterPersonTypes'].length > 0) {
+      payload.from = 0;
+      payload.size = 1000;
+      payload.query.bool.must.push({bool: {should: []}});
+      filters['filterPersonTypes'].forEach(element => {
+        payload.query.bool.must[payload.query.bool.must.length - 1].bool.
+        should.push({'term': {'type.keyword': String(element.name)}});
+      });
+    }
+
     // Add date range filter.
-    if (filterYear) {
+    if (filters.filterYearMax && filters.filterYearMin) {
       payload.query.bool.must.push({
         range: {
           date_born_date: {
-            gte: filterYear,
+            gte: filters.filterYearMin + '-01-01',
+            lte: filters.filterYearMax + '-01-01',
           }
         }
       })
@@ -275,7 +329,7 @@ export class SemanticDataService {
     .catch(this.handleError)
   }
 
-  getTagElastic(from, searchText?) {
+  getTagElastic(from, searchText?, filters?) {
     let showPublishedStatus = 2;
     try {
       showPublishedStatus = this.config.getSettings('LocationSearch.ShowPublishedStatus');
@@ -304,6 +358,17 @@ export class SemanticDataService {
       payload.size = 1000;
       payload.query.bool.must.push({'prefix': {'name': String(searchText).toLowerCase()}});
     }
+
+    if (filters !== undefined && filters['filterCategoryTypes'] !== undefined) {
+      payload.from = 0;
+      payload.size = 1000;
+      payload.query.bool.must.push({bool: {should: []}});
+      filters['filterCategoryTypes'].forEach(element => {
+        payload.query.bool.must[payload.query.bool.must.length - 1].bool.
+        should.push({'term': {'tag_type.keyword': String(element.name)}});
+      });
+    }
+
     return this.http.post(this.getSearchUrl(this.elasticTagIndex), payload)
     .map(this.extractData)
     .catch(this.handleError)

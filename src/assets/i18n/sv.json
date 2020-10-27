@@ -234,6 +234,11 @@
     "WordCount": "Antal träffar (estimat)",
     "NoWordHits": "inga träffar"
   },
+  "Filter":{
+    "personTypes": "Personkategori",
+    "tagTypes": "Ämneskategori",
+    "year": "Född mellan"
+  },
   "Type": "Typ",
   "Genre": "Genre",
   "Collection": "Utgåvor",

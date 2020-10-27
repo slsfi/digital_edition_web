@@ -23,28 +23,29 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-item *ngIf="shouldFilterYear">
-        <ion-label color="primary" floating>Year</ion-label>
-        <ion-input type="number" [(ngModel)]="filterYear"></ion-input>
+      <span class="year_label label">{{"Filter.year" | translate}}</span>
+      <ion-item *ngIf="shouldFilterYear">
+        <ion-input type="number" class="fromYear" [(ngModel)]="filterYearMin"></ion-input>
+        <ion-input type="number" class="toYear" [(ngModel)]="filterYearMax"></ion-input>
       </ion-item>
       <ion-item-divider style="background: transparent;"></ion-item-divider>
-    <ion-list *ngIf="filterPersonTypes">
+    <ion-list *ngIf="filterCategoryTypes">
       <ion-list-header>
-        Person types
+        {{"Filter.tagTypes" | translate}}
       </ion-list-header>
-      <ion-item *ngFor="let filterPT of filterPersonTypes">
-          <ion-label>{{filterPT.title}}</ion-label>
-          <ion-toggle [(ngModel)]="filterPT.selected"></ion-toggle>
+      <ion-item *ngFor="let filterC of filterCategoryTypes">
+          <ion-label>{{filterC.name}}</ion-label>
+          <ion-toggle [(ngModel)]="filterC.selected"></ion-toggle>
         </ion-item>
     </ion-list>
 
-    <ion-list *ngIf="filterCollections">
+    <ion-list *ngIf="filterPersonTypes">
       <ion-list-header>
-        Collections
+        {{"Filter.personTypes" | translate}}
       </ion-list-header>
-      <ion-item *ngFor="let filterCollection of filterCollections">
-        <ion-label>{{filterCollection.title}}</ion-label>
-        <ion-toggle [(ngModel)]="filterCollection.selected"></ion-toggle>
-      </ion-item>
+      <ion-item *ngFor="let filterPT of filterPersonTypes">
+          <ion-label>{{filterPT.name}}</ion-label>
+          <ion-toggle [(ngModel)]="filterPT.selected"></ion-toggle>
+        </ion-item>
     </ion-list>
 </ion-content>

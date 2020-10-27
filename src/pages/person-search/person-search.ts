@@ -58,6 +58,8 @@ export class PersonSearchPage {
   subType: any;
   from = 0;
 
+  filters: any[] = [];
+
   objectType = 'subject';
 
   // tslint:disable-next-line:max-line-length
@@ -186,7 +188,7 @@ export class PersonSearchPage {
 
   getPersons() {
     this.showLoading = true;
-    this.semanticDataService.getSubjectsElastic(this.from, this.searchText, this.filterYear).subscribe(
+    this.semanticDataService.getSubjectsElastic(this.from, this.searchText, this.filters).subscribe(
       persons => {
         const personsTmp = [];
         persons = persons.hits.hits;
@@ -354,10 +356,11 @@ export class PersonSearchPage {
     filterModal.onDidDismiss(filters => {
 
       if (filters) {
-        if (filters['isEmpty']) {
+        this.persons = [];
+        this.allData = [];
+        this.filters = filters;
+        if (filters['isEmpty'] || filters['isEmpty'] === undefined) {
           console.log('filters are empty')
-          this.persons = [];
-          this.allData = [];
           this.count = 0;
           this.getPersons();
         } else {
@@ -374,12 +377,7 @@ export class PersonSearchPage {
             }
           }
           if (filters.filterPersonTypes) {
-            const filterSelected = filters.filterPersonTypes.some(function(el) {
-              return el.selected === true;
-            });
-            if (filterSelected) {
-              this.getSubjectsOccurrenceBySubjectType(filters.filterPersonTypes);
-            }
+            this.getPersons();
           }
         }
       }

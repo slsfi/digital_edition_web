@@ -53,6 +53,7 @@ export class TagSearchPage {
   showFilter = true;
   from = 0;
   infiniteScrollNumber = 30;
+  filters: any[] = [];
 
   selectedLinkID: string;
 
@@ -108,7 +109,7 @@ export class TagSearchPage {
 
   gettags() {
     this.showLoading = true;
-    this.semanticDataService.getTagElastic(this.from, this.searchText).subscribe(
+    this.semanticDataService.getTagElastic(this.from, this.searchText, this.filters).subscribe(
       tags => {
         const tagsTmp = [];
         tags = tags.hits.hits;
@@ -222,7 +223,8 @@ export class TagSearchPage {
   }
 
   filter(terms) {
-    if ( terms._value ) {
+    console.log(terms);
+    /*if ( terms._value ) {
       terms = terms._value;
     }
     if (!terms) {
@@ -247,7 +249,7 @@ export class TagSearchPage {
       }
     } else {
       this.tags = this.tagsCopy;
-    }
+    }*/
   }
 
   doInfinite(infiniteScroll) {
@@ -449,10 +451,13 @@ export class TagSearchPage {
   }
 
   openFilterModal() {
-    const filterModal = this.modalCtrl.create(FilterPage, { searchType: 'tag-search' });
+    const filterModal = this.modalCtrl.create(FilterPage, { searchType: 'tag-search', activeFilters: this.filters });
     filterModal.onDidDismiss(filters => {
 
       if (filters) {
+        this.tags = [];
+        this.allData = [];
+        this.filters = filters;
         if (filters['isEmpty']) {
           console.log('filters are empty')
           this.tags = [];
@@ -460,6 +465,11 @@ export class TagSearchPage {
           this.count = 0;
           this.gettags();
         }
+
+        if (filters.filterCategoryTypes) {
+          this.gettags();
+        }
+
         if (filters.filterCollections) {
           const filterSelected = filters.filterCollections.some(function(el) {
             return el.selected === true;
