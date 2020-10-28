@@ -138,7 +138,7 @@ export class DigitalEditionsApp {
     musicAccordion: false,
     songTypesAccordion: false,
     galleryAccordion: false,
-    collectionsAccordion: false,
+    collectionsAccordion: [false],
     aboutMenuAccordion: false,
     pdfAccordion: false
   }
@@ -176,6 +176,7 @@ export class DigitalEditionsApp {
   tocItems: GeneralTocItem[];
 
   galleryInReadMenu = true;
+  splitReadCollections: any[];
 
   constructor(
     private platform: Platform,
@@ -231,6 +232,15 @@ export class DigitalEditionsApp {
       this.showBooks = this.genericSettingsService.show('TOC.Books');
     } catch (e) {
       this.showBooks = false;
+    }
+
+    try {
+      this.splitReadCollections = this.genericSettingsService.show('TOC.splitReadCollections');
+      if ( this.splitReadCollections === null || this.splitReadCollections.length <= 0 ) {
+        this.splitReadCollections = [''];
+      }
+    } catch (e) {
+      this.splitReadCollections = [''];
     }
 
     try {
@@ -561,7 +571,9 @@ export class DigitalEditionsApp {
     try {
       this.simpleAccordionsExpanded.songTypesAccordion = this.config.getSettings('AccordionsExpandedDefault.SongTypes');
       this.simpleAccordionsExpanded.musicAccordion = this.config.getSettings('AccordionsExpandedDefault.Music');
-      this.simpleAccordionsExpanded.collectionsAccordion = this.config.getSettings('AccordionsExpandedDefault.Collections');
+      for ( let i = 0; i < this.splitReadCollections.length; i++ ) {
+        this.simpleAccordionsExpanded.collectionsAccordion[i] = this.config.getSettings('AccordionsExpandedDefault.Collections');
+      }
     } catch (e) {
     }
   }
@@ -681,7 +693,9 @@ export class DigitalEditionsApp {
             menuID: selectedMenu,
             component: 'app-component'
           });
-          this.simpleAccordionsExpanded.collectionsAccordion = true;
+          for ( let i = 0; i < this.splitReadCollections.length; i++ ) {
+            this.simpleAccordionsExpanded.collectionsAccordion[i] = true;
+          }
         } else {
           collection['highlight'] = false;
         }
@@ -723,10 +737,12 @@ export class DigitalEditionsApp {
 
       // Check if there is a need to expand
       // Otherwise we might change smth after user clicks on accordion
-      if (expand && !this.simpleAccordionsExpanded.collectionsAccordion) {
-        this.simpleAccordionsExpanded.collectionsAccordion = true;
-      } else if (!expand && this.simpleAccordionsExpanded.collectionsAccordion) {
-        this.simpleAccordionsExpanded.collectionsAccordion = false;
+      for ( let i = 0; i < this.splitReadCollections.length; i++ ) {
+        if (expand && !this.simpleAccordionsExpanded.collectionsAccordion[i]) {
+          this.simpleAccordionsExpanded.collectionsAccordion[i] = true;
+        } else if (!expand && this.simpleAccordionsExpanded.collectionsAccordion) {
+          this.simpleAccordionsExpanded.collectionsAccordion[i] = false;
+        }
       }
       this.cdRef.detectChanges();
     });
@@ -774,7 +790,9 @@ export class DigitalEditionsApp {
           if ((data.collectionID !== undefined && String(collection.id) === String(data.collectionID.id))
           || (data.collectionID !== undefined && Number(collection.id) === Number(data.collectionID))) {
             collection.expanded = true;
-            this.simpleAccordionsExpanded.collectionsAccordion = true;
+            for ( let i = 0; i < this.splitReadCollections.length; i++ ) {
+              this.simpleAccordionsExpanded.collectionsAccordion[i] = true;
+            }
 
             if ( data.chapterID ) {
               data.itemId = Number(data.collectionID) + '_' + Number(data.publicationID) + '_' + data.chapterID;

@@ -284,7 +284,8 @@
             "TagSearch": true,
             "WorkSearch": true,
             "SongTypes": false,
-            "Books": false
+            "Books": false,
+            "splitReadCollections":[]
         }
     },
     "defaults": {
