@@ -169,17 +169,9 @@ export class TagSearchPage {
 
   sortByLetter(letter) {
     this.searchText = letter;
-    const list = [];
-    try {
-      for (const p of this.allData) {
-        if (p.name && p.name.startsWith(letter)) {
-          list.push(p);
-        }
-      }
-    } catch ( e ) {
-      this.tags = this.allData;
-    }
-    this.tags = list;
+    this.tags = [];
+    this.cf.detectChanges();
+    this.gettags();
   }
 
   ionViewDidLeave() {
