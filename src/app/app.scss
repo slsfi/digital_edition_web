@@ -1061,3 +1061,18 @@ tr.introjs-showElement > th {
     font-size: 14px !important;
   }
 }
+/*.menuResizer {
+  height: 100%;
+  width: 5px;
+
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  background: #e2e2e2;
+
+  z-index: 99;
+
+  cursor: col-resize;
+}*/

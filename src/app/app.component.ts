@@ -1,4 +1,4 @@
-import { Component, ViewChild, Pipe, PipeTransform, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild, Pipe, PipeTransform, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef, Renderer, Renderer2 } from '@angular/core';
 import './rxjs-operators';
 import { Nav, Platform, MenuController, IonicPage, Events, App, NavParams, AlertController } from 'ionic-angular';
 import { LangChangeEvent, TranslateService/*, TranslatePipe*/ } from '@ngx-translate/core';
@@ -197,7 +197,8 @@ export class DigitalEditionsApp {
     public cdRef: ChangeDetectorRef,
     private alertCtrl: AlertController,
     private tutorial: TutorialService,
-    private galleryService: GalleryService
+    private galleryService: GalleryService,
+    private renderer: Renderer
   ) {
 
     // Check for IE11
@@ -651,7 +652,22 @@ export class DigitalEditionsApp {
         }
       });
       this.events.publish('pdfview:open', { 'isOpen': false });
+
+      /* const tableOfContentsMenu: HTMLElement = document.querySelector('.split-pane-side');
+      const menuResizer = document.querySelector('.menuResizer');
+      const initialtWidth = Number(tableOfContentsMenu.offsetWidth);
+      menuResizer.addEventListener('drag', (event: MouseEvent) => {
+        this.resizeTOCMenu(event, tableOfContentsMenu, initialtWidth);
+      });
+      this.cdRef.detectChanges(); */
     });
+  }
+
+  resizeTOCMenu( event: MouseEvent, splitPaneItem, initialtWidth ) {
+    const relativeWidth = Number(String(event.clientX).replace('px', ''));
+    if ( relativeWidth > 0 ) {
+      splitPaneItem.style.minWidth =  (initialtWidth + relativeWidth) + 'px';
+    }
   }
 
   toggleMusicAccordion() {

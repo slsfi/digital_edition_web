@@ -29,14 +29,14 @@
         <ng-template #recursiveList let-list>
             <ng-template ngFor let-menuItem [ngForOf]="list" let-i="index">
                 <ng-template [ngIf]="!menuItem.childrenCount && !(playmanTraditionPageInMusicAccordion && menuItem.markdownID && menuItem.markdownID == playmanTraditionPageID)">
-                    <ion-item [style.marginLeft]="menuItem.is_child ? 20 + 'px' : '0px'" id="toc_{{menuItem.itemId}}" class="option type-{{menuItem.type}}" [ngClass]="menuSettings?.showSelectedOption && menuItem.selected ? menuSettings.selectedOptionClass : null" (tap)="select(menuItem)"
+                    <ion-item *ngIf="menuItem.type!='hidden'"  [style.marginLeft]="menuItem.is_child ? 20 + 'px' : '0px'" id="toc_{{menuItem.itemId}}" class="option type-{{menuItem.type}}" [ngClass]="menuSettings?.showSelectedOption && menuItem.selected ? menuSettings.selectedOptionClass : null" (tap)="select(menuItem)"
                         tappable>
                         <p>{{ menuItem.text }}</p>
                         <span *ngIf="menuItem.description" class="description">{{ menuItem.description }}</span>
                     </ion-item>
                 </ng-template>
                 <ng-template [ngIf]="(menuItem.childrenCount && menuItem.subOptions.length) || menuItem.children_id || menuItem.search_children_id">
-                    <ion-list no-margin class="accordion-menu" [style.marginLeft]="menuItem.is_child ? 20 + 'px' : '0px'">
+                    <ion-list no-margin *ngIf="menuItem.type!='hidden'" class="accordion-menu" [style.marginLeft]="menuItem.is_child ? 20 + 'px' : '0px'">
                         <ion-item class="header type-{{menuItem.type}}" [ngClass]="menuSettings?.showSelectedOption && menuItem.selected ? menuSettings.selectedOptionClass : null" (tap)="toggleItemOptions(menuItem)" tappable>
                             <ion-icon [class.rotate]="(menuItem.expanded || menuItem.collapsed === false)" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
                             <p>{{ menuItem.text }}</p>
