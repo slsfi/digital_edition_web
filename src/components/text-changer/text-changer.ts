@@ -64,6 +64,7 @@ export class TextChangerComponent {
           for (let i = 0; i < val.children.length; i++) {
             if (val.children[i].itemId.split('_')[1] === c_id) {
               this.currentItemTitle = val.children[i].text;
+              this.storage.set('currentTOCItemTitle', this.currentItemTitle);
               this.nextItemTitle = String(val.children[i + 1].text).substring(0, 40) +
               (String(val.children[i + 1].text).length > 40 ? '...' : '');
               this.prevItemTitle =  String(val.children[i - 1].text).substring(0, 40) +
@@ -162,6 +163,7 @@ export class TextChangerComponent {
               (String(this.prevItem.text).length > 40 ? '...' : '');
     this.currentItemTitle = String(this.flattened[currentId].text).substring(0, 40) +
     (String(this.flattened[currentId].text).length > 40 ? '...' : '');
+    this.storage.set('currentTOCItemTitle', this.currentItemTitle);
   }
 
   flatten(toc) {

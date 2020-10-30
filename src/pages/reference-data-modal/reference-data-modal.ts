@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ViewController, NavParams, Events } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ReferenceDataService } from '../../app/services/reference-data/reference-data.service';
+import { Storage } from '@ionic/storage';
 
 /*
   Generated class for the ReferenceDataModal page.
@@ -21,6 +22,7 @@ export class ReferenceDataModalPage {
   constructor(  public navCtrl: NavController,
                 public viewCtrl: ViewController,
                 params: NavParams,
+                private storage: Storage,
                 private sanitizer: DomSanitizer,
                 private referenceDataService: ReferenceDataService,
                 private events: Events
@@ -67,6 +69,12 @@ export class ReferenceDataModalPage {
                   this.getReferenceData(newId);
                 }
               }
+              this.storage.get('currentTOCItemTitle').then((currentTOCItemTitle) => {
+                if ( currentTOCItemTitle !== '' && currentTOCItemTitle !== undefined && this.referenceData['reference_text'] ) {
+                  this.referenceData['reference_text'] =
+                  String(this.referenceData['reference_text']).replace('[title]', currentTOCItemTitle)
+                }
+              });
           },
           error =>  {
               this.referenceData = 'Unable to get referenceData';

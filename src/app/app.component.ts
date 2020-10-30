@@ -1,4 +1,5 @@
-import { Component, ViewChild, Pipe, PipeTransform, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef, Renderer, Renderer2 } from '@angular/core';
+import { Component, ViewChild, Pipe, PipeTransform, ChangeDetectionStrategy,
+  ViewEncapsulation, ChangeDetectorRef, Renderer, Renderer2 } from '@angular/core';
 import './rxjs-operators';
 import { Nav, Platform, MenuController, IonicPage, Events, App, NavParams, AlertController } from 'ionic-angular';
 import { LangChangeEvent, TranslateService/*, TranslatePipe*/ } from '@ngx-translate/core';
