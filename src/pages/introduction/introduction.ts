@@ -379,9 +379,9 @@ export class IntroductionPage {
       'workInfo': true,
       'changes': false,
       'abbreviations': true,
-      'pageNumbering': false,
+      'pageNumbering': true,
       'pageBreakOriginal': false,
-      'pageBreakEdition': false
+      'pageBreakEdition': true
     };
     const popover = this.popoverCtrl.create(ReadPopoverPage, {toggles}, { cssClass: 'popover_settings' });
     popover.present({
