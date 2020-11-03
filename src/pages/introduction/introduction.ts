@@ -8,6 +8,7 @@ import { ConfigService } from '@ngx-config/core';
 import { TooltipService } from '../../app/services/tooltips/tooltip.service';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { ReadPopoverPage } from '../read-popover/read-popover';
+import { SharePopoverPage } from '../share-popover/share-popover';
 import { GeneralTocItem } from '../../app/models/table-of-contents.model';
 import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
 import { Storage } from '@ionic/storage';
@@ -403,6 +404,13 @@ export class IntroductionPage {
       element.scrollIntoView({'behavior': 'smooth', 'block': 'start'});
     } catch ( e ) {
     }
+  }
+
+  showSharePopover(myEvent) {
+    const popover = this.popoverCtrl.create(SharePopoverPage, {}, { cssClass: 'share-popover' });
+    popover.present({
+      ev: myEvent
+    });
   }
 
  private toggleTocMenu() {

@@ -176,4 +176,12 @@ page-introduction {
         }
       }
     }
+
+    .secondary-toolbar-icons-wrapper {
+      ion-icon {
+        font-size: 1.6rem!important;
+        padding: 0.5rem;
+        cursor: pointer;
+      }
+    }
 }

@@ -4,6 +4,11 @@
         <ion-grid>
             <ion-row class="secondary-toolbar-icons-wrapper">
               <ion-col>
+                  <div id="share-icon" (click)="showSharePopover($event)">
+                    <ion-icon class="share-icon" name="ios-share-outline" ios="ios-share-outline"></ion-icon>
+                  </div>
+              </ion-col>
+              <ion-col>
                   <div #settingsIconElement (click)="showPopover($event)" id="settings-icon">
                   <ion-icon  class="settings-icon" name="settings"></ion-icon>
                   </div>
