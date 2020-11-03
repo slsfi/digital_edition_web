@@ -63,6 +63,12 @@ export class ReadTextComponent {
 
   ngAfterViewInit() {
     this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
+
+      // Check if we have the "illustrations" tab open, if not, open
+      if ( document.querySelector('illustrations') === null ) {
+        this.openNewView(event, null, 'illustrations');
+      }
+
     try {
       if (this.config.getSettings('settings.showReadTextIllustrations')) {
         const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
@@ -113,6 +119,16 @@ export class ReadTextComponent {
       }
     }.bind(this), 100);
 
+  }
+
+  openNewView( event, id: any, type: string ) {
+    let openId = id;
+    let chapter = null;
+    if (String(id).includes('ch')) {
+      openId = String(String(id).split('ch')[0]).trim();
+      chapter = 'ch' + String(String(id).split('ch')[1]).trim();
+    }
+    this.events.publish('show:view', type, openId, chapter);
   }
 
   private setIllustrationImages() {
