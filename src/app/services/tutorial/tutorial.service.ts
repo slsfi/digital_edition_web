@@ -37,7 +37,7 @@ export class TutorialService {
           this.tutorialSteps[i].intro = tutorialTexts[str] || `${str} Untranslated text`;
         }
         setTimeout(() => {
-          this.storage.get('tutorial_steps').then((steps) => {
+          this.storage.get('all_tutorial_steps').then((steps) => {
             if (steps !== undefined && steps !== null) {
               this.tutorialSteps = steps;
             }
@@ -62,7 +62,7 @@ export class TutorialService {
 
   private async redoIntro() {
     setTimeout(() => {
-      this.storage.get('tutorial_steps').then((steps) => {
+      this.storage.get('all_tutorial_steps').then((steps) => {
         if (steps !== undefined && steps !== null) {
           this.tutorialSteps = steps;
           this.intro();
@@ -119,7 +119,7 @@ export class TutorialService {
     if (i) {
       this.tutorialSteps[i].alreadySeen = true;
     }
-    this.storage.set('tutorial_steps', this.tutorialSteps);
+    this.storage.set('all_tutorial_steps', this.tutorialSteps);
   }
 
   canBeSeen(step, page) {
@@ -163,7 +163,7 @@ export class TutorialService {
     for (const i in this.tutorialSteps) {
       const step = this.tutorialSteps[i];
       this.tutorialSteps[i].alreadySeen = false;
-      this.storage.set('tutorial_steps', this.tutorialSteps);
+      this.storage.set('all_tutorial_steps', this.tutorialSteps);
 
     }
     this.storage.set('tutorial-done', false);
