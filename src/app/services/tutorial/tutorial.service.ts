@@ -37,16 +37,21 @@ export class TutorialService {
           this.tutorialSteps[i].intro = tutorialTexts[str] || `${str} Untranslated text`;
         }
         setTimeout(() => {
-          this.storage.get('tutorial-done').then((seen) => {
-            if (!seen) {
-              try {
-                if (this.config.getSettings('showTutorial')) {
-                  this.intro();
-                }
-              } catch (e) {
-                console.error('Missing showTutorial from config.json');
-              }
+          this.storage.get('tutorial_steps').then((steps) => {
+            if (steps !== undefined && steps !== null) {
+              this.tutorialSteps = steps;
             }
+            this.storage.get('tutorial-done').then((seen) => {
+              if (!seen) {
+                try {
+                  if (this.config.getSettings('showTutorial')) {
+                    this.intro();
+                  }
+                } catch (e) {
+                  console.error('Missing showTutorial from config.json');
+                }
+              }
+            });
           });
         }, 1000);
 
@@ -55,11 +60,25 @@ export class TutorialService {
     this.registerListeners();
   }
 
+  private async redoIntro() {
+    setTimeout(() => {
+      this.storage.get('tutorial_steps').then((steps) => {
+        if (steps !== undefined && steps !== null) {
+          this.tutorialSteps = steps;
+        }
+        this.intro();
+      });
+    }, 1000);
+  }
 
   private async intro() {
 
-    const intro = introJs();
     const steps = this.tutorialSteps.filter((step) => {return this.canBeSeen(step, this.currentPage)});
+    if ( steps.length === 0 ) {
+      return false;
+    }
+
+    const intro = introJs();
 
     intro.setOptions({
       steps: steps,
@@ -100,6 +119,7 @@ export class TutorialService {
     if (i) {
       this.tutorialSteps[i].alreadySeen = true;
     }
+    this.storage.set('tutorial_steps', this.tutorialSteps);
   }
 
   canBeSeen(step, page) {
@@ -116,18 +136,20 @@ export class TutorialService {
       // with no element attribute.
       for (const i in this.tutorialSteps) {
         const step = this.tutorialSteps[i];
-        if (!step.element && this.canBeSeen(step, this.currentPage)) {
-          if (returnIndex) {
-            return i;
-          } else {
-            return step;
+        if (!step.element) {
+          if (!step.element && this.canBeSeen(step, this.currentPage)) {
+            if (returnIndex) {
+              return i;
+            } else {
+              return step;
+            }
           }
         }
       }
     }
     for (const i in this.tutorialSteps) {
       const step = this.tutorialSteps[i];
-      if (step.element && '#' + step.element === selector) {
+      if (step.element && step.element === '#' + selector) {
         if (returnIndex) {
           return i;
         } else {
@@ -141,7 +163,7 @@ export class TutorialService {
     for (const i in this.tutorialSteps) {
       const step = this.tutorialSteps[i];
       this.tutorialSteps[i].alreadySeen = false;
-      this.storage.set('tutorial-step-' + step.id, false);
+      this.storage.set('tutorial_steps', this.tutorialSteps);
 
     }
     this.storage.set('tutorial-done', false);
@@ -155,6 +177,10 @@ export class TutorialService {
     this.events.subscribe('topMenu:help', () => {
       this.reset();
       this.intro();
+    });
+
+    this.events.subscribe('help:continue', () => {
+      this.redoIntro();
     });
   }
 }

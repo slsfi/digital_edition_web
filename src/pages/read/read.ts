@@ -338,6 +338,7 @@ export class ReadPage /*implements OnDestroy*/ {
     this.events.unsubscribe('show:view');
   }
   ionViewDidEnter() {
+    this.events.publish('help:continue');
     (<any>window).ga('set', 'page', 'Read');
     (<any>window).ga('send', 'pageview');
   }
@@ -859,11 +860,6 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   ngAfterViewInit() {
-    if (!localStorage.getItem('firstTime')) {
-      this.settingsIconElement.nativeElement.click();
-      localStorage.setItem('firstTime', 'true');
-    }
-
     setTimeout(function () {
       try {
         const itemId = 'toc_' + this.legacyId;
