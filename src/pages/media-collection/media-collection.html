@@ -48,8 +48,13 @@
             <img src="{{apiEndPoint}}/{{projectMachineName}}/gallery/get/{{mediaCollectionId}}/{{asThumb(image.front)}}"/>
           </div>
           <ion-card-content>
-            <div *ngIf="image.description" class="img-desc">
-              "{{image.description}}"
+            <div *ngIf="image.media_title_translation" class="img-desc title">
+              {{image.media_title_translation}}
+            </div>
+            <div *ngIf="image.subject_name" class="img-desc subject_name">
+              {{image.subject_name}}
+            </div>
+            <div *ngIf="image.description" class="img-desc" [innerHTML]="image.description">
             </div>
           </ion-card-content>
         </ion-card>
@@ -59,7 +64,7 @@
           </div>
           <ion-card-content>
             <div *ngIf="image.description" class="img-desc">
-              "{{image.description}}"
+              {{image.description}}
             </div>
           </ion-card-content>
         </ion-card>
