@@ -65,8 +65,8 @@ export class TutorialService {
       this.storage.get('tutorial_steps').then((steps) => {
         if (steps !== undefined && steps !== null) {
           this.tutorialSteps = steps;
+          this.intro();
         }
-        this.intro();
       });
     }, 1000);
   }
