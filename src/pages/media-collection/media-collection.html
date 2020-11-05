@@ -16,14 +16,14 @@
     <p>{{mediaDescription}}</p>
   </div>
   <div class="filters">
-    <ion-item class="tagSelect">
+    <ion-item class="tagSelect" *ngIf="galleryTags.length > 0">
       <ion-label>{{"tags" | translate}}</ion-label>
       <ion-select [(ngModel)]="tagModel" class="tagSelect" (ngModelChange)="filterCollectionsByTag(tagModel)">
         <ion-option selected value=""></ion-option>
         <ion-option *ngFor="let tag of galleryTags" value="{{tag.name}}">{{tag.name}}</ion-option>
       </ion-select>
     </ion-item>
-    <ion-item class="locationSelect">
+    <ion-item class="locationSelect" *ngIf="galleryLocations.length > 0">
       <ion-label>{{"locations" | translate}}</ion-label>
       <ion-select [(ngModel)]="locationModel" class="locationSelect"
         (ngModelChange)="filterCollectionsByLocation(locationModel)">
@@ -31,7 +31,7 @@
         <ion-option *ngFor="let location of galleryLocations" value="{{location.name}}">{{location.name}}</ion-option>
       </ion-select>
     </ion-item>
-    <ion-item class="subjectSelect">
+    <ion-item class="subjectSelect" *ngIf="gallerySubjects.length > 0">
       <ion-label>{{"subjects" | translate}}</ion-label>
       <ion-select [(ngModel)]="subjectModel" class="subjectSelect"
         (ngModelChange)="filterCollectionsBySubject(subjectModel)">

@@ -257,10 +257,10 @@ export class MediaCollectionPage {
   filterCollectionsByTag(name) {
     if (name === '') {
       this.mediaCollection = this.allMediaCollection;
-      if (this.locationModel !== '') {
+      if (this.locationModel !== undefined && this.locationModel !== '') {
         this.filterCollectionsByLocation(this.locationModel);
       }
-      if (this.subjectModel !== '') {
+      if (this.subjectModel !== undefined && this.subjectModel !== '') {
         this.filterCollectionsBySubject(this.subjectModel);
       }
       return true;
@@ -268,10 +268,10 @@ export class MediaCollectionPage {
     if (name !== this.prevTag) {
       this.mediaCollection = this.allMediaCollection;
       this.prevTag = name;
-      if (this.locationModel !== '') {
+      if (this.locationModel !== undefined && this.locationModel !== '') {
         this.filterCollectionsByLocation(this.locationModel);
       }
-      if (this.subjectModel !== '') {
+      if (this.subjectModel !== undefined && this.subjectModel !== '') {
         this.filterCollectionsBySubject(this.subjectModel);
       }
     }
@@ -294,10 +294,10 @@ export class MediaCollectionPage {
   filterCollectionsByLocation(name) {
     if (name === '') {
       this.mediaCollection = this.allMediaCollection;
-      if (this.tagModel !== '') {
+      if (this.tagModel !== undefined && this.tagModel !== '') {
         this.filterCollectionsByTag(this.tagModel);
       }
-      if (this.subjectModel !== '') {
+      if (this.subjectModel !== undefined && this.subjectModel !== '') {
         this.filterCollectionsBySubject(this.subjectModel);
       }
       return true;
@@ -305,10 +305,10 @@ export class MediaCollectionPage {
     if (name !== this.prevLoc) {
       this.mediaCollection = this.allMediaCollection;
       this.prevLoc = name;
-      if (this.tagModel !== '') {
+      if (this.tagModel !== undefined && this.tagModel !== '') {
         this.filterCollectionsByTag(this.tagModel);
       }
-      if (this.subjectModel !== '') {
+      if (this.subjectModel !== undefined && this.subjectModel !== '') {
         this.filterCollectionsBySubject(this.subjectModel);
       }
     }
@@ -331,10 +331,10 @@ export class MediaCollectionPage {
   filterCollectionsBySubject(name) {
     if (name === '') {
       this.mediaCollection = this.allMediaCollection;
-      if (this.tagModel !== '') {
+      if ( this.tagModel !== undefined && this.tagModel !== '') {
         this.filterCollectionsByTag(this.tagModel);
       }
-      if (this.locationModel !== '') {
+      if (this.locationModel !== undefined && this.locationModel !== '') {
         this.filterCollectionsByLocation(this.locationModel);
       }
       return true;
@@ -342,17 +342,17 @@ export class MediaCollectionPage {
     if (name !== this.prevSub) {
       this.mediaCollection = this.allMediaCollection;
       this.prevSub = name;
-      if (this.tagModel !== '') {
+      if ( this.tagModel !== undefined && this.tagModel !== '') {
         this.filterCollectionsByTag(this.tagModel);
       }
-      if (this.locationModel !== '') {
+      if ( this.locationModel !== undefined && this.locationModel !== '') {
         this.filterCollectionsByLocation(this.locationModel);
       }
     }
     const filenames: Array<any> = [];
     const filteredGalleries = [];
     this.allSubjects.forEach(element => {
-      if (String(element['name']).toLowerCase() === String(name).toLowerCase()) {
+      if (String(element['name']).toLowerCase() === String(name).toLowerCase() || name === '') {
         filenames.push(element['filename']);
       }
     });
