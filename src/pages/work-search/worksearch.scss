@@ -66,4 +66,8 @@ page-work-search {
     .author{
       color: color($colors, gray);
     }
+
+    div .item-inner{
+      cursor: pointer;
+    }
 }
