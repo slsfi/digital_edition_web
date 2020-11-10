@@ -301,7 +301,7 @@ export class SemanticDataService {
       from: from,
       size: 200,
       sort: [
-        { 'title.keyword' : 'asc' }
+        { 'author_data.last_name.keyword' : 'asc' }
       ],
       query: {
         bool: {

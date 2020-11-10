@@ -121,7 +121,22 @@ export class WorkSearchPage {
         works.forEach(element => {
           element = element['_source'];
 
-          element['sortBy'] = String(element['title']).toLowerCase().trim().replace('ʽ', '');
+          element['sortBy'] = String(element['title']).trim().replace('ʽ', '');
+
+          // remove any empty author_data
+          if ( element['author_data'][0]['id'] === undefined ) {
+            element['author_data'] = [];
+          }
+
+          if ( element['author_data'].length > 0 ) {
+            element['sortBy'] = String(element['author_data'][0]['first_name']).trim().replace('ʽ', '');
+          }
+
+          // prefer sorting by last_name
+          if ( element['author_data'].length > 0 && String(element['author_data'][0]['last_name']).trim().length > 0 ) {
+            element['sortBy'] = String(element['author_data'][0]['last_name']).trim().replace('ʽ', '');
+          }
+
           const ltr = element['sortBy'].charAt(0);
           const mt = ltr.match(/[a-zåäö]/i);
           if (ltr.length === 1 && ltr.match(/[a-zåäö]/i) !== null) {
@@ -351,21 +366,21 @@ export class WorkSearchPage {
 
     // Sort alphabetically
     data.sort(function(a, b) {
-      if (a.name < b.name) { return -1; }
-      if (a.name > b.name) { return 1; }
+      if (a.sortBy < b.sortBy) { return -1; }
+      if (a.sortBy > b.sortBy) { return 1; }
       return 0;
     });
 
     // Check when first character changes in order to divide names into alphabetical groups
     for (let i = 0; i < data.length ; i++) {
       if (data[i] && data[i - 1]) {
-        if (data[i].name && data[i - 1].name) {
-          if (data[i].name.length > 1 && data[i - 1].name.length > 1) {
-            if (data[i].name.charAt(0) !== data[i - 1].name.charAt(0)) {
-              console.log(data[i].name.charAt(0) + ' != ' + data[i - 1].name.charAt(0))
-              const ltr = data[i].name.charAt(0);
+        if (data[i].sortBy && data[i - 1].sortBy) {
+          if (data[i].sortBy.length > 1 && data[i - 1].sortBy.length > 1) {
+            if (data[i].sortBy.charAt(0) !== data[i - 1].sortBy.charAt(0)) {
+              console.log(data[i].sortBy.charAt(0) + ' != ' + data[i - 1].sortBy.charAt(0))
+              const ltr = data[i].sortBy.charAt(0);
               if (ltr.length === 1 && ltr.match(/[a-z]/i)) {
-                data[i]['firstOfItsKind'] = data[i].name.charAt(0);
+                data[i]['firstOfItsKind'] = data[i].sortBy.charAt(0);
               }
             }
           }
@@ -374,8 +389,8 @@ export class WorkSearchPage {
     }
 
     for (let j = 0; j < data.length; j++) {
-      if (data[j].name.length > 1) {
-        data[j]['firstOfItsKind'] = data[j].name.charAt(0);
+      if (data[j].sortBy.length > 1) {
+        data[j]['firstOfItsKind'] = data[j].sortBy.charAt(0);
         break;
       }
     }
