@@ -99,6 +99,10 @@ export class OccurrencesPage {
     this.isbn = this.occurrenceResult.isbn;
     this.authors = this.occurrenceResult.author_data;
 
+    if ( this.authors[0] === undefined || this.authors[0]['id'] === undefined ) {
+      this.authors = [];
+    }
+
 
     this.date_born = (this.occurrenceResult.date_born !== undefined && this.occurrenceResult.date_born !== null) ?
                               String(this.occurrenceResult.date_born).split('-')[0] : null;
