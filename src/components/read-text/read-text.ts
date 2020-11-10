@@ -63,12 +63,6 @@ export class ReadTextComponent {
 
   ngAfterViewInit() {
     this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
-
-      // Check if we have the "illustrations" tab open, if not, open
-      if ( document.querySelector('illustrations') === null ) {
-        this.openNewView(event, null, 'illustrations');
-      }
-
     try {
       if (this.config.getSettings('settings.showReadTextIllustrations')) {
         const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
@@ -79,12 +73,20 @@ export class ReadTextComponent {
         }
         if ( showIllustration.includes(this.link.split('_')[1])) {
           if (event.target.classList.contains('est_figure_graphic')) {
+             // Check if we have the "illustrations" tab open, if not, open
+            if ( document.querySelector('illustrations') === null ) {
+              this.openNewView(event, null, 'illustrations');
+            }
             const image = {src: event.target.src, class: 'illustration'};
             this.events.publish('give:illustration', image);
           }
         } else {
           if (event.target.previousElementSibling !== null &&
             event.target.previousElementSibling.classList.contains('est_figure_graphic')) {
+            // Check if we have the "illustrations" tab open, if not, open
+            if ( document.querySelector('illustrations') === null ) {
+              this.openNewView(event, null, 'illustrations');
+            }
             const image = {src: event.target.previousElementSibling.src, class: 'illustration'};
             this.events.publish('give:illustration', image);
           }
