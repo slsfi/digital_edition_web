@@ -164,6 +164,12 @@
       "digitalEditionHeading": "Zacharias Topeliuksen teokset",
       "selectEdition": "Lue"
   },
+  "Filter":{
+    "personTypes": "Personkategori",
+    "tagTypes": "Ämneskategori",
+    "year": "Född mellan",
+    "apply": "Verkställ"
+  },
   "SearchApp": {
       "simpleSearch": "Hae",
       "advancedSearch": "Tarkennettu haku",

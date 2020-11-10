@@ -240,7 +240,8 @@
   "Filter":{
     "personTypes": "Personkategori",
     "tagTypes": "Ämneskategori",
-    "year": "Född mellan"
+    "year": "Född mellan",
+    "apply": "Verkställ"
   },
   "Type": "Typ",
   "Genre": "Genre",

@@ -11,7 +11,7 @@
   </ion-navbar>-->
   <ion-toolbar>
       <ion-buttons>
-        <button class="apply-button" (click)="apply()" ion-button>Apply</button>
+        <button class="apply-button" (click)="apply()" ion-button>{{"Filter.apply" | translate}}</button>
       </ion-buttons>
       <ion-buttons end>
         <button (click)="cancel()" ion-button>
@@ -23,12 +23,12 @@
 </ion-header>
 
 <ion-content padding>
-      <span class="year_label label">{{"Filter.year" | translate}}</span>
+      <span *ngIf="shouldFilterYear" class="year_label label">{{"Filter.year" | translate}}</span>
       <ion-item *ngIf="shouldFilterYear">
         <ion-input type="number" class="fromYear" [(ngModel)]="filterYearMin"></ion-input>
         <ion-input type="number" class="toYear" [(ngModel)]="filterYearMax"></ion-input>
       </ion-item>
-      <ion-item-divider style="background: transparent;"></ion-item-divider>
+      <ion-item-divider *ngIf="shouldFilterYear" style="background: transparent;"></ion-item-divider>
     <ion-list *ngIf="filterCategoryTypes">
       <ion-list-header>
         {{"Filter.tagTypes" | translate}}

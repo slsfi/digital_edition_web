@@ -226,6 +226,8 @@ export class SemanticDataService {
 
     // Add date range filter.
     if (filters.filterYearMax && filters.filterYearMin) {
+      payload.from = 0;
+      payload.size = 1000;
       payload.query.bool.must.push({
         range: {
           date_born_date: {

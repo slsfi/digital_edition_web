@@ -144,6 +144,12 @@
       "verk": "Works",
       "sort-by": "Sort by"
   },
+  "Filter":{
+    "personTypes": "Personkategori",
+    "tagTypes": "Ämneskategori",
+    "year": "Född mellan",
+    "apply": "Apply"
+  },
   "Occurrences": {
     "Title": "Occurrences",
     "Manuscript": "Manuscript",
