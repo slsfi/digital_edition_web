@@ -195,7 +195,13 @@ export class PersonSearchPage {
         persons.forEach(element => {
           element = element['_source'];
           const sortBy = [];
-          sortBy.push(String(element['full_name']).toLowerCase().trim().replace(' ', '').replace('ʽ', ''));
+          let sortByName = String(element['full_name']).toLowerCase().replace('ʽ', '');
+          sortByName = sortByName.replace('de ', '');
+          sortByName = sortByName.replace('von ', '');
+          sortByName = sortByName.replace('van ', '');
+          sortByName = sortByName.replace('af ', '');
+          sortByName = sortByName.trim();
+          sortBy.push(sortByName);
           element['sortBy'] = sortBy.join();
           const ltr = element['sortBy'].charAt(0);
           if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
@@ -221,7 +227,7 @@ export class PersonSearchPage {
         this.allData = this.persons;
         this.cacheData = this.persons;
         this.showLoading = false;
-        this.sortListAlphabeticallyAndGroup(this.allData);
+        this.sortListAlphabeticallyAndGroup(this.persons);
       },
       err => {console.error(err); this.showLoading = false; }
     );
@@ -471,8 +477,10 @@ export class PersonSearchPage {
       this.persons = [];
       terms = String(terms).toLowerCase().replace(' ', '');
       for (const person of this.allData) {
-        const sortBy = String(person.full_name).toLowerCase().replace(' ', '').replace('ʽ', '');
-        const sortByReverse = String(person.full_name).toLowerCase().replace(' ', '').replace('ʽ', '');
+        let sortBy = String(person.full_name).toLowerCase().replace(' ', '').replace('ʽ', '');
+        sortBy = sortBy.replace('de', '').replace('von', '').replace('van', '').replace('af', '');
+        let sortByReverse = String(person.full_name).toLowerCase().replace(' ', '').replace('ʽ', '');
+        sortByReverse = sortByReverse.replace('de', '').replace('von', '').replace('van', '').replace('af', '');
         if (sortBy) {
           if (sortBy.includes(terms) || sortByReverse.includes(terms)) {
             const inList = this.persons.some(function(p) {
