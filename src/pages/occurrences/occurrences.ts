@@ -79,8 +79,16 @@ export class OccurrencesPage {
               public viewCtrl: ViewController,
               private events: Events
   ) {
+    this.occurrenceResult = this.navParams.get('occurrenceResult');
+    if ( this.occurrenceResult !== undefined ) {
+      this.init();
+    } else if ( this.navParams.get('type') && this.navParams.get('id') ) {
+      this.getObjectData(this.navParams.get('type'), this.navParams.get('id'));
+    }
+  }
+
+  init() {
     this.groupedTexts = [];
-    this.occurrenceResult = navParams.get('occurrenceResult');
     this.title = (this.occurrenceResult.name === undefined) ? this.occurrenceResult['full_name'] : this.occurrenceResult.name;
     this.longitude = (Number(this.occurrenceResult.longitude) !== 0 ) ? Number(this.occurrenceResult.longitude) : null;
     this.latitude = (Number(this.occurrenceResult.latitude) !== 0 ) ? Number(this.occurrenceResult.latitude) : null;
@@ -102,7 +110,6 @@ export class OccurrencesPage {
     if ( this.authors[0] === undefined || this.authors[0]['id'] === undefined ) {
       this.authors = [];
     }
-
 
     this.date_born = (this.occurrenceResult.date_born !== undefined && this.occurrenceResult.date_born !== null) ?
                               String(this.occurrenceResult.date_born).split('-')[0] : null;
@@ -127,11 +134,17 @@ export class OccurrencesPage {
       this.showPublishedStatus = 2;
     }
 
+    this.setObjectType();
+    this.getOccurrenceTexts(this.occurrenceResult);
+    this.getMediaData();
+    this.getArticleData();
+    this.getGalleryOccurrences();
+
     try {
       try {
         (<any>window).ga('send', 'event', {
           eventCategory: 'Occurrence',
-          eventLabel: this.navParams.get('objectType'),
+          eventLabel: this.objectType,
           eventAction: String(this.title),
           eventValue: 10
         });
@@ -140,11 +153,6 @@ export class OccurrencesPage {
     } catch ( e ) {
 
     }
-    this.setObjectType();
-    this.getOccurrenceTexts(navParams.get('occurrenceResult'));
-    this.getMediaData();
-    this.getArticleData();
-    this.getGalleryOccurrences();
   }
 
   ionViewWillLeave() {
@@ -158,6 +166,25 @@ export class OccurrencesPage {
     if (this.navParams.get('objectType')) {
       this.objectType = this.navParams.get('objectType');
     }
+  }
+
+  getObjectData(type, id) {
+    this.isLoading = true;
+    this.semanticDataService.getSingleObjectElastic(type, id).subscribe(
+      data => {
+        this.objectType = type;
+        const personsTmp = [];
+        this.occurrenceResult = data.hits.hits[0]['_source'];
+        if ( type === 'work' ) {
+          this.occurrenceResult.id = this.occurrenceResult['man_id'];
+          this.occurrenceResult.description = this.occurrenceResult['reference'];
+          this.occurrenceResult.name = this.occurrenceResult['title'];
+        }
+        this.isLoading = false;
+        this.init();
+      },
+      err => {console.error(err); this.isLoading = false; }
+    );
   }
 
   getMediaData() {

@@ -1312,17 +1312,19 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   showPersonModal(id: string) {
-    const modal = this.modalCtrl.create(SemanticDataModalPage, { id: id, type: 'person' });
+    // const modal = this.modalCtrl.create(SemanticDataModalPage, { id: id, type: 'person' });
+    // modal.present();
+    const modal = this.modalCtrl.create(OccurrencesPage, { id: id, type: 'subject' });
     modal.present();
   }
 
   showPlaceModal(id: string) {
-    const modal = this.modalCtrl.create(SemanticDataModalPage, { id: id, type: 'place' });
+    const modal = this.modalCtrl.create(OccurrencesPage, { id: id, type: 'location' });
     modal.present();
   }
 
   showWorkModal(id: string) {
-    const modal = this.modalCtrl.create(SemanticDataModalPage, { id: id, type: 'work' });
+    const modal = this.modalCtrl.create(OccurrencesPage, { id: id, type: 'work' });
     modal.present();
   }
 

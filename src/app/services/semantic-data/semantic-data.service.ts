@@ -192,7 +192,7 @@ export class SemanticDataService {
       filters = {};
     }
     try {
-      showPublishedStatus = this.config.getSettings('LocationSearch.ShowPublishedStatus');
+      showPublishedStatus = this.config.getSettings('PersonSearch.ShowPublishedStatus');
     } catch (e) {
       showPublishedStatus = 2;
     }
@@ -252,6 +252,45 @@ export class SemanticDataService {
     }
 
     return this.http.post(this.getSearchUrl(this.elasticSubjectIndex), payload)
+    .map(this.extractData)
+    .catch(this.handleError)
+  }
+
+  getSingleObjectElastic(type, id) {
+    const payload: any = {
+      from: 0,
+      size: 200,
+      query: {
+        bool: {
+          should : [{
+            bool: {
+              must:  [{
+                'term' : { 'project_id' : this.config.getSettings('app.projectId') }
+              },
+              {
+                'term' : { 'id' : id }
+              }]
+            }
+          },
+          {
+            bool: {
+              must:  [{
+                'term' : { 'project_id' : this.config.getSettings('app.projectId') }
+              },
+              {
+                'term' : { 'legacy_id' : id }
+              }]
+            }
+          }]
+        }
+      }
+    }
+
+    if ( type === 'work' ) {
+      payload.query.bool.should[0].bool.must[1]['term'] = {'man_id': id};
+    }
+
+    return this.http.post(this.getSearchUrl(type), payload)
     .map(this.extractData)
     .catch(this.handleError)
   }
