@@ -1197,9 +1197,16 @@ export class ReadPage /*implements OnDestroy*/ {
       tooltip => {
         let text = '';
         if ( tooltip.date_born !== null || tooltip.date_deceased !== null ) {
-          const date_born =  String(tooltip.date_born).split('-')[0];
-          const date_deceased = String(tooltip.date_deceased).split('-')[0];
-          text = '<b>' + tooltip.name + '</b> (' + date_born + '–' + date_deceased + ')';
+          const date_born =  String(tooltip.date_born).split('-')[0].replace(/^0+/, '');
+          const date_deceased = String(tooltip.date_deceased).split('-')[0].replace(/^0+/, '');
+          let bcTranslation = 'BC';
+          this.translate.get('BC').subscribe(
+            translation => {
+              bcTranslation = translation;
+            }, error => { }
+          );
+          const bcIndicator = (String(tooltip.date_deceased).includes('BC')) ? ' ' + bcTranslation : '';
+          text = '<b>' + tooltip.name + '</b> (' + date_born + '–' + date_deceased + '' + bcIndicator + ')';
         } else {
           text = '<b>' + tooltip.name + '</b>';
         }

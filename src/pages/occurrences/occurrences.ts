@@ -112,9 +112,19 @@ export class OccurrencesPage {
     }
 
     this.date_born = (this.occurrenceResult.date_born !== undefined && this.occurrenceResult.date_born !== null) ?
-                              String(this.occurrenceResult.date_born).split('-')[0] : null;
+                              String(this.occurrenceResult.date_born).split('-')[0].replace(/^0+/, '') : null;
     this.date_deceased = (this.occurrenceResult.date_deceased !== undefined && this.occurrenceResult.date_deceased !== null) ?
-                              String(this.occurrenceResult.date_deceased).split('-')[0] : null;
+                              String(this.occurrenceResult.date_deceased).split('-')[0].replace(/^0+/, '') : null;
+
+    let bcTranslation = 'BC';
+    this.translate.get('BC').subscribe(
+      translation => {
+        bcTranslation = translation;
+      }, error => { }
+    );
+    if ( this.date_deceased !== null ) {
+      this.date_deceased = this.date_deceased + '' + ((String(this.occurrenceResult.date_deceased).includes('BC')) ? ' ' + bcTranslation : '');
+    }
 
     try {
       this.singleOccurrenceType = this.config.getSettings('SingleOccurrenceType');
