@@ -13,6 +13,7 @@ import { SingleOccurrence } from '../../app/models/single-occurrence.model';
 import { Storage } from '@ionic/storage';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { OccurrencesPage } from '../occurrences/occurrences';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * Generated class for the PersonSearchPage page.
@@ -83,6 +84,7 @@ export class PersonSearchPage {
               public loadingCtrl: LoadingController,
               public occurrenceService: OccurrenceService,
               protected storage: Storage,
+              public translate: TranslateService,
               private toastCtrl: ToastController,
               private userSettingsService: UserSettingsService,
               private events: Events,
@@ -201,6 +203,12 @@ export class PersonSearchPage {
           sortByName = sortByName.replace('van ', '');
           sortByName = sortByName.replace('af ', '');
           sortByName = sortByName.trim();
+          if ( element['date_deceased'] !== null ) {
+            element['date_deceased'] = String(element['date_deceased']).replace(/^0+/, '');
+          }
+          if ( element['date_born'] !== null ) {
+            element['date_born'] = String(element['date_born']).replace(/^0+/, '');
+          }
           sortBy.push(sortByName);
           element['sortBy'] = sortBy.join();
           const ltr = element['sortBy'].charAt(0);
