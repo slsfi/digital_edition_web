@@ -65,10 +65,8 @@ export class TextChangerComponent {
             if (val.children[i].itemId.split('_')[1] === c_id) {
               this.currentItemTitle = val.children[i].text;
               this.storage.set('currentTOCItemTitle', this.currentItemTitle);
-              this.nextItemTitle = String(val.children[i + 1].text).substring(0, 40) +
-              (String(val.children[i + 1].text).length > 40 ? '...' : '');
-              this.prevItemTitle =  String(val.children[i - 1].text).substring(0, 40) +
-              (String(val.children[i - 1].text).length > 40 ? '...' : '');
+              this.nextItemTitle = String(val.children[i + 1].text);
+              this.prevItemTitle =  String(val.children[i - 1].text);
             }
           }
         }
@@ -156,13 +154,10 @@ export class TextChangerComponent {
     }
 
     this.nextItem = this.flattened[nextId];
-    this.nextItemTitle = String(this.nextItem.text).substring(0, 40) +
-              (String(this.nextItem.text).length > 40 ? '...' : '');
+    this.nextItemTitle = String(this.nextItem.text);
     this.prevItem = this.flattened[prevId];
-    this.prevItemTitle = String(this.prevItem.text).substring(0, 40) +
-              (String(this.prevItem.text).length > 40 ? '...' : '');
-    this.currentItemTitle = String(this.flattened[currentId].text).substring(0, 40) +
-    (String(this.flattened[currentId].text).length > 40 ? '...' : '');
+    this.prevItemTitle = String(this.prevItem.text);
+    this.currentItemTitle = String(this.flattened[currentId].text);
     this.storage.set('currentTOCItemTitle', this.currentItemTitle);
   }
 

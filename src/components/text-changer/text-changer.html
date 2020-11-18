@@ -5,7 +5,7 @@
       <p *ngIf="!(userSettingsService.isMobile())" class="forwardBackward__previouspage-name">{{prevItemTitle}}</p>
     </button>
   </div>
-  <p class="forwardBackward__currentpage-name">{{currentItemTitle}}</p>
+  <div class="forwardBackward__currentpage-name"><p>{{currentItemTitle}}</p></div>
   <div class="forwardButtonDiv">
     <button [disabled]="lastItem" class="forwardButton" (click)="next()">
       <p *ngIf="!(userSettingsService.isMobile())" class="forwardBackward__nextpage-name">{{nextItemTitle}} </p>
