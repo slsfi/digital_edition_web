@@ -74,6 +74,8 @@ export class DigitalEditionsApp {
   currentMarkdownId = null;
   openCollectionFromToc = false;
 
+  pageFirstLoad = true;
+
   accordionTOC = false;
   accordionMusic = false;
 
@@ -849,7 +851,10 @@ export class DigitalEditionsApp {
       if (homeUrl >= 0) {
         this.setupPageSettings(currentPage);
       } else if ( document.URL.indexOf('/#/') > 0 ) {
-        this.showSplitPane();
+        if ( this.splitPaneOpen === false && this.pageFirstLoad === true ) {
+          this.showSplitPane();
+          this.pageFirstLoad = false;
+        }
       }
     });
 
@@ -962,16 +967,6 @@ export class DigitalEditionsApp {
   }
 
   mobileSplitPaneDetector() {
-    this.events.subscribe('splitPaneToggle:disable', () => {
-      if (this.userSettingsService.isMobile()) {
-        this.hideSplitPane();
-      }
-    });
-    this.events.subscribe('splitPaneToggle:enable', () => {
-      if (this.userSettingsService.isMobile()) {
-        this.showSplitPane();
-      }
-    });
   }
 
   doFor(needle, haystack, callback) {
