@@ -42,14 +42,12 @@ export class TutorialService {
               this.tutorialSteps = steps;
             }
             this.storage.get('tutorial-done').then((seen) => {
-              if (!seen) {
-                try {
-                  if (this.config.getSettings('showTutorial')) {
-                    this.intro();
-                  }
-                } catch (e) {
-                  console.error('Missing showTutorial from config.json');
+              try {
+                if (this.config.getSettings('showTutorial')) {
+                  this.intro();
                 }
+              } catch (e) {
+                console.error('Missing showTutorial from config.json');
               }
             });
           });
@@ -125,8 +123,15 @@ export class TutorialService {
   canBeSeen(step, page) {
     // i have not already seen it and it is not disabled on this page
     // It is visible by default or has been specifically enabled for this page
-    return !step.alreadySeen && !step.hideOn.includes(page) &&
-    (step.show || step.showOn.includes(page));
+    if ( String(step.element).includes('#') ) {
+      if ( document.getElementById(String(step.element).replace('#', '')) !== null && step.show ) {
+        return !step.alreadySeen;
+      } else {
+        return false;
+      }
+    } else {
+      return !step.alreadySeen;
+    }
   }
 
   getStep(selector, returnIndex = false): any {

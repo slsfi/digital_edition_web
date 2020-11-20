@@ -8,6 +8,7 @@
       "skipLabel": "Ohita",
       "doneLabel": "Valmis",
       "WelcomeText": "Tervetuloa, tässä on käyttöliittymän esittely.",
+      "searchIcon": "Klicka här för att söka i utgåvan.",
       "MenuToggleText": "Piilota tai näytä sivuvalikko napsauttamalla tätä.",
       "ReadTocItemText": "Täällä voit nähdä kaikki digitaaliset julkaisut.",
       "DownloadCacheText": "Tällä painikkeella voit tallentaa tiedot paikallisesti, niin se on nopeampaa seuraavan kerran."

@@ -9,6 +9,7 @@
       "doneLabel": "Done",
       "WelcomeText": "Welcome, here is a presentation of the user interface.",
       "MenuToggleText": "Click here to show or hide the menu.",
+      "searchIcon": "Click here for search.",
       "ReadTocItemText": "Here you can see all digital publications and volumes.",
       "DownloadCacheText": "With this button you can save the data locally, and it will be faster next time."
   },
