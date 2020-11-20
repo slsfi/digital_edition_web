@@ -112,6 +112,9 @@
         "Nothing": "Ei kuvia",
         "Showall": "Näytä kaikki"
       },
+      "CoverPage": {
+        "Title": "Kansi"
+      },
       "ShowAll": "Näytä kaikki",
       "ShowSearchResults": "Esiintymät"
   },
