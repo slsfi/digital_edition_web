@@ -53,6 +53,9 @@ export class SingleEditionPage {
   description: string;
   showPage = false;
   show: string;
+  hasTitle: boolean;
+  hasCover: boolean;
+  hasIntro: boolean;
   childrenPdfs = [];
   hasDigitalEditionListChildren = false;
 
@@ -85,6 +88,24 @@ export class SingleEditionPage {
       this.appName = this.config.getSettings('app.name.' + lang);
       this.show = this.config.getSettings('defaults.ReadModeView');
     });
+
+    try {
+      this.hasTitle = this.config.getSettings('HasTitle');
+    } catch (e) {
+      this.hasTitle = false;
+    }
+
+    try {
+      this.hasIntro = this.config.getSettings('HasIntro');
+    } catch (e) {
+      this.hasIntro = false;
+    }
+
+    try {
+      this.hasCover = this.config.getSettings('HasCover');
+    } catch (e) {
+      this.hasCover = false;
+    }
 
     if (this.collection !== undefined && this.collection.id !== undefined && this.collection.id !== 'mediaCollections') {
       if (this.collection.title !== undefined) {
@@ -197,7 +218,7 @@ export class SingleEditionPage {
     this.events.publish('musicAccordion:reset', true);
     if (this.collection.id && !this.collection.isDownloadOnly) {
       this.getTocRoot(this.collection.id);
-      this.maybeLoadTitlePage(this.collection.id);
+      this.maybeLoadIntroductionPage(this.collection.id);
     } else {
       console.log(this.collection.id, 'perhaps maybe');
     }
@@ -278,13 +299,19 @@ export class SingleEditionPage {
       console.log('Opening read from SingleEdition.openFirstPage()');
       nav[0].setRoot('read', params);
     } catch (e) {
-      this.maybeLoadTitlePage(params['collectionID']);
+      this.maybeLoadIntroductionPage(params['collectionID']);
     }
   }
 
-  maybeLoadTitlePage(collectionID: string) {
+  maybeLoadIntroductionPage(collectionID: string) {
       const nav = this.app.getActiveNavs();
       const params = { collection: this.collection, fetch: true, collectionID: this.collection.id };
-      nav[0].setRoot('title-page', params);
+      if ( this.hasIntro ) {
+        nav[0].setRoot('introduction', params);
+      } else if ( this.hasCover ) {
+        nav[0].setRoot('cover-page', params);
+      } else if ( this.hasTitle ) {
+        nav[0].setRoot('title-page', params);
+      }
   }
 }

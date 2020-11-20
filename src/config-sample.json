@@ -331,7 +331,8 @@
     "LoadCollectionsFromAssets": false,
     "LoadTitleFromDB": true,
     "StaticMarkdownCovers": false,
-    "ProjectStaticMarkdownCoversFolder": "05",
+    "ProjectStaticMarkdownCoversFolder": "08",
+    "ProjectStaticMarkdownTitleFolder": "05",
     "showOccurencesModalOnReadPageAfterSearch": {
         "tagSearch": true,
         "personSearch": false,
@@ -352,6 +353,7 @@
         "Music": false
     },
     "HasCover": true,
+    "HasTitle": true,
     "HasIntro": true,
     "SidemenuMobile": true,
     "OpenOccurrencesAndInfoOnNewPage": false,

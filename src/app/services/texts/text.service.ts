@@ -134,6 +134,20 @@ export class TextService {
         .catch(this.handleError);
   }
 
+
+  getCoverPage(id: string, lang: string): Observable<any> {
+    const data = `${id}`.split('_');
+    const c_id = data[0];
+    const pub_id = (data.length > 1) ? data[1] : 1;
+
+    return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
+        this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/cover/' + lang)
+        .map(res => {
+          return res.json();
+        })
+        .catch(this.handleError);
+  }
+
   getVariations(id: string): Observable<any> {
     const c_id = `${id}`.split('_')[0];
     const pub_id = `${id}`.split('_')[1];

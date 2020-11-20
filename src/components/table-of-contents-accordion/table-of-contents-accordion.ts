@@ -280,8 +280,10 @@ export class TableOfContentsAccordionComponent {
   foundTocItem = false;
   titleSelected: boolean;
   introductionSelected: boolean;
+  coverSelected: boolean;
   root: any;
   hasCover: boolean;
+  hasTitle: boolean;
   hasIntro: boolean;
   playmanTraditionPageInMusicAccordion = false;
   playmanTraditionPageID = '03-03';
@@ -342,11 +344,12 @@ export class TableOfContentsAccordionComponent {
 
     this.titleSelected = false;
     this.introductionSelected = false;
+    this.coverSelected = false;
 
     try {
-      this.hasCover = this.config.getSettings('HasCover');
+      this.hasTitle = this.config.getSettings('HasTitle');
     } catch (e) {
-      this.hasCover = false;
+      this.hasTitle = false;
     }
 
     try {
@@ -355,10 +358,19 @@ export class TableOfContentsAccordionComponent {
       this.hasIntro = false;
     }
 
-    if ( this.hasCover && String(window.location.href).includes('publication-introduction') === false) {
-      this.titleSelected = true;
-    } else if ( this.hasIntro ) {
+    try {
+      this.hasCover = this.config.getSettings('HasCover');
+    } catch (e) {
+      this.hasCover = false;
+    }
+
+    const currentPage = String(window.location.href);
+    if ( currentPage.includes('publication-introduction') ) {
       this.introductionSelected = true;
+    } else if ( currentPage.includes('publication-title') ) {
+      this.titleSelected = true;
+    } else if ( currentPage.includes('publication-cover') ) {
+      this.coverSelected = true;
     }
 
     this.events.subscribe('tableOfContents:findMarkdownTocItem', (data) => {
@@ -576,11 +588,16 @@ export class TableOfContentsAccordionComponent {
       if (!data) {
         return;
       }
+      this.titleSelected = false;
+      this.introductionSelected = false;
+      this.coverSelected = false;
 
       this.currentOption = null;
-      if ( this.hasCover ) {
+      if ( data.selected === 'title' ) {
         this.titleSelected = true;
-      } else if ( this.hasIntro ) {
+      } else if ( data.selected === 'cover' ) {
+        this.coverSelected = true;
+      } else {
         this.introductionSelected = true;
       }
       this.unSelectAllItems(this.collapsableItems);
@@ -711,6 +728,7 @@ export class TableOfContentsAccordionComponent {
 
       this.titleSelected = false;
       this.introductionSelected = false;
+      this.coverSelected = false;
 
       if (item.url) {
         params['url'] = item.url;
@@ -823,6 +841,7 @@ export class TableOfContentsAccordionComponent {
     params['collectionID'] = this.collectionId;
     this.introductionSelected = true;
     this.titleSelected = false;
+    this.coverSelected = false;
     const nav = this.app.getActiveNavs();
     if (this.platform.is('mobile')) {
       nav[0].push('introduction', params);
@@ -836,12 +855,28 @@ export class TableOfContentsAccordionComponent {
     params['collectionID'] = this.collectionId;
     params['firstItem'] = '1';
     this.titleSelected = true;
+    this.coverSelected = false;
     this.introductionSelected = false;
     const nav = this.app.getActiveNavs();
     if (this.platform.is('mobile')) {
       nav[0].push('title-page', params);
     } else {
       nav[0].setRoot('title-page', params);
+    }
+  }
+
+  openCoverPage() {
+    const params = {root: this.root, tocItem: null, collection: {title: 'Cover Page'}};
+    params['collectionID'] = this.collectionId;
+    params['firstItem'] = '1';
+    this.titleSelected = false;
+    this.coverSelected = true;
+    this.introductionSelected = false;
+    const nav = this.app.getActiveNavs();
+    if (this.platform.is('mobile')) {
+      nav[0].push('cover-page', params);
+    } else {
+      nav[0].setRoot('cover-page', params);
     }
   }
 

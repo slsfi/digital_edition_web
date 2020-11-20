@@ -5,10 +5,10 @@
   <ion-card *ngIf="!hasDigitalEditionListChildren">
     <ion-card-content>
       <ion-scroll scrollY="true" style="height:80vh;" class="card">
-        <div *ngIf="hasMDTitle && mdContent && !hasDigitalEditionListChildren" class="tei md_content">
+        <div *ngIf="hasMDCover && mdContent && !hasDigitalEditionListChildren" class="tei md_content">
           <markdown [data]="mdContent"></markdown>
         </div>
-        <div *ngIf="!hasMDTitle && !hasDigitalEditionListChildren" class="tei" [innerHTML]="text"></div>
+        <div *ngIf="!hasMDCover && !hasDigitalEditionListChildren" class="tei" [innerHTML]="text"></div>
       </ion-scroll>
     </ion-card-content>
   </ion-card>

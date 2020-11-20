@@ -10,33 +10,33 @@ import { ConfigService } from '@ngx-config/core';
 import { MdContentService } from '../../app/services/md/md-content.service';
 
 /**
- * Generated class for the TitlePage page.
+ * Generated class for the CoverPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
 
 @IonicPage({
-  name: 'title-page',
-  segment: 'publication-title/:collectionID',
+  name: 'cover-page',
+  segment: 'publication-cover/:collectionID',
   priority: 'high'
 })
 @Component({
-  selector: 'page-title',
-  templateUrl: 'title.html',
+  selector: 'page-cover',
+  templateUrl: 'cover.html',
 })
-export class TitlePage {
+export class CoverPage {
 
   errorMessage: any;
   mdContent: string;
   lang = 'sv';
-  hasMDTitle = false;
+  hasMDCover = false;
   hasDigitalEditionListChildren = false;
   childrenPdfs = [];
   protected id: string;
   protected text: any;
   protected collection: any;
-  titleSelected: boolean;
+  coverSelected: boolean;
   collectionID: any;
 
   constructor(
@@ -54,21 +54,21 @@ export class TitlePage {
     public config: ConfigService,
     public mdContentService: MdContentService
   ) {
-    this.titleSelected = true;
+    this.coverSelected = true;
     this.id = this.params.get('collectionID');
-    console.log(`Titlepage id is ${this.id}`);
+    console.log(`Coverpage id is ${this.id}`);
 
     this.collection = this.params.get('collection');
     if ( this.params.get('publicationID') === undefined ) {
-      this.titleSelected = true;
+      this.coverSelected = true;
     } else {
-      this.titleSelected = false;
+      this.coverSelected = false;
     }
     this.mdContent = '';
     try {
-      this.hasMDTitle = this.config.getSettings('ProjectStaticMarkdownTitleFolder');
+      this.hasMDCover = this.config.getSettings('ProjectStaticMarkdownCoversFolder');
     } catch (e) {
-      this.hasMDTitle = false;
+      this.hasMDCover = false;
     }
 
     this.events.subscribe('language:change', () => {
@@ -79,9 +79,10 @@ export class TitlePage {
     });
 
     this.checkIfCollectionHasChildrenPdfs();
+
     if (!isNaN(Number(this.id))) {
-      if (this.hasMDTitle) {
-        const folder = this.hasMDTitle;
+      if (this.hasMDCover) {
+        const folder = this.hasMDCover;
         this.getMdContent(`${this.lang}-${folder}-${this.id}`);
       }
     }
@@ -112,11 +113,11 @@ export class TitlePage {
   ionViewWillEnter() {
     this.events.publish('ionViewWillEnter', this.constructor.name);
     this.events.publish('musicAccordion:reset', true);
-    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'title'});
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'cover'});
 
     this.events.publish('SelectedItemInMenu', {
       menuID: this.params.get('collectionID'),
-      component: 'title-page'
+      component: 'cover-page'
     });
 
   }
@@ -132,14 +133,14 @@ export class TitlePage {
   getTocRoot(id: string) {
     this.storage.get('toc_' + id).then((tocItemsC) => {
       if (tocItemsC) {
-        tocItemsC.titleSelected = this.titleSelected;
-        this.events.publish('tableOfContents:loaded', {tocItems: tocItemsC, searchTocItem: true, collectionID: tocItemsC.collectionId, 'caller':  'title'});
+        tocItemsC.coverSelected = this.coverSelected;
+        this.events.publish('tableOfContents:loaded', {tocItems: tocItemsC, searchTocItem: true, collectionID: tocItemsC.collectionId, 'caller':  'cover'});
       } else {
         this.tableOfContentsService.getTableOfContents(id)
         .subscribe(
             tocItems => {
-              tocItems.titleSelected = this.titleSelected;
-              this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId, 'caller':  'title'});
+              tocItems.coverSelected = this.coverSelected;
+              this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId, 'caller':  'cover'});
               this.storage.set('toc_' + id, tocItems);
             },
           error =>  {this.errorMessage = <any>error});
@@ -149,11 +150,11 @@ export class TitlePage {
 
   ionViewDidLoad() {
     this.getTocRoot(this.params.get('collectionID'));
-    this.events.publish('pageLoaded:title');
+    this.events.publish('pageLoaded:cover');
     if (!isNaN(Number(this.id))) {
-      if (!this.hasMDTitle) {
+      if (!this.hasMDCover) {
         this.langService.getLanguage().subscribe(lang => {
-          this.textService.getTitlePage(this.id, lang).subscribe(
+          this.textService.getCoverPage(this.id, lang).subscribe(
             res => {
               // in order to get id attributes for tooltips
               this.text = this.sanitizer.bypassSecurityTrustHtml(
@@ -170,7 +171,7 @@ export class TitlePage {
         if (isNaN(Number(this.id))) {
           this.langService.getLanguage().subscribe(lang => {
             const fileID = lang + '-08';
-            this.hasMDTitle = true;
+            this.hasMDCover = true;
             this.mdService.getMdContent(fileID).subscribe(
               res => {
                 // in order to get id attributes for tooltips

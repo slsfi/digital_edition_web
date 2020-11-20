@@ -19,7 +19,10 @@
         </button>
         </ion-item>
     </ng-container>
-    <ion-item *ngIf="hasCover && collectionName != 'About'" [ngClass]="titleSelected?'selected-toc-item':''">
+    <ion-item *ngIf="hasCover && collectionName != 'About'" [ngClass]="coverSelected?'selected-toc-item':''">
+        <p class="justLevel" (click)="openCoverPage()">{{ "Read.TitlePage.Cover" | translate }}</p>
+    </ion-item>
+    <ion-item *ngIf="hasTitle && collectionName != 'About'" [ngClass]="titleSelected?'selected-toc-item':''">
         <p class="justLevel" (click)="openTitlePage()">{{ "Read.TitlePage.Title" | translate }}</p>
     </ion-item>
     <ion-item *ngIf="hasIntro && collectionName != 'About' && collectionId != 'mediaCollections'" [ngClass]="introductionSelected?'selected-toc-item':''">
