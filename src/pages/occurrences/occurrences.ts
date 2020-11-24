@@ -500,6 +500,7 @@ export class OccurrencesPage {
     this.semanticDataService.getOccurrences(this.objectType, id).subscribe(
       occ => {
         this.groupedTexts = [];
+        this.infoLoading = false;
         // Sort alphabetically
         const addedTOCs: Array<String> = [];
         occ.forEach(item => {
@@ -515,9 +516,11 @@ export class OccurrencesPage {
           }
         });
         this.isLoading = false;
+        this.infoLoading = false;
       },
       err => {
         this.isLoading = false;
+        this.infoLoading = false;
       },
       () => console.log('Fetched tags...')
     );
