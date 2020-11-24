@@ -88,6 +88,7 @@ export class TutorialService {
       prevLabel: this.tutorialTexts.prevLabel,
       skipLabel: this.tutorialTexts.skipLabel,
       doneLabel: this.tutorialTexts.doneLabel,
+      overlayOpacity: 0.45,
       keyboardNavigation: true,
       scrollToElement: true,
     });

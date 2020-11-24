@@ -9,6 +9,7 @@ import { Occurrence, OccurrenceType, OccurrenceResult } from '../../app/models/o
 import { SingleOccurrence } from '../../app/models/single-occurrence.model';
 import { TranslateService } from '@ngx-translate/core';
 import leaflet from 'leaflet';
+import { BootstrapOptions } from '@angular/core/src/application_ref';
 
 /**
  * Generated class for the OccurrencesPage page.
@@ -54,7 +55,9 @@ export class OccurrencesPage {
   galleryOccurrenceData: any = [];
   hideTypeAndDescription = false;
   isLoading: Boolean = true;
+  infoLoading: Boolean = true;
   showPublishedStatus: Number = 2;
+  noData: Boolean = false;
 
   objectType = '';
 
@@ -179,21 +182,25 @@ export class OccurrencesPage {
   }
 
   getObjectData(type, id) {
-    this.isLoading = true;
+    this.infoLoading = true;
     this.semanticDataService.getSingleObjectElastic(type, id).subscribe(
       data => {
+        this.infoLoading = false;
         this.objectType = type;
         const personsTmp = [];
-        this.occurrenceResult = data.hits.hits[0]['_source'];
+        if ( data.hits.hits.length <= 0 ) {
+          this.noData = true;
+        } else {
+          this.occurrenceResult = data.hits.hits[0]['_source'];
+        }
         if ( type === 'work' ) {
           this.occurrenceResult.id = this.occurrenceResult['man_id'];
           this.occurrenceResult.description = this.occurrenceResult['reference'];
           this.occurrenceResult.name = this.occurrenceResult['title'];
         }
-        this.isLoading = false;
         this.init();
       },
-      err => {console.error(err); this.isLoading = false; }
+      err => {console.error(err); this.infoLoading = false; }
     );
   }
 

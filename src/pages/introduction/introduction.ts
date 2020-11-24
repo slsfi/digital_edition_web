@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Component, Renderer, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, Platform, PopoverController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -70,7 +71,8 @@ export class IntroductionPage {
     protected tableOfContentsService: TableOfContentsService,
     private storage: Storage,
     public readPopoverService: ReadPopoverService,
-    private config: ConfigService
+    private config: ConfigService,
+    public translate: TranslateService
   ) {
     this.id = this.params.get('collectionID');
     this.collection = this.params.get('collection');
@@ -247,7 +249,13 @@ export class IntroductionPage {
         this.tooltips.works[id] = tooltip.description;
       },
       error => {
-        this.setToolTipText('Could not get work information');
+        let noInfoFound = 'Could not get work information';
+        this.translate.get('Occurrences.NoInfoFound').subscribe(
+          translation => {
+            noInfoFound = translation;
+          }, error => { }
+        );
+        this.setToolTipText(noInfoFound);
       }
     );
   }
@@ -279,7 +287,13 @@ export class IntroductionPage {
         this.tooltips.places[id] = tooltip.description;
       },
       error => {
-        this.setToolTipText('Could not get place information');
+        let noInfoFound = 'Could not get place information';
+        this.translate.get('Occurrences.NoInfoFound').subscribe(
+          translation => {
+            noInfoFound = translation;
+          }, error => { }
+        );
+        this.setToolTipText(noInfoFound);
       }
     );
   }
@@ -329,7 +343,13 @@ export class IntroductionPage {
         this.tooltips.persons[id] = tooltip.description;
       },
       error => {
-        this.setToolTipText('Could not get person information');
+        let noInfoFound = 'Could not get person information';
+        this.translate.get('Occurrences.NoInfoFound').subscribe(
+          translation => {
+            noInfoFound = translation;
+          }, error => { }
+        );
+        this.setToolTipText(noInfoFound);
       }
     );
   }

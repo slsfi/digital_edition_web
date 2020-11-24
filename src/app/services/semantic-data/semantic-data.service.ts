@@ -290,6 +290,11 @@ export class SemanticDataService {
       payload.query.bool.should[0].bool.must[1]['term'] = {'man_id': id};
     }
 
+    // remove if the ID is not strictly numerical
+    if ( /^\d+$/.test(id) === false ) {
+      delete payload.query.bool.should[0];
+    }
+
     return this.http.post(this.getSearchUrl(type), payload)
     .map(this.extractData)
     .catch(this.handleError)

@@ -1219,7 +1219,13 @@ export class ReadPage /*implements OnDestroy*/ {
         this.tooltips.persons[id] = text;
       },
       error => {
-        this.setToolTipText('Could not get person information');
+        let noInfoFound = 'Could not get person information';
+        this.translate.get('Occurrences.NoInfoFound').subscribe(
+          translation => {
+            noInfoFound = translation;
+          }, error => { }
+        );
+        this.setToolTipText(noInfoFound);
       }
     );
   }
@@ -1262,7 +1268,13 @@ export class ReadPage /*implements OnDestroy*/ {
         this.tooltips.places[id] = (tooltip.description) ?  tooltip.name + ', ' + tooltip.description : tooltip.name;
       },
       error => {
-        this.setToolTipText('Could not get place information');
+        let noInfoFound = 'Could not get place information';
+        this.translate.get('Occurrences.NoInfoFound').subscribe(
+          translation => {
+            noInfoFound = translation;
+          }, error => { }
+        );
+        this.setToolTipText(noInfoFound);
       }
     );
   }
@@ -1279,7 +1291,13 @@ export class ReadPage /*implements OnDestroy*/ {
         this.tooltips.works[id] = tooltip.description;
       },
       error => {
-        this.setToolTipText('Could not get work information');
+        let noInfoFound = 'Could not get work information';
+        this.translate.get('Occurrences.NoInfoFound').subscribe(
+          translation => {
+            noInfoFound = translation;
+          }, error => { }
+        );
+        this.setToolTipText(noInfoFound);
       }
     );
   }
