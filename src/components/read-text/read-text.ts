@@ -29,6 +29,7 @@ export class ReadTextComponent {
   defaultView: string;
   apiEndPoint: string;
   appMachineName: string;
+  textLoading: Boolean = true;
 
   constructor(
     public events: Events,
@@ -160,6 +161,7 @@ export class ReadTextComponent {
 
   getCacheText(id: string) {
     this.storage.get(id).then((content) => {
+      this.textLoading = false;
       const c_id = String(this.link).split('_')[0];
       let galleryId = 44;
       try {
@@ -195,6 +197,7 @@ export class ReadTextComponent {
   getEstText() {
     this.textService.getEstablishedText(this.link).subscribe(
       text => {
+        this.textLoading = false;
         const c_id = String(this.link).split('_')[0];
         let galleryId = 44;
         try {
@@ -217,7 +220,7 @@ export class ReadTextComponent {
           this.text = tmpText;
         }
       },
-      error => { this.errorMessage = <any>error }
+      error => { this.errorMessage = <any>error; this.textLoading = false; }
     );
   }
 

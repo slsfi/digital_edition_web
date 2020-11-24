@@ -1,3 +1,4 @@
+<ion-item *ngIf="textLoading"><ion-spinner class="loading" name="dots"></ion-spinner></ion-item>
 <div class="tei" [innerHTML]="text"
   [class.show_comments]="readPopoverService.show.comments"
   [class.show_personInfo]="readPopoverService.show.personInfo"
@@ -9,4 +10,5 @@
   [class.show_pageBreakOriginal]="readPopoverService.show.pageBreakOriginal"
   [class.show_pageBreakEdition]="readPopoverService.show.pageBreakEdition"
   [ngClass]="(readPopoverService.fontsize==0)?'smallFont':(readPopoverService.fontsize==1)?'mediumFont':'largeFont'"
-></div>
+>
+</div>

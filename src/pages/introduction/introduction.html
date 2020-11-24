@@ -24,6 +24,7 @@
         <ion-card-content>
             <div *ngIf="showToolTip" class="toolTip" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}" [innerHTML]="toolTipText"></div>
             <ion-scroll scrollY="true" style="height:80vh;" class="card">
+                <ion-item *ngIf="textLoading"><ion-spinner class="loading" name="dots"></ion-spinner></ion-item>
                 <div class="tei"
                   [class.show_personInfo]="readPopoverService.show.personInfo"
                   [class.show_placeInfo]="readPopoverService.show.placeInfo"

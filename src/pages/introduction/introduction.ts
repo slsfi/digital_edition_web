@@ -51,7 +51,7 @@ export class IntroductionPage {
     'abbreviations': {},
     'footnotes': {}
   };
-
+  textLoading: Boolean = true;
   tocItems: GeneralTocItem[];
 
   constructor(
@@ -93,6 +93,7 @@ export class IntroductionPage {
     this.langService.getLanguage().subscribe(lang => {
       this.textService.getIntroduction(this.id, lang).subscribe(
         res => {
+            this.textLoading = false;
             // in order to get id attributes for tooltips
             this.text = this.sanitizer.bypassSecurityTrustHtml(
               res.content.replace(/images\//g, 'assets/images/')
@@ -103,7 +104,7 @@ export class IntroductionPage {
             const the_string = matches[0];
             this.textMenu = the_string;
           },
-        error =>  {this.errorMessage = <any>error}
+        error =>  {this.errorMessage = <any>error; this.textLoading = false; }
       );
     });
 
@@ -253,7 +254,7 @@ export class IntroductionPage {
         this.translate.get('Occurrences.NoInfoFound').subscribe(
           translation => {
             noInfoFound = translation;
-          }, error => { }
+          }, errorT => {  }
         );
         this.setToolTipText(noInfoFound);
       }
@@ -291,7 +292,7 @@ export class IntroductionPage {
         this.translate.get('Occurrences.NoInfoFound').subscribe(
           translation => {
             noInfoFound = translation;
-          }, error => { }
+          }, errorT => { }
         );
         this.setToolTipText(noInfoFound);
       }
@@ -347,7 +348,7 @@ export class IntroductionPage {
         this.translate.get('Occurrences.NoInfoFound').subscribe(
           translation => {
             noInfoFound = translation;
-          }, error => { }
+          }, errorT => { }
         );
         this.setToolTipText(noInfoFound);
       }

@@ -1,3 +1,4 @@
+<ion-item *ngIf="textLoading"><ion-spinner class="loading" name="dots"></ion-spinner></ion-item>
 <div class="tei" [innerHTML]="text"
   [class.show_comments]="readPopoverService.show.comments"
   [class.show_personInfo]="readPopoverService.show.personInfo"
