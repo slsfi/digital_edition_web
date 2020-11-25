@@ -51,7 +51,7 @@
       <ion-col col-10>
         <ion-row>
           <ion-col col-11>
-            <ion-searchbar class="searchbar" [(ngModel)]="searchText" (keyup)="filter($event.target.value)">
+            <ion-searchbar class="searchbar" [(ngModel)]="searchText" (ionChange)=onChanged($event)>
             </ion-searchbar>
           </ion-col>
           <ion-col col-1 *ngIf="showFilter">

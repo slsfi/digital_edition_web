@@ -351,9 +351,20 @@ export class SemanticDataService {
       ],
       query: {
         bool: {
-          must : [{
-            'term' : { 'project_id' : this.config.getSettings('app.projectId') }
-          }],
+          should : [{
+            bool: {
+              must:  [{
+                'term' : { 'project_id' : this.config.getSettings('app.projectId')},
+              }]
+            }
+          },
+          {
+            bool: {
+              must:  [{
+                'term' : { 'project_id' : this.config.getSettings('app.projectId')}
+              }]
+            }
+          }]
         }
       }
     }
@@ -361,14 +372,18 @@ export class SemanticDataService {
     if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
       payload.from = 0;
       payload.size = 5000;
-      payload.query.bool.must.push({regexp: {'title.keyword': {
+      payload.query.bool.should[0].bool.must.push({regexp: {'title.keyword': {
           'value': `${String(searchText)}.*|${String(searchText).toLowerCase()}.*`}}});
+      payload.query.bool.should[1].bool.must.push({regexp: {'title.keyword': {
+            'value': `${String(searchText)}.*|${String(searchText).toLowerCase()}.*`}}});
     } else if ( searchText !== undefined && searchText !== '' ) {
       payload.from = 0;
       payload.size = 5000;
       payload.sort = ['_score'],
-      payload.query.bool.must.push({fuzzy: {'title': {
+      payload.query.bool.should[0].bool.must.push({fuzzy: {'title': {
           'value': `${String(searchText)}`}}});
+      payload.query.bool.should[1].bool.must.push({regexp: {'author_data.full_name': {
+          'value': `${String(searchText)}.*|${String(searchText).toLowerCase()}.*`}}});
     }
     return this.http.post(this.getSearchUrl(this.elasticWorkIndex), payload)
     .map(this.extractData)

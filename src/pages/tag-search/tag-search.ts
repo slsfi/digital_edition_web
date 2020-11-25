@@ -224,8 +224,7 @@ export class TagSearchPage {
   }
 
   filter(terms) {
-    console.log(terms);
-    /*if ( terms._value ) {
+    if ( terms._value ) {
       terms = terms._value;
     }
     if (!terms) {
@@ -250,7 +249,7 @@ export class TagSearchPage {
       }
     } else {
       this.tags = this.tagsCopy;
-    }*/
+    }
   }
 
   doInfinite(infiniteScroll) {

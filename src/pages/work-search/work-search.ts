@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, App, Platform, ToastController,
   ModalController, Content, Events, ViewController } from 'ionic-angular';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
@@ -57,8 +57,8 @@ export class WorkSearchPage {
 
   // tslint:disable-next-line:max-line-length
   alphabet: string[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Å', 'Ä', 'Ö'];
-  from: Number = 0;
-  infiniteScrollNumber: Number = 200;
+  from = 0;
+  infiniteScrollNumber = 200;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -74,7 +74,8 @@ export class WorkSearchPage {
               public viewCtrl: ViewController,
               public modalCtrl: ModalController,
               private userSettingsService: UserSettingsService,
-              private events: Events
+              private events: Events,
+              private cf: ChangeDetectorRef
   ) {
     this.langService.getLanguage().subscribe((lang) => {
       this.appName = this.config.getSettings('app.name.' + lang);
@@ -206,11 +207,16 @@ export class WorkSearchPage {
   }
 
   filter(terms) {
+    if ( terms._value ) {
+      terms = terms._value;
+    }
     if (!terms) {
       this.works = this.worksCopy;
     } else if (terms != null) {
+      this.from = 0;
       this.works = [];
-      terms = terms.toLocaleLowerCase();
+      this.getworks();
+      terms = String(terms).toLowerCase().replace(' ', '');
       for (const work of this.allData) {
         if (work.name) {
           const title = work.name.toLocaleLowerCase();
@@ -225,18 +231,18 @@ export class WorkSearchPage {
         }
       }
     } else {
-      this.works = this.worksCopy;
+      this.worksCopy = this.worksCopy;
     }
   }
 
+  onChanged(obj) {
+    this.cf.detectChanges();
+    this.filter(obj);
+  }
+
   doInfinite(infiniteScroll) {
-    for (let i = 0; i < 30; i++) {
-      if ( this.allData !== undefined ) {
-        this.works.push(this.allData[this.count]);
-        this.worksCopy.push(this.allData[this.count]);
-        this.count++;
-      }
-    }
+    this.from += this.infiniteScrollNumber;
+    this.getworks();
     infiniteScroll.complete();
   }
 
