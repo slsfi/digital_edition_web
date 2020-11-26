@@ -37,6 +37,7 @@ import { OccurrencesPage } from '../occurrences/occurrences';
 import { OccurrenceResult } from '../../app/models/occurrence.model';
 import { SearchAppPage } from '../search-app/search-app';
 import { SocialSharing } from '@ionic-native/social-sharing';
+import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
 
 /**
  * A page used for reading publications.
@@ -189,6 +190,7 @@ export class ReadPage /*implements OnDestroy*/ {
     private events: Events,
     private platform: Platform,
     private storage: Storage,
+    public semanticDataService: SemanticDataService,
     private userSettingsService: UserSettingsService,
     public publicationCacheService: PublicationCacheService,
     private socialSharing: SocialSharing
@@ -1284,11 +1286,12 @@ export class ReadPage /*implements OnDestroy*/ {
       this.setToolTipText(this.tooltips.works[id]);
       return;
     }
-
-    this.tooltipService.getWorkTooltip(id).subscribe(
+    this.semanticDataService.getSingleObjectElastic('work', id).subscribe(
       tooltip => {
-        this.setToolTipText(tooltip.description);
-        this.tooltips.works[id] = tooltip.description;
+        tooltip = tooltip.hits.hits[0]['_source'];
+        const description = '<span class="work_title">' + tooltip.title  + '</span><br/>' + tooltip.reference;
+        this.setToolTipText(description);
+        this.tooltips.works[id] = description;
       },
       error => {
         let noInfoFound = 'Could not get work information';

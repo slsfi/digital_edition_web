@@ -13,6 +13,7 @@ import { SharePopoverPage } from '../share-popover/share-popover';
 import { GeneralTocItem } from '../../app/models/table-of-contents.model';
 import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
 import { Storage } from '@ionic/storage';
+import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
 
 /**
  * Generated class for the IntroductionPage page.
@@ -70,6 +71,7 @@ export class IntroductionPage {
     private platform: Platform,
     protected tableOfContentsService: TableOfContentsService,
     private storage: Storage,
+    public semanticDataService: SemanticDataService,
     public readPopoverService: ReadPopoverService,
     private config: ConfigService,
     public translate: TranslateService
@@ -243,18 +245,19 @@ export class IntroductionPage {
       this.setToolTipText(this.tooltips.works[id]);
       return;
     }
-
-    this.tooltipService.getWorkTooltip(id).subscribe(
+    this.semanticDataService.getSingleObjectElastic('work', id).subscribe(
       tooltip => {
-        this.setToolTipText(tooltip.description);
-        this.tooltips.works[id] = tooltip.description;
+        tooltip = tooltip.hits.hits[0]['_source'];
+        const description = '<span class="work_title">' + tooltip.title  + '</span><br/>' + tooltip.reference;
+        this.setToolTipText(description);
+        this.tooltips.works[id] = description;
       },
       error => {
         let noInfoFound = 'Could not get work information';
         this.translate.get('Occurrences.NoInfoFound').subscribe(
           translation => {
             noInfoFound = translation;
-          }, errorT => {  }
+          }, error => { }
         );
         this.setToolTipText(noInfoFound);
       }
