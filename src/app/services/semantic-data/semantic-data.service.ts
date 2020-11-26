@@ -209,6 +209,9 @@ export class SemanticDataService {
           },
           {
             'term' : { 'published' : showPublishedStatus }
+          },
+          {
+            'term' : { 'sub_deleted' : 0 }
           }],
         }
       }
@@ -320,6 +323,9 @@ export class SemanticDataService {
           },
           {
             'term' : { 'published' : showPublishedStatus }
+          },
+          {
+            'term' : { 'loc_deleted' : 0 }
           }],
         }
       }
@@ -355,6 +361,9 @@ export class SemanticDataService {
             bool: {
               must:  [{
                 'term' : { 'project_id' : this.config.getSettings('app.projectId')},
+              },
+              {
+                'term' : { 'deleted' : 0 }
               }]
             }
           },
@@ -362,6 +371,9 @@ export class SemanticDataService {
             bool: {
               must:  [{
                 'term' : { 'project_id' : this.config.getSettings('app.projectId')}
+              },
+              {
+                'term' : { 'deleted' : 0 }
               }]
             }
           }]
@@ -410,6 +422,9 @@ export class SemanticDataService {
           },
           {
             'term' : { 'published' : showPublishedStatus }
+          },
+          {
+            'term' : { 'tag_deleted' : 0 }
           }],
         }
       }
