@@ -255,14 +255,17 @@ export class SimpleSearchComponent {
 
   getPublicationTOCName(collection_id, publication_id, data) {
     if ( this.collectionTOCs[collection_id] !== undefined ) {
-      this.updatePublicationNames(collection_id, publication_id, data);
+      this.updatePublicationNames(collection_id, publication_id, data, this.collectionTOCs[collection_id]);
     }
   }
 
-  public updatePublicationNames(collection_id, publication_id, data) {
-    this.collectionTOCs[collection_id].forEach( item => {
+  public updatePublicationNames(collection_id, publication_id, data, toc) {
+    let found = false;
+    toc.forEach( item => {
       const id =  collection_id + '_' + publication_id;
-      if ( id === item['itemId'] ) {
+      const itemArray = String(item['itemId']).split('_');
+      const itemId = itemArray[0] + '_' + itemArray[1];
+      if ( id === itemId ) {
         data['publication_name'] = item['text'];
         return true;
       }
@@ -379,10 +382,19 @@ export class SimpleSearchComponent {
           res.forEach(function(element, index, object) {
             const source = element['_source'];
             const pubId = source['publication_id'];
-            const colID = source['collection_id'] || source['publication_collection_id'] ;
+            let colID = source['collection_id'] || source['publication_collection_id'];
+            if ( colID === undefined ) {
+              const path = String(source['path']).split('/');
+              colID = path[path.length - 1];
+              colID = String(colID).split('_')[0];
+            }
+            colID = String(colID).split(',')[0];
             this.getPublicationTOCName(colID, pubId, source);
             if ( source['publication_data'] !== undefined && source['publication_data'][0]['collection_published'] === 0 ) {
               delete object[index];
+            }
+            if ( source['publication_name'] === undefined ) {
+              source['publication_name'] = source['publication_data'][0]['pubname'];
             }
           }.bind(this));
           this.searchResult = res;
