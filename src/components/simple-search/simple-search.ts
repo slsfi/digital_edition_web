@@ -1,4 +1,5 @@
-import { Component, Input, ViewChild, HostListener, ElementRef } from '@angular/core';
+import { SemanticDataService } from './../../app/services/semantic-data/semantic-data.service';
+import { Component, Input, ViewChild, HostListener, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { App, Platform, Events, NavParams, Searchbar, ViewController } from 'ionic-angular';
 import { SearchDataService } from '../../app/services/search/search-data.service';
 import { TableOfContentsCategory, GeneralTocItem } from '../../app/models/table-of-contents.model';
@@ -59,6 +60,8 @@ export class SimpleSearchComponent {
     desktop: 250
   }
 
+  collectionTOCs = [];
+
   objectTypes = {
     all: ['location', 'tag', 'subject', 'recorder', 'playman', 'person'],
     subjects: ['subject', 'recorder', 'playman', 'person']
@@ -73,7 +76,9 @@ export class SimpleSearchComponent {
     private _eref: ElementRef,
     public userSettingsService: UserSettingsService,
     public viewctrl: ViewController,
-    private storage: Storage) {
+    public semanticDataService: SemanticDataService,
+    private storage: Storage,
+    private cf: ChangeDetectorRef) {
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.projectMachineName = this.config.getSettings('app.machineName');
     this.showPageNumbers = this.config.getSettings('simpleSearch.showPageNumbers');
@@ -113,6 +118,8 @@ export class SimpleSearchComponent {
     this.pdfViewOpen = false;
 
     this.getFacsimileLookupData();
+
+    this.getTOCLookupData();
 
     if (navParams.get('searchResult') !== undefined) {
       this.searchString = navParams.get('searchResult');
@@ -161,6 +168,26 @@ export class SimpleSearchComponent {
       error => { this.errorMessage = <any>error }
     );
   }
+
+  getTOCLookupData() {
+    this.search.getProjectCollections().subscribe(
+      res => {
+        res.forEach(element => {
+          if ( this.collectionTOCs[element['id']] === undefined ) {
+            this.semanticDataService.getPublicationTOC(element['id']).subscribe(
+              toc_data => {
+                  this.collectionTOCs[element['id']] = toc_data;
+                },
+              error =>  {
+              }
+            );
+          }
+        });
+      },
+      error => { this.errorMessage = <any>error }
+    );
+  }
+
 
   getPublicationNameByFacsimileId(fId) {
     for (let i = 0; i < this.facsimileLookupData.length; i++) {
@@ -224,6 +251,22 @@ export class SimpleSearchComponent {
     } else {
       this.simpleSearchHeight = this.simpleSearchHeightSizeInPx.desktop;
     }
+  }
+
+  getPublicationTOCName(collection_id, publication_id, data) {
+    if ( this.collectionTOCs[collection_id] !== undefined ) {
+      this.updatePublicationNames(collection_id, publication_id, data);
+    }
+  }
+
+  public updatePublicationNames(collection_id, publication_id, data) {
+    this.collectionTOCs[collection_id].forEach( item => {
+      const id =  collection_id + '_' + publication_id;
+      if ( id === item['itemId'] ) {
+        data['publication_name'] = item['text'];
+        return true;
+      }
+    });
   }
 
   configOccurrencePdf() {
@@ -332,7 +375,17 @@ export class SimpleSearchComponent {
       this.search.getAll(searchString, val, 1).subscribe(
         res => {
           // in order to get id attributes for tooltips
-          this.searchResult = res
+          // getPublicationTOCName();
+          res.forEach(function(element, index, object) {
+            const source = element['_source'];
+            const pubId = source['publication_id'];
+            const colID = source['collection_id'] || source['publication_collection_id'] ;
+            this.getPublicationTOCName(colID, pubId, source);
+            if ( source['publication_data'] !== undefined && source['publication_data'][0]['collection_published'] === 0 ) {
+              delete object[index];
+            }
+          }.bind(this));
+          this.searchResult = res;
           this.formatSearchresult(val);
           this.mergeResults('texts');
           this.mergeResults('subjects');
@@ -441,6 +494,7 @@ export class SimpleSearchComponent {
         }
         this.searchFacets[0].children.sort();
       }
+
     }
 
     if (this.hasKey('collections', this.searchFacets) === false && this.displayResult[type].length > 0) {
@@ -458,7 +512,7 @@ export class SimpleSearchComponent {
       for (let j = 0; j < this.searchFacets.length; j++) {
         if (this.searchFacets[j].type === this.displayResult[type][i]['textType']) {
           const facet: Facet = new Facet;
-          facet.name = this.displayResult[type][i]['text'];
+          facet.name = this.displayResult[type][i]['publication_name'] || this.displayResult[type][i]['text'];
           facet.checked = this.checkedDefault;
           facet.count = 1;
           facet.type = this.displayResult[type][i]['textType'];
@@ -544,6 +598,7 @@ export class SimpleSearchComponent {
           'score': element._score,
           'facsimilePage': ((subjectData['publication_facsimile_page']) ? subjectData['publication_facsimile_page'] : null),
           'publication_name': subjectData['publication_name'],
+          'publication_collection_id': subjectData['collection_id'],
           'collection_name': subjectData['collection_name'],
           'publication_id': subjectData['publication_id'],
           'publication_version_id': subjectData['publication_version_id'],
@@ -576,6 +631,7 @@ export class SimpleSearchComponent {
           'facsimilePage': ((tagData['publication_facsimile_page']) ? tagData['publication_facsimile_page'] : null),
           'publication_name': tagData['publication_name'],
           'collection_name': tagData['collection_name'],
+          'publication_collection_id': tagData['collection_id'],
           'publication_id': tagData['publication_id'],
           'publication_version_id': tagData['publication_version_id'],
           'publication_manuscript_id': tagData['publication_manuscript_id'],
@@ -603,6 +659,7 @@ export class SimpleSearchComponent {
           'identifier': String('song' + songData['song_name']).toLowerCase().trim().replace(' ', ''),
           'origDate': songData['song_original_publication_date'],
           'object_id': String(songData['song_id']).toLowerCase(),
+          'publication_collection_id': songData['collection_id'],
           'song_performer_born_name': songData['song_performer_born_name'],
           'song_performer_firstname': songData['song_performer_firstname'],
           'song_performer_lastname': songData['song_performer_lastname'],
@@ -647,6 +704,7 @@ export class SimpleSearchComponent {
           'score': element._score,
           'facsimilePage': ((locationData['publication_facsimile_page']) ? locationData['publication_facsimile_page'] : null),
           'publication_name': locationData['publication_name'],
+          'publication_collection_id': locationData['collection_id'],
           'collection_name': locationData['collection_name'],
           'publication_id': locationData['publication_id'],
           'publication_version_id': locationData['publication_version_id'],
@@ -721,7 +779,11 @@ export class SimpleSearchComponent {
     }
     const pubName = (pData !== undefined) ? pData['p_name'] : null;
     const colName = (pData !== undefined) ? pData['pc_name'] : null;
-    const pubId = this.getPublicationIdNameByFacsimileId(fId);
+    let pubId = this.getPublicationIdNameByFacsimileId(fId);
+    if ( pubId === undefined || pubId === null ) {
+      pubId = element['_source']['publication_id'];
+    }
+
     if (element._score > 1) {
       this.displayResult['texts'].push(
         {
@@ -737,7 +799,7 @@ export class SimpleSearchComponent {
           'score': element._score,
           'facsimilePage': facsimilePage,
           'SLSCollection': SLSCollection,
-          'publication_name': pubName,
+          'publication_name': element['_source']['publication_name'],
           'publication_id': pubId,
           'collection_name': colName
         }
