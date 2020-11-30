@@ -33,6 +33,7 @@
     (pan)="handleSwipeEvent($event)"
     (mouseup)="onMouseUp($event)"
     (touchend)="onTouchEnd($event)"
+    (mousedown)="$event.preventDefault();"
   >
   <span *ngIf="!facsimilePagesInfinite && externalURLs" class="external_url">
     <a *ngFor="let ext of externalURLs" target="_blank" href="{{ext.url}}" [innerHTML]="ext.title"></a>
@@ -48,6 +49,7 @@
     (pan)="handleSwipeEvent($event)"
     (mouseup)="onMouseUp($event)"
     (touchend)="onTouchEnd($event)"
+    (mousedown)="$event.preventDefault();"
   >
   <span *ngIf="externalURLs" class="external_url">
     <a *ngFor="let ext of externalURLs" target="_blank" href="{{ext.url}}" [innerHTML]="ext.title"></a>

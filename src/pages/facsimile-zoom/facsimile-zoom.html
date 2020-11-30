@@ -61,6 +61,8 @@
                           (wheel)="onMouseWheel($event)"
                           (pan)="handlePanEvent($event)"
                           (mouseup)="onMouseUp($event)"
+                          (mousedown)="$event.preventDefault();"
+                          draggable="true"
                         >
                         <img *ngIf="!facsimilePagesInfinite && backside && backsides[activeImage]"
                           [src]="backSide(images[activeImage])"
@@ -69,6 +71,8 @@
                           (wheel)="onMouseWheel($event)"
                           (pan)="handlePanEvent($event)"
                           (mouseup)="onMouseUp($event)"
+                          (mousedown)="$event.preventDefault();"
+                          draggable="true"
                         >
                         <img *ngIf="facsimilePagesInfinite && facsNumber"
                           [src]="facsUrl + facsNumber + '/' + facsSize"
@@ -77,6 +81,8 @@
                           (wheel)="onMouseWheel($event)"
                           (pan)="handlePanEvent($event)"
                           (mouseup)="onMouseUp($event)"
+                          (mousedown)="$event.preventDefault();"
+                          draggable="true"
                         >
                     </div>
                     <div *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet())">
