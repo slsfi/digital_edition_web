@@ -260,7 +260,6 @@ export class SimpleSearchComponent {
   }
 
   public updatePublicationNames(collection_id, publication_id, data, toc) {
-    let found = false;
     toc.forEach( item => {
       const id =  collection_id + '_' + publication_id;
       const itemArray = String(item['itemId']).split('_');

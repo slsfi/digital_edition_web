@@ -1225,7 +1225,7 @@ export class ReadPage /*implements OnDestroy*/ {
         this.translate.get('Occurrences.NoInfoFound').subscribe(
           translation => {
             noInfoFound = translation;
-          }, error => { }
+          }, err => { }
         );
         this.setToolTipText(noInfoFound);
       }
@@ -1274,7 +1274,7 @@ export class ReadPage /*implements OnDestroy*/ {
         this.translate.get('Occurrences.NoInfoFound').subscribe(
           translation => {
             noInfoFound = translation;
-          }, error => { }
+          }, err => { }
         );
         this.setToolTipText(noInfoFound);
       }
@@ -1298,7 +1298,7 @@ export class ReadPage /*implements OnDestroy*/ {
         this.translate.get('Occurrences.NoInfoFound').subscribe(
           translation => {
             noInfoFound = translation;
-          }, error => { }
+          }, err => { }
         );
         this.setToolTipText(noInfoFound);
       }

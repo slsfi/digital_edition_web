@@ -257,7 +257,7 @@ export class IntroductionPage {
         this.translate.get('Occurrences.NoInfoFound').subscribe(
           translation => {
             noInfoFound = translation;
-          }, error => { }
+          }, err => { }
         );
         this.setToolTipText(noInfoFound);
       }
