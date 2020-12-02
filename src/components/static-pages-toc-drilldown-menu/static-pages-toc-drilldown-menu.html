@@ -1,24 +1,23 @@
 <ion-list *ngIf="menuStack">
-    <ion-item menuClose (click)="front()" class="mainMenuItem">
-      <ion-label>
-        {{"TOC.Home" | translate }}
-      </ion-label>
-      <ion-icon name="home" item-right small></ion-icon>
+    <ion-item *ngIf="menuStack.length > 1" menuClose (click)="unDrill()" class="mainMenuItem">
+        <ion-label>
+            <ion-icon name="ios-arrow-back" item-left small></ion-icon>
+        </ion-label>
     </ion-item>
     <ng-container *ngFor="let item of menuStack[menuStack.length -1] | orderBy: 'id' ; let i = index;">
-      <ion-item *ngIf="item.root" (click)="goBack()"  class="back-to-list-button" no-lines>
-        <ion-icon name="ios-arrow-back" item-left small></ion-icon>
-      </ion-item>
-      <ion-item *ngIf="item.children" (click)="drillDown(item)">
-        <p>
-          {{item.title}}
-        </p>
-        <ion-icon name="ios-arrow-forward" item-right small></ion-icon>
-      </ion-item>
-      <ion-item *ngIf="!item.children" (click)="open(item)" [ngClass]="item.id === currentItemId ? 'selected': ''">
-        <p>
-          {{item.title}}
-        </p>
-      </ion-item>
+        <ion-item *ngIf="item.root" (click)="goBack()" class="back-to-list-button" no-lines>
+            <ion-icon name="ios-arrow-back" item-left small></ion-icon>
+        </ion-item>
+        <ion-item *ngIf="item.children" (click)="drillDown(item)">
+            <p>
+                {{item.title}}
+            </p>
+            <ion-icon name="ios-arrow-forward" item-right small></ion-icon>
+        </ion-item>
+        <ion-item *ngIf="!item.children" (click)="open(item)" [ngClass]="item.id === currentItemId ? 'selected': ''">
+            <p>
+                {{item.title}}
+            </p>
+        </ion-item>
     </ng-container>
-  </ion-list>
+</ion-list>

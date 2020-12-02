@@ -1,9 +1,49 @@
+<ion-header no-border>
+  <ion-toolbar color="secondary" class="secondary">
+    <ion-buttons>
+        <ion-grid>
+            <ion-row class="secondary-toolbar-icons-wrapper">
+              <ion-col>
+                  <div id="share-icon" (click)="showSharePopover($event)">
+                    <ion-icon class="share-icon" name="ios-share-outline" ios="ios-share-outline"></ion-icon>
+                  </div>
+              </ion-col>
+              <ion-col>
+                  <div #settingsIconElement (click)="showPopover($event)" id="settings-icon">
+                  <ion-icon  class="settings-icon" name="settings"></ion-icon>
+                  </div>
+              </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content padding>
-  <ion-card>
-    <ion-card-content>
-      <ion-scroll scrollY="true" style="height:80vh;" class="card">
-        <div class="tei" [innerHTML]="text"></div>
-      </ion-scroll>
-    </ion-card-content>
-  </ion-card>
+    <ion-card>
+        <ion-card-content>
+            <div *ngIf="showToolTip" class="toolTip" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}" [innerHTML]="toolTipText"></div>
+            <ion-scroll scrollY="true" style="height:80vh;" class="card">
+                <ion-item *ngIf="textLoading"><ion-spinner class="loading" name="dots"></ion-spinner></ion-item>
+                <div class="tei"
+                  [class.show_personInfo]="readPopoverService.show.personInfo"
+                  [class.show_placeInfo]="readPopoverService.show.placeInfo"
+                  [class.show_workInfo]="readPopoverService.show.workInfo"
+                  [class.show_abbreviations]="readPopoverService.show.abbreviations"
+                  [class.show_pageNumbering]="readPopoverService.show.pageNumbering"
+                  [class.show_pageBreakOriginal]="readPopoverService.show.pageBreakOriginal"
+                  [class.show_pageBreakEdition]="readPopoverService.show.pageBreakEdition"
+                [innerHTML]="text" [ngClass]="(hasSeparateIntroToc ? 'hideIntro' : '') + ' ' +
+                ((readPopoverService.fontsize==0)?'smallFont':(readPopoverService.fontsize==1)?'mediumFont':'largeFont')"></div>
+            </ion-scroll>
+        </ion-card-content>
+    </ion-card>
+    <nav id="TOC" *ngIf="hasSeparateIntroToc" [ngClass]="tocMenuOpen ? 'menuOpenTOC' : 'menuClosedTOC'">
+        <div id="toc_menu" (click)="toggleTocMenu()" [ngClass]="tocMenuOpen ? 'menuOpenIcon' : 'menuClosedIcon'">
+            <ion-icon name="menu" *ngIf="!tocMenuOpen"></ion-icon>
+            <ion-icon name="close" *ngIf="tocMenuOpen"></ion-icon>
+        </div>
+        <div id="toc_text" [innerHTML]="textMenu" [ngClass]="tocMenuOpen ? 'menuOpen' : 'menuClosed'">
+        </div>
+    </nav>
 </ion-content>

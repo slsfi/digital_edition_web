@@ -1,7 +1,15 @@
-<!-- Go to previous or next publication -->
-<ion-fab *ngIf="displayPrev" bottom left class="goLeft">
-    <button ion-fab color="primary" mini (click)="previous()"><ion-icon name="arrow-back"></ion-icon></button>
-</ion-fab>
-<ion-fab *ngIf="displayNext" bottom right>
-    <button ion-fab color="primary" mini (click)="next()"><ion-icon name="arrow-forward"></ion-icon></button>
-</ion-fab>
+<div class="forwardBackward">
+  <div class="backwardButtonDiv">
+    <button class="backwardButton" (click)="previous()">
+      <ion-icon name="arrow-round-back"></ion-icon>
+      <p *ngIf="!(userSettingsService.isMobile()) && !(userSettingsService.isTablet())" class="forwardBackward__previouspage-name">{{prevItemTitle}}</p>
+    </button>
+  </div>
+  <div class="forwardBackward__currentpage-name"><p>{{currentItemTitle}}</p></div>
+  <div class="forwardButtonDiv">
+    <button [disabled]="lastItem" class="forwardButton" (click)="next()">
+      <p *ngIf="!(userSettingsService.isMobile()) && !(userSettingsService.isTablet())" class="forwardBackward__nextpage-name">{{nextItemTitle}} </p>
+      <ion-icon name="arrow-round-forward"></ion-icon>
+    </button>
+  </div>
+</div>

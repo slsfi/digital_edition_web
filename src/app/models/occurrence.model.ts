@@ -51,6 +51,7 @@ export class OccurrenceResult {
     name: string;
     first_name: string;
     last_name: string;
+    full_name: string;
     sortBy: string;
     object_type?: string;
     occurrences: any[];
@@ -66,4 +67,9 @@ export class OccurrenceResult {
     region?: any;
     source?: any;
     type?: any;
+    author_data?: any;
+    publisher?: any;
+    published_year?: any;
+    journal?: any;
+    isbn?: any;
 }

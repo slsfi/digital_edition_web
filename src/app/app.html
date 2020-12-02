@@ -18,7 +18,8 @@
                     </ion-item>
                     <div [style.height]="simpleAccordionsExpanded.aboutMenuAccordion ? '100%' : '0px'" class="simple-accordion-options options">
                         <div class="sub-option" tappable>
-                            <table-of-contents-accordion #aboutMenuMarkdownAccordion *ngIf="aboutOptionsMarkdown.toc.length" [isMarkdown]="true" [showBackButton]="false" [options]="aboutOptionsMarkdown" [collectionId]="'aboutMarkdown'" [collectionName]="'About'" [settings]="sideMenuSettings">
+                            <table-of-contents-accordion #aboutMenuMarkdownAccordion *ngIf="aboutOptionsMarkdown.toc.length" [isMarkdown]="true" [showBackButton]="false" [options]="aboutOptionsMarkdown" [collectionId]="'aboutMarkdown'" [collectionName]="'About'" [settings]="sideMenuSettings"
+                                [open]="true">
                             </table-of-contents-accordion>
                         </div>
                     </div>
@@ -28,39 +29,40 @@
                         {{"TOC.About" | translate }}
                     </p>
                 </ion-item>
-                <ion-list *ngIf="genericSettingsService.show('TOC.Read') && accordionTOC" class="accordion-menu">
-                    <ion-item class="header" (tap)="simpleAccordionsExpanded.collectionsAccordion = !simpleAccordionsExpanded.collectionsAccordion;" tappable id="readTocItem">
-                        <ion-icon [class.rotate]="simpleAccordionsExpanded.collectionsAccordion" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
-                        <p>{{"TOC.Read" | translate }}</p>
-                    </ion-item>
-                    <div [style.height]="simpleAccordionsExpanded.collectionsAccordion ? '100%' : '0px'" class="simple-accordion-options options">
-                        <ng-container *ngFor="let collection of collectionsListWithTOC">
-                            <ion-list *ngIf="collection.toc_exists" class="accordion-menu">
-                                <ion-item [ngClass]="collection.highlight ? 'selected-toc-item' : ''" class="header" (tap)="toggleSingleCollectionAccordion(collection)" tappable>
-                                    <ion-icon [class.rotate]="collection.expanded" *ngIf="!collection.isDownload && !collection.has_children_pdfs" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
-                                    <p>{{ collection.title }}</p>
-                                    <ion-icon item-right size="small" class="menu-download" *ngIf="collection.isDownload" name="cloud-download"></ion-icon>
-                                </ion-item>
-                                <div *ngIf="collection.loading && !collection.has_children_pdfs" text-center>
-                                    <ion-spinner name="dots"></ion-spinner>
-                                </div>
-                                <div *ngIf="collection.accordionToc.toc && collection.accordionToc.toc.length" [style.height]="collection.expanded ? '100%' : '0px'" class="simple-accordion-options options">
-                                    <table-of-contents-accordion *ngIf="!searchTocItem" [showBackButton]="false" [options]="collection.accordionToc" [collectionId]="collection.id" [collectionName]="collection.title" [settings]="sideMenuSettings"></table-of-contents-accordion>
-                                </div>
-                            </ion-list>
-                        </ng-container>
-                        <ng-container *ngIf="mediaCollectionOptions.length > 0">
-                            <ion-list class="accordion-menu">
-                                <ion-item [ngClass]="mediaCollectionOptions.highlight ? 'selected-toc-item' : ''" class="header" (tap)="toggleSingleCollectionAccordion(mediaCollectionOptions)" tappable>
-                                    <ion-icon [class.rotate]="mediaCollectionOptions.expanded" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
-                                    <p>{{"TOC.MediaCollections" | translate }}</p>
-                                </ion-item>
-                                <div [style.height]="mediaCollectionOptions.expanded ? '100%' : '0px'" class="simple-accordion-options options">
-                                    <table-of-contents-accordion *ngIf="accordionTOC && mediaCollectionOptions" [showBackButton]="false" [isGallery]="true" [options]="mediaCollectionOptions.accordionToc" [collectionId]="'mediaCollections'" [collectionName]="'media'" [settings]="sideMenuSettings">
-                                    </table-of-contents-accordion>
-                                </div>
-                            </ion-list>
-                        </ng-container>
+                <!-- TOC READ ACCORDION  -->
+                <ion-list class="accordion-menu" *ngFor="let split of splitReadCollections; let i = index">
+                    <div *ngIf="genericSettingsService.show('TOC.Read') && accordionTOC" >
+                      <ion-item class="header" (tap)="simpleAccordionsExpanded.collectionsAccordion[i] = !simpleAccordionsExpanded.collectionsAccordion[i];" tappable id="readTocItem">
+                          <ion-icon [class.rotate]="simpleAccordionsExpanded.collectionsAccordion[i]" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
+                          <p *ngIf="i==0">{{"TOC.Read" | translate }}</p>
+                          <p *ngIf="i>0">{{"TOC.Read" + i | translate }}</p>
+                      </ion-item>
+                      <div [style.height]="simpleAccordionsExpanded.collectionsAccordion[i] ? '100%' : '0px'" class="simple-accordion-options options">
+                          <ng-container *ngFor="let collection of collectionsListWithTOC">
+                              <ion-list *ngIf="collection.toc_exists && ( splitReadCollections.length <= 1 || splitReadCollections[i].includes(collection.id) )" class="accordion-menu">
+                                  <!-- toggleSingleCollectionAccordion öppnar accordion  -->
+                                  <ion-item [ngClass]="collection.highlight ? 'selected-toc-item' : ''" class="header" (tap)="openCollectionFromToc ? openCollection(collection) : toggleSingleCollectionAccordion(collection)" tappable>
+                                      <ion-icon *ngIf="!collection.isDownload && !collection.has_children_pdfs" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
+                                      <p>{{ collection.title }}</p>
+                                      <ion-icon item-right size="small" class="menu-download" *ngIf="collection.isDownload" name="cloud-download"></ion-icon>
+                                  </ion-item>
+                                  <div *ngIf="collection.loading && !collection.has_children_pdfs" text-center>
+                                      <ion-spinner name="dots"></ion-spinner>
+                                  </div>
+                                  <div *ngIf="collection.accordionToc.toc && collection.accordionToc.toc.length" [style.height]="collection.expanded ? '100%' : '0px'" class="simple-accordion-options options">
+                                      <table-of-contents-accordion *ngIf="!searchTocItem" [showBackButton]="false" [options]="collection.accordionToc" [collectionId]="collection.id" [collectionName]="collection.title" [settings]="sideMenuSettings"></table-of-contents-accordion>
+                                  </div>
+                              </ion-list>
+                          </ng-container>
+                          <ng-container *ngIf="mediaCollectionOptions['accordionToc'] !== undefined && galleryInReadMenu">
+                              <ion-list class="accordion-menu">
+                                  <ion-item [ngClass]="mediaCollectionOptions.highlight ? 'selected-toc-item' : ''" class="header" (tap)="openCollection(mediaCollectionOptions)" tappable>
+                                      <ion-icon [class.rotate]="mediaCollectionOptions.expanded" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
+                                      <p>{{"TOC.MediaCollections" | translate }}</p>
+                                  </ion-item>
+                              </ion-list>
+                          </ng-container>
+                        </div>
                     </div>
                 </ion-list>
                 <ion-item *ngIf="genericSettingsService.show('TOC.Read') && !accordionTOC" menuClose (click)="readMenuOpen=true;" class="mainMenuItem" id="readTocItem">
@@ -130,16 +132,33 @@
                         </ng-container>
                     </div>
                 </ion-list>
+
+
+                <ion-list no-margin *ngIf="mediaCollectionOptions && genericSettingsService.show('TOC.MediaCollections') && !galleryInReadMenu" class="accordion-menu">
+                    <ion-item class="header" (tap)="simpleAccordionsExpanded.galleryAccordion = !simpleAccordionsExpanded.galleryAccordion;" tappable>
+                        <ion-icon [class.rotate]="simpleAccordionsExpanded.galleryAccordion" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
+                        <p>{{"TOC.MediaCollections" | translate }}</p>
+                    </ion-item>
+                    <div [style.height]="simpleAccordionsExpanded.galleryAccordion ? '100%' : '0px'" class="simple-accordion-options options"
+                    *ngIf="mediaCollectionOptions['accordionToc'] && mediaCollectionOptions['accordionToc']['toc']">
+                        <ng-container *ngFor="let collection of mediaCollectionOptions['accordionToc']['toc']">
+                            <ion-list class="accordion-menu">
+                                <ion-item *ngIf="collection.id !== 'all'" [ngClass]="collection.highlight ? 'selected-toc-item' : ''" class="header" (tap)="openMediaCollection(collection)" tappable>
+                                    <p>{{ collection.title }}</p>
+                                </ion-item>
+                                <ion-item *ngIf="collection.id === 'all'" [ngClass]="collection.highlight ? 'selected-toc-item' : ''" class="header" (tap)="openMediaCollections()" tappable>
+                                    <p>{{ collection.title }}</p>
+                                </ion-item>
+                            </ion-list>
+                        </ng-container>
+                    </div>
+                </ion-list>
+
                 <!-- ./MUSIC -->
 
                 <ion-item *ngIf="genericSettingsService.show('TOC.Facsimiles')" menuClose detail-push (click)="openPage('featured-facsimiles')" class="mainMenuItem">
                     <p>
                         {{"TOC.Facsimiles" | translate }}
-                    </p>
-                </ion-item>
-                <ion-item *ngIf="genericSettingsService.show('TOC.ImageGallery')" menuClose (click)="galleryMenuOpen=true;openGalleries();" class="mainMenuItem">
-                    <p>
-                        {{"TOC.ImageGallery" | translate }}
                     </p>
                 </ion-item>
                 <ng-container *ngIf="genericSettingsService.show('TOC.PersonSearch') && !musicAccordion.personSearchTypes.show">
@@ -187,11 +206,16 @@
                     <div style="padding-left:2rem; white-space: normal;">{{"TOC.Collections" | translate }}</div>
                     <ion-icon name="ios-arrow-back" item-left small></ion-icon>
                 </ion-item>
-                <ion-item *ngFor="let collection of collectionsList" (click)="openCollection(collection);">
-                    <p>{{collection.title}}</p>
-                    <ion-icon item-right size="small" class="menu-download" *ngIf="collection.isDownload" name="cloud-download">
-                    </ion-icon>
-                </ion-item>
+                <ng-container>
+                    <ng-container *ngFor="let collection of collectionsList">
+                        <ion-item *ngIf="openCollectionFromToc" (click)="openCollection(collection);">
+                            <p>{{collection.title}}</p>
+                            <ion-icon item-right size="small" class="menu-download" *ngIf="collection.isDownload" name="cloud-download">
+                            </ion-icon>
+                        </ion-item>
+                    </ng-container>
+                </ng-container>
+
             </ng-container>
             <!-- ./Read Menu -->
             <!-- Gallery Menu -->
@@ -221,6 +245,7 @@
             </ng-container>
             <!-- ./Static Pages Menus In Main TOC -->
         </ion-content>
+        <!--div class="menuResizer" id="menuResizer"></div-->
     </ion-menu>
 
     <!-- Separate Static Pages Menus. (Aboutmenu etc) -->
@@ -246,9 +271,13 @@
             <table-of-contents-drilldown-menu *ngIf="!accordionTOC"></table-of-contents-drilldown-menu>
 
             <!-- TOC Type: Accordion -->
-            <table-of-contents-accordion *ngIf="accordionTOC && options && false" [showBackButton]="true" [options]="options" [collectionId]="currentCollectionId" [collectionName]="currentCollectionName" [settings]="sideMenuSettings">
+            <table-of-contents-accordion [open]="true" *ngIf="accordionTOC && options && !openCollectionFromToc" [showBackButton]="true" [options]="options" [collectionId]="currentCollectionId" [collectionName]="currentCollectionName" [settings]="sideMenuSettings">
             </table-of-contents-accordion>
+
+            <table-of-contents-accordion *ngIf="currentCollection && accordionTOC && openCollectionFromToc" [open]="true" [showBackButton]="true" [options]="currentCollection.accordionToc" [collectionId]="currentCollectionId" [collectionName]="currentCollection.title"
+                [settings]="sideMenuSettings"></table-of-contents-accordion>
         </ion-content>
+        <!--div class="menuResizer" id="menuResizer"></div-->
     </ion-menu>
     <!-- ./TOC Menu -->
 

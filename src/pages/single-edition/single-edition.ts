@@ -7,6 +7,7 @@ import { global } from '../../app/global';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { ReadPopoverPage } from '../read-popover/read-popover';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Storage } from '@ionic/storage';
 import { TextService } from '../../app/services/texts/text.service';
 import { HtmlContentService } from '../../app/services/html/html-content.service';
 import { LanguageService } from '../../app/services/languages/language.service';
@@ -26,7 +27,8 @@ import { PdfService } from '../../app/services/pdf/pdf.service';
 
 @IonicPage({
   name: 'single-edition',
-  segment: 'publication/:id/table-of-contents'
+  segment: 'publication-toc/:id',
+  priority: 'high'
 })
 @Component({
   selector: 'page-single-edition',
@@ -51,6 +53,9 @@ export class SingleEditionPage {
   description: string;
   showPage = false;
   show: string;
+  hasTitle: boolean;
+  hasCover: boolean;
+  hasIntro: boolean;
   childrenPdfs = [];
   hasDigitalEditionListChildren = false;
 
@@ -65,6 +70,7 @@ export class SingleEditionPage {
     protected htmlService: HtmlContentService,
     protected translate: TranslateService,
     protected app: App,
+    private storage: Storage,
     protected langService: LanguageService,
     protected events: Events,
     protected sanitizer: DomSanitizer,
@@ -83,7 +89,25 @@ export class SingleEditionPage {
       this.show = this.config.getSettings('defaults.ReadModeView');
     });
 
-    if (this.collection !== undefined && this.collection.id !== undefined) {
+    try {
+      this.hasTitle = this.config.getSettings('HasTitle');
+    } catch (e) {
+      this.hasTitle = false;
+    }
+
+    try {
+      this.hasIntro = this.config.getSettings('HasIntro');
+    } catch (e) {
+      this.hasIntro = false;
+    }
+
+    try {
+      this.hasCover = this.config.getSettings('HasCover');
+    } catch (e) {
+      this.hasCover = false;
+    }
+
+    if (this.collection !== undefined && this.collection.id !== undefined && this.collection.id !== 'mediaCollections') {
       if (this.collection.title !== undefined) {
         global.setSubtitle(this.collection.title);
       }
@@ -98,7 +122,7 @@ export class SingleEditionPage {
     }
 
     const collectionImages = this.config.getSettings('editionImages');
-    if ( this.collection.id !== undefined ) {
+    if ( this.collection.id !== undefined  && this.collection.id !== 'mediaCollections' ) {
       this.image = collectionImages[this.collection.id];
       this.setCollectionTitle();
       this.events.publish('title-logo:collectionTitle', this.subTitle);
@@ -171,16 +195,18 @@ export class SingleEditionPage {
   }
 
   async setCollectionTitle() {
-    await this.textService.getCollection(this.params.get('id')).subscribe(
-      collection => {
-        this.subTitle = collection[0].name;
-        this.events.publish('title-logo:collectionTitle', collection[0].name);
-      },
-      error => {
-        console.log('could not get collection title');
-      },
-      () => console.log(this.subTitle)
-    );
+    if ( this.params.get('id') !== 'mediaCollections' ) {
+      await this.textService.getCollection(this.params.get('id')).subscribe(
+        collection => {
+          this.subTitle = collection[0].name;
+          this.events.publish('title-logo:collectionTitle', collection[0].name);
+        },
+        error => {
+          console.log('could not get collection title');
+        },
+        () => console.log(this.subTitle)
+      );
+    }
   }
 
   ionViewWillLeave() {
@@ -190,9 +216,11 @@ export class SingleEditionPage {
     this.events.publish('ionViewWillEnter', this.constructor.name);
     this.events.publish('tableOfContents:unSelectSelectedTocItem', true);
     this.events.publish('musicAccordion:reset', true);
-    if (this.collection.id && this.collection.isDownloadOnly === false) {
+    if (this.collection.id && !this.collection.isDownloadOnly) {
       this.getTocRoot(this.collection.id);
-      this.maybeLoadTitlePage(this.collection.id);
+      this.maybeLoadIntroductionPage(this.collection.id);
+    } else {
+      console.log(this.collection.id, 'perhaps maybe');
     }
     this.viewCtrl.setBackButtonText('');
     console.log('single collection ion will enter...');
@@ -200,14 +228,40 @@ export class SingleEditionPage {
   }
 
   getTocRoot(id: string) {
-    this.tableOfContentsService.getTableOfContents(id)
-      .subscribe(
-        tocItems => {
-          this.tocItems = tocItems;
-          console.log('get toc root... --- --- in single edition');
-          this.events.publish('tableOfContents:loaded', { tocItems: tocItems });
-        },
-        error => { this.errorMessage = <any>error });
+    this.storage.get('toc_' + id).then((tocItemsC) => {
+      if (tocItemsC) {
+        this.tocItems = tocItemsC;
+        console.log('get toc root... --- --- in single edition');
+        const tocLoadedParams = { tocItems: tocItemsC };
+        tocLoadedParams['collectionID'] = this.collection;
+        tocLoadedParams['searchTocItem'] = true;
+        this.events.publish('tableOfContents:loaded', tocLoadedParams);
+        console.log('toc from cache');
+      } else {
+        if ( id !== 'mediaCollections' ) {
+          this.tableOfContentsService.getTableOfContents(id)
+          .subscribe(
+            tocItems => {
+              this.tocItems = tocItems;
+              console.log('get toc root... --- --- in single edition');
+              const tocLoadedParams = { tocItems: tocItems };
+              tocLoadedParams['collectionID'] = this.collection;
+              tocLoadedParams['searchTocItem'] = true;
+              this.events.publish('tableOfContents:loaded', tocLoadedParams);
+              this.storage.set('toc_' + id, tocItems);
+            },
+            error => { this.errorMessage = <any>error });
+        } else {
+          this.tocItems = this.collection['accordionToc']['toc'];
+          const tocLoadedParams = { tocItems: this.tocItems };
+          tocLoadedParams['collectionID'] = 'mediaCollections';
+          tocLoadedParams['searchTocItem'] = true;
+          this.events.publish('tableOfContents:loaded', tocLoadedParams);
+          this.storage.set('toc_' + id, this.tocItems);
+          console.log('media');
+        }
+      }
+    });
   }
 
   getTableOfContents(id: string) {
@@ -241,22 +295,23 @@ export class SingleEditionPage {
     params['collectionID'] = this.params.get('id')
     try {
       params['publicationID'] = String(this.tocItems['children'][0]['itemId']).split('_')[1];
+      const nav = this.app.getActiveNavs();
+      console.log('Opening read from SingleEdition.openFirstPage()');
+      nav[0].setRoot('read', params);
     } catch (e) {
-      console.log(e);
-      params['publicationID'] = '1';
+      this.maybeLoadIntroductionPage(params['collectionID']);
     }
-
-    const nav = this.app.getActiveNavs();
-    nav[0].setRoot('read', params);
   }
 
-  maybeLoadTitlePage(collectionID: string) {
-    if (this.platform.is('core') || this.platform.is('tablet')) {
+  maybeLoadIntroductionPage(collectionID: string) {
       const nav = this.app.getActiveNavs();
       const params = { collection: this.collection, fetch: true, collectionID: this.collection.id };
-      nav[0].setRoot('cover', params);
-    } else {
-      this.showPage = true;
-    }
+      if ( this.hasIntro ) {
+        nav[0].setRoot('introduction', params);
+      } else if ( this.hasCover ) {
+        nav[0].setRoot('cover-page', params);
+      } else if ( this.hasTitle ) {
+        nav[0].setRoot('title-page', params);
+      }
   }
 }

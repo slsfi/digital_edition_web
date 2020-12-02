@@ -9,6 +9,7 @@ import { Occurrence, OccurrenceType, OccurrenceResult } from '../../app/models/o
 import { SingleOccurrence } from '../../app/models/single-occurrence.model';
 import { TranslateService } from '@ngx-translate/core';
 import leaflet from 'leaflet';
+import { BootstrapOptions } from '@angular/core/src/application_ref';
 
 /**
  * Generated class for the OccurrencesPage page.
@@ -31,6 +32,7 @@ export class OccurrencesPage {
   title: string;
   occurrenceResult: OccurrenceResult;
   texts: any[] = [];
+  groupedTexts: any[] = [];
   longitude: Number = null;
   latitude: Number = null;
   city: string = null;
@@ -43,9 +45,19 @@ export class OccurrencesPage {
   country: string = null;
   date_born: string = null;
   date_deceased: string = null;
+  publisher: string = null;
+  published_year: string = null;
+  journal: string = null;
+  isbn: string = null;
+  authors: Array<Object> = [];
   filterToggle: Boolean = true;
   singleOccurrenceType: string = null;
   galleryOccurrenceData: any = [];
+  hideTypeAndDescription = false;
+  isLoading: Boolean = true;
+  infoLoading: Boolean = true;
+  showPublishedStatus: Number = 2;
+  noData: Boolean = false;
 
   objectType = '';
 
@@ -70,8 +82,17 @@ export class OccurrencesPage {
               public viewCtrl: ViewController,
               private events: Events
   ) {
-    this.occurrenceResult = navParams.get('occurrenceResult');
-    this.title = this.occurrenceResult.name;
+    this.occurrenceResult = this.navParams.get('occurrenceResult');
+    if ( this.occurrenceResult !== undefined ) {
+      this.init();
+    } else if ( this.navParams.get('type') && this.navParams.get('id') ) {
+      this.getObjectData(this.navParams.get('type'), this.navParams.get('id'));
+    }
+  }
+
+  init() {
+    this.groupedTexts = [];
+    this.title = (this.occurrenceResult.name === undefined) ? this.occurrenceResult['full_name'] : this.occurrenceResult.name;
     this.longitude = (Number(this.occurrenceResult.longitude) !== 0 ) ? Number(this.occurrenceResult.longitude) : null;
     this.latitude = (Number(this.occurrenceResult.latitude) !== 0 ) ? Number(this.occurrenceResult.latitude) : null;
     this.city = this.occurrenceResult.city;
@@ -82,10 +103,31 @@ export class OccurrencesPage {
     this.source = this.occurrenceResult.source;
     this.description = this.occurrenceResult.description;
     this.country = this.occurrenceResult.country;
+
+    this.publisher = this.occurrenceResult.publisher;
+    this.published_year = this.occurrenceResult.published_year;
+    this.journal = this.occurrenceResult.journal;
+    this.isbn = this.occurrenceResult.isbn;
+    this.authors = this.occurrenceResult.author_data;
+
+    if ( this.authors[0] === undefined || this.authors[0]['id'] === undefined ) {
+      this.authors = [];
+    }
+
     this.date_born = (this.occurrenceResult.date_born !== undefined && this.occurrenceResult.date_born !== null) ?
-                              String(this.occurrenceResult.date_born).split('-')[0] : null;
+                              String(this.occurrenceResult.date_born).split('-')[0].replace(/^0+/, '') : null;
     this.date_deceased = (this.occurrenceResult.date_deceased !== undefined && this.occurrenceResult.date_deceased !== null) ?
-                              String(this.occurrenceResult.date_deceased).split('-')[0] : null;
+                              String(this.occurrenceResult.date_deceased).split('-')[0].replace(/^0+/, '') : null;
+
+    let bcTranslation = 'BC';
+    this.translate.get('BC').subscribe(
+      translation => {
+        bcTranslation = translation;
+      }, error => { }
+    );
+    if ( this.date_deceased !== null ) {
+      this.date_deceased = this.date_deceased + '' + ((String(this.occurrenceResult.date_deceased).includes('BC')) ? ' ' + bcTranslation : '');
+    }
 
     try {
       this.singleOccurrenceType = this.config.getSettings('SingleOccurrenceType');
@@ -94,10 +136,28 @@ export class OccurrencesPage {
     }
 
     try {
+      this.hideTypeAndDescription = this.config.getSettings('Occurrences.HideTypeAndDescription');
+    } catch (e) {
+      this.hideTypeAndDescription = false;
+    }
+
+    try {
+      this.showPublishedStatus = this.config.getSettings('Occurrences.ShowPublishedStatus');
+    } catch (e) {
+      this.showPublishedStatus = 2;
+    }
+
+    this.setObjectType();
+    this.getOccurrenceTexts(this.occurrenceResult);
+    this.getMediaData();
+    this.getArticleData();
+    this.getGalleryOccurrences();
+
+    try {
       try {
         (<any>window).ga('send', 'event', {
           eventCategory: 'Occurrence',
-          eventLabel: this.navParams.get('objectType'),
+          eventLabel: this.objectType,
           eventAction: String(this.title),
           eventValue: 10
         });
@@ -106,12 +166,6 @@ export class OccurrencesPage {
     } catch ( e ) {
 
     }
-
-    this.getOccurrenceTexts(navParams.get('occurrenceResult'));
-    this.setObjectType();
-    this.getMediaData();
-    this.getArticleData();
-    this.getGalleryOccurrences();
   }
 
   ionViewWillLeave() {
@@ -125,6 +179,29 @@ export class OccurrencesPage {
     if (this.navParams.get('objectType')) {
       this.objectType = this.navParams.get('objectType');
     }
+  }
+
+  getObjectData(type, id) {
+    this.infoLoading = true;
+    this.semanticDataService.getSingleObjectElastic(type, id).subscribe(
+      data => {
+        this.infoLoading = false;
+        this.objectType = type;
+        const personsTmp = [];
+        if ( data.hits.hits.length <= 0 ) {
+          this.noData = true;
+        } else {
+          this.occurrenceResult = data.hits.hits[0]['_source'];
+        }
+        if ( type === 'work' ) {
+          this.occurrenceResult.id = this.occurrenceResult['man_id'];
+          this.occurrenceResult.description = this.occurrenceResult['reference'];
+          this.occurrenceResult.name = this.occurrenceResult['title'];
+        }
+        this.init();
+      },
+      err => {console.error(err); this.infoLoading = false; }
+    );
   }
 
   getMediaData() {
@@ -234,10 +311,15 @@ export class OccurrencesPage {
 
   getOccurrenceTexts(occurrenceResult) {
     this.texts = [];
-
-    const occurrences: Occurrence[] = occurrenceResult.occurrences;
-    for (const occurence of occurrences) {
-      this.getOccurrence(occurence);
+    this.groupedTexts = [];
+    let occurrences: Occurrence[] = [];
+    if ( occurrenceResult.occurrences !== undefined ) {
+      occurrences = occurrenceResult.occurrences;
+      for (const occurence of occurrences) {
+        this.getOccurrence(occurence);
+      }
+    } else {
+      this.getOccurrences(occurrenceResult.id);
     }
   }
 
@@ -300,6 +382,10 @@ export class OccurrencesPage {
     }
   }
 
+  objectKeys(obj) {
+    return Object.keys(obj);
+}
+
   openGallery(data) {
     let type = this.objectType;
     if ( type === 'places' ) {
@@ -343,7 +429,7 @@ export class OccurrencesPage {
     const newOccurrence = new SingleOccurrence();
     let fileName = occurrence.original_filename;
 
-    if ( occurrence.original_filename === null ) {
+    if ( occurrence.original_filename === undefined || occurrence.original_filename === null ) {
       fileName = occurrence.collection_id + '_' + occurrence['publication_id'] + '.xml';
     }
 
@@ -356,7 +442,42 @@ export class OccurrencesPage {
       occurrence.collection_id + '_' + occurrence.publication_id : newOccurrence.linkID.split('_' + type)[0];
     newOccurrence.collectionName = occurrence.collection_name;
     newOccurrence.displayName = (occurrence.publication_name !== null) ? occurrence.publication_name : occurrence.collection_name;
+    this.setOccurrenceTree(newOccurrence, occurrence);
+
     this.texts.push(newOccurrence);
+  }
+
+  setOccurrenceTree(newOccurrence, occurrence) {
+    let foundCollection = false;
+    for ( let i = 0; i < this.groupedTexts.length; i++ ) {
+      if ( this.groupedTexts[i].collection_id === occurrence.collection_id) {
+        foundCollection = true;
+        let foundPublication = false;
+        for ( let j = 0; j < this.groupedTexts[i].publications.length; j++ ) {
+          if ( this.groupedTexts[i].publications[j].publication_id === occurrence.publication_id) {
+            this.groupedTexts[i].publications[j].occurrences.push(newOccurrence);
+            foundPublication = true;
+            break;
+          }
+        }
+        if ( !foundPublication && occurrence.publication_published >= this.showPublishedStatus ) {
+          const item = {publication_id: occurrence.publication_id, name: occurrence.publication_name, occurrences: [newOccurrence]};
+          this.groupedTexts[i].publications.push(item);
+        }
+        break;
+      }
+    }
+
+    if ( !foundCollection ) {
+      if ( occurrence.collection_name === undefined ) {
+        occurrence.collection_name = occurrence.publication_collection_name;
+      }
+      if ( occurrence.publication_published >= this.showPublishedStatus ) {
+        const item = {collection_id: occurrence.collection_id, name: occurrence.collection_name, hidden: true,
+          publications: [{publication_id: occurrence.publication_id, name: occurrence.publication_name, occurrences: [newOccurrence]}]};
+        this.groupedTexts.push(item);
+      }
+    }
   }
 
   setFacsimileOccurrence(occurrence: Occurrence, type: string) {
@@ -367,7 +488,87 @@ export class OccurrencesPage {
     newOccurrence.collectionName = occurrence.collection_name
     newOccurrence.facsimilePage = occurrence.publication_facsimile_page
     newOccurrence.displayName = (occurrence.publication_name !== null ) ? occurrence.publication_name : occurrence.collection_name;
+    this.setOccurrenceTree(newOccurrence, occurrence);
     this.texts.push(newOccurrence);
+  }
+
+  getOccurrences(id) {
+    this.isLoading = true;
+    if ( this.objectType === 'work' ) {
+      this.objectType = 'work_manifestation';
+    }
+    this.semanticDataService.getOccurrences(this.objectType, id).subscribe(
+      occ => {
+        this.groupedTexts = [];
+        this.infoLoading = false;
+        // Sort alphabetically
+        const addedTOCs: Array<String> = [];
+        occ.forEach(item => {
+          if ( item.occurrences !== undefined ) {
+            for (const occurence of item.occurrences) {
+              this.getOccurrence(occurence);
+            }
+            if ( item.occurrences[0] !== undefined &&
+             addedTOCs.includes(item.occurrences[0]['collection_id']) === false ) {
+              this.getPublicationTOCName(item.occurrences[0], this.groupedTexts);
+              addedTOCs.push(item.occurrences[0]['collection_id']);
+            }
+          }
+        });
+        this.isLoading = false;
+        this.infoLoading = false;
+      },
+      err => {
+        this.isLoading = false;
+        this.infoLoading = false;
+      },
+      () => console.log('Fetched tags...')
+    );
+  }
+
+  getPublicationTOCName(occ_data, all_data) {
+    const itemId = occ_data['collection_id'] + '_' + occ_data['publication_id'];
+    this.semanticDataService.getPublicationTOC(occ_data['collection_id']).subscribe(
+      toc_data => {
+          this.updatePublicationNames(toc_data, all_data, itemId);
+        },
+      error =>  {
+      }
+    );
+  }
+
+  public updatePublicationNames(tocData, allData, itemId) {
+    tocData.forEach( item => {
+      allData.forEach(data => {
+        data['publications'].forEach(pub => {
+          const id =  data['collection_id'] + '_' + pub['publication_id'];
+          if ( id === item['itemId'] ) {
+            pub.occurrences[0].displayName = item['text'];
+            pub['name'] = item['text'];
+          }
+        });
+      });
+  });
+  }
+
+  sortList(arrayToSort, fieldToSortOn) {
+    arrayToSort.sort(function(a, b) {
+      if (a[fieldToSortOn].charCodeAt(0) < b[fieldToSortOn].charCodeAt(0)) { return -1; }
+      if (a[fieldToSortOn].charCodeAt(0) > b[fieldToSortOn].charCodeAt(0)) { return 1; }
+      return 0;
+    });
+  }
+
+  toggleList(id) {
+    for ( let i = 0; i < this.groupedTexts.length; i++ ) {
+      if ( id === this.groupedTexts[i]['collection_id'] ) {
+        if (this.groupedTexts[i].hidden === true) {
+          this.groupedTexts[i].hidden = false;
+        } else {
+          this.groupedTexts[i].hidden = true;
+        }
+      }
+    }
   }
 
   cancel() {

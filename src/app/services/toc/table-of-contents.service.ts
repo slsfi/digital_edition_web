@@ -85,8 +85,6 @@ export class TableOfContentsService {
 
   private handleError (error: Response | any) {
     let errMsg: string;
-    console.error('snafu', error);
-
     if (error instanceof Response) {
       const body = error.json() || '';
       const err = body.error || JSON.stringify(body);

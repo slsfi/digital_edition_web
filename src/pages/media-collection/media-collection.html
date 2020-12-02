@@ -16,14 +16,14 @@
     <p>{{mediaDescription}}</p>
   </div>
   <div class="filters">
-    <ion-item class="tagSelect">
+    <ion-item class="tagSelect" *ngIf="galleryTags.length > 0">
       <ion-label>{{"tags" | translate}}</ion-label>
       <ion-select [(ngModel)]="tagModel" class="tagSelect" (ngModelChange)="filterCollectionsByTag(tagModel)">
         <ion-option selected value=""></ion-option>
         <ion-option *ngFor="let tag of galleryTags" value="{{tag.name}}">{{tag.name}}</ion-option>
       </ion-select>
     </ion-item>
-    <ion-item class="locationSelect">
+    <ion-item class="locationSelect" *ngIf="galleryLocations.length > 0">
       <ion-label>{{"locations" | translate}}</ion-label>
       <ion-select [(ngModel)]="locationModel" class="locationSelect"
         (ngModelChange)="filterCollectionsByLocation(locationModel)">
@@ -31,7 +31,7 @@
         <ion-option *ngFor="let location of galleryLocations" value="{{location.name}}">{{location.name}}</ion-option>
       </ion-select>
     </ion-item>
-    <ion-item class="subjectSelect">
+    <ion-item class="subjectSelect" *ngIf="gallerySubjects.length > 0">
       <ion-label>{{"subjects" | translate}}</ion-label>
       <ion-select [(ngModel)]="subjectModel" class="subjectSelect"
         (ngModelChange)="filterCollectionsBySubject(subjectModel)">
@@ -48,8 +48,13 @@
             <img src="{{apiEndPoint}}/{{projectMachineName}}/gallery/get/{{mediaCollectionId}}/{{asThumb(image.front)}}"/>
           </div>
           <ion-card-content>
-            <div *ngIf="image.description" class="img-desc">
-              "{{image.description}}"
+            <div *ngIf="image.media_title_translation" class="img-desc title">
+              {{image.media_title_translation}}
+            </div>
+            <div *ngIf="image.subject_name" class="img-desc subject_name">
+              {{image.subject_name}}
+            </div>
+            <div *ngIf="image.description" class="img-desc" [innerHTML]="image.description">
             </div>
           </ion-card-content>
         </ion-card>
@@ -59,7 +64,7 @@
           </div>
           <ion-card-content>
             <div *ngIf="image.description" class="img-desc">
-              "{{image.description}}"
+              {{image.description}}
             </div>
           </ion-card-content>
         </ion-card>

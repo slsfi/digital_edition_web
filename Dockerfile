@@ -3,7 +3,7 @@ FROM node:10-alpine
 RUN apk update
 RUN apk add --no-cache g++ gcc libgcc libstdc++ linux-headers make python git
 
-RUN git clone --depth 1 -b master https://github.com/slsfi/digital_edition_web.git
+RUN git clone --depth 1 -b develop https://github.com/slsfi/digital_edition_web.git
 
 WORKDIR /digital_edition_web
 
@@ -20,7 +20,7 @@ RUN mkdir www
 RUN npm install
 RUN npm install cheerio
 RUN npm install rev-hash
-RUN npm install -g ionic
+RUN npm i -g @ionic/cli
 RUN npm i -g cordova
 RUN npm i -g native-run
 RUN npm i -g @sentry/browser

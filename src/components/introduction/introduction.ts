@@ -25,6 +25,7 @@ export class IntroductionComponent {
 
   public text: any;
   protected errorMessage: string;
+  textLoading: Boolean = true;
 
   constructor(
     protected readPopoverService: ReadPopoverService,
@@ -42,15 +43,17 @@ export class IntroductionComponent {
     this.langService.getLanguage().subscribe(lang => {
       this.textService.getIntroduction(String(this.itemId).split('_')[0], lang).subscribe(
         res => {
+            this.textLoading = false;
             // in order to get id attributes for tooltips
             this.text = this.sanitizer.bypassSecurityTrustHtml(
               res.content.replace(/images\//g, 'assets/images/')
                   .replace(/\.png/g, '.svg')
             );
           },
-        error =>  {this.errorMessage = <any>error}
+        error =>  {this.errorMessage = <any>error; this.textLoading = false; }
       );
     });
+    this.doAnalytics();
   }
 
   ngAfterViewInit() {
@@ -70,7 +73,19 @@ export class IntroductionComponent {
     try {
       element.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
     } catch ( e ) {
-      console.log(e);
+      console.error(e);
+    }
+  }
+
+  doAnalytics() {
+    try {
+      (<any>window).ga('send', 'event', {
+        eventCategory: 'Introduction',
+        eventLabel: 'Introduction',
+        eventAction: String(this.itemId),
+        eventValue: 10
+      });
+    } catch ( e ) {
     }
   }
 }

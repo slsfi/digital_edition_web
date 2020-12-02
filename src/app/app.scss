@@ -15,6 +15,13 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+body {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
 ion-split-pane {
   top: 60px !important;
 
@@ -26,10 +33,17 @@ ion-split-pane {
   }
 }
 
+ion-label {
+  overflow: visible!important;
+}
+
 .tei {
   font-family: $font-app-tei;
-  user-select: text !important;
+  // user-select: text !important;
+
 }
+
+.selectable { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
 
 ion-app, ion-app.md {
   font-family: $font-family-base;
@@ -496,7 +510,6 @@ ion-nav{
 }
 
 .introjs-fixParent {
-  z-index: auto !important;
   opacity: 1.0 !important;
   -webkit-transform: none !important;
      -moz-transform: none !important;
@@ -1048,3 +1061,18 @@ tr.introjs-showElement > th {
     font-size: 14px !important;
   }
 }
+/*.menuResizer {
+  height: 100%;
+  width: 5px;
+
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  background: #e2e2e2;
+
+  z-index: 99;
+
+  cursor: col-resize;
+}*/

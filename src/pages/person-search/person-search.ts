@@ -13,6 +13,7 @@ import { SingleOccurrence } from '../../app/models/single-occurrence.model';
 import { Storage } from '@ionic/storage';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { OccurrencesPage } from '../occurrences/occurrences';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * Generated class for the PersonSearchPage page.
@@ -27,7 +28,7 @@ import { OccurrencesPage } from '../occurrences/occurrences';
 
 @IonicPage({
   name: 'person-search',
-  segment: 'search/:type/:subtype',
+  segment: 'person-search/:type/:subtype',
   defaultHistory: ['HomePage']
 })
 @Component({
@@ -48,7 +49,7 @@ export class PersonSearchPage {
   personsCopy: any[] = [];
   searchText: string;
   texts: SingleOccurrence[] = [];
-  infiniteScrollNumber = 30;
+  infiniteScrollNumber = 200;
 
   personTitle: string;
   selectedLinkID: string;
@@ -56,6 +57,9 @@ export class PersonSearchPage {
   showFilter = true;
   type: any;
   subType: any;
+  from = 0;
+
+  filters: any[] = [];
 
   objectType = 'subject';
 
@@ -66,6 +70,7 @@ export class PersonSearchPage {
   personsKey = 'person-search';
 
   personSearchTypes = [];
+  filterYear: number;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -79,12 +84,14 @@ export class PersonSearchPage {
               public loadingCtrl: LoadingController,
               public occurrenceService: OccurrenceService,
               protected storage: Storage,
+              public translate: TranslateService,
               private toastCtrl: ToastController,
               private userSettingsService: UserSettingsService,
               private events: Events,
               private cf: ChangeDetectorRef
   ) {
     const type = this.navParams.get('type') || null;
+    this.filterYear = null;
     this.langService.getLanguage().subscribe((lang) => {
       this.appName = this.config.getSettings('app.name.' + lang);
       try {
@@ -103,6 +110,10 @@ export class PersonSearchPage {
   getParamsData() {
     this.type = this.navParams.get('type');
     this.subType = this.navParams.get('subtype');
+
+    if ( String(this.subType).includes('subtype') ) {
+      this.subType = null;
+    }
 
     if (this.subType) {
       this.personsKey += `-${this.subType}`;
@@ -123,8 +134,6 @@ export class PersonSearchPage {
 
   selectMusicAccordionItem() {
     const appHasMusicAccordion = this.appHasMusicAccordionConfig();
-
-    this.subType = this.navParams.get('subtype') || null;
 
     if (!appHasMusicAccordion || !this.subType.length) {
       return;
@@ -160,25 +169,14 @@ export class PersonSearchPage {
     this.selectMusicAccordionItem();
     this.setData();
   }
+
   sortByLetter(letter) {
-    const list = [];
-    try {
-      for (const p of this.allData) {
-        if (p.sortBy && p.sortBy.charCodeAt(0) === String(letter).toLowerCase().charCodeAt(0)) {
-          list.push(p);
-        } else {
-          const combining = /[\u0300-\u036F]/g;
-          const tmpChar = p.sortBy.normalize('NFKD').replace(combining, '').replace(',', '');
-          if ( tmpChar.charCodeAt(0) === String(letter).toLowerCase().charCodeAt(0) ) {
-            list.push(p);
-          }
-        }
-      }
-    } catch ( e ) {
-      this.persons = this.allData;
-    }
-    this.persons = list;
+    this.searchText = letter;
+    this.persons = [];
+    this.cf.detectChanges();
+    this.getPersons();
   }
+
   setData() {
     this.storage.get(this.personsKey).then((persons) => {
       if (persons) {
@@ -189,24 +187,29 @@ export class PersonSearchPage {
       }
     });
   }
+
   getPersons() {
     this.showLoading = true;
-    this.semanticDataService.getSubjectOccurrences().subscribe(
+    this.semanticDataService.getSubjectsElastic(this.from, this.searchText, this.filters).subscribe(
       persons => {
         const personsTmp = [];
+        persons = persons.hits.hits;
         persons.forEach(element => {
+          element = element['_source'];
           const sortBy = [];
-          if ( element['last_name'] != null ) {
-            sortBy.push(String(element['last_name']).toLowerCase().trim().replace(' ', '').replace('ʽ', ''));
+          let sortByName = String(element['full_name']).toLowerCase().replace('ʽ', '');
+          sortByName = sortByName.replace('de ', '');
+          sortByName = sortByName.replace('von ', '');
+          sortByName = sortByName.replace('van ', '');
+          sortByName = sortByName.replace('af ', '');
+          sortByName = sortByName.trim();
+          if ( element['date_deceased'] !== null ) {
+            element['date_deceased'] = String(element['date_deceased']).replace(/^0+/, '');
           }
-          if ( element['first_name'] != null ) {
-            sortBy.push(String(element['first_name']).toLowerCase().trim().replace(' ', '').replace('ʽ', ''));
+          if ( element['date_born'] !== null ) {
+            element['date_born'] = String(element['date_born']).replace(/^0+/, '');
           }
-
-          if ( element['last_name'] == null && element['first_name'] == null ) {
-            sortBy.push(String(element['name']).toLowerCase().trim().replace(' ', '').replace('ʽ', ''));
-          }
-
+          sortBy.push(sortByName);
           element['sortBy'] = sortBy.join();
           const ltr = element['sortBy'].charAt(0);
           if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
@@ -216,29 +219,28 @@ export class PersonSearchPage {
           }
           if ( this.subType !== '' && this.subType !== null && element['object_type'] !== this.subType ) {
           } else {
-            personsTmp.push(element);
+            let found = false;
+            this.persons.forEach(pers => {
+              if ( pers.id === element['id'] ) {
+                found = true;
+              }
+            });
+            if ( !found ) {
+              personsTmp.push(element);
+              this.persons.push(element);
+            }
           }
         });
 
-        this.allData = personsTmp;
-        this.cacheData = personsTmp;
+        this.allData = this.persons;
+        this.cacheData = this.persons;
         this.showLoading = false;
-        this.sortListAlphabeticallyAndGroup(this.allData);
-
-        for (let i = 0; i < this.infiniteScrollNumber; i++) {
-          if (i === personsTmp.length) {
-            break;
-          } else {
-            this.persons.push(personsTmp[this.count]);
-            this.personsCopy.push(personsTmp[this.count]);
-            this.count++;
-          }
-        }
+        this.sortListAlphabeticallyAndGroup(this.persons);
       },
-      err => {console.error(err); this.showLoading = false; },
-      () => console.log(this.persons)
+      err => {console.error(err); this.showLoading = false; }
     );
   }
+
   async download() {
     this.cacheItem = !this.cacheItem;
 
@@ -248,14 +250,17 @@ export class PersonSearchPage {
       this.removeFromCache(this.personsKey);
     }
   }
+
   async storeCacheText(id: string, text: any) {
     await this.storage.set(id, text);
     await this.addedToCacheToast(id);
   }
+
   async removeFromCache(id: string) {
     await this.storage.remove(id);
     await this.removedFromCacheToast(id);
   }
+
   getCacheText(id: string) {
     this.storage.get(id).then((persons) => {
       this.allData = persons;
@@ -269,6 +274,7 @@ export class PersonSearchPage {
       }
     });
   }
+
   async addedToCacheToast(id: string) {
     let status = '';
 
@@ -292,6 +298,7 @@ export class PersonSearchPage {
 
     await toast.present();
   }
+
   async removedFromCacheToast(id: string) {
     let status = '';
 
@@ -315,6 +322,7 @@ export class PersonSearchPage {
 
     await toast.present();
   }
+
   sortListAlphabeticallyAndGroup(listOfPersons: any[]) {
     const persons = listOfPersons;
 
@@ -329,6 +337,7 @@ export class PersonSearchPage {
     }
     return persons;
   }
+
   groupPersonsAlphabetically(persons) {
     // Checks when first character changes in order to divide names into alphabetical groups
     for (let i = 0; i < persons.length ; i++) {
@@ -361,10 +370,11 @@ export class PersonSearchPage {
     filterModal.onDidDismiss(filters => {
 
       if (filters) {
-        if (filters['isEmpty']) {
+        this.persons = [];
+        this.allData = [];
+        this.filters = filters;
+        if (filters['isEmpty'] || filters['isEmpty'] === undefined) {
           console.log('filters are empty')
-          this.persons = [];
-          this.allData = [];
           this.count = 0;
           this.getPersons();
         } else {
@@ -381,12 +391,7 @@ export class PersonSearchPage {
             }
           }
           if (filters.filterPersonTypes) {
-            const filterSelected = filters.filterPersonTypes.some(function(el) {
-              return el.selected === true;
-            });
-            if (filterSelected) {
-              this.getSubjectsOccurrenceBySubjectType(filters.filterPersonTypes);
-            }
+            this.getPersons();
           }
         }
       }
@@ -395,29 +400,8 @@ export class PersonSearchPage {
   }
 
   filterByYear(year: number) {
-    this.count = 0;
-    const newData = [];
-
-    for (const p of this.allData) {
-      if (p.date_born && p.date_deceased) {
-        if (Number(p.date_born.match(/\S+/g)[3]) < year && Number(p.date_deceased.match(/\S+/g)[3]) > year) {
-          newData.push(p);
-        }
-      }
-    }
-
-    this.persons = [];
-    this.allData = newData;
-
-    for (let k = 0; k < this.infiniteScrollNumber; k++) {
-      if (k === this.allData.length) {
-        break;
-      } else {
-        this.persons.push(this.allData[this.count]);
-        this.personsCopy.push(this.allData[this.count]);
-        this.count++
-      }
-    }
+    this.filterYear = year;
+    this.getPersons();
   }
 
   getSubjectsOccurrencesByCollection(filterCollections, callback) {
@@ -496,12 +480,15 @@ export class PersonSearchPage {
     if ( !terms || terms === '' ) {
       this.persons = this.personsCopy;
     } else if (terms != null) {
-      const oldPersons = this.persons;
+      this.from = 0;
+      this.getPersons();
       this.persons = [];
       terms = String(terms).toLowerCase().replace(' ', '');
       for (const person of this.allData) {
-        const sortBy = String(person.first_name + '' + person.last_name).toLowerCase().replace(' ', '').replace('ʽ', '');
-        const sortByReverse = String(person.last_name + '' + person.first_name).toLowerCase().replace(' ', '').replace('ʽ', '');
+        let sortBy = String(person.full_name).toLowerCase().replace(' ', '').replace('ʽ', '');
+        sortBy = sortBy.replace('de', '').replace('von', '').replace('van', '').replace('af', '');
+        let sortByReverse = String(person.full_name).toLowerCase().replace(' ', '').replace('ʽ', '');
+        sortByReverse = sortByReverse.replace('de', '').replace('von', '').replace('van', '').replace('af', '');
         if (sortBy) {
           if (sortBy.includes(terms) || sortByReverse.includes(terms)) {
             const inList = this.persons.some(function(p) {
@@ -518,13 +505,8 @@ export class PersonSearchPage {
   }
 
   doInfinite(infiniteScroll) {
-    for (let i = 0; i < this.infiniteScrollNumber; i++) {
-      if ( this.allData !== undefined ) {
-        this.persons.push(this.allData[this.count]);
-        this.personsCopy.push(this.allData[this.count]);
-        this.count++
-      }
-    }
+    this.from += this.infiniteScrollNumber;
+    this.getPersons();
     infiniteScroll.complete();
   }
 

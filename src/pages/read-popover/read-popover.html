@@ -1,6 +1,7 @@
     <ion-list>
-      <ion-list-header>
-        {{'Read.Popover.Appearance' | translate}}
+      <ion-list-header class="read-popover-header">
+        <div class="appearence">{{'Read.Popover.Appearance' | translate}}</div>
+        <div class="close" (click)="close()"><ion-icon name="close"></ion-icon></div>
       </ion-list-header>
       <ion-row>
         <ion-col width-50><button class="text-button text-smaller item-block" (click)="decreaseFontSize()" style="font-size:1rem !important;">A</button></ion-col>
@@ -33,6 +34,11 @@
       <ion-item *ngIf="readToggles.placeInfo">
         <ion-label class="show_placeInfo">{{'Read.Popover.PlaceInfo' | translate}}</ion-label>
         <ion-toggle [(ngModel)]="show.placeInfo" (ionChange)="togglePlaceInfo()"></ion-toggle>
+      </ion-item>
+
+      <ion-item *ngIf="readToggles.workInfo">
+        <ion-label class="show_workInfo">{{'Read.Popover.WorkInfo' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="show.workInfo" (ionChange)="toggleWorkInfo()"></ion-toggle>
       </ion-item>
 
       <ion-item *ngIf="readToggles.abbreviations">

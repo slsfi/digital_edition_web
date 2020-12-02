@@ -21,10 +21,14 @@ export class FacsimileService {
       this.facsimileImageUrl + facs_id + '/' + image_nr + '/' + zoom;
   }
 
-  getFacsimiles(publication_id) {
+  getFacsimiles(publication_id, chapter?: string) {
+    const parts = String(publication_id).split('_');
+    if ( parts[2] !== undefined ) {
+      chapter = String(parts[2]).split(';')[0];
+    }
     return this.http.get(
       this.config.getSettings('app.apiEndpoint') + '/' +
-      this.config.getSettings('app.machineName') + this.facsimilesUrl + publication_id
+      this.config.getSettings('app.machineName') + this.facsimilesUrl + publication_id + ((chapter) ? '/' + chapter + '' : '')
     ).map(res => {
       const body = res.json();
       return body;
@@ -52,7 +56,7 @@ export class FacsimileService {
   getFacsimilePage (legacy_id): Observable<any[]> {
     return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
                          this.config.getSettings('app.machineName') +
-                        `/facsimile/page/${legacy_id}`)
+                        `/facsimiles/${legacy_id}`)
                     .map(this.extractData)
                     .catch(this.handleError);
   }

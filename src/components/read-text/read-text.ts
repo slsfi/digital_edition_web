@@ -1,3 +1,4 @@
+
 import { Component, Input, ElementRef, Renderer } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
@@ -6,6 +7,7 @@ import { Storage } from '@ionic/storage';
 import { ToastController, Events, ModalController } from 'ionic-angular';
 import { IllustrationPage } from '../../pages/illustration/illustration';
 import { ConfigService } from '@ngx-config/core';
+import { TextCacheService } from '../../app/services/texts/text-cache.service';
 
 /**
  * Generated class for the ReadTextComponent component.
@@ -25,9 +27,9 @@ export class ReadTextComponent {
   public text: any;
   protected errorMessage: string;
   defaultView: string;
-  showToolTip: boolean;
-  toolTipPosition: object;
-  toolTipText: string;
+  apiEndPoint: string;
+  appMachineName: string;
+  textLoading: Boolean = true;
 
   constructor(
     public events: Events,
@@ -41,10 +43,9 @@ export class ReadTextComponent {
     private config: ConfigService,
     protected modalController: ModalController
   ) {
+    this.appMachineName = this.config.getSettings('app.machineName');
+    this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.defaultView = this.config.getSettings('defaults.ReadModeView');
-    this.showToolTip = false;
-    this.toolTipPosition = { top: 40 + 'px', left: 100 + 'px' };
-    this.toolTipText = '';
   }
 
   ngOnInit() {
@@ -63,23 +64,83 @@ export class ReadTextComponent {
 
   ngAfterViewInit() {
     this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
-      if (event.target.classList.contains('variantScrollTarget') && this.readPopoverService.show.comments) {
-        if (event.target !== undefined) {
-          this.showTooltip(event);
+    try {
+      if (this.config.getSettings('settings.showReadTextIllustrations')) {
+        const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
+
+        if (event.target.classList.contains('doodle')) {
+          const image = {src: '/assets/images/verk/' + String(event.target.dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
+          this.events.publish('give:illustration', image);
+        }
+        if ( showIllustration.includes(this.link.split('_')[1])) {
+          if (event.target.classList.contains('est_figure_graphic')) {
+             // Check if we have the "illustrations" tab open, if not, open
+            if ( document.querySelector('illustrations') === null ) {
+              this.openNewView(event, null, 'illustrations');
+            }
+            const image = {src: event.target.src, class: 'illustration'};
+            this.events.publish('give:illustration', image);
+          }
+        } else {
+          if (event.target.previousElementSibling !== null &&
+            event.target.previousElementSibling.classList.contains('est_figure_graphic')) {
+            // Check if we have the "illustrations" tab open, if not, open
+            if ( document.querySelector('illustrations') === null ) {
+              this.openNewView(event, null, 'illustrations');
+            }
+            const image = {src: event.target.previousElementSibling.src, class: 'illustration'};
+            this.events.publish('give:illustration', image);
+          }
         }
       }
+    } catch (e) {
+      console.error(e);
+    }
+
+
       if (event.target.parentNode.classList.contains('ref_illustration')) {
         const hashNumber = event.target.parentNode.hash;
         const imageNumber = hashNumber.split('#')[1];
         this.openIllustration(imageNumber);
       }
     });
-    this.renderer.listen(this.elementRef.nativeElement, 'mouseover', (event) => {
-      if ((event.target.parentNode.classList.contains('tooltiptrigger') || event.target.classList.contains('tooltiptrigger')) &&
-        this.readPopoverService.show.comments) {
-        if (event.target !== undefined) {
-          this.showTooltip(event);
+
+    const checkExist = setInterval(function() {
+      if ( this.link !== undefined ) {
+        const linkData = this.link.split(';');
+        if ( linkData[1] ) {
+          const target = document.getElementsByName('' + linkData[1] + '')[0] as HTMLAnchorElement;
+          if ( target ) {
+            this.scrollToHTMLElement(target, false);
+            clearInterval(checkExist);
+          }
+        } else {
+          clearInterval(checkExist);
         }
+      } else {
+        clearInterval(checkExist);
+      }
+    }.bind(this), 100);
+
+  }
+
+  openNewView( event, id: any, type: string ) {
+    let openId = id;
+    let chapter = null;
+    if (String(id).includes('ch')) {
+      openId = String(String(id).split('ch')[0]).trim();
+      chapter = 'ch' + String(String(id).split('ch')[1]).trim();
+    }
+    this.events.publish('show:view', type, openId, chapter);
+  }
+
+  private setIllustrationImages() {
+    this.textService.getEstablishedText(this.link).subscribe(text => {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(text, 'text/html');
+      const images: any = xmlDoc.querySelectorAll('img.est_figure_graphic');
+      for (let i = 0; i < images.length ; i++) {
+        images[i].classList.add('show-illustration');
       }
     });
   }
@@ -100,10 +161,18 @@ export class ReadTextComponent {
 
   getCacheText(id: string) {
     this.storage.get(id).then((content) => {
+      this.textLoading = false;
+      const c_id = String(this.link).split('_')[0];
+      let galleryId = 44;
+      try {
+        galleryId = this.config.getSettings('settings.galleryCollectionMapping')[c_id];
+      } catch ( err ) {
+
+      }
       this.text = content;
       this.text = this.sanitizer.bypassSecurityTrustHtml(
-        content.replace(/images\//g, 'assets/images/')
-          .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"')
+        content.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/${galleryId}/`)
+          .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"').replace(/images\//g, 'assets/images/')
       );
       this.matches.forEach(function (val) {
         const re = new RegExp('(' + val + ')', 'g');
@@ -128,21 +197,68 @@ export class ReadTextComponent {
   getEstText() {
     this.textService.getEstablishedText(this.link).subscribe(
       text => {
+        this.textLoading = false;
+        const c_id = String(this.link).split('_')[0];
+        let galleryId = 44;
+        try {
+          galleryId = this.config.getSettings('settings.galleryCollectionMapping')[c_id];
+        } catch ( err ) {
+
+        }
+        text = text.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/${galleryId}/`);
+        text = text.replace(/\.png/g, '.svg');
+        text = text.replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"');
+        text = text.replace(/images\//g, 'assets/images/');
         this.text = this.sanitizer.bypassSecurityTrustHtml(
-          text.replace(/images\//g, 'assets/images/')
-            .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"')
+          text
         );
-        if (this.matches instanceof Array) {
+        if (this.matches instanceof Array && this.matches.length > 0) {
+          let tmpText: any = '';
           this.matches.forEach(function (val) {
-            const re = new RegExp('(' + val + ')', 'g');
-            this.text = this.sanitizer.bypassSecurityTrustHtml(
+            const re = new RegExp('(' + val + ')', 'ig');
+            tmpText = this.sanitizer.bypassSecurityTrustHtml(
               text.replace(re, '<match>$1</match>')
             );
           }.bind(this));
+          this.text = tmpText;
         }
       },
-      error => { this.errorMessage = <any>error }
+      error => { this.errorMessage = <any>error; this.textLoading = false; }
     );
+  }
+
+  private scrollToHTMLElement(element: HTMLElement, addTag: boolean, timeOut = 8000) {
+    try {
+      element.scrollIntoView({'behavior': 'smooth', 'block': 'start'});
+      const tmp = element.previousElementSibling as HTMLElement;
+      let addedArrow = false;
+
+      if ( tmp !== null && tmp !== undefined && tmp.classList.contains('anchor_lemma') ) {
+        tmp.style.display = 'inline';
+        setTimeout(function() {
+          tmp.style.display = 'none';
+        }, 2000);
+        addedArrow = true;
+      } else {
+        const tmpImage: HTMLImageElement = new Image();
+        tmpImage.src = 'assets/images/ms_arrow_right.svg';
+        tmpImage.classList.add('inl_ms_arrow');
+        element.parentElement.insertBefore(tmpImage, element);
+        setTimeout(function() {
+          element.parentElement.removeChild(tmpImage);
+        }, timeOut);
+        addedArrow = true;
+      }
+
+      if ( addTag && !addedArrow ) {
+        element.innerHTML = '<img class="inl_ms_arrow" src="assets/images/ms_arrow_right.svg"/>';
+        setTimeout(function() {
+          element.innerHTML = '';
+        }, timeOut);
+      }
+    } catch ( e ) {
+      console.error(e);
+    }
   }
 
   doAnalytics() {
@@ -154,37 +270,6 @@ export class ReadTextComponent {
         eventValue: 10
       });
     } catch ( e ) {
-    }
-  }
-
-  showTooltip(origin: any) {
-    let elem = [];
-    if (origin.target.nextSibling !== null && origin.target.nextSibling !== undefined &&
-      !String(origin.target.nextSibling.className).includes('tooltiptrigger')) {
-      elem = origin.target;
-    } else if (origin.target.parentNode.nextSibling !== null && origin.target.parentNode.nextSibling !== undefined) {
-      elem = origin.target.parentNode;
-    }
-    if (elem['nextSibling'] !== null && elem['nextSibling'] !== undefined) {
-      if (elem['nextSibling'].className !== undefined && String(elem['nextSibling'].className).includes('tooltip')) {
-        this.toolTipPosition = {
-          top: (elem['offsetTop'] - (elem['offsetHeight'] / 2) + 4) +
-            'px', left: (elem['offsetLeft'] + elem['offsetWidth'] + 4) + 'px'
-        };
-        this.showToolTip = true;
-        this.toolTipText = elem['nextSibling'].textContent;
-        if ((elem['offsetParent'].clientWidth) < ((elem['offsetLeft'] + elem['offsetWidth'] + 70))) {
-          this.toolTipPosition = {
-            top: (elem['offsetTop'] - (elem['offsetHeight'] / 2) + 40) +
-              'px', left: (elem['offsetLeft'] + elem['offsetWidth'] - 100) + 'px'
-          };
-        }
-
-        setTimeout(() => {
-          this.showToolTip = false;
-          this.toolTipText = '';
-        }, 5000);
-      }
     }
   }
 }

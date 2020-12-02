@@ -1,5 +1,6 @@
 // MenuOptionModel interface
 export interface TocAccordionMenuOptionModel {
+    collapsed?: boolean;
     id?: any;
     // If the option has sub items and the iconName is null,
     // the default icon will be 'ios-arrow-down'.
@@ -29,6 +30,8 @@ export interface TocAccordionMenuOptionModel {
     title?: string;
 
     type?: string;
+
+    description?: string;
 
     publication_id?: any;
 
@@ -63,4 +66,6 @@ export interface TocAccordionMenuOptionModel {
     search_children_id?: any;
 
     important?: boolean;
+
+    is_gallery?: boolean;
 }

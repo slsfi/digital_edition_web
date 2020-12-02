@@ -48,4 +48,8 @@ export class TitleLogoComponent {
       this.subtitle = subTitle;
     });
   }
+  ngOnDestroy() {
+    this.events.unsubscribe('title-logo:setTitle');
+    this.events.unsubscribe('title-logo:collectionTitle');
+  }
 }

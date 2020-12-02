@@ -24,6 +24,10 @@ export class CommentsComponent {
   public text: any;
   protected errorMessage: string;
   listenFunc: Function;
+  manuscript: any;
+  sender: any;
+  receiver: any;
+  letter: any;
 
   constructor(
     protected readPopoverService: ReadPopoverService,
@@ -49,6 +53,7 @@ export class CommentsComponent {
     } else {
       this.setText();
     }
+    this.getCorrespondanceMetadata();
   }
 
   setText() {
@@ -63,7 +68,7 @@ export class CommentsComponent {
           this.doAnalytics();
         },
       error =>  {
-        console.log('Error loading comments...', this.link);
+        console.error('Error loading comments...', this.link);
         this.errorMessage = <any>error
       }
     );
@@ -82,7 +87,13 @@ export class CommentsComponent {
   }
 
   openNewView( event, id: any, type: string ) {
-    this.events.publish('show:view', type, id);
+    let openId = id;
+    let chapter = null;
+    if (String(id).includes('ch')) {
+      openId = String(String(id).split('ch')[0]).trim();
+      chapter = 'ch' + String(String(id).split('ch')[1]).trim();
+    }
+    this.events.publish('show:view', type, openId, chapter);
   }
 
   openNewIntro( event, id: any ) {
@@ -97,34 +108,54 @@ export class CommentsComponent {
       event.preventDefault();
       // This is tagging in href to another page e.g. introduction
       try {
-        const elem: HTMLElement = event.target as HTMLElement;
-        const targetId = String(elem.getAttribute('href')).split('#')[1];
-        let target = document.getElementsByName(targetId)[0] as HTMLElement;
-        if ( target !== null && target !== undefined ) {
-          this.scrollToHTMLElement(target, true);
-        } else if ( targetId !== null && targetId !== undefined ) {
+        const elem: HTMLAnchorElement = event.target as HTMLAnchorElement;
+        let targetId = '';
+        let colPub = '';
+        if ( String(elem.getAttribute('href')).includes('#') === false ) {
+          targetId = String(elem.getAttribute('href'));
+          colPub = String(elem.getAttribute('href'));
+        } else {
+          targetId = String(elem.getAttribute('href')).split('#')[1];
+          colPub = String(elem.getAttribute('href')).split('#')[0];
+        }
+        let target = document.getElementsByName(targetId)[0] as HTMLAnchorElement;
+        if ( targetId !== null && targetId !== undefined && (elem.classList.contains('xref') !== false ||
+         elem.classList.contains('xreference') !== false) ) {
           // Check if intro or same publication id
           // Check class ref_introduction, readingtext
           // Also check if already open and if same publication?
           if ( elem.classList !== undefined ) {
             const list = elem.classList;
-            if ( list.contains('introduction') ) {
-              this.openNewIntro(event, {id: String(elem.getAttribute('href')).split('#')[0].trim()});
-            } else if ( list.contains('readingtext') ) {
-              this.openNewView(event, String(elem.getAttribute('href')).split('#')[0].trim(), 'established');
-            } else if ( list.contains('comment') ) {
-              this.openNewView(event, String(elem.getAttribute('href')).split('#')[0].trim(), 'comments');
+            if ( list.contains('introduction') || list.contains('ref_introduction') ) {
+              this.openNewIntro(event, {id: colPub});
+            } else if ( list.contains('readingtext') || list.contains('ref_readingtext') ) {
+              this.openNewView(event, colPub, 'established');
+            } else if ( list.contains('comment') || list.contains('ref_comment') ) {
+              if ( target !== null && target !== undefined ) {
+                // this.scrollToHTMLElement(target, true);
+              } else {
+                this.openNewView(event, colPub, 'comments');
+              }
             }
           }
           // Some other text, open in new window
           setTimeout(function() {
-            target = document.getElementsByName(targetId)[0] as HTMLElement;
+            target = document.getElementsByName(targetId)[0] as HTMLAnchorElement;
+            // Add arrow at correct place, not first occurrence of anchor
+            if ( !elem.classList.contains('comment') && !elem.classList.contains('ref_comment') &&
+                (target === undefined || target.classList.contains('teiComment')) ) {
+                  target = document.getElementsByName(targetId)[document.getElementsByName(targetId).length - 1] as HTMLAnchorElement;
+            }
             if ( target !== null && target !== undefined ) {
               this.scrollToHTMLElement(target, false);
             }
           }.bind(this), 500);
+
+        } else if ( target !== null && target !== undefined && elem.classList.contains('ext') === false  ) {
+          this.scrollToHTMLElement(target, true);
         } else if ( elem.classList !== undefined && elem.classList.contains('ext') ) {
-          const ref = window.open(elem.getAttribute('href'), '_blank', 'location=no');
+          const anchor = <HTMLAnchorElement>elem;
+          const ref = window.open(anchor.href, '_blank', 'location=no');
         }
       } catch ( e ) {}
 
@@ -269,7 +300,29 @@ export class CommentsComponent {
         }, timeOut);
       }
     } catch ( e ) {
-      console.log(e);
+      console.error(e);
     }
+  }
+
+  getCorrespondanceMetadata() {
+    this.commentService.getCorrespondanceMetadata(String(this.link).split('_')[1]).subscribe(
+      text => {
+        if (text.length > 0) {
+          text['subjects'].forEach(subject => {
+            if ( subject['avsändare'] ) {
+              this.sender = subject['avsändare'];
+            }
+            if ( subject['mottagare'] ) {
+              this.receiver = subject['mottagare'];
+            }
+          });
+        }
+          this.letter = text['letter'];
+          this.doAnalytics();
+        },
+      error =>  {
+        this.errorMessage = <any>error
+      }
+    );
   }
 }

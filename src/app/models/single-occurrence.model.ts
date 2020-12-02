@@ -34,5 +34,4 @@ export class SingleOccurrence {
     public variant?: string;
     public volume?: string;
     public landscape?: string;
-    public publication_name?: string;
   }

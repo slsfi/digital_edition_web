@@ -60,15 +60,14 @@
             <ion-list>
                 <div *ngFor="let p of persons">
                   <ion-item *ngIf="p?.firstOfItsKind">
-                    <ion-item-divider color="light">{{p.firstOfItsKind}}</ion-item-divider>
+                    <ion-item-divider color="light">{{p.firstOfItsKind.toLocaleUpperCase()}}</ion-item-divider>
                   </ion-item>
                   <ion-item *ngIf="p?.sortBy.length > 1" (click)="openPerson(p)">
-                    <p *ngIf="p.last_name || p.first_name">{{p.last_name}}<span *ngIf="p.last_name && p.first_name">, </span>{{p.first_name}}</p>
-                    <p *ngIf="!p.last_name && !p.first_name">{{p.name}}</p>
+                    <p>{{p.full_name}} <span *ngIf="p.date_born || p.date_deceased">({{(p.date_born)?p.date_born.split('-')[0]:p.date_born}}–{{(p.date_deceased)?p.date_deceased.split('-')[0]:p.date_deceased}}{{(p.date_born !== null && p.date_born.includes('BC'))?(' '+('BC'|translate)):''}})</span></p>
                   </ion-item>
                 </div>
             </ion-list>
-          
+
               <ion-infinite-scroll *ngIf="!searchText" (ionInfinite)="doInfinite($event)">
                 <ion-infinite-scroll-content></ion-infinite-scroll-content>
               </ion-infinite-scroll>

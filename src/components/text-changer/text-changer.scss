@@ -1,5 +1,97 @@
 text-changer {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    flex-grow: 2;
     .goLeft{
         left: 0;
+    }
+    .forwardBackward {
+      display: flex;
+      grid-template-columns: [first] 30% auto [last] 30%;
+      margin: auto;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    .forwardBackward__currentpage-name {
+      font-size: 15px!important;
+      margin: 0 auto;
+      font-weight: bold;
+      text-align: center;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .forwardBackward__currentpage-name p{
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .forwardBackward__previouspage-name,
+    .forwardBackward__nextpage-name {
+      vertical-align: super;
+      margin: 0 0.5rem;
+      &:hover {
+        text-shadow: 1px 0 0 currentColor;
+      }
+    }
+    .forwardButton,
+    .backwardButton {
+      display: flex;
+      align-items: center;
+      hyphens: auto;
+      background: transparent;
+      overflow: hidden;
+      &:hover .forwardBackward__previouspage-name,
+      &:hover .forwardBackward__nextpage-name  {
+        text-shadow: 1px 0 0 currentColor;
+      }
+      .forwardBackward__nextpage-name,
+      .forwardBackward__previouspage-name {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      ion-icon,
+      .forwardBackward__currentpage-name,
+      .forwardBackward__nextpage-name,
+      .forwardBackward__previouspage-name {
+        font-size: 15px!important;
+      }
+    }
+    .forwardButtonDiv {
+      justify-content: flex-end;
+    }
+    .backwardButtonDiv {
+    }
+    }
+    @media screen and (max-width: 800px) {
+      .forwardBackward {
+        max-width: 100%;
+        padding: 0;
+        &__currentpage-name {
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          max-width: 70%;
+        }
+      }
+    }
+}
+
+.text-changer-mobile-view {
+    .forwardBackward {
+        position: fixed;
+        max-width: 100vw;
+        width: 100vw;
+        z-index: 9999;
+        background-color: rgba(99,99,99, 0.9);
+        bottom: 0;
+        left: 0;
+        padding: 10px 1em;
+        transform: none;
+        height: 64px;
     }
 }

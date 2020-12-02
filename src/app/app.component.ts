@@ -1,4 +1,5 @@
-import { Component, ViewChild, Pipe, PipeTransform, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild, Pipe, PipeTransform, ChangeDetectionStrategy,
+  ViewEncapsulation, ChangeDetectorRef, Renderer, Renderer2 } from '@angular/core';
 import './rxjs-operators';
 import { Nav, Platform, MenuController, IonicPage, Events, App, NavParams, AlertController } from 'ionic-angular';
 import { LangChangeEvent, TranslateService/*, TranslatePipe*/ } from '@ngx-translate/core';
@@ -48,6 +49,7 @@ export class DigitalEditionsApp {
   splitPane = false;
   collectionsList: any[];
   collectionsListWithTOC: any[];
+  tocData: any;
   pdfCollections: any[];
   currentContentName: string;
   showBackButton = true;
@@ -62,19 +64,24 @@ export class DigitalEditionsApp {
   menuConditionals = {
     songTypesMenuOpen: false
   }
+  tocLoaded = false;
   googleAnalyticsID: string;
   collectionDownloads: Array<String>;
 
   currentCollectionId = '';
   currentCollectionName = '';
+  currentCollection: any;
   currentMarkdownId = null;
+  openCollectionFromToc = false;
+
+  pageFirstLoad = true;
 
   accordionTOC = false;
   accordionMusic = false;
 
   storageCollections = {};
 
-
+  collectionSortOrder: any;
 
   browserWarning: string;
   browserWarningInfo: string;
@@ -98,13 +105,13 @@ export class DigitalEditionsApp {
 
   pagesThatShallShow = {
     tocMenu: ['FeaturedFacsimilePage'],
-    tocMenuIfNotAccordion: ['SingleEditionPage', 'CoverPage'],
+    tableOfContentsMenu: ['SingleEditionPage', 'CoverPage', 'TitlePage'],
     aboutMenu: ['AboutPage'],
-    contentMenu: ['HomePage', 'EditionsPage', 'ContentPage', 'MusicPage', 'FeaturedFacsimilePage']
+    contentMenu: ['HomePage', 'EditionsPage', 'ContentPage', 'MusicPage', 'FeaturedFacsimilePage', 'ElasticSearchPage']
   }
 
   pagesWithoutMenu = [];
-  pagesWithClosedMenu = ['HomePage', 'HomePage'];
+  pagesWithClosedMenu = ['HomePage'];
 
   public options: Array<TocAccordionMenuOptionModel>;
   public songTypesOptions: {
@@ -134,7 +141,7 @@ export class DigitalEditionsApp {
     musicAccordion: false,
     songTypesAccordion: false,
     galleryAccordion: false,
-    collectionsAccordion: false,
+    collectionsAccordion: [false],
     aboutMenuAccordion: false,
     pdfAccordion: false
   }
@@ -171,6 +178,9 @@ export class DigitalEditionsApp {
   hasCover = true;
   tocItems: GeneralTocItem[];
 
+  galleryInReadMenu = true;
+  splitReadCollections: any[];
+
   constructor(
     private platform: Platform,
     public translate: TranslateService,
@@ -190,7 +200,8 @@ export class DigitalEditionsApp {
     public cdRef: ChangeDetectorRef,
     private alertCtrl: AlertController,
     private tutorial: TutorialService,
-    private galleryService: GalleryService
+    private galleryService: GalleryService,
+    private renderer: Renderer
   ) {
 
     // Check for IE11
@@ -226,6 +237,21 @@ export class DigitalEditionsApp {
     } catch (e) {
       this.showBooks = false;
     }
+
+    try {
+      this.splitReadCollections = this.genericSettingsService.show('TOC.splitReadCollections');
+      if ( this.splitReadCollections === null || this.splitReadCollections.length <= 0 ) {
+        this.splitReadCollections = [''];
+      }
+    } catch (e) {
+      this.splitReadCollections = [''];
+    }
+
+    try {
+      this.collectionSortOrder = this.config.getSettings('app.CollectionSortOrder');
+    } catch (e) {
+      this.collectionSortOrder = undefined;
+    }
     this.sideMenuMobileConfig();
     this.songTypesMenuMarkdownConfig();
     this.aboutMenuMarkdownConfig();
@@ -233,6 +259,18 @@ export class DigitalEditionsApp {
       this.accordionTOC = this.config.getSettings('AccordionTOC');
     } catch (e) {
       this.accordionTOC = false;
+    }
+
+    try {
+      this.openCollectionFromToc = this.config.getSettings('OpenCollectionFromToc');
+    } catch (e) {
+      this.openCollectionFromToc = false;
+    }
+
+    try {
+      this.galleryInReadMenu = this.config.getSettings('ImageGallery.ShowInReadMenu');
+    } catch (e) {
+      this.galleryInReadMenu = true;
     }
 
     try {
@@ -306,6 +344,22 @@ export class DigitalEditionsApp {
 
   showSplitPane() {
     this.splitPaneOpen = true;
+
+    this.closeSplitPane();
+  }
+
+  closeSplitPane() {
+    setTimeout(() => {
+        const shadow = document.querySelector('.shadow');
+
+        if (shadow !== null) {
+            shadow.addEventListener('click', () => {
+                if (this.splitPaneOpen) {
+                    this.splitPaneOpen = false;
+                }
+            });
+        }
+    }, 1);
   }
 
   disableSplitPane() {
@@ -369,7 +423,8 @@ export class DigitalEditionsApp {
   openCollectionPage(collection) {
     this.currentContentName = collection.title;
     const params = { collection: collection, fetch: false, id: collection.id };
-    this.nav.setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
+    const nav = this.app.getActiveNavs();
+    nav[0].setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
   }
 
   getCollectionsWithTOC() {
@@ -379,7 +434,12 @@ export class DigitalEditionsApp {
         return;
       }
 
-      collections = this.sortListRoman(collections);
+      if ( this.collectionSortOrder === undefined ) {
+        collections = this.sortListRoman(collections);
+      } else if ( Object.keys(this.collectionSortOrder).length > 0 )  {
+        collections = this.sortListDefined(collections, this.collectionSortOrder);
+      }
+
       const collectionsTmp = [];
       const pdfCollections = [];
       collections.forEach(collection => {
@@ -415,6 +475,7 @@ export class DigitalEditionsApp {
         }
       });
       this.collectionsListWithTOC = collectionsTmp;
+
       if (this.showBooks) {
         this.pdfCollections = pdfCollections;
         this.pdfCollections.sort(function (a, b) {
@@ -447,6 +508,23 @@ export class DigitalEditionsApp {
     for (const coll of list) {
       const romanNumeral = coll.title.split(' ')[0];
       const order = this.romanToInt(romanNumeral);
+      coll['order'] = order;
+    }
+
+    list.sort((a, b) => {
+      if (typeof a['order'] === 'number') {
+        return (a['order'] - b['order']);
+      } else {
+        return ((a['order'] < b['order']) ? -1 : ((a['order'] > b['order']) ? 1 : 0));
+      }
+    });
+
+    return list;
+  }
+
+  sortListDefined(list, sort) {
+    for (const coll of list) {
+      const order = sort[coll.id];
       coll['order'] = order;
     }
 
@@ -497,7 +575,9 @@ export class DigitalEditionsApp {
     try {
       this.simpleAccordionsExpanded.songTypesAccordion = this.config.getSettings('AccordionsExpandedDefault.SongTypes');
       this.simpleAccordionsExpanded.musicAccordion = this.config.getSettings('AccordionsExpandedDefault.Music');
-      this.simpleAccordionsExpanded.collectionsAccordion = this.config.getSettings('AccordionsExpandedDefault.Collections');
+      for ( let i = 0; i < this.splitReadCollections.length; i++ ) {
+        this.simpleAccordionsExpanded.collectionsAccordion[i] = this.config.getSettings('AccordionsExpandedDefault.Collections');
+      }
     } catch (e) {
     }
   }
@@ -528,11 +608,13 @@ export class DigitalEditionsApp {
         if (this.aboutMenuMarkdownAccordion !== undefined) {
           this.aboutMenuMarkdownAccordion.ngOnChanges(aboutMarkdownMenu.children);
         }
+        this.cdRef.detectChanges();
       }).bind(this)();
     }
   }
 
   getCollectionTOC(collectionID) {
+    console.log('Getting collection TOC in app component');
     this.tableOfContentsService.getTableOfContents(collectionID)
       .subscribe(
         tocItems => {
@@ -557,7 +639,7 @@ export class DigitalEditionsApp {
         'tablet',
         'windows',
       ]
-      platforms.map(p => console.log(`${p}: ${this.platform.is(p)}`));
+      // platforms.map(p => console.log(`${p}: ${this.platform.is(p)}`));
       this.splashScreen.hide();
       this.languageService.getLanguage().subscribe((lang: string) => {
         this.language = lang;
@@ -573,7 +655,22 @@ export class DigitalEditionsApp {
         }
       });
       this.events.publish('pdfview:open', { 'isOpen': false });
+
+      /* const tableOfContentsMenu: HTMLElement = document.querySelector('.split-pane-side');
+      const menuResizer = document.querySelector('.menuResizer');
+      const initialtWidth = Number(tableOfContentsMenu.offsetWidth);
+      menuResizer.addEventListener('drag', (event: MouseEvent) => {
+        this.resizeTOCMenu(event, tableOfContentsMenu, initialtWidth);
+      });
+      this.cdRef.detectChanges(); */
     });
+  }
+
+  resizeTOCMenu( event: MouseEvent, splitPaneItem, initialtWidth ) {
+    const relativeWidth = Number(String(event.clientX).replace('px', ''));
+    if ( relativeWidth > 0 ) {
+      splitPaneItem.style.minWidth =  (initialtWidth + relativeWidth) + 'px';
+    }
   }
 
   toggleMusicAccordion() {
@@ -601,6 +698,10 @@ export class DigitalEditionsApp {
   }
 
   registerEventListeners() {
+    this.events.subscribe('digital-edition-list:open', (collection) => {
+      console.log('listened to digital-edition-list:open');
+      this.openCollection(collection);
+    });
     this.events.subscribe('CollectionWithChildrenPdfs:highlight', (collectionID) => {
       for (const collection of this.collectionsListWithTOC) {
         if (String(collection.id) === String(collectionID)) {
@@ -611,12 +712,19 @@ export class DigitalEditionsApp {
             menuID: selectedMenu,
             component: 'app-component'
           });
-          this.simpleAccordionsExpanded.collectionsAccordion = true;
+          for ( let i = 0; i < this.splitReadCollections.length; i++ ) {
+            this.simpleAccordionsExpanded.collectionsAccordion[i] = true;
+          }
         } else {
           collection['highlight'] = false;
         }
       }
     });
+
+    this.events.subscribe('exitActiveCollection', () => {
+        this.enableContentMenu();
+    });
+
     // Unselect accordion items that doesn't belong to current menu
     this.events.subscribe('SelectedItemInMenu', (menu) => {
       if (menu.component === 'table-of-contents-accordion-component' || this.currentAccordionMenu !== menu.menuID) {
@@ -648,10 +756,12 @@ export class DigitalEditionsApp {
 
       // Check if there is a need to expand
       // Otherwise we might change smth after user clicks on accordion
-      if (expand && !this.simpleAccordionsExpanded.collectionsAccordion) {
-        this.simpleAccordionsExpanded.collectionsAccordion = true;
-      } else if (!expand && this.simpleAccordionsExpanded.collectionsAccordion) {
-        this.simpleAccordionsExpanded.collectionsAccordion = false;
+      for ( let i = 0; i < this.splitReadCollections.length; i++ ) {
+        if (expand && !this.simpleAccordionsExpanded.collectionsAccordion[i]) {
+          this.simpleAccordionsExpanded.collectionsAccordion[i] = true;
+        } else if (!expand && this.simpleAccordionsExpanded.collectionsAccordion) {
+          this.simpleAccordionsExpanded.collectionsAccordion[i] = false;
+        }
       }
       this.cdRef.detectChanges();
     });
@@ -690,22 +800,37 @@ export class DigitalEditionsApp {
       }
     });
     this.events.subscribe('tableOfContents:loaded', (data) => {
-      if (data.searchTocItem) {
+      this.tocData = data;
+      this.tocLoaded = true;
 
+      if (data.searchTocItem) {
         for (const collection of this.collectionsListWithTOC) {
 
-          if (Number(collection.id) === Number(data.collectionID)) {
+          if ((data.collectionID !== undefined && String(collection.id) === String(data.collectionID.id))
+          || (data.collectionID !== undefined && Number(collection.id) === Number(data.collectionID))) {
             collection.expanded = true;
-            this.simpleAccordionsExpanded.collectionsAccordion = true;
+            for ( let i = 0; i < this.splitReadCollections.length; i++ ) {
+              this.simpleAccordionsExpanded.collectionsAccordion[i] = true;
+            }
 
-            collection.accordionToc.toc = data.tocItems.children;
+            if ( data.chapterID ) {
+              data.itemId = Number(data.collectionID) + '_' + Number(data.publicationID) + '_' + data.chapterID;
+            }
+
+            if ( data.itemId === undefined && data.collectionID !== undefined && data.publicationID !== undefined) {
+              data.itemId = String(data.collectionID) + '_' + String(data.publicationID);
+            }
+
             collection.accordionToc = {
               toc: data.tocItems.children,
               searchTocItem: true,
+              searchItemId: data.itemId,
               searchPublicationId: Number(data.publicationID),
-              searchTitle: data.search_title ? data.search_title : null
+              searchCollectionId: Number(data.collectionID),
+              searchTitle:  null
             }
-
+            collection.accordionToc.toc = data.tocItems.children;
+            this.currentCollection = collection;
             break;
           }
         }
@@ -713,12 +838,23 @@ export class DigitalEditionsApp {
       this.options = data.tocItems.children;
       this.currentCollectionId = data.tocItems.collectionId;
       this.currentCollectionName = data.tocItems.text;
+      this.enableTableOfContentsMenu();
+    });
+
+    this.events.subscribe('exitedTo', (page) => {
+      this.setupPageSettings(page);
     });
 
     this.events.subscribe('ionViewWillEnter', (currentPage) => {
+      this.tocLoaded = false;
       const homeUrl = document.URL.indexOf('/#/home');
       if (homeUrl >= 0) {
         this.setupPageSettings(currentPage);
+      } else if ( document.URL.indexOf('/#/') > 0 ) {
+        if ( this.splitPaneOpen === false && this.pageFirstLoad === true ) {
+          this.showSplitPane();
+          this.pageFirstLoad = false;
+        }
       }
     });
 
@@ -735,22 +871,34 @@ export class DigitalEditionsApp {
       });
       this.currentContentName = 'Digital Publications';
       const params = {};
-      this.nav.setRoot('EditionsPage', params, { animate: false });
+      const nav = this.app.getActiveNavs();
+      this.enableContentMenu();
+      nav[0].setRoot('EditionsPage', params, { animate: false });
     });
     this.events.subscribe('topMenu:about', () => {
       this.events.publish('SelectedItemInMenu', {
         menuID: 'topMenu',
         component: 'app-component'
       });
+      this.enableAboutMenu();
       this.languageService.getLanguage().subscribe((lang: string) => {
         this.language = lang;
 
         if (this.aboutMenuMarkdown && this.aboutOptionsMarkdown.toc && this.aboutOptionsMarkdown.toc.length) {
-          const firstAboutPageID = this.aboutOptionsMarkdown.toc[0].id;
+          let firstAboutPageID = this.aboutOptionsMarkdown.toc[0].id;
+          if ( this.config.getSettings('StaticPagesMenus')[0]['initialAboutPage'] !== undefined ) {
+            firstAboutPageID = this.language + '-' + this.config.getSettings('StaticPagesMenus')[0]['initialAboutPage'];
+          }
           this.openStaticPage(firstAboutPageID);
         } else {
+
           this.enableAboutMenu();
-          this.openStaticPage(this.language + '-03-01');
+          if ( this.config.getSettings('StaticPagesMenus')[0]['initialAboutPage'] === undefined ) {
+            this.staticPagesMenus['initialAboutPage'] = this.language + '-03-01';
+          } else {
+            this.staticPagesMenus['initialAboutPage'] = this.language + '-' + this.config.getSettings('StaticPagesMenus')[0]['initialAboutPage'];
+          }
+          this.openStaticPage(this.staticPagesMenus['initialAboutPage']);
         }
       });
     });
@@ -764,7 +912,8 @@ export class DigitalEditionsApp {
       // Open music accordion as well
       this.simpleAccordionsExpanded.musicAccordion = true;
       const params = {};
-      this.nav.setRoot('music', params, { animate: false });
+      const nav = this.app.getActiveNavs();
+      nav[0].setRoot('music', params, { animate: false });
     });
     this.events.subscribe('topMenu:front', () => {
       this.events.publish('SelectedItemInMenu', {
@@ -799,19 +948,25 @@ export class DigitalEditionsApp {
         this.getMediaCollections();
       });
     });
+
+    this.events.subscribe('topMenu:elasticSearch', () => {
+      const params = {};
+      this.nav.push('elastic-search', params, { animate: false }).then(e => {
+      });
+      this.tocLoaded = true;
+      // this.resetCurrentCollection();
+      this.enableContentMenu();
+    });
+  }
+
+  resetCurrentCollection() {
+    this.currentCollection = null;
+    this.currentCollectionId = null;
+    this.currentCollectionName = '';
+    this.options = null;
   }
 
   mobileSplitPaneDetector() {
-    this.events.subscribe('splitPaneToggle:disable', () => {
-      if (this.userSettingsService.isMobile()) {
-        this.hideSplitPane();
-      }
-    });
-    this.events.subscribe('splitPaneToggle:enable', () => {
-      if (this.userSettingsService.isMobile()) {
-        this.showSplitPane();
-      }
-    });
   }
 
   doFor(needle, haystack, callback) {
@@ -855,18 +1010,21 @@ export class DigitalEditionsApp {
       this.enableTableOfContentsMenu();
     });
 
-    this.doFor(p, pagesWith.tocMenuIfNotAccordion, () => {
-      if (!this.accordionTOC) {
+    this.doFor(p, pagesWith.tableOfContentsMenu, () => {
+      console.log('Enabling TOC Menu', p, this.openCollectionFromToc, pagesWith.tableOfContentsMenu);
+      if (this.openCollectionFromToc) {
         this.enableTableOfContentsMenu();
       }
     });
 
     this.doFor(p, pagesWith.aboutMenu, () => {
+      console.log('enabling about menu for ' + p);
       this.enableAboutMenu();
 
     });
 
     this.doFor(p, pagesWith.contentMenu, () => {
+      console.log('enabling content menu for ' + p);
       this.enableContentMenu();
     });
 
@@ -1034,12 +1192,24 @@ export class DigitalEditionsApp {
   }
 
   enableTableOfContentsMenu() {
-    this.menu.enable(true, 'tableOfContentsMenu');
-    if (this.platform.is('core')) {
-      this.events.publish('title-logo:show', true);
+    if (this.tocLoaded) {
+      console.log('Toc is loaded');
+      try {
+        this.menu.enable(true, 'tableOfContentsMenu');
+        if (this.platform.is('core')) {
+          this.events.publish('title-logo:show', true);
+        } else {
+          this.events.publish('title-logo:show', false);
+        }
+      } catch (e) {
+        console.log('error att App.enableTableOfContentsMenu');
+      }
     } else {
-      this.events.publish('title-logo:show', false);
+      console.log('Toc is not loaded');
     }
+
+
+
   }
 
   openPlaymanTraditionPage() {
@@ -1054,7 +1224,8 @@ export class DigitalEditionsApp {
 
   openStaticPage(id: string) {
     const params = { id: id };
-    this.nav.setRoot('content', params);
+    const nav = this.app.getActiveNavs();
+    nav[0].setRoot('content', params);
   }
 
   openPage(page, selectedMenu?) {
@@ -1072,7 +1243,12 @@ export class DigitalEditionsApp {
     /*if ( this.platform.is('mobile') ) {
       this.events.publish('splitPaneToggle:disable');
     }*/
-    this.nav.setRoot(page);
+    try {
+      const nav = this.app.getActiveNavs();
+      nav[0].setRoot(page);
+    } catch (e) {
+      console.error('Error opening page');
+    }
   }
 
   openPersonSearchPage(searchPage, selectedMenu?) {
@@ -1085,12 +1261,15 @@ export class DigitalEditionsApp {
         component: 'app-component'
       });
     }
+    if ( searchPage.object_subtype === undefined || searchPage.object_subtype === '' ) {
+      searchPage.object_subtype = encodeURI('subtype');
+    }
     const params = {
       type: searchPage.object_type,
       subtype: searchPage.object_subtype
     };
-
-    this.nav.setRoot('person-search', params);
+    const nav = this.app.getActiveNavs();
+    nav[0].setRoot('person-search', params);
   }
 
   openFirstPage(collection: DigitalEdition) {
@@ -1103,6 +1282,7 @@ export class DigitalEditionsApp {
     }
 
     const nav = this.app.getActiveNavs();
+    console.log('Opening read from App.openFirstPage()');
     nav[0].setRoot('read', params);
   }
 
@@ -1118,6 +1298,7 @@ export class DigitalEditionsApp {
 
   openCollection(collection: any) {
 
+    console.log(collection, '<<-- open this...');
     if (this.hasCover === false) {
       this.getTocRoot(collection);
     } else {
@@ -1135,10 +1316,25 @@ export class DigitalEditionsApp {
       } else {
         this.currentContentName = collection.title;
         const params = { collection: collection, fetch: false, id: collection.id };
-        this.nav.setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
+
+        const nav = this.app.getActiveNavs();
+        nav[0].setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
       }
       this.cdRef.detectChanges();
     }
+    if (this.openCollectionFromToc) {
+      this.currentCollection = collection;
+      console.log('currentCollection', collection);
+      console.log(this.options, 'options of the fn');
+      try {
+        // if (this.options) {
+          this.enableTableOfContentsMenu();
+        // }
+      } catch (e) {
+        console.log('Error enabling enableTableOfContentsMenu');
+      }
+    }
+    this.currentCollectionId = collection.id;
   }
 
   onShowAccordion(show: boolean) {
@@ -1148,13 +1344,15 @@ export class DigitalEditionsApp {
   /* Legacy code */
   openGalleries() {
     const params = { fetch: true };
-    this.nav.setRoot('galleries', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
+    const nav = this.app.getActiveNavs();
+    nav[0].setRoot('galleries', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
   }
 
   /* Legacy code */
   openGalleryPage(galleryPage: string) {
     const params = { galleryPage: galleryPage, fetch: false };
-    this.nav.setRoot('image-gallery', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
+    const nav = this.app.getActiveNavs();
+    nav[0].setRoot('image-gallery', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
   }
 
   getMediaCollections() {
@@ -1173,20 +1371,25 @@ export class DigitalEditionsApp {
               t_all = translation;
             }, error => { }
           );
-          mediaCollectionMenu.unshift({ 'id': 'all', 'title': t_all });
+          mediaCollectionMenu.unshift({ 'id': 'all', 'title': t_all, 'highlight': true });
+          mediaCollectionMenu.forEach(item => {
+            item['is_gallery'] = true;
+          });
           this.mediaCollectionOptions['toc_exists'] = true;
           this.mediaCollectionOptions['expanded'] = false;
           this.mediaCollectionOptions['loading'] = false;
           this.mediaCollectionOptions['accordionToc'] = {
             toc: mediaCollectionMenu,
-            searchTocItem: false,
+            searchTocItem: true,
             searchTitle: '', // If toc item has to be searched by unique title also
             currentPublicationId: null
           };
           this.mediaCollectionOptions['has_children_pdfs'] = false;
           this.mediaCollectionOptions['isDownload'] = false;
           this.mediaCollectionOptions['highlight'] = false;
-          this.mediaCollectionOptions['title'] = '';
+          this.mediaCollectionOptions['title'] = 'media';
+          this.mediaCollectionOptions['id'] = 'mediaCollections';
+          this.mediaCollectionOptions['collectionId'] = 'mediaCollections';
         } else {
           this.mediaCollectionOptions = [];
         }
@@ -1194,12 +1397,28 @@ export class DigitalEditionsApp {
     }
   }
 
+
   openMediaCollections() {
+    this.mediaCollectionOptions['accordionToc']['toc'].forEach(element => {
+      if (element.id === 'all') {
+        element.highlight = true;
+      } else {
+        element.highlight = false;
+      }
+    });
     const params = {};
-    this.nav.setRoot('media-collections', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
+    const nav = this.app.getActiveNavs();
+    nav[0].setRoot('media-collections', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
   }
 
   openMediaCollection(gallery) {
+    this.mediaCollectionOptions['accordionToc']['toc'].forEach(element => {
+      if (gallery.id === element.id) {
+        element.highlight = true;
+      } else {
+        element.highlight = false;
+      }
+    });
     const nav = this.app.getActiveNavs();
     const params = { mediaCollectionId: gallery.id, mediaTitle: this.makeTitle(gallery.image_path), fetch: false };
     nav[0].push('media-collection', params, { animate: true, direction: 'forward', animation: 'ios-transition' });

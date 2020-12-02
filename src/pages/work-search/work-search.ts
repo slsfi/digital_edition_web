@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, App, Platform, ToastController,
   ModalController, Content, Events, ViewController } from 'ionic-angular';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
@@ -51,11 +51,14 @@ export class WorkSearchPage {
   cacheItem = false;
   showLoading = false;
   showFilter = true;
+  objectType = 'work';
 
   selectedLinkID: string;
 
   // tslint:disable-next-line:max-line-length
   alphabet: string[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Å', 'Ä', 'Ö'];
+  from = 0;
+  infiniteScrollNumber = 200;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -71,7 +74,8 @@ export class WorkSearchPage {
               public viewCtrl: ViewController,
               public modalCtrl: ModalController,
               private userSettingsService: UserSettingsService,
-              private events: Events
+              private events: Events,
+              private cf: ChangeDetectorRef
   ) {
     this.langService.getLanguage().subscribe((lang) => {
       this.appName = this.config.getSettings('app.name.' + lang);
@@ -109,36 +113,64 @@ export class WorkSearchPage {
 
   getworks() {
     this.showLoading = true;
-    this.semanticDataService.getWorkOccurrences().subscribe(
+    this.semanticDataService.getWorksElastic(this.from, this.searchText).subscribe(
       works => {
-
-        works.forEach(element => {
-          element.name = String(element.name).toLocaleLowerCase()
-        });
-
-        this.allData = works;
-        this.cacheData = works;
+        works = works.hits.hits;
         this.showLoading = false;
 
-        this.sortListAlphabeticallyAndGroup(this.allData);
+        const worksTmp = [];
+        works.forEach(element => {
+          element = element['_source'];
 
-        for (let i = 0; i < 30; i++) {
-          if (i === works.length) {
-            break;
-          } else {
-            this.works.push(works[this.count]);
-            this.worksCopy.push(works[this.count]);
-            this.count++
+          element['sortBy'] = String(element['title']).trim().replace('ʽ', '');
+
+          // remove any empty author_data
+          if ( element['author_data'][0]['id'] === undefined ) {
+            element['author_data'] = [];
           }
-        }
+
+          if ( element['author_data'].length > 0 ) {
+            element['sortBy'] = String(element['author_data'][0]['first_name']).trim().replace('ʽ', '');
+          }
+
+          // prefer sorting by last_name
+          if ( element['author_data'].length > 0 && String(element['author_data'][0]['last_name']).trim().length > 0 ) {
+            element['sortBy'] = String(element['author_data'][0]['last_name']).trim().replace('ʽ', '');
+          }
+
+          const ltr = element['sortBy'].charAt(0);
+          const mt = ltr.match(/[a-zåäö]/i);
+          if (ltr.length === 1 && ltr.match(/[a-zåäö]/i) !== null) {
+            // console.log(ltr);
+          } else {
+            const combining = /[\u0300-\u036F]/g;
+            element['sortBy'] = element['sortBy'].normalize('NFKD').replace(combining, '').replace(',', '');
+          }
+          let found = false;
+          this.works.forEach(work => {
+            work.id = work.man_id;
+            work.description = work.reference;
+            work.name = work.title;
+            if ( work.id === element['id'] ) {
+              found = true;
+            }
+          });
+          if ( !found ) {
+            worksTmp.push(element);
+            this.works.push(element);
+          }
+        });
+
+        this.allData = this.works;
+        this.cacheData = this.works;
+        this.sortListAlphabeticallyAndGroup(this.allData);
       },
-      err => {console.error(err); this.showLoading = false; },
-      () => console.log(this.works)
+      err => {console.error(err); this.showLoading = false; }
     );
   }
 
   loadMoreworks() {
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < this.infiniteScrollNumber; i++) {
       if (i === this.allData.length) {
         break;
       } else {
@@ -175,11 +207,16 @@ export class WorkSearchPage {
   }
 
   filter(terms) {
+    if ( terms._value ) {
+      terms = terms._value;
+    }
     if (!terms) {
       this.works = this.worksCopy;
     } else if (terms != null) {
+      this.from = 0;
       this.works = [];
-      terms = terms.toLocaleLowerCase();
+      this.getworks();
+      terms = String(terms).toLowerCase().replace(' ', '');
       for (const work of this.allData) {
         if (work.name) {
           const title = work.name.toLocaleLowerCase();
@@ -194,24 +231,58 @@ export class WorkSearchPage {
         }
       }
     } else {
-      this.works = this.worksCopy;
+      this.worksCopy = this.worksCopy;
     }
   }
 
+  onChanged(obj) {
+    this.cf.detectChanges();
+    this.filter(obj);
+  }
+
   doInfinite(infiniteScroll) {
-    for (let i = 0; i < 30; i++) {
-      if ( this.allData !== undefined ) {
-        this.works.push(this.allData[this.count]);
-        this.worksCopy.push(this.allData[this.count]);
-        this.count++;
-      }
-    }
+    this.from += this.infiniteScrollNumber;
+    this.getworks();
     infiniteScroll.complete();
   }
 
   async openWork(occurrenceResult: OccurrenceResult) {
-    const occurrenceModal = this.modalCtrl.create(OccurrencesPage, { occurrenceResult: occurrenceResult });
-    occurrenceModal.present();
+    let showOccurrencesModalOnRead = false;
+    if (this.config.getSettings('showOccurencesModalOnReadPageAfterSearch.tagSearch')) {
+      showOccurrencesModalOnRead = true;
+    }
+
+    let openOccurrencesAndInfoOnNewPage = false;
+
+    try {
+      openOccurrencesAndInfoOnNewPage = this.config.getSettings('OpenOccurrencesAndInfoOnNewPage');
+    } catch (e) {
+      openOccurrencesAndInfoOnNewPage = false;
+    }
+
+    if (openOccurrencesAndInfoOnNewPage) {
+      const nav = this.app.getActiveNavs();
+
+      const params = {
+        id: occurrenceResult.id,
+        objectType: this.objectType
+      }
+
+      if ((this.platform.is('mobile') || this.userSettingsService.isMobile()) && !this.userSettingsService.isDesktop()) {
+        nav[0].push('occurrences-result', params);
+      } else {
+        nav[0].setRoot('occurrences-result', params);
+      }
+
+    } else {
+      const occurrenceModal = this.modalCtrl.create(OccurrencesPage, {
+        occurrenceResult: occurrenceResult,
+        showOccurrencesModalOnRead: showOccurrencesModalOnRead,
+        objectType: this.objectType
+      });
+
+      occurrenceModal.present();
+    }
   }
 
   async download() {
@@ -301,21 +372,21 @@ export class WorkSearchPage {
 
     // Sort alphabetically
     data.sort(function(a, b) {
-      if (a.name < b.name) { return -1; }
-      if (a.name > b.name) { return 1; }
+      if (a.sortBy < b.sortBy) { return -1; }
+      if (a.sortBy > b.sortBy) { return 1; }
       return 0;
     });
 
     // Check when first character changes in order to divide names into alphabetical groups
     for (let i = 0; i < data.length ; i++) {
       if (data[i] && data[i - 1]) {
-        if (data[i].name && data[i - 1].name) {
-          if (data[i].name.length > 1 && data[i - 1].name.length > 1) {
-            if (data[i].name.charAt(0) !== data[i - 1].name.charAt(0)) {
-              console.log(data[i].name.charAt(0) + ' != ' + data[i - 1].name.charAt(0))
-              const ltr = data[i].name.charAt(0);
+        if (data[i].sortBy && data[i - 1].sortBy) {
+          if (data[i].sortBy.length > 1 && data[i - 1].sortBy.length > 1) {
+            if (data[i].sortBy.charAt(0) !== data[i - 1].sortBy.charAt(0)) {
+              console.log(data[i].sortBy.charAt(0) + ' != ' + data[i - 1].sortBy.charAt(0))
+              const ltr = data[i].sortBy.charAt(0);
               if (ltr.length === 1 && ltr.match(/[a-z]/i)) {
-                data[i]['firstOfItsKind'] = data[i].name.charAt(0);
+                data[i]['firstOfItsKind'] = data[i].sortBy.charAt(0);
               }
             }
           }
@@ -324,8 +395,8 @@ export class WorkSearchPage {
     }
 
     for (let j = 0; j < data.length; j++) {
-      if (data[j].name.length > 1) {
-        data[j]['firstOfItsKind'] = data[j].name.charAt(0);
+      if (data[j].sortBy.length > 1) {
+        data[j]['firstOfItsKind'] = data[j].sortBy.charAt(0);
         break;
       }
     }
@@ -340,16 +411,7 @@ export class WorkSearchPage {
     const pub_id = text.collectionID.split('_')[1];
     let text_type: string;
 
-    if (text.textType === 'ms') {
-      text_type = 'manuscripts';
-    } else if (text.textType === 'var') {
-      text_type = 'variations';
-    } else if (text.textType === 'facs') {
-      text_type = 'facsimiles'
-    } else {
-      text_type = 'comments';
-    }
-
+    text_type = 'established';
     params['tocLinkId'] = text.collectionID;
     params['collectionID'] = col_id;
     params['publicationID'] = pub_id;
@@ -359,12 +421,7 @@ export class WorkSearchPage {
         id: text.linkID
       }
     ];
-
-    if (this.platform.is('mobile')) {
       this.app.getRootNav().push('read', params);
-    } else {
-      this.app.getRootNav().push('read', params);
-    }
   }
 
   openFilterModal() {

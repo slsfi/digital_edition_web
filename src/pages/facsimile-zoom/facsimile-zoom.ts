@@ -18,15 +18,21 @@ import { UserSettingsService } from '../../app/services/settings/user-settings.s
 })
 export class FacsimileZoomModalPage {
 
-  images: any;
+  images: any[] = [];
   backsides: any;
   descriptions: any;
   activeImage: any;
   zoom = 1.0;
+  angle = 0;
+  latestDeltaX = 0
+  latestDeltaY = 0
+  prevX = 0
+  prevY = 0
 
   facsUrl = '';
   facsimilePagesInfinite = false;
   backside = false;
+  facsSize: number;
   facsPage: any;
   facsNumber = 0;
   manualPageNumber = 1;
@@ -41,6 +47,13 @@ export class FacsimileZoomModalPage {
     this.backsides = [];
   }
 
+  rotate() {
+    this.angle += 90;
+    if ( this.angle >= 360 ) {
+      this.angle = 0;
+    }
+  }
+
   cancel() {
     this.viewCtrl.dismiss(this.viewCtrl);
   }
@@ -53,6 +66,8 @@ export class FacsimileZoomModalPage {
   }
 
   ionViewWillLoad() {
+    this.facsSize = this.navParams.get('facsSize');
+
     if (this.navParams.get('facsimilePagesInfinite')) {
       this.facsimilePagesInfinite = true;
       this.facsUrl = this.navParams.get('facsUrl');
@@ -66,8 +81,10 @@ export class FacsimileZoomModalPage {
         this.descriptions = [];
       }
       this.activeImage = this.navParams.get('activeImage');
+      this.manualPageNumber = this.activeImage
       this.doAnalytics(String(this.images[this.activeImage]));
     }
+
     try {
       this.backsides = this.navParams.get('backsides');
       if ( this.backsides === undefined ) {
@@ -176,15 +193,58 @@ export class FacsimileZoomModalPage {
     this.doAnalytics(String(this.images[this.activeImage]));
   }
 
-  handleSwipeEvent(event) {
-    if ( event.direction === 2 ) {
-      this.next();
-    } else if ( event.direction === 4 ) {
-      this.previous();
+  backSide(url) {
+    return url.replace('.jpg', 'B.jpg');
+  }
+
+  handlePanEvent(event) {
+    const img = event.target;
+    // Store latest zoom adjusted delta.
+    // NOTE: img must have touch-action: none !important;
+    // otherwise deltaX and deltaY will give wrong values on mobile.
+    this.latestDeltaX = event.deltaX / this.zoom
+    this.latestDeltaY = event.deltaY / this.zoom
+
+    // Get current position from last position and delta.
+    let x = this.prevX + this.latestDeltaX
+    let y = this.prevY + this.latestDeltaY
+
+    if (this.angle === 90) {
+      const tmp = x;
+      x = y;
+      y = tmp;
+      y = y * -1;
+    } else if (this.angle === 180) {
+      y = y * -1;
+      x = x * -1;
+    } else if (this.angle === 270) {
+      const tmp = x;
+      x = y;
+      y = tmp;
+      x = x * -1;
+    }
+
+    if (img !== null) {
+      img.style.transform = 'rotate(' + this.angle + 'deg) scale(' + this.zoom + ') translate3d(' + x + 'px, ' + y + 'px, 0px)';
     }
   }
 
-  backSide(url) {
-    return url.replace('.jpg', 'B.jpg');
+  onMouseUp(e) {
+    // Update the previous position on desktop by adding the latest delta.
+    this.prevX += this.latestDeltaX
+    this.prevY += this.latestDeltaY
+  }
+
+  onMouseWheel(e) {
+    const img = e.target;
+    if (e.deltaY > 0) {
+      this.zoomIn();
+      img.style.transform = 'rotate(' + this.angle + 'deg) scale(' + this.zoom + ') translate3d(' + this.prevX + 'px, ' +
+        this.prevY + 'px, 0px)';
+    } else {
+      this.zoomOut();
+      img.style.transform = 'rotate(' + this.angle + 'deg) scale(' + this.zoom + ') translate3d(' + this.prevX + 'px, ' +
+        this.prevY + 'px, 0px)';
+    }
   }
 }

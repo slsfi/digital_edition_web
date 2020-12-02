@@ -1,9 +1,14 @@
 facsimiles {
     .leftFacsimileArrow{
         left: 0;
+        right: auto !important;
     }
     .page_number_input input{
 
+    }
+
+    .external_url a{
+      white-space: normal;
     }
 
     .tab-container{
@@ -96,5 +101,13 @@ facsimiles {
 
     img{
         cursor: move;
+        // https://github.com/hammerjs/hammer.js/issues/1050#issuecomment-267595556
+        // Need to use !important because something is trying to override the value.
+        touch-action: none !important;
+    }
+
+    .external_url{
+        display: grid;
+        line-height: 2;
     }
 }

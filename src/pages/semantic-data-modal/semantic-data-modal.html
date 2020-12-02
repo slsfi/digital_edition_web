@@ -44,5 +44,27 @@
         <span>{{"Occurrences.no_occurrences" | translate}}</span>
       </div>
     </ion-list>
+    <ion-list *ngIf="this.type=='work'">
+      <div *ngFor="let occurrence of workOccurrences">
+        <ion-item (click)="openText(occurrence)">
+          <span>{{occurrence['name']}}</span>
+          <p>&nbsp;</p>
+        </ion-item>
+      </div>
+      <div *ngIf="workOccurrences.length == 0">
+        <span>{{"Occurrences.no_occurrences" | translate}}</span>
+      </div>
+    </ion-list>
+    <ion-list *ngIf="this.type=='tag'">
+      <div *ngFor="let occurrence of tagOccurrences">
+        <ion-item (click)="openText(occurrence['occurrences'][0])">
+          <span>{{occurrence['occurrences'][0].description}}</span>
+          <p>{{occurrence['occurrences'][0].publication_collection_name}} - {{occurrence['occurrences'][0].publication_name}}</p>
+        </ion-item>
+      </div>
+      <div *ngIf="workOccurrences.length == 0">
+        <span>{{"Occurrences.no_occurrences" | translate}}</span>
+      </div>
+    </ion-list>
   </div>
 </ion-content>

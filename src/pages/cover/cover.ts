@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Storage } from '@ionic/storage';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { TextService } from '../../app/services/texts/text.service';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
@@ -11,15 +12,14 @@ import { MdContentService } from '../../app/services/md/md-content.service';
 /**
  * Generated class for the CoverPage page.
  *
- * Collection cover/title page.
- *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
 
 @IonicPage({
-  name: 'cover',
-  segment: 'publication/:collectionID/cover/'
+  name: 'cover-page',
+  segment: 'publication-cover/:collectionID',
+  priority: 'high'
 })
 @Component({
   selector: 'page-cover',
@@ -48,6 +48,7 @@ export class CoverPage {
     protected sanitizer: DomSanitizer,
     protected params: NavParams,
     protected events: Events,
+    private storage: Storage,
     private userSettingsService: UserSettingsService,
     protected tableOfContentsService: TableOfContentsService,
     public config: ConfigService,
@@ -55,6 +56,8 @@ export class CoverPage {
   ) {
     this.coverSelected = true;
     this.id = this.params.get('collectionID');
+    console.log(`Coverpage id is ${this.id}`);
+
     this.collection = this.params.get('collection');
     if ( this.params.get('publicationID') === undefined ) {
       this.coverSelected = true;
@@ -76,12 +79,17 @@ export class CoverPage {
     });
 
     this.checkIfCollectionHasChildrenPdfs();
+
     if (!isNaN(Number(this.id))) {
       if (this.hasMDCover) {
         const folder = this.hasMDCover;
         this.getMdContent(`${this.lang}-${folder}-${this.id}`);
       }
     }
+  }
+
+  ngOnDestroy() {
+    this.events.unsubscribe('language:change');
   }
 
   checkIfCollectionHasChildrenPdfs() {
@@ -105,7 +113,13 @@ export class CoverPage {
   ionViewWillEnter() {
     this.events.publish('ionViewWillEnter', this.constructor.name);
     this.events.publish('musicAccordion:reset', true);
-    this.events.publish('tableOfContents:unSelectSelectedTocItem', true);
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'cover'});
+
+    this.events.publish('SelectedItemInMenu', {
+      menuID: this.params.get('collectionID'),
+      component: 'cover-page'
+    });
+
   }
 
   getMdContent(fileID: string) {
@@ -117,13 +131,21 @@ export class CoverPage {
   }
 
   getTocRoot(id: string) {
-    this.tableOfContentsService.getTableOfContents(id)
+    this.storage.get('toc_' + id).then((tocItemsC) => {
+      if (tocItemsC) {
+        tocItemsC.coverSelected = this.coverSelected;
+        this.events.publish('tableOfContents:loaded', {tocItems: tocItemsC, searchTocItem: true, collectionID: tocItemsC.collectionId, 'caller':  'cover'});
+      } else {
+        this.tableOfContentsService.getTableOfContents(id)
         .subscribe(
             tocItems => {
               tocItems.coverSelected = this.coverSelected;
-              this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId});
+              this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId, 'caller':  'cover'});
+              this.storage.set('toc_' + id, tocItems);
             },
-            error =>  {this.errorMessage = <any>error});
+          error =>  {this.errorMessage = <any>error});
+          }
+    });
   }
 
   ionViewDidLoad() {
@@ -132,7 +154,7 @@ export class CoverPage {
     if (!isNaN(Number(this.id))) {
       if (!this.hasMDCover) {
         this.langService.getLanguage().subscribe(lang => {
-          this.textService.getTitlePage(this.id, lang).subscribe(
+          this.textService.getCoverPage(this.id, lang).subscribe(
             res => {
               // in order to get id attributes for tooltips
               this.text = this.sanitizer.bypassSecurityTrustHtml(
@@ -145,22 +167,22 @@ export class CoverPage {
             }
           );
         });
-      }
-    } else {
-      if (isNaN(Number(this.id))) {
-        this.langService.getLanguage().subscribe(lang => {
-          const fileID = lang + '-08';
-          this.hasMDCover = true;
-          this.mdService.getMdContent(fileID).subscribe(
-            res => {
-              // in order to get id attributes for tooltips
-              this.mdContent = res.content;
-            },
-            error => {
-              this.errorMessage = <any>error;
-            }
-          );
-        });
+      } else {
+        if (isNaN(Number(this.id))) {
+          this.langService.getLanguage().subscribe(lang => {
+            const fileID = lang + '-08';
+            this.hasMDCover = true;
+            this.mdService.getMdContent(fileID).subscribe(
+              res => {
+                // in order to get id attributes for tooltips
+                this.mdContent = res.content;
+              },
+              error => {
+                this.errorMessage = <any>error;
+              }
+            );
+          });
+        }
       }
     }
   }

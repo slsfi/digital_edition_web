@@ -21,20 +21,27 @@ export class CommentService {
     const parts = id2.split(';');
     const collection_id = parts[0].split('_')[0];
     const pub_id = parts[0].split('_')[1];
+    const section_id = parts[0].split('_')[2];
 
-    const commentId = parts[0];
     if (!parts[1]) {
       parts[1] = '';
     }
 
+    const commentId = collection_id + '_' + pub_id + (section_id === undefined && section_id !== '') ? '_' + section_id : '';
     const introURL = '/text/' + collection_id + '/' + pub_id + '/com';
     const commentIdURL = '/text/' + collection_id + '/' + pub_id + '/com/' + parts[1];
-    let url: string;
+    let url: String = '';
 
     if (parts[1]) {
-      if (parts[1].length > 1) {
+      if (parts[1].length > 1 ) {
         url = commentIdURL;
       }
+    } else {
+      url = introURL;
+    }
+
+    if ( section_id !== undefined && section_id !== '' ) {
+      url = introURL + '/' + section_id + '/' + section_id;
     } else {
       url = introURL;
     }
@@ -42,8 +49,8 @@ export class CommentService {
     if (this.cache.hasHtml(commentId)) {
       return this.cache.getHtmlAsObservable(id2);
     } else {
-      return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
-        this.config.getSettings('app.machineName') + url
+      return this.http.get(
+        this.config.getSettings('app.apiEndpoint') + '/' + this.config.getSettings('app.machineName') + url
       )
       .map(res => {
         const body = res.json();
@@ -78,6 +85,18 @@ export class CommentService {
       errMsg = error.message ? error.message : error.toString();
     }
     return Observable.throw(errMsg);
+  }
+
+  getCorrespondanceMetadata(pub_id) {
+    return this.http.get(  this.config.getSettings('app.apiEndpoint')  + '/' +
+                          this.config.getSettings('app.machineName') +
+                          '/correspondence/publication/metadata/' + pub_id + '')
+        .map(res => {
+          const body = res.json();
+
+          return body || ' - no content - ';
+        })
+        .catch(this.handleError);
   }
 
 }

@@ -32,6 +32,7 @@ export class TopMenuComponent {
   public showTopURNButton: boolean;
   public showTopMusicButton: boolean;
   public showColAmount: string;
+  public showTopElasticButton: boolean;
 
   constructor(
     private events: Events,
@@ -62,6 +63,12 @@ export class TopMenuComponent {
     }
 
     try {
+      this.showTopElasticButton = this.config.getSettings('app.showTopElasticButton');
+    } catch ( e ) {
+      this.showTopElasticButton = true;
+    }
+
+    try {
       this.showTopMusicButton = this.config.getSettings('app.showTopMusicButton');
     } catch ( e ) {
       this.showTopMusicButton = true;
@@ -71,6 +78,12 @@ export class TopMenuComponent {
       this.getShowLogo();
     });
     this.getShowLogo();
+  }
+
+  ngOnDestroy() {
+    this.events.unsubscribe('title-logo:show');
+    this.events.unsubscribe('title-logo:setTitle');
+    this.events.unsubscribe('title-logo:setSubTitle');
   }
 
   getShowLogo() {
@@ -92,6 +105,11 @@ export class TopMenuComponent {
     modal.onDidDismiss(data => {
       console.log('dismissed', data);
     });
+  }
+
+  public elasticSearch() {
+    this.events.publish('topMenu:elasticSearch');
+    this.storage.set('showLogo', false);
   }
 
   public front() {

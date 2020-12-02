@@ -22,7 +22,7 @@ export class ReferenceDataService {
         .map(res => {
           const body = res.json();
 
-          return body[0] || ' - no content - ';
+          return body[0] || '';
         })
         .catch(this.handleError);
   }

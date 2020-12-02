@@ -51,7 +51,7 @@
       <ion-col col-10>
         <ion-row>
           <ion-col col-11>
-            <ion-searchbar class="searchbar" [(ngModel)]="searchText" (keyup)="filter($event.target.value)">
+            <ion-searchbar class="searchbar" [(ngModel)]="searchText" (ionChange)=onChanged($event)>
             </ion-searchbar>
           </ion-col>
           <ion-col col-1 *ngIf="showFilter">
@@ -72,8 +72,8 @@
             <ion-item *ngIf="p?.firstOfItsKind">
               <ion-item-divider color="light">{{p.firstOfItsKind}}</ion-item-divider>
             </ion-item>
-            <ion-item *ngIf="p?.name.length > 1" (click)="openTag(p)">
-              <p>{{p.name}}</p>
+            <ion-item *ngIf="p['title'].length > 1" (click)="openWork(p)">
+                <span *ngFor="let author of p.author_data; let i = index;" class="author">{{(author['last_name'] != '')?author['last_name'].trim():''}}<span *ngIf="author['first_name'].length>0">, </span>{{(author['first_name'] != '')?author['first_name'].trim():''}}{{(i < (p.author_data.length-1))?', ': ''}}</span><span *ngIf="p.author_data.length>0">, </span><span class="work_title">{{p['title']}}</span>
             </ion-item>
           </div>
         </ion-list>

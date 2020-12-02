@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, App, Platform, ToastController,
   ModalController, Content, Events, ViewController } from 'ionic-angular';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
@@ -51,6 +51,9 @@ export class TagSearchPage {
   cacheItem = false;
   showLoading = false;
   showFilter = true;
+  from = 0;
+  infiniteScrollNumber = 30;
+  filters: any[] = [];
 
   selectedLinkID: string;
 
@@ -74,7 +77,8 @@ export class TagSearchPage {
               public modalCtrl: ModalController,
               public viewCtrl: ViewController,
               private userSettingsService: UserSettingsService,
-              private events: Events
+              private events: Events,
+              private cf: ChangeDetectorRef
   ) {
     this.langService.getLanguage().subscribe((lang) => {
       this.appName = this.config.getSettings('app.name.' + lang);
@@ -105,32 +109,50 @@ export class TagSearchPage {
 
   gettags() {
     this.showLoading = true;
-    this.semanticDataService.getTagOccurrences().subscribe(
+    this.semanticDataService.getTagElastic(this.from, this.searchText, this.filters).subscribe(
       tags => {
-
+        const tagsTmp = [];
+        tags = tags.hits.hits;
         tags.forEach(element => {
-          element.name = String(element.name).toLocaleLowerCase()
+          element = element['_source'];
+          element.name = String(element.name)
+          element['sortBy'] = String(element.name).trim().replace('ʽ', '').toUpperCase();
+          if ( element.name ) {
+            let found = false;
+            this.tags.forEach(tag => {
+              if ( tag.id === element['id'] ) {
+                found = true;
+              }
+            });
+            if ( !found ) {
+              tagsTmp.push(element);
+              this.tags.push(element);
+            }
+          }
+          const ltr = element['sortBy'].charAt(0);
+          const mt = ltr.match(/[a-zåäö]/i);
+          if (ltr.length === 1 && ltr.match(/[a-zåäö]/i) !== null) {
+            // console.log(ltr);
+          } else {
+            const combining = /[\u0300-\u036F]/g;
+            element['sortBy'] = element['sortBy'].normalize('NFKD').replace(combining, '').replace(',', '');
+          }
         });
 
-        this.allData = tags;
-        this.cacheData = tags;
+        this.allData = this.tags;
+        this.cacheData = this.tags;
         this.showLoading = false;
-
         this.sortListAlphabeticallyAndGroup(this.allData);
-
-        for (let i = 0; i < 30; i++) {
-          if (i === tags.length) {
-            break;
-          } else {
-            this.tags.push(tags[this.count]);
-            this.tagsCopy.push(tags[this.count]);
-            this.count++
-          }
-        }
       },
       err => {console.error(err); this.showLoading = false; },
       () => console.log(this.tags)
     );
+  }
+
+  onChanged(obj) {
+    this.cf.detectChanges();
+    console.log('segment changed')
+    this.filter(obj);
   }
 
   loadMoretags() {
@@ -155,17 +177,10 @@ export class TagSearchPage {
   }
 
   sortByLetter(letter) {
-    const list = [];
-    try {
-      for (const p of this.allData) {
-        if (p.name && p.name.startsWith(letter)) {
-          list.push(p);
-        }
-      }
-    } catch ( e ) {
-      this.tags = this.allData;
-    }
-    this.tags = list;
+    this.searchText = letter;
+    this.tags = [];
+    this.cf.detectChanges();
+    this.gettags();
   }
 
   ionViewDidLeave() {
@@ -209,11 +224,16 @@ export class TagSearchPage {
   }
 
   filter(terms) {
+    if ( terms._value ) {
+      terms = terms._value;
+    }
     if (!terms) {
       this.tags = this.tagsCopy;
     } else if (terms != null) {
+      this.from = 0;
+      this.gettags();
       this.tags = [];
-      terms = terms.toLocaleLowerCase();
+      terms = String(terms).toLowerCase().replace(' ', '');
       for (const tag of this.allData) {
         if (tag.name) {
           const title = tag.name.toLocaleLowerCase();
@@ -233,13 +253,8 @@ export class TagSearchPage {
   }
 
   doInfinite(infiniteScroll) {
-    for (let i = 0; i < 30; i++) {
-      if ( this.allData !== undefined ) {
-        this.tags.push(this.allData[this.count]);
-        this.tagsCopy.push(this.allData[this.count]);
-        this.count++;
-      }
-    }
+    this.from += this.infiniteScrollNumber;
+    this.gettags();
     infiniteScroll.complete();
   }
 
@@ -369,21 +384,21 @@ export class TagSearchPage {
 
     // Sort alphabetically
     data.sort(function(a, b) {
-      if (a.name < b.name) { return -1; }
-      if (a.name > b.name) { return 1; }
+      if (a.sortBy < b.sortBy) { return -1; }
+      if (a.sortBy > b.sortBy) { return 1; }
       return 0;
     });
 
     // Check when first character changes in order to divide names into alphabetical groups
     for (let i = 0; i < data.length ; i++) {
       if (data[i] && data[i - 1]) {
-        if (data[i].name && data[i - 1].name) {
-          if (data[i].name.length > 1 && data[i - 1].name.length > 1) {
-            if (data[i].name.charAt(0) !== data[i - 1].name.charAt(0)) {
-              console.log(data[i].name.charAt(0) + ' != ' + data[i - 1].name.charAt(0))
-              const ltr = data[i].name.charAt(0);
+        if (data[i].sortBy && data[i - 1].sortBy) {
+          if (data[i].sortBy.length > 1 && data[i - 1].sortBy.length > 1) {
+            if (data[i].sortBy.charAt(0) !== data[i - 1].sortBy.charAt(0)) {
+              console.log(data[i].sortBy.charAt(0) + ' != ' + data[i - 1].sortBy.charAt(0))
+              const ltr = data[i].sortBy.charAt(0);
               if (ltr.length === 1 && ltr.match(/[a-z]/i)) {
-                data[i]['firstOfItsKind'] = data[i].name.charAt(0);
+                data[i]['firstOfItsKind'] = data[i].sortBy.charAt(0);
               }
             }
           }
@@ -392,8 +407,8 @@ export class TagSearchPage {
     }
 
     for (let j = 0; j < data.length; j++) {
-      if (data[j].name.length > 1) {
-        data[j]['firstOfItsKind'] = data[j].name.charAt(0);
+      if (data[j].sortBy.length > 1) {
+        data[j]['firstOfItsKind'] = data[j].sortBy.charAt(0);
         break;
       }
     }
@@ -436,10 +451,13 @@ export class TagSearchPage {
   }
 
   openFilterModal() {
-    const filterModal = this.modalCtrl.create(FilterPage, { searchType: 'tag-search' });
+    const filterModal = this.modalCtrl.create(FilterPage, { searchType: 'tag-search', activeFilters: this.filters });
     filterModal.onDidDismiss(filters => {
 
       if (filters) {
+        this.tags = [];
+        this.allData = [];
+        this.filters = filters;
         if (filters['isEmpty']) {
           console.log('filters are empty')
           this.tags = [];
@@ -447,6 +465,11 @@ export class TagSearchPage {
           this.count = 0;
           this.gettags();
         }
+
+        if (filters.filterCategoryTypes) {
+          this.gettags();
+        }
+
         if (filters.filterCollections) {
           const filterSelected = filters.filterCollections.some(function(el) {
             return el.selected === true;

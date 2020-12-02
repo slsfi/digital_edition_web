@@ -18,4 +18,21 @@ comments {
         margin-bottom: 0rem !important;
         display: block !important;
     }
+    div.ms{
+      padding-top: 2rem;
+    }
+    .ms li{
+      list-style: none;
+      line-height: 1.5rem;
+    }
+    .ms ul{
+      padding-left: 0px;
+    }
+}
+
+@media (max-width: 800px) {
+    .tei img.comment {
+        width: 20px;
+        height: 20px;
+    }
 }

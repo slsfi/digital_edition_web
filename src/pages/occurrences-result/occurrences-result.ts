@@ -129,6 +129,9 @@ export class OccurrencesResultPage {
       this.getSubjectOccurrences();
     } else if (this.objectType === 'location') {
       this.getLocationOccurrences();
+    } else if (this.objectType === 'work') {
+      this.getWork();
+      this.getWorkOccurrences();
     }
   }
 
@@ -177,10 +180,13 @@ export class OccurrencesResultPage {
     }
 
     newOccurrence.description = occurrence.description || null;
+    newOccurrence.publication_id = occurrence.publication_id || null;
+    newOccurrence.collectionID = occurrence.collection_id || null;
+    newOccurrence.description = occurrence.description || null;
     newOccurrence.publication_facsimile_id = occurrence.publication_facsimile_id || null;
     newOccurrence.publication_facsimile = occurrence.publication_facsimile || null;
     newOccurrence.publication_facsimile_page = occurrence.publication_facsimile_page || null;
-    newOccurrence.linkID = fileName.split('.xml')[0];
+    newOccurrence.linkID = newOccurrence.collectionID + '_' + newOccurrence.publication_id;
     newOccurrence.filename = fileName;
     newOccurrence.textType = type;
     newOccurrence.name = occurrence.song_name || null;
@@ -203,10 +209,8 @@ export class OccurrencesResultPage {
     newOccurrence.landscape = occurrence.song_landscape || null;
     newOccurrence.title = occurrence.name;
     newOccurrence.song_id = occurrence.song_id;
-    newOccurrence.collectionID = newOccurrence.linkID.split('_' + type)[0];
     newOccurrence.collectionName = occurrence.collection_name;
     newOccurrence.displayName = (occurrence.publication_name !== null) ? occurrence.publication_name : occurrence.collection_name;
-    newOccurrence.publication_name = occurrence.publication_name || null;
 
     if ( newOccurrence.type !== null ) {
       newOccurrence.displayName = String(newOccurrence.type).charAt(0).toUpperCase() + String(newOccurrence.type).slice(1);
@@ -388,6 +392,46 @@ export class OccurrencesResultPage {
     );
   }
 
+  getWorkOccurrences() {
+    const currentLocationId = this.id;
+    this.semanticDataService.getWorkOccurrencesById(currentLocationId).subscribe(
+      occurrences => {
+        for (const occurrence of occurrences) {
+          this.setOccurrence(occurrence);
+        }
+        this.loadingInfoData = false;
+        this.loadingOccurrencesData = false
+        this.setWork(occurrences);
+        /*for (const location of locations) {
+          if (Number(location.id) === Number(currentLocationId)) {
+             this.setLocation(location);
+            this.checkHasAnyInfoDataToDisplay();
+
+            this.occurrenceResult = location;
+            const occurrences: Occurrence[] = this.occurrenceResult.occurrences;
+
+            for (const occurence of occurrences) {
+              this.setOccurrence(occurence);
+            }
+            this.loadingInfoData = false;
+            this.loadingOccurrencesData = false
+
+            if (!this.hasInfoDataToDisplay && this.occurrencesToShow && this.occurrencesToShow.length) {
+              this.segments = 'occurrences';
+            }
+            break;
+          }
+        }*/
+      },
+      err => {
+        console.error(err);
+        this.loadingInfoData = false;
+        this.loadingOccurrencesData = false;
+      },
+      () => console.log('Fetched tags...')
+    );
+  }
+
   getTag() {
     if (!this.id) {
       return;
@@ -403,6 +447,40 @@ export class OccurrencesResultPage {
             (<any>window).ga('send', 'event', {
               eventCategory: 'Occurrence',
               eventLabel: 'tag',
+              eventAction: String(title),
+              eventValue: 10
+            });
+          } catch ( e ) {
+          }
+        }
+        // string.charAt(0).toUpperCase() + string.slice(1);
+        this.loadingInfoData = false;
+        this.checkHasAnyInfoDataToDisplay();
+      },
+      err => {
+        console.error(err);
+        this.loadingInfoData = false;
+      },
+      () => console.log('Fetched tags...')
+    );
+  }
+
+  getWork() {
+    if (this.id === undefined) {
+      return;
+    }
+
+    this.loadingInfoData = true;
+    this.semanticDataService.getWork(this.id).subscribe(
+      work => {
+        if (work.title) {
+          let title = work.title;
+          title = title.charAt(0).toUpperCase() + title.slice(1);
+          this.title = title;
+          try {
+            (<any>window).ga('send', 'event', {
+              eventCategory: 'Occurrence',
+              eventLabel: 'work',
               eventAction: String(title),
               eventValue: 10
             });
@@ -461,6 +539,26 @@ export class OccurrencesResultPage {
     this.infoData.latitude = location.latitude;
     this.infoData.longitude = location.longitude;
     this.infoData.region = location.region;
+  }
+
+  setWork(work) {
+    if (work.name) {
+      this.title = work.name;
+      try {
+        (<any>window).ga('send', 'event', {
+          eventCategory: 'Occurrence',
+          eventLabel: 'location',
+          eventAction: String(this.title),
+          eventValue: 10
+        });
+      } catch ( e ) {
+      }
+    }
+
+    this.infoData.city = work.city;
+    this.infoData.latitude = work.latitude;
+    this.infoData.longitude = work.longitude;
+    this.infoData.region = work.region;
   }
 
   /**
@@ -530,8 +628,8 @@ export class OccurrencesResultPage {
 
     const params = {};
     const nav = this.app.getActiveNavs();
-    const col_id = text.collectionID.split('_')[0];
-    const pub_id = text.collectionID.split('_')[1];
+    const col_id = text.collectionID;
+    const pub_id = text.publication_id;
     let text_type: string;
 
     if (text.textType === 'ms') {
@@ -550,6 +648,7 @@ export class OccurrencesResultPage {
     params['facs_id'] = 'not';
     params['facs_nr'] = 'infinite';
     params['song_id'] = 'nosong';
+    params['chapterID'] = 'nochapter';
 
     if (text_type === 'facsimile') {
       if (text.publication_facsimile_id) {
@@ -561,15 +660,16 @@ export class OccurrencesResultPage {
       }
     }
 
-    params['tocLinkId'] = text.collectionID;
+    params['tocLinkId'] = col_id + '_' + pub_id;
     params['collectionID'] = col_id;
     params['publicationID'] = pub_id;
+    // params['legacyId'] = col_id + '_' + pub_id;
     if (text.facsimilePage) {
       params['facsimilePage'] = text.facsimilePage;
     } else {
       params['facsimilePage'] = null;
     }
-
+    params['urlviews'] = text_type;
     params['views'] = [
       {
         type: text_type,
@@ -586,7 +686,7 @@ export class OccurrencesResultPage {
     if (this.objectType) {
       params['objectType'] = this.objectType;
     }
-
+    params['selectedItemInAccordion'] = false;
     if (this.platform.is('mobile')) {
       this.app.getRootNav().push('read', params);
     } else {

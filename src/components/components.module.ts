@@ -21,6 +21,9 @@ import { DigitalEditionListChildrenComponent } from './digital-edition-list-chil
 import { TableOfContentsAccordionComponent } from './table-of-contents-accordion/table-of-contents-accordion';
 import { ListOfSongsComponent } from './list-of-songs/list-of-songs';
 import { NgxExtendedPdfViewerComponent } from './ngx-extended-pdf-viewer/ngx-extended-pdf-viewer.component';
+import { IllustrationsComponent } from './illustrations/illustrations';
+import { TableOfContentLetterFilterComponent } from './table-of-content-letter-filter/table-of-content-letter-filter';
+import { DateHistogram } from './date-histogram/date-histogram'
 
 
 export function createTranslateLoader(http: HttpClient) {
@@ -43,7 +46,10 @@ export function createTranslateLoader(http: HttpClient) {
     DigitalEditionListChildrenComponent,
     TableOfContentsAccordionComponent,
     ListOfSongsComponent,
-    NgxExtendedPdfViewerComponent
+    NgxExtendedPdfViewerComponent,
+    IllustrationsComponent,
+    TableOfContentLetterFilterComponent,
+    DateHistogram,
   ],
   imports: [
     IonicModule,
@@ -72,7 +78,12 @@ export function createTranslateLoader(http: HttpClient) {
     DigitalEditionListChildrenComponent,
     TableOfContentsAccordionComponent,
     ListOfSongsComponent,
-    NgxExtendedPdfViewerComponent
+    NgxExtendedPdfViewerComponent,
+    TableOfContentLetterFilterComponent,
+    DateHistogram,
+    IllustrationsComponent,
+    TableOfContentLetterFilterComponent,
+    DateHistogram,
   ],
   providers: [
     UserSettingsService

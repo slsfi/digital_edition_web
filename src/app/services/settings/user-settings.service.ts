@@ -26,18 +26,12 @@ export class UserSettingsService {
   detectPlatform() {
     this.storage.get('mode').then((mode) => {
       // mode is either desktop or mobile
-      console.log(`my mode is ${mode}...`);
       if (mode) {
-        console.log('thus ${mode}');
         this._mode = mode;
       } else {
-        console.log('thus some other');
-
         if (this.platform.is('core') || this.platform.is('tablet')) {
           this._mode = 'desktop';
-          console.log('perhaps desktop');
         } else {
-          console.log('perhaps mobile');
           this._mode = 'mobile';
         }
       }
@@ -124,7 +118,7 @@ export class UserSettingsService {
 
   set splitPaneOpen(maybe: boolean) {
     this._splitPaneOpen = maybe;
-    console.log(this._splitPaneOpen);
+    // console.log(this._splitPaneOpen);
     this.storage.set('splitPane', maybe);
   }
 

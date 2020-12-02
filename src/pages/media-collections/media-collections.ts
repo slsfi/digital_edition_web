@@ -140,10 +140,10 @@ export class MediaCollectionsPage {
   filterCollectionsByTag(name) {
     if (name === '') {
       this.galleries = this.allGalleries;
-      if (this.locationModel !== '') {
+      if ( this.locationModel !== undefined && this.locationModel !== '') {
         this.filterCollectionsByLocation(this.locationModel);
       }
-      if (this.subjectModel !== '') {
+      if (this.subjectModel !== undefined && this.subjectModel !== '') {
         this.filterCollectionsBySubject(this.subjectModel);
       }
       return true;
@@ -151,10 +151,10 @@ export class MediaCollectionsPage {
     if (name !== this.prevTag) {
       this.galleries = this.allGalleries;
       this.prevTag = name;
-      if (this.locationModel !== '') {
+      if (this.locationModel !== undefined && this.locationModel !== '') {
         this.filterCollectionsByLocation(this.locationModel);
       }
-      if (this.subjectModel !== '') {
+      if (this.subjectModel !== undefined && this.subjectModel !== '') {
         this.filterCollectionsBySubject(this.subjectModel);
       }
     }
@@ -177,10 +177,10 @@ export class MediaCollectionsPage {
   filterCollectionsByLocation(name) {
     if (name === '') {
       this.galleries = this.allGalleries;
-      if ( this.tagModel !== '' ) {
+      if ( this.tagModel !== undefined && this.tagModel !== '' ) {
         this.filterCollectionsByTag(this.tagModel);
       }
-      if (this.subjectModel !== '') {
+      if (this.subjectModel !== undefined && this.subjectModel !== '') {
         this.filterCollectionsBySubject(this.subjectModel);
       }
       return true;
@@ -188,10 +188,10 @@ export class MediaCollectionsPage {
     if (name !== this.prevLoc) {
       this.galleries = this.allGalleries;
       this.prevLoc = name;
-      if (this.tagModel !== '') {
+      if ( this.tagModel !== undefined && this.tagModel !== '') {
         this.filterCollectionsByTag(this.tagModel);
       }
-      if (this.subjectModel !== '') {
+      if (this.subjectModel !== undefined && this.subjectModel !== '') {
         this.filterCollectionsBySubject(this.subjectModel);
       }
     }
@@ -214,10 +214,10 @@ export class MediaCollectionsPage {
   filterCollectionsBySubject(name) {
     if (name === '') {
       this.galleries = this.allGalleries;
-      if (this.tagModel !== '') {
+      if ( this.tagModel !== undefined && this.tagModel !== '') {
         this.filterCollectionsByTag(this.tagModel);
       }
-      if (this.locationModel !== '') {
+      if (this.locationModel !== undefined && this.locationModel !== '') {
         this.filterCollectionsByLocation(this.locationModel);
       }
       return true;
@@ -225,10 +225,10 @@ export class MediaCollectionsPage {
     if (name !== this.prevSub) {
       this.galleries = this.allGalleries;
       this.prevSub = name;
-      if (this.tagModel !== '') {
+      if ( this.tagModel !== undefined && this.tagModel !== '') {
         this.filterCollectionsByTag(this.tagModel);
       }
-      if (this.locationModel !== '') {
+      if (this.locationModel !== undefined && this.locationModel !== '') {
         this.filterCollectionsByLocation(this.locationModel);
       }
     }

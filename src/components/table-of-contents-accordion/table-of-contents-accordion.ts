@@ -40,6 +40,7 @@ class InnerMenuOptionModel {
   facs_nr?: any;
   children?: Array<InnerMenuOptionModel>;
   is_child?: boolean;
+  is_gallery?: boolean;
   itemId?: any;
   markdownID?: any;
   datafile?: any;
@@ -47,11 +48,12 @@ class InnerMenuOptionModel {
   song_id?: any;
   amountOfParents?: any;
   openByDefault?: boolean;
-  collectionId?: any;
   loading?: boolean;
   children_id?: any;
   search_children_id?: any;
   important?: boolean;
+  description: any;
+  collapsed: boolean;
 
   public static fromMenuOptionModel(
                   option: TocAccordionMenuOptionModel,
@@ -76,6 +78,7 @@ class InnerMenuOptionModel {
 
     if (option.text) {
       innerMenuOptionModel.text = option.text;
+      innerMenuOptionModel.description = option.description;
     } else if (option.title) {
       innerMenuOptionModel.text = option.title;
     }
@@ -83,6 +86,8 @@ class InnerMenuOptionModel {
     innerMenuOptionModel.publication_id = option.publication_id || null;
     innerMenuOptionModel.page_nr = option.page_nr || null;
     innerMenuOptionModel.facs_nr = option.facs_nr || null;
+
+    innerMenuOptionModel.is_gallery = option.is_gallery || false;
 
     if (option.itemId) {
       innerMenuOptionModel.itemId = option.itemId;
@@ -139,12 +144,16 @@ class InnerMenuOptionModel {
       option.children.forEach(subItem => {
 
       const innerSubItem = InnerMenuOptionModel.fromMenuOptionModel(subItem, innerMenuOptionModel, true, searchingTocItem);
-
+      innerSubItem.collapsed = subItem.collapsed;
       if (innerSubItem.text) {
         if (storeChildren) {
-          childrenToc[innerMenuOptionModel.children_id].push(innerSubItem);
+          if ( childrenToc[innerMenuOptionModel.children_id].indexOf(innerSubItem) === -1 ) {
+            childrenToc[innerMenuOptionModel.children_id].push(innerSubItem);
+          }
         } else {
-          innerMenuOptionModel.subOptions.push(innerSubItem);
+          if ( innerMenuOptionModel.subOptions.indexOf(innerSubItem) === -1 ) {
+            innerMenuOptionModel.subOptions.push(innerSubItem);
+          }
         }
       }
 
@@ -154,7 +163,6 @@ class InnerMenuOptionModel {
         innerSubItem.parent.selected = true;
         innerSubItem.parent.expanded = true;
       }
-
       });
     }
 
@@ -181,10 +189,11 @@ export class TableOfContentsAccordionComponent {
     toc: Array<MenuOptionModel>,
     searchTocItem?: Boolean,
     searchPublicationId?: Number,
+    searchItemId?: String,
     searchTitle?: String
   }) {
     if (value && value.toc && value.toc.length > 0) {
-      if (value.searchTocItem) {
+      if (value.searchTocItem !== undefined && value.searchTocItem === true) {
         this.searchingForTocItem = true;
       }
       this.menuOptions = value.toc;
@@ -194,7 +203,9 @@ export class TableOfContentsAccordionComponent {
       // Map the options to our internal models
       this.menuOptions.forEach(option => {
         const innerMenuOption = InnerMenuOptionModel.fromMenuOptionModel(option, null, false, value.searchTocItem);
-        this.collapsableItems.push(innerMenuOption);
+        if ( this.collapsableItems.indexOf(innerMenuOption) === -1 && innerMenuOption.type !== 'folder' ) {
+          this.collapsableItems.push(innerMenuOption);
+        }
 
         // Check if there's any option marked as selected
         if (option.selected) {
@@ -214,15 +225,16 @@ export class TableOfContentsAccordionComponent {
         console.log('found menu item');
       }
 
-      if (value.searchTocItem) {
+      if (value.searchTocItem !== undefined && value.searchTocItem) {
         // Find toc item and open its parents
-        if (value.searchPublicationId && value.searchTitle) {
-          this.findTocByPubAndTitle(this.collapsableItems, value.searchPublicationId, value.searchTitle);
+        if (value.searchItemId) {
+          value.searchItemId = String(value.searchItemId).replace('_nochapter', '').replace(':chapterID', '');
+          this.findTocByPubOnly(this.collapsableItems, value.searchItemId);
           this.events.publish('typesAccordion:change', {
             expand: true
           });
-        } else if (value.searchPublicationId) {
-          this.findTocByPubOnly(this.collapsableItems, value.searchPublicationId);
+        } else if (value.searchPublicationId && value.searchTitle) {
+          this.findTocByPubAndTitle(this.collapsableItems, value.searchPublicationId, value.searchTitle);
           this.events.publish('typesAccordion:change', {
             expand: true
           });
@@ -239,9 +251,9 @@ export class TableOfContentsAccordionComponent {
           }
         }
       }
-
       this.searchingForTocItem = false;
     }
+    this.activeMenuTree = this.collapsableItems;
   }
 
   @Input('settings')
@@ -257,6 +269,7 @@ export class TableOfContentsAccordionComponent {
   @Input() showBackButton?: Boolean;
   @Input() isMarkdown?: Boolean;
   @Input() isGallery?: Boolean;
+  @Input() open: Boolean;
   @Output() selectOption = new EventEmitter<any>();
 
   currentItem: GeneralTocItem;
@@ -265,13 +278,33 @@ export class TableOfContentsAccordionComponent {
   searchTocItemInAccordionByTitle = false;
   tocItemSearchChildrenCounter = 0;
   foundTocItem = false;
-  coverSelected: boolean;
   titleSelected: boolean;
+  introductionSelected: boolean;
+  coverSelected: boolean;
   root: any;
   hasCover: boolean;
+  hasTitle: boolean;
   hasIntro: boolean;
   playmanTraditionPageInMusicAccordion = false;
   playmanTraditionPageID = '03-03';
+
+  chronologicalOrderActive: boolean;
+  thematicOrderActive = true;
+  alphabethicOrderActive: boolean;
+
+  visibleactiveMenuTree = [];
+  visibleTitleStack = [];
+
+  chronologicalactiveMenuTree = [];
+  chronologicalTitleStack = [];
+
+  alphabeticalactiveMenuTree: any[];
+  alphabeticalTitleStack: any[];
+
+  activeMenuTree = [];
+
+  sortableLetters = [];
+
   constructor(
     public platform: Platform,
     public events: Events,
@@ -284,27 +317,39 @@ export class TableOfContentsAccordionComponent {
     public userSettingsService: UserSettingsService,
     public translate: TranslateService
   ) {
+    this.collectionId = JSON.stringify(this.collectionId);
+
+    this.registerEventListeners();
     this.setConfigs();
     // Handle the redirect event
     this.events.subscribe(SideMenuRedirectEvent, (data: SideMenuRedirectEventData) => {
       this.updateSelectedOption(data);
     });
 
+    try {
+      this.sortableLetters = this.config.getSettings('settings.sortableLetters');
+    } catch (e) {
+      this.sortableLetters = [];
+    }
+
     this.events.subscribe('SelectedItemInMenu', (menu) => {
       if (this.collectionId !== menu.menuID && this.currentOption) {
         this.currentOption.selected = false;
         this.currentOption = null;
         this.cdRef.detectChanges();
+      } else {
+        console.log('this.collectionId', this.collectionId);
       }
     });
 
-    this.coverSelected = false;
     this.titleSelected = false;
+    this.introductionSelected = false;
+    this.coverSelected = false;
 
     try {
-      this.hasCover = this.config.getSettings('HasCover');
+      this.hasTitle = this.config.getSettings('HasTitle');
     } catch (e) {
-      this.hasCover = false;
+      this.hasTitle = false;
     }
 
     try {
@@ -313,10 +358,19 @@ export class TableOfContentsAccordionComponent {
       this.hasIntro = false;
     }
 
-    if ( this.hasCover ) {
-      this.coverSelected = true;
-    } else if ( this.hasIntro ) {
+    try {
+      this.hasCover = this.config.getSettings('HasCover');
+    } catch (e) {
+      this.hasCover = false;
+    }
+
+    const currentPage = String(window.location.href);
+    if ( currentPage.includes('publication-introduction') ) {
+      this.introductionSelected = true;
+    } else if ( currentPage.includes('publication-title') ) {
       this.titleSelected = true;
+    } else if ( currentPage.includes('publication-cover') ) {
+      this.coverSelected = true;
     }
 
     this.events.subscribe('tableOfContents:findMarkdownTocItem', (data) => {
@@ -351,19 +405,142 @@ export class TableOfContentsAccordionComponent {
     this.unSelectSelectedTocItemEventListener();
   }
 
+  constructAlphabeticalTOC(data) {
+    this.alphabeticalactiveMenuTree = [];
+    this.alphabeticalTitleStack = [];
+    const list = this.flattenList(data.tocItems);
+
+    for (const child of list) {
+        if (child.type !== 'section_title') {
+            this.alphabeticalactiveMenuTree.push(child);
+        }
+    }
+
+    this.alphabeticalactiveMenuTree.sort(
+      (a, b) =>
+        (a.text !== undefined && b.text !== undefined) ?
+          ((String(a.text).toUpperCase() < String(b.text).toUpperCase()) ? -1 :
+          (String(a.text).toUpperCase() > String(b.text).toUpperCase()) ? 1 : 0) : 0
+      );
+      this.storage.set('toc_alfabetical_' + data['collectionID'], this.alphabeticalactiveMenuTree);
+  }
+
+  constructChronologialTOC(data) {
+    this.chronologicalactiveMenuTree = [];
+    this.chronologicalTitleStack = [];
+
+    const list = this.flattenList(data.tocItems);
+
+    for (const child of list) {
+        if (child.date && child.type !== 'section_title') {
+            this.chronologicalactiveMenuTree.push(child);
+        }
+    }
+
+    this.chronologicalactiveMenuTree.sort((a, b) => (a.date < b.date) ? -1 : (a.date > b.date) ? 1 : 0);
+    let prevYear = '';
+
+    const itemArray = [];
+    let childItems = [];
+    for ( let i = 0; i < this.chronologicalactiveMenuTree.length; i++) {
+      const item = this.chronologicalactiveMenuTree[i];
+      const currentYear = String(item['date']).slice(0, 4);
+      if ( prevYear === '' ) {
+        prevYear = currentYear;
+        itemArray.push({type: 'section_title', text: prevYear, subOptions: []});
+      }
+
+      if ( prevYear !==  currentYear ) {
+        itemArray[itemArray.length - 1].subOptions = childItems;
+        itemArray[itemArray.length - 1].childrenCount = true;
+        childItems = [];
+        prevYear = currentYear;
+        itemArray.push({type: 'section_title', text: prevYear});
+      }
+      childItems.push(this.chronologicalactiveMenuTree[i]);
+    }
+    if ( itemArray.length > 0 ) {
+      itemArray[itemArray.length - 1].subOptions = childItems;
+      itemArray[itemArray.length - 1].childrenCount = true;
+    } else {
+      itemArray[0] = {};
+      itemArray[0].subOptions = childItems;
+      itemArray[0].childrenCount = true;
+    }
+    this.chronologicalactiveMenuTree = itemArray;
+    this.storage.set('toc_chronological_' + data['collectionID'], this.chronologicalactiveMenuTree);
+  }
+
+  flattenList(data) {
+    data.childrenCount = 0;
+    let list = [data];
+    if (!data.children) {
+      return list;
+    }
+    for (const child of data.children) {
+      list = list.concat(this.flattenList(child));
+    }
+    return list;
+  }
+
+  registerEventListeners() {
+    this.events.subscribe('tableOfContents:loaded', (data) => {
+      this.storage.get('toc_alfabetical_' + data['collectionID']).then((toc) => {
+        if ( toc === null  || data['collectionID'] !== toc['collectionID'] ) {
+          this.constructAlphabeticalTOC(data);
+        } else {
+          this.alphabeticalactiveMenuTree = toc;
+        }
+      });
+      this.storage.get('toc_chronologial_' + data['collectionID']).then((toc) => {
+        if (  toc === null  || data['collectionID'] !== toc['collectionID'] ) {
+          this.constructChronologialTOC(data);
+        } else {
+          this.chronologicalactiveMenuTree = toc;
+        }
+      });
+    });
+  }
+
+  setActiveSortingType(e) {
+    const thematic = e.target.id === 'thematic' || e.target.parentElement.parentElement.id === 'thematic';
+    const alphabetic = e.target.id === 'alphabetical' || e.target.parentElement.parentElement.id === 'alphabetical';
+    const chronological = e.target.id === 'chronological' || e.target.parentElement.parentElement.id === 'chronological';
+
+    if (thematic) {
+        this.alphabethicOrderActive = false;
+        this.chronologicalOrderActive = false;
+        this.thematicOrderActive = true;
+    } else if (alphabetic) {
+        this.alphabethicOrderActive = true;
+        this.chronologicalOrderActive = false;
+        this.thematicOrderActive = false;
+    } else if (chronological) {
+        this.alphabethicOrderActive = false;
+        this.chronologicalOrderActive = true;
+        this.thematicOrderActive = false;
+    }
+  }
+
   ngOnChanges(about) {
     if ( Array.isArray(about) ) {
       this.menuOptions = about;
       this.collapsableItems = new Array<InnerMenuOptionModel>();
+      this.activeMenuTree = [];
 
       let foundSelected = false;
       // Map the options to our internal models
       this.menuOptions.forEach(option => {
         const innerMenuOption = InnerMenuOptionModel.fromMenuOptionModel(option, null, false, false);
-        this.collapsableItems.push(innerMenuOption);
+        if ( this.collapsableItems.indexOf(innerMenuOption) === -1 ) {
+          this.collapsableItems.push(innerMenuOption);
+        }
+        if ( this.activeMenuTree.indexOf(innerMenuOption) === -1 ) {
+          this.activeMenuTree.push(innerMenuOption);
+        }
 
         // Check if there's any option marked as selected
-        if (option.selected) {
+        if (option.selected !== undefined && option.selected === true) {
           this.selectedOption = innerMenuOption;
         } else if (innerMenuOption.childrenCount) {
           innerMenuOption.subOptions.forEach(subItem => {
@@ -411,15 +588,20 @@ export class TableOfContentsAccordionComponent {
       if (!data) {
         return;
       }
+      this.titleSelected = false;
+      this.introductionSelected = false;
+      this.coverSelected = false;
 
       this.currentOption = null;
-      if ( this.hasCover ) {
-        this.coverSelected = true;
-      } else if ( this.hasIntro ) {
+      if ( data.selected === 'title' ) {
         this.titleSelected = true;
+      } else if ( data.selected === 'cover' ) {
+        this.coverSelected = true;
+      } else {
+        this.introductionSelected = true;
       }
       this.unSelectAllItems(this.collapsableItems);
-      this.cdRef.detectChanges();
+      // this.cdRef.detectChanges();
     });
   }
 
@@ -498,9 +680,7 @@ export class TableOfContentsAccordionComponent {
     for (const item of list) {
       if (item.subOptions && item.subOptions.length) {
         this.findTocByPubOnly(item.subOptions, publicationID);
-      } else if (
-        item.publication_id &&
-        (String(item.publication_id) === String(publicationID) || Number(item.publication_id) === Number(publicationID))
+      } else if ((String(item.itemId) === String(publicationID) || Number(item.publication_id) === Number(publicationID))
       ) {
         item.selected = true;
         this.currentOption = item;
@@ -513,8 +693,10 @@ export class TableOfContentsAccordionComponent {
 
   ngOnDestroy() {
     this.events.unsubscribe(SideMenuRedirectEvent);
-    this.events.unsubscribe('tableOfContents:unSelectSelectedTocItem');
     this.events.unsubscribe('SelectedItemInMenu');
+    this.events.unsubscribe('tableOfContents:findMarkdownTocItem');
+    this.events.unsubscribe('tableOfContents:loaded');
+    this.events.unsubscribe('tableOfContents:unSelectSelectedTocItem');
   }
 
   // Send the selected option to the caller component
@@ -536,15 +718,17 @@ export class TableOfContentsAccordionComponent {
 
     if (this.isMarkdown) {
       this.selectMarkdown(item);
-    } else if (this.isGallery) {
+    } else if (item.is_gallery) {
       this.selectGallery(item);
-    } else {
+    } else if ( item.itemId !== undefined ) {
+
       this.storage.set('currentTOCItem', item);
       const params = {root: this.options, tocItem: item, collection: {title: item.text}};
       const nav = this.app.getActiveNavs();
 
-      this.coverSelected = false;
       this.titleSelected = false;
+      this.introductionSelected = false;
+      this.coverSelected = false;
 
       if (item.url) {
         params['url'] = item.url;
@@ -604,7 +788,10 @@ export class TableOfContentsAccordionComponent {
         this.events.publish('title-logo:show', false);
       }
 
+      console.log('Opening read from TableOfContentsAccordionComponent.openFirstPage()');
       nav[0].setRoot('read', params);
+    } else {
+      this.storage.set('currentTOCItem', item);
     }
   }
 
@@ -652,7 +839,8 @@ export class TableOfContentsAccordionComponent {
   openIntroduction() {
     const params = {root: this.root, tocItem: null, collection: {title: 'Introduction'}};
     params['collectionID'] = this.collectionId;
-    this.titleSelected = true;
+    this.introductionSelected = true;
+    this.titleSelected = false;
     this.coverSelected = false;
     const nav = this.app.getActiveNavs();
     if (this.platform.is('mobile')) {
@@ -666,13 +854,29 @@ export class TableOfContentsAccordionComponent {
     const params = {root: this.root, tocItem: null, collection: {title: 'Title Page'}};
     params['collectionID'] = this.collectionId;
     params['firstItem'] = '1';
-    this.coverSelected = true;
-    this.titleSelected = false;
+    this.titleSelected = true;
+    this.coverSelected = false;
+    this.introductionSelected = false;
     const nav = this.app.getActiveNavs();
     if (this.platform.is('mobile')) {
-      nav[0].push('cover', params);
+      nav[0].push('title-page', params);
     } else {
-      nav[0].setRoot('cover', params);
+      nav[0].setRoot('title-page', params);
+    }
+  }
+
+  openCoverPage() {
+    const params = {root: this.root, tocItem: null, collection: {title: 'Cover Page'}};
+    params['collectionID'] = this.collectionId;
+    params['firstItem'] = '1';
+    this.titleSelected = false;
+    this.coverSelected = true;
+    this.introductionSelected = false;
+    const nav = this.app.getActiveNavs();
+    if (this.platform.is('mobile')) {
+      nav[0].push('cover-page', params);
+    } else {
+      nav[0].setRoot('cover-page', params);
     }
   }
 
@@ -701,8 +905,18 @@ export class TableOfContentsAccordionComponent {
   exit() {
     this.collectionId = null;
     this.collectionName = null;
+
+    this.events.publish('exitActiveCollection');
+
+    this.activeMenuTree = [];
+    this.collapsableItems = [];
+
     const nav = this.app.getActiveNavs();
     nav[0].setRoot('EditionsPage', [], {animate: false, direction: 'back', animation: 'ios-transition'});
+
+    this.alphabethicOrderActive = false;
+    this.chronologicalOrderActive = false;
+    this.thematicOrderActive = false;
   }
 
   /**
@@ -721,8 +935,20 @@ export class TableOfContentsAccordionComponent {
         targetOption.subOptions = searchChildrenToc[targetOption.search_children_id];
       }
     }
-    // Toggle the selected option
-    targetOption.expanded = !targetOption.expanded;
+
+    if ( targetOption.collapsed === undefined || String(targetOption.collapsed) === '' ) {
+      // collapsed is inverted expanded
+      targetOption.collapsed = targetOption.expanded;
+      targetOption.expanded = !targetOption.expanded;
+    } else {
+      // Toggle the selected option
+      targetOption.expanded = targetOption.collapsed;
+      targetOption.collapsed = !targetOption.expanded;
+    }
+
+    if ( targetOption.itemId !== undefined ) {
+      this.select(targetOption);
+    }
   }
 
   // Reset the entire menu
@@ -730,11 +956,12 @@ export class TableOfContentsAccordionComponent {
     this.collapsableItems.forEach(option => {
       if (!option.selected) {
         option.expanded = false;
+        option.collapsed = true;
       }
 
       if (option.childrenCount) {
         option.subOptions.forEach(subItem => {
-          if (subItem.selected) {
+          if (subItem.selected || subItem['collapsed'] === false) {
             // Expand the parent if any of
             // its childs is selected
             subItem.parent.expanded = true;

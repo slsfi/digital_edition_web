@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ModalController, NavParams, Events, ViewController, Platform } from 'ionic-angular';
 import { FacsimileZoomModalPage } from '../../pages/facsimile-zoom/facsimile-zoom';
@@ -9,6 +9,7 @@ import { ConfigService } from '@ngx-config/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SongService } from '../../app/services/song/song.service';
 import { IfObservable } from 'rxjs/observable/IfObservable';
+
 /**
  * Generated class for the FacsimilesComponent component.
  *
@@ -41,14 +42,23 @@ export class FacsimilesComponent {
   manualPageNumber: number;
   zoom = 1.0;
   angle = 0;
-  latestDeltaX = null;
-  latestDeltaY = null;
+  latestDeltaX = 0
+  latestDeltaY = 0
+  prevX = 0
+  prevY = 0
+  isExternal = false;
 
   facsUrl = '';
+  externalURLs = [];
   facsimilePagesInfinite = false;
-
+  // If defined, this size will be appended to the image url.
+  // So define only if the image API supports it.
+  facsSize: number;
   facsPage: any;
   facsNumber = 0;
+  facsimileDefaultZoomLevel = 1;
+  numberOfPages: number;
+  chapter: string;
 
   constructor(
     protected sanitizer: DomSanitizer,
@@ -68,6 +78,13 @@ export class FacsimilesComponent {
     this.manualPageNumber = 1;
     this.text = '';
     this.facsimiles = [];
+
+    const parts = String(this.itemId).split('_')
+    this.chapter = null;
+    if ( parts[2] !== undefined ) {
+      this.chapter = parts[2];
+    }
+
     if (this.params.get('facsimilePage') !== undefined) {
       this.facsimilePage = this.params.get('facsimilePage');
       // To account for index at 0
@@ -75,12 +92,17 @@ export class FacsimilesComponent {
     } else {
       this.facsimilePage = 0;
     }
+    try {
+      this.facsimileDefaultZoomLevel = this.config.getSettings('settings.facsimileDefaultZoomLevel');
+    } catch (e) {
+      this.facsimileDefaultZoomLevel = 1;
+    }
   }
 
   openNewFacs(event: Event, id: any) {
     event.preventDefault();
     event.stopPropagation();
-    id.viewType = 'facsimile';
+    id.viewType = 'facsimiles';
     this.openNewFacsimileView.emit(id);
   }
 
@@ -123,15 +145,17 @@ export class FacsimilesComponent {
             this.config.getSettings('app.machineName') +
             `/song-example/page/image/${this.facsID}/`;
           this.facsNumber = this.facsNr;
+          this.facsSize = null
+
         } else if (this.facsID && this.facsNr) {
           this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
             this.config.getSettings('app.machineName') +
             `/facsimile/page/image/${this.facsID}/`;
           this.facsNumber = this.facsNr;
+          this.facsSize = null
+
         } else {
-          this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
-            this.config.getSettings('app.machineName') +
-            `/facsimile/page/image/${this.params.get('collectionID')}/`;
+          this.facsSize = this.facsimileDefaultZoomLevel;
           this.getFacsimilePageInfinite();
         }
       } else {
@@ -145,11 +169,54 @@ export class FacsimilesComponent {
   getFacsimilePageInfinite() {
     this.facsimileService.getFacsimilePage(this.itemId).subscribe(
       facs => {
-        this.facsPage = facs;
-        this.facsNumber = facs['page_number'];
+        this.facsimiles = [];
+        if ( String(this.itemId).indexOf('ch') > 0 ) {
+          facs.forEach( fac => {
+            let section = String(this.itemId).split(';')[0];
+            section = String((String(section).split('_')[2]).replace('ch', ''));
+            if ( String(fac['section_id']) === section ) {
+              this.facsPage = fac;
+            }
+          });
+          if ( this.facsPage === undefined ) {
+            this.facsPage = facs[0];
+          }
+        } else {
+          this.facsPage = facs[0];
+        }
+
+        this.manualPageNumber = this.activeImage = this.facsimilePage = this.facsNumber = (this.facsPage['page_nr'] + this.facsPage['start_page_number']);
+        this.numberOfPages = this.facsPage['number_of_pages'];
+
+        this.facsPage['title'] = this.sanitizer.bypassSecurityTrustHtml(this.facsPage['title']);
+
+        this.selectedFacsimile = this.facsPage;
+        this.selectedFacsimile.f_col_id = this.facsPage['publication_facsimile_collection_id'];
+        this.selectedFacsimile.title = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(this.facsPage['title']));
+
+        // add all
+        for (const f of facs) {
+          const tmp = f;
+          tmp.title = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(tmp.title));
+          const facsimile = new Facsimile(tmp);
+          facsimile.itemId = this.itemId;
+          facsimile.manuscript_id = f.publication_manuscript_id;
+          this.facsimiles.push(facsimile);
+          if ( f['external_url'] !== null ) {
+            this.isExternal = true;
+            this.externalURLs.push({'title': f['title'], 'url': f['external_url']});
+          }
+        }
+
+        if ( this.facsPage['external_url'] === undefined || this.facsPage['external_url'] === null ) {
+          this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
+          this.config.getSettings('app.machineName') +
+          `/facsimiles/${this.facsPage['publication_facsimile_collection_id']}/`;
+          this.isExternal = false;
+        }
       },
       error => {
-        console.log('Error loading facsimiles...');
+        console.error('Error loading facsimiles...');
         this.errorMessage = <any>error
       }
     );
@@ -170,7 +237,7 @@ export class FacsimilesComponent {
     if (itemId) {
       this.itemId = itemId
     }
-    this.facsimileService.getFacsimiles(this.itemId).subscribe(
+    this.facsimileService.getFacsimiles(this.itemId, this.chapter).subscribe(
       facs => {
         // in order to get id attributes for tooltips
         this.facsimiles = [];
@@ -180,7 +247,7 @@ export class FacsimilesComponent {
             if (f.publication_facsimile_collection_id === undefined && f['publication_facsimile_collection_id'] !== undefined) {
               f.publication_facsimile_collection_id = f['publication_facsimile_collection_id'];
             }
-            const f_url = this.facsimileService.getFacsimileImage(f.publication_facsimile_collection_id, i, 1);
+            const f_url = this.facsimileService.getFacsimileImage(f.publication_facsimile_collection_id, i, this.facsimileDefaultZoomLevel);
             facsimile.images.push(f_url);
             const zf_url = this.facsimileService.getFacsimileImage(f.publication_facsimile_collection_id, i, 4);
             facsimile.zoomedImages.push(zf_url);
@@ -198,7 +265,7 @@ export class FacsimilesComponent {
               }
             }
           } else {
-            this.selectedFacsimile = this.facsimiles[0];
+            this.selectedFacsimile = this.facsimiles[this.facsimiles.length - 1];
           }
           this.images = this.selectedFacsimile.images;
           this.activeImage = 0;
@@ -207,7 +274,7 @@ export class FacsimilesComponent {
         this.doAnalytics();
       },
       error => {
-        console.log('Error loading facsimiles...', this.itemId);
+      console.error('Error loading facsimiles...', this.itemId);
         this.errorMessage = <any>error
       }
     )
@@ -235,6 +302,13 @@ export class FacsimilesComponent {
     if (facs) {
       this.selectedFacsimile = facs;
       this.itemId = this.selectedFacsimile.itemId;
+      this.facsNumber = facs.page;
+      this.facsPage = facs.page;
+      this.manualPageNumber = facs.page;
+      this.numberOfPages = facs.number_of_pages;
+      this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
+            this.config.getSettings('app.machineName') +
+            `/facsimiles/${facs.publication_facsimile_collection_id}/`;
     }
     this.text = this.sanitizer.bypassSecurityTrustHtml(
       this.selectedFacsimile.content.replace(/images\//g, 'assets/images/')
@@ -246,8 +320,10 @@ export class FacsimilesComponent {
 
   previous() {
     if (this.facsimilePagesInfinite) {
-      this.prevFacsimileUrl();
-      this.manualPageNumber = Number(this.manualPageNumber) - 1;
+      if (this.manualPageNumber > 1) {
+        this.prevFacsimileUrl();
+        this.manualPageNumber = Number(this.manualPageNumber) - 1;
+      }
       return;
     }
     this.activeImage = (this.activeImage - 1);
@@ -263,8 +339,14 @@ export class FacsimilesComponent {
 
   next() {
     if (this.facsimilePagesInfinite) {
-      this.nextFacsimileUrl();
-      this.manualPageNumber = Number(this.manualPageNumber) + 1;
+      if ( (Number(this.manualPageNumber) + 1) <= this.numberOfPages ) {
+        this.nextFacsimileUrl();
+        this.manualPageNumber = Number(this.manualPageNumber) + 1;
+      } else {
+        this.facsNumber = 1;
+        this.manualPageNumber = 1;
+      }
+      // this.manualPageNumber = Number(this.manualPageNumber) + 1;
       return;
     }
     this.activeImage = (this.activeImage + 1);
@@ -293,28 +375,40 @@ export class FacsimilesComponent {
 
   openZoom() {
     let modal = null;
-    if (this.facsimilePagesInfinite) {
-      const params = {
-        'facsimilePagesInfinite': true,
-        'facsUrl': this.facsUrl,
-        'facsID': this.facsID,
-        'facsNr': this.facsNr
-      };
+    let params: object;
+    this.facsSize = 4;
 
-      modal = this.modalController.create(FacsimileZoomModalPage,
-        params,
-        { cssClass: 'facsimile-zoom-modal' }
-      );
+    if (this.facsimilePagesInfinite) {
+      // TODO: images array contains 0 index that is invalid since page numbers are 1 based.
+      const images = []
+      for (let i = 0; i < this.numberOfPages; i++) {
+        images.push(this.facsUrl + i + '/' + this.facsSize)
+      }
+
+      params = {
+        facsimilePagesInfinite: false,
+        facsUrl: this.facsUrl,
+        facsID: this.facsID,
+        facsNr: this.facsNr,
+        facsSize: this.facsSize,
+        images,
+        activeImage: this.manualPageNumber,
+      };
     } else {
-      modal = this.modalController.create(FacsimileZoomModalPage,
-        { 'images': this.selectedFacsimile.zoomedImages, 'activeImage': this.activeImage },
-        { cssClass: 'facsimile-zoom-modal' }
-      );
+      params = {
+        images: this.selectedFacsimile.zoomedImages,
+        activeImage: this.activeImage,
+      };
     }
+
+    modal = this.modalController.create(FacsimileZoomModalPage,
+      params,
+      { cssClass: 'facsimile-zoom-modal' }
+    );
 
     modal.present();
     modal.onDidDismiss(data => {
-      console.log('dismissed', data);
+      console.error('dismissed', data);
     });
   }
 
@@ -335,21 +429,25 @@ export class FacsimilesComponent {
     }
   }
 
-  zoomReset() {
+  resetFacsimile() {
     this.zoom = 1 + (Math.random() * (0.00001 - 0.00000001) + 0.00000001);
     this.angle = 0;
+    this.prevX = 0;
+    this.prevY = 0;
   }
 
   handleSwipeEvent(event) {
     const img = event.target;
-    let x = event.deltaX;
-    let y = event.deltaY;
-    if ( this.latestDeltaX !== null ) {
-      x = this.latestDeltaX;
-      y = this.latestDeltaY;
-      this.latestDeltaX = null;
-      this.latestDeltaY = null;
-    }
+    // Store latest zoom adjusted delta.
+    // NOTE: img must have touch-action: none !important;
+    // otherwise deltaX and deltaY will give wrong values on mobile.
+    this.latestDeltaX = event.deltaX / this.zoom
+    this.latestDeltaY = event.deltaY / this.zoom
+
+    // Get current position from last position and delta.
+    let x = this.prevX + this.latestDeltaX
+    let y = this.prevY + this.latestDeltaY
+
     if ( this.angle === 90 ) {
       const tmp = x;
       x = y;
@@ -364,28 +462,34 @@ export class FacsimilesComponent {
       y = tmp;
       x = x * -1;
     }
+
     if (img !== null) {
       img.style.transform = 'rotate(' + this.angle + 'deg) scale(' + this.zoom + ') translate3d(' + x + 'px, ' + y + 'px, 0px)';
     }
   }
 
-  setLatestPos(e) {
-    this.latestDeltaX = e.clientX - e.offsetX;
-    this.latestDeltaY = e.clientY - e.offsetY;
+  onMouseUp(e) {
+    // Update the previous position on desktop by adding the latest delta.
+    this.prevX += this.latestDeltaX
+    this.prevY += this.latestDeltaY
+  }
+
+  onTouchEnd(e) {
+    // Update the previous position on mobile by adding the latest delta.
+    this.prevX += this.latestDeltaX
+    this.prevY += this.latestDeltaY
   }
 
   onMouseWheel(e) {
     const img = e.target;
-    this.latestDeltaY = e.clientY - e.offsetY;
-    this.latestDeltaX = e.clientX - e.offsetX;
     if ( e.deltaY > 0 ) {
       this.zoomIn();
-      img.style.transform = 'rotate(' + this.angle + 'deg) scale(' + this.zoom + ') translate3d(' + this.latestDeltaX + 'px, ' +
-       this.latestDeltaY + 'px, 0px)';
+      img.style.transform = 'rotate(' + this.angle + 'deg) scale(' + this.zoom + ') translate3d(' + this.prevX + 'px, ' +
+       this.prevY + 'px, 0px)';
     } else {
       this.zoomOut();
-      img.style.transform = 'rotate(' + this.angle + 'deg) scale(' + this.zoom + ') translate3d(' + this.latestDeltaX + 'px, ' +
-       this.latestDeltaY + 'px, 0px)';
+      img.style.transform = 'rotate(' + this.angle + 'deg) scale(' + this.zoom + ') translate3d(' + this.prevX + 'px, ' +
+       this.prevY + 'px, 0px)';
     }
   }
 

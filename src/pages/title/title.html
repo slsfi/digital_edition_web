@@ -1,0 +1,15 @@
+<ion-content padding>
+  <div *ngIf="hasDigitalEditionListChildren" class="">
+    <digital-edition-list-children [layoutType]="'auto'" [childrenPdfs]="childrenPdfs" [collectionID]="collectionID"></digital-edition-list-children>
+  </div>
+  <ion-card *ngIf="!hasDigitalEditionListChildren">
+    <ion-card-content>
+      <ion-scroll scrollY="true" style="height:80vh;" class="card">
+        <div *ngIf="hasMDTitle && mdContent && !hasDigitalEditionListChildren" class="tei md_content">
+          <markdown [data]="mdContent"></markdown>
+        </div>
+        <div *ngIf="!hasMDTitle && !hasDigitalEditionListChildren" class="tei" [innerHTML]="text"></div>
+      </ion-scroll>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

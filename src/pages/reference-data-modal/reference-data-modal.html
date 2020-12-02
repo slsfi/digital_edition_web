@@ -21,10 +21,10 @@
   </ion-item>
   <ion-item *ngIf="referenceData['intro_reference_text']">
       <label>{{'Reference.established' | translate}}:</label>
-      <div class="urn" [innerHTML]="referenceData['intro_reference_text']">...</div>
+      <div class="urn" [innerHTML]="referenceData['reference_text'] + ' ' + referenceData['urn']">...</div>
   </ion-item>
   <ion-item *ngIf="referenceData['reference_text']">
       <label>{{'Reference.intro' | translate}}:</label>
-      <div class="urn" [innerHTML]="referenceData['reference_text']">...</div>
-  </ion-item>  
+      <div class="urn" [innerHTML]="referenceData['intro_reference_text']">...</div>
+  </ion-item>
 </ion-content>
