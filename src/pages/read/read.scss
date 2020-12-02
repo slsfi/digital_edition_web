@@ -38,7 +38,9 @@ page-read {
         justify-content: flex-end;
 
         .bar-buttons:last-child {
-					margin-left: 0;
+          margin-left: 0;
+          flex-grow: 1;
+          min-width: 30%;
 				}
 			}
 		}
@@ -305,7 +307,13 @@ page-read {
   @media screen and (max-width: 800px) {
 	.text-changer-desktop-view{
 		max-width: 80%;
-	}
+  }
+  .forwardBackward__previouspage-name{
+    display: none;
+  }
+  .forwardBackward__nextpage-name{
+    display: none;
+  }
 }
 
 	.text-changer-mobile-view{
