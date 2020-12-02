@@ -2,6 +2,7 @@ text-changer {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    flex-grow: 2;
     .goLeft{
         left: 0;
     }
