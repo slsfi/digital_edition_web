@@ -2,6 +2,8 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { TocItem } from '../../app/models/toc-item.model';
 import { Events, App } from 'ionic-angular';
 import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
+import { ConfigService } from '@ngx-config/core';
+import { LanguageService } from '../../app/services/languages/language.service';
 
 /**
  * Generated class for the TocMenuComponent component.
@@ -24,10 +26,16 @@ export class TocMenuComponent {
   constructor(
     private events: Events,
     private tableOfContentsService: TableOfContentsService,
+    private config: ConfigService,
+    public languageService: LanguageService,
     private app: App
   ) {
     this.menuStack = [];
     this.titleStack = [];
+    this.language = this.config.getSettings('i18n.locale');
+    this.languageService.getLanguage().subscribe((lang: string) => {
+      this.language = lang;
+    });
   }
 
   getTocItems() {

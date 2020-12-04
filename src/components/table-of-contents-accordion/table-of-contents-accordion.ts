@@ -386,7 +386,7 @@ export class TableOfContentsAccordionComponent {
           });
         }
 
-        let language = 'sv';
+        let language = this.config.getSettings('i18n.locale');
         this.languageService.getLanguage().subscribe((lang: string) => {
           language = lang;
         });

@@ -48,7 +48,7 @@ export class ContentPage /*implements OnDestroy*/ {
     const data = this.config.getSettings('staticPages.about');
     let fileID = this.params.get('id');
     this.mdContent = new MdContent({id: fileID, title: '...', content: null, filename: null});
-    this.lang = 'sv';
+    this.lang = this.config.getSettings('i18n.locale');
 
     this.langService.getLanguage().subscribe((lang) => {
       this.lang = lang;
@@ -96,7 +96,7 @@ export class ContentPage /*implements OnDestroy*/ {
     // If playman tradition exists in musicaccordion
     // we don't have to search for it in table-of-contents-accordion component.
     // Instead we search for it in MusicAccordion
-    let language = 'sv';
+    let language = this.config.getSettings('i18n.locale');
     this.langService.getLanguage().subscribe((lang: string) => {
       language = lang;
     });

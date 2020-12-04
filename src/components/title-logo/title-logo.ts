@@ -13,14 +13,18 @@ export class TitleLogoComponent {
 
   public title: string;
   public subtitle: string;
-
+  public siteLogoURL: string;
   constructor(
     private events: Events,
     private userSettingsService: UserSettingsService,
     private config: ConfigService,
     public languageService: LanguageService
   ) {
-
+    try {
+      this.siteLogoURL = this.config.getSettings('app.siteLogoURL');
+    } catch ( e ) {
+      this.siteLogoURL = 'https://www.sls.fi';
+    }
 
     this.registerEventListeners();
   }

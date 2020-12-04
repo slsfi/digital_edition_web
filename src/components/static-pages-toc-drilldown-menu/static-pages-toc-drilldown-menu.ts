@@ -40,7 +40,8 @@ export class StaticPagesTocDrilldownMenuComponent {
   ) {
     this.menuStack = [];
     this.titleStack = [];
-    this.events.subscribe('language:change', () => {
+    this.language = this.config.getSettings('i18n.locale');
+    this.events.subscribe('language-static:change', () => {
       this.languageService.getLanguage().subscribe((lang: string) => {
         this.menuStack = [];
         this.titleStack = [];
@@ -68,9 +69,10 @@ export class StaticPagesTocDrilldownMenuComponent {
               if (this.backButtonAtRoot) {
                 this.setFirstItemRoot();
               }
-
-              this.menuStack.push(this.pages.children);
-              this.titleStack.push(this.pages.title || '');
+              if ( this.pages !== null && this.pages.children !== undefined ) {
+                this.menuStack.push(this.pages.children);
+                this.titleStack.push(this.pages.title || '');
+              }
             } else {
               try {
                 const startIndex: number = Number(this.config.getSettings('staticPages.about_index'));
@@ -104,6 +106,10 @@ export class StaticPagesTocDrilldownMenuComponent {
     })
   }
 
+  ngOnDestroy() {
+    this.events.unsubscribe('language:change');
+  }
+
   /**
    * Used for component interaction.
    * Sends an output event that takes us back to the main toc menu.
@@ -127,7 +133,10 @@ export class StaticPagesTocDrilldownMenuComponent {
   }
 
   ngOnInit() {
-    this.getPages();
+    this.languageService.getLanguage().subscribe((lang: string) => {
+      this.language = lang;
+      this.getPages(this.language);
+    });
   }
 
   drillDown(item) {
@@ -146,21 +155,23 @@ export class StaticPagesTocDrilldownMenuComponent {
   open(item: StaticPage) {
     this.languageService.getLanguage().subscribe((lang: string) => {
       this.language = lang;
+      this.openWithLanguage(item);
     });
+  }
 
-    if ( !String(item.id).includes(this.language) ) {
-      const tmpId = String(item.id).split('-')
-      item.id = this.language + '-' + tmpId[1] + '-' + tmpId[2];
+  openWithLanguage(itemId) {
+    if ( !String(itemId).includes(this.language) ) {
+      const tmpId = String(itemId).split('-')
+      itemId = this.language + '-' + tmpId[1] + '-' + tmpId[2];
     }
 
-    this.currentItemId = item.id;
+    this.currentItemId = itemId;
 
-    const params = {id: item.id};
+    const params = {id: itemId};
     const nav = this.app.getActiveNavs();
 
     if ((this.platform.is('mobile') || this.userSettingsService.isMobile()) && !this.userSettingsService.isDesktop()) {
       nav[0].push('content', params);
-      console.log('pushed mobile')
     } else {
       nav[0].setRoot('content', params);
     }

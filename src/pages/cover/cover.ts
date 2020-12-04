@@ -57,7 +57,7 @@ export class CoverPage {
     this.coverSelected = true;
     this.id = this.params.get('collectionID');
     console.log(`Coverpage id is ${this.id}`);
-
+    this.lang = this.config.getSettings('i18n.locale');
     this.collection = this.params.get('collection');
     if ( this.params.get('publicationID') === undefined ) {
       this.coverSelected = true;

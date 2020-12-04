@@ -70,7 +70,7 @@ export class TitlePage {
     } catch (e) {
       this.hasMDTitle = false;
     }
-
+    this.lang = this.config.getSettings('i18n.locale');
     this.events.subscribe('language:change', () => {
       this.langService.getLanguage().subscribe((lang) => {
         this.lang = lang;

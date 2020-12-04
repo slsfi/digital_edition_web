@@ -62,7 +62,8 @@ export class LanguageService {
           subscriber.complete();
         }
       }).catch(() => {
-        subscriber.next('sv');
+          this.lang = this.config.getSettings('i18n.locale');
+          subscriber.next(this.lang);
         subscriber.complete();
       });
     }.bind(this));
@@ -72,6 +73,7 @@ export class LanguageService {
     this.translate.use(lang).subscribe(
       res => {
         this.events.publish('language:change');
+        this.events.publish('language-static:change');
         },
         err => console.error(err)
     );

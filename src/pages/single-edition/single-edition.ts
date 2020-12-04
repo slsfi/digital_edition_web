@@ -83,7 +83,7 @@ export class SingleEditionPage {
     this.parentItem = this.params.get('tocItem');
     this.shallFetch = this.params.get('fetch');
     this.collectionDescription = { content: null };
-
+    this.language = this.config.getSettings('i18n.locale');
     this.langService.getLanguage().subscribe((lang) => {
       this.appName = this.config.getSettings('app.name.' + lang);
       this.show = this.config.getSettings('defaults.ReadModeView');

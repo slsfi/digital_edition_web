@@ -49,6 +49,7 @@ export class IllustrationPage {
     if (this.navParams.get('zoomImage') !== undefined) {
       this.zoomImage = this.navParams.get('zoomImage');
     }
+    this.language = this.config.getSettings('i18n.locale');
     this.imgMetadata = [];
     this.languageService.getLanguage().subscribe((lang: string) => {
       this.language = lang;

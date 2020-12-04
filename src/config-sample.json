@@ -10,6 +10,7 @@
         "showTopURNButton": false,
         "showTopElasticButton": false,
         "showTopMusicButton": false,
+        "siteLogoURL": "https://www.sls.fi",
         "page-title": {
             "sv": "",
             "fi": "",
