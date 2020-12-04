@@ -40,6 +40,7 @@ export class AboutPage {
     this.enableLanguageChanges = this.config.getSettings('i18n.enableLanguageChanges');
     this.languages = this.config.getSettings('i18n.languages');
 
+    this.language = this.config.getSettings('i18n.locale');
     this.languageService.getLanguage().subscribe((lang: string) => {
       this.language = lang;
       this.appName = this.config.getSettings('app.name.' + lang);

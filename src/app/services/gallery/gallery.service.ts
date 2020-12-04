@@ -3,6 +3,7 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 import { ConfigService } from '@ngx-config/core';
+import { LanguageService } from '../languages/language.service';
 
 @Injectable()
 export class GalleryService {
@@ -10,11 +11,16 @@ export class GalleryService {
   private apiEndPoint: string;
   private projectMachineName: string;
   private galleries: Array<any>;
+  private language: string;
 
-  constructor(private http: Http, private config: ConfigService) {
+  constructor(private http: Http, public languageService: LanguageService, private config: ConfigService) {
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.projectMachineName = this.config.getSettings('app.machineName');
-    this.getGalleries('sv');
+    this.language = this.config.getSettings('i18n.locale');
+    this.languageService.getLanguage().subscribe((lang: string) => {
+      this.language = lang;
+      this.getGalleries(this.language);
+    });
   }
 
   async getGalleries(language: string): Promise<any> {

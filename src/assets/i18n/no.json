@@ -1,0 +1,225 @@
+{
+  "BrowserWarning": "Din webbläsare stöds inte",
+  "BrowserWarningInfo": "Internet Explorer stöds inte av denna sida. Använd Edge, Firefox eller nån annan webbläsare.",
+  "BrowserWarningClose": "Lukk",
+  "TutorialTexts": {
+      "nextLabel": "Neste",
+      "prevLabel": "Forrige",
+      "skipLabel": "Hopp over",
+      "doneLabel": "Klar",
+      "WelcomeText": "Välkommen, här följer en presentation av användargränssnittet.",
+      "MenuToggleText": "Klicka här för att dölja eller visa sidomenyn.",
+      "ReadTocItemText": "Här kan du se alla digital publikationer och volymer.",
+      "DownloadCacheText": "Med denna knapp kan du spara datan lokalt, så går det snabbare nästa gång."
+  },
+  "TopMenu": {
+      "Home": "Forside",
+      "Read": "Les",
+      "Info": "Utgave",
+      "Music": "Musik"
+  },
+  "Tabs": {
+      "Home": "Hem",
+      "Read": "Läs digitalt",
+      "Info": "Mer information"
+  },
+  "Read": {
+      "DigitalEditions": "Digitala utgåvor",
+      "OpenInTab": "Öppna i ny flik",
+      "Popover": {
+          "All": "Välj alla",
+          "Appearance": "Utseende",
+          "Show": "Visningsalternativ",
+          "Comments": "Kommentarer",
+          "PersonInfo": "Personupplysningar",
+          "PlaceInfo": "Platsupplysningar",
+          "Changes": "Ändringar",
+          "Abbreviations": "Förkortningar",
+          "PageNumbering": "Stycke-/versnummer",
+          "PageBreakOriginal": "Sidnummer / sidbrytning i orig.",
+          "PageBreakEdition": "Sidnummer i den tryckta utgåvan"
+      },
+      "DownloadDigitalVersion": "Ladda ner digital version",
+      "DownloadPDF": "Ladda ner PDF",
+      "CommentsFor": "Kommentarer till",
+      "ReadFromBeginning": "Läs från början",
+      "Established": {
+          "Title": "Lästext",
+          "AddButtonText": "Lästextvy"
+      },
+      "Comments": {
+          "Title": "Kommentarer",
+          "AddButtonText": "Kommentarvy"
+      },
+      "Manuscripts": {
+          "Title": "Manuskript",
+          "AddButtonText": "Manuskriptvy",
+          "SelectManuscript": "Välj manuskript",
+          "ShowNormalized": "Visa ändringar inarbetade",
+          "ShowChanges": "Visa ändringar",
+          "OpenFacsimile": "Öppna faksimil"
+      },
+      "Variations": {
+          "Title": "Variationer",
+          "AddButtonText": "Variationsvy"
+      },
+      "Facsimiles": {
+          "Title": "Faksimil",
+          "AddButtonText": "Faksimilvy",
+          "SelectFacsimiles": "Välj faksimil",
+          "Page": "Sida",
+          "Of": "av",
+          "OpenManuscript": "Öppna manuskript"
+      },
+      "SongExample": {
+          "Title": "Melodi exempel",
+          "AddButtonText": "Melodi exempel"
+      },
+      "TitlePage": {
+          "Title": ""
+      },
+      "Introduction": {
+          "Title": "",
+          "AddButtonText": ""
+      },
+      "ShowAll": "Visa alla",
+      "ShowSearchResults": "Förekomster"
+  },
+  "About": {
+      "Title": "Arkivverket kildeutgivelser",
+      "UI": "Brukergrensesnitt",
+      "Language": "Språk",
+      "Information": "Informasjon"
+  },
+  "TOC": {
+      "Home": "Til forsiden",
+      "About": "Arkivverket kildeutgivelser",
+      "Read": "Les",
+      "Facsimiles": "Faksimil i urval",
+      "ImageGallery": "Bildgalleri",
+      "PersonSearch": "Personsök",
+      "PlaceSearch": "Platsregister",
+      "TagSearch": "Ämnesord",
+      "WorkSearch": "Verkregister",
+      "MusicianSearch": "Spelmän",
+      "WriterSearch": "Upptecknare",
+      "SongTypes": "Låttyper",
+      "Music": "Musik",
+      "Collections": "Kategorier",
+      "PlaymanTradition": "Finlandssvensk spelmanstradition"
+  },
+  "GalleryPages": {
+      "0": "Finland framställdt i teckningar",
+      "1": "En resa i Finland",
+      "2": "Topelius liv och verk"
+  },
+  "MobilePages": {
+      "header": "Sidor"
+  },
+  "BackButton": {
+      "default": "Tillbaka"
+  },
+  "HomePage": {
+      "current": "Aktuellt",
+      "publishedEditions": "Publicerade utgåvor:",
+      "digitalEditionHeading": "Zacharias Topelius verk i digital utgåva",
+      "selectEdition": "Se denna"
+  },
+  "SearchApp": {
+      "simpleSearch": "Sök",
+      "advancedSearch": "Avancerad sökning",
+      "filter": "Filter",
+      "matchesOn": "Sökträff(ar):",
+      "numberOf": "träffar",
+      "pagenumber": "s.",
+      "search-holder": "Söktext",
+      "hitCount": "Antal träffar",
+      "type": "Typ",
+      "timeline": "Tidsperiod",
+      "freetext": "Fritext",
+      "start": "Start",
+      "end": "Slut",
+      "relevance": "Relevans",
+      "alphabetical": "Alfabetet",
+      "oldest": "Äldst",
+      "genre": "Genre",
+      "person-register": "Personregister",
+      "place-register": "Platsregister ",
+      "tag-register": "Ämnesord",
+      "verk": "Verkregister",
+      "sort-by": "Sortera enligt"
+  },
+  "Occurrences": {
+      "Title": "Förekomster",
+      "Manuscript": "Manuskript",
+      "Variation": "Variant",
+      "Commentary": "Kommentar",
+      "Facsimile": "Faksimil",
+      "Established": "Lästext",
+      "Song": "Melodi",
+      "Info": "Information",
+      "NoInfoFound": "Ingen information hittades.",
+      "OccurrencesSmall": "förekomster",
+      "Found": "Hittade",
+      "Result": "Resultat",
+      "longitude": "long.",
+      "latitude": "lat.",
+      "city": "Stad",
+      "region": "Region",
+      "country": "Plats",
+      "place_of_birth": "Ort",
+      "type": "Typ",
+      "source": "Källa",
+      "description": "Beskrivning",
+      "no_occurrences": "Inga förekomster",
+      "download": "ladda ner pdf",
+      "articles": "Artiklar"
+  },
+  "est": "Lästext",
+  "ms": "Manuskript",
+  "com": "Kommentar",
+  "tit": "Titel",
+  "var": "Variant",
+  "inl": "Inledning",
+  "locations": "Platser",
+  "location": "Plats",
+  "tags": "Ämnesord",
+  "tag": "Ämnesord",
+  "subjects": "Personer",
+  "subject": "Person",
+  "collections": "Samlingar",
+  "works": "Verk",
+  "recorder": "Upptecknare",
+  "playman": "Spelman",
+  "song": "Melodi",
+  "Text": "PDF",
+  "Reference": {
+      "title": "Hänvisa",
+      "thisPage": "Hänvisa till denna sida",
+      "established": "Hänvisa till denna lästext",
+      "intro": "Hänvisa till denna inledning"
+  },
+  "Song": {
+      "Playman": "Spelman",
+      "playman": "Spelman",
+      "SongType": "Låttyp",
+      "SongName": "Låtens namn",
+      "Landscape": "Landskap",
+      "Place": "Ort",
+      "Recorder": "Upptecknare",
+      "recorder": "Upptecknare",
+      "Year": "Uppteckningsår",
+      "OCL": "Originalsamlingens placering",
+      "OCS": "Originalsamlingens signum",
+      "Volume": "Volym",
+      "SongNumber": "Melodinummer",
+      "Comments": "Kommentarer",
+      "SongText": "Meloditext",
+      "Download": "Ladda ner"
+  },
+  "MusicPage": {
+      "Title": "Musik",
+      "SubTitle": "",
+      "PageTitle": "Musikvolymerna"
+  }
+}
