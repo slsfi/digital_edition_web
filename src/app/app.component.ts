@@ -940,7 +940,7 @@ export class DigitalEditionsApp {
       this.storage.set('pdfIsOpen', Boolean(params['isOpen']));
     });
 
-    this.events.subscribe('language:change', () => {
+    this.events.subscribe('language-static:change', () => {
       this.languageService.getLanguage().subscribe((lang: string) => {
         this.language = lang;
         this.getStaticPagesMenus();

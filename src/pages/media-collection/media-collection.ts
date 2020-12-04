@@ -73,6 +73,7 @@ export class MediaCollectionPage {
     } catch (e) {
       this.removeScanDetails = false;
     }
+    this.language = this.config.getSettings('i18n.locale');
     this.languageService.getLanguage().subscribe((lang: string) => {
       this.language = lang;
       if (this.mediaCollectionId !== null && this.mediaCollectionId !== 'null') {
