@@ -169,10 +169,16 @@ export class ReadTextComponent {
       } catch ( err ) {
 
       }
-      this.text = content;
+      if ( String(content).includes('images/verk/http') ) {
+        content = content.replace(/images\/verk\//g, '');
+      } else {
+        content = content.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/${galleryId}/`);
+      }
+      content = content.replace(/\.png/g, '.svg');
+      content = content.replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"');
+      content = content.replace(/images\//g, 'assets/images/');
       this.text = this.sanitizer.bypassSecurityTrustHtml(
-        content.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/${galleryId}/`)
-          .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"').replace(/images\//g, 'assets/images/')
+        content
       );
       this.matches.forEach(function (val) {
         const re = new RegExp('(' + val + ')', 'g');
@@ -205,7 +211,11 @@ export class ReadTextComponent {
         } catch ( err ) {
 
         }
-        text = text.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/${galleryId}/`);
+        if ( String(text).includes('/images/verk/http') ) {
+          text = text.replace(/images\/verk\//g, '');
+        } else {
+          text = text.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/${galleryId}/`);
+        }
         text = text.replace(/\.png/g, '.svg');
         text = text.replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"');
         text = text.replace(/images\//g, 'assets/images/');
