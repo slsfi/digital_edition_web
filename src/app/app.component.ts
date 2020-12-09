@@ -175,7 +175,7 @@ export class DigitalEditionsApp {
     }
   }
   showBooks = false
-  hasCover = true;
+  hasIntro = true;
   tocItems: GeneralTocItem[];
 
   galleryInReadMenu = true;
@@ -280,9 +280,9 @@ export class DigitalEditionsApp {
     }
 
     try {
-      this.hasCover = this.config.getSettings('HasCover');
+      this.hasIntro = this.config.getSettings('HasIntro');
     } catch (e) {
-      this.hasCover = true;
+      this.hasIntro = true;
     }
 
     this.getCollectionsWithoutTOC();
@@ -1297,9 +1297,7 @@ export class DigitalEditionsApp {
   }
 
   openCollection(collection: any) {
-
-    console.log(collection, '<<-- open this...');
-    if (this.hasCover === false) {
+    if (this.hasIntro === false) {
       this.getTocRoot(collection);
     } else {
       const downloadOnly = this.config.getSettings('collectionDownloads.isDownloadOnly');
@@ -1324,8 +1322,6 @@ export class DigitalEditionsApp {
     }
     if (this.openCollectionFromToc) {
       this.currentCollection = collection;
-      console.log('currentCollection', collection);
-      console.log(this.options, 'options of the fn');
       try {
         // if (this.options) {
           this.enableTableOfContentsMenu();
