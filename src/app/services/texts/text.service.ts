@@ -74,7 +74,7 @@ export class TextService {
                 this.cache.setHtmlCache(textId, body.content);
                 const ret = this.cache.getHtml(id);
                 if ( !ret ) {
-                  return body.content;s
+                  return body.content;
                 }
                 return this.cache.getHtml(id);
               }
