@@ -165,7 +165,6 @@ class InnerMenuOptionModel {
       }
       });
     }
-
     return innerMenuOptionModel;
   }
 }
@@ -341,6 +340,14 @@ export class TableOfContentsAccordionComponent {
         console.log('this.collectionId', this.collectionId);
       }
     });
+
+    this.events.subscribe('selectOneItem', (itemId) => {
+      this.unSelectAllItems(this.collapsableItems);
+      this.selectOneItem(itemId);
+      this.cdRef.detectChanges();
+    });
+
+
 
     this.titleSelected = false;
     this.introductionSelected = false;
@@ -789,6 +796,7 @@ export class TableOfContentsAccordionComponent {
       }
 
       console.log('Opening read from TableOfContentsAccordionComponent.openFirstPage()');
+      console.log(params);
       nav[0].setRoot('read', params);
     } else {
       this.storage.set('currentTOCItem', item);
@@ -890,6 +898,53 @@ export class TableOfContentsAccordionComponent {
         }
       }
     }
+  }
+
+  selectOneItem(itemId, list?, parent?) {
+    if( list ) {
+      list.forEach(option => {
+        if (option.text === itemId) {
+          option.selected = true;
+          parent['expanded'] = true;
+          parent['collapsed'] = false;
+          option.parent = parent;
+        } else if (option.childrenCount) {
+          if( option.subOptions.length > 0 ){
+            this.selectOneItem(itemId, option.subOptions, option.subOptions);
+          } else if( option.targetOption ) {
+            if (option.targetOption.itemId === itemId) {
+              option.selected = true;
+              parent.expanded = true;
+            } else if( option.targetOption.children.length > 0 ) {
+              this.selectOneItem(itemId, option.targetOption.children, option.targetOption);
+            }
+          }
+        }
+      });
+    } else {
+      this.collapsableItems.forEach(option => {
+        if (option.text === itemId) {
+          option.selected = true;
+        } else if (option.childrenCount) {
+          if( option.subOptions.length > 0 ){
+            this.selectOneItem(itemId, option.subOptions, option.subOptions);
+          } else if( option.targetOption ) {
+            if (option.targetOption.itemId === itemId) {
+              option.selected = true;
+            } else if( option.targetOption.children.length > 0 ) {
+              this.selectOneItem(itemId, option.targetOption.children, option.targetOption);
+            }
+          }
+        }
+      });
+    }
+
+    /*for (const item of this.collapsableItems) {
+      if ( item.itemId !== undefined && item.itemId === itemId ) {
+        item.selected = true;
+        return true;
+      }
+     }*/
   }
 
   unSelectAllItems(list) {

@@ -252,10 +252,6 @@ export class ReadPage /*implements OnDestroy*/ {
 
     this.show = this.config.getSettings('defaults.ReadModeView');
 
-    if ( this.show === 'facsimiles' ) {
-      this.maxSingleWindowWidth = 35;
-    }
-
     this.setDefaultViews();
 
     const title = global.getSubtitle();
