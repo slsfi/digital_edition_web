@@ -70,4 +70,10 @@ page-work-search {
     div .item-inner{
       cursor: pointer;
     }
+
+    .alphabet ion-scroll {
+      height: 100%;
+      width: 80px;
+      position: inherit;
+  }
 }

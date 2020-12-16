@@ -24,4 +24,8 @@ page-filter {
     .year_label{
       margin-bottom: 1rem;
     }
+
+    ion-label {
+      text-transform: lowercase;
+  }
 }

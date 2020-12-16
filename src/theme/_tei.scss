@@ -897,3 +897,1118 @@
 
 @media only screen and (max-width: 600px) { div.tei{ max-width: 300px; } }
 @media only screen and (min-width: 800px) { div.tei{ max-width: 670px; } }
+
+h3.tei.chapter {
+	font-style: italic;
+	text-align: center;
+	font-weight: normal !important;
+	margin:1.3em 0em 1em 0em !important;
+	font-size:1.4em !important;
+}
+h3.tei.poem {
+	font-style: italic;
+	text-align: left;
+	font-weight: normal !important;
+	margin:1.3em 0em 1em 0em !important;
+}
+h3.tei.poemdiary {
+	font-style: italic;
+	text-align: left;
+	font-weight: normal !important;
+	margin:1.3em 0em 1em 0em !important;
+	margin-left: 30px !important;
+	text-indent: -15px;
+}
+h3.tei.ms {
+	text-align: left;
+	font-weight: normal !important;
+	margin:1.3em 0em 1em 0em !important;
+}
+h3.tei.diary {
+	font-variant:small-caps;
+	text-align: center;
+	font-weight: normal !important;
+	margin:1.3em 0em 1em 0em !important;
+}
+h4.tei.sub {
+	font-style: italic;
+	text-align: center;
+	font-weight: normal !important;
+	margin:0.7em 0em 1em 0em !important;
+	font-size:1.25em !important;
+}
+h4.tei.poemsub {
+	font-style: italic;
+	text-align: left;
+	font-weight: normal !important;
+	margin:0.8em 0em 1em 0em !important;
+}
+
+h4.tei.poemsubdiary {
+	font-style: italic;
+	text-align: left;
+	font-weight: normal !important;
+	margin:0.8em 0em 1em 0em !important;
+	margin-left: 30px !important;
+	text-indent: -15px;
+}
+h4.tei.mssub {
+	text-align: left;
+	font-weight: normal !important;
+	margin:0.8em 0em 1em 0em !important;
+}
+h4.tei.academicsub {
+	font-style: italic;
+	text-align: center;
+	font-weight: normal !important;
+	margin:1em 0em 0.7em 0em !important;
+	font-size:1.3em !important;
+}
+h5.tei.motto {
+	font-style: italic;
+	text-align: right;
+	font-weight: normal !important;
+	margin:0.5em 0em 0.7em 0em !important;
+	font-size:1.1em !important;
+}
+h5.tei.poemmotto {
+	font-style: italic;
+	text-align: left;
+	font-weight: normal !important;
+	margin:0.5em 0em 1.2em 0em !important;
+}
+h5.tei.sub2est {
+	font-style: italic;
+	text-align: center;
+	font-weight: normal !important;
+	margin:0.6em 0em 0.8em 0em !important;
+	font-size:1.1em !important;
+}
+h5.tei.poemsub2 {
+	font-style: italic;
+	text-align: left;
+	font-weight: normal !important;
+	margin:0.6em 0em 0.8em 0em !important;
+}
+h6.tei.sub3 {
+	font-style: italic;
+	text-align: center;
+	font-weight: normal !important;
+	font-family: Georgia, serif;
+	font-size: 1.1em !important;
+	margin:0.5em 0em 0.8em 0em !important;
+}
+h6.tei.poemsub3 {
+	font-style: italic;
+	text-align: left;
+	font-weight: normal !important;
+	font-family: Georgia, serif;
+	font-size: 1.1em !important;
+	margin:0.5em 0em 0.8em 0em !important;
+}
+h6.tei.motto2 {
+	font-style: italic;
+	text-align: right;
+	font-family: Georgia, serif;
+	font-weight: normal !important;
+	font-size: 1.1em !important;
+	margin:0.5em 0em 0.5em 0em !important;
+}
+h6.tei.poemmotto2 {
+	font-style: italic;
+	text-align: left;
+	font-family: Georgia, serif;
+	font-weight: normal !important;
+	font-size: 1.1em !important;
+	margin:0.5em 0em 0.5em 0em !important;
+}
+.blackletter {
+	font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif !important;
+}
+.pb_zts {
+	font-size: 0.9em;
+}
+.pb_orig {
+	font-size: 0.9em;
+}
+
+/*titelsidans verktitel*/
+.cont_titlepage h1.title {
+	text-align: center !important;
+}
+
+/*titelsidans ZTS-del*/
+.cont_titlepage h3.chapter {
+	text-align: center !important;
+}
+/*responsboxen*/
+.theme-background-color {
+    background-color: #b2d0ea !important;
+}
+
+/*tabeller*/
+td, th {
+    padding-top: 1px;
+    padding-right: 5px;
+    padding-bottom: 2px;
+    padding-left: 0px;
+}
+/* Den okände von Wright, tidslinje-tabell i markdown*/
+/* feta den första kolumnen */
+div.md_content markdown td:first-child {
+}
+div.md_content markdown td {
+padding: 0.5em;
+line-height: 1.4;
+vertical-align: top;
+}
+/*texten på huvudbalken*/
+.bar-button-clear-md-default, .bar-button-default-md, .bar-button-md-default {
+    color: #000000;
+}
+
+/*faksimilknapparna*/
+.fab-md-secondary {
+    color: #000;
+    background-color: #f2f2f2;
+}
+
+/*fotnotsmarkören*/
+span.footnoteindicator {
+    font-size: 0.75em;
+    line-height: 0.5em;
+    vertical-align: super;
+}
+
+/*kommentarspaltens rubriker*/
+h3.teiComment {
+	font-size: 1.2em;
+    font-weight: normal;
+	margin: 1em 0 .5em;
+	font-variant: small-caps;
+}
+h4.teiComment {
+	font-size: 1.1em;
+	font-weight: normal;
+    font-weight: normal;
+	margin: 1em 0 .5em;
+}
+
+/*toc: textfärgen*/
+.item-md p {
+	color: #404040;
+}
+
+/*toc: beskrivning av lästextslänk*/
+span.description {
+	color: #666;
+}
+
+/*inledningens toc: rubrikerna*/
+page-introduction #TOC h2.contentSection.smallCaps {
+    font-size: 1.2em;
+    padding-left: 1em;
+	margin-bottom: .6em;
+	margin-top: 1.2em;
+	padding-top: .2em;
+	font-variant: small-caps;
+	font-weight: 600;
+	line-height: 1;
+}
+page-introduction #TOC h5.tei.contentSub2 {
+    font-size: 1em;
+    padding-left: 1.2em;
+	margin-bottom: .4em;
+	margin-top: .1em;
+	font-weight: 600;
+	line-height: 1;
+}
+page-introduction #TOC p {
+	line-height: .1em;
+}
+
+/*ms med lg: inte extra stort radavstånd, inte indrag på första raden av strofen*/
+p.teiManuscript.strofe[class*=lg] {
+	line-height: 180% !important;
+	text-indent: 0px !important;
+}
+
+/*normaliseringar hade tooltip men ingen färg*/
+.tei.show_changes span.tei.ttNormalisations {
+    background-color: #f2f2f2;
+    cursor: default;
+}
+
+/* CONTAINERS FOR COLUMNS */
+.padded {
+}
+.padded p {
+	padding-left: 100px;
+}
+.padded h3 {
+	padding-left: 100px;
+}
+h3.tei.letterTitle {
+	font-variant:small-caps;
+	font-weight: normal !important;
+}
+p.authorHeader {
+	text-indent:0px !important;
+	margin-bottom: 0.5em;
+}
+h3.tei.titleTopMargin {
+	margin-top: 2em !important;
+}
+h3.tei.titleBottomMargin {
+	margin-bottom: 2em !important;
+}
+
+/* COMMON PARAGRAPHS */
+p.invisible {
+	height: 0px !important;
+	width: 0px !important;
+}
+/*p.invisiblelg {
+	margin-bottom: 1em !important;
+	margin-top: 1em !important;
+}*/
+p.personDesc, p.placeDesc, p.titleDesc {
+	text-indent:0px !important;
+	margin-bottom: 1em !important;
+	padding-bottom: 0px !important;
+}
+p.paragraphSpace {
+	padding-bottom: 1.5em !important;
+}
+p.paragraphDiary {
+	margin-top: 0.5em !important;
+}
+p.frontmatter {
+	padding-top: 2em !important;
+	padding-bottom: 2em !important;
+	padding-right: 1.5em !important;
+	padding-left: 1.5em !important;
+	border-top: 2px solid black;
+	border-bottom: 2px solid black;
+	line-height: 1.5em;
+}
+p.frontmatterPrevious {
+	padding-top: 2em !important;
+	margin-bottom: 1.5em !important;
+	padding-right: 1.5em !important;
+	padding-left: 1.5em !important;
+	border-top: 2px solid black;
+	line-height: 1.5em;
+}
+p.frontmatterMiddle {
+	margin-top: 1.5em !important;
+	margin-bottom: 1.5em !important;
+	padding-right: 1.5em !important;
+	padding-left: 1.5em !important;
+	line-height: 1.5em;
+}
+p.frontmatterNext {
+	margin-top: 1.5em !important;
+	padding-bottom: 2em !important;
+	padding-right: 1.5em !important;
+	padding-left: 1.5em !important;
+	border-bottom: 2px solid black;
+	line-height: 1.5em;
+}
+.topMargin {
+	margin-top: 1em;
+}
+.bottomMargin {
+	margin-bottom: 1em;
+}
+p.dateline
+{
+	margin-top: 1.0em;
+	margin-bottom: 1.0em;
+}
+p.underline, h3.underline {
+	font-style: italic;
+}
+p.label_margin {
+    float: right;
+    text-indent: 0px !important;
+}
+p.label_above {
+    margin-left: 60px;
+    text-indent: 0px !important;
+    margin-top: 0.2em;
+    margin-bottom: 0.4em;
+}
+span.labelledLines_before {
+    margin-left: -80px !important;
+    text-indent: 0px !important;
+    position:absolute;
+}
+span.labelledLines_after {
+    float: right;
+    text-indent: 0px !important;
+}
+span.labelledLines_before_F {
+    margin-left: -200px !important;
+    text-indent: 0px !important;
+    position:absolute;
+}
+p.l.labelledLines_before {
+    position:relative;
+    margin-left: 110px !important;
+}
+p.l.labelledLines_before.lfinal {
+    position:relative;
+    margin-left: 120px !important;
+}
+span.writer {
+	font-size: 12px;
+	font-variant: normal;
+	font-weight: normal;
+}
+span.underline {
+	font-style: italic;
+}
+span.underline2 {
+	font-style: italic;
+}
+.true-underline {
+	text-decoration: underline;
+}
+div.manuscriptText p.underline, div.manuscriptText h3.underline {
+	font-style: normal;
+	text-decoration: underline;
+}
+div.manuscriptText span.underline {
+	font-style: normal;
+	border-bottom: 1px solid black;
+}
+.tei_hi_medium {
+    text-decoration: none;
+    color: #000000;
+}
+.tei_encircled_medium {
+    border: 1px solid #008100;
+}
+.tei_dashUnderline_medium {
+    border-bottom: 1px dashed #008100;
+}
+.tei_underline_medium {
+    text-decoration: underline;
+    color: #008100;
+}
+.tei_underline2_medium {
+    border-bottom: 3px double #008100;
+	font-style: normal;
+	text-decoration: none;
+}
+.stamp, .print {
+	font-family: "Times New Roman", serif;
+	letter-spacing:1px;
+
+}
+.left {
+	text-align: left !important;
+	text-indent:0px !important;
+}
+.center {
+	text-align: center;
+	text-indent:0px !important;
+}
+.right {
+	text-align: right;
+	text-indent:0px !important;
+}
+.dramaCenter {
+	text-align: center;
+	text-indent:0px !important;
+	margin-top:0.9em !important;
+	margin-bottom:0.3em !important;
+}
+.img_left {
+	float:left;
+	padding-right: 8px;
+}
+.img_right {
+	float:right;
+	padding-left: 8px;
+}
+/*mindre strofmellanrum för ms*/
+.tei p.strofe {
+	text-indent:0px !important;
+	margin-bottom: 1em !important;
+	margin-top: 1em !important;
+}
+p.l {
+	margin-left: 30px !important;
+	text-indent:-30px !important;
+}
+p.item {
+	text-indent:0px !important;
+}
+p.item_indented {
+	margin-left: 40px !important;
+	text-indent:-15px !important;
+}
+p.lIndent
+{
+	text-indent:-9px !important;
+}
+p.lIndentDiary
+{
+	text-indent:-15px !important;
+}
+p.lcenter
+{
+	text-align:center !important;
+}
+p.lIndent.lcenter
+{
+	text-align:center !important;
+}
+p.lmedial
+{
+	text-indent:30px !important;
+}
+p.lfinal
+{
+	text-indent:80px !important;
+}
+p.lfinal2
+{
+	text-indent:95px !important;
+}
+p.strofeSpacing  {
+	padding-bottom: 1em !important;
+}
+p.strofePadding {
+	padding-left: 20px;
+}
+p.milestoneWhen, p.milestonePart {
+	font-size: 1em !important;
+	font-family: Georgia, serif;
+	color: gray;
+	background-color: #d2ccbf;
+	margin-top: 0.8em !important;
+	margin-bottom: 0.8em !important;
+	line-height: 1.5em !important;
+}
+span.milestoneWhen, span.milestonePart {
+	display: block;
+	font-size: 1em !important;
+	font-family: Georgia, serif;
+	color: gray;
+	background-color: #d2ccbf;
+	margin-top: 0.8em !important;
+	margin-bottom: 0.8em !important;
+	line-height: 1.5em !important;
+}
+p.teiOpener {
+	margin-bottom: 1.5em !important;
+}
+p.teiCloser {
+	margin-top: 1.5em !important;
+	margin-bottom: 1.5em !important;
+}
+.noIndent {
+	text-indent:0px !important;
+}
+.hangingIndent {
+	padding-left: 30px !important;
+	text-indent:-30px !important;
+}
+.poemP, .poemP.right, .poemP.normalizedIndent, .poemP.noIndent {
+	margin-left: 30px !important;
+	text-indent: -15px !important;
+	margin-bottom: 1em !important;
+	text-align:left;
+}
+.figureP {
+    color: gray !important;
+    background-color: white !important;
+    font-size: 0.95em !important;
+    font-family: "Fedra Serif A Book", verdana, arial, helvetica, sans-serif !important;
+    margin-top: 0.5em !important;
+    margin-bottom: 0.5em !important;
+}
+span.figure {
+    display: inline-block;
+    margin-top: 0.5em !important;
+    margin-bottom: 0.5em !important;
+    text-indent: 0em !important;
+}
+.tei .parIndent {
+	text-indent:30px !important;
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-bottom: 0px !important;
+	margin-top: 0px !important;
+}
+:not(.parIndent) + .parIndent.noIndent {
+	text-indent: 0px !important;
+	padding-left: 30px;
+	padding-right: 30px;
+	margin-top: 1em !important;
+}
+:not(.parIndent) + .parIndent {
+	text-indent: 30px !important;
+	padding-left: 30px;
+	padding-right: 30px;
+	margin-top: 1em !important;
+}
+.parIndent + :not(.parIndent) {
+	margin-top: 1em !important;
+}
+.parHalfIndent {
+	text-indent:0px !important;
+	padding-left: 15px;
+}
+.frontmatterNext + span {
+	margin-top: 1em !important;
+}
+.halfLinePadding {
+	padding-bottom: 0.5em !important;
+}
+div.comment_background h3 {
+	color: #55524c;
+	font-size: 1.05em !important;
+}
+div.comment_background p {
+	color: #55524c;
+	font-size: 1.05em !important;
+}
+span.comment_background {
+	color: #55524c;
+	font-size: 1.05em !important;
+}
+div.comment_background p:first-child {
+    margin-top: 1.5em;
+}
+p.footnote {
+	text-indent:0px !important;
+	padding-bottom: 0.5em !important;
+}
+
+/* COMMON SPANS */
+span.lNumber {
+	position:absolute;
+	width:18px;
+	color:#a9a49a;
+}
+
+span.personDesc, span.placeDesc {
+	cursor: pointer;
+}
+.sub {
+	vertical-align: sub;
+	font-size: 0.8em;
+}
+.sup {
+	vertical-align: super;
+	font-size: 0.8em;
+}
+.raised {
+	vertical-align: super;
+	line-height: 0.5em;
+	font-size: 0.8em;
+}
+a.reference span.raised {
+	vertical-align: super;
+	line-height: 0.5em;
+	font-size: 0.65em !important;
+	font-variant:normal !important;
+	font-style:normal !important;
+	float: right !important;
+}
+
+.mainText span.uppercase {
+	font-variant: small-caps;
+}
+.mainText span.uppercaseDiary {
+	font-variant: small-caps;
+}
+.c_ms span.uppercase {
+	text-transform: uppercase;
+}
+.smallcaps {
+	font-variant: small-caps;
+}
+.abbr_noSmallcaps {
+	font-variant: normal;
+}
+.smallcapsItalics {
+	font-variant: small-caps;
+	font-style: italic;
+}
+.italics {
+	font-style: italic;
+}
+/*dramatik, scen- och personanvisningar*/
+.smallFont{
+	font-size: 0.9em;
+}
+.small {
+	font-size: 0.9em !important;
+	color: gray;
+}
+.expanded {
+	font-style: italic;
+}
+.trueexpanded {
+	letter-spacing: 2px;
+}
+.expanded.italics {
+	letter-spacing: 2px;
+	font-style: italic;
+}
+.romanType {
+	font-style: italic;
+}
+.bold {
+	font-weight: bold;
+}
+.cont_manuscript span.underline2 {
+	border-bottom: 3px double black;
+	font-style: normal;
+	text-decoration: none;
+}
+.c_ms span.dashUnderline {
+	border-bottom: 1px dashed black;
+}
+.mainText span.dashUnderline {
+	font-style: italic;
+}
+.c_ms .encircled {
+	border: 1px solid gray;
+}
+.mainText .encircled {
+	font-style: italic;
+}
+.c_ms .encreasedSize {
+	font-size: 120%;
+}
+.mainText .encreasedSize {
+	font-style: italic;
+	font-size: 100%;
+}
+.segment {
+}
+.anchor_lemma {
+	display: none;
+	font-weight: bold;
+}
+a.textreference {
+	color: black!important;
+}
+a.ref_variant img {
+	position: relative;
+	top: 3px;
+}
+.footnotePoem {
+	display:block;
+	text-indent:15px;
+}
+
+/*.corr_hide {
+	display: none;
+}*/
+
+/* KOMMENTARER */
+.tei p.note {
+	cursor: pointer;
+	padding-left: 0px !important;
+}
+p.teiComment.noteLegend
+{
+	text-indent: 0px !important;
+	margin-bottom: 0.5em !important;
+	font-size: 0.95em !important;
+}
+.notePosition {
+	font-weight: bold;
+}
+.noteLemma {
+	font-style: italic;
+}
+.lemmaBreak {
+	font-style: normal !important;
+}
+.notePosition:after {
+	content:" ";
+}
+.noteLemma:after {
+	content:" \2013  ";
+}
+.noteText {
+
+}
+
+/* MANUSCRIPT */
+.symbol_red {
+	color: #990202;
+}
+.gap {
+	color: #990202;
+}
+.unclear {
+	/*font-style: italic;*/
+	color: #808080;
+}
+.space {
+	color: #990202;
+}
+.substitution {
+	color: #0000a1;
+}
+.alternative {
+	position: relative;
+}
+.tei_add_subst_zts {
+	color: #0000a1;
+}
+.tei_subst_table {
+    display: inline-table;
+    position: relative;
+    padding: 0;
+    left: -4.8em;
+    font-style: inherit;
+    margin-right: -4.8em;
+    margin-bottom: -1em;
+}
+.tei_subst_table_noIndent {
+    display: inline-table;
+    position: relative;
+    padding: 0;
+    font-style: inherit;
+    margin-bottom: -1em;
+}
+.tei_td_del {
+    display: table-cell;
+    position: relative;
+}
+.tei_td_add {
+    display: table-cell;
+    position: relative;
+    top: -1.9em;
+}
+.tei_td_add_sublinear {
+    display: table-cell;
+    position: relative;
+}
+.tei_tr {
+    display: table-row;
+}
+.tei_tr_add {
+    display: table-row;
+    line-height: 0px;
+}
+.delSpan {
+	background-color: #a5a299;
+	display: inline-block;
+	left: -30px;
+	position: relative;
+}
+.delSpan_noIndent {
+	background-color: #a5a299;
+	display: inline-block;
+}
+.delSpan_medium {
+	background-color: #a3b550;
+	display: inline-block;
+	left: -30px;
+	position: relative;
+}
+.delSpan_noIndent_medium {
+	background-color: #a3b550;
+	display: inline-block;
+}
+.deletion {
+	text-decoration: line-through;
+}
+.deletion_strikethrough {
+	text-decoration: line-through;
+	background-color: #a5a299;
+}
+.deletion_subst {
+	text-decoration: line-through;
+}
+.tei_deletion_medium_wrapper {
+	text-decoration: line-through;
+	color: #008100 !important;
+}
+.tei_deletion_editorial {
+	text-decoration: none;
+	color: #000000;
+}
+.tei_deletion_add_editorial {
+	text-decoration: none;
+	color: #0000a1;
+}
+.add_margin {
+	/*position: absolute;
+	left: 0px;
+	width: 95px;
+	margin: 0px;
+	padding: 0px;*/
+	color: #0000a1;
+}
+.add_over {
+	/*position:absolute;
+	top:-11pt;
+	left:0px;*/
+	vertical-align: super;
+	color: #0000a1;
+}
+.add_sublinear {
+	vertical-align: -30%;
+	color: #0000a1;
+}
+.add_inline {
+	color: #6262e6 !important;
+}
+.add_subst {
+	color: #0000a1;
+}
+.add_choice {
+	position: absolute;
+	top: -1.2em;
+	left: 0px;
+}
+.addSpan {
+	color: #0000a1;
+}
+.medium {
+	color: #008100 !important;
+}
+
+.restore {
+	border-bottom: 1px dashed green;
+}
+.switchpos_nonumber {
+	vertical-align: super;
+	color: #990202;
+}
+.switchpos_number {
+	vertical-align: super;
+	color: #0000a1;
+}
+.immediate_symbol {
+	position: relative;
+	bottom: -2px;
+}
+
+/* OTHER */
+img.symbol {
+	position: relative;
+	bottom: -2px;
+}
+
+/* VARIANTS */
+.lemma
+{
+	background-color: #fff1b9 !important;
+}
+div.lemma
+{
+	display: inline-block;
+}
+.variant
+{
+	background-color: #C5C5C5 !important;
+}
+div.variant
+{
+	display: inline-block;
+}
+.orthographic
+{
+	background-color:  #eee6ff !important;
+}
+div.orthographic
+{
+	display: inline-block;
+}
+.substantial
+{
+	background-color: #fee0e2 !important;
+}
+div.substantial
+{
+	display: inline-block;
+}
+.interpunction
+{
+	background-color: #dbf0ec !important;
+}
+div.interpunction
+{
+	display: inline-block;
+}
+.identical
+{
+	background-color: #fff1b9 !important;
+}
+div.identical
+{
+	display: inline-block;
+}
+.typographic
+{
+	background-color: #f6e65b !important;
+}
+div.typographic
+{
+	display: inline-block;
+}
+.error
+{
+	background-color: #daecf1 !important;
+}
+div.error
+{
+	display: inline-block;
+}
+.var_bold {
+	font-weight: bold;
+}
+span.extVariantsTrigger {
+	color: #990202;
+	cursor: pointer;
+}
+span.extVariants {
+	display: none;
+	padding: 3px;
+	border: 1px solid #990202;
+	border-radius: 3px;
+	background-color: #E8E3D4;
+}
+
+/* CALENDAR */
+table.calendar {
+	margin-left: 10px;
+	margin-top: 0.7em;
+}
+table.calendar td {
+	font-size: 0.7em;
+	width: 23px;
+}
+a.calendarlink {
+	margin-left: 10px;
+}
+a.calendarlink img {
+	position: relative;
+	bottom: -2px;
+}
+.cal_days {
+	color: gray;
+}
+.cal_active {
+	color: #eb9414;
+	cursor: pointer;
+}
+
+/* SEARCH RESULT */
+.p_editor {
+	color: #990202;
+}
+span.note_editor {
+	color: #990202;
+	font-style: italic;
+}
+span.note_foot {
+	color: #78756f;
+	font-style: italic;
+}
+.highlightPerson {
+	background-color: #e5bb71 !important;
+}
+.highlightPlace {
+	background-color: #d1dfb6 !important;
+}
+.highlightForeign {
+	background-color: #cae4eb !important;
+}
+.highlightXMLcomment {
+	background-color: #cae4eb !important;
+}
+
+.revision
+{
+    border-radius: 5px;
+    border: 2px solid #000000;
+    padding: 2px;
+}
+
+.est_figure_graphic{
+	max-width:100%;
+	padding-right:0.2rem;
+}
+
+/*titelsidans omslag*/
+.tit_figure_graphic {
+    max-width: 50%;
+    display: block;
+    margin-left: 165px;
+}
+
+.pdf_figure_graphic{
+	display:inline-block;
+	margin:0 0.5em 0 0;
+}
+
+h1.tei.title {
+	font-variant:small-caps;
+	text-align: center;
+	font-weight: normal !important;
+	color: #111;
+	font-size:1.5em !important;
+	margin:1em 0em 1em 0em !important;
+}
+h1.tei.poemtitle {
+	font-variant:small-caps;
+	text-align: left;
+	font-weight: normal !important;
+	color: #111;
+	font-size:1.5em !important;
+	margin:1em 0em 1em 0em !important;
+}
+h1.tei.poemtitleFromMs, h1.tei.poemtitleSuite {
+	font-style: italic;
+	text-align: left;
+	font-weight: normal !important;
+	color: #111;
+	font-size:1.5em!important;
+	margin:1em 0em 1em 0em !important;
+}
+h2.tei.zts {
+	font-variant: small-caps;
+	font-size: 1.3em !important;
+	text-align: center;
+	font-weight: normal !important;
+	color: gray;
+	margin:1em 0em 1em 0em !important;
+}
+
+h2.tei.section {
+	text-align: center !important;
+	font-weight: normal !important;
+	margin:1em 0em 1em 0em !important;
+}
+h2.tei.poemsection {
+	font-style: italic;
+	text-align: left;
+	font-weight: normal !important;
+	margin:1em 0em 1em 0em !important;
+}
+h2.tei.section2 {
+	font-style: italic;
+	text-align: center;
+	font-weight: normal !important;
+	margin:1em 0em 1em 0em !important;
+}
+h2.tei.poemsection2 {
+	font-style: italic;
+	text-align: left;
+	font-weight: normal !important;
+	margin:1em 0em 1em 0em !important;
+}

@@ -7,6 +7,20 @@ facsimiles {
 
     }
 
+    .tab-container{
+        display:none;
+    }
+
+    > ion-item{
+        display:none !important;
+    }
+
+    #facsimilies-image img{
+      max-height: -webkit-fill-available;
+      max-height: fill-available;
+        object-fit: scale-down;
+    }
+
     .external_url a{
       white-space: normal;
     }

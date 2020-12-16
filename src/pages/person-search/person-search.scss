@@ -23,7 +23,7 @@ page-person-search {
     .filter-button {
         font-size: 2.8rem;
     }
-    
+
     .searchbar {
         color: white;
     }
@@ -37,8 +37,8 @@ page-person-search {
             margin: 0 !important;
         }
         ion-scroll {
-            height: 100%; 
-            width: 80px; 
+            height: 100%;
+            width: 80px;
         }
     }
 
@@ -86,5 +86,11 @@ page-person-search {
         flex: 1;
         min-height: fit-content;
     }
-    
+
+    .alphabet ion-scroll {
+      height: 100%;
+      width: 80px;
+      position: inherit;
+  }
+
 }
