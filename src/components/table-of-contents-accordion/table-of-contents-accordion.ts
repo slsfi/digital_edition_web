@@ -118,6 +118,12 @@ class InnerMenuOptionModel {
       innerMenuOptionModel.is_child = false;
     }
 
+    if (option.collapsed === false) {
+      innerMenuOptionModel.collapsed = false;
+    } else {
+      innerMenuOptionModel.collapsed = true;
+    }
+
     if (option.children) {
       innerMenuOptionModel.expanded = false;
       let storeChildren = false;
