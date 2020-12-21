@@ -306,12 +306,12 @@ export class SingleEditionPage {
   maybeLoadIntroductionPage(collectionID: string) {
       const nav = this.app.getActiveNavs();
       const params = { collection: this.collection, fetch: true, collectionID: this.collection.id };
-      if ( this.hasIntro ) {
-        nav[0].setRoot('introduction', params);
-      } else if ( this.hasCover ) {
+      if ( this.hasCover ) {
         nav[0].setRoot('cover-page', params);
       } else if ( this.hasTitle ) {
         nav[0].setRoot('title-page', params);
+      } else if ( this.hasIntro ) {
+        nav[0].setRoot('introduction', params);
       }
   }
 }

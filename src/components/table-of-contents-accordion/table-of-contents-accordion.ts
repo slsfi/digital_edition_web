@@ -353,8 +353,6 @@ export class TableOfContentsAccordionComponent {
       this.cdRef.detectChanges();
     });
 
-
-
     this.titleSelected = false;
     this.introductionSelected = false;
     this.coverSelected = false;
@@ -377,13 +375,12 @@ export class TableOfContentsAccordionComponent {
       this.hasCover = false;
     }
 
-    const currentPage = String(window.location.href);
-    if ( currentPage.includes('publication-introduction') ) {
-      this.introductionSelected = true;
-    } else if ( currentPage.includes('publication-title') ) {
-      this.titleSelected = true;
-    } else if ( currentPage.includes('publication-cover') ) {
+    if ( this.hasCover ) {
       this.coverSelected = true;
+    } else if ( this.hasTitle ) {
+      this.titleSelected = true;
+    } else if ( this.hasIntro ) {
+      this.introductionSelected = true;
     }
 
     this.events.subscribe('tableOfContents:findMarkdownTocItem', (data) => {
@@ -411,7 +408,14 @@ export class TableOfContentsAccordionComponent {
             expand: true
           });
         }
-
+        const currentPage = String(window.location.href);
+        if ( currentPage.includes('publication-introduction') ) {
+          this.introductionSelected = true;
+        } else if ( currentPage.includes('publication-title') ) {
+          this.titleSelected = true;
+        } else if ( currentPage.includes('publication-cover') ) {
+          this.coverSelected = true;
+        }
       }
     });
 
