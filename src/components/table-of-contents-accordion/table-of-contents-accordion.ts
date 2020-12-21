@@ -911,7 +911,7 @@ export class TableOfContentsAccordionComponent {
   }
 
   selectOneItem(itemId, list?, parent?) {
-    if( list ) {
+    if ( list ) {
       list.forEach(option => {
         if (option.text === itemId) {
           option.selected = true;
@@ -919,13 +919,13 @@ export class TableOfContentsAccordionComponent {
           parent['collapsed'] = false;
           option.parent = parent;
         } else if (option.childrenCount) {
-          if( option.subOptions.length > 0 ){
+          if ( option.subOptions.length > 0 ) {
             this.selectOneItem(itemId, option.subOptions, option.subOptions);
-          } else if( option.targetOption ) {
+          } else if ( option.targetOption ) {
             if (option.targetOption.itemId === itemId) {
               option.selected = true;
               parent.expanded = true;
-            } else if( option.targetOption.children.length > 0 ) {
+            } else if ( option.targetOption.children.length > 0 ) {
               this.selectOneItem(itemId, option.targetOption.children, option.targetOption);
             }
           }
@@ -936,12 +936,12 @@ export class TableOfContentsAccordionComponent {
         if (option.text === itemId) {
           option.selected = true;
         } else if (option.childrenCount) {
-          if( option.subOptions.length > 0 ){
+          if ( option.subOptions.length > 0 ) {
             this.selectOneItem(itemId, option.subOptions, option.subOptions);
-          } else if( option.targetOption ) {
+          } else if ( option.targetOption ) {
             if (option.targetOption.itemId === itemId) {
               option.selected = true;
-            } else if( option.targetOption.children.length > 0 ) {
+            } else if ( option.targetOption.children.length > 0 ) {
               this.selectOneItem(itemId, option.targetOption.children, option.targetOption);
             }
           }
