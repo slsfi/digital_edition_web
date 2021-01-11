@@ -156,9 +156,9 @@ export class TextService {
   getVariations(id: string): Observable<any> {
     const c_id = `${id}`.split('_')[0];
     const pub_id = `${id}`.split('_')[1];
-
-    return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
-        this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/var')
+    const url = this.config.getSettings('app.apiEndpoint') + '/' +
+    this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/var/';
+    return this.http.get( url )
         .map(res => {
           return res.json();
         })
@@ -174,7 +174,7 @@ export class TextService {
     }
 
     return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
-        this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/ms' + ((chapter) ? '/' + chapter + '' : ''))
+        this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/ms' + ((chapter) ? '/' + chapter + '/' : '/'))
         .map(res => {
           return res.json();
         })
