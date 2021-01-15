@@ -199,7 +199,7 @@ export class TextChangerComponent {
     if ( parts[2] !== undefined ) {
       params['chapterID'] = parts[2];
     }
-    params['search_title'] = "searchtitle";
+    params['search_title'] = 'searchtitle';
     if (this.recentlyOpenViews !== undefined && this.recentlyOpenViews.length > 0) {
       params['recentlyOpenViews'] = this.recentlyOpenViews;
     }

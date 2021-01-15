@@ -44,23 +44,23 @@ read-popover-page {
 
 	.show_personInfo{
 		display: inline;
-		background-color: color($colors, person);
+		background-color: $persName-color;
 	}
 	.show_workInfo{
 		display: inline;
-		background-color: color($colors, work);
+		background-color: $workTitle-color;
 	}
 	.show_placeInfo{
 		display: inline;
-		background-color: color($colors, location);
+		background-color: $placeName-color;
 	}
 	.show_abbreviations{
 		display: inline;
-		background-color: color($colors, abbreviations);
+		background-color: $abbreviations-color;
 	}
 	.show_changesInfo{
 		display: inline;
-		background-color: color($colors, changes);
+		background-color: $changes-color;
 	}
 }
 

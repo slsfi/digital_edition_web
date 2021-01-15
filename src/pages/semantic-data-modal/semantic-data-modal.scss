@@ -31,10 +31,10 @@ page-semantic-data-modal {
         border: 0px !important;
         border-radius: 0px !important;
 	}
-	
+
 	.segment-activated{
 		background-color: color($colors, primary) !important;
-		color: color($colors, white) !important;
+		color: $white-color !important;
 	}
 	.header{
 		border-bottom: 1px solid color($colors, primary);

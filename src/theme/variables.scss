@@ -25,8 +25,8 @@ $background-color: #f3f1ea;
 $colors: (
 	primary:	#538494,
 	secondary:	#e4dcca,
-    dark:		#222,
-    light:		#D3DD9F
+  dark:		#222,
+  light:		#D3DD9F
 );
 
 // Custom colors for semantic code etc.
@@ -34,10 +34,22 @@ $persName-color: #f9e0bf;
 $placeName-color: #dee8ca;
 $workTitle-color: #f7efba;
 $changes-color: #ccc;
+$est-color: #ccc;
+$com-color: #e1a462;
+$ms-color: #b0e162;
+$inl-color: #e162ac;
+$tit-color: #62c3e1;
+$var-color: #b262e1;
+$tag-color: #0fa14c;
 $normalisations-color: #e6e6e6;
 $abbreviations-color: #ffe2fa;
 $pageBreakOriginal-color: #c34be1;
 $pageBreakEdition-color: #d58205;
+$purple-color: #413861;
+$grey-color: #666666;
+$blackish-color: #363636;
+$orange-color: #e1a462;
+$white-color: #fff;
 
 
 $fab-content-margin: 0;
@@ -166,7 +178,7 @@ $ionicons-font-path: "../assets/fonts";
 
 .tei h2{
     padding-top: 1em;
-    font-size: 1em !important; 
+    font-size: 1em !important;
 }
 
 .tei.place_name,.onki_province,.collection{

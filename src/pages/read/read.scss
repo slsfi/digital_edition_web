@@ -85,7 +85,7 @@ page-read {
 
   .segment-activated {
     background-color: color($colors, primary) !important;
-    color: color($colors, white) !important;
+    color: $white-color !important;
   }
 
   .readpage-occurrences-mobile {

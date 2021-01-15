@@ -121,7 +121,14 @@ export class TextService {
     return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
         this.config.getSettings('app.machineName') + '/legacy/' + legacyId)
         .map(res => {
-          return res.json();
+          const data = res.json();
+          if ( String(data).length === 0 ) {
+            const legArr = legacyId.split('_');
+            data[0] = [];
+            data[0]['coll_id'] = legArr[0];
+            data[0]['pub_id'] = legArr[1];
+          }
+          return data;
         })
         .catch(this.handleError);
   }

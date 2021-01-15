@@ -15,7 +15,7 @@ page-music {
 		margin-top: 0.00em;
 		padding-left: 0px;
 		margin-left: 0px;
-		height: 50%; 
+		height: 50%;
 		background-position: center;
 		background-repeat: no-repeat;
 		background-size: cover;
@@ -68,13 +68,13 @@ page-music {
 			font-size: 22px;
 		}
 	}
-	
+
 	.fp_h1 {
 		font-size: 2rem;
 	}
-	
+
 	.foreground {
-		border-bottom: 5px solid color($colors, orange);
+		border-bottom: 5px solid $orange-color;
 	}
 
 	h1{
@@ -98,7 +98,7 @@ page-music {
 	.banner{
 		@media only screen and (min-device-width : 640px) {
 			background-size: contain;
-		}		
+		}
 	}
 	.scroll-content{
 		@media only screen and (min-device-width : 640px) {
@@ -109,5 +109,5 @@ page-music {
 		@media only screen and (min-device-width : 640px) {
 			background-size: contain;
 		}
-	}		
+	}
 }
