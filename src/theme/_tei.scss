@@ -139,7 +139,7 @@
     }
     .tei_hi_medium {
         text-decoration: none;
-        color: color($colors, dark);
+        color: #000;
     }
     .tei_encircled_medium {
         border: 1px solid #008100;
@@ -674,7 +674,7 @@
         left: -9px;
     }
     .medium {
-        color: #606b2f !important;
+        color: #008100 !important;
     }
 
     .restore {
@@ -838,19 +838,19 @@
 .tei.show_regStyle  span.reg_hide {display: inherit;}
 .tei.show_regStyle  span.reg {background-color: color($colors, primary); cursor: default;}
 
-.tei.show_personInfo    span.person {background-color: color($colors, person);}
+.tei.show_personInfo    span.person {background-color: $persName-color;}
 .tei.show_personInfo    span.person[id] {cursor:pointer;}
 
-.tei.show_placeInfo    span.placeName {background-color: color($colors, location);}
+.tei.show_placeInfo    span.placeName {background-color: $placeName-color;}
 .tei.show_placeInfo    span.placeName[id] {cursor:pointer;}
 
-.tei.show_workInfo    span.title {background-color: color($colors, work);}
+.tei.show_workInfo    span.title {background-color: $workTitle-color;}
 .tei.show_workInfo    span.title[id] {cursor:pointer;}
 
 .tei                     span.corr_hide {display: none;}
 .tei.show_choiceStyle    span.corr_hide {display: inherit;}
 .tei.show_choiceStyle    span.corr {background-color: color($colors, light); cursor: default;}
-.tei.show_choiceStyle    span.corr_red {background-color: color($colors, danger); cursor: default;}
+.tei.show_choiceStyle    span.corr_red {background-color: $changes-color; cursor: default;}
 
 .tei                     span.reg_hide {display: none;}
 .tei.show_regShow        span.reg_hide {display: inherit;}
@@ -860,22 +860,22 @@
 .tei.show_regStyle       span.reg_hide {display: inherit;}
 .tei.show_regStyle       span.reg {background-color: color($colors, light); cursor: default;}
 
-.tei.show_abbreviations   span.abbr {background-color: color($colors, abbreviations); cursor: default;}
+.tei.show_abbreviations   span.abbr {background-color: $abbreviations-color; cursor: default;}
 
-.tei.show_changes         span.corr_red {background-color: color($colors, changes); cursor: default;}
-.tei.show_changes         span.tei.corr {background-color: color($colors, changes); cursor: default;}
+.tei.show_changes         span.corr_red {background-color: $changes-color; cursor: default;}
+.tei.show_changes         span.tei.corr {background-color: $changes-color; cursor: default;}
 
 .tei.show_placeStyle        span.placeName {background-color: color($colors, light);}
 .tei.show_placeStyle        span.placeName[id] {cursor:pointer;}
 
 .tei.show_foreignStyle      .foreign {background-color: color($colors, light); cursor: default;}
 
-.tei.show_titleStyle        span.title {background-color: color($colors, danger);}
+.tei.show_titleStyle        span.title {background-color: $workTitle-color;}
 .tei.show_titleStyle        span.title[id] {cursor:pointer;}
 
 .tei                        .pb_zts {display: none;}
 .tei.show_pbztsStyle        .pb_zts {display: inherit;}
-.tei.show_pbztsStyle        .pb_zts {color: color($colors, danger);}
+.tei.show_pbztsStyle        .pb_zts {color: $pageBreakEdition-color;}
 
 .tei                        span.lNumber {display: none;}
 .tei.show_pageNumbering     span.lNumber {display: inline;}
@@ -883,8 +883,8 @@
 .tei                        span.paragraph_number {display: none}
 .tei.show_pageNumbering     span.paragraph_number {display: block; position: absolute; margin-left: -40px; text-align: right; width:30px;}
 
-.tei.show_pageBreakOriginal     span.pb_orig {color: #c34be1; display: contents; position: absolute; margin-left: -40px; text-align: right; width:30px;}
-.tei.show_pageBreakEdition     span.pb_zts { color: #d58205; display: contents; position: absolute; margin-left: -40px; text-align: right; width:30px;}
+.tei.show_pageBreakOriginal     span.pb_orig {color: $pageBreakOriginal-color; display: contents; position: absolute; margin-left: -40px; text-align: right; width:30px;}
+.tei.show_pageBreakEdition     span.pb_zts { color: $pageBreakEdition-color; display: contents; position: absolute; margin-left: -40px; text-align: right; width:30px;}
 
 
 
