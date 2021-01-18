@@ -1,4 +1,4 @@
-<div class="tab-container" id="tabs-text-container" *ngIf="platform.is('core') && isExternal === false && numberOfPages > 1" >
+<div class="tab-container" id="tabs-text-container" *ngIf="platform.is('core') && isExternal === false " >
   <div *ngFor="let facsimile of facsimiles; let i = index" (click)="changeFacsimile(facsimile)"
     [ngClass]="(selectedFacsimile.title === facsimile.title)?'firts-tab':'tab'">
     <span [innerHTML]='facsimile.title'></span>

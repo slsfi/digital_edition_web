@@ -129,6 +129,12 @@ export class IntroductionPage {
             const target = elem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
             if ( target !== null ) {
               this.scrollToElementTOC(target, event);
+            } else {
+              this.textService.getCollectionAndPublicationByLegacyId(targetId[0]).subscribe(data => {
+                if ( data[0] !== undefined ) {
+                  const ref = window.open('#/publication-introduction/' + data[0]['coll_id'], '_blank');
+                }
+              });
             }
           } else {
             window.open('#/publication-introduction/' + String(targetId), '_blank');

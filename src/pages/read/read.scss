@@ -132,7 +132,7 @@ page-read {
   .read-columns {
     margin-bottom: 0.5rem;
     -webkit-overflow-scrolling: touch;
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
 
@@ -166,7 +166,7 @@ page-read {
         }
 
         ion-scroll {
-          max-height: calc(100vh - 197px);
+          max-height: calc(100vh - 253px);
         }
       }
     }
