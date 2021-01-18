@@ -3,8 +3,12 @@ facsimiles {
         left: 0;
         right: auto !important;
     }
-    .page_number_input input{
 
+    #facsimilies-image img{
+      max-height: -webkit-fill-available;
+      max-height: fill-available;
+      object-fit: scale-down;
+      object-position: top;
     }
 
     .external_url a{

@@ -118,6 +118,12 @@ class InnerMenuOptionModel {
       innerMenuOptionModel.is_child = false;
     }
 
+    if (option.collapsed === false) {
+      innerMenuOptionModel.collapsed = false;
+    } else {
+      innerMenuOptionModel.collapsed = true;
+    }
+
     if (option.children) {
       innerMenuOptionModel.expanded = false;
       let storeChildren = false;
@@ -165,7 +171,6 @@ class InnerMenuOptionModel {
       }
       });
     }
-
     return innerMenuOptionModel;
   }
 }
@@ -342,6 +347,12 @@ export class TableOfContentsAccordionComponent {
       }
     });
 
+    this.events.subscribe('selectOneItem', (itemId) => {
+      this.unSelectAllItems(this.collapsableItems);
+      this.selectOneItem(itemId);
+      this.cdRef.detectChanges();
+    });
+
     this.titleSelected = false;
     this.introductionSelected = false;
     this.coverSelected = false;
@@ -364,13 +375,12 @@ export class TableOfContentsAccordionComponent {
       this.hasCover = false;
     }
 
-    const currentPage = String(window.location.href);
-    if ( currentPage.includes('publication-introduction') ) {
-      this.introductionSelected = true;
-    } else if ( currentPage.includes('publication-title') ) {
-      this.titleSelected = true;
-    } else if ( currentPage.includes('publication-cover') ) {
+    if ( this.hasCover ) {
       this.coverSelected = true;
+    } else if ( this.hasTitle ) {
+      this.titleSelected = true;
+    } else if ( this.hasIntro ) {
+      this.introductionSelected = true;
     }
 
     this.events.subscribe('tableOfContents:findMarkdownTocItem', (data) => {
@@ -398,7 +408,14 @@ export class TableOfContentsAccordionComponent {
             expand: true
           });
         }
-
+        const currentPage = String(window.location.href);
+        if ( currentPage.includes('publication-introduction') ) {
+          this.introductionSelected = true;
+        } else if ( currentPage.includes('publication-title') ) {
+          this.titleSelected = true;
+        } else if ( currentPage.includes('publication-cover') ) {
+          this.coverSelected = true;
+        }
       }
     });
 
@@ -789,6 +806,7 @@ export class TableOfContentsAccordionComponent {
       }
 
       console.log('Opening read from TableOfContentsAccordionComponent.openFirstPage()');
+      console.log(params);
       nav[0].setRoot('read', params);
     } else {
       this.storage.set('currentTOCItem', item);
@@ -890,6 +908,53 @@ export class TableOfContentsAccordionComponent {
         }
       }
     }
+  }
+
+  selectOneItem(itemId, list?, parent?) {
+    if ( list ) {
+      list.forEach(option => {
+        if (option.text === itemId) {
+          option.selected = true;
+          parent['expanded'] = true;
+          parent['collapsed'] = false;
+          option.parent = parent;
+        } else if (option.childrenCount) {
+          if ( option.subOptions.length > 0 ) {
+            this.selectOneItem(itemId, option.subOptions, option.subOptions);
+          } else if ( option.targetOption ) {
+            if (option.targetOption.itemId === itemId) {
+              option.selected = true;
+              parent.expanded = true;
+            } else if ( option.targetOption.children.length > 0 ) {
+              this.selectOneItem(itemId, option.targetOption.children, option.targetOption);
+            }
+          }
+        }
+      });
+    } else {
+      this.collapsableItems.forEach(option => {
+        if (option.text === itemId) {
+          option.selected = true;
+        } else if (option.childrenCount) {
+          if ( option.subOptions.length > 0 ) {
+            this.selectOneItem(itemId, option.subOptions, option.subOptions);
+          } else if ( option.targetOption ) {
+            if (option.targetOption.itemId === itemId) {
+              option.selected = true;
+            } else if ( option.targetOption.children.length > 0 ) {
+              this.selectOneItem(itemId, option.targetOption.children, option.targetOption);
+            }
+          }
+        }
+      });
+    }
+
+    /*for (const item of this.collapsableItems) {
+      if ( item.itemId !== undefined && item.itemId === itemId ) {
+        item.selected = true;
+        return true;
+      }
+     }*/
   }
 
   unSelectAllItems(list) {

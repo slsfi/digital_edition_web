@@ -64,10 +64,16 @@ page-work-search {
       font-style: italic;
     }
     .author{
-      color: color($colors, gray);
+      color: $grey-color;
     }
 
     div .item-inner{
       cursor: pointer;
     }
+
+    .alphabet ion-scroll {
+      height: 100%;
+      width: 80px;
+      position: inherit;
+  }
 }

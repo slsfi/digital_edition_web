@@ -121,7 +121,14 @@ export class TextService {
     return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
         this.config.getSettings('app.machineName') + '/legacy/' + legacyId)
         .map(res => {
-          return res.json();
+          const data = res.json();
+          if ( String(data).length === 0 ) {
+            const legArr = legacyId.split('_');
+            data[0] = [];
+            data[0]['coll_id'] = legArr[0];
+            data[0]['pub_id'] = legArr[1];
+          }
+          return data;
         })
         .catch(this.handleError);
   }
@@ -156,9 +163,9 @@ export class TextService {
   getVariations(id: string): Observable<any> {
     const c_id = `${id}`.split('_')[0];
     const pub_id = `${id}`.split('_')[1];
-
-    return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
-        this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/var')
+    const url = this.config.getSettings('app.apiEndpoint') + '/' +
+    this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/var/';
+    return this.http.get( url )
         .map(res => {
           return res.json();
         })
@@ -174,7 +181,7 @@ export class TextService {
     }
 
     return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
-        this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/ms' + ((chapter) ? '/' + chapter + '' : ''))
+        this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/ms' + ((chapter) ? '/' + chapter + '/' : '/'))
         .map(res => {
           return res.json();
         })

@@ -33,7 +33,7 @@ date-histogram {
     top: -20px;
     padding: 2px;
     font-size: 12px !important;
-    color: color($colors, grey);
+    color: $grey-color;
     background-color: rgba(255,255,255,0.5);
   }
 
@@ -41,7 +41,7 @@ date-histogram {
     background-color: color($colors, secondary);
   }
   .year:hover > .yearBar, .yearBarInRange {
-    background-color: color($colors, location);
+    background-color: $placeName-color;
   }
   .year:hover .yearDetails {
     display: block;
@@ -58,7 +58,7 @@ date-histogram {
     top: -7px;
     width: 50px;
     font-size: 12px !important;
-    color: color($colors, grey);
+    color: $grey-color;
     text-align: right;
   }
 

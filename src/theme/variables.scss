@@ -10,8 +10,8 @@
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
-$text-color:        #000000;
-$background-color:  #fafafa;
+$text-color:       #000000;
+$background-color: #f3f1ea;
 
 
 // Named Color Variables
@@ -23,50 +23,56 @@ $background-color:  #fafafa;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-	primary:	#B0A898,
-	secondary:	#888174,
-	danger:		#f53d3d,
-	light:		#D3DD9F,
-	person:		#edd19f,
-	location:	#62c3e1,
-	change:		#606b2f,
-	dark:		#222,
-	white:		#fff,
-	purple:		#413861,
-	orange:		#e1a462,
-	com:		#e1a462,
-	est:		#e6572c,
-	ms:			#b0e162,
-	inl:		#e162ac,
-	tit:		#62c3e1,
-  var:		#b262e1,
-  work: #e6572c
+	primary:	#538494,
+	secondary:	#e4dcca,
+  dark:		#222,
+  light:		#D3DD9F
 );
+
+// Custom colors for semantic code etc.
+$persName-color: #f9e0bf;
+$placeName-color: #dee8ca;
+$workTitle-color: #f7efba;
+$changes-color: #ccc;
+$est-color: #ccc;
+$com-color: #e1a462;
+$ms-color: #b0e162;
+$inl-color: #e162ac;
+$tit-color: #62c3e1;
+$var-color: #b262e1;
+$tag-color: #0fa14c;
+$normalisations-color: #e6e6e6;
+$abbreviations-color: #ffe2fa;
+$pageBreakOriginal-color: #c34be1;
+$pageBreakEdition-color: #d58205;
+$purple-color: #413861;
+$grey-color: #666666;
+$blackish-color: #363636;
+$orange-color: #e1a462;
+$white-color: #fff;
 
 
 $fab-content-margin: 0;
 
-$text-color:                           $text-color;
-
 // Use the primary color as the background for the toolbar-md-background
-$toolbar-background:                   color($colors, purple);
+$toolbar-background:                   color($colors, primary);
 
 // Use the default background for the tabbar since it inherits from toolbar
-$tabs-background:                      color($colors, purple);
+$tabs-background:                      color($colors, primary);
 
 // Change the color of the tabs text
-$tabs-tab-color-active:                color($colors, white);
-$tabs-tab-color-inactive:              color($colors, white);
+$tabs-tab-color-active:                #fff;
+$tabs-tab-color-inactive:              #fff;
 
 // Change the color of the segment button text
 $toolbar-active-color:                 #fff;
 $toolbar-inactive-color:               #fff;
 $segment-button-text-color-activated:  #fff;
 
-$back-button-color:							color($colors, primary);
+$back-button-color:						color($colors, secondary);
 $back-button-text-color:				color($colors, dark);
-$forward-arrow-color:						color($colors, dark);
-
+$forward-arrow-color:					color($colors, dark);
+$divider-bg-color:                      color($colors, light);
 
 // App iOS Variables
 // --------------------------------------------------
@@ -79,23 +85,30 @@ $forward-arrow-color:						color($colors, dark);
 // Material Design only Sass variables can go here
 
 // Change #000 to any color to see the md text color change
-//$text-md-color:                           $text-color;
+//$text-md-color:                       $text-color;
 
-// Use the primary color as the background for the toolbar-md-background
-//$toolbar-md-background:                   color($colors, purple);
+// Use the default color as the background for the toolbar-md-background
+$toolbar-md-background:                 $toolbar-background;
 
 // Use the default background for the tabbar since it inherits from toolbar
-//$tabs-md-background:                      color($colors, purple);
+$tabs-md-background:                    $tabs-background;
 
+$fab-md-box-shadow: none;
 // Change the color of the tabs text
-$tabs-md-tab-color-active:                color($colors, white);
-$tabs-md-tab-color-inactive:              color($colors, white);
+$tabs-md-tab-color-active:              #fff;
+$tabs-md-tab-color-inactive:            #fff;
 
 // Change the color of the segment button text
 $toolbar-md-active-color:                 #fff;
 $toolbar-md-inactive-color:               #fff;
 $segment-button-md-text-color-activated:  #fff;
-//$item-md-detail-push-show: true;*/
+//$item-md-detail-push-show: true;
+
+$card-md-title-text-color: color($colors, dark);
+$card-md-box-shadow: none;
+$card-md-background-color: #fff;
+
+
 
 // App Windows Variables
 // --------------------------------------------------
@@ -103,7 +116,7 @@ $segment-button-md-text-color-activated:  #fff;
 
 
 
-// custom variables
+// Custom variables
 
 $top-menu-left: 370px;
 $top-menu-left-split-pane: 10px;
@@ -165,7 +178,7 @@ $ionicons-font-path: "../assets/fonts";
 
 .tei h2{
     padding-top: 1em;
-    font-size: 1em !important; 
+    font-size: 1em !important;
 }
 
 .tei.place_name,.onki_province,.collection{

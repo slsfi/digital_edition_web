@@ -135,7 +135,7 @@ export class IntroductionPage {
             targetId = elem.parentElement.getAttribute('href');
           }
           if ( targetId !== null ) {
-            window.open(targetId, '_blank', 'location=no');
+            window.open(targetId, '_blank');
           }
         } else {
           let targetId = elem.getAttribute('href');
@@ -228,7 +228,7 @@ export class IntroductionPage {
         if ( extParts[3] !== undefined && String(extParts[3]).includes('#') !== false ) {
           link += String(extParts[3]).replace('#', ';');
         }
-        const ref = window.open(link + '/not/infinite/nosong/searchtitle/established&comments', '_blank', 'location=no');
+        const ref = window.open(link + '/nochapter/not/infinite/nosong/established&comments', '_blank');
       }
     });
   }
@@ -247,6 +247,16 @@ export class IntroductionPage {
     }
     this.semanticDataService.getSingleObjectElastic('work', id).subscribe(
       tooltip => {
+        if ( tooltip.hits.hits[0] === undefined || tooltip.hits.hits[0]['_source'] === undefined ) {
+          let noInfoFound = 'Could not get work information';
+          this.translate.get('Occurrences.NoInfoFound').subscribe(
+            translation => {
+              noInfoFound = translation;
+            }, err => { }
+          );
+          this.setToolTipText(noInfoFound);
+          return;
+        }
         tooltip = tooltip.hits.hits[0]['_source'];
         const description = '<span class="work_title">' + tooltip.title  + '</span><br/>' + tooltip.reference;
         this.setToolTipText(description);

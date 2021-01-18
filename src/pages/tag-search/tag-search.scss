@@ -8,7 +8,7 @@ page-tag-search {
     ion-icon.settings-icon.icon {
 		font-size: 1.8em;
     }
-    
+
     .occurence {
         background-color: white;
     }
@@ -20,7 +20,7 @@ page-tag-search {
     .alphabet > .scroll-content {
         position: relative !important;
     }
-    
+
     ion-list > div{
         cursor: pointer;
     }
@@ -71,8 +71,14 @@ page-tag-search {
     .filter-button {
         font-size: 2.8rem;
     }
-    
+
     .searchbar {
         color: white;
     }
+
+    .alphabet ion-scroll {
+      height: 100%;
+      width: 80px;
+      position: inherit;
+  }
 }

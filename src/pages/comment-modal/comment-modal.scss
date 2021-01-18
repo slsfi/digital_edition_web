@@ -1,33 +1,56 @@
 page-comment-modal {
-	.pos44{
-		color: #fe0000;
-	}
-	.note{
-				
-	}
-	.tei{
-		font-family: $font-comment-modal-tei;
-		line-height: 2.2rem;
-		font-size: 1.5rem;
-	}
-	.notePosition {
-		display: inline-block;
-		padding-right: 1rem;
-    }
-    .noteLemma {
-		display: inline;
-    }
-    .teiComment  + p{
-        display: inline;
-    }
-    .tei p.note{
-        display: inline;
-    }
-    p .teiComment{
-        margin-top: 1rem;
-    }
-    .noteLegend{
-        margin-bottom: 0rem !important;
-        display: block !important;
-    }
+  .pos44 {
+    color: #fe0000;
+  }
+
+  .note {}
+
+  .tei {
+    font-family: $font-comment-modal-tei;
+    line-height: 2.2rem;
+    font-size: 1.5rem;
+  }
+
+  .notePosition {
+    display: inline-block;
+    padding-right: 1rem;
+  }
+
+  .noteLemma {
+    display: inline;
+  }
+
+  .teiComment+p {
+    display: inline;
+  }
+
+  .tei p.note {
+    display: inline;
+  }
+
+  p .teiComment {
+    margin-top: 1rem;
+  }
+
+  .noteLegend {
+    margin-bottom: 0rem !important;
+    display: block !important;
+  }
+
+  span:not([class]) {
+    font-size: 9pt;
+    line-height: 150%;
+  }
+
+  .noteLemma {
+    line-height: 2rem;
+  }
+
+  span:not([class]) {
+    font-size: 9pt;
+    line-height: 150%;
+}
+.noteLemma {
+  line-height: 2rem;
+}
 }

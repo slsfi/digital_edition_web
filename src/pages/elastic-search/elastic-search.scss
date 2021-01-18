@@ -86,7 +86,7 @@ page-elastic-search {
   }
 
   .searchStatus {
-    color: color($colors, grey);
+    color: $grey-color;
   }
 
   ion-item.item.item-block.item-md {
@@ -101,11 +101,11 @@ page-elastic-search {
     .itemHeading {
       padding-left: 20px;
       font-weight: bold;
-      color: color($colors, blackish);
+      color: $blackish-color;
     }
 
     .highlight {
-      color: color($colors, blackish);
+      color: $blackish-color;
 
       em {
         background-color: color($colors, primary);

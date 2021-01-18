@@ -5,32 +5,32 @@ page-single-edition-part {
 		font-style: italic;
 		font-weight: normal;
 	}
-	
+
 	.item-inner{
-		border-bottom: 1px solid color($colors, orange) !important;
+		border-bottom: 1px solid $orange-color !important;
 	}
-	
+
 	.collectionImage{
 		height: 50%;
-	}	
+	}
 	.collectionImageCard{
 		width: 20%;
-		
+
 	}
-	
+
 	h1{
 		font-size: 2rem !important;
 		font-weight: bold;
 	}
-	
+
 	.item-block {
 		padding-left: 0;
 	}
-	
+
 	.indented{
 		padding-left: 1.2em;
 	}
-	
+
 	.justLevel{
 		color: #000000;
 	}

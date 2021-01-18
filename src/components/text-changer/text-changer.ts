@@ -186,8 +186,11 @@ export class TextChangerComponent {
   }
 
   open(item) {
+    item.selected = true;
     const params = {tocItem: item, collection: {title: item.itemId}};
     const nav = this.app.getActiveNavs();
+
+    this.events.publish('selectOneItem', item.text);
 
     params['tocLinkId'] = item.itemId;
     const parts = item.itemId.split('_');
@@ -196,11 +199,13 @@ export class TextChangerComponent {
     if ( parts[2] !== undefined ) {
       params['chapterID'] = parts[2];
     }
-
+    params['search_title'] = 'searchtitle';
     if (this.recentlyOpenViews !== undefined && this.recentlyOpenViews.length > 0) {
       params['recentlyOpenViews'] = this.recentlyOpenViews;
     }
+    params['selectedItemInAccordion'] = true;
     console.log('Opening read from TextChanged.open()');
+    console.log(params);
     nav[0].setRoot('read', params);
   }
 
