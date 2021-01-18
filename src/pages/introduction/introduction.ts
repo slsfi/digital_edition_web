@@ -123,11 +123,15 @@ export class IntroductionPage {
           if ( targetId === null ) {
             targetId = elem.parentElement.getAttribute('href');
           }
-          targetId = String(targetId).split('#')[1];
-          const dataIdSelector = '[name="' + String(targetId).replace('#', '') + '"]';
-          const target = elem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
-          if ( target !== null ) {
-            this.scrollToElementTOC(target, event);
+          if( String(targetId).indexOf('#') !== -1 ) {
+            targetId = String(targetId).split('#')[1];
+            const dataIdSelector = '[name="' + String(targetId).replace('#', '') + '"]';
+            const target = elem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
+            if ( target !== null ) {
+              this.scrollToElementTOC(target, event);
+            }
+          } else {
+            window.open('#/publication-introduction/' + String(targetId), '_blank');
           }
         } else if ( event.target.classList.contains('ref_external') ) {
           let targetId = elem.getAttribute('href');
@@ -228,7 +232,7 @@ export class IntroductionPage {
         if ( extParts[3] !== undefined && String(extParts[3]).includes('#') !== false ) {
           link += String(extParts[3]).replace('#', ';');
         }
-        const ref = window.open(link + '/nochapter/not/infinite/nosong/established&comments', '_blank');
+        const ref = window.open(link + '/nochapter/not/infinite/nosong/searchtitle/established&comments', '_blank');
       }
     });
   }
