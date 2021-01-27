@@ -1,9 +1,10 @@
 page-read {
 
+  /*
   .tei.show_pageNumbering {
     padding-left: 20px !important;
   }
-
+  */
   .work_title {
     font-style: italic;
   }
@@ -75,8 +76,8 @@ page-read {
   }
 
   .segment-button {
-    border: 0px !important;
-    border-radius: 0px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
     height: 2rem !important;
     line-height: 2rem !important;
     font-size: 1rem !important;
@@ -115,7 +116,7 @@ page-read {
     position: absolute;
     top: 0;
     right: 0;
-    margin-top: 0px;
+    margin-top: 0;
     margin-right: -8px;
     z-index: 1000;
   }
@@ -132,18 +133,22 @@ page-read {
   .read-columns {
     margin-bottom: 0.5rem;
     -webkit-overflow-scrolling: touch;
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
 
+    /*the bar with a heading for the column*/
     &__title {
+      /*
       background: #E4DCCB !important;
+      */
+      background: #f2f2f2 !important; /*should be changed into a variable*/
       font-size: 0.8rem !important;
       font-weight: bold !important;
     }
 
     &.single-column .read-column {
-      max-width: 50%;
+      max-width: initial !important;
       margin-left: auto;
       margin-right: auto;
       display: block;
@@ -166,7 +171,7 @@ page-read {
         }
 
         ion-scroll {
-          max-height: calc(100vh - 197px);
+          max-height: calc(100vh - 253px);
         }
       }
     }
@@ -182,9 +187,11 @@ page-read {
     display: none;
   }
 
+  /*
   .tooltiptrigger {
     cursor: pointer;
   }
+
 
   .pb_orig {
     display: none;
@@ -193,6 +200,7 @@ page-read {
   .pb_zts {
     display: none;
   }
+  */
 
   .swipeCenter {
     position: absolute;
@@ -214,7 +222,7 @@ page-read {
   }
 
   @media screen and (max-width: 480px) {
-    .tei {
+    div.tei {
       padding-left: 5px !important;
       padding-right: 5px !important;
     }
@@ -225,9 +233,11 @@ page-read {
     transition-duration: 0.2s;
   }
 
+  /* Duplicate and in the wrong place
   .tei.show_pageNumbering {
     padding-left: 50px !important;
   }
+  */
 
   ion-slides {
     .card {
@@ -342,12 +352,11 @@ page-read {
       display: none;
     }
   }
-  .read-columns__title {
-    background: #f2f2f2 !important;
+  /* Rule already defined above
+  .read-column.single-column {
+    max-width: initial !important;
   }
-    .read-column.single-column {
-      max-width: initial !important;
-  }
+  */
 }
 
 .md,

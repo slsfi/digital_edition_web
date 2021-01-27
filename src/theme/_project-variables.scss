@@ -57,31 +57,15 @@
 $font-family-base: 'Muli';
 $font-family-header: 'Muli';
 $font-family-top-menu: 'Muli';
-$font-read-column-p: "Muli",
-'Open Sans',
-Arial,
-sans-serif;
+$font-read-column-p: "Muli", 'Open Sans', Arial, sans-serif;
 
 // Tei fonts
 //$font-app-tei: Georgia,Times,"Times New Roman",serif;
-$font-app-tei: "Muli",
-Times,
-"Times New Roman",
-serif;
-$font-comment-modal-tei: "Muli",
-'Open Sans',
-Arial,
-sans-serif;
-$font-semantic-data-model-tei: "Muli",
-'Open Sans',
-Arial,
-sans-serif;
-$font-stamp-print-tei: "Times New Roman",
-serif;
-$font-tei-note-editorial: "Muli",
-arial,
-helvetica,
-sans-serif;
+$font-app-tei: "Muli", Times, "Times New Roman", serif;
+$font-comment-modal-tei: "Muli", 'Open Sans', Arial, sans-serif;
+$font-semantic-data-model-tei: "Muli", 'Open Sans', Arial, sans-serif;
+$font-stamp-print-tei: "Times New Roman", serif;
+$font-tei-note-editorial: "Muli", arial, helvetica, sans-serif;
 
 // Load tei stylesheet
 @import 'tei';
@@ -99,7 +83,7 @@ html {
 
 home-page {
   h2 {
-    margin-top: 0px !important;
+    margin-top: 0 !important;
   }
 }
 
@@ -158,6 +142,7 @@ img.symbol {
   display: inline;
 }
 
+/* Defined elsewhere
 @media only screen and (max-width: 600px) {
   div.tei {
     max-width: 300px;
@@ -169,43 +154,39 @@ img.symbol {
     max-width: 650px;
   }
 }
+*/
 
 ion-card-content {
   padding-top: 10px !important;
   padding-bottom: 5px !important;
 }
 
-/*justera bilden av skrivande Topelius så den är ok på olika skärmar, för andra bilder annan position och höjd*/
 home-page .banner {
   position: relative;
   margin-top: 0;
   padding-left: 0;
   margin-left: 0;
-  height: 58%;
-  /* height: 50%*/
-  /* background-position: center; */
+  height: 50%;
+  background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: cover;
-  background-position-x: 40%;
-  background-position-y: 40%;
 }
 
-/*kommentarasteriskernas placering: inga marginaler vänster-höger*/
+/*kommentarasteriskernas placering: inga marginaler vänster-höger
 .tei img.tooltiptrigger {
   height: 10px;
   width: 10px;
   position: relative;
   top: 4px;
   left: 0;
-  margin-right: 0px !important;
-  margin-left: 0px !important;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
 }
+*/
 
 .debug {}
 
-/*styckenumreringen ska inte ta så mycket plats i vänsterkanten av spalten*/
-
-/*styckenumreringen siffror ska inte ta så mycket plats och vara så stora*/
+/*styckenumreringen siffror ska inte ta så mycket plats och vara så stora
 .tei.show_pageNumbering span.tei.paragraph_number {
   display: block;
   position: absolute;
@@ -216,8 +197,9 @@ home-page .banner {
   text-indent: 0;
   color: #000;
 }
+*/
 
-/*styckenumrering vid blockcitat (funkar??)*/
+/*styckenumrering vid blockcitat (funkar??)
 p.noIndent.parIndent span.paragraph_number {
   margin-left: -65px !important;
 }
@@ -225,9 +207,16 @@ p.noIndent.parIndent span.paragraph_number {
 p.parIndent span.paragraph_number {
   margin-left: -75px !important;
 }
+*/
+
+/*styckenumrering vid blockcitat, ingen skild stil för .noIndent.parIndent behövs*/
+p.parIndent span.paragraph_number {
+	margin-left: -65px !important;
+}
 
 /*radnumreringen siffror ska inte ta så mycket plats och vara så stora*/
-.tei.show_pageNumbering span.tei.lNumber {
+.tei.show_pageNumbering span.tei.lNumber, 
+.tei.show_pageNumbering span.lNumber {
   display: block;
   position: absolute;
   margin-left: -65px;
@@ -271,14 +260,15 @@ p.parIndent span.paragraph_number {
   font-variant: normal;
 }
 
-/*titelsidans spaltbredd justerad till smalare*/
+/*titelsidans spaltbredd justerad till smalare -> FLYTTA till scss för page-title */
 page-title ion-card {
   max-width: 760px;
   background-color: #fff;
 }
+*/
 
 /*strofer med en blankrad mellan sig ska inte ha två blankrader bara för att ett sidnr dyker upp*/
-p.tei.invisiblelg+p.tei.invisiblelg {
+p.tei.invisiblelg + p.tei.invisiblelg {
   margin-bottom: 0;
 }
 
@@ -314,7 +304,8 @@ ion-item.item {
   background-color: #f2f2f2 !important;
 }
 
-/*toc: när man fäller ut, bakgrunden längst till vänster*/
+/*toc: när man fäller ut, bakgrunden längst till vänster
+  regeln definieras redan med en variable i app.scss så borde inte finnas här*/
 #tableOfContentsMenu .scroll-content {
   background-color: #f2f2f2;
 }
@@ -329,18 +320,27 @@ ion-item.item {
   text-align: center !important;
 }
 
-/*responsboxen*/
+/*responsboxen
 .theme-background-color {
   background-color: #b2d0ea !important;
 }
+*/
 
 /*tabeller*/
 td,
 th {
+  /*
   padding-top: 1px;
   padding-right: 5px;
   padding-bottom: 2px;
-  padding-left: 0px;
+  padding-left: 0;
+  */
+  padding:0.25em 1em 0.25em 0;
+  vertical-align:top;
+}
+td:last-child, 
+th:last-child {
+	padding-right:0;
 }
 
 /* Den okände von Wright, tidslinje-tabell i markdown*/
@@ -357,7 +357,7 @@ div.md_content markdown td {
 .bar-button-clear-md-default,
 .bar-button-default-md,
 .bar-button-md-default {
-  color: #000000;
+  color: #000;
 }
 
 /*faksimilknapparna*/
@@ -399,9 +399,9 @@ span.description {
 }
 
 /*ms med lg: inte extra stort radavstånd, inte indrag på första raden av strofen*/
-p.teiManuscript.strofe[class*=lg] {
+p.teiManuscript.strofe[class *= lg] {
   line-height: 180% !important;
-  text-indent: 0px !important;
+  text-indent: 0 !important;
 }
 
 /*normaliseringar hade tooltip men ingen färg*/
@@ -427,7 +427,7 @@ h3.tei.letterTitle {
 }
 
 p.authorHeader {
-  text-indent: 0px !important;
+  text-indent: 0 !important;
   margin-bottom: 0.5em;
 }
 
@@ -441,8 +441,8 @@ h3.tei.titleBottomMargin {
 
 /* COMMON PARAGRAPHS */
 p.invisible {
-  height: 0px !important;
-  width: 0px !important;
+  height: 0 !important;
+  width: 0 !important;
 }
 
 /*p.invisiblelg {
@@ -452,9 +452,9 @@ p.invisible {
 p.personDesc,
 p.placeDesc,
 p.titleDesc {
-  text-indent: 0px !important;
+  text-indent: 0 !important;
   margin-bottom: 1em !important;
-  padding-bottom: 0px !important;
+  padding-bottom: 0 !important;
 }
 
 p.paragraphSpace {
@@ -521,30 +521,30 @@ h3.underline {
 
 p.label_margin {
   float: right;
-  text-indent: 0px !important;
+  text-indent: 0 !important;
 }
 
 p.label_above {
   margin-left: 60px;
-  text-indent: 0px !important;
+  text-indent: 0 !important;
   margin-top: 0.2em;
   margin-bottom: 0.4em;
 }
 
 span.labelledLines_before {
   margin-left: -80px !important;
-  text-indent: 0px !important;
+  text-indent: 0 !important;
   position: absolute;
 }
 
 span.labelledLines_after {
   float: right;
-  text-indent: 0px !important;
+  text-indent: 0 !important;
 }
 
 span.labelledLines_before_F {
   margin-left: -200px !important;
-  text-indent: 0px !important;
+  text-indent: 0 !important;
   position: absolute;
 }
 
@@ -589,7 +589,7 @@ div.manuscriptText span.underline {
 
 .tei_hi_medium {
   text-decoration: none;
-  color: #000000;
+  color: #000;
 }
 
 .tei_encircled_medium {
@@ -620,24 +620,35 @@ div.manuscriptText span.underline {
 
 .left {
   text-align: left !important;
-  text-indent: 0px !important;
+  text-indent: 0 !important;
 }
 
 .center {
   text-align: center;
-  text-indent: 0px !important;
+  text-indent: 0 !important;
 }
 
 .right {
   text-align: right;
-  text-indent: 0px !important;
+  text-indent: 0 !important;
 }
-
+/*
 .dramaCenter {
   text-align: center;
-  text-indent: 0px !important;
+  text-indent: 0 !important;
   margin-top: 0.9em !important;
   margin-bottom: 0.3em !important;
+}
+*/
+.playCenter {
+	text-align: center;
+	text-indent: 0 !important;
+	margin-top: 0.9em !important;
+	margin-bottom: 0.3em !important;
+}
+.playCenter + .noIndent {
+	text-indent: 0 !important;
+	margin-bottom: 0.9em !important;
 }
 
 .img_left {
@@ -652,7 +663,7 @@ div.manuscriptText span.underline {
 
 /*mindre strofmellanrum för ms*/
 .tei p.strofe {
-  text-indent: 0px !important;
+  text-indent: 0 !important;
   margin-bottom: 1em !important;
   margin-top: 1em !important;
 }
@@ -663,7 +674,7 @@ p.l {
 }
 
 p.item {
-  text-indent: 0px !important;
+  text-indent: 0 !important;
 }
 
 p.item_indented {
@@ -730,6 +741,20 @@ span.milestonePart {
   line-height: 1.5em !important;
 }
 
+hr.milestoneBar, 
+hr.milestoneSmallBar {
+	height: 1px;
+	border: 0;
+	background-color: rgb(64, 64, 64);
+	padding: 0;
+	margin: 1.5rem auto;
+	width: 5.625em;
+}
+
+hr.milestoneSmallBar {
+	width: 2.25em;
+}
+
 p.teiOpener {
   margin-bottom: 1.5em !important;
 }
@@ -740,7 +765,7 @@ p.teiCloser {
 }
 
 .noIndent {
-  text-indent: 0px !important;
+  text-indent: 0 !important;
 }
 
 .hangingIndent {
@@ -771,41 +796,41 @@ span.figure {
   display: inline-block;
   margin-top: 0.5em !important;
   margin-bottom: 0.5em !important;
-  text-indent: 0em !important;
+  text-indent: 0 !important;
 }
 
 .tei .parIndent {
   text-indent: 30px !important;
   padding-left: 30px;
   padding-right: 30px;
-  padding-bottom: 0px !important;
-  margin-top: 0px !important;
+  padding-bottom: 0 !important;
+  margin-top: 0 !important;
 }
 
-:not(.parIndent)+.parIndent.noIndent {
-  text-indent: 0px !important;
+:not(.parIndent) + .parIndent.noIndent {
+  text-indent: 0 !important;
   padding-left: 30px;
   padding-right: 30px;
   margin-top: 1em !important;
 }
 
-:not(.parIndent)+.parIndent {
+:not(.parIndent) + .parIndent {
   text-indent: 30px !important;
   padding-left: 30px;
   padding-right: 30px;
   margin-top: 1em !important;
 }
 
-.parIndent+ :not(.parIndent) {
+.parIndent + :not(.parIndent) {
   margin-top: 1em !important;
 }
 
 .parHalfIndent {
-  text-indent: 0px !important;
+  text-indent: 0 !important;
   padding-left: 15px;
 }
 
-.frontmatterNext+span {
+.frontmatterNext + span {
   margin-top: 1em !important;
 }
 
@@ -833,7 +858,7 @@ div.comment_background p:first-child {
 }
 
 p.footnote {
-  text-indent: 0px !important;
+  text-indent: 0 !important;
   padding-bottom: 0.5em !important;
 }
 
@@ -989,13 +1014,14 @@ a.ref_variant img {
  }*/
 
 /* KOMMENTARER */
+/* Dessa definieras också två gånger i tei.scss */
 .tei p.note {
   cursor: pointer;
-  padding-left: 0px !important;
+  padding-left: 0 !important;
 }
 
 p.teiComment.noteLegend {
-  text-indent: 0px !important;
+  text-indent: 0 !important;
   margin-bottom: 0.5em !important;
   font-size: 0.95em !important;
 }
@@ -1020,6 +1046,25 @@ p.teiComment.noteLegend {
   content: " \2013  ";
 }
 
+/*det normala för p i kommentarer är att vara block, inte inline*/
+/* De här reglerna borde flyttas till _tei_comments.scss eller components/comments/ */
+comments p.teiComment.note {
+	display: block;
+}
+comments .teiComment + p {
+	display: block;
+}
+
+/*det normala för p i punktkommentarer är att inte ha styckeindrag*/
+comments p.teiComment.note {
+	text-indent: 0 !important;
+}
+
+/*p i punktkommentarer utan stor padding under*/
+comments .tei p.paragraphSpace {
+	padding-bottom: 0 !important;
+}
+
 /* MANUSCRIPT */
 .symbol_red {
   color: #990202;
@@ -1030,7 +1075,9 @@ p.teiComment.noteLegend {
 }
 
 .unclear {
-  /*font-style: italic;*/
+  /*
+  font-style: italic;
+  */
   color: #808080;
 }
 
@@ -1090,7 +1137,7 @@ p.teiComment.noteLegend {
 
 .tei_tr_add {
   display: table-row;
-  line-height: 0px;
+  line-height: 0;
 }
 
 .delSpan {
@@ -1137,7 +1184,7 @@ p.teiComment.noteLegend {
 
 .tei_deletion_editorial {
   text-decoration: none;
-  color: #000000;
+  color: #000;
 }
 
 .tei_deletion_add_editorial {
@@ -1146,18 +1193,22 @@ p.teiComment.noteLegend {
 }
 
 .add_margin {
-  /*position: absolute;
-   left: 0px;
+  /*
+  position: absolute;
+   left: 0;
    width: 95px;
-   margin: 0px;
-   padding: 0px;*/
+   margin: 0;
+   padding: 0;
+   */
   color: #0000a1;
 }
 
 .add_over {
-  /*position:absolute;
+  /*
+  position:absolute;
    top:-11pt;
-   left:0px;*/
+   left:0px;
+   */
   vertical-align: super;
   color: #0000a1;
 }
@@ -1178,7 +1229,7 @@ p.teiComment.noteLegend {
 .add_choice {
   position: absolute;
   top: -1.2em;
-  left: 0px;
+  left: 0;
 }
 
 .addSpan {
@@ -1367,11 +1418,12 @@ span.note_foot {
   padding-right: 0.2rem;
 }
 
-/*titelsidans omslag*/
+/*titelsidans omslag, definieras också någon annanstans i scss*/
 .tit_figure_graphic {
   max-width: 50%;
   display: block;
-  margin-left: 165px;
+  /* margin-left: 165px; */
+  margin:0 auto; /*centrera titelsidans bild*/
 }
 
 .pdf_figure_graphic {
@@ -1385,7 +1437,7 @@ h1.tei.title {
   font-weight: normal !important;
   color: #111;
   font-size: 1.5em !important;
-  margin: 1em 0em 1em 0em !important;
+  margin: 1em 0 !important;
 }
 
 h1.tei.poemtitle {
@@ -1394,7 +1446,7 @@ h1.tei.poemtitle {
   font-weight: normal !important;
   color: #111;
   font-size: 1.5em !important;
-  margin: 1em 0em 1em 0em !important;
+  margin: 1em 0 !important;
 }
 
 h1.tei.poemtitleFromMs,
@@ -1404,7 +1456,7 @@ h1.tei.poemtitleSuite {
   font-weight: normal !important;
   color: #111;
   font-size: 1.5em !important;
-  margin: 1em 0em 1em 0em !important;
+  margin: 1em 0 !important;
 }
 
 h2.tei.zts {
@@ -1413,37 +1465,38 @@ h2.tei.zts {
   text-align: center;
   font-weight: normal !important;
   color: gray;
-  margin: 1em 0em 1em 0em !important;
+  margin: 1em 0 !important;
 }
 
 h2.tei.section {
   text-align: center !important;
   font-weight: normal !important;
-  margin: 1em 0em 1em 0em !important;
+  margin: 1em 0 !important;
 }
 
 h2.tei.poemsection {
   font-style: italic;
   text-align: left;
   font-weight: normal !important;
-  margin: 1em 0em 1em 0em !important;
+  margin: 1em 0 !important;
 }
 
 h2.tei.section2 {
   font-style: italic;
   text-align: center;
   font-weight: normal !important;
-  margin: 1em 0em 1em 0em !important;
+  margin: 1em 0 !important;
 }
 
 h2.tei.poemsection2 {
   font-style: italic;
   text-align: left;
   font-weight: normal !important;
-  margin: 1em 0em 1em 0em !important;
+  margin: 1em 0 !important;
 }
 
 /* Style the button that is used to open and close the collapsible content */
+/* RADERA: torde vara en kvarleva från gamla eZTS
 .collapsibleToggler {
   background-color: #F0F0F0;
   color: #d47f00;
@@ -1454,24 +1507,27 @@ h2.tei.poemsection2 {
   outline: none;
   font-size: 1.3em;
   font-family: Georgia, serif;
-}
+} */
 
-/* Add a background color to the button when you move the mouse over it (hover) */
+/* Add a background color to the button when you move the mouse over it (hover)
 .collapsibleToggler:hover {
   background-color: #E8E8E8;
-}
+} */
 
-/* Style the collapsible content. Note: hidden by default */
+/* Style the collapsible content. Note: hidden by default
 .collapsibleContent {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
-}
+} */
 
 /* Style for adding a bottom border to table cells */
 .botBorder {
+  /*
   border-bottom-style: solid;
   border-bottom-width: 1px;
+  */
+  border-bottom: 1px solid #000;
 }
 
 .inl_ms_arrow {
@@ -1484,11 +1540,12 @@ h2.tei.poemsection2 {
   opacity: 1;
 }
 
-/*
- .item {
-     background-color: #f3f1ea !important;
- }
- */
+/*item i list ska inte ha bakgrundsfärg*/
+/* Regeln kör över den regel som definieras i variables.scss
+   men det är oklart vad den används till (införd här från custom.css)*/
+.item {
+	background-color: inherit !important;
+}
 
 
 
@@ -1503,8 +1560,8 @@ span.ttDel {
 }
 
 .tei p.note {
-  padding-left: 0px !important;
-  text-indent: 0px !important;
+  padding-left: 0 !important;
+  text-indent: 0 !important;
 }
 
 .tei.sub {

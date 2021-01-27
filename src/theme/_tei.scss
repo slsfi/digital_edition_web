@@ -40,8 +40,9 @@
         font-size: 1.15em !important;
     }
 
-    .comment {
-        font-size: 3em;
+    /*Regel för kommentarasteriskerna i lästexten / har lagt till img för att regeln inte ska tillämpas i kommentarkolumnen*/
+    img.comment {
+        /*font-size: 3em;*/
         cursor: pointer;
         vertical-align: top;
     }
@@ -81,14 +82,14 @@
 
     /* COMMON PARAGRAPHS */
     p.invisible {
-        height: 0px !important;
-        width: 0px !important;
+        height: 0 !important;
+        width: 0 !important;
         display:none;
     }
     p.personDesc, p.placeDesc, p.titleDesc {
         text-indent:0px !important;
         margin-bottom: 1em !important;
-        padding-bottom: 0px !important;
+        padding-bottom: 0 !important;
     }
     p.paragraphSpace {
         padding-bottom: 1.5em !important;
@@ -205,7 +206,7 @@
         display: inline-block;
     }
     p.strofeSpacing  {
-        padding-bottom: 0em;
+        padding-bottom: 0;
     }
     p.strofePadding {
         padding-left: 20px;
@@ -396,7 +397,7 @@
     }
     p.noteLegend
     {
-        text-indent: 0px !important;
+        text-indent: 0 !important;
         margin-bottom: 1em;
         font-size: 0.95em !important;
     }
@@ -481,7 +482,7 @@
     }
     .tei_tr_add {
         display: table-row;
-        line-height: 0px;
+        line-height: 0;
     }
     .delSpan {
         background-color: #a5a299;
@@ -588,10 +589,10 @@
     }
     .tei_add_margin {
         /*position: absolute;
-        left: 0px;
+        left: 0;
         width: 95px;
-        margin: 0px;
-        padding: 0px;*/
+        margin: 0;
+        padding: 0;*/
         color: #0000a1;
         padding: 15px;
     }
@@ -637,12 +638,12 @@
     .tei_add_choice_noIndent {
         position: absolute;
         top: -1.2em;
-        left: 0px;
+        left: 0;
     }
     .tei_add_choice_noIndent_sublinear {
         position: absolute;
         top: 1.5em;
-        left: 0px;
+        left: 0;
     }
     .addSpan {
         color: #0000a1;
@@ -813,13 +814,16 @@
 
     // these will be svg
     img.tooltiptrigger {
-        height: 10px;
+        height: 10px !important;
         width: 10px;
         position: relative;
         top: 4px;
-        left: 0px;
+        left: 0;
+        /*
         margin-right: 3px;
         margin-left: 3px;
+        */
+        margin: 0 !important;
     }
 
 }
@@ -840,6 +844,7 @@
 
 .tei.show_personInfo    span.person {background-color: $persName-color;}
 .tei.show_personInfo    span.person[id] {cursor:pointer;}
+/*ovanstående sätt att visa cursor:pointer fungerar inte*/
 
 .tei.show_placeInfo    span.placeName {background-color: $placeName-color;}
 .tei.show_placeInfo    span.placeName[id] {cursor:pointer;}
@@ -881,11 +886,40 @@
 .tei.show_pageNumbering     span.lNumber {display: inline;}
 
 .tei                        span.paragraph_number {display: none}
-.tei.show_pageNumbering     span.paragraph_number {display: block; position: absolute; margin-left: -40px; text-align: right; width:30px;}
+.tei.show_pageNumbering     span.tei.paragraph_number,
+.tei.show_pageNumbering     span.paragraph_number {
+    display: block;
+    position: absolute;
+    /*
+    margin-left: -40px;
+    text-align: right;
+    */
+    margin-left: -35px;
+    text-align: left;
+    width: 30px;
+    font-size: 0.7rem;
+	text-indent: 0;
+	color: #000;
+}
 
 .tei.show_pageBreakOriginal     span.pb_orig {color: $pageBreakOriginal-color; display: contents; position: absolute; margin-left: -40px; text-align: right; width:30px;}
 .tei.show_pageBreakEdition     span.pb_zts { color: $pageBreakEdition-color; display: contents; position: absolute; margin-left: -40px; text-align: right; width:30px;}
 
+/*ändra pekaren till en hand över personer och platser när visningsalternativen är påslagna eftersom dessa går att klicka på för att öppna registren*/
+.tei.show_personInfo span.person.tooltiptrigger, 
+.tei.show_placeInfo span.placeName.tooltiptrigger,
+.tei.show_workInfo span.title.tooltiptrigger {
+	cursor: pointer;
+}
+
+/* Vänster padding för lästext och inledning när styckenumreringen visas */
+read-text .tei.show_pageNumbering, 
+page-introduction .tei.show_pageNumbering {
+	padding-left: 20px;
+}
+page-introduction .tei.show_pageNumbering {
+	margin-left: 5px;
+}
 
 
 .tei a.anchor, .tei a.anchor:hover {color: inherit; }
@@ -895,100 +929,114 @@
 .tei.largeFont              p { font-size: 1.6rem; line-height: 2rem;}
 .tei.mediumFont              p { font-size: 1.2rem; line-height: 1.8rem;}
 
-@media only screen and (max-width: 600px) { div.tei{ max-width: 300px; } }
-@media only screen and (min-width: 800px) { div.tei{ max-width: 670px; } }
+@media only screen and (max-width: 600px) {
+    div.tei {
+        max-width: 300px;
+    }
+}
+@media only screen and (min-width: 600px) {
+    div.tei {
+        /*
+        max-width: 670px;
+        */
+        max-width: 650px;
+    }
+    page-introduction div.tei.show_pageNumbering {
+        max-width: 675px;
+    }
+}
 
 h3.tei.chapter {
 	font-style: italic;
 	text-align: center;
 	font-weight: normal !important;
-	margin:1.3em 0em 1em 0em !important;
+	margin:1.3em 0 1em 0 !important;
 	font-size:1.4em !important;
 }
 h3.tei.poem {
 	font-style: italic;
 	text-align: left;
 	font-weight: normal !important;
-	margin:1.3em 0em 1em 0em !important;
+	margin:1.3em 0 1em 0 !important;
 }
 h3.tei.poemdiary {
 	font-style: italic;
 	text-align: left;
 	font-weight: normal !important;
-	margin:1.3em 0em 1em 0em !important;
+	margin:1.3em 0 1em 0 !important;
 	margin-left: 30px !important;
 	text-indent: -15px;
 }
 h3.tei.ms {
 	text-align: left;
 	font-weight: normal !important;
-	margin:1.3em 0em 1em 0em !important;
+	margin: 1.3em 0 1em 0 !important;
 }
 h3.tei.diary {
 	font-variant:small-caps;
 	text-align: center;
 	font-weight: normal !important;
-	margin:1.3em 0em 1em 0em !important;
+	margin: 1.3em 0 1em 0 !important;
 }
 h4.tei.sub {
 	font-style: italic;
 	text-align: center;
 	font-weight: normal !important;
-	margin:0.7em 0em 1em 0em !important;
-	font-size:1.25em !important;
+	margin: 0.7em 0 1em 0 !important;
+	font-size: 1.25em !important;
 }
 h4.tei.poemsub {
 	font-style: italic;
 	text-align: left;
 	font-weight: normal !important;
-	margin:0.8em 0em 1em 0em !important;
+	margin: 0.8em 0 1em 0 !important;
 }
 
 h4.tei.poemsubdiary {
 	font-style: italic;
 	text-align: left;
 	font-weight: normal !important;
-	margin:0.8em 0em 1em 0em !important;
+	margin: 0.8em 0 1em 0 !important;
 	margin-left: 30px !important;
 	text-indent: -15px;
 }
 h4.tei.mssub {
 	text-align: left;
 	font-weight: normal !important;
-	margin:0.8em 0em 1em 0em !important;
+	margin: 0.8em 0 1em 0 !important;
 }
 h4.tei.academicsub {
 	font-style: italic;
 	text-align: center;
 	font-weight: normal !important;
-	margin:1em 0em 0.7em 0em !important;
-	font-size:1.3em !important;
+	margin: 1em 0 0.7em 0 !important;
+	font-size: 1.3em !important;
 }
 h5.tei.motto {
 	font-style: italic;
 	text-align: right;
 	font-weight: normal !important;
-	margin:0.5em 0em 0.7em 0em !important;
-	font-size:1.1em !important;
+	margin: 0.5em 0 0.7em 0 !important;
+	font-size: 1.1em !important;
 }
 h5.tei.poemmotto {
 	font-style: italic;
 	text-align: left;
 	font-weight: normal !important;
-	margin:0.5em 0em 1.2em 0em !important;
+	margin: 0.5em 0 1.2em 0 !important;
 }
 h5.tei.sub2est {
 	font-style: italic;
 	text-align: center;
 	font-weight: normal !important;
-	margin:0.6em 0em 0.8em 0em !important;
-	font-size:1.1em !important;
+	margin: 0.6em 0 0.8em 0 !important;
+	font-size: 1.1em !important;
 }
 h5.tei.poemsub2 {
 	font-style: italic;
 	text-align: left;
 	font-weight: normal !important;
-	margin:0.6em 0em 0.8em 0em !important;
+	margin: 0.6em 0 0.8em 0 !important;
 }
 h6.tei.sub3 {
 	font-style: italic;
@@ -996,7 +1044,7 @@ h6.tei.sub3 {
 	font-weight: normal !important;
 	font-family: Georgia, serif;
 	font-size: 1.1em !important;
-	margin:0.5em 0em 0.8em 0em !important;
+	margin: 0.5em 0 0.8em 0 !important;
 }
 h6.tei.poemsub3 {
 	font-style: italic;
@@ -1004,7 +1052,7 @@ h6.tei.poemsub3 {
 	font-weight: normal !important;
 	font-family: Georgia, serif;
 	font-size: 1.1em !important;
-	margin:0.5em 0em 0.8em 0em !important;
+	margin: 0.5em 0 0.8em 0 !important;
 }
 h6.tei.motto2 {
 	font-style: italic;
@@ -1012,7 +1060,7 @@ h6.tei.motto2 {
 	font-family: Georgia, serif;
 	font-weight: normal !important;
 	font-size: 1.1em !important;
-	margin:0.5em 0em 0.5em 0em !important;
+	margin: 0.5em 0 0.5em 0 !important;
 }
 h6.tei.poemmotto2 {
 	font-style: italic;
@@ -1020,16 +1068,15 @@ h6.tei.poemmotto2 {
 	font-family: Georgia, serif;
 	font-weight: normal !important;
 	font-size: 1.1em !important;
-	margin:0.5em 0em 0.5em 0em !important;
+	margin: 0.5em 0 0.5em 0 !important;
 }
 .blackletter {
 	font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif !important;
 }
+
+.pb_orig,
 .pb_zts {
-	font-size: 0.9em;
-}
-.pb_orig {
-	font-size: 0.9em;
+	font-size: 0.9rem;
 }
 
 /*titelsidans verktitel*/
@@ -1051,7 +1098,7 @@ td, th {
     padding-top: 1px;
     padding-right: 5px;
     padding-bottom: 2px;
-    padding-left: 0px;
+    padding-left: 0;
 }
 /* Den okände von Wright, tidslinje-tabell i markdown*/
 /* feta den första kolumnen */
@@ -1104,7 +1151,8 @@ span.description {
 	color: #666;
 }
 
-/*inledningens toc: rubrikerna*/
+/*inledningens toc: rubrikerna
+  RADERA: definieras i introduction.scss
 page-introduction #TOC h2.contentSection.smallCaps {
     font-size: 1.2em;
     padding-left: 1em;
@@ -1125,12 +1173,12 @@ page-introduction #TOC h5.tei.contentSub2 {
 }
 page-introduction #TOC p {
 	line-height: .1em;
-}
+}*/
 
 /*ms med lg: inte extra stort radavstånd, inte indrag på första raden av strofen*/
 p.teiManuscript.strofe[class*=lg] {
 	line-height: 180% !important;
-	text-indent: 0px !important;
+	text-indent: 0 !important;
 }
 
 /*normaliseringar hade tooltip men ingen färg*/
@@ -1165,8 +1213,8 @@ h3.tei.titleBottomMargin {
 
 /* COMMON PARAGRAPHS */
 p.invisible {
-	height: 0px !important;
-	width: 0px !important;
+	height: 0 !important;
+	width: 0 !important;
 }
 /*p.invisiblelg {
 	margin-bottom: 1em !important;
@@ -1175,7 +1223,7 @@ p.invisible {
 p.personDesc, p.placeDesc, p.titleDesc {
 	text-indent:0px !important;
 	margin-bottom: 1em !important;
-	padding-bottom: 0px !important;
+	padding-bottom: 0 !important;
 }
 p.paragraphSpace {
 	padding-bottom: 1.5em !important;
@@ -1231,26 +1279,26 @@ p.underline, h3.underline {
 }
 p.label_margin {
     float: right;
-    text-indent: 0px !important;
+    text-indent: 0 !important;
 }
 p.label_above {
     margin-left: 60px;
-    text-indent: 0px !important;
+    text-indent: 0 !important;
     margin-top: 0.2em;
     margin-bottom: 0.4em;
 }
 span.labelledLines_before {
     margin-left: -80px !important;
-    text-indent: 0px !important;
+    text-indent: 0 !important;
     position:absolute;
 }
 span.labelledLines_after {
     float: right;
-    text-indent: 0px !important;
+    text-indent: 0 !important;
 }
 span.labelledLines_before_F {
     margin-left: -200px !important;
-    text-indent: 0px !important;
+    text-indent: 0 !important;
     position:absolute;
 }
 p.l.labelledLines_before {
@@ -1435,17 +1483,17 @@ span.figure {
     display: inline-block;
     margin-top: 0.5em !important;
     margin-bottom: 0.5em !important;
-    text-indent: 0em !important;
+    text-indent: 0 !important;
 }
 .tei .parIndent {
 	text-indent:30px !important;
 	padding-left: 30px;
 	padding-right: 30px;
-	padding-bottom: 0px !important;
-	margin-top: 0px !important;
+	padding-bottom: 0 !important;
+	margin-top: 0 !important;
 }
 :not(.parIndent) + .parIndent.noIndent {
-	text-indent: 0px !important;
+	text-indent: 0 !important;
 	padding-left: 30px;
 	padding-right: 30px;
 	margin-top: 1em !important;
@@ -1616,11 +1664,11 @@ a.ref_variant img {
 /* KOMMENTARER */
 .tei p.note {
 	cursor: pointer;
-	padding-left: 0px !important;
+	padding-left: 0 !important;
 }
 p.teiComment.noteLegend
 {
-	text-indent: 0px !important;
+	text-indent: 0 !important;
 	margin-bottom: 0.5em !important;
 	font-size: 0.95em !important;
 }
@@ -1700,7 +1748,7 @@ p.teiComment.noteLegend
 }
 .tei_tr_add {
     display: table-row;
-    line-height: 0px;
+    line-height: 0;
 }
 .delSpan {
 	background-color: #a5a299;
@@ -1746,10 +1794,10 @@ p.teiComment.noteLegend
 }
 .add_margin {
 	/*position: absolute;
-	left: 0px;
+	left: 0;
 	width: 95px;
-	margin: 0px;
-	padding: 0px;*/
+	margin: 0;
+	padding: 0;*/
 	color: #0000a1;
 }
 .add_over {
@@ -1772,7 +1820,7 @@ p.teiComment.noteLegend
 .add_choice {
 	position: absolute;
 	top: -1.2em;
-	left: 0px;
+	left: 0;
 }
 .addSpan {
 	color: #0000a1;
@@ -1962,7 +2010,7 @@ h1.tei.title {
 	font-weight: normal !important;
 	color: #111;
 	font-size:1.5em !important;
-	margin:1em 0em 1em 0em !important;
+	margin:1em 0 1em 0 !important;
 }
 h1.tei.poemtitle {
 	font-variant:small-caps;
@@ -1970,7 +2018,7 @@ h1.tei.poemtitle {
 	font-weight: normal !important;
 	color: #111;
 	font-size:1.5em !important;
-	margin:1em 0em 1em 0em !important;
+	margin:1em 0 1em 0 !important;
 }
 h1.tei.poemtitleFromMs, h1.tei.poemtitleSuite {
 	font-style: italic;
@@ -1978,7 +2026,7 @@ h1.tei.poemtitleFromMs, h1.tei.poemtitleSuite {
 	font-weight: normal !important;
 	color: #111;
 	font-size:1.5em!important;
-	margin:1em 0em 1em 0em !important;
+	margin:1em 0 1em 0 !important;
 }
 h2.tei.zts {
 	font-variant: small-caps;
@@ -1986,29 +2034,29 @@ h2.tei.zts {
 	text-align: center;
 	font-weight: normal !important;
 	color: gray;
-	margin:1em 0em 1em 0em !important;
+	margin:1em 0 1em 0 !important;
 }
 
 h2.tei.section {
 	text-align: center !important;
 	font-weight: normal !important;
-	margin:1em 0em 1em 0em !important;
+	margin:1em 0 1em 0 !important;
 }
 h2.tei.poemsection {
 	font-style: italic;
 	text-align: left;
 	font-weight: normal !important;
-	margin:1em 0em 1em 0em !important;
+	margin:1em 0 1em 0 !important;
 }
 h2.tei.section2 {
 	font-style: italic;
 	text-align: center;
 	font-weight: normal !important;
-	margin:1em 0em 1em 0em !important;
+	margin:1em 0 1em 0 !important;
 }
 h2.tei.poemsection2 {
 	font-style: italic;
 	text-align: left;
 	font-weight: normal !important;
-	margin:1em 0em 1em 0em !important;
+	margin:1em 0 1em 0 !important;
 }
