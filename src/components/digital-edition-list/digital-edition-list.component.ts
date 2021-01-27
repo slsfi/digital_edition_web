@@ -29,6 +29,8 @@ export class DigitalEditionList implements OnInit {
   pdfsAreDownloadOnly = false;
   tocItems: GeneralTocItem[];
   hasCover = true;
+  hasIntro = true;
+  hasTitle = true;
   hideBooks = false;
   collectionSortOrder: any;
 
@@ -55,6 +57,16 @@ export class DigitalEditionList implements OnInit {
       this.hasCover = this.config.getSettings('HasCover');
     } catch (e) {
       this.hasCover = true;
+    }
+    try {
+      this.hasTitle = this.config.getSettings('HasTitle');
+    } catch (e) {
+      this.hasTitle = true;
+    }
+    try {
+      this.hasIntro = this.config.getSettings('HasIntro');
+    } catch (e) {
+      this.hasIntro = true;
     }
     try {
       this.collectionSortOrder = this.config.getSettings('app.CollectionSortOrder');
@@ -240,8 +252,8 @@ export class DigitalEditionList implements OnInit {
   }
 
   openCollection(collection: DigitalEdition, animate = true) {
-    if (!collection.isDownload) {
-      if (this.hasCover === false) {
+    if ( collection.isDownload === undefined && !collection.isDownload) {
+      if (this.hasCover === false && this.hasIntro === false  && this.hasTitle === false) {
         this.getTocRoot(collection);
       } else {
         this.events.publish('digital-edition-list:open', collection);
