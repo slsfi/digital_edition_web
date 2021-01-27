@@ -1,5 +1,5 @@
 <ion-item *ngIf="showBackButton" class="collection-name-top" no-lines>
-    <ion-label>{{collectionName}}</ion-label>
+    <ion-label>{{collectionName | translate}}</ion-label>
 </ion-item>
 <ion-item *ngIf="showBackButton" (click)="exit()" class="back-to-list-button collections" no-lines>
     <ion-icon name="ios-arrow-back" item-left small></ion-icon>
@@ -20,13 +20,13 @@
         </ion-item>
     </ng-container>
     <ion-item *ngIf="hasCover && collectionName != 'About'" [ngClass]="coverSelected?'selected-toc-item':''">
-        <p class="justLevel" (click)="openCoverPage()">{{ "Read.CoverPage.Title" | translate }}</p>
+        <p class="justLevel" (click)="openCoverPage(collectionId)">{{ "Read.CoverPage.Title" | translate }}</p>
     </ion-item>
     <ion-item *ngIf="hasTitle && collectionName != 'About'" [ngClass]="titleSelected?'selected-toc-item':''">
-        <p class="justLevel" (click)="openTitlePage()">{{ "Read.TitlePage.Title" | translate }}</p>
+        <p class="justLevel" (click)="openTitlePage(collectionId)">{{ "Read.TitlePage.Title" | translate }}</p>
     </ion-item>
     <ion-item *ngIf="hasIntro && collectionName != 'About' && collectionId != 'mediaCollections'" [ngClass]="introductionSelected?'selected-toc-item':''">
-        <p class="justLevel" (click)="openIntroduction()">{{ "Read.Introduction.Title" | translate }}</p>
+        <p class="justLevel" (click)="openIntroduction(collectionId)">{{ "Read.Introduction.Title" | translate }}</p>
     </ion-item>
     <ion-list *ngIf="collectionId !== 'songtypes'" no-margin>
         <ng-template #recursiveList let-list>

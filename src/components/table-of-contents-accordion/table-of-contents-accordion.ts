@@ -736,6 +736,9 @@ export class TableOfContentsAccordionComponent {
     if (this.isMarkdown) {
       this.selectMarkdown(item);
     } else if (item.is_gallery) {
+      this.titleSelected = false;
+      this.introductionSelected = false;
+      this.coverSelected = false;
       this.selectGallery(item);
     } else if ( item.itemId !== undefined ) {
 
@@ -854,9 +857,9 @@ export class TableOfContentsAccordionComponent {
     }
   }
 
-  openIntroduction() {
+  openIntroduction(id) {
     const params = {root: this.root, tocItem: null, collection: {title: 'Introduction'}};
-    params['collectionID'] = this.collectionId;
+    params['collectionID'] = id;
     this.introductionSelected = true;
     this.titleSelected = false;
     this.coverSelected = false;
@@ -868,9 +871,9 @@ export class TableOfContentsAccordionComponent {
     }
   }
 
-  openTitlePage() {
+  openTitlePage(id) {
     const params = {root: this.root, tocItem: null, collection: {title: 'Title Page'}};
-    params['collectionID'] = this.collectionId;
+    params['collectionID'] = id;
     params['firstItem'] = '1';
     this.titleSelected = true;
     this.coverSelected = false;
@@ -883,9 +886,9 @@ export class TableOfContentsAccordionComponent {
     }
   }
 
-  openCoverPage() {
+  openCoverPage(id) {
     const params = {root: this.root, tocItem: null, collection: {title: 'Cover Page'}};
-    params['collectionID'] = this.collectionId;
+    params['collectionID'] = id;
     params['firstItem'] = '1';
     this.titleSelected = false;
     this.coverSelected = true;
