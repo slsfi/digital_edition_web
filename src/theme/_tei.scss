@@ -1,6 +1,43 @@
+@media only screen and (max-width: 600px) {
+    div.tei {
+        max-width: 100%;
+    }
+}
+@media only screen and (min-width: 600px) {
+    div.tei {
+        /*
+        max-width: 670px;
+        */
+        max-width: 650px;
+    }
+    page-introduction div.tei.show_pageNumbering {
+        max-width: 675px;
+    }
+}
+@media screen and (max-width: 800px) {
+    div.tei {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+}
+@media screen and (max-width: 480px) {
+    div.tei {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+}
+/* Padding below the columns so their height won't end precisely after the texts. */
+page-introduction div.tei, 
+read-text div.tei, 
+comments div.tei, 
+variations div.tei, 
+manuscripts div.tei {
+    padding-bottom: 20vh;
+}
+
 .tei {
 
-    font-family: "Muli", serif !important;
+    font-family: "Muli", serif !important; /*borde definieras via en variabel*/
 
     white-space: normal;
 
@@ -23,11 +60,11 @@
         padding-top: 10px;
     }
     h3.poemtitle, h3.lettertitle {
-        font-variant:small-caps;
+        font-variant: small-caps;
         font-weight: normal !important;
     }
     h1.poemtitle, h1.lettertitle {
-        font-variant:small-caps;
+        font-variant: small-caps;
         font-weight: normal !important;
         font-size: 1.5em;
     }
@@ -62,7 +99,7 @@
         font-weight: normal !important;
     }
     p.authorHeader {
-        text-indent:0px !important;
+        text-indent: 0 !important;
         margin-bottom: 0.5em;
     }
     h3.shortstory {
@@ -84,10 +121,10 @@
     p.invisible {
         height: 0 !important;
         width: 0 !important;
-        display:none;
+        display: none;
     }
     p.personDesc, p.placeDesc, p.titleDesc {
-        text-indent:0px !important;
+        text-indent: 0 !important;
         margin-bottom: 1em !important;
         padding-bottom: 0 !important;
     }
@@ -97,7 +134,7 @@
     /*p.letterStatus {
         position: absolute;
         top: 21px;
-        text-indent:0px !important;
+        text-indent: 0 !important;
     }*/
     .topMargin {
         margin-top: 1em;
@@ -107,14 +144,14 @@
     }
     p.dateline
     {
-        margin-top: 1.0em;
-        margin-bottom: 1.0em;
+        margin-top: 1em;
+        margin-bottom: 1em;
     }
     p.underline {
         font-style: italic;
     }
     h3.underline {
-            text-decoration: underline;
+        text-decoration: underline;
     }
     span.writer {
         font-size: 12px;
@@ -159,63 +196,86 @@
     }
     .stamp, .print {
         font-family: $font-stamp-print-tei;
-        letter-spacing:1px;
+        letter-spacing: 1px;
 
     }
     .left {
         text-align: left !important;
-        text-indent:0px !important;
+        text-indent: 0 !important;
     }
     .center {
         text-align: center;
-        text-indent:0px !important;
+        text-indent: 0 !important;
     }
-    .center img{
+    .center img {
         height: 1em;
     }
     .right {
         text-align: right;
-        text-indent:0px !important;
+        text-indent: 0 !important;
         margin-bottom: 1em;
     }
     .img_left {
-        float:left;
+        float: left;
         padding-right: 8px;
     }
     .img_right {
-        float:right;
+        float: right;
         padding-left: 8px;
     }
     p.strofe {
-        text-indent:0px !important;
+        text-indent: 0 !important;
         padding-bottom: 1em !important;
+        margin-top: 1em !important;
     }
     p.l {
         margin-left: 30px !important;
-        text-indent:-30px !important;
+        text-indent: -30px !important;
         margin-top: 0;
         margin-bottom: 0;
     }
     p.lIndent
     {
-        text-indent:-9px !important;
+        text-indent: -9px !important;
     }
     .tei_indent
     {
-        padding-left:30px !important;
+        padding-left: 30px !important;
         display: inline-block;
     }
     p.strofeSpacing  {
-        padding-bottom: 0;
+        /*padding-bottom: 0;*/
+        padding-bottom: 1em !important;
     }
     p.strofePadding {
         padding-left: 20px;
     }
+    /*
     p.milestoneWhen, p.milestonePart {
         font-size: 0.9em !important;
         color: gray;
         background-color: #d2ccbf;
         margin-bottom: 1em !important;
+    }
+    */
+    p.milestoneWhen, p.milestonePart {
+        font-size: 1em !important;
+        font-family: Georgia, serif;
+        color: gray;
+        background-color: #d2ccbf;
+        margin-top: 0.8em !important;
+        margin-bottom: 0.8em !important;
+        line-height: 1.5em !important;
+    }
+    span.milestoneWhen, span.milestonePart {
+        display: block;
+        font-size: 1em !important;
+        font-family: Georgia, serif;
+        color: gray;
+        background-color: #d2ccbf;
+        margin-top: 0.8em !important;
+        margin-bottom: 0.8em !important;
+        line-height: 1.5em !important;
     }
     p.teiOpener {
         margin-bottom: 1.5em !important;
@@ -225,22 +285,24 @@
         margin-bottom: 1.5em !important;
     }
     .noIndent {
-        text-indent:0px !important;
+        text-indent: 0 !important;
     }
+    /*
     .parIndent {
-        text-indent:0px !important;
+        text-indent: 0 !important;
         padding-left: 30px;
         padding-right: 30px;
         margin-top: 1em !important;
         padding-bottom: 1em !important;
-    }
+    }*/
     .parHalfIndent {
-        text-indent:0px !important;
+        text-indent: 0 !important;
         padding-left: 15px;
     }
     .halfLinePadding {
         padding-bottom: 0.5em !important;
     }
+    /*
     div.comment_background h3 {
         color: #55524c;
         font-size: 0.95em;
@@ -253,19 +315,22 @@
         color: #55524c;
         font-size: 0.95em;
     }
+    */
     p.footnote {
-        text-indent:0px !important;
+        text-indent: 0 !important;
         padding-bottom: 0.5em !important;
     }
 
     /* COMMON SPANS */
+    /*
     span.lNumber {
-        position:absolute;
-        width:18px;
-        color:#a9a49a;
+        position: absolute;
+        width: 18px;
+        color: #a9a49a;
 
         margin-left: -20px;
     }
+    */
 
     span.personDesc, span.placeDesc {
         cursor: pointer;
@@ -280,11 +345,12 @@
     }
     .raised {
         vertical-align: 20%;
+        line-height: 0.5em;
         font-size: 0.8em;
     }
 
     /* Maintext will show raised text differently */
-    /*.mainText .raised:before, .mainText .sup:before {
+    /*.mainText .raised::before, .mainText .sup::before {
         content: ":";
     }
     .mainText .raised, .mainText .sup {
@@ -301,9 +367,11 @@
     .italicsTT {
         font-style: italic;
     }
+    /*
     .small {
         font-size: 0.9em !important;
     }
+    */
 
     .expanded {
         /* Changed this to italics
@@ -313,7 +381,9 @@
     .expandedTT {
         letter-spacing: 2px;
     }
-
+    .trueexpanded {
+        letter-spacing: 2px;
+    }
     .expanded.italics {
         letter-spacing: 2px;
         font-style: italic;
@@ -368,9 +438,6 @@
         font-style: italic;
         font-size: 100%;
     }
-    .raised {
-        vertical-align: 20%;
-    }
     .segment {
     }
     .anchor_lemma {
@@ -378,7 +445,7 @@
         font-weight: bold;
     }
     a.textreference {
-        color: black!important;
+        color: #000 !important;
     }
     a.ref_variant img {
         position: relative;
@@ -389,20 +456,39 @@
     }*/
 
 
-    /* KOMMENTARER */
+    /* KOMMENTARER -- stilar definieras också i components/comments */
+    /*
     p.note {
         cursor: pointer;
         padding-left: 30px !important;
         text-indent: -30px !important;
     }
+    
     p.noteLegend
     {
         text-indent: 0 !important;
         margin-bottom: 1em;
         font-size: 0.95em !important;
     }
+    */
+    .tei p.note {
+        cursor: pointer;
+        padding-left: 0 !important;
+    }
+    p.teiComment.noteLegend {
+        text-indent: 0 !important;
+        margin-bottom: 0.5em !important;
+        font-size: 0.95em !important;
+    }
+    /*
     .notePosition {
         font-weight: bold;
+    }
+    */
+    .notePosition {
+        font-weight: normal !important;
+        font-size: 0.8rem;
+        font-style: italic;
     }
     .noteLemma {
         font-style: italic;
@@ -410,11 +496,11 @@
     .lemmaBreak {
         font-style: normal !important;
     }
-    .notePosition:after {
-        content:" ";
+    .notePosition::after {
+        content: " ";
     }
-    .noteLemma:after {
-        content:" – ";
+    .noteLemma::after {
+        content: " – ";
     }
     .noteText {
 
@@ -434,6 +520,9 @@
     .space {
         color: #990202;
     }
+    .substitution {
+        color: #0000a1;
+    }
     .tei_substitution_zts {
         color: #0000a1;
     }
@@ -448,6 +537,7 @@
         position: relative;
         width: 100%;
     }*/
+    /*
     .tei_subst_table {
         display: inline-table;
         position: relative;
@@ -455,6 +545,16 @@
         left: -60px;
         font-style: inherit;
         margin-right: -60px;
+        margin-bottom: -1em;
+    }
+    */
+    .tei_subst_table {
+        display: inline-table;
+        position: relative;
+        padding: 0;
+        left: -4.8em;
+        font-style: inherit;
+        margin-right: -4.8em;
         margin-bottom: -1em;
     }
     .tei_subst_table_noIndent {
@@ -468,10 +568,17 @@
         display: table-cell;
         position: relative;
     }
+    /*
     .tei_td_add {
         display: table-cell;
         position: relative;
         top: -2.2em;
+    }
+    */
+    .tei_td_add {
+        display: table-cell;
+        position: relative;
+        top: -1.9em;
     }
     .tei_td_add_sublinear {
         display: table-cell;
@@ -514,7 +621,17 @@
         background-color: #a3b550;
         display: inline-block;
     }
-    .tei_del_in_del{
+    .deletion {
+        text-decoration: line-through;
+    }
+    .deletion_strikethrough {
+        text-decoration: line-through;
+        background-color: #a5a299;
+    }
+    .deletion_subst {
+        text-decoration: line-through;
+    }
+    .tei_del_in_del {
         position: relative;
     }
     .tei_deletion {
@@ -532,7 +649,8 @@
     .tei_deletion_del {
         text-decoration: none;
         color: color($colors, dark);
-    }.tei_deletion_del_add {
+    }
+    .tei_deletion_del_add {
         text-decoration: none;
         color: #0000a1;
     }
@@ -540,7 +658,7 @@
         text-decoration: line-through;
         color: color($colors, dark);
     }
-    .tei_deletion_del:after {
+    .tei_deletion_del::after {
         content: ' ';
         position: absolute;
         border-top: 1px solid #000;
@@ -548,7 +666,7 @@
         left: 0;
         right: 0;
     }
-    .tei_deletion_del_add:after {
+    .tei_deletion_del_add::after {
         content: ' ';
         position: absolute;
         border-top: 1px solid #000;
@@ -556,7 +674,7 @@
         left: 0;
         right: 0;
     }
-    .tei_deletion_del_subst:after {
+    .tei_deletion_del_subst::after {
         content: ' ';
         position: absolute;
         border-top: 1px solid #000;
@@ -572,16 +690,28 @@
         text-decoration: line-through;
         color: #a66e37 !important;
     }
+    /*
     .tei_deletion_medium_wrapper {
         text-decoration: line-through;
         color: #606b2f !important;
     }
+    */
+    .tei_deletion_medium_wrapper {
+        text-decoration: line-through;
+        color: #008100 !important;
+    }
     .tei_restore_editorial_wrapper {
         border-bottom: 1px dashed #a66e37;
     }
+    /*
     .tei_deletion_editorial {
         text-decoration: none;
         color: color($colors, dark);
+    }
+    */
+    .tei_deletion_editorial {
+        text-decoration: none;
+        color: #000000;
     }
     .tei_deletion_add_editorial {
         text-decoration: none;
@@ -600,9 +730,9 @@
         margin-right: 3px;
     }
     .tei_add_over_zts {
-        /*position:absolute;
-        top:-11pt;
-        left:0px;*/
+        /*position: absolute;
+        top: -11pt;
+        left: 0;*/
         vertical-align: super;
         color: #0000a1;
     }
@@ -618,7 +748,7 @@
     .tei_add_inline {
         color: #6262e6 !important;
     }
-    .tei_add_in_add:before {
+    .tei_add_in_add::before {
         content: ' | ';
         color: #990202 !important;
     }
@@ -708,11 +838,11 @@
         padding-left: 15px;
         padding-right: 15px;
     }
-    .tei_hi_editorial_wrapper{
+    .tei_hi_editorial_wrapper {
         text-decoration: underline;
         color: #a66e37 !important;
     }
-    .tei_hi_editorial{
+    .tei_hi_editorial {
         text-decoration: none;
         color: color($colors, dark);
     }
@@ -724,6 +854,7 @@
     }
 
     /* VARIANTS */
+    /*
     span.lemma
     {
         background-color: #c1bac1;
@@ -761,6 +892,69 @@
         border: 1px solid #990202;
         border-radius: 3px;
         background-color: #e6e6e0;
+    }
+    */
+    .lemma {
+        background-color: #fff1b9 !important;
+    }
+    div.lemma {
+        display: inline-block;
+    }
+    .variant {
+        background-color: #C5C5C5 !important;
+    }
+    div.variant {
+        display: inline-block;
+    }
+    .orthographic {
+        background-color:  #eee6ff !important;
+    }
+    div.orthographic {
+        display: inline-block;
+    }
+    .substantial {
+        background-color: #fee0e2 !important;
+    }
+    div.substantial {
+        display: inline-block;
+    }
+    .interpunction {
+        background-color: #dbf0ec !important;
+    }
+    div.interpunction {
+        display: inline-block;
+    }
+    .identical {
+        background-color: #fff1b9 !important;
+    }
+    div.identical {
+        display: inline-block;
+    }
+    .typographic {
+        background-color: #f6e65b !important;
+    }
+    div.typographic {
+        display: inline-block;
+    }
+    .error {
+        background-color: #daecf1 !important;
+    }
+    div.error {
+        display: inline-block;
+    }
+    .var_bold {
+        font-weight: bold;
+    }
+    span.extVariantsTrigger {
+        color: #990202;
+        cursor: pointer;
+    }
+    span.extVariants {
+        display: none;
+        padding: 3px;
+        border: 1px solid #990202;
+        border-radius: 3px;
+        background-color: #E8E3D4;
     }
 
     /* CALENDAR */
@@ -831,11 +1025,11 @@
 
 /*** Advanced mode styles */
 
-.tei                .ttChanges {display:inline;}
+.tei                .ttChanges {display: inline;}
 .tei.show_changes   .ttChanges {display: inline;}
-.tei                .tooltip.ttChanges {display:none;}
+.tei                .tooltip.ttChanges {display: none;}
 
-.tei                img.comment {display:none;}
+.tei                img.comment {display: none;}
 .tei.show_comments  img.comment {display: inline-block;}
 
 .tei                span.reg_hide {display: none;}
@@ -843,14 +1037,14 @@
 .tei.show_regStyle  span.reg {background-color: color($colors, primary); cursor: default;}
 
 .tei.show_personInfo    span.person {background-color: $persName-color;}
-.tei.show_personInfo    span.person[id] {cursor:pointer;}
+.tei.show_personInfo    span.person[id] {cursor: pointer;}
 /*ovanstående sätt att visa cursor:pointer fungerar inte*/
 
 .tei.show_placeInfo    span.placeName {background-color: $placeName-color;}
-.tei.show_placeInfo    span.placeName[id] {cursor:pointer;}
+.tei.show_placeInfo    span.placeName[id] {cursor: pointer;}
 
 .tei.show_workInfo    span.title {background-color: $workTitle-color;}
-.tei.show_workInfo    span.title[id] {cursor:pointer;}
+.tei.show_workInfo    span.title[id] {cursor: pointer;}
 
 .tei                     span.corr_hide {display: none;}
 .tei.show_choiceStyle    span.corr_hide {display: inherit;}
@@ -871,29 +1065,28 @@
 .tei.show_changes         span.tei.corr {background-color: $changes-color; cursor: default;}
 
 .tei.show_placeStyle        span.placeName {background-color: color($colors, light);}
-.tei.show_placeStyle        span.placeName[id] {cursor:pointer;}
+.tei.show_placeStyle        span.placeName[id] {cursor: pointer;}
 
 .tei.show_foreignStyle      .foreign {background-color: color($colors, light); cursor: default;}
 
 .tei.show_titleStyle        span.title {background-color: $workTitle-color;}
-.tei.show_titleStyle        span.title[id] {cursor:pointer;}
+.tei.show_titleStyle        span.title[id] {cursor: pointer;}
 
 .tei                        .pb_zts {display: none;}
+/* .show_pbztsStyle verkar inte användas
 .tei.show_pbztsStyle        .pb_zts {display: inherit;}
 .tei.show_pbztsStyle        .pb_zts {color: $pageBreakEdition-color;}
+*/
 
-.tei                        span.lNumber {display: none;}
-.tei.show_pageNumbering     span.lNumber {display: inline;}
-
-.tei                        span.paragraph_number {display: none}
-.tei.show_pageNumbering     span.tei.paragraph_number,
-.tei.show_pageNumbering     span.paragraph_number {
+/* PARAGRAPH AND LINE NUMBERING */
+.tei span.lNumber,
+.tei span.paragraph_number {
+    display: none;
+}
+.tei.show_pageNumbering span.paragraph_number,
+.tei.show_pageNumbering span.lNumber {
     display: block;
     position: absolute;
-    /*
-    margin-left: -40px;
-    text-align: right;
-    */
     margin-left: -35px;
     text-align: left;
     width: 30px;
@@ -901,9 +1094,43 @@
 	text-indent: 0;
 	color: #000;
 }
+.tei.show_pageNumbering span.lNumber,
+.tei.show_pageNumbering p.parIndent span.paragraph_number {
+    margin-left: -65px;
+}
+/* Vänster padding för lästext och inledning när styckenumreringen visas */
+read-text .tei.show_pageNumbering, 
+page-introduction .tei.show_pageNumbering {
+    padding-left: 20px;
+    margin-left: 5px;
+}
+@media screen and (max-width: 800px) {
+    read-text .tei.show_pageNumbering, 
+    page-introduction .tei.show_pageNumbering {
+      padding-left: 35px;
+    }
+}
 
-.tei.show_pageBreakOriginal     span.pb_orig {color: $pageBreakOriginal-color; display: contents; position: absolute; margin-left: -40px; text-align: right; width:30px;}
-.tei.show_pageBreakEdition     span.pb_zts { color: $pageBreakEdition-color; display: contents; position: absolute; margin-left: -40px; text-align: right; width:30px;}
+/* PAGE BREAKS IN ORIGINAL AND EDITION */
+.pb_orig,
+.pb_zts {
+    display: none;
+}
+.show_pageBreakOriginal .pb_orig,
+.show_pageBreakEdition .pb_zts {
+    display: contents;
+    position: absolute;
+    margin-left: -40px;
+    text-align: right;
+    width: 30px;
+    font-size: 0.9rem;
+}
+.show_pageBreakOriginal .pb_orig {
+    color: $pageBreakOriginal-color;
+}
+.show_pageBreakEdition .pb_zts {
+    color: $pageBreakEdition-color;
+}
 
 /*ändra pekaren till en hand över personer och platser när visningsalternativen är påslagna eftersom dessa går att klicka på för att öppna registren*/
 .tei.show_personInfo span.person.tooltiptrigger, 
@@ -912,58 +1139,45 @@
 	cursor: pointer;
 }
 
-/* Vänster padding för lästext och inledning när styckenumreringen visas */
-read-text .tei.show_pageNumbering, 
-page-introduction .tei.show_pageNumbering {
-	padding-left: 20px;
-}
-page-introduction .tei.show_pageNumbering {
-	margin-left: 5px;
-}
-
 
 .tei a.anchor, .tei a.anchor:hover {color: inherit; }
 
-.tei                        p { font-size: 1rem;}
-.tei.smallFont              p { font-size: 1rem; line-height: 1.5rem;}
-.tei.largeFont              p { font-size: 1.6rem; line-height: 2rem;}
-.tei.mediumFont              p { font-size: 1.2rem; line-height: 1.8rem;}
-
-@media only screen and (max-width: 600px) {
-    div.tei {
-        max-width: 300px;
-    }
+.tei p, 
+.tei.smallFont p {
+    font-size: 1rem;
+    line-height: 1.5;
+    text-indent: 1.875rem; // 30px if 1rem = 16px
+    margin: 0;
 }
-@media only screen and (min-width: 600px) {
-    div.tei {
-        /*
-        max-width: 670px;
-        */
-        max-width: 650px;
-    }
-    page-introduction div.tei.show_pageNumbering {
-        max-width: 675px;
-    }
+.tei.mediumFont p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    text-indent: 2.25rem;
+}
+.tei.largeFont p {
+    font-size: 1.6rem;
+    line-height: 2.4;
+    text-indent: 3rem;
 }
 
 h3.tei.chapter {
 	font-style: italic;
 	text-align: center;
 	font-weight: normal !important;
-	margin:1.3em 0 1em 0 !important;
-	font-size:1.4em !important;
+	margin: 1.3em 0 1em 0 !important;
+	font-size: 1.4em !important;
 }
 h3.tei.poem {
 	font-style: italic;
 	text-align: left;
 	font-weight: normal !important;
-	margin:1.3em 0 1em 0 !important;
+	margin: 1.3em 0 1em 0 !important;
 }
 h3.tei.poemdiary {
 	font-style: italic;
 	text-align: left;
 	font-weight: normal !important;
-	margin:1.3em 0 1em 0 !important;
+	margin: 1.3em 0 1em 0 !important;
 	margin-left: 30px !important;
 	text-indent: -15px;
 }
@@ -973,7 +1187,7 @@ h3.tei.ms {
 	margin: 1.3em 0 1em 0 !important;
 }
 h3.tei.diary {
-	font-variant:small-caps;
+	font-variant: small-caps;
 	text-align: center;
 	font-weight: normal !important;
 	margin: 1.3em 0 1em 0 !important;
@@ -1074,10 +1288,6 @@ h6.tei.poemmotto2 {
 	font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif !important;
 }
 
-.pb_orig,
-.pb_zts {
-	font-size: 0.9rem;
-}
 
 /*titelsidans verktitel*/
 .cont_titlepage h1.title {
@@ -1088,10 +1298,11 @@ h6.tei.poemmotto2 {
 .cont_titlepage h3.chapter {
 	text-align: center !important;
 }
-/*responsboxen*/
+/*responsboxen
 .theme-background-color {
     background-color: #b2d0ea !important;
 }
+*/
 
 /*tabeller*/
 td, th {
@@ -1187,7 +1398,7 @@ p.teiManuscript.strofe[class*=lg] {
     cursor: default;
 }
 
-/* CONTAINERS FOR COLUMNS */
+/* CONTAINERS FOR COLUMNS --> Already defined in .tei {} above
 .padded {
 }
 .padded p {
@@ -1197,11 +1408,11 @@ p.teiManuscript.strofe[class*=lg] {
 	padding-left: 100px;
 }
 h3.tei.letterTitle {
-	font-variant:small-caps;
+	font-variant: small-caps;
 	font-weight: normal !important;
 }
 p.authorHeader {
-	text-indent:0px !important;
+	text-indent: 0 !important;
 	margin-bottom: 0.5em;
 }
 h3.tei.titleTopMargin {
@@ -1210,24 +1421,28 @@ h3.tei.titleTopMargin {
 h3.tei.titleBottomMargin {
 	margin-bottom: 2em !important;
 }
+ */
 
 /* COMMON PARAGRAPHS */
+/* Defined above
 p.invisible {
 	height: 0 !important;
 	width: 0 !important;
-}
+}*/
 /*p.invisiblelg {
 	margin-bottom: 1em !important;
 	margin-top: 1em !important;
 }*/
+/* Defined above
 p.personDesc, p.placeDesc, p.titleDesc {
-	text-indent:0px !important;
+	text-indent: 0 !important;
 	margin-bottom: 1em !important;
 	padding-bottom: 0 !important;
 }
 p.paragraphSpace {
 	padding-bottom: 1.5em !important;
 }
+*/
 p.paragraphDiary {
 	margin-top: 0.5em !important;
 }
@@ -1263,6 +1478,7 @@ p.frontmatterNext {
 	border-bottom: 2px solid black;
 	line-height: 1.5em;
 }
+/*
 .topMargin {
 	margin-top: 1em;
 }
@@ -1274,7 +1490,12 @@ p.dateline
 	margin-top: 1.0em;
 	margin-bottom: 1.0em;
 }
+
 p.underline, h3.underline {
+	font-style: italic;
+}
+*/
+h3.underline {
 	font-style: italic;
 }
 p.label_margin {
@@ -1290,7 +1511,7 @@ p.label_above {
 span.labelledLines_before {
     margin-left: -80px !important;
     text-indent: 0 !important;
-    position:absolute;
+    position: absolute;
 }
 span.labelledLines_after {
     float: right;
@@ -1299,16 +1520,17 @@ span.labelledLines_after {
 span.labelledLines_before_F {
     margin-left: -200px !important;
     text-indent: 0 !important;
-    position:absolute;
+    position: absolute;
 }
 p.l.labelledLines_before {
-    position:relative;
+    position: relative;
     margin-left: 110px !important;
 }
 p.l.labelledLines_before.lfinal {
-    position:relative;
+    position: relative;
     margin-left: 120px !important;
 }
+/* Defined above
 span.writer {
 	font-size: 12px;
 	font-variant: normal;
@@ -1352,80 +1574,84 @@ div.manuscriptText span.underline {
 }
 .stamp, .print {
 	font-family: "Times New Roman", serif;
-	letter-spacing:1px;
+	letter-spacing: 1px;
 
 }
 .left {
 	text-align: left !important;
-	text-indent:0px !important;
+	text-indent: 0 !important;
 }
 .center {
 	text-align: center;
-	text-indent:0px !important;
+	text-indent: 0 !important;
 }
 .right {
 	text-align: right;
-	text-indent:0px !important;
+	text-indent: 0 !important;
 }
 .dramaCenter {
 	text-align: center;
-	text-indent:0px !important;
-	margin-top:0.9em !important;
-	margin-bottom:0.3em !important;
+	text-indent: 0 !important;
+	margin-top: 0.9em !important;
+	margin-bottom: 0.3em !important;
 }
 .img_left {
-	float:left;
+	float: left;
 	padding-right: 8px;
 }
 .img_right {
-	float:right;
+	float: right;
 	padding-left: 8px;
 }
+*/
 /*mindre strofmellanrum för ms*/
+/*
 .tei p.strofe {
-	text-indent:0px !important;
+	text-indent: 0 !important;
 	margin-bottom: 1em !important;
 	margin-top: 1em !important;
 }
 p.l {
 	margin-left: 30px !important;
-	text-indent:-30px !important;
+	text-indent: -30px !important;
 }
+*/
 p.item {
-	text-indent:0px !important;
+	text-indent: 0 !important;
 }
 p.item_indented {
 	margin-left: 40px !important;
-	text-indent:-15px !important;
+	text-indent: -15px !important;
 }
 p.lIndent
 {
-	text-indent:-9px !important;
+	text-indent: -9px !important;
 }
 p.lIndentDiary
 {
-	text-indent:-15px !important;
+	text-indent: -15px !important;
 }
 p.lcenter
 {
-	text-align:center !important;
+	text-align: center !important;
 }
 p.lIndent.lcenter
 {
-	text-align:center !important;
+	text-align: center !important;
 }
 p.lmedial
 {
-	text-indent:30px !important;
+	text-indent: 30px !important;
 }
 p.lfinal
 {
-	text-indent:80px !important;
+	text-indent: 80px !important;
 }
 p.lfinal2
 {
-	text-indent:95px !important;
+	text-indent: 95px !important;
 }
+/*
 p.strofeSpacing  {
 	padding-bottom: 1em !important;
 }
@@ -1459,17 +1685,18 @@ p.teiCloser {
 	margin-bottom: 1.5em !important;
 }
 .noIndent {
-	text-indent:0px !important;
+	text-indent: 0 !important;
 }
+*/
 .hangingIndent {
 	padding-left: 30px !important;
-	text-indent:-30px !important;
+	text-indent: -30px !important;
 }
 .poemP, .poemP.right, .poemP.normalizedIndent, .poemP.noIndent {
 	margin-left: 30px !important;
 	text-indent: -15px !important;
 	margin-bottom: 1em !important;
-	text-align:left;
+	text-align: left;
 }
 .figureP {
     color: gray !important;
@@ -1485,8 +1712,8 @@ span.figure {
     margin-bottom: 0.5em !important;
     text-indent: 0 !important;
 }
-.tei .parIndent {
-	text-indent:30px !important;
+.parIndent {
+	text-indent: 30px !important;
 	padding-left: 30px;
 	padding-right: 30px;
 	padding-bottom: 0 !important;
@@ -1507,16 +1734,20 @@ span.figure {
 .parIndent + :not(.parIndent) {
 	margin-top: 1em !important;
 }
+/*
 .parHalfIndent {
-	text-indent:0px !important;
+	text-indent: 0 !important;
 	padding-left: 15px;
 }
+*/
 .frontmatterNext + span {
 	margin-top: 1em !important;
 }
+/*
 .halfLinePadding {
 	padding-bottom: 0.5em !important;
 }
+*/
 div.comment_background h3 {
 	color: #55524c;
 	font-size: 1.05em !important;
@@ -1532,16 +1763,18 @@ span.comment_background {
 div.comment_background p:first-child {
     margin-top: 1.5em;
 }
+/*
 p.footnote {
-	text-indent:0px !important;
+	text-indent: 0 !important;
 	padding-bottom: 0.5em !important;
 }
+*/
 
-/* COMMON SPANS */
+/* COMMON SPANS 
 span.lNumber {
-	position:absolute;
-	width:18px;
-	color:#a9a49a;
+	position: absolute;
+	width: 18px;
+	color: #a9a49a;
 }
 
 span.personDesc, span.placeDesc {
@@ -1560,12 +1793,13 @@ span.personDesc, span.placeDesc {
 	line-height: 0.5em;
 	font-size: 0.8em;
 }
+*/
 a.reference span.raised {
 	vertical-align: super;
 	line-height: 0.5em;
 	font-size: 0.65em !important;
-	font-variant:normal !important;
-	font-style:normal !important;
+	font-variant: normal !important;
+	font-style: normal !important;
 	float: right !important;
 }
 
@@ -1588,17 +1822,21 @@ a.reference span.raised {
 	font-variant: small-caps;
 	font-style: italic;
 }
+/*
 .italics {
 	font-style: italic;
 }
+*/
 /*dramatik, scen- och personanvisningar*/
-.smallFont{
+/* KONFLIKT med klassnamnet som ändrar texten storlek i UI:n */
+.smallFont {
 	font-size: 0.9em;
 }
 .small {
 	font-size: 0.9em !important;
 	color: gray;
 }
+/*
 .expanded {
 	font-style: italic;
 }
@@ -1615,11 +1853,13 @@ a.reference span.raised {
 .bold {
 	font-weight: bold;
 }
+
 .cont_manuscript span.underline2 {
 	border-bottom: 3px double black;
 	font-style: normal;
 	text-decoration: none;
 }
+*/
 .c_ms span.dashUnderline {
 	border-bottom: 1px dashed black;
 }
@@ -1635,6 +1875,7 @@ a.reference span.raised {
 .c_ms .encreasedSize {
 	font-size: 120%;
 }
+/*
 .mainText .encreasedSize {
 	font-style: italic;
 	font-size: 100%;
@@ -1652,22 +1893,23 @@ a.ref_variant img {
 	position: relative;
 	top: 3px;
 }
+*/
 .footnotePoem {
-	display:block;
-	text-indent:15px;
+	display: block;
+	text-indent: 15px;
 }
 
 /*.corr_hide {
 	display: none;
 }*/
 
-/* KOMMENTARER */
+/* KOMMENTARER -- stilar definieras också i components/comments */
+/*
 .tei p.note {
 	cursor: pointer;
 	padding-left: 0 !important;
 }
-p.teiComment.noteLegend
-{
+p.teiComment.noteLegend {
 	text-indent: 0 !important;
 	margin-bottom: 0.5em !important;
 	font-size: 0.95em !important;
@@ -1681,17 +1923,18 @@ p.teiComment.noteLegend
 .lemmaBreak {
 	font-style: normal !important;
 }
-.notePosition:after {
-	content:" ";
+.notePosition::after {
+	content: " ";
 }
-.noteLemma:after {
-	content:" \2013  ";
+.noteLemma::after {
+	content: " \2013  ";
 }
 .noteText {
 
 }
+*/
 
-/* MANUSCRIPT */
+/* MANUSCRIPT
 .symbol_red {
 	color: #990202;
 }
@@ -1699,7 +1942,7 @@ p.teiComment.noteLegend
 	color: #990202;
 }
 .unclear {
-	/*font-style: italic;*/
+	//font-style: italic;
 	color: #808080;
 }
 .space {
@@ -1792,6 +2035,7 @@ p.teiComment.noteLegend
 	text-decoration: none;
 	color: #0000a1;
 }
+*/
 .add_margin {
 	/*position: absolute;
 	left: 0;
@@ -1801,9 +2045,9 @@ p.teiComment.noteLegend
 	color: #0000a1;
 }
 .add_over {
-	/*position:absolute;
-	top:-11pt;
-	left:0px;*/
+	/*position: absolute;
+	top: -11pt;
+	left: 0;*/
 	vertical-align: super;
 	color: #0000a1;
 }
@@ -1822,6 +2066,10 @@ p.teiComment.noteLegend
 	top: -1.2em;
 	left: 0;
 }
+.ttDel {
+    display: none;
+}
+/*
 .addSpan {
 	color: #0000a1;
 }
@@ -1844,76 +2092,62 @@ p.teiComment.noteLegend
 	position: relative;
 	bottom: -2px;
 }
+*/
 
-/* OTHER */
+/* OTHER
 img.symbol {
 	position: relative;
 	bottom: -2px;
 }
+ */
 
-/* VARIANTS */
-.lemma
-{
+/* VARIANTS
+.lemma {
 	background-color: #fff1b9 !important;
 }
-div.lemma
-{
+div.lemma {
 	display: inline-block;
 }
-.variant
-{
+.variant {
 	background-color: #C5C5C5 !important;
 }
-div.variant
-{
+div.variant {
 	display: inline-block;
 }
-.orthographic
-{
+.orthographic {
 	background-color:  #eee6ff !important;
 }
-div.orthographic
-{
+div.orthographic {
 	display: inline-block;
 }
-.substantial
-{
+.substantial {
 	background-color: #fee0e2 !important;
 }
-div.substantial
-{
+div.substantial {
 	display: inline-block;
 }
-.interpunction
-{
+.interpunction {
 	background-color: #dbf0ec !important;
 }
-div.interpunction
-{
+div.interpunction {
 	display: inline-block;
 }
-.identical
-{
+.identical {
 	background-color: #fff1b9 !important;
 }
-div.identical
-{
+div.identical {
 	display: inline-block;
 }
-.typographic
-{
+.typographic {
 	background-color: #f6e65b !important;
 }
-div.typographic
-{
+div.typographic {
 	display: inline-block;
 }
-.error
-{
+.error {
 	background-color: #daecf1 !important;
 }
-div.error
-{
+div.error {
 	display: inline-block;
 }
 .var_bold {
@@ -1930,8 +2164,9 @@ span.extVariants {
 	border-radius: 3px;
 	background-color: #E8E3D4;
 }
+ */
 
-/* CALENDAR */
+/* CALENDAR
 table.calendar {
 	margin-left: 10px;
 	margin-top: 0.7em;
@@ -1954,8 +2189,9 @@ a.calendarlink img {
 	color: #eb9414;
 	cursor: pointer;
 }
+ */
 
-/* SEARCH RESULT */
+/* SEARCH RESULT
 .p_editor {
 	color: #990202;
 }
@@ -1979,17 +2215,17 @@ span.note_foot {
 .highlightXMLcomment {
 	background-color: #cae4eb !important;
 }
+ */
 
-.revision
-{
+.revision {
     border-radius: 5px;
     border: 2px solid #000000;
     padding: 2px;
 }
 
-.est_figure_graphic{
-	max-width:100%;
-	padding-right:0.2rem;
+.est_figure_graphic {
+	max-width: 100%;
+	padding-right: 0.2rem;
 }
 
 /*titelsidans omslag*/
@@ -1999,34 +2235,34 @@ span.note_foot {
     margin-left: 165px;
 }
 
-.pdf_figure_graphic{
-	display:inline-block;
-	margin:0 0.5em 0 0;
+.pdf_figure_graphic {
+	display: inline-block;
+	margin: 0 0.5em 0 0;
 }
 
 h1.tei.title {
-	font-variant:small-caps;
+	font-variant: small-caps;
 	text-align: center;
 	font-weight: normal !important;
 	color: #111;
-	font-size:1.5em !important;
-	margin:1em 0 1em 0 !important;
+	font-size: 1.5em !important;
+	margin: 1em 0 1em 0 !important;
 }
 h1.tei.poemtitle {
-	font-variant:small-caps;
+	font-variant: small-caps;
 	text-align: left;
 	font-weight: normal !important;
 	color: #111;
-	font-size:1.5em !important;
-	margin:1em 0 1em 0 !important;
+	font-size: 1.5em !important;
+	margin: 1em 0 1em 0 !important;
 }
 h1.tei.poemtitleFromMs, h1.tei.poemtitleSuite {
 	font-style: italic;
 	text-align: left;
 	font-weight: normal !important;
 	color: #111;
-	font-size:1.5em!important;
-	margin:1em 0 1em 0 !important;
+	font-size: 1.5em!important;
+	margin: 1em 0 1em 0 !important;
 }
 h2.tei.zts {
 	font-variant: small-caps;
@@ -2034,29 +2270,29 @@ h2.tei.zts {
 	text-align: center;
 	font-weight: normal !important;
 	color: gray;
-	margin:1em 0 1em 0 !important;
+	margin: 1em 0 1em 0 !important;
 }
 
 h2.tei.section {
 	text-align: center !important;
 	font-weight: normal !important;
-	margin:1em 0 1em 0 !important;
+	margin: 1em 0 1em 0 !important;
 }
 h2.tei.poemsection {
 	font-style: italic;
 	text-align: left;
 	font-weight: normal !important;
-	margin:1em 0 1em 0 !important;
+	margin: 1em 0 1em 0 !important;
 }
 h2.tei.section2 {
 	font-style: italic;
 	text-align: center;
 	font-weight: normal !important;
-	margin:1em 0 1em 0 !important;
+	margin: 1em 0 1em 0 !important;
 }
 h2.tei.poemsection2 {
 	font-style: italic;
 	text-align: left;
 	font-weight: normal !important;
-	margin:1em 0 1em 0 !important;
+	margin: 1em 0 1em 0 !important;
 }

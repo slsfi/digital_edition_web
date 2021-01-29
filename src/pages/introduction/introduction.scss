@@ -235,7 +235,7 @@ page-introduction {
     }
   }
 
-  div[data-id = "cont_introduction"] h4 {
+  div[data-id="cont_introduction"] h4 {
     font-style: italic;
     text-align: left !important;
     font-weight: normal !important;
@@ -243,14 +243,14 @@ page-introduction {
     margin: 0.8em 0 1em 0 !important;
   }
 
-  div[data-id = "cont_introduction"] h2.tei.section {
+  div[data-id="cont_introduction"] h2.tei.section {
     text-align: left !important;
     font-weight: normal !important;
     margin: 1.4em 0 1.3em 0 !important;
     font-size: 1.4em !important;
   }
 
-  div[data-id = "cont_introduction"] h3.italics {
+  div[data-id="cont_introduction"] h3.italics {
     /* text-align, font-style och font-weight torde vara överflödiga här*/
     text-align: left !important;
     font-style: italic;
@@ -297,7 +297,7 @@ page-introduction {
     background-color: #b2d0ea;
   }
 
-  div[data-id = "content"] {
+  div[data-id="content"] {
     display: none;
   }
 

@@ -166,8 +166,13 @@ page-read {
         background-color: #fff;
         margin-bottom: 0;
 
+        /*
         .card-content {
           padding-right: 0;
+        }
+        */
+        .card-content {
+          padding: 0;
         }
 
         ion-scroll {
@@ -221,12 +226,14 @@ page-read {
     padding-right: 1em;
   }
 
+  /* Flyttad till tei.scss
   @media screen and (max-width: 480px) {
     div.tei {
       padding-left: 5px !important;
       padding-right: 5px !important;
     }
   }
+  */
 
   .tei {
     transition-property: padding-left;

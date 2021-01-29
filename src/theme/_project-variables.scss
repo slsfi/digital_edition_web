@@ -81,11 +81,12 @@ html {
   font-size: 16px !important;
 }
 
+/* MOVED to pages/home/home.scss
 home-page {
   h2 {
     margin-top: 0 !important;
   }
-}
+} */
 
 h2 {
   font-size: 1.6rem;
@@ -109,6 +110,7 @@ p {
   cursor: pointer;
 }
 
+/* Defined in components/top-menu/ and overwritten i custom.css
 .mobile_row {
   background-color: #b2d0ea !important;
 }
@@ -116,14 +118,19 @@ p {
 .mobile_row>button {
   background-color: #b2d0ea !important;
 }
+*/
 
+/*
 read-text .ttDel {
   display: none;
 }
+*/
 
+/* --> custom.css
 .digital-edition-list-card-content {
   display: none;
 }
+*/
 
 .anchorScrollTarget img {
   font-size: 0.6rem;
@@ -156,11 +163,14 @@ img.symbol {
 }
 */
 
+/* SK tagit bort, vill inte ha padding här
 ion-card-content {
   padding-top: 10px !important;
   padding-bottom: 5px !important;
 }
+*/
 
+/* Defined in pages/home/
 home-page .banner {
   position: relative;
   margin-top: 0;
@@ -171,6 +181,7 @@ home-page .banner {
   background-repeat: no-repeat;
   background-size: cover;
 }
+*/
 
 /*kommentarasteriskernas placering: inga marginaler vänster-höger
 .tei img.tooltiptrigger {
@@ -209,12 +220,12 @@ p.parIndent span.paragraph_number {
 }
 */
 
-/*styckenumrering vid blockcitat, ingen skild stil för .noIndent.parIndent behövs*/
+/*styckenumrering vid blockcitat, ingen skild stil för .noIndent.parIndent behövs --> flyttad till tei.scss
 p.parIndent span.paragraph_number {
 	margin-left: -65px !important;
-}
+}*/
 
-/*radnumreringen siffror ska inte ta så mycket plats och vara så stora*/
+/*radnumreringen siffror ska inte ta så mycket plats och vara så stora
 .tei.show_pageNumbering span.tei.lNumber, 
 .tei.show_pageNumbering span.lNumber {
   display: block;
@@ -225,24 +236,25 @@ p.parIndent span.paragraph_number {
   font-size: 0.7rem;
   text-indent: 0;
   color: #000;
-}
+}*/
 
-/*så att stycke-/versnr inte har så stor padding till vänster om sig*/
+/*så att stycke-/versnr inte har så stor padding till vänster om sig
 .card-content-md {
   padding: 13px 12px;
-}
+}*/
 
-/*lemmats styckepositionering med en siffra ska inte vara så framträdande*/
+/*lemmats styckepositionering med en siffra ska inte vara så framträdande
 .notePosition {
   font-weight: normal !important;
   font-size: 0.8rem;
   font-style: italic;
-}
+}*/
 
 /*det normala för p är att ha styckeindrag*/
+/* FLYTTAT till tei.scss 
 .tei p {
   text-indent: 30px;
-}
+}*/
 
 /*inte så jättestort radmellanrum för ms*/
 .tei .cont_manuscript p {
@@ -399,7 +411,7 @@ span.description {
 }
 
 /*ms med lg: inte extra stort radavstånd, inte indrag på första raden av strofen*/
-p.teiManuscript.strofe[class *= lg] {
+p.teiManuscript.strofe[class*=lg] {
   line-height: 180% !important;
   text-indent: 0 !important;
 }
@@ -1038,11 +1050,11 @@ p.teiComment.noteLegend {
   font-style: normal !important;
 }
 
-.notePosition:after {
+.notePosition::after {
   content: " ";
 }
 
-.noteLemma:after {
+.noteLemma::after {
   content: " \2013  ";
 }
 
@@ -1548,16 +1560,18 @@ h2.tei.poemsection2 {
 }
 
 
-
+/* SK tagit bort, vill inte ha padding här
 ion-card-content {
   padding-top: 10px !important;
   padding-bottom: 5px !important;
 }
+*/
 
-
+/*
 span.ttDel {
   display: none;
 }
+*/
 
 .tei p.note {
   padding-left: 0 !important;
@@ -1571,6 +1585,7 @@ span.ttDel {
   margin-bottom: 0.5rem;
 }
 
+/* Duplicates in this file
 .mainMenuItem {
   cursor: pointer;
 }
@@ -1578,13 +1593,10 @@ span.ttDel {
 .digital-edition-list-card-content {
   display: none;
 }
+*/
 
 
 @media only screen and (max-width: 600px) {
-  div.tei {
-    max-width: 100%;
-  }
-
   .segment-button {
     background-color: rgba(99, 99, 99, 0.8) !important;
   }
@@ -1612,11 +1624,14 @@ h1.mainH1Header {
   width: 10% !important;
 }
 
+/* SK tagit bort, vill inte ha padding här
 ion-card-content {
   padding-top: 10px !important;
   padding-bottom: 5px !important;
 }
-
+*/
+/*
 span.ttDel {
   display: none;
 }
+*/
