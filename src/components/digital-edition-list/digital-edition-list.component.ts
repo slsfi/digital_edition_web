@@ -196,9 +196,13 @@ export class DigitalEditionList implements OnInit {
         tresh = true;
       }
 
-      if ((this.collectionDownloads['pdf'] !== undefined && de[i].id in this.collectionDownloads['pdf']) ||
-        (this.collectionDownloads['epub'] !== undefined && de[i].id in this.collectionDownloads['epub'])) {
-        de[i].url = this.collectionDownloads[de[i].title];
+      if ( this.collectionDownloads['pdf'] !== undefined &&  this.collectionDownloads['pdf'][String(de[i].id)] !== undefined ) {
+        de[i].url = this.collectionDownloads['pdf'][String(de[i].id)].title;
+        de[i].isDownload = (String(de[i].url).length > 0) ? true : false;
+      }
+
+      if ( this.collectionDownloads['epub'] !== undefined && de[i].id in this.collectionDownloads['epub'] ) {
+        de[i].url = this.collectionDownloads['epub'][String(de[i].id)].title;
         de[i].isDownload = (String(de[i].url).length > 0) ? true : false;
       }
 
@@ -214,12 +218,12 @@ export class DigitalEditionList implements OnInit {
     if (collection.isDownload) {
       if (collection.id in this.collectionDownloads['pdf']) {
         const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.id + '/pdf/' +
-          this.collectionDownloads['pdf'][collection.id] + '/';
-        const ref = window.open(dURL, '_self', 'location=no');
+          this.collectionDownloads['pdf'][collection.id].title + '/';
+        const ref = window.open(dURL);
       } else if (collection.id in this.collectionDownloads['epub']) {
         const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.id + '/epub/' +
-          this.collectionDownloads['epub'][collection.id] + '/';
-        const ref = window.open(dURL, '_self', 'location=no');
+          this.collectionDownloads['epub'][collection.id].title + '/';
+        const ref = window.open(dURL);
       }
     }
     this.doAnalytics('Download', 'PDF', this.collectionDownloads['pdf'][collection.id]);
