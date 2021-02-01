@@ -1147,18 +1147,18 @@ page-introduction .tei.show_pageNumbering {
 .tei.smallFont p {
     font-size: 1rem;
     line-height: 1.5rem;
-    text-indent: 1.75rem; // 28px if 1rem = 16px
+    text-indent: 1.25rem; // 20px if 1rem = 16px
     margin: 0;
 }
 .tei.mediumFont p {
     font-size: 1.125rem;
     line-height: 1.6875rem;
-    text-indent: 1.96875rem;
+    text-indent: 1.40625rem;
 }
 .tei.largeFont p {
     font-size: 1.25rem;
     line-height: 1.875rem;
-    text-indent: 2.1875rem;
+    text-indent: 1.5625rem;
 }
 
 h3.tei.chapter {
