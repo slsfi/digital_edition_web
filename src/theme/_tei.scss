@@ -1142,22 +1142,23 @@ page-introduction .tei.show_pageNumbering {
 
 .tei a.anchor, .tei a.anchor:hover {color: inherit; }
 
+/* Text sizes, should be changed to affect all elements, not just p */
 .tei p, 
 .tei.smallFont p {
     font-size: 1rem;
-    line-height: 1.5;
-    text-indent: 1.875rem; // 30px if 1rem = 16px
+    line-height: 1.5rem;
+    text-indent: 1.75rem; // 28px if 1rem = 16px
     margin: 0;
 }
 .tei.mediumFont p {
-    font-size: 1.2rem;
-    line-height: 1.8;
-    text-indent: 2.25rem;
+    font-size: 1.125rem;
+    line-height: 1.6875rem;
+    text-indent: 1.96875rem;
 }
 .tei.largeFont p {
-    font-size: 1.6rem;
-    line-height: 2.4;
-    text-indent: 3rem;
+    font-size: 1.25rem;
+    line-height: 1.875rem;
+    text-indent: 2.1875rem;
 }
 
 h3.tei.chapter {
