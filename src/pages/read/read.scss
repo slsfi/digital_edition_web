@@ -139,10 +139,7 @@ page-read {
 
     /*the bar with a heading for the column*/
     &__title {
-      /*
-      background: #E4DCCB !important;
-      */
-      background: #f2f2f2 !important; /*should be changed into a variable*/
+      background: #E4DCCB !important; /*should be changed into a variable*/
       font-size: 0.8rem !important;
       font-weight: bold !important;
     }

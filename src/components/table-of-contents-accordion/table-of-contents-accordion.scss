@@ -1,7 +1,4 @@
 table-of-contents-accordion {
-  .accordion-menu .list .list-md {
-    background-color: #f2f2f2;
-  }
   ion-label{
     cursor: pointer;
   }
@@ -64,7 +61,7 @@ table-of-contents-accordion {
     }
 
     .accordion-menu .list .list-md {
-        background-color: #ecece4;
+        background-color: #ecece4; /* should changed into variable */
     }
 
     ion-list.accordion-menu ion-item.header ion-icon.header-icon.rotate {

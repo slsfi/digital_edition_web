@@ -59,7 +59,9 @@ manuscripts div.tei {
         font-weight: normal !important;
         padding-top: 10px;
     }
-    h3.poemtitle, h3.lettertitle {
+    h3.poemtitle,
+    h3.lettertitle,
+    h3.tei.letterTitle {
         font-variant: small-caps;
         font-weight: normal !important;
     }
@@ -105,10 +107,12 @@ manuscripts div.tei {
     h3.shortstory {
         font-size: 1.1em;
     }
-    h3.titleTopMargin {
+    h3.titleTopMargin,
+    h3.tei.titleTopMargin {
         margin-top: 2em !important;
     }
-    h3.titleBottomMargin {
+    h3.titleBottomMargin,
+    h3.tei.titleBottomMargin {
         margin-bottom: 2em !important;
     }
 
@@ -1830,7 +1834,7 @@ a.reference span.raised {
 */
 /*dramatik, scen- och personanvisningar*/
 /* KONFLIKT med klassnamnet som ändrar texten storlek i UI:n */
-.smallFont {
+span.smallFont {
 	font-size: 0.9em;
 }
 .small {
