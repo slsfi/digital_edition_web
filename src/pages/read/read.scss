@@ -139,9 +139,9 @@ page-read {
 
     /*the bar with a heading for the column*/
     &__title {
-      background: #E4DCCB !important; /*should be changed into a variable*/
-      font-size: 0.8rem !important;
-      font-weight: bold !important;
+      background: #E4DCCB; /*should be changed into a variable*/
+      font-size: 0.8rem;
+      font-weight: bold;
     }
 
     &.single-column .read-column {

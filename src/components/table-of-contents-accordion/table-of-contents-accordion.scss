@@ -4,7 +4,7 @@ table-of-contents-accordion {
   }
 
   .collection-name-top{
-    background-color: rgba(color($colors, primary), $alpha: 0.2) !important;
+    background-color: color($colors, secondary) !important;
   }
   .collection-name-top ion-label{
     white-space: pre-wrap !important;
