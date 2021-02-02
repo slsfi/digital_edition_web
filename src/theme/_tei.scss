@@ -82,24 +82,6 @@ manuscripts div.tei {
         font-size: 1.15em !important;
     }
 
-    /*Regel för kommentarasteriskerna i lästexten / har lagt till img för att regeln inte ska tillämpas i kommentarkolumnen*/
-    img.comment {
-        /*font-size: 3em;*/
-        cursor: pointer;
-        top: -0.125rem;
-        width: 0.75rem !important;
-        height: 0.75rem !important;
-    }
-    /* Kommentarasteriskernas storlekar vid större font-storlekar */
-    div.tei.mediumFont img.comment {
-        top: calc(-0.125 * 1.125rem);
-        width: calc(0.75 * 1.125rem) !important;
-        height: calc(0.75 * 1.125rem) !important;
-    }
-    div.tei.largeFont img.comment {
-        width: calc(0.75 * 1.25rem) !important;
-        height: calc(0.75 * 1.25rem) !important;
-    }
     h3.section
     {
         font-size: 1.4em !important;
@@ -1038,7 +1020,25 @@ manuscripts div.tei {
         */
         margin: 0 !important;
     }
-
+    
+    /*Regel för kommentarasteriskerna i lästexten / har lagt till img för att regeln inte ska tillämpas i kommentarkolumnen*/
+    img.comment {
+        /*font-size: 3em;*/
+        cursor: pointer;
+        top: -0.125rem;
+        width: 0.75rem !important;
+        height: 0.75rem !important;
+    }
+    /* Kommentarasteriskernas storlekar vid större font-storlekar */
+    div.tei.mediumFont img.comment {
+        top: calc(-0.125 * 1.125rem);
+        width: calc(0.75 * 1.125rem) !important;
+        height: calc(0.75 * 1.125rem) !important;
+    }
+    div.tei.largeFont img.comment {
+        width: calc(0.75 * 1.25rem) !important;
+        height: calc(0.75 * 1.25rem) !important;
+    }
 }
 
 
