@@ -386,8 +386,9 @@ input{
   }
 }
 
-.item-md p{
+.item-md p {
   font-size: 1rem;
+  color: color($colors, dark);
 }
 
 .searchbar input, div, button{
@@ -432,15 +433,17 @@ ion-list.accordion-menu div.options {
   margin-left: 20px;
 }
 
+/* Definieras redan i table-of-contents-accordion.scss
 ion-item.selected-toc-item {
   background-color: #eee;
 }
+*/
 
 .mainMenuItem{
   font-weight: 400;
 }
 
-ion-label > p{
+ion-label > p {
   white-space: normal;
   font-size: 1rem !important;
 }

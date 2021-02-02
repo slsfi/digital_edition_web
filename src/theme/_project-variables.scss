@@ -73,9 +73,10 @@ $font-tei-note-editorial: "Muli", arial, helvetica, sans-serif;
 @import 'tei_variant';
 @import 'tei_manuscript';
 
+/* Borde vara en överflödig regel
 .menu-inner .item-md p {
   white-space: normal !important;
-}
+}*/
 
 html {
   font-size: 16px !important;

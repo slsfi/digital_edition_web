@@ -3,10 +3,13 @@ table-of-contents-accordion {
     cursor: pointer;
   }
 
-  .collection-name-top{
+  .collection-name-top {
     background-color: color($colors, secondary) !important;
+    max-height: 50px;
+    min-height: 50px;
+    font-weight: bold;
   }
-  .collection-name-top ion-label{
+  .collection-name-top ion-label {
     white-space: pre-wrap !important;
   }
     .collection-filters {
