@@ -1020,24 +1020,14 @@ manuscripts div.tei {
         */
         margin: 0 !important;
     }
-    
+
     /*Regel för kommentarasteriskerna i lästexten / har lagt till img för att regeln inte ska tillämpas i kommentarkolumnen*/
     img.comment {
         /*font-size: 3em;*/
         cursor: pointer;
-        top: -0.125rem;
+        top: 0;
         width: 0.75rem !important;
         height: 0.75rem !important;
-    }
-    /* Kommentarasteriskernas storlekar vid större font-storlekar */
-    div.tei.mediumFont img.comment {
-        top: calc(-0.125 * 1.125rem);
-        width: calc(0.75 * 1.125rem) !important;
-        height: calc(0.75 * 1.125rem) !important;
-    }
-    div.tei.largeFont img.comment {
-        width: calc(0.75 * 1.25rem) !important;
-        height: calc(0.75 * 1.25rem) !important;
     }
 }
 
@@ -1179,6 +1169,17 @@ page-introduction .tei.show_pageNumbering {
     line-height: 1.875rem;
     text-indent: 1.5625rem;
 }
+/* Kommentarasteriskernas storlekar vid större font-storlekar */
+div.tei.mediumFont img.comment {
+    width: calc(0.75 * 1.125rem) !important;
+    height: calc(0.75 * 1.125rem) !important;
+}
+div.tei.largeFont img.comment {
+    width: calc(0.75 * 1.25rem) !important;
+    height: calc(0.75 * 1.25rem) !important;
+}
+
+
 
 h3.tei.chapter {
 	font-style: italic;
