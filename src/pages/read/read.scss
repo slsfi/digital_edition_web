@@ -82,6 +82,7 @@ page-read {
     line-height: 2rem !important;
     font-size: 1rem !important;
     min-width: max-content;
+    background-color: #9f9f9f !important;
   }
 
   .segment-activated {
@@ -345,7 +346,7 @@ page-read {
   }
 
   .scroll-zoom-wrapper {
-    padding: 0 6px;
+    padding: 6px;
   }
 
   @media screen and (max-width: 800px) {
@@ -414,6 +415,11 @@ ion-fab .fab-list-active .fab-backdrop {
 
   page-read .scroll-content {
     padding: 0 !important;
+  }
+
+  /* Padding for the established text in mobile mode. */
+  page-read div[ng-reflect-ng-switch="established"] {
+    padding: 12px;
   }
 
   .modal-wrapper {

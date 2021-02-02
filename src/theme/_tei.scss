@@ -86,7 +86,19 @@ manuscripts div.tei {
     img.comment {
         /*font-size: 3em;*/
         cursor: pointer;
-        vertical-align: top;
+        top: -0.125rem;
+        width: 0.75rem !important;
+        height: 0.75rem !important;
+    }
+    /* Kommentarasteriskernas storlekar vid större font-storlekar */
+    div.tei.mediumFont img.comment {
+        top: calc(-0.125 * 1.125rem);
+        width: calc(0.75 * 1.125rem) !important;
+        height: calc(0.75 * 1.125rem) !important;
+    }
+    div.tei.largeFont img.comment {
+        width: calc(0.75 * 1.25rem) !important;
+        height: calc(0.75 * 1.25rem) !important;
     }
     h3.section
     {
