@@ -139,9 +139,10 @@ page-read {
 
     /*the bar with a heading for the column*/
     &__title {
-      background: #E4DCCB; /*should be changed into a variable*/
-      font-size: 0.8rem;
+      background: color($colors, secondary);
+      font-size: 0.75rem;
       font-weight: bold;
+      padding: 16px 22px;
     }
 
     &.single-column .read-column {
@@ -343,7 +344,17 @@ page-read {
     }
   }
 
+  .scroll-zoom-wrapper {
+    padding: 0 6px;
+  }
+
   @media screen and (max-width: 800px) {
+    .read-columns__title {
+      padding-left: 12px;
+    }
+    .scroll-zoom-wrapper {
+      padding: 16px 12px;
+    }
     .text-changer-desktop-view {
       max-width: 80%;
     }
@@ -356,11 +367,15 @@ page-read {
       display: none;
     }
   }
+
   /* Rule already defined above
   .read-column.single-column {
     max-width: initial !important;
   }
   */
+
+  
+
 }
 
 .md,
