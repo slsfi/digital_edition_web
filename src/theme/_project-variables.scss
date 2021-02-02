@@ -1540,9 +1540,10 @@ h2.tei.poemsection2 {
 /*item i list ska inte ha bakgrundsfärg*/
 /* Regeln kör över den regel som definieras i variables.scss
    men det är oklart vad den används till (införd här från custom.css)*/
+   /* test
 .item {
 	background-color: inherit !important;
-}
+}*/
 
 
 /* SK tagit bort, vill inte ha padding här
