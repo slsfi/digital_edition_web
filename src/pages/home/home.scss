@@ -51,19 +51,19 @@ home-page {
 		font-family: $font-family-header;
 		font-size: calc(1.5rem + 2.1vw);
 		font-weight: normal;
-		line-height: 1.2;
+		line-height: 1.5;
 		color: #000;
 		background-color: rgba($background-color, 0.8);	
-		padding: 0 0.5rem;
-		width: max-content;
-		margin: 0.5rem auto;
+		padding: 0 1rem;
 	}
 
 	.banner-subtitle {
-		font-size: 1.75rem;
+		font-size: calc(1rem + 0.7vw);
 		font-style: italic;
+		display: inline-block;
 	}
 
+	/*
 	@media only screen and (max-width: 650px) {
 		.banner-title {
 			font-size: 2rem;
@@ -72,6 +72,7 @@ home-page {
 			font-size: 1.375rem;
 		}
 	}
+	*/
 
 	.banner::before {
 		background: rgba(93, 106, 126, 0) !important;
