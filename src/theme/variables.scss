@@ -24,9 +24,9 @@ $background-color: #ecebe4;
 
 $colors: (
 	primary:	#538494,
-	secondary:	#e4dcca,
+	secondary:	#e6e1d8,
     dark:		#222,
-    light:		#D3DD9F
+    light:		#d3dd9f
 );
 
 // Custom colors for semantic code etc.
@@ -213,15 +213,13 @@ blockquote{
     font-weight: 600;
 }
 
+/* These overrides are unnecessary here, primary and secondary colors are used instead by default.
 .toolbar-background{
-    background-color: #A6AEBD;
+    background-color: #a6aebd;
 }
-
 .content {
-    background-color: #ECEBE4 !important;
+    background-color: #ecebe4 !important;
 }
-
-/* test
 .item {
     background-color: #ECEBE4 !important;
 }*/
