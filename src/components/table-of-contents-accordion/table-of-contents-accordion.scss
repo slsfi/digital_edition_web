@@ -95,7 +95,8 @@ table-of-contents-accordion {
     }
 
     ion-item.selected-toc-item {
-        background-color: #eee;
+        /*background-color: #eee;*/
+        font-weight: bold;
     }
 }
 .list-ios > .item-block:first-child {

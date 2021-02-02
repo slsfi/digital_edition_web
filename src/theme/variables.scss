@@ -11,7 +11,7 @@
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
 $text-color:       #000000;
-$background-color: #f3f1ea;
+$background-color: #ecebe4;
 
 
 // Named Color Variables
@@ -189,9 +189,10 @@ match {
 	background-color: transparent !important;
 }
 
-.selected-toc-item p{
+/* definieras i table-of-contents-accordion.scss
+.selected-toc-item p {
 	font-weight: bold;
-}
+}*/
 
 img[src*="#fsfd_bild_md_left"] {
     padding: 2px;

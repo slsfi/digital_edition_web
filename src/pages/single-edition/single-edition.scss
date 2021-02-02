@@ -1,34 +1,34 @@
 page-single-edition {
-	.subTitle{
-		color:#000000;
+	.subTitle {
+		color: #000000;
 		font-size: 1.3em;
 		font-style: italic;
 		font-weight: normal;
 	}
 	
-	.collectionImageDiv{
-		float:left;
+	.collectionImageDiv {
+		float: left;
 	}
 
-	h2{
+	h2 {
 		font-size: 1.3em;
 	}
 
-	.collectionDescription{
-		text-align:left;
-		padding-top: 0.0em;
-		padding-left: 0.0em;
+	.collectionDescription {
+		text-align: left;
+		padding-top: 0;
+		padding-left: 0;
 	}
 
-	.collectionDescription h1{
+	.collectionDescription h1 {
 		font-size: 1.7rem;
-		font-weight:bold;
+		font-weight: bold;
 	}
 
-	.collectionDescription h2{
+	.collectionDescription h2 {
 		font-size: 1.5rem;
 		padding-bottom: 1em;
-		font-weight:bold;
+		font-weight: bold;
 	}
 
 	.indented{
@@ -43,26 +43,26 @@ page-single-edition {
 		padding-left: 0;
 	}
 
-	.collectionImageCard{
+	.collectionImageCard {
 		display: inline-block;
 		box-shadow: none !important;
 		margin-left: 0;
 		margin-right: 0;
-		width:100%;
+		width: 100%;
 	}
 
 	ion-item.back-to-list-button.collections.item.item-block.item-ios {
 		display: none;
 	}
 
-	.secondary-mobile{
+	.secondary-mobile {
 		display: grid;
 	}
 
-	.fixed-content{
-		margin-top: 0px;
+	.fixed-content {
+		margin-top: 0;
 	}
-	.scroll-content{
-		margin-top: 0px;
+	.scroll-content {
+		margin-top: 0;
 	}
 }
