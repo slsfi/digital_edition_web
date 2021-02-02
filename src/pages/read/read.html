@@ -83,7 +83,7 @@
                 <comments [link]="establishedText.link" [matches]="matches" [external]="external" (openNewIntroView)="openNewView($event)">
                 </comments>
               </div>
-              <div *ngIf="view.facsimiles.show">
+              <div *ngIf="view.facsimiles.show" class="read_facsimiles">
                 <facsimiles [itemId]="establishedText.link" [selectedFacsimile]="view.facsimiles.id" [matches]="matches"
                   [facsID]="facs_id" [facsNr]="facs_nr" [songID]="song_id" (openNewFacsimileView)="openNewView($event)">
                 </facsimiles>
