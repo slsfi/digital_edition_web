@@ -1223,9 +1223,7 @@ export class DigitalEditionsApp {
     } else {
       console.log('Toc is not loaded');
     }
-
-
-
+    this.cdRef.detectChanges();
   }
 
   openPlaymanTraditionPage() {
@@ -1347,6 +1345,7 @@ export class DigitalEditionsApp {
       }
     }
     this.currentCollectionId = collection.id;
+    this.cdRef.detectChanges();
   }
 
   onShowAccordion(show: boolean) {

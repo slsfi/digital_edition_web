@@ -77,11 +77,19 @@ export class TitlePage {
       });
     });
 
-    if ( isNaN(Number(this.id)) ) {
+    // Check if not a Number
+    let idNaN = isNaN(Number(this.id));
+    if ( this.id === null || this.id === 'null' ) {
+      idNaN = true;
+    }
+
+    // idNaN === false, id is a number
+    if ( idNaN === false ) {
       this.checkIfCollectionHasChildrenPdfs();
     }
 
-    if (!isNaN(Number(this.id))) {
+    // idNaN === false, id is a number
+    if ( idNaN === false ) {
       if (this.hasMDTitle) {
         this.getMdContent(`${this.lang}-${this.hasMDTitle}-${this.id}`);
       }

@@ -233,7 +233,7 @@ export class DigitalEditionList implements OnInit {
     try {
       (<any>window).ga('send', 'event', {
         eventCategory: action,
-        eventLabel: 'Song',
+        eventLabel: 'digital-edition-list',
         eventAction: type + ' - ' + name,
         eventValue: 10
       });

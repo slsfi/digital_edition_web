@@ -338,6 +338,9 @@ export class TableOfContentsAccordionComponent {
     }
 
     this.events.subscribe('SelectedItemInMenu', (menu) => {
+      if ( this.collectionId === undefined || this.collectionId === null ) {
+        this.collectionId = menu.menuID;
+      }
       if (this.collectionId !== menu.menuID && this.currentOption) {
         this.currentOption.selected = false;
         this.currentOption = null;
