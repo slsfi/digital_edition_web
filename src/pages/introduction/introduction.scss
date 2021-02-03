@@ -54,21 +54,17 @@ page-introduction {
   /* menyn */
   #TOC {
     margin: 10px;
-    height: 100%;
-    /*width: 40vh;*/
-    width: 100%;
-    /* 0-bredd - ändras med JavaScript */
+    height: calc(100% - 102px);
+    width: 85%;
     max-width: 375px;
     position: fixed;
     z-index: 10;
     overflow-x: hidden;
-    /* ingen horisontell scrollning */
     transition: 0.25s;
   }
 
   #toc_menu {
     float: left;
-    /*z-index: 99; -- har ingen effekt eftersom inte ett positionerat element*/
     width: 100%;
   }
 
