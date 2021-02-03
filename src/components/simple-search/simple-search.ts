@@ -387,14 +387,17 @@ export class SimpleSearchComponent {
               colID = path[path.length - 1];
               colID = String(colID).split('_')[0];
             }
-            colID = String(colID).split(',')[0];
-            this.getPublicationTOCName(colID, pubId, source);
-            if ( source['publication_name'] === undefined ) {
-              source['publication_name'] = source['publication_data'][0]['pubname'];
+            if ( String(colID).indexOf('.txt') === -1 ) {
+              colID = String(colID).split(',')[0];
+              this.getPublicationTOCName(colID, pubId, source);
+              if ( source['publication_name'] === undefined ) {
+                source['publication_name'] = source['publication_data'][0]['pubname'];
+              }
+              if ( source['publication_data'] !== undefined && source['publication_data'][0]['collection_published'] === 0 ) {
+                delete object[index];
+              }
             }
-            if ( source['publication_data'] !== undefined && source['publication_data'][0]['collection_published'] === 0 ) {
-              delete object[index];
-            }
+
           }.bind(this));
           this.searchResult = res;
           this.formatSearchresult(val);
