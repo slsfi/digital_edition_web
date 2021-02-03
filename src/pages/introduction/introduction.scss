@@ -5,9 +5,10 @@ page-introduction {
     /*background-color: #fff; white by default*/
   }
 
+  /* denna default är för mobilvyn, gör rum för menyikonen ovanför innehållet. ändras till padding-top 0 för desktop (över 1000px skärmbredd) längre ner*/
   .card-content {
     height: 100%;
-    padding: 0;
+    padding: 41px 0 0 0;
   }
 
   .card-content > ion-scroll {
@@ -55,7 +56,7 @@ page-introduction {
     margin: 10px;
     height: 100%;
     /*width: 40vh;*/
-    width: 50vw;
+    width: 100%;
     /* 0-bredd - ändras med JavaScript */
     max-width: 375px;
     position: fixed;
@@ -67,7 +68,7 @@ page-introduction {
 
   #toc_menu {
     float: left;
-    z-index: 99;
+    /*z-index: 99; -- har ingen effekt eftersom inte ett positionerat element*/
     width: 100%;
   }
 
@@ -89,6 +90,17 @@ page-introduction {
 
   .menuClosedIcon {
     background-color: transparent;
+  }
+
+  #TOC.menuClosedTOC {
+    width: auto;
+    height: auto;
+    /*
+    width: 100%;
+    max-width: 710px;
+    height: auto;
+    background-color: #fff;
+    */
   }
 
   /* navigeringsbalken för inledningar */
@@ -162,6 +174,11 @@ page-introduction {
       height: auto;
       transition: none;
       z-index: 1;
+      width: 50vw;
+    }
+
+    .card-content {
+      padding-top: 0;
     }
 
     .menuClosedIcon {
