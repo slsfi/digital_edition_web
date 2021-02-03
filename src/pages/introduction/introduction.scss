@@ -1,6 +1,21 @@
 page-introduction {
-  .work_title {
-    font-style: italic;
+
+  ion-card {
+    max-width: 710px;
+    /*background-color: #fff; white by default*/
+  }
+
+  .card-content {
+    height: 100%;
+    padding: 0;
+  }
+
+  .card-content > ion-scroll {
+    height: 100% !important;
+  }
+
+  .scroll-content {
+    display: flex;
   }
 
   .scroll-zoom-wrapper {
@@ -8,65 +23,25 @@ page-introduction {
     padding: 6px;
   }
 
-  ion-card {
-    width: 75%;
-    /*max-width: 830px;*/
-    max-width: 720px;
-    /*background-color: #fff; white by default*/
-  }
-
-  .scroll-content {
+  .toolbar-content {
     display: flex;
+    justify-content: flex-end;
+    grid-template-columns: auto max-content;
+
+    ion-buttons {
+      order: 0;
+    }
+
+    /*
+    .bar-buttons:last-child {
+      margin-left: -118px;
+    }
+    */
   }
 
-  .hideIntro.tei #content {
-    display: none !important;
-  }
+  
 
-  #toc_menu {
-    float: left;
-    z-index: 99;
-    width: 100%;
-    margin-bottom: 12px;
-  }
-
-  #toc_menu ion-icon {
-    margin: 6px 12px;
-  }
-
-  p {
-    font-family: $font-read-column-p;
-  }
-
-  .est_figure_graphic {
-    width: initial;
-  }
-
-  .menuOpen {
-    display: sticky;
-  }
-
-  .menuClosed {
-    display: none;
-  }
-
-  .menuClosedIcon {
-    background-color: transparent;
-  }
-
-  /* navigeringsbalken för inledningar */
-  #toc_text,
-  .menuOpenIcon {
-    background-color: color($colors, secondary);
-  }
-
-  /*
-  .menuOpenIcon {
-    background-color: color($colors, light);
-  }
-  */
-
-  /* knappens position i desktop-vy */
+  /* knappens position i desktop-vy -- ANVÄNDS DENNA ALLS? */
   @media (min-width: 650px) {
     #navbtn {
       margin-top: 1.5rem;
@@ -88,6 +63,38 @@ page-introduction {
     overflow-x: hidden;
     /* ingen horisontell scrollning */
     transition: 0.25s;
+  }
+
+  #toc_menu {
+    float: left;
+    z-index: 99;
+    width: 100%;
+  }
+
+  #toc_menu.menuOpenIcon {
+    margin-bottom: 12px;
+  }
+
+  #toc_menu ion-icon {
+    margin: 6px 12px;
+  }
+
+  .menuOpen {
+    display: sticky;
+  }
+
+  .menuClosed {
+    display: none;
+  }
+
+  .menuClosedIcon {
+    background-color: transparent;
+  }
+
+  /* navigeringsbalken för inledningar */
+  #toc_text,
+  .menuOpenIcon {
+    background-color: color($colors, secondary);
   }
 
   #toc_text {
@@ -124,6 +131,28 @@ page-introduction {
   }
   */
 
+  #TOC p {
+    line-height: .1em;
+  }
+
+  #TOC h2.contentSection.smallCaps {
+    font-size: 1.2em;
+    margin-bottom: .6em;
+    margin-top: 1.2em;
+    padding-top: .2em;
+    font-variant: small-caps;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  #TOC h5.tei.contentSub2 {
+    font-size: 1em;
+    margin-bottom: .4em;
+    margin-top: .1em;
+    font-weight: 600;
+    line-height: 1;
+  }
+
   /* visning för bred skärm: toc flyter till höger om artikeln */
   @media (min-width: 1000px) {
     nav#TOC {
@@ -134,6 +163,22 @@ page-introduction {
       transition: none;
       z-index: 1;
     }
+
+    .menuClosedIcon {
+      background-color: transparent;
+    }
+  }
+
+  .hideIntro.tei #content {
+    display: none !important;
+  }
+
+  p {
+    font-family: $font-read-column-p;
+  }
+
+  .est_figure_graphic {
+    width: initial;
   }
 
   /* Gör texten mindre på mycket små skärmar */
@@ -191,39 +236,7 @@ page-introduction {
   }
   */
 
-  /*
-  .card-content>ion-scroll {
-    height: 100% !important;
-    padding: 0px !important;
-  }
 
-  .card-content {
-    height: 100% !important;
-    padding: 0px !important;
-  }
-  */
-  .card-content {
-    height: 100%;
-    padding: 0;
-  }
-
-  .card-content > ion-scroll {
-    height: 100% !important;
-  }
-
-  .toolbar-content {
-    display: flex;
-    justify-content: flex-end;
-    grid-template-columns: auto max-content;
-
-    ion-buttons {
-      order: 0;
-    }
-
-    .bar-buttons:last-child {
-      // margin-left: -118px;
-    }
-  }
 
   @media screen and (max-width: 800px) {
     .secondary .toolbar-content {
@@ -268,41 +281,16 @@ page-introduction {
     font-size: 1.2em !important;
   }
 
-  /* Duplicate, defined above
-  ion-card {
-    max-width: 760px;
-    background-color: #fff;
-  }
-  */
-
-  #TOC h5.tei.contentSub2 {
-    font-size: 1em;
-    margin-bottom: .4em;
-    margin-top: .1em;
-    font-weight: 600;
-    line-height: 1;
-  }
-
-  #TOC p {
-    line-height: .1em;
-  }
-
-  #TOC h2.contentSection.smallCaps {
-    font-size: 1.2em;
-    margin-bottom: .6em;
-    margin-top: 1.2em;
-    padding-top: .2em;
-    font-variant: small-caps;
-    font-weight: 600;
-    line-height: 1;
-  }
-
   div[data-id="content"] {
     display: none;
   }
 
   .tooltip.ttFoot {
     display: none;
+  }
+
+  .work_title {
+    font-style: italic;
   }
 
 }
