@@ -5,18 +5,11 @@
 }
 @media only screen and (min-width: 600px) {
     div.tei {
-        /*
-        max-width: 670px;
-        */
         max-width: 650px;
     }
     page-introduction div.tei {
         max-width: 100%;
     }
-    /*
-    page-introduction div.tei.show_pageNumbering {
-        max-width: 675px;
-    }*/
 }
 /*
 @media screen and (max-width: 800px) {
@@ -1085,7 +1078,7 @@ manuscripts div.tei {
 .tei.show_titleStyle        span.title {background-color: $workTitle-color;}
 .tei.show_titleStyle        span.title[id] {cursor: pointer;}
 
-.tei                        .pb_zts {display: none;}
+/*.tei                        .pb_zts {display: none;}*/
 /* .show_pbztsStyle verkar inte användas
 .tei.show_pbztsStyle        .pb_zts {display: inherit;}
 .tei.show_pbztsStyle        .pb_zts {color: $pageBreakEdition-color;}
@@ -1118,30 +1111,36 @@ page-introduction .tei.show_pageNumbering {
     margin-left: 5px;
 }
 @media screen and (max-width: 800px) {
-    read-text .tei.show_pageNumbering, 
-    page-introduction .tei.show_pageNumbering {
-      padding-left: 35px;
+    read-text .tei.show_pageNumbering {
+      padding-left: 28px;
     }
+    /* if mobile view, decrease the left padding when showing paragraph numbering */
+    page-read div[ng-reflect-ng-switch="established"] read-text .tei.show_pageNumbering {
+        padding-left: 16px;
+      }
 }
 
 /* PAGE BREAKS IN ORIGINAL AND EDITION */
 .pb_orig,
-.pb_zts {
+.pb_zts,
+.pb_edition {
     display: none;
 }
 .show_pageBreakOriginal .pb_orig,
-.show_pageBreakEdition .pb_zts {
+.show_pageBreakEdition .pb_zts,
+.show_pageBreakEdition .pb_edition {
     display: contents;
     position: absolute;
     margin-left: -40px;
     text-align: right;
     width: 30px;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
 }
 .show_pageBreakOriginal .pb_orig {
     color: $pageBreakOriginal-color;
 }
-.show_pageBreakEdition .pb_zts {
+.show_pageBreakEdition .pb_zts,
+.show_pageBreakEdition .pb_edition {
     color: $pageBreakEdition-color;
 }
 
@@ -1158,31 +1157,47 @@ page-introduction .tei.show_pageNumbering {
 /* Text sizes, should be changed to affect all elements, not just p */
 .tei p, 
 .tei.smallFont p {
-    font-size: 1rem;
+    font-size: $text-fontsize-small;
     line-height: 1.5rem;
     text-indent: 1.25rem; // 20px if 1rem = 16px
     margin: 0;
 }
 .tei.mediumFont p {
-    font-size: 1.125rem;
-    line-height: 1.6875rem;
-    text-indent: 1.40625rem;
+    font-size: $text-fontsize-medium;
+    line-height: calc(1.5 * $text-fontsize-medium);
+    text-indent: calc(1.25 * $text-fontsize-medium);
 }
 .tei.largeFont p {
-    font-size: 1.25rem;
-    line-height: 1.875rem;
-    text-indent: 1.5625rem;
+    font-size: $text-fontsize-large;
+    line-height: calc(1.5 * $text-fontsize-large);
+    text-indent: 1calc(1.25 * $text-fontsize-large);
 }
-/* Kommentarasteriskernas storlekar vid större font-storlekar */
+/* Kommentarasteriskernas storlekar vid större textstorlekar */
 div.tei.mediumFont img.comment {
-    width: calc(0.75 * 1.125rem) !important;
-    height: calc(0.75 * 1.125rem) !important;
+    width: calc(0.75 * $text-fontsize-medium) !important;
+    height: calc(0.75 * $text-fontsize-medium) !important;
 }
 div.tei.largeFont img.comment {
-    width: calc(0.75 * 1.25rem) !important;
-    height: calc(0.75 * 1.25rem) !important;
+    width: calc(0.75 * $text-fontsize-large) !important;
+    height: calc(0.75 * $text-fontsize-large) !important;
 }
-
+/* Sidnumreringarnas storlekar vid större textstorlekar*/
+div.tei.mediumFont.show_pageBreakOriginal,
+div.tei.mediumFont.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: calc(0.875 * $text-fontsize-medium);
+    }
+}
+div.tei.largeFont.show_pageBreakOriginal,
+div.tei.largeFont.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: calc(0.875 * $text-fontsize-large);
+    }
+}
 
 
 h3.tei.chapter {

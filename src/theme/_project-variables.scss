@@ -67,6 +67,10 @@ $font-semantic-data-model-tei: "Muli", 'Open Sans', Arial, sans-serif;
 $font-stamp-print-tei: "Times New Roman", serif;
 $font-tei-note-editorial: "Muli", arial, helvetica, sans-serif;
 
+$text-fontsize-small: 1rem;
+$text-fontsize-medium: 1.125rem;
+$text-fontsize-large: 1.25rem;
+
 // Load tei stylesheet
 @import 'tei';
 @import 'tei_comment';

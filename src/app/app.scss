@@ -489,6 +489,13 @@ ion-nav{
   box-shadow: 6px 0 6px rgba(0,0,0,.1) !important;
 }
 
+/* Adjust placement of read-page settings popover */
+.popover_settings .popover-content {
+  top: 70px !important;
+  left: unset !important;
+  right: 12px !important;
+}
+
 /* Intro.js core  */
 .introjs-overlay {
   position: absolute;
