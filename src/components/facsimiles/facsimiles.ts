@@ -185,7 +185,9 @@ export class FacsimilesComponent {
           this.facsPage = facs[0];
         }
 
-        this.manualPageNumber = this.activeImage = this.facsNumber = (this.facsPage['page_nr'] + this.facsPage['start_page_number'] + this.facsimilePage);
+        this.manualPageNumber = this.activeImage = this.facsNumber = (
+          this.facsPage['page_nr'] + this.facsPage['start_page_number'] + this.facsimilePage
+        );
         this.numberOfPages = this.facsPage['number_of_pages'];
 
         this.facsPage['title'] = this.sanitizer.bypassSecurityTrustHtml(this.facsPage['title']);

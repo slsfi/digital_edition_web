@@ -131,7 +131,7 @@ export class CoverPage {
   }
 
   getTocRoot(id: string) {
-    if( id === 'mediaCollections' || id === undefined ) {
+    if ( id === 'mediaCollections' || id === undefined ) {
       return [{}];
     }
     this.tableOfContentsService.getTableOfContents(id)

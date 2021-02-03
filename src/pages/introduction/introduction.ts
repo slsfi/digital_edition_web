@@ -125,7 +125,7 @@ export class IntroductionPage {
           if ( targetId === null ) {
             targetId = elem.parentElement.getAttribute('href');
           }
-          if( String(targetId).indexOf('#') !== -1 ) {
+          if ( String(targetId).indexOf('#') !== -1 ) {
             targetId = String(targetId).split('#')[1];
             const dataIdSelector = '[name="' + String(targetId).replace('#', '') + '"]';
             const target = elem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
