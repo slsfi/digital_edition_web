@@ -1114,10 +1114,10 @@ page-introduction .tei.show_pageNumbering {
     read-text .tei.show_pageNumbering {
       padding-left: 28px;
     }
-    /* if mobile view, decrease the left padding when showing paragraph numbering */
-    page-read div[ng-reflect-ng-switch="established"] read-text .tei.show_pageNumbering {
-        padding-left: 16px;
-      }
+}
+/* left padding if showing paragraph numbering in mobile view */
+page-read div[ng-reflect-ng-switch="established"] read-text .tei.show_pageNumbering {
+    padding-left: 28px;
 }
 
 /* PAGE BREAKS IN ORIGINAL AND EDITION */
