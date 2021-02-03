@@ -983,9 +983,7 @@ export class TableOfContentsAccordionComponent {
     // this.collapsableItems = [];
 
     const nav = this.app.getActiveNavs();
-    nav[0].goToRoot();
-    // nav[0].setRoot('EditionsPage', [], {animate: false, direction: 'back', animation: 'ios-transition'});
-
+    nav[0].goToRoot({animate: false});
     this.alphabethicOrderActive = false;
     this.chronologicalOrderActive = false;
     this.thematicOrderActive = false;
