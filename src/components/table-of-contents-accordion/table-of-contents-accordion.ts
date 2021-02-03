@@ -974,16 +974,17 @@ export class TableOfContentsAccordionComponent {
   }
 
   exit() {
-    this.collectionId = null;
-    this.collectionName = null;
+    // this.collectionId = null;
+    this.collectionName = undefined;
 
     this.events.publish('exitActiveCollection');
 
-    this.activeMenuTree = [];
-    this.collapsableItems = [];
+    // this.activeMenuTree = [];
+    // this.collapsableItems = [];
 
     const nav = this.app.getActiveNavs();
-    nav[0].setRoot('EditionsPage', [], {animate: false, direction: 'back', animation: 'ios-transition'});
+    nav[0].goToRoot();
+    // nav[0].setRoot('EditionsPage', [], {animate: false, direction: 'back', animation: 'ios-transition'});
 
     this.alphabethicOrderActive = false;
     this.chronologicalOrderActive = false;
