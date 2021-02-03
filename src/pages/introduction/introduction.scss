@@ -11,8 +11,8 @@ page-introduction {
   ion-card {
     width: 75%;
     /*max-width: 830px;*/
-    max-width: 760px;
-    background-color: #fff;
+    max-width: 720px;
+    /*background-color: #fff; white by default*/
   }
 
   .scroll-content {
@@ -31,7 +31,7 @@ page-introduction {
   }
 
   #toc_menu ion-icon {
-    margin: 5px;
+    margin: 6px 12px;
   }
 
   p {
@@ -110,7 +110,7 @@ page-introduction {
   /* menylänkarna */
   #TOC a {
     text-decoration: none;
-    color: #364930;
+    color: color($colors, dark);
     transition: 0.3s;
   }
 
@@ -118,9 +118,11 @@ page-introduction {
     display: none;
   }
 
+  /*
   #TOC a:hover {
     color: #538494;
   }
+  */
 
   /* visning för bred skärm: toc flyter till höger om artikeln */
   @media (min-width: 1000px) {
@@ -142,11 +144,11 @@ page-introduction {
     }
 
     #TOC h2 {
-      font-size: 0.9rem;
+      font-size: 0.875rem;
     }
 
     #TOC h5 {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
     }
 
     p {
@@ -266,10 +268,12 @@ page-introduction {
     font-size: 1.2em !important;
   }
 
+  /* Duplicate, defined above
   ion-card {
     max-width: 760px;
     background-color: #fff;
   }
+  */
 
   #TOC h5.tei.contentSub2 {
     font-size: 1em;

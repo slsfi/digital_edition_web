@@ -10,9 +10,13 @@
         */
         max-width: 650px;
     }
+    page-introduction div.tei {
+        max-width: 100%;
+    }
+    /*
     page-introduction div.tei.show_pageNumbering {
         max-width: 675px;
-    }
+    }*/
 }
 /*
 @media screen and (max-width: 800px) {
