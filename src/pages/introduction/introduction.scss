@@ -5,6 +5,7 @@ page-introduction {
 
   .scroll-zoom-wrapper {
     width: 100%;
+    padding: 6px;
   }
 
   ion-card {
@@ -26,6 +27,7 @@ page-introduction {
     float: left;
     z-index: 99;
     width: 100%;
+    margin-bottom: 12px;
   }
 
   #toc_menu ion-icon {
@@ -52,9 +54,17 @@ page-introduction {
     background-color: transparent;
   }
 
+  /* navigeringsbalken för inledningar */
+  #toc_text,
+  .menuOpenIcon {
+    background-color: color($colors, secondary);
+  }
+
+  /*
   .menuOpenIcon {
     background-color: color($colors, light);
   }
+  */
 
   /* knappens position i desktop-vy */
   @media (min-width: 650px) {
@@ -69,9 +79,10 @@ page-introduction {
   #TOC {
     margin: 10px;
     height: 100%;
-    width: 40vh;
+    /*width: 40vh;*/
+    width: 50vw;
     /* 0-bredd - ändras med JavaScript */
-    max-width: 100%;
+    max-width: 375px;
     position: fixed;
     z-index: 10;
     overflow-x: hidden;
@@ -82,20 +93,16 @@ page-introduction {
   #toc_text {
     margin-top: 2.5rem;
     position: sticky;
-    background-color: color($colors, light);
-    /* ljusgrön SLS */
-    padding-bottom: 15px;
+    padding: 0 1.25rem 20vh 1.25rem;
   }
 
   #TOC h2 {
     font-size: 1.1rem;
-    padding-left: 1rem;
     margin-bottom: 0.8rem;
   }
 
   #TOC h5 {
     font-size: 1rem;
-    padding-left: 2rem;
     margin-bottom: 0.6rem;
     margin-top: 0.1rem;
   }
@@ -199,7 +206,7 @@ page-introduction {
   }
 
   .card-content > ion-scroll {
-    height: 100%;
+    height: 100% !important;
   }
 
   .toolbar-content {
@@ -266,7 +273,6 @@ page-introduction {
 
   #TOC h5.tei.contentSub2 {
     font-size: 1em;
-    padding-left: 1.2em;
     margin-bottom: .4em;
     margin-top: .1em;
     font-weight: 600;
@@ -279,22 +285,12 @@ page-introduction {
 
   #TOC h2.contentSection.smallCaps {
     font-size: 1.2em;
-    padding-left: 1em;
     margin-bottom: .6em;
     margin-top: 1.2em;
     padding-top: .2em;
     font-variant: small-caps;
     font-weight: 600;
     line-height: 1;
-  }
-
-  /* navigeringsbalken för inledningar */
-  #toc_text {
-    background-color: #b2d0ea;
-  }
-
-  .menuOpenIcon {
-    background-color: #b2d0ea;
   }
 
   div[data-id="content"] {
@@ -305,15 +301,4 @@ page-introduction {
     display: none;
   }
 
-  /* Duplicate rules
-  .card-content>ion-scroll {
-    height: 100% !important;
-    padding: 0px !important;
-  }
-
-  .card-content {
-    height: 100% !important;
-    padding: 0px !important;
-  }
-  */
 }
