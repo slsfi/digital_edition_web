@@ -517,10 +517,10 @@ ion-nav{
 
 
 // Load TEI-stylesheets. Moved here from project-variables.scss
-@import 'tei';
-@import 'tei_comment';
-@import 'tei_variant';
-@import 'tei_manuscript';
+@import '../theme/tei';
+@import '../theme/tei_comment';
+@import '../theme/tei_variant';
+@import '../theme/tei_manuscript';
 
 
 
