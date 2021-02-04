@@ -71,11 +71,13 @@ $text-fontsize-small: 1rem;
 $text-fontsize-medium: 1.125rem;
 $text-fontsize-large: 1.25rem;
 
-// Load tei stylesheet
+// Load tei stylesheet --> MOVED to app.scss
+/*
 @import 'tei';
 @import 'tei_comment';
 @import 'tei_variant';
 @import 'tei_manuscript';
+*/
 
 /* Borde vara en överflödig regel
 .menu-inner .item-md p {
@@ -101,9 +103,11 @@ p {
   font-size: 1.1rem;
 }
 
+/* MOVED to app.scss
 .popover_settings .popover-content {
   width: min-content !important;
 }
+*/
 
 /*
 .selected-toc-item {

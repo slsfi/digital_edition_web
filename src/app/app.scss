@@ -511,7 +511,18 @@ ion-nav{
   top: 70px !important;
   left: unset !important;
   right: 12px !important;
+  width: min-content !important;
 }
+
+
+
+// Load TEI-stylesheets. Moved here from project-variables.scss
+@import 'tei';
+@import 'tei_comment';
+@import 'tei_variant';
+@import 'tei_manuscript';
+
+
 
 /* Intro.js core  */
 .introjs-overlay {
