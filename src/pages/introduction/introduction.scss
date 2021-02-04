@@ -14,12 +14,17 @@ page-introduction {
     height: 100% !important;
   }
 
+  /* This hides the vertical scrollbar on the right edge of the viewport area when it is not necessary to show it. Observe that there are two elements with class scroll-content, which is why this needs to be this specific. */
+  ion-content > .scroll-content {
+    overflow: auto;
+  }
+
   .scroll-content {
     display: flex;
   }
 
   .scroll-zoom-wrapper {
-    /*width: 100%;*/
+    width: 100%;
     padding: 6px;
   }
 
@@ -73,6 +78,7 @@ page-introduction {
 
   #toc_menu ion-icon {
     margin: 6px 12px;
+    cursor: pointer;
   }
 
   .menuOpen {
