@@ -1344,13 +1344,13 @@ h6.tei.poemmotto2 {
 }
 */
 
-/*tabeller*/
+/*tabeller --> definieras i app.scss
 td, th {
     padding-top: 1px;
     padding-right: 5px;
     padding-bottom: 2px;
     padding-left: 0;
-}
+}*/
 /* Den okände von Wright, tidslinje-tabell i markdown*/
 /* feta den första kolumnen */
 div.md_content markdown td:first-child {
@@ -1360,10 +1360,10 @@ div.md_content markdown td {
     line-height: 1.4;
     vertical-align: top;
 }
-/*texten på huvudbalken*/
+/*texten på huvudbalken --> custom.css
 .bar-button-clear-md-default, .bar-button-default-md, .bar-button-md-default {
     color: #000000;
-}
+}*/
 
 /*faksimilknapparna --> flyttas till custom.css om behöver ändras
 .fab-md-secondary {
@@ -2268,12 +2268,13 @@ span.note_foot {
 	padding-right: 0.2rem;
 }
 
-/*titelsidans omslag -- definieras redan i project-variables.scss
+/*titelsidans omslag --> flytta till page-title */
 .tit_figure_graphic {
     max-width: 50%;
     display: block;
-    margin-left: 165px;
-}*/
+    /* margin-left: 165px; */
+  margin: 1rem auto 0 auto; /*centrera titelsidans bild*/
+}
 
 .pdf_figure_graphic {
 	display: inline-block;
