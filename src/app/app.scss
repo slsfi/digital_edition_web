@@ -144,7 +144,7 @@ th:last-child {
 }
 
 .back-to-list-button {
-  background-color: $back-button-color;
+  background-color: $back-button-color !important;
 
   .back-button-text {
     color: $back-button-text-color;

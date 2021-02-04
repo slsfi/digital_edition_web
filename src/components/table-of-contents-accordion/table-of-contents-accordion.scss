@@ -3,7 +3,17 @@ table-of-contents-accordion {
     cursor: pointer;
   }
 
-  .collection-name-top {
+  /* The toc items should not have a background color in them selves, thus the background color for the entire navigation panel shines through. */
+  ion-item.item {
+    background-color: unset;
+  }
+
+  ion-item.item.selected-toc-item {
+    /*background-color: #eee;*/
+    font-weight: bold;
+  }
+
+  ion-item.item.collection-name-top {
     background-color: color($colors, secondary);
     min-height: 50px;
     font-weight: bold;
@@ -94,10 +104,11 @@ table-of-contents-accordion {
         overflow-x: hidden;
     }
 
-    ion-item.selected-toc-item {
-        /*background-color: #eee;*/
-        font-weight: bold;
+    ion-item ion-label span.description {
+        color: #666;
+        font-weight: normal !important;
     }
+
 }
 .list-ios > .item-block:first-child {
     border-top: none !important;
