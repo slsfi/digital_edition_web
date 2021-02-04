@@ -1,23 +1,24 @@
 page-title {
+
+  ion-card {
+    max-width: 710px;
+  }
+
   .card-content {
+    height: 100%;
+    padding: 0;
+  }
+
+  .card-content > ion-scroll {
     height: 100% !important;
   }
 
   .scroll-content {
-    overflow: hidden;
-    margin-bottom: 1rem;
+    display: flex;
   }
 
-  ion-scroll {
-    height: 100% !important;
-    padding: 0 !important;
-  }
-
-  ion-card {
-    height: 100% !important;
-    padding: 0 !important;
-    max-width: 760px;
-	  background-color: #fff;
+  .scroll-zoom-wrapper {
+    padding: 6px;
   }
 
 }

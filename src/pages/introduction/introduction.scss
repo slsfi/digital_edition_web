@@ -2,7 +2,6 @@ page-introduction {
 
   ion-card {
     max-width: 710px;
-    /*background-color: #fff; white by default*/
   }
 
   /* denna default är för mobilvyn, gör rum för menyikonen ovanför innehållet. ändras till padding-top 0 för desktop (över 1000px skärmbredd) längre ner*/
@@ -20,7 +19,7 @@ page-introduction {
   }
 
   .scroll-zoom-wrapper {
-    width: 100%;
+    /*width: 100%;*/
     padding: 6px;
   }
 

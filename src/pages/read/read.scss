@@ -5,6 +5,12 @@ page-read {
     padding-left: 20px !important;
   }
   */
+
+  /* This hides the vertical scrollbar on the entire column area when it is not necessary, giving a few additional pixels in width */
+  ion-content > .scroll-content {
+    overflow: auto;
+  }
+
   .work_title {
     font-style: italic;
   }
@@ -24,6 +30,7 @@ page-read {
 
   .read-fab-menu {
     bottom: 50px;
+    position: fixed; /* default is absolute */
   }
 
   .toolbar-content {
@@ -134,8 +141,8 @@ page-read {
   .read-columns {
     margin-bottom: 0.5rem;
     -webkit-overflow-scrolling: touch;
-    overflow-x: auto;
-    overflow-y: hidden;
+    /*overflow-x: auto;
+    overflow-y: hidden;  overflow is now set on the parent element div.scroll-content */
     white-space: nowrap;
 
     /*the bar with a heading for the column*/
