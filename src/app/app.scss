@@ -79,6 +79,23 @@ p, blockquote {
   line-height: 2.2rem;
 }
 
+/* Tabeller, alternativet är att sätta dessa i tei.scss och göra dem enbart tei-specifika */
+td,
+th {
+  /*
+  padding-top: 1px;
+  padding-right: 5px;
+  padding-bottom: 2px;
+  padding-left: 0;
+  */
+  padding: 0.25em 1em 0.25em 0;
+  vertical-align: top;
+}
+td:last-child, 
+th:last-child {
+	padding-right: 0;
+}
+
 .ion-page {
   min-width: 200px;
   overflow: hidden;

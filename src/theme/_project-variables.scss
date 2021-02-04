@@ -278,13 +278,6 @@ p.parIndent span.paragraph_number {
   font-variant: normal;
 }
 
-/*titelsidans spaltbredd justerad till smalare -> FLYTTA till scss för page-title */
-page-title ion-card {
-  max-width: 760px;
-  background-color: #fff;
-}
-
-
 /*strofer med en blankrad mellan sig ska inte ha två blankrader bara för att ett sidnr dyker upp*/
 p.tei.invisiblelg + p.tei.invisiblelg {
   margin-bottom: 0;
@@ -343,23 +336,6 @@ ion-item.item {
   background-color: #b2d0ea !important;
 }
 */
-
-/*tabeller*/
-td,
-th {
-  /*
-  padding-top: 1px;
-  padding-right: 5px;
-  padding-bottom: 2px;
-  padding-left: 0;
-  */
-  padding: 0.25em 1em 0.25em 0;
-  vertical-align: top;
-}
-td:last-child, 
-th:last-child {
-	padding-right: 0;
-}
 
 /* Den okände von Wright, tidslinje-tabell i markdown*/
 /* feta den första kolumnen */
