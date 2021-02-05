@@ -10,8 +10,8 @@
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
-$text-color:       #000000;
-$background-color: #f3f1ea;
+$text-color:       #000;
+$background-color: #ecebe4;
 
 
 // Named Color Variables
@@ -24,9 +24,9 @@ $background-color: #f3f1ea;
 
 $colors: (
 	primary:	#538494,
-	secondary:	#e4dcca,
-  dark:		#222,
-  light:		#D3DD9F
+	secondary:	#e6e1d8,
+    dark:		#222,
+    light:		#d3dd9f
 );
 
 // Custom colors for semantic code etc.
@@ -69,7 +69,7 @@ $toolbar-active-color:                 #fff;
 $toolbar-inactive-color:               #fff;
 $segment-button-text-color-activated:  #fff;
 
-$back-button-color:						color($colors, secondary);
+$back-button-color:						#e8e4df; // Ideally something between secondary and $background-color
 $back-button-text-color:				color($colors, dark);
 $forward-arrow-color:					color($colors, dark);
 $divider-bg-color:                      color($colors, light);
@@ -189,10 +189,6 @@ match {
 	background-color: transparent !important;
 }
 
-.selected-toc-item p{
-	font-weight: bold;
-}
-
 img[src*="#fsfd_bild_md_left"] {
     padding: 2px;
     border: 1px solid #c4c4b1;
@@ -212,19 +208,19 @@ blockquote{
     font-weight: 600;
 }
 
+/* These overrides are unnecessary here, primary and secondary colors are used instead by default.
 .toolbar-background{
-    background-color: #A6AEBD;
+    background-color: #a6aebd;
 }
-
 .content {
-    background-color: #ECEBE4 !important;
+    background-color: #ecebe4 !important;
 }
-
 .item {
     background-color: #ECEBE4 !important;
-}
+}*/
 
-.description{
+/* This applies to descriptions in TOC, but unclear why declared here and not in table-of-contents-accordion.scss */
+.description {
     white-space: normal;
     line-height: 1.4rem !important;
 }

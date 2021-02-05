@@ -7,7 +7,13 @@ facsimiles {
     #facsimilies-image{
         max-height: 100%;
         height: 100%;
-    }    
+    }
+    #facsimilies-image img{
+      max-height: -webkit-fill-available;
+      max-height: fill-available;
+      object-fit: scale-down;
+      object-position: top;
+    }
 
     #facsimilies-image img{
       max-height: -webkit-fill-available;
@@ -15,7 +21,7 @@ facsimiles {
       object-fit: scale-down;
       object-position: top;
     }
-    
+
     .external_url a{
       white-space: normal;
     }

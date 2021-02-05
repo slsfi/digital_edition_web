@@ -10,17 +10,21 @@ read-popover-page {
 	}
 
 	.text-medium {
-		font-size: 1.2rem;
+		font-size: 1.25rem;
 	}
 
 	.text-larger {
-		font-size: 1.6rem;
+		font-size: 1.625rem;
 	}
 
 	ion-list-header {
 		font-weight: bold;
-		margin-bottom: 0px !important;
+		margin-bottom: 0 !important;
 		min-height: 1rem !important;
+	}
+	ion-item ion-label.label {
+		line-height: 1.5;
+		margin: 9px 8px 9px 0;
 	}
 
 	.read-popover-header ion-label {
@@ -29,36 +33,36 @@ read-popover-page {
 		margin-top: 2px;
 	}
 
-	.close{
+	.close {
 		font-size: 1rem;
 	}
 
-	.appearence{
+	.appearence {
 		margin-top: 0.8rem;
 	}
 
-	.asterix{
+	.asterix {
 		height: 0.8em;
 		padding-right: 0.1em;
 	}
 
-	.show_personInfo{
+	.show_personInfo {
 		display: inline;
 		background-color: $persName-color;
 	}
-	.show_workInfo{
+	.show_workInfo {
 		display: inline;
 		background-color: $workTitle-color;
 	}
-	.show_placeInfo{
+	.show_placeInfo {
 		display: inline;
 		background-color: $placeName-color;
 	}
-	.show_abbreviations{
+	.show_abbreviations {
 		display: inline;
 		background-color: $abbreviations-color;
 	}
-	.show_changesInfo{
+	.show_changesInfo {
 		display: inline;
 		background-color: $changes-color;
 	}

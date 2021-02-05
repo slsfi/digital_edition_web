@@ -1,42 +1,84 @@
 page-introduction {
-  .work_title {
-    font-style: italic;
-  }
-
-  .scroll-zoom-wrapper {
-    width: 100%;
-  }
 
   ion-card {
-    width: 75%;
-    max-width: 830px;
-    background-color: #fff;
+    max-width: 710px;
+  }
+
+  /* denna default är för mobilvyn, gör rum för menyikonen ovanför innehållet. ändras till padding-top 0 för desktop (över 1000px skärmbredd) längre ner*/
+  .card-content {
+    height: 100%;
+    padding: 41px 0 0 0;
+  }
+
+  .card-content>ion-scroll {
+    height: 100% !important;
+  }
+
+  /* This hides the vertical scrollbar on the right edge of the viewport area when it is not necessary to show it. Observe that there are two elements with class scroll-content, which is why this needs to be this specific. */
+  ion-content>.scroll-content {
+    overflow: auto;
   }
 
   .scroll-content {
     display: flex;
   }
 
-  .hideIntro.tei #content {
-    display: none !important;
+  .scroll-zoom-wrapper {
+    width: 100%;
+    padding: 6px;
+  }
+
+  .toolbar-content {
+    display: flex;
+    justify-content: flex-end;
+    grid-template-columns: auto max-content;
+
+    ion-buttons {
+      order: 0;
+    }
+
+    /*
+    .bar-buttons:last-child {
+      margin-left: -118px;
+    }
+    */
+  }
+
+
+
+  /* knappens position i desktop-vy -- ANVÄNDS DENNA ALLS? */
+  @media (min-width: 650px) {
+    #navbtn {
+      margin-top: 1.5rem;
+      margin-right: -2.5rem;
+    }
+  }
+
+  /* sidenav för mobil */
+  /* menyn */
+  #TOC {
+    margin: 10px;
+    height: calc(100% - 102px);
+    width: 85%;
+    max-width: 375px;
+    position: fixed;
+    z-index: 10;
+    overflow-x: hidden;
+    transition: 0.25s;
   }
 
   #toc_menu {
     float: left;
-    z-index: 99;
     width: 100%;
   }
 
+  #toc_menu.menuOpenIcon {
+    margin-bottom: 12px;
+  }
+
   #toc_menu ion-icon {
-    margin: 5px;
-  }
-
-  p {
-    font-family: $font-read-column-p;
-  }
-
-  .est_figure_graphic {
-    width: initial;
+    margin: 6px 12px;
+    cursor: pointer;
   }
 
   .menuOpen {
@@ -51,50 +93,36 @@ page-introduction {
     background-color: transparent;
   }
 
+  #TOC.menuClosedTOC {
+    width: auto;
+    height: auto;
+    /*
+    width: 100%;
+    max-width: 710px;
+    height: auto;
+    background-color: #fff;
+    */
+  }
+
+  /* navigeringsbalken för inledningar */
+  #toc_text,
   .menuOpenIcon {
-    background-color: color($colors, light);
-  }
-
-  /* knappens position i desktop-vy */
-  @media (min-width: 650px) {
-    #navbtn {
-      margin-top: 1.5rem;
-      margin-right: -2.5rem;
-    }
-  }
-
-  /* sidenav för mobil */
-  /* menyn */
-  #TOC {
-    margin: 10px;
-    height: 100%;
-    width: 40vh;
-    /* 0-bredd - ändras med JavaScript */
-    max-width: 100%;
-    position: fixed;
-    z-index: 10;
-    overflow-x: hidden;
-    /* ingen horisontell scrollning */
-    transition: 0.25s;
+    background-color: color($colors, secondary);
   }
 
   #toc_text {
     margin-top: 2.5rem;
     position: sticky;
-    background-color: color($colors, light);
-    /* ljusgrön SLS */
-    padding-bottom: 15px;
+    padding: 0 1.25rem 20vh 1.25rem;
   }
 
   #TOC h2 {
     font-size: 1.1rem;
-    padding-left: 1rem;
     margin-bottom: 0.8rem;
   }
 
   #TOC h5 {
     font-size: 1rem;
-    padding-left: 2rem;
     margin-bottom: 0.6rem;
     margin-top: 0.1rem;
   }
@@ -102,7 +130,7 @@ page-introduction {
   /* menylänkarna */
   #TOC a {
     text-decoration: none;
-    color: #364930;
+    color: color($colors, dark);
     transition: 0.3s;
   }
 
@@ -110,8 +138,32 @@ page-introduction {
     display: none;
   }
 
+  /*
   #TOC a:hover {
     color: #538494;
+  }
+  */
+
+  #TOC p {
+    line-height: .1em;
+  }
+
+  #TOC h2.contentSection.smallCaps {
+    font-size: 1.2em;
+    margin-bottom: .6em;
+    margin-top: 1.2em;
+    padding-top: .2em;
+    font-variant: small-caps;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  #TOC h5.tei.contentSub2 {
+    font-size: 1em;
+    margin-bottom: .4em;
+    margin-top: .1em;
+    font-weight: 600;
+    line-height: 1;
   }
 
   /* visning för bred skärm: toc flyter till höger om artikeln */
@@ -123,7 +175,28 @@ page-introduction {
       height: auto;
       transition: none;
       z-index: 1;
+      width: 50vw;
     }
+
+    .card-content {
+      padding-top: 0;
+    }
+
+    .menuClosedIcon {
+      background-color: transparent;
+    }
+  }
+
+  .hideIntro.tei #content {
+    display: none !important;
+  }
+
+  p {
+    font-family: $font-read-column-p;
+  }
+
+  .est_figure_graphic {
+    width: initial;
   }
 
   /* Gör texten mindre på mycket små skärmar */
@@ -134,11 +207,11 @@ page-introduction {
     }
 
     #TOC h2 {
-      font-size: 0.9rem;
+      font-size: 0.875rem;
     }
 
     #TOC h5 {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
     }
 
     p {
@@ -148,26 +221,6 @@ page-introduction {
 
     .menuOpenTOC {
       width: 65%;
-    }
-
-    .menuClosedTOC {
-      width: 10% !important;
-    }
-  }
-
-  .toolTip {
-    z-index: 1000;
-    position: absolute;
-    background: #f1f1f1;
-    border: 1px solid #222;
-    box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
-    padding: 0.5rem;
-    white-space: normal;
-    max-width: 400px;
-    text-align: left;
-
-    p {
-      line-height: 22px;
     }
   }
 
@@ -179,29 +232,37 @@ page-introduction {
     cursor: pointer;
   }
 
-  .card-content>ion-scroll {
-    height: 100% !important;
-    padding: 0px !important;
+  .menuClosedTOC {
+    width: 10% !important;
+  }
+}
+
+.toolTip {
+  z-index: 1000;
+  position: absolute;
+  background: #f1f1f1;
+  border: 1px solid #222;
+  box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
+  padding: 0.5rem;
+  white-space: normal;
+  max-width: 400px;
+  text-align: left;
+
+  p {
+    line-height: 22px;
   }
 
-  .card-content {
-    height: 100% !important;
-    padding: 0px !important;
+  .tooltip {
+    display: none;
   }
 
-  .toolbar-content {
-    display: flex;
-    justify-content: flex-end;
-    grid-template-columns: auto max-content;
-
-    ion-buttons {
-      order: 0;
+  /*
+    .tooltiptrigger {
+      cursor: pointer;
     }
+    */
 
-    .bar-buttons:last-child {
-      // margin-left: -118px;
-    }
-  }
+
 
   @media screen and (max-width: 800px) {
     .secondary .toolbar-content {
@@ -227,52 +288,23 @@ page-introduction {
     text-align: left !important;
     font-weight: normal !important;
     font-size: 1em !important;
-    margin: 0.8em 0em 1em 0em !important;
+    margin: 0.8em 0 1em 0 !important;
   }
 
   div[data-id="cont_introduction"] h2.tei.section {
     text-align: left !important;
     font-weight: normal !important;
-    margin: 1.4em 0em 1.3em 0em !important;
-    font-size: 1.4em !important
+    margin: 1.4em 0 1.3em 0 !important;
+    font-size: 1.4em !important;
   }
 
-  ion-card {
-    max-width: 760px;
-    background-color: #fff;
-  }
-
-  #TOC h5.tei.contentSub2 {
-    font-size: 1em;
-    padding-left: 1.2em;
-    margin-bottom: .4em;
-    margin-top: .1em;
-    font-weight: 600;
-    line-height: 1;
-  }
-
-  #TOC p {
-    line-height: .1em;
-  }
-
-  #TOC h2.contentSection.smallCaps {
-    font-size: 1.2em;
-    padding-left: 1em;
-    margin-bottom: .6em;
-    margin-top: 1.2em;
-    padding-top: .2em;
-    font-variant: small-caps;
-    font-weight: 600;
-    line-height: 1;
-  }
-
-  /* navigeringsbalken för inledningar */
-  #toc_text {
-    background-color: #b2d0ea;
-  }
-
-  .menuOpenIcon {
-    background-color: #b2d0ea;
+  div[data-id="cont_introduction"] h3.italics {
+    /* text-align, font-style och font-weight torde vara överflödiga här*/
+    text-align: left !important;
+    font-style: italic;
+    font-weight: normal !important;
+    margin: 1.3em 0 1.2em 0 !important;
+    font-size: 1.2em !important;
   }
 
   div[data-id="content"] {
@@ -283,15 +315,7 @@ page-introduction {
     display: none;
   }
 
-
-  .card-content>ion-scroll {
-    height: 100% !important;
-    padding: 0px !important;
+  .work_title {
+    font-style: italic;
   }
-
-  .card-content {
-    height: 100% !important;
-    padding: 0px !important;
-  }
-
 }

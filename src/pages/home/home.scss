@@ -1,4 +1,10 @@
 home-page {
+
+	/* This hides the vertical scrollbar on the right edge of the viewport area when it is not necessary to show it. Observe that there are two elements with class scroll-content, which is why this needs to be this specific. */
+	ion-content > .scroll-content {
+		overflow: auto;
+	}
+
 	.page-title {
 		margin-left: 5px;
 	}
@@ -12,11 +18,11 @@ home-page {
 
 	.banner {
 		position: relative;
-		margin-top: 0.00em;
-		padding-left: 0px;
-		margin-left: 0px;
+		margin-top: 0;
+		padding-left: 0;
+		margin-left: 0;
 		height: 50%;
-		background-position: center;
+		background-position: 50% 50%;
 		background-repeat: no-repeat;
 		background-size: cover;
 	}
@@ -46,27 +52,36 @@ home-page {
 		}
 	}
 
-	.banner-title {
+	.banner-title,
+	.banner-subtitle {
 		font-family: $font-family-header;
-		font-size: 4rem;
-		font-weight: 500;
-		line-height: 80px;
-		color: white;
-
-		@media only screen and (max-width: 650px) {
-			font-size: 31px;
-		}
+		font-size: calc(1.375rem + 2.15vw);
+		font-weight: normal;
+		line-height: 1.5;
+		color: #000;
+		background-color: rgba($background-color, 0.8);
+		padding: 0 1rem;
 	}
 
 	.banner-subtitle {
-		font-family: $font-family-header;
-		font-size: 28px;
-		font-weight: 300;
+		font-size: calc(1rem + 0.7vw);
 		font-style: italic;
+		display: inline-block;
+	}
 
-		@media only screen and (max-width: 650px) {
-			font-size: 22px;
+	/*
+	@media only screen and (max-width: 650px) {
+		.banner-title {
+			font-size: 2rem;
 		}
+		.banner-subtitle {
+			font-size: 1.375rem;
+		}
+	}
+	*/
+
+	.banner::before {
+		background: rgba(93, 106, 126, 0) !important;
 	}
 
 	.fp_h1 {
@@ -77,44 +92,19 @@ home-page {
 		border-bottom: 5px solid $orange-color;
 	}
 
-	h1{
+	h1 {
 		text-transform: none;
 	}
 
-	h2{
+	h2 {
 		font-size: 1.6rem;
+		margin-top: 0;
 	}
 
-	p{
+	p {
 		line-height: 1.8rem;
 	}
 
-	.banner-title {
-		color: black !important;
-		padding-left: 1rem;
-		padding-right: 1rem;
-		padding-bottom: 0.8rem;
-		background-color: rgba(228, 220, 202, 0.8);
-	}
-
-	.banner-subtitle {
-		color: #364930;
-		padding-left: 1rem;
-		padding-right: 1rem;
-		background-color: rgba(228, 220, 202, 0.8);
-	}
-
-	.banner::before{
-		background: rgba(93, 106, 126, 0) !important;
-	}
-
-	.banner-title{
-		color: black !important;
-	}
-
-	.banner-subtitle{
-		color: #364930;
-	}
 }
 
 
@@ -124,17 +114,14 @@ home-page {
 }
 
 
-footer{
+footer {
 	text-align: center;
 	padding-bottom: 2rem;
 }
 
-footer p{
+footer p {
 	font-size: 1rem;
-	color: rgba($color: #000000, $alpha: 0.6);
-}
-
-footer p{
+	color: rgba($color: #000, $alpha: 0.6);
 	margin: 0;
 }
 

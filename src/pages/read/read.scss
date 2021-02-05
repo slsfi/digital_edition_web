@@ -1,7 +1,7 @@
 page-read {
   .read_facsimiles {
     max-height: 100%;
-    height: 100%; 
+    height: 100%;
   }
 
   .scroll-zoom-wrapper {
@@ -11,6 +11,11 @@ page-read {
 
   .tei.show_pageNumbering {
     padding-left: 20px !important;
+  }
+
+  /* This hides the vertical scrollbar on the entire column area when it is not necessary, giving a few additional pixels in width. Observe that there are two elements with class scroll-content, which is why this needs to be this specific. */
+  ion-content > .scroll-content {
+    overflow: auto;
   }
 
   .work_title {
@@ -32,6 +37,7 @@ page-read {
 
   .read-fab-menu {
     bottom: 50px;
+    position: fixed; /* default is absolute */
   }
 
   .toolbar-content {
@@ -84,12 +90,13 @@ page-read {
   }
 
   .segment-button {
-    border: 0px !important;
-    border-radius: 0px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
     height: 2rem !important;
     line-height: 2rem !important;
     font-size: 1rem !important;
     min-width: max-content;
+    background-color: #9f9f9f !important;
   }
 
   .segment-activated {
@@ -124,7 +131,7 @@ page-read {
     position: absolute;
     top: 0;
     right: 0;
-    margin-top: 0px;
+    margin-top: 0;
     margin-right: -8px;
     z-index: 1000;
   }
@@ -141,18 +148,20 @@ page-read {
   .read-columns {
     margin-bottom: 0.5rem;
     -webkit-overflow-scrolling: touch;
-    overflow-x: auto;
-    overflow-y: hidden;
+    /*overflow-x: auto;
+    overflow-y: hidden;  overflow is now set on the parent element div.scroll-content */
     white-space: nowrap;
 
+    /*the bar with a heading for the column*/
     &__title {
-      background: #E4DCCB !important;
-      font-size: 0.8rem !important;
-      font-weight: bold !important;
+      background: color($colors, secondary);
+      font-size: 0.75rem;
+      font-weight: bold;
+      padding: 16px 22px;
     }
 
     &.single-column .read-column {
-      max-width: 50%;
+      max-width: initial !important;
       margin-left: auto;
       margin-right: auto;
       display: block;
@@ -170,12 +179,17 @@ page-read {
         background-color: #fff;
         margin-bottom: 0;
 
+        /*
         .card-content {
           padding-right: 0;
         }
+        */
+        .card-content {
+          padding: 0;
+        }
 
         ion-scroll {
-          max-height: calc(100vh - 253px);
+          max-height: calc(100vh - 225px);
         }
       }
     }
@@ -191,6 +205,7 @@ page-read {
     display: none;
   }
 
+  /*
   .tooltiptrigger {
     cursor: pointer;
   }
@@ -202,6 +217,7 @@ page-read {
   .pb_zts {
     display: none;
   }
+  */
 
   .swipeCenter {
     position: absolute;
@@ -222,21 +238,25 @@ page-read {
     padding-right: 1em;
   }
 
+  /* Flyttad till tei.scss
   @media screen and (max-width: 480px) {
-    .tei {
+    div.tei {
       padding-left: 5px !important;
       padding-right: 5px !important;
     }
   }
+  */
 
   .tei {
     transition-property: padding-left;
     transition-duration: 0.2s;
   }
 
+  /* Duplicate and in the wrong place
   .tei.show_pageNumbering {
     padding-left: 50px !important;
   }
+  */
 
   ion-slides {
     .card {
@@ -338,7 +358,17 @@ page-read {
     }
   }
 
+  .scroll-zoom-wrapper {
+    padding: 6px;
+  }
+
   @media screen and (max-width: 800px) {
+    .read-columns__title {
+      padding-left: 12px;
+    }
+    .scroll-zoom-wrapper {
+      padding: 16px 12px;
+    }
     .text-changer-desktop-view {
       max-width: 80%;
     }
@@ -351,12 +381,15 @@ page-read {
       display: none;
     }
   }
-  .read-columns__title {
-    background: #f2f2f2 !important;
+
+  /* Rule already defined above
+  .read-column.single-column {
+    max-width: initial !important;
   }
-    .read-column.single-column {
-      max-width: initial !important;
-  }
+  */
+
+
+
 }
 
 .md,
@@ -395,6 +428,11 @@ ion-fab .fab-list-active .fab-backdrop {
 
   page-read .scroll-content {
     padding: 0 !important;
+  }
+
+  /* Padding for the established text in mobile mode. */
+  page-read div[ng-reflect-ng-switch="established"] {
+    padding: 12px;
   }
 
   .modal-wrapper {

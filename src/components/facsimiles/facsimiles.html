@@ -26,7 +26,7 @@
 </ion-item>
 
 <div id="facsimilies-image" *ngIf="!facsimilePagesInfinite && externalURLs.length===0">
-  <img 
+  <img
     [src]="images ? images[activeImage] : ''"
     [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
     (wheel)="onMouseWheel($event)"
@@ -41,7 +41,7 @@
 </div>
 
 <div id="facsimilies-image" *ngIf="facsimilePagesInfinite && facsNumber && externalURLs.length===0">
-  <img 
+  <img
     [src]="facsUrl + facsNumber + (facsSize ? '/' + facsSize : '')"
     [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
     (wheel)="onMouseWheel($event)"
@@ -56,7 +56,7 @@
 </div>
 
 <ion-fab *ngIf="numberOfPages > 1" middle left class="leftFacsimileArrow">
-  <button  ion-fab color="primary" mini (click)="previous()">
+  <button *ngIf="numberOfPages > 1" ion-fab color="primary" mini (click)="previous()">
     <ion-icon name="arrow-back"></ion-icon>
   </button>
 </ion-fab>

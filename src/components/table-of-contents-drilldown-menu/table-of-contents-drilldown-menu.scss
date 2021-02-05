@@ -1,5 +1,5 @@
 table-of-contents-drilldown-menu {
-    .back-to-list-button p{
+    .back-to-list-button p {
         font-size: inherit;
         font-weight: 400;
         color: $back-button-text-color;
@@ -9,11 +9,11 @@ table-of-contents-drilldown-menu {
     ion-item-divider {
         background-color: $divider-bg-color !important;
     }
-    .selected{
+    .selected {
         background-color: rgba(0, 0, 0, 0.1);
     }
 
-    ion-label > p{
+    ion-label > p {
         white-space: normal;
         font-size: 1rem !important;
     }

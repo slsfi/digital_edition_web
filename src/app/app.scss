@@ -69,14 +69,31 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
 
-.card-md p{
+.card-md p {
   font-size: 1.2rem;
-  font-weight: 100;
+  /*font-weight: 100;*/
 }
 
 p, blockquote {
   font-family: $font-family-base;
   line-height: 2.2rem;
+}
+
+/* Tabeller, alternativet är att sätta dessa i tei.scss och göra dem enbart tei-specifika */
+td,
+th {
+  /*
+  padding-top: 1px;
+  padding-right: 5px;
+  padding-bottom: 2px;
+  padding-left: 0;
+  */
+  padding: 0.25em 1em 0.25em 0;
+  vertical-align: top;
+}
+td:last-child, 
+th:last-child {
+	padding-right: 0;
 }
 
 .ion-page {
@@ -127,7 +144,7 @@ p, blockquote {
 }
 
 .back-to-list-button {
-  background-color: $back-button-color;
+  background-color: $back-button-color !important;
 
   .back-button-text {
     color: $back-button-text-color;
@@ -386,8 +403,9 @@ input{
   }
 }
 
-.item-md p{
+.item-md p {
   font-size: 1rem;
+  color: color($colors, dark);
 }
 
 .searchbar input, div, button{
@@ -432,15 +450,17 @@ ion-list.accordion-menu div.options {
   margin-left: 20px;
 }
 
+/* Definieras redan i table-of-contents-accordion.scss
 ion-item.selected-toc-item {
   background-color: #eee;
 }
+*/
 
 .mainMenuItem{
   font-weight: 400;
 }
 
-ion-label > p{
+ion-label > p {
   white-space: normal;
   font-size: 1rem !important;
 }
@@ -469,7 +489,7 @@ ion-list.accordion-menu{
 ion-nav{
   transform: none !important;
   z-index: 1 !important;
-  background-color: #ECEBE4 !important;
+  background-color: $background-color !important;
 }
 
 #tableOfContentsMenu{
@@ -485,6 +505,24 @@ ion-nav{
 .split-pane-ios.split-pane-visible > .split-pane-side{
   box-shadow: 6px 0 6px rgba(0,0,0,.1) !important;
 }
+
+/* Adjust placement of read-page settings popover */
+.popover_settings .popover-content {
+  top: 70px !important;
+  left: unset !important;
+  right: 12px !important;
+  width: min-content !important;
+}
+
+
+
+// Load TEI-stylesheets. Moved here from project-variables.scss
+@import '../theme/tei';
+@import '../theme/tei_comment';
+@import '../theme/tei_variant';
+@import '../theme/tei_manuscript';
+
+
 
 /* Intro.js core  */
 .introjs-overlay {

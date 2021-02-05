@@ -1,9 +1,15 @@
 page-comment-modal {
+
+  /* This hides the vertical scrollbar on the right edge of the modal when it is not necessary to show it. */
+  ion-content > .scroll-content {
+    overflow: auto;
+  }
+
+  /*
   .pos44 {
     color: #fe0000;
   }
-
-  .note {}
+  */
 
   .tei {
     font-family: $font-comment-modal-tei;
