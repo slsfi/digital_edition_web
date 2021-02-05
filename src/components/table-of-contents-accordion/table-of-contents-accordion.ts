@@ -520,6 +520,20 @@ export class TableOfContentsAccordionComponent {
         }
       });
     });
+
+    this.events.subscribe('setSelectedStatic:true', (data) => {
+      this.introductionSelected = false;
+      this.coverSelected = false;
+      this.titleSelected = false;
+      if ( data['isCover'] !== undefined ) {
+        this.coverSelected = true;
+      } else if ( data['isTitle'] !== undefined ) {
+        this.titleSelected = true;
+      } else if ( data['isIntroduction'] !== undefined ) {
+        this.introductionSelected = true;
+      }
+      this.cdRef.detectChanges();
+    });
   }
 
   setActiveSortingType(e) {
@@ -810,9 +824,6 @@ export class TableOfContentsAccordionComponent {
       } else {
         this.events.publish('title-logo:show', false);
       }
-
-      console.log('Opening read from TableOfContentsAccordionComponent.openFirstPage()');
-      console.log(params);
       nav[0].setRoot('read', params);
     } else {
       this.storage.set('currentTOCItem', item);

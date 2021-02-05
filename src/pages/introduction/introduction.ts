@@ -109,7 +109,11 @@ export class IntroductionPage {
             this.textMenu = the_string;
           },
         error =>  {this.errorMessage = <any>error; this.textLoading = false; }
+
       );
+      const selectedStatic = [];
+      selectedStatic['isIntroduction'] = true;
+      this.events.publish('setSelectedStatic:true', selectedStatic);
     });
 
     this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
@@ -388,7 +392,7 @@ export class IntroductionPage {
           this.tocItems = tocItems;
           console.log('get toc root... --- --- in single edition');
           const tocLoadedParams = { tocItems: tocItems };
-          tocLoadedParams['collectionID'] = this.collection;
+          tocLoadedParams['collectionID'] = this.tocItems['collectionId'];
           tocLoadedParams['searchTocItem'] = true;
           this.events.publish('tableOfContents:loaded', tocLoadedParams);
           this.storage.set('toc_' + id, tocItems);
@@ -401,7 +405,6 @@ export class IntroductionPage {
       tocLoadedParams['searchTocItem'] = true;
       this.events.publish('tableOfContents:loaded', tocLoadedParams);
       this.storage.set('toc_' + id, this.tocItems);
-      console.log('media');
     }
   }
 
