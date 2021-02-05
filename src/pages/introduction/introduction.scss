@@ -235,8 +235,48 @@ page-introduction {
   .menuClosedTOC {
     width: 10% !important;
   }
+
+
+  .secondary-toolbar-icons-wrapper {
+    ion-icon {
+      font-size: 1.6rem !important;
+      padding: 0.5rem;
+      cursor: pointer;
+    }
+  }
+
+  div[data-id="cont_introduction"] h4 {
+    font-style: italic;
+    text-align: left !important;
+    font-weight: normal !important;
+    font-size: 1em !important;
+    margin: 0.8em 0 1em 0 !important;
+  }
+
+  div[data-id="cont_introduction"] h2.tei.section {
+    text-align: left !important;
+    font-weight: normal !important;
+    margin: 1.4em 0 1.3em 0 !important;
+    font-size: 1.4em !important;
+  }
+
+  div[data-id="cont_introduction"] h3.italics {
+    /* text-align, font-style och font-weight torde vara överflödiga här*/
+    text-align: left !important;
+    font-style: italic;
+    font-weight: normal !important;
+    margin: 1.3em 0 1.2em 0 !important;
+    font-size: 1.2em !important;
+  }
+
+  div[data-id="content"] {
+    display: none;
+  }
+
 }
 
+
+/* The rules below have no effect since they are not declared in the page-introduction block above. Are they needed? */
 .toolTip {
   z-index: 1000;
   position: absolute;
@@ -273,42 +313,6 @@ page-introduction {
         margin-left: 0;
       }
     }
-  }
-
-  .secondary-toolbar-icons-wrapper {
-    ion-icon {
-      font-size: 1.6rem !important;
-      padding: 0.5rem;
-      cursor: pointer;
-    }
-  }
-
-  div[data-id="cont_introduction"] h4 {
-    font-style: italic;
-    text-align: left !important;
-    font-weight: normal !important;
-    font-size: 1em !important;
-    margin: 0.8em 0 1em 0 !important;
-  }
-
-  div[data-id="cont_introduction"] h2.tei.section {
-    text-align: left !important;
-    font-weight: normal !important;
-    margin: 1.4em 0 1.3em 0 !important;
-    font-size: 1.4em !important;
-  }
-
-  div[data-id="cont_introduction"] h3.italics {
-    /* text-align, font-style och font-weight torde vara överflödiga här*/
-    text-align: left !important;
-    font-style: italic;
-    font-weight: normal !important;
-    margin: 1.3em 0 1.2em 0 !important;
-    font-size: 1.2em !important;
-  }
-
-  div[data-id="content"] {
-    display: none;
   }
 
   .tooltip.ttFoot {
