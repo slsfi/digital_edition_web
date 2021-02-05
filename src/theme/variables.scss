@@ -26,7 +26,7 @@ $colors: (
 	primary:	#538494,
 	secondary:	#e6e1d8,
     dark:		#222,
-    light:		#d3dd9f
+    light:		#f4f4f4
 );
 
 // Custom colors for semantic code etc.
@@ -72,7 +72,7 @@ $segment-button-text-color-activated:  #fff;
 $back-button-color:						#e8e4df; // Ideally something between secondary and $background-color
 $back-button-text-color:				color($colors, dark);
 $forward-arrow-color:					color($colors, dark);
-$divider-bg-color:                      color($colors, light);
+$divider-bg-color:                      color($colors, secondary);
 
 // App iOS Variables
 // --------------------------------------------------
@@ -107,7 +107,6 @@ $segment-button-md-text-color-activated:  #fff;
 $card-md-title-text-color: color($colors, dark);
 $card-md-box-shadow: none;
 $card-md-background-color: #fff;
-
 
 
 // App Windows Variables

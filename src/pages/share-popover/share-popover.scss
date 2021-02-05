@@ -3,6 +3,10 @@ page-share-popover {
     margin: 0 !important;
   }
 
+  ion-item-divider.item-divider-md-light {
+    background-color: color($colors, secondary);
+  }
+
   ion-label {
     overflow: visible;
   }
