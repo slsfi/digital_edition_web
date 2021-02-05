@@ -223,6 +223,8 @@
   "Reference": {
       "title": "Refer",
       "urn": "Link",
+      "share": "Share",
+      "mail": "Mail",
       "thisPage": "Refer to this page",
       "established": "Refer to this text",
       "intro": "Refer to this introduction"

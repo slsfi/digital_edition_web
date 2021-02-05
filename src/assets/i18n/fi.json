@@ -278,6 +278,8 @@
   "Reference": {
       "title": "Lähdeviittaus",
       "urn": "Linkitä",
+      "share": "Jaa",
+      "mail": "Sähköposti",
       "thisPage": "Lähdevittaus",
       "established": "Lähdevittaus tähän lukutekstiin",
       "intro": "Lähdevittaus tähän johdantoon"

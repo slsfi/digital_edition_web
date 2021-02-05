@@ -3,10 +3,6 @@ page-share-popover {
     margin: 0 !important;
   }
 
-  ion-item-divider.item-divider-md-light {
-    background-color: color($colors, secondary);
-  }
-
   ion-label {
     overflow: visible;
   }
@@ -24,8 +20,15 @@ page-share-popover {
       font-weight: 700;
     }
   }
+
+  ion-item-divider ion-label.label-md {
+    margin: 14px 8px 14px 0;
+  }
+
   .close{
     font-size: 1rem;
-    float: right;
+    position: absolute;
+    top: 8px;
+    right: 12px;
 	}
 }

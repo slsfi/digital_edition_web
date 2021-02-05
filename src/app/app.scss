@@ -265,6 +265,11 @@ ion-toolbar.secondary {
   }
 }
 
+/* Remove default line-height from divs in secondary toolbar to vertically center button icons */
+ion-toolbar.secondary div {
+	line-height: unset !important;
+}
+
 ion-label{
   font-size: 1rem;
 }
@@ -408,6 +413,7 @@ input{
   color: color($colors, dark);
 }
 
+/* det här är en mycket problematisk regel! är det månne menat att vara .searchbar input, .searchbar div, .searchbar button ? */
 .searchbar input, div, button{
   font-size: 1rem !important;
   line-height: 1rem !important;
@@ -506,14 +512,18 @@ ion-nav{
   box-shadow: 6px 0 6px rgba(0,0,0,.1) !important;
 }
 
-/* Adjust placement of read-page settings popover */
-.popover_settings .popover-content {
+/* Adjust placement of read-page/intro settings and share popovers */
+.popover_settings .popover-content,
+.share-popover .popover-content {
   top: 70px !important;
   left: unset !important;
   right: 12px !important;
   width: min-content !important;
+  transform-origin: right top 0 !important;
 }
-
+.popover_settings .popover-content {
+  width: min-content !important;
+}
 
 
 // Load TEI-stylesheets. Moved here from project-variables.scss

@@ -195,6 +195,9 @@
   "Text": "PDF",
   "Reference": {
       "title": "Hänvisa",
+      "urn": "Länka",
+      "share": "Dela",
+      "mail": "E-post",
       "thisPage": "Hänvisa till denna sida",
       "established": "Hänvisa till denna lästext",
       "intro": "Hänvisa till denna inledning"
