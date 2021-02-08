@@ -4,9 +4,9 @@
         <div class="close" (click)="close()"><ion-icon name="close"></ion-icon></div>
       </ion-list-header>
       <ion-row>
-        <ion-col width-50><button [ngClass]="((readPopoverService.fontsize==0)?'selected-font-size':'')" class="text-button text-smaller item-block" (click)="decreaseFontSize()" style="font-size:1rem !important;">A</button></ion-col>
-        <ion-col width-50><button [ngClass]="((readPopoverService.fontsize==1)?'selected-font-size':'')" class="text-button text-medium item-block" (click)="increaseFontMeduimSize()" style="font-size:1.25rem !important;">A</button></ion-col>
-        <ion-col width-50><button [ngClass]="((readPopoverService.fontsize==2)?'selected-font-size':'')" class="text-button text-larger item-block" (click)="increaseFontSize()" style="font-size:1.625rem !important;">A</button></ion-col>
+        <ion-col width-50><button [ngClass]="((readPopoverService.fontsize==0)?'selected-font-size':'')" class="text-button text-smaller item-block" (click)="decreaseFontSize()">A</button></ion-col>
+        <ion-col width-50><button [ngClass]="((readPopoverService.fontsize==1)?'selected-font-size':'')" class="text-button text-medium item-block" (click)="increaseFontMeduimSize()">A</button></ion-col>
+        <ion-col width-50><button [ngClass]="((readPopoverService.fontsize==2)?'selected-font-size':'')" class="text-button text-larger item-block" (click)="increaseFontSize()">A</button></ion-col>
       </ion-row>
 
     </ion-list>
