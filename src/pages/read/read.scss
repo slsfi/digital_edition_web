@@ -176,7 +176,10 @@ page-read {
       width: 97%;
 
       ion-card {
+        /*
         background-color: #fff;
+        */
+        background-color: $read-columns-background-color;
         margin-bottom: 0;
 
         /*
