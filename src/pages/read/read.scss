@@ -431,7 +431,7 @@ ion-fab .fab-list-active .fab-backdrop {
   }
 
   /* Padding for the established text in mobile mode. */
-  page-read div[ng-reflect-ng-switch="established"] {
+  page-read div.mobile-mode {
     padding: 12px;
   }
 

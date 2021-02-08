@@ -27,6 +27,10 @@ read-popover-page {
 		margin: 9px 8px 9px 0;
 	}
 
+	ion-list:last-child {
+		margin-bottom: 8px;
+	}
+
 	.read-popover-header ion-label {
 		display: flex;
 		justify-content: space-between;
@@ -35,6 +39,9 @@ read-popover-page {
 
 	.close {
 		font-size: 1rem;
+		position: absolute;
+		top: 0.5rem;
+		right: 0.75rem;
 	}
 
 	.appearence {
@@ -42,8 +49,8 @@ read-popover-page {
 	}
 
 	.asterix {
-		height: 0.8em;
-		padding-right: 0.1em;
+		height: 0.75rem;
+		padding-right: 0.125rem;
 	}
 
 	.show_personInfo {

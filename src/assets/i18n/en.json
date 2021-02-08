@@ -28,16 +28,16 @@
       "OpenInTab": "Open in new tab",
       "Popover": {
           "All": "Choose all",
-          "Appearance": "Appearance",
-          "Show": "Show",
+          "Appearance": "Text size",
+          "Show": "Options",
           "Comments": "Comments",
           "PersonInfo": "People",
           "PlaceInfo": "Places",
           "Changes": "Changes",
           "Abbreviations": "Abbreviations",
-          "PageNumbering": "Page Numbering",
-          "PageBreakOriginal": "Original Page Breaks",
-          "PageBreakEdition": "Edition Page Breaks"
+          "PageNumbering": "Paragraph/Stanza numbering",
+          "PageBreakOriginal": "Original page breaks",
+          "PageBreakEdition": "Edition page breaks"
       },
       "DownloadDigitalVersion": "Download a Digital Version",
       "DownloadPDF": "",

@@ -31,7 +31,7 @@
       "OpenInTab": "Öppna i ny flik",
       "Popover": {
           "All": "Välj alla",
-          "Appearance": "Utseende",
+          "Appearance": "Textstorlek",
           "Show": "Visningsalternativ",
           "Comments": "Kommentarer",
           "PersonInfo": "Personupplysningar",
@@ -40,8 +40,8 @@
           "Changes": "Utgivarens ändringar",
           "Abbreviations": "Förkortningar",
           "PageNumbering": "Stycke-/radnumrering",
-          "PageBreakOriginal": "Sidnummer/sidbrytning i originalet",
-          "PageBreakEdition": "Sidnummer i ZTS tryckta utgåva"
+          "PageBreakOriginal": "Sidnummer/-brytning i originalet",
+          "PageBreakEdition": "Sidnummer i den tryckta utgåvan"
       },
       "DownloadDigitalVersion": "Ladda ner digital version",
       "DownloadPDF": "Ladda ner PDF",
