@@ -520,8 +520,8 @@ ion-spinner {
   margin: 0 auto;
 }
 ion-spinner * {
-  width: 48px;
-  height: 48px;
+  width: 48px !important;
+  height: 48px !important;
 }
 
 /* Adjust placement of read-page/intro settings and share popovers */
