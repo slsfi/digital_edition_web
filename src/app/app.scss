@@ -512,25 +512,6 @@ ion-nav{
   box-shadow: 6px 0 6px rgba(0,0,0,.1) !important;
 }
 
-
-/* Center loading spinners and increase default size */
-.spinner-wrapper {
-  background-color: transparent;
-  height: 3.5rem;
-
-  ion-spinner {
-    position: absolute;
-    top:0;
-    left: 50%;
-    transform: translate(-50%, 0%);
-  }
-  ion-spinner > svg {
-    width: 3rem;
-    height: 3rem;
-  }
-}
-
-
 /* Adjust placement of read-page/intro settings and share popovers */
 .popover_settings .popover-content,
 .share-popover .popover-content {
