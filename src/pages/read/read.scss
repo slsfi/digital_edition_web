@@ -9,10 +9,6 @@ page-read {
     height: 100%;
   }
 
-  .tei.show_pageNumbering {
-    padding-left: 20px !important;
-  }
-
   /* This hides the vertical scrollbar on the entire column area when it is not necessary, giving a few additional pixels in width. Observe that there are two elements with class scroll-content, which is why this needs to be this specific. */
   ion-content > .scroll-content {
     overflow: auto;
@@ -254,12 +250,6 @@ page-read {
     transition-property: padding-left;
     transition-duration: 0.2s;
   }
-
-  /* Duplicate and in the wrong place
-  .tei.show_pageNumbering {
-    padding-left: 50px !important;
-  }
-  */
 
   ion-slides {
     .card {
