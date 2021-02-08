@@ -2,7 +2,7 @@ page-introduction {
 
   ion-card {
     max-width: 710px;
-    background-color: $read-columns-background-color;
+    background-color: $read-columns-background-color !important;
   }
 
   /* denna default är för mobilvyn, gör rum för menyikonen ovanför innehållet. ändras till padding-top 0 för desktop (över 1000px skärmbredd) längre ner*/
