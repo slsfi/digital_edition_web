@@ -512,6 +512,18 @@ ion-nav{
   box-shadow: 6px 0 6px rgba(0,0,0,.1) !important;
 }
 
+.spinner-wrapper {
+  background-color: transparent;;
+}
+ion-spinner {
+  display: block;
+  margin: 0 auto;
+}
+ion-spinner * {
+  width: 48px;
+  height: 48px;
+}
+
 /* Adjust placement of read-page/intro settings and share popovers */
 .popover_settings .popover-content,
 .share-popover .popover-content {
