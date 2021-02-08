@@ -1116,7 +1116,7 @@ page-introduction .tei.show_pageNumbering {
     }
 }
 /* left padding if showing paragraph numbering in mobile view */
-page-read div[ng-reflect-ng-switch="established"] read-text .tei.show_pageNumbering {
+page-read div.mobile-mode .tei.show_pageNumbering {
     padding-left: 28px;
 }
 

@@ -179,7 +179,7 @@
         </ion-segment>
       </div>
       <div [ngSwitch]="show">
-        <div *ngSwitchCase="'established'">
+        <div *ngSwitchCase="'established'" class="mobile-mode">
           <read-text [link]="establishedText.link" [matches]="matches"></read-text>
         </div>
         <div *ngSwitchCase="'facsimiles'" class="no-scroll">
