@@ -204,6 +204,7 @@ page-introduction {
     #TOC {
       width: 75%;
       opacity: 97%;
+      height: calc(100% - 70px);
     }
 
     /* Minska padding på mycket små skärmar */
