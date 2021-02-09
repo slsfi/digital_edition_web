@@ -59,6 +59,11 @@ page-read {
         flex-grow: 1;
         min-width: 30%;
       }
+
+      ion-col.col {
+        display: flex;
+        justify-content: center;
+      }
     }
   }
 
@@ -423,9 +428,10 @@ ion-fab .fab-list-active .fab-backdrop {
     padding: 0 !important;
   }
 
-  /* Padding for the established text in mobile mode. */
+  /* Special rules in mobile mode on small screens. */
   page-read div.mobile-mode {
     padding: 12px;
+    background-color: $read-columns-background-color;
   }
 
   .modal-wrapper {
