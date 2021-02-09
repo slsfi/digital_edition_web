@@ -506,9 +506,10 @@ ion-nav{
 .popover_settings .popover-content {
   width: min-content !important;
 }
-/* on very small screens, place further right */
+/* on very small screens, place popovers further right */
 @media screen and (max-width: 360px) {
-  .popover_settings .popover-content {
+  .popover_settings .popover-content,
+  .share-popover .popover-content {
     right: 1px !important;
   }
 }
