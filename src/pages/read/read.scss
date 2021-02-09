@@ -56,13 +56,6 @@ page-read {
 
       .bar-buttons:last-child {
         margin-left: 0;
-        flex-grow: 1;
-        min-width: 30%;
-      }
-
-      ion-col.col {
-        display: flex;
-        justify-content: center;
       }
     }
   }
