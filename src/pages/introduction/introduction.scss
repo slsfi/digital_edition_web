@@ -84,12 +84,6 @@ page-introduction {
     cursor: pointer;
   }
 
-  /*
-  .menuOpen {
-    display: sticky;
-  }
-  */
-
   .menuClosed {
     display: none;
   }
@@ -204,11 +198,20 @@ page-introduction {
     width: initial;
   }
 
-  /* Gör innehållsförteckningen lite smalare på mycket små skärmar */
+  
   @media screen and (max-width: 450px) {
+    /* Gör innehållsförteckningen lite smalare på mycket små skärmar */
     #TOC {
       width: 75%;
       opacity: 97%;
+    }
+
+    /* Minska padding på mycket små skärmar */
+    ion-content > .scroll-content {
+      padding: 0 !important;
+    }
+    ion-scroll > .scroll-content {
+      padding: 8px !important;
     }
   }
 

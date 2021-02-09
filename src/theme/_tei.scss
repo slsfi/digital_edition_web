@@ -1026,6 +1026,21 @@ manuscripts div.tei {
         width: 0.75rem !important;
         height: 0.75rem !important;
     }
+
+    /* Tables */
+    table {
+        table-layout: fixed;
+        width: 100%;
+    }
+    td,
+    th {
+        padding: 0.25em 1em 0.25em 0;
+        vertical-align: top;
+    }
+    td:last-child, 
+    th:last-child {
+        padding-right: 0;
+    }
 }
 
 
