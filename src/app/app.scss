@@ -523,6 +523,11 @@ ion-nav{
 .popover_settings .popover-content {
   width: min-content !important;
 }
+@media screen and (max-width: 360px) {
+  .popover_settings .popover-content {
+    right: 1px !important;
+  }
+}
 
 
 // Load TEI-stylesheets. Moved here from project-variables.scss
