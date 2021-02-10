@@ -417,6 +417,12 @@ ion-fab .fab-list-active .fab-backdrop {
   z-index: -1;
 }
 
+/* Adjust padding and background color of text column in mobile mode. */
+page-read div.mobile-mode {
+  padding: 12px;
+  background-color: $read-columns-background-color;
+}
+
 @media(max-width: 800px) {
   ion-backdrop {
     visibility: visible !important;
@@ -425,12 +431,6 @@ ion-fab .fab-list-active .fab-backdrop {
 
   page-read .scroll-content {
     padding: 0 !important;
-  }
-
-  /* Special rules in mobile mode on small screens. */
-  page-read div.mobile-mode {
-    padding: 12px;
-    background-color: $read-columns-background-color;
   }
 
   .modal-wrapper {
