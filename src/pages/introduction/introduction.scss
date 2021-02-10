@@ -190,9 +190,11 @@ page-introduction {
     display: none !important;
   }
 
+  /* Font family is inherited instead
   p {
     font-family: $font-read-column-p;
   }
+  */
 
   .est_figure_graphic {
     width: initial;

@@ -1,3 +1,4 @@
+/* Widths of div.tei on different screen resolutions */
 @media only screen and (max-width: 600px) {
     div.tei {
         max-width: 100%;
@@ -11,22 +12,8 @@
         max-width: 100%;
     }
 }
-/*
-@media screen and (max-width: 800px) {
-    div.tei {
-      padding-left: 10px;
-      padding-right: 10px;
-    }
-}
-@media screen and (max-width: 480px) {
-    div.tei {
-      padding-left: 5px;
-      padding-right: 5px;
-    }
-}
-*/
 
-/* Padding below the columns so their height won't end precisely after the texts. */
+/* Padding below the columns so their height won't end precisely after the texts */
 page-introduction div.tei,
 read-text div.tei,
 comments div.tei,
@@ -37,8 +24,7 @@ manuscripts div.tei {
 
 .tei {
 
-    font-family: "Muli", serif !important; /*borde definieras via en variabel*/
-
+    font-family: $font-app-tei;
     white-space: normal;
 
     /* CONTAINERS FOR COLUMNS */
