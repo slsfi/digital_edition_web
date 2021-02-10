@@ -70,12 +70,14 @@ top-menu {
 }
 
 .mobile_row {
-  background-color: color($colors, primary) !important;
+  /*background-color: color($colors, primary) !important;*/
+  background-color: transparent;
 }
 
 .mobile_row > button{
-  background-color: color($colors, primary) !important;
-  box-shadow: none !important;
+  /*background-color: color($colors, primary) !important;*/
+  background-color: transparent;
+  box-shadow: none;
 }
 
 .secondary.toolbar{
