@@ -7,7 +7,7 @@
             <ion-col *ngIf="userSettingsService.isDesktop() || userSettingsService.isTablet()">
               <ion-buttons start>
                 <button ion-button icon-only (click)="toggleSplitPane()" class="enable" isActive="false" small id="menuToggle">
-                  <ion-icon [name]="splitPaneOpen ? 'close' : 'menu'"></ion-icon>
+                  <ion-icon name="menu"></ion-icon>
                 </button>
                 <button ion-button class="top-menu-button" (click)="front()">
                   <ion-icon name="home"></ion-icon>

@@ -33,7 +33,6 @@ export class TopMenuComponent {
   public showTopMusicButton: boolean;
   public showColAmount: string;
   public showTopElasticButton: boolean;
-  public openHamburgerMenu: boolean;
 
   constructor(
     private events: Events,
@@ -46,7 +45,6 @@ export class TopMenuComponent {
   ) {
     this.registerEventListeners();
     this.showColAmount = 'col-8';
-    this.openHamburgerMenu = false;
 
     try {
       this.showHelpButton = this.config.getSettings('app.showHelpButton');
@@ -135,7 +133,6 @@ export class TopMenuComponent {
   }
 
   public toggleSplitPane() {
-    this.openHamburgerMenu = !this.openHamburgerMenu;
     this.hamburgerMenuClick.emit();
   }
 
