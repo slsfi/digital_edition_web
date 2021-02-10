@@ -36,9 +36,13 @@ page-read {
     position: fixed; /* default is absolute */
   }
 
-  .toolbar-content {
+  .secondary > .toolbar-content {
+    /*
     display: grid;
     grid-template-columns: auto max-content;
+    */
+    display: flex;
+    justify-content: flex-end;
 
     ion-buttons {
       order: 0;
@@ -49,6 +53,7 @@ page-read {
     }
   }
 
+  /*
   @media screen and (max-width: 800px) {
     .secondary .toolbar-content {
       display: flex;
@@ -59,6 +64,7 @@ page-read {
       }
     }
   }
+  */
 
   .toolTip {
     z-index: 1000;
