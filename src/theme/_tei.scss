@@ -1785,7 +1785,10 @@ span.figure {
 	padding-right: 30px;
 	margin-top: 1em !important;
 }
-.parIndent + :not(.parIndent) {
+.parIndent + :not(.parIndent),
+.parIndent + span.pb_zts + :not(.parIndent),
+.parIndent + span.pb_edition + :not(.parIndent)
+.parIndent + span.pb_orig + :not(.parIndent) {
 	margin-top: 1em !important;
 }
 /*
