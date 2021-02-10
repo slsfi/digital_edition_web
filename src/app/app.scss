@@ -396,8 +396,8 @@ input{
   color: color($colors, dark);
 }
 
-/* det här är en mycket problematisk regel! är det månne menat att vara .searchbar input, .searchbar div, .searchbar button ? */
-.searchbar input, div, button{
+/* Previously this rule affected all divs and buttons, testing to limit the scope since it's otherwise a very problematic rule. The intention was probably to just affect the searchbar. */
+.searchbar input, .searchbar div, .searchbar button {
   font-size: 1rem !important;
   line-height: 1rem !important;
 }
