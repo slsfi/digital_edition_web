@@ -108,6 +108,7 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
     }),
     IonicModule.forRoot(
       DigitalEditionsApp, {
+      mode: 'md',
       backButtonText: '',
       tabsPlacement: 'bottom',
       links: [
