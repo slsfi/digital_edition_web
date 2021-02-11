@@ -151,6 +151,17 @@ div.tei.largeFont.show_pageBreakEdition {
         margin-bottom: 1em !important;
         margin-top: 1em !important;
     }
+    /*strofer med en blankrad mellan sig ska inte ha två blankrader bara för att ett sidnr dyker upp*/
+    p.tei.invisiblelg + p.tei.invisiblelg {
+        margin-bottom: 0;
+    }
+  
+    /*inget indrag i blankrader, för de kan innehålla pb-taggar som inte ska ha indrag före sig
+    och det ska inte bli dubbla blankrader ifall invisiblelg innehåller pb-tagg*/
+    p.tei.invisiblelg {
+        text-indent: 0 !important;
+        margin-top: 0 !important;
+    }
 
     /* COMMON PARAGRAPHS */
     p.invisible {
@@ -1078,6 +1089,10 @@ div.tei.largeFont.show_pageBreakEdition {
     th:last-child {
         padding-right: 0;
     }
+    /* Style for adding a bottom border to table cells */
+    .botBorder {
+        border-bottom: 1px solid #000;
+    }
 }
 
 
@@ -1350,38 +1365,6 @@ h6.tei.poemmotto2 {
 .cont_titlepage h3.chapter {
 	text-align: center !important;
 }
-/*responsboxen
-.theme-background-color {
-    background-color: #b2d0ea !important;
-}
-*/
-
-/*tabeller --> definieras i app.scss
-td, th {
-    padding-top: 1px;
-    padding-right: 5px;
-    padding-bottom: 2px;
-    padding-left: 0;
-}*/
-/* Den okände von Wright, tidslinje-tabell i markdown*/
-/* feta den första kolumnen */
-div.md_content markdown td:first-child {
-}
-div.md_content markdown td {
-    padding: 0.5em;
-    line-height: 1.4;
-    vertical-align: top;
-}
-/*texten på huvudbalken --> custom.css
-.bar-button-clear-md-default, .bar-button-default-md, .bar-button-md-default {
-    color: #000000;
-}*/
-
-/*faksimilknapparna --> flyttas till custom.css om behöver ändras
-.fab-md-secondary {
-    color: #000;
-    background-color: #f2f2f2;
-}*/
 
 /*fotnotsmarkören*/
 span.footnoteindicator {
@@ -1437,12 +1420,6 @@ page-introduction #TOC h5.tei.contentSub2 {
 page-introduction #TOC p {
 	line-height: .1em;
 }*/
-
-/*ms med lg: inte extra stort radavstånd, inte indrag på första raden av strofen*/
-p.teiManuscript.strofe[class*=lg] {
-	line-height: 180% !important;
-	text-indent: 0 !important;
-}
 
 /*normaliseringar hade tooltip men ingen färg*/
 .tei.show_changes span.tei.ttNormalisations {
@@ -2097,6 +2074,11 @@ p.teiComment.noteLegend {
 	margin: 0;
 	padding: 0;*/
 	color: #0000a1;
+}
+/*ms-tillägg från marginalen: symbolerna ska inte vara hela spaltens bredd eller block?*/
+.add_margin img {
+    display: inline;
+    width: 3%;
 }
 .add_over {
 	/*position: absolute;

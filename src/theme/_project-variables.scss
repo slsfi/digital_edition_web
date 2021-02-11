@@ -166,231 +166,15 @@ img.symbol {
   display: inline;
 }
 
-/*ms-tillägg från marginalen: symbolerna ska inte vara hela spaltens bredd eller block?*/
-.add_margin img {
-  display: inline;
-  width: 3%;
-}
-
-/*ms-spaltens rubriker ska inte vara smallcaps*/
-.teiManuscript h3 {
-  font-variant: normal;
-}
-
-/*strofer med en blankrad mellan sig ska inte ha två blankrader bara för att ett sidnr dyker upp*/
-p.tei.invisiblelg + p.tei.invisiblelg {
-  margin-bottom: 0;
-}
-
-/*inget indrag i blankrader, för de kan innehålla pb-taggar som inte ska ha indrag före sig
- och det ska inte bli dubbla blankrader ifall invisiblelg innehåller pb-tagg*/
-p.tei.invisiblelg {
-  text-indent: 0 !important;
-  margin-top: 0 !important;
-}
-
-/*huvudbalken
-.toolbar-background-md {
-  border-color: #b2b2b2;
-  background: #b2d0ea;
-}*/
-
-/*bakgrund
-.content {
-  background-color: #f7f7f7 !important;
-}
-
-home-page .banner-title {
-  background-color: rgba(247, 247, 247, .8);
-}*/
-
-/*du-är-här-balken
-.toolbar-md-secondary .toolbar-background-md {
-  background: #f2f2f2;
-}*/
-
-/* navigeringsbalken till vänster
-ion-item.item {
-  background-color: #f2f2f2 !important;
-} */
-
-/*toc: när man fäller ut, bakgrunden längst till vänster
-  regeln definieras redan med en variable i app.scss så borde inte finnas här
-#tableOfContentsMenu .scroll-content {
-  background-color: #f2f2f2;
-}*/
-
-/*titelsidans verktitel*/
-.cont_titlepage h1.title {
-  text-align: center !important;
-}
-
-/*titelsidans ZTS-del*/
-.cont_titlepage h3.chapter {
-  text-align: center !important;
-}
-
-/*responsboxen
-.theme-background-color {
-  background-color: #b2d0ea !important;
-}
-*/
-
 /* Den okände von Wright, tidslinje-tabell i markdown*/
 /* feta den första kolumnen */
 div.md_content markdown td:first-child {}
-
 div.md_content markdown td {
   padding: 0.5em;
   line-height: 1.4;
   vertical-align: top;
 }
 
-/*faksimilknapparna
-.fab-md-secondary {
-  color: #000;
-  background-color: #f2f2f2;
-}*/
-
-/*fotnotsmarkören*/
-span.footnoteindicator {
-  font-size: 0.75em;
-  line-height: 0.5em;
-  vertical-align: super;
-}
-
-/*kommentarspaltens rubriker*/
-h3.teiComment {
-  font-size: 1.2em;
-  font-weight: normal;
-  margin: 1em 0 .5em;
-  font-variant: small-caps;
-}
-
-h4.teiComment {
-  font-size: 1.1em;
-  font-weight: normal;
-  font-weight: normal;
-  margin: 1em 0 .5em;
-}
-
-/*ms med lg: inte extra stort radavstånd, inte indrag på första raden av strofen*/
-p.teiManuscript.strofe[class*=lg] {
-  line-height: 180% !important;
-  text-indent: 0 !important;
-}
-
-/*normaliseringar hade tooltip men ingen färg*/
-.tei.show_changes span.tei.ttNormalisations {
-  background-color: #f2f2f2;
-  cursor: default;
-}
-
-/* CONTAINERS FOR COLUMNS */
-/*
-.padded {}
-
-.padded p {
-  padding-left: 100px;
-}
-
-.padded h3 {
-  padding-left: 100px;
-}
-
-h3.tei.letterTitle {
-  font-variant: small-caps;
-  font-weight: normal !important;
-}
-
-p.authorHeader {
-  text-indent: 0 !important;
-  margin-bottom: 0.5em;
-}
-
-h3.tei.titleTopMargin {
-  margin-top: 2em !important;
-}
-
-h3.tei.titleBottomMargin {
-  margin-bottom: 2em !important;
-}
-*/
-/* COMMON PARAGRAPHS */
-/*
-p.invisible {
-  height: 0 !important;
-  width: 0 !important;
-}
-p.invisiblelg {
-   margin-bottom: 1em !important;
-   margin-top: 1em !important;
- }
-p.personDesc,
-p.placeDesc,
-p.titleDesc {
-  text-indent: 0 !important;
-  margin-bottom: 1em !important;
-  padding-bottom: 0 !important;
-}
-
-p.paragraphSpace {
-  padding-bottom: 1.5em !important;
-}
-
-p.paragraphDiary {
-  margin-top: 0.5em !important;
-}
-
-p.frontmatter {
-  padding-top: 2em !important;
-  padding-bottom: 2em !important;
-  padding-right: 1.5em !important;
-  padding-left: 1.5em !important;
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
-  line-height: 1.5em;
-}
-
-p.frontmatterPrevious {
-  padding-top: 2em !important;
-  margin-bottom: 1.5em !important;
-  padding-right: 1.5em !important;
-  padding-left: 1.5em !important;
-  border-top: 2px solid black;
-  line-height: 1.5em;
-}
-
-p.frontmatterMiddle {
-  margin-top: 1.5em !important;
-  margin-bottom: 1.5em !important;
-  padding-right: 1.5em !important;
-  padding-left: 1.5em !important;
-  line-height: 1.5em;
-}
-
-p.frontmatterNext {
-  margin-top: 1.5em !important;
-  padding-bottom: 2em !important;
-  padding-right: 1.5em !important;
-  padding-left: 1.5em !important;
-  border-bottom: 2px solid black;
-  line-height: 1.5em;
-}
-
-.topMargin {
-  margin-top: 1em;
-}
-
-.bottomMargin {
-  margin-bottom: 1em;
-}
-
-p.dateline {
-  margin-top: 1.0em;
-  margin-bottom: 1.0em;
-}
-*/
 p.underline,
 h3.underline {
   font-style: italic;
@@ -509,14 +293,6 @@ div.manuscriptText span.underline {
   text-align: right;
   text-indent: 0 !important;
 }
-/*
-.dramaCenter {
-  text-align: center;
-  text-indent: 0 !important;
-  margin-top: 0.9em !important;
-  margin-bottom: 0.3em !important;
-}
-*/
 .playCenter {
 	text-align: center;
 	text-indent: 0 !important;
@@ -1397,15 +1173,6 @@ h2.tei.poemsection2 {
   transition: max-height 0.2s ease-out;
 } */
 
-/* Style for adding a bottom border to table cells */
-.botBorder {
-  /*
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  */
-  border-bottom: 1px solid #000;
-}
-
 .inl_ms_arrow {
   height: 0.9rem;
   display: inline !important;
@@ -1415,28 +1182,6 @@ h2.tei.poemsection2 {
 .tei a.anchor:hover {
   opacity: 1;
 }
-
-/*item i list ska inte ha bakgrundsfärg*/
-/* Regeln kör över den regel som definieras i variables.scss
-   men det är oklart vad den används till (införd här från custom.css)*/
-   /* test
-.item {
-	background-color: inherit !important;
-}*/
-
-
-/* SK tagit bort, vill inte ha padding här
-ion-card-content {
-  padding-top: 10px !important;
-  padding-bottom: 5px !important;
-}
-*/
-
-/*
-span.ttDel {
-  display: none;
-}
-*/
 
 .tei p.note {
   padding-left: 0 !important;
@@ -1449,24 +1194,6 @@ span.ttDel {
   margin-top: 0.8rem;
   margin-bottom: 0.5rem;
 }
-
-/* Duplicates in this file
-.mainMenuItem {
-  cursor: pointer;
-}
-
-.digital-edition-list-card-content {
-  display: none;
-}
-*/
-
-/*
-@media only screen and (max-width: 600px) {
-  .segment-button {
-    background-color: rgba(99, 99, 99, 0.8) !important;
-  }
-}
-*/
 
 ion-list-header ion-label {
   text-transform: unset;
@@ -1485,20 +1212,3 @@ h1.mainH1Header {
 .tei h3.title {
   font-variant: small-caps !important;
 }
-
-/*
-.menuClosedTOC {
-  width: 10% !important;
-}*/
-
-/* SK tagit bort, vill inte ha padding här
-ion-card-content {
-  padding-top: 10px !important;
-  padding-bottom: 5px !important;
-}
-*/
-/*
-span.ttDel {
-  display: none;
-}
-*/
