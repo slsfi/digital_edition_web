@@ -209,7 +209,8 @@ div.tei.largeFont.show_pageBreakEdition {
     .true-underline {
         text-decoration: underline;
     }
-    div.manuscriptText p.underline, div.manuscriptText h3.underline {
+    div.manuscriptText p.underline, 
+    div.manuscriptText h3.underline {
         font-style: normal;
         text-decoration: underline;
     }
@@ -236,10 +237,10 @@ div.tei.largeFont.show_pageBreakEdition {
         font-style: normal;
         text-decoration: none;
     }
-    .stamp, .print {
+    .stamp, 
+    .print {
         font-family: $font-stamp-print-tei;
         letter-spacing: 1px;
-
     }
     .left {
         text-align: left !important;
@@ -248,6 +249,16 @@ div.tei.largeFont.show_pageBreakEdition {
     .center {
         text-align: center;
         text-indent: 0 !important;
+    }
+    .playCenter {
+        text-align: center;
+        text-indent: 0 !important;
+        margin-top: 0.9em !important;
+        margin-bottom: 0.3em !important;
+    }
+    .playCenter + .noIndent {
+        text-indent: 0 !important;
+        margin-bottom: 0.9em !important;
     }
     .center img {
         height: 1em;
@@ -276,10 +287,6 @@ div.tei.largeFont.show_pageBreakEdition {
         margin-top: 0;
         margin-bottom: 0;
     }
-    p.lIndent
-    {
-        text-indent: -9px !important;
-    }
     .tei_indent
     {
         padding-left: 30px !important;
@@ -300,24 +307,36 @@ div.tei.largeFont.show_pageBreakEdition {
         margin-bottom: 1em !important;
     }
     */
-    p.milestoneWhen, p.milestonePart {
+    p.milestoneWhen, 
+    p.milestonePart {
         font-size: 1em !important;
-        font-family: Georgia, serif;
         color: gray;
         background-color: #d2ccbf;
         margin-top: 0.8em !important;
         margin-bottom: 0.8em !important;
         line-height: 1.5em !important;
     }
-    span.milestoneWhen, span.milestonePart {
+    span.milestoneWhen, 
+    span.milestonePart {
         display: block;
         font-size: 1em !important;
-        font-family: Georgia, serif;
         color: gray;
         background-color: #d2ccbf;
         margin-top: 0.8em !important;
         margin-bottom: 0.8em !important;
         line-height: 1.5em !important;
+    }
+    hr.milestoneBar,
+    hr.milestoneSmallBar {
+        height: 1px;
+        border: 0;
+        background-color: rgb(64, 64, 64);
+        padding: 0;
+        margin: 1.5rem auto;
+        width: 5.625em;
+    }
+    hr.milestoneSmallBar {
+        width: 2.25em;
     }
     p.teiOpener {
         margin-bottom: 1.5em !important;
@@ -1643,32 +1662,25 @@ p.item_indented {
 	margin-left: 40px !important;
 	text-indent: -15px !important;
 }
-p.lIndent
-{
+p.lIndent {
 	text-indent: -9px !important;
 }
-p.lIndentDiary
-{
+p.lIndentDiary {
 	text-indent: -15px !important;
 }
-p.lcenter
-{
+p.lcenter {
 	text-align: center !important;
 }
-p.lIndent.lcenter
-{
+p.lIndent.lcenter {
 	text-align: center !important;
 }
-p.lmedial
-{
+p.lmedial {
 	text-indent: 30px !important;
 }
-p.lfinal
-{
+p.lfinal {
 	text-indent: 80px !important;
 }
-p.lfinal2
-{
+p.lfinal2 {
 	text-indent: 95px !important;
 }
 /*
