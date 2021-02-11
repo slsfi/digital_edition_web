@@ -44,8 +44,9 @@ $colors: (
 $system-font-stack:         -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 
 // These are part of Ionic's Sass variables
+$font-size-root:            16px;
+$font-size-base:            1rem;
 $font-family-base:          'Muli', $system-font-stack;
-$font-size-base:            1.6rem; // 1rem = 10px;
 $text-color:                #000;
 $background-color:          #ecebe4;
 $toolbar-background:        color($colors, primary);
