@@ -15,6 +15,125 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+// @font-face rules should go here!
+
+
+
+
+
+// START OF ORIGINAL _PROJECT-VARIABLES.SCSS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// START OF ORIGINAL VARIABLES.SCSS RULES
+.searchbar-search-icon{
+	left: 1rem !important;
+	top: 0.5rem !important;
+	width: 2rem !important;
+	height: 2rem !important;
+}
+
+.filter-button {
+	font-size: 2rem !important;
+}
+
+.button-md{
+	height: 2.3rem !important;
+}
+
+.tei.heading{
+    font-size: 1.3rem !important;
+    text-transform: none;
+}
+
+.tei.places{
+    font-size: 1.0rem;
+    color: #78756f;
+}
+
+.tei.collections{
+    font-size: 1rem;
+    color: #78756f;
+}
+
+.tei h2{
+    padding-top: 1em;
+    font-size: 1em !important;
+}
+
+.tei.place_name,.onki_province,.collection{
+    color: #78756f;
+}
+
+match {
+	background-color: transparent !important;
+}
+
+img[src*="#fsfd_bild_md_left"] {
+    padding: 2px;
+    border: 1px solid #c4c4b1;
+    float: left;
+    margin-right: 10px;
+}
+
+img[src*="#fsfd_bild_md_right"] {
+    padding: 2px;
+    border: 1px solid #c4c4b1;
+    float: right;
+    margin-left: 10px;
+}
+
+blockquote{
+    font-style: italic;
+    font-weight: 600;
+}
+
+/* These overrides are unnecessary here, primary and secondary colors are used instead by default.
+.toolbar-background{
+    background-color: #a6aebd;
+}
+.content {
+    background-color: #ecebe4 !important;
+}
+.item {
+    background-color: #ECEBE4 !important;
+}*/
+
+/* This applies to descriptions in TOC, but unclear why declared here and not in table-of-contents-accordion.scss */
+.description {
+    white-space: normal;
+    line-height: 1.4rem !important;
+}
+.media_description {
+    float: left;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// START OF ORIGINAL APP.SCSS RULES
+
 body {
   -webkit-user-select: text;
   -moz-user-select: text;

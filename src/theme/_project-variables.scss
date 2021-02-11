@@ -1,51 +1,50 @@
-// COLOR VARIABLES are defined in variables.scss which imports this file.
+/*  
+  This file contains CUSTOM SASS VARIABLES USED IN THIS APP and must not contain any style rules.
+
+  Overrides to Ionic's Sass variables belong in src/theme/variables.scss which imports this file.
+
+  ALL CUSTOM STYLE RULES which should apply globally, including @font-face font loading rules which should be added before any styles, belong in src/app/app.scss.
+
+  Other custom style rules belong in the individual scss-files for components and pages.
+*/
 
 
-// FONTS
-// ------------------------
-// @import 'https://fonts.googleapis.com/css?family=Halant|Work+Sans';
-// $font-family-ios-base: "Lato";
-// $font-family-wp-base: "Lato";
-
+// Move @font-face rules to app.scss
 @font-face {
   font-family: "Muli";
-  font-display: auto;
-  font-style: normal;
-  font-weight: 400;
   src: url(../assets/fonts/Muli-Regular.ttf) format("truetype");
+  font-display: fallback;
+  font-style: normal;
+  font-weight: 400;
 }
-
 @font-face {
   font-family: "Muli";
-  font-display: auto;
+  src: url(../assets/fonts/Muli-Italic.ttf) format("truetype");
+  font-display: fallback;
   font-style: italic;
   font-weight: 400;
-  src: url(../assets/fonts/Muli-Italic.ttf) format("truetype");
 }
-
 @font-face {
   font-family: "Muli";
-  font-display: auto;
+  src: url(../assets/fonts/Muli-Bold.ttf) format("truetype");
+  font-display: fallback;
   font-style: normal;
   font-weight: 700;
-  src: url(../assets/fonts/Muli-Bold.ttf) format("truetype");
 }
-
 @font-face {
   font-family: "Muli";
-  font-display: auto;
+  src: url(../assets/fonts/Muli-BoldItalic.ttf) format("truetype");
+  font-display: fallback;
   font-style: italic;
   font-weight: 700;
-  src: url(../assets/fonts/Muli-BoldItalic.ttf) format("truetype");
 }
-
 @font-face {
   font-family: "Muli";
-  font-display: auto;
-  font-weight: 600;
   src: url(../assets/fonts/Muli-SemiBold.ttf) format("truetype");
+  font-display: fallback;
+  font-weight: 600;
 }
-
+/*
 @font-face {
   font-family: "Lora";
   font-display: auto;
@@ -53,11 +52,13 @@
   font-weight: 400;
   src: url(../assets/fonts/Lora-Regular.ttf) format("truetype");
 }
+*/
 
-$system-font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-$font-family-base: 'Muli', $system-font-stack;
-$font-family-header: $font-family-base;
-$font-family-top-menu: $font-family-base;
+
+// CUSTOM FONT FAMILY VARIABLES
+// --------------------------------------------------
+$font-family-header:            $font-family-base;
+$font-family-top-menu:          $font-family-base;
 /*$font-read-column-p: $font-family-base;*/
 
 // Tei fonts
@@ -68,15 +69,61 @@ $font-semantic-data-model-tei: "Muli", 'Open Sans', Arial, sans-serif;
 $font-stamp-print-tei: "Times New Roman", serif;
 $font-tei-note-editorial: "Muli", arial, helvetica, sans-serif;
 */
-$font-app-tei: $font-family-base;
-$font-comment-modal-tei: $font-app-tei;
-$font-semantic-data-model-tei: $font-app-tei;
-$font-stamp-print-tei: "Times New Roman", serif;
-$font-tei-note-editorial: $font-app-tei;
+$font-app-tei:                  $font-family-base;
+$font-comment-modal-tei:        $font-app-tei;
+$font-semantic-data-model-tei:  $font-app-tei;
+$font-stamp-print-tei:          "Times New Roman", serif;
+$font-tei-note-editorial:       $font-app-tei;
 
-$text-fontsize-small: 1rem;
-$text-fontsize-medium: 1.125rem;
-$text-fontsize-large: 1.25rem;
+
+
+// CUSTOM FONT SIZE VARIABLES
+// --------------------------------------------------
+$text-fontsize-small:           1rem;
+$text-fontsize-medium:          1.125rem;
+$text-fontsize-large:           1.25rem;
+
+
+
+// CUSTOM COLOR VARIABLES
+// --------------------------------------------------
+$persName-color:                #f9e0bf;
+$placeName-color:               #dee8ca;
+$workTitle-color:               #f7efba;
+$changes-color:                 #ccc;
+$normalisations-color:          #e6e6e6;
+$abbreviations-color:           #ffe2fa;
+$pageBreakOriginal-color:       #c34be1;
+$pageBreakEdition-color:        #d58205;
+
+$est-color:       #ccc;
+$com-color:       #e1a462;
+$ms-color:        #b0e162;
+$inl-color:       #e162ac;
+$tit-color:       #62c3e1;
+$var-color:       #b262e1;
+$tag-color:       #0fa14c;
+
+$purple-color:    #413861;
+$grey-color:      #666666;
+$blackish-color:  #363636;
+$orange-color:    #e1a462;
+$white-color:     #fff;
+
+$read-columns-background-color: #f8f8f8;
+$back-button-color:						  #e8e4df; // Between secondary & $background-color
+$back-button-text-color:				color($colors, dark);
+$forward-arrow-color:					  color($colors, dark);
+$divider-bg-color:              color($colors, secondary);
+
+
+
+// OTHER CUSTOM VARIABLES
+// --------------------------------------------------
+$top-menu-left: 370px;
+$top-menu-left-split-pane: 10px;
+
+
 
 /* Borde vara en överflödig regel
 .menu-inner .item-md p {

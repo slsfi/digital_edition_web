@@ -1,17 +1,19 @@
+/*
+    This file contains OVERRIDES TO THE DEFAULT IONIC SASS VARIABLES and must not contain any style rules.
+
+    Custom Sass variables generally belong in src/theme/_project-variables.scss
+
+    ALL CUSTOM STYLE RULES which should apply globally, including @font-face font loading rules which should be added before any styles, belong in src/app/app.scss.
+
+    Other custom style rules belong in the individual scss-files for components and pages.
+*/
+
+
+
 // Ionic Variables and Theming. For more info, please see:
-// http://ionicframework.com/docs/v2/theming/
+// https://ionicframework.com/docs/v3/theming/
 @import "ionic.globals";
 
-
-// Shared Variables
-// --------------------------------------------------
-// To customize the look and feel of this app, you can override
-// the Sass variables found in Ionic's source scss files.
-// To view all the possible Ionic variables, see:
-// http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
-
-$text-color:       #000;
-$background-color: #ecebe4;
 
 
 // Named Color Variables
@@ -29,54 +31,31 @@ $colors: (
     light:		#f4f4f4
 );
 
-// Custom colors for semantic code etc.
-$persName-color: #f9e0bf;
-$placeName-color: #dee8ca;
-$workTitle-color: #f7efba;
-$changes-color: #ccc;
-$normalisations-color: #e6e6e6;
-$abbreviations-color: #ffe2fa;
-$pageBreakOriginal-color: #c34be1;
-$pageBreakEdition-color: #d58205;
-
-$est-color: #ccc;
-$com-color: #e1a462;
-$ms-color: #b0e162;
-$inl-color: #e162ac;
-$tit-color: #62c3e1;
-$var-color: #b262e1;
-$tag-color: #0fa14c;
-
-$purple-color: #413861;
-$grey-color: #666666;
-$blackish-color: #363636;
-$orange-color: #e1a462;
-$white-color: #fff;
-
-$read-columns-background-color: #f8f8f8;
 
 
-$fab-content-margin: 0;
+// Shared Variables
+// --------------------------------------------------
+// To customize the look and feel of this app, you can override
+// the Sass variables found in Ionic's source scss files.
+// To view all the possible Ionic variables, see:
+// https://ionicframework.com/docs/v3/theming/overriding-ionic-variables/
 
-// Use the primary color as the background for the toolbar-md-background
-$toolbar-background:                   color($colors, primary);
+// This is a custom variable
+$system-font-stack:         -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 
-// Use the default background for the tabbar since it inherits from toolbar
-$tabs-background:                      color($colors, primary);
+// These are part of Ionic's Sass variables
+$font-family-base:          'Muli', $system-font-stack;
+$text-color:                #000;
+$background-color:          #ecebe4;
+$toolbar-background:        color($colors, primary);
+$toolbar-active-color:      #fff;
+$toolbar-inactive-color:    #fff;
+$tabs-background:           color($colors, primary);
+$tabs-tab-color-active:     #fff;
+$tabs-tab-color-inactive:   #fff;
+$fab-content-margin:        0;
 
-// Change the color of the tabs text
-$tabs-tab-color-active:                #fff;
-$tabs-tab-color-inactive:              #fff;
 
-// Change the color of the segment button text
-$toolbar-active-color:                 #fff;
-$toolbar-inactive-color:               #fff;
-$segment-button-text-color-activated:  #fff;
-
-$back-button-color:						#e8e4df; // Ideally something between secondary and $background-color
-$back-button-text-color:				color($colors, dark);
-$forward-arrow-color:					color($colors, dark);
-$divider-bg-color:                      color($colors, secondary);
 
 // App iOS Variables
 // --------------------------------------------------
@@ -88,47 +67,36 @@ $divider-bg-color:                      color($colors, secondary);
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
-// Change #000 to any color to see the md text color change
-//$text-md-color:                       $text-color;
+// Use the default base font family
+$font-family-md-base:                       $font-family-base;
 
 // Use the default color as the background for the toolbar-md-background
-$toolbar-md-background:                 $toolbar-background;
+//$toolbar-md-background:                     $toolbar-background;
 
 // Use the default background for the tabbar since it inherits from toolbar
-$tabs-md-background:                    $tabs-background;
+//$tabs-md-background:                        $tabs-background;
 
-$fab-md-box-shadow: none;
+$fab-md-box-shadow:                         none;
 // Change the color of the tabs text
-$tabs-md-tab-color-active:              #fff;
-$tabs-md-tab-color-inactive:            #fff;
+//$tabs-md-tab-color-active:                #fff;
+$tabs-md-tab-color-inactive:                $tabs-tab-color-inactive;
 
 // Change the color of the segment button text
-$toolbar-md-active-color:                 #fff;
-$toolbar-md-inactive-color:               #fff;
-$segment-button-md-text-color-activated:  #fff;
+//$toolbar-md-active-color:                 #fff;
+//$toolbar-md-inactive-color:               #fff;
+$segment-button-md-text-color-activated:    #fff; // default is $toolbar-active-color so actually unnecessary to declare again
 //$item-md-detail-push-show: true;
 
-$card-md-title-text-color: color($colors, dark);
-$card-md-box-shadow: none;
-$card-md-background-color: #fff;
+$card-md-title-text-color:                  color($colors, dark);
+$card-md-box-shadow:                        none;
+$card-md-background-color:                  #fff; // default is same as $background-color
+
 
 
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
 
-
-
-// Custom variables
-
-$top-menu-left: 370px;
-$top-menu-left-split-pane: 10px;
-
-$font-family-base:'Open Sans',Arial,sans-serif;
-$font-family-header:'Open Sans',Arial,sans-serif;
-
-// Project specific variables
-@import "project-variables.scss";
 
 
 // App Theme
@@ -141,6 +109,7 @@ $font-family-header:'Open Sans',Arial,sans-serif;
 @import "ionic.theme.default";
 
 
+
 // Ionicons
 // --------------------------------------------------
 // The premium icon font for Ionic. For more info, please see:
@@ -149,85 +118,8 @@ $font-family-header:'Open Sans',Arial,sans-serif;
 $ionicons-font-path: "../assets/fonts";
 @import "ionicons";
 
-.searchbar-search-icon{
-	left: 1rem !important;
-	top: 0.5rem !important;
-	width: 2rem !important;
-	height: 2rem !important;
-}
 
-.filter-button {
-	font-size: 2rem !important;
-}
 
-.button-md{
-	height: 2.3rem !important;
-}
-
-.tei.heading{
-    font-size: 1.3rem !important;
-    text-transform: none;
-}
-
-.tei.places{
-    font-size: 1.0rem;
-    color: #78756f;
-}
-
-.tei.collections{
-    font-size: 1rem;
-    color: #78756f;
-}
-
-.tei h2{
-    padding-top: 1em;
-    font-size: 1em !important;
-}
-
-.tei.place_name,.onki_province,.collection{
-    color: #78756f;
-}
-
-match {
-	background-color: transparent !important;
-}
-
-img[src*="#fsfd_bild_md_left"] {
-    padding: 2px;
-    border: 1px solid #c4c4b1;
-    float: left;
-    margin-right: 10px;
-}
-
-img[src*="#fsfd_bild_md_right"] {
-    padding: 2px;
-    border: 1px solid #c4c4b1;
-    float: right;
-    margin-left: 10px;
-}
-
-blockquote{
-    font-style: italic;
-    font-weight: 600;
-}
-
-/* These overrides are unnecessary here, primary and secondary colors are used instead by default.
-.toolbar-background{
-    background-color: #a6aebd;
-}
-.content {
-    background-color: #ecebe4 !important;
-}
-.item {
-    background-color: #ECEBE4 !important;
-}*/
-
-/* This applies to descriptions in TOC, but unclear why declared here and not in table-of-contents-accordion.scss */
-.description {
-    white-space: normal;
-    line-height: 1.4rem !important;
-}
-.media_description {
-    float: left;
-}
-
+// Project specific variables
+// --------------------------------------------------
+@import "project-variables.scss";
