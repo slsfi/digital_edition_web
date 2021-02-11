@@ -1,3 +1,7 @@
+/*
+    This file contains style rules which are applied exclusively to the contents of the <div> elements with class "tei" on the title page, in the introduction and in the columns on the read page.
+*/
+
 /* Widths of div.tei on different screen resolutions */
 @media only screen and (max-width: 600px) {
     div.tei {
@@ -20,6 +24,51 @@ comments div.tei,
 variations div.tei,
 manuscripts div.tei {
     padding-bottom: 20vh;
+}
+
+/* Text sizes, should be changed to affect all elements, not just p */
+.tei p,
+.tei.smallFont p {
+    font-size: $text-fontsize-small;
+    line-height: 1.5rem;
+    text-indent: 1.25rem; // 20px if 1rem = 16px
+    margin: 0;
+}
+.tei.mediumFont p {
+    font-size: $text-fontsize-medium;
+    line-height: calc(1.5 * #{$text-fontsize-medium});
+    text-indent: calc(1.25 * #{$text-fontsize-medium});
+}
+.tei.largeFont p {
+    font-size: $text-fontsize-large;
+    line-height: calc(1.5 * #{$text-fontsize-large});
+    text-indent: 1calc(1.25 * #{$text-fontsize-large});
+}
+/* Kommentarasteriskernas storlekar vid större textstorlekar */
+div.tei.mediumFont img.comment {
+    width: calc(0.75 * #{$text-fontsize-medium}) !important;
+    height: calc(0.75 * #{$text-fontsize-medium}) !important;
+}
+div.tei.largeFont img.comment {
+    width: calc(0.75 * #{$text-fontsize-large}) !important;
+    height: calc(0.75 * #{$text-fontsize-large}) !important;
+}
+/* Sidnumreringarnas storlekar vid större textstorlekar*/
+div.tei.mediumFont.show_pageBreakOriginal,
+div.tei.mediumFont.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: calc(0.875 * #{$text-fontsize-medium});
+    }
+}
+div.tei.largeFont.show_pageBreakOriginal,
+div.tei.largeFont.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: calc(0.875 * #{$text-fontsize-large});
+    }
 }
 
 .tei {
@@ -398,8 +447,8 @@ manuscripts div.tei {
         text-decoration: none;
     }
     .cont_manuscript p {
-        line-height: 260% !important;
-        position: relative !important;
+        line-height: 180%;
+        position: relative;
         text-indent: 30px;
     }
     span.dashUnderline {
@@ -1162,50 +1211,6 @@ page-read .mobile-mode-established .tei.show_pageNumbering {
 
 .tei a.anchor, .tei a.anchor:hover {color: inherit; }
 
-/* Text sizes, should be changed to affect all elements, not just p */
-.tei p,
-.tei.smallFont p {
-    font-size: $text-fontsize-small;
-    line-height: 1.5rem;
-    text-indent: 1.25rem; // 20px if 1rem = 16px
-    margin: 0;
-}
-.tei.mediumFont p {
-    font-size: $text-fontsize-medium;
-    line-height: calc(1.5 * #{$text-fontsize-medium});
-    text-indent: calc(1.25 * #{$text-fontsize-medium});
-}
-.tei.largeFont p {
-    font-size: $text-fontsize-large;
-    line-height: calc(1.5 * #{$text-fontsize-large});
-    text-indent: 1calc(1.25 * #{$text-fontsize-large});
-}
-/* Kommentarasteriskernas storlekar vid större textstorlekar */
-div.tei.mediumFont img.comment {
-    width: calc(0.75 * #{$text-fontsize-medium}) !important;
-    height: calc(0.75 * #{$text-fontsize-medium}) !important;
-}
-div.tei.largeFont img.comment {
-    width: calc(0.75 * #{$text-fontsize-large}) !important;
-    height: calc(0.75 * #{$text-fontsize-large}) !important;
-}
-/* Sidnumreringarnas storlekar vid större textstorlekar*/
-div.tei.mediumFont.show_pageBreakOriginal,
-div.tei.mediumFont.show_pageBreakEdition {
-    .pb_orig,
-    .pb_zts,
-    .pb_edition {
-        font-size: calc(0.875 * #{$text-fontsize-medium});
-    }
-}
-div.tei.largeFont.show_pageBreakOriginal,
-div.tei.largeFont.show_pageBreakEdition {
-    .pb_orig,
-    .pb_zts,
-    .pb_edition {
-        font-size: calc(0.875 * #{$text-fontsize-large});
-    }
-}
 
 
 h3.tei.chapter {

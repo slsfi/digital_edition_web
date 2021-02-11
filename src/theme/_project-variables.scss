@@ -134,13 +134,6 @@ html {
   font-size: 16px !important;
 }
 
-/* MOVED to pages/home/home.scss
-home-page {
-  h2 {
-    margin-top: 0 !important;
-  }
-} */
-
 h2 {
   font-size: 1.6rem;
 }
@@ -149,170 +142,28 @@ p {
   font-size: 1.1rem;
 }
 
-/* MOVED to app.scss
-.popover_settings .popover-content {
-  width: min-content !important;
-}
-*/
-
-/*
-.selected-toc-item {
-  p {
-    font-weight: bold;
-  }
-}*/
-
 .mainMenuItem {
   cursor: pointer;
 }
 
-/* Defined in components/top-menu/ and overwritten i custom.css
-.mobile_row {
-  background-color: #b2d0ea !important;
-}
-
-.mobile_row>button {
-  background-color: #b2d0ea !important;
-}
-*/
-
-/*
-read-text .ttDel {
-  display: none;
-}
-*/
-
-/* --> custom.css
-.digital-edition-list-card-content {
-  display: none;
-}
-*/
-
+// almost the same rule declared in tei_variants
 .anchorScrollTarget img {
   font-size: 0.6rem;
   width: 0.6rem;
   display: inline;
 }
 
+// Same selectors with different decl in tei.scss. Combine?
 img.symbol {
   width: 0.6rem;
   display: inline;
 }
 
+// almost the same rule declared in tei_variants
 .teiVariant img {
   font-size: 0.9rem;
   width: 0.9rem;
   display: inline;
-}
-
-/* Defined elsewhere
-@media only screen and (max-width: 600px) {
-  div.tei {
-    max-width: 300px;
-  }
-}
-
-@media only screen and (min-width: 600px) {
-  div.tei {
-    max-width: 650px;
-  }
-}
-*/
-
-/* SK tagit bort, vill inte ha padding här
-ion-card-content {
-  padding-top: 10px !important;
-  padding-bottom: 5px !important;
-}
-*/
-
-/* Defined in pages/home/
-home-page .banner {
-  position: relative;
-  margin-top: 0;
-  padding-left: 0;
-  margin-left: 0;
-  height: 50%;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-*/
-
-/*kommentarasteriskernas placering: inga marginaler vänster-höger
-.tei img.tooltiptrigger {
-  height: 10px;
-  width: 10px;
-  position: relative;
-  top: 4px;
-  left: 0;
-  margin-right: 0 !important;
-  margin-left: 0 !important;
-}
-*/
-
-/*styckenumreringen siffror ska inte ta så mycket plats och vara så stora
-.tei.show_pageNumbering span.tei.paragraph_number {
-  display: block;
-  position: absolute;
-  margin-left: -35px;
-  text-align: left;
-  width: 30px;
-  font-size: 0.7rem;
-  text-indent: 0;
-  color: #000;
-}
-*/
-
-/*styckenumrering vid blockcitat (funkar??)
-p.noIndent.parIndent span.paragraph_number {
-  margin-left: -65px !important;
-}
-
-p.parIndent span.paragraph_number {
-  margin-left: -75px !important;
-}
-*/
-
-/*styckenumrering vid blockcitat, ingen skild stil för .noIndent.parIndent behövs --> flyttad till tei.scss
-p.parIndent span.paragraph_number {
-	margin-left: -65px !important;
-}*/
-
-/*radnumreringen siffror ska inte ta så mycket plats och vara så stora
-.tei.show_pageNumbering span.tei.lNumber,
-.tei.show_pageNumbering span.lNumber {
-  display: block;
-  position: absolute;
-  margin-left: -65px;
-  text-align: left;
-  width: 30px;
-  font-size: 0.7rem;
-  text-indent: 0;
-  color: #000;
-}*/
-
-/*så att stycke-/versnr inte har så stor padding till vänster om sig
-.card-content-md {
-  padding: 13px 12px;
-}*/
-
-/*lemmats styckepositionering med en siffra ska inte vara så framträdande
-.notePosition {
-  font-weight: normal !important;
-  font-size: 0.8rem;
-  font-style: italic;
-}*/
-
-/*det normala för p är att ha styckeindrag*/
-/* FLYTTAT till tei.scss
-.tei p {
-  text-indent: 30px;
-}*/
-
-/*inte så jättestort radmellanrum för ms*/
-.tei .cont_manuscript p {
-  line-height: 180% !important;
 }
 
 /*ms-tillägg från marginalen: symbolerna ska inte vara hela spaltens bredd eller block?*/
