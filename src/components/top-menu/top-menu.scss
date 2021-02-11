@@ -75,7 +75,7 @@ top-menu {
 
 .mobile_row > button{
   background-color: transparent !important; // imp needed to override hover bg-color
-  box-shadow: none;
+  box-shadow: none !important;  // imp needed to override shadow on click
 }
 
 .secondary.toolbar{
