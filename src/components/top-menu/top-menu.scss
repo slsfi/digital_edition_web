@@ -70,13 +70,11 @@ top-menu {
 }
 
 .mobile_row {
-  /*background-color: color($colors, primary) !important;*/
   background-color: transparent;
 }
 
 .mobile_row > button{
-  /*background-color: color($colors, primary) !important;*/
-  background-color: transparent;
+  background-color: transparent !important; // imp needed to override hover bg-color
   box-shadow: none;
 }
 
