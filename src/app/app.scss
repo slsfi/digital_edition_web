@@ -634,12 +634,19 @@ ion-nav{
   }
 }
 
+/* Set font-size for tab-container to smaller than inherited 1.4rem */
+div.tab-container {
+  font-size: 1rem;
+}
+
 
 // Load TEI-stylesheets. Moved here from project-variables.scss
 @import '../theme/tei';
 @import '../theme/tei_comment';
 @import '../theme/tei_variant';
 @import '../theme/tei_manuscript';
+
+
 
 
 
