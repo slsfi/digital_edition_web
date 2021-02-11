@@ -11,12 +11,12 @@ page-introduction {
     padding: 41px 0 0 0;
   }
 
-  .card-content>ion-scroll {
+  .card-content > ion-scroll {
     height: 100% !important;
   }
 
   /* This hides the vertical scrollbar on the right edge of the viewport area when it is not necessary to show it. Observe that there are two elements with class scroll-content, which is why this needs to be this specific. */
-  ion-content>.scroll-content {
+  ion-content > .scroll-content {
     overflow: auto;
   }
 
@@ -64,6 +64,7 @@ page-introduction {
     z-index: 10;
     overflow-x: hidden;
     transition: 0.25s;
+    font-size: 1rem;
   }
 
   #toc_menu {
@@ -163,6 +164,12 @@ page-introduction {
     margin-top: .1em;
     font-weight: 600;
     line-height: 1;
+  }
+
+  #TOC span.writer {
+    font-size: 12px;
+    font-variant: normal;
+    font-weight: normal;
   }
 
   /* visning för bred skärm: toc flyter till höger om artikeln */
