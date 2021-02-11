@@ -175,56 +175,6 @@ div.md_content markdown td {
   vertical-align: top;
 }
 
-p.underline,
-h3.underline {
-  font-style: italic;
-}
-
-p.label_margin {
-  float: right;
-  text-indent: 0 !important;
-}
-
-p.label_above {
-  margin-left: 60px;
-  text-indent: 0 !important;
-  margin-top: 0.2em;
-  margin-bottom: 0.4em;
-}
-
-span.labelledLines_before {
-  margin-left: -80px !important;
-  text-indent: 0 !important;
-  position: absolute;
-}
-
-span.labelledLines_after {
-  float: right;
-  text-indent: 0 !important;
-}
-
-span.labelledLines_before_F {
-  margin-left: -200px !important;
-  text-indent: 0 !important;
-  position: absolute;
-}
-
-p.l.labelledLines_before {
-  position: relative;
-  margin-left: 110px !important;
-}
-
-p.l.labelledLines_before.lfinal {
-  position: relative;
-  margin-left: 120px !important;
-}
-
-span.writer {
-  font-size: 12px;
-  font-variant: normal;
-  font-weight: normal;
-}
-
 span.underline {
   font-style: italic;
 }

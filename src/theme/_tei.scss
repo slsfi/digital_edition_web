@@ -193,16 +193,12 @@ div.tei.largeFont.show_pageBreakEdition {
         margin-top: 1em;
         margin-bottom: 1em;
     }
-    p.underline {
+    p.underline,
+    h3.underline {
         font-style: italic;
     }
     h3.underline {
         text-decoration: underline;
-    }
-    span.writer {
-        font-size: 12px;
-        font-variant: normal;
-        font-weight: normal;
     }
     span.underline {
         font-style: italic;
@@ -1226,8 +1222,6 @@ page-read .mobile-mode-established .tei.show_pageNumbering {
 
 .tei a.anchor, .tei a.anchor:hover {color: inherit; }
 
-
-
 h3.tei.chapter {
 	font-style: italic;
 	text-align: center;
@@ -1524,9 +1518,6 @@ p.underline, h3.underline {
 	font-style: italic;
 }
 */
-h3.underline {
-	font-style: italic;
-}
 p.label_margin {
     float: right;
     text-indent: 0 !important;
