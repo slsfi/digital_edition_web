@@ -1,11 +1,11 @@
-<div class="tei" [innerHTML]="text"
+<div class="tei"
   [class.show_comments]="readPopoverService.show.comments"
   [class.show_personInfo]="readPopoverService.show.personInfo"
   [class.show_workInfo]="readPopoverService.show.workInfo"
   [class.show_abbreviations]="readPopoverService.show.abbreviations"
   [class.show_pageNumbering]="readPopoverService.show.pageNumbering"
-  [ngClass]="(readPopoverService.fontsize==0)?'smallFont':(readPopoverService.fontsize==1)?'mediumFont':'largeFont'"
->
+  [ngClass]="(readPopoverService.fontsize==0)?'smallFont':(readPopoverService.fontsize==1)?'mediumFont':'largeFont'">
+  {{text}}
   <div class="ms" *ngIf="letter">
     <h3>{{ "Read.Comments.Manuscript.Title" | translate }}</h3>
     <ul>
