@@ -66,7 +66,7 @@ page-read {
   }
   */
 
-  /* Style for tooltip boxes. The tooltips also inherit styles from div.tei in _tei.scss */
+  /* Moved to app.scss
   .toolTip {
     z-index: 1000;
     position: fixed;
@@ -82,7 +82,7 @@ page-read {
     p {
       line-height: 22px;
     }
-  }
+  }*/
 
   .segment-header {
     font-size: 1rem !important;
@@ -209,10 +209,10 @@ page-read {
 
   }
 
-
+  /* Moved to tei.scss
   .tooltip {
     display: none;
-  }
+  }*/
 
   /*
   .tooltiptrigger {

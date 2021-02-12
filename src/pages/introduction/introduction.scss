@@ -240,7 +240,7 @@ page-introduction {
 
   .secondary-toolbar-icons-wrapper {
     ion-icon {
-      font-size: 1.6rem !important;
+      font-size: 1.75rem !important;
       padding: 0.5rem;
       cursor: pointer;
     }
@@ -274,10 +274,13 @@ page-introduction {
     display: none;
   }
 
+  /* Unnecessary rule since .tooltip already has display:none in _tei.scss
   .tooltip.ttFoot {
     display: none;
   }
+  */
 
+  /* Moved to app.scss
   .toolTip {
     z-index: 1000;
     position: absolute;
@@ -293,6 +296,7 @@ page-introduction {
       line-height: 22px;
     }
   }
+  */
 
   @media screen and (max-width: 800px) {
     .secondary .toolbar-content {
