@@ -45,7 +45,7 @@
 
     <div class="read-columns" drag-scroll-y-disabled scrollbar-hidden="true" reachesRightBound="true"
       snap-disabled="true" snap-offset="0" [ngClass]="views.length > 1 ? 'multiple-columns' : 'single-column'">
-      <div *ngIf="showToolTip" class="toolTip" [ngClass]="(readPopoverService.fontsize==0)?'tei smallFont':(readPopoverService.fontsize==1)?'tei mediumFont':'tei largeFont'" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}" [innerHTML]="toolTipText"></div>
+      <div *ngIf="showToolTip" class="toolTip" [ngClass]="((readPopoverService.fontsize==0)?'smallFont':(readPopoverService.fontsize==1)?'mediumFont':'largeFont')" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}" [innerHTML]="toolTipText"></div>
       <div [ngClass]="views.length > 1 ? 'read-column multiple-columns' : 'read-column single-column'" *ngFor="let view of views; let i = index;" id="read_div_{{i}}" scrollY="true"
         [ngStyle]="{'position': 'relative','max-width':((maxSingleWindowWidth)/((views.length>1)?views.length:1))+'%','min-width':'25%'}"
         #readColumn>
