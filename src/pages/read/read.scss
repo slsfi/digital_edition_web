@@ -118,9 +118,11 @@ page-read {
     text-align: left;
   }
 
+  /* Settings icons should not have different sizes from the other icons in the secondary toolbar
   ion-icon.settings-icon.icon {
     font-size: 1.8em;
   }
+  */
 
   .settings-icon,
   .facebook-icon,
@@ -353,7 +355,7 @@ page-read {
 
   .secondary-toolbar-icons-wrapper {
     ion-icon {
-      font-size: 1.6rem !important;
+      font-size: 1.75rem !important;
       padding: 0.5rem;
       cursor: pointer;
     }
