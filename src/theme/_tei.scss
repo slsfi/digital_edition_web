@@ -1172,6 +1172,9 @@ div.tei {
 .tei.show_regStyle       span.reg_hide {display: inherit;}
 .tei.show_regStyle       span.reg {background-color: color($colors, light); cursor: default;}
 
+/* For now, show normalizations when showing changes since show_regStyle is not implemented yet. */
+.tei.show_changes         span.tei.ttNormalisations { background-color: $normalisations-color; cursor: default; }
+
 .tei.show_abbreviations   span.abbr {background-color: $abbreviations-color; cursor: default;}
 
 .tei.show_changes         span.corr_red {background-color: $changes-color; cursor: default;}
@@ -1459,12 +1462,6 @@ page-introduction #TOC h5.tei.contentSub2 {
 page-introduction #TOC p {
 	line-height: .1em;
 }*/
-
-/*normaliseringar hade tooltip men ingen färg*/
-.tei.show_changes span.tei.ttNormalisations {
-    background-color: #f2f2f2;
-    cursor: default;
-}
 
 /* CONTAINERS FOR COLUMNS --> Already defined in .tei {} above
 .padded {
