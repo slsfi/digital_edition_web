@@ -1080,6 +1080,10 @@ div.tei {
         */
         margin: 0 !important;
     }
+    .tooltip {
+        display: none;
+    }
+
 
     /*Regel för kommentarasteriskerna i lästexten / har lagt till img för att regeln inte ska tillämpas i kommentarkolumnen*/
     img.comment {
