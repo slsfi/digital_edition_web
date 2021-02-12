@@ -36,10 +36,13 @@ table-of-contents-accordion {
 
                 &.active {
                     background-color:#4a6770;
-                    color: #fff !important;
-
-                    &:hover {
-                        background-color: color($colors, primary);
+                    .button-inner ion-icon {
+                        color: #fff;
+                    }
+                }
+                &:hover {
+                    .button-inner ion-icon {
+                        color: #fff;
                     }
                 }
             }
