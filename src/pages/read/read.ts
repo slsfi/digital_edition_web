@@ -993,9 +993,9 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   hideToolTip() {
-    //window['reload_timer'] = setTimeout(() => {
+    window['reload_timer'] = setTimeout(() => {
       this.showToolTip = false;
-    //}, 500);
+    }, 1000);
   }
 
   showFootnoteTooltip(id: string, origin: any) {
