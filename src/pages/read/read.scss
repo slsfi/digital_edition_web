@@ -66,6 +66,7 @@ page-read {
   }
   */
 
+  /* Style for tooltip boxes. The tooltips also inherit styles from div.tei in _tei.scss */
   .toolTip {
     z-index: 1000;
     position: absolute;
