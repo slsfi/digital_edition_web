@@ -1,75 +1,30 @@
 comments {
 
-  p.teiComment {
-    &.noteLegend {
-      text-indent: 0;
-      margin-bottom: 0.5rem;
-      font-size: 0.875em;
+  /* Styles for comments are generally defined in _tei_comment.scss*/
+
+  div.tei {
+    /* Used for? */
+    span:not([class]) {
+        font-size: 0.85rem;
+        line-height: 1.55;
+        text-indent: 0;
+        display: block;
+        margin-top: 0.5em;
     }
+
+    /* Manuscript description */
+    div.ms {
+        padding-top: 2rem;
+
+        li {
+            list-style: none;
+            line-height: 1.5rem;
+        }
     
-    &.note {
-      margin-top: 1rem;
-      cursor: pointer;
-      padding-left: 0;
-      text-indent: 0;
+        ul {
+            padding-left: 0;
+        }
     }
-
-    &.paragraphSpace {
-      padding-bottom: 0 !important;
-    }
-  }
-
-  span.teiComment {
-    &.notePosition {
-      font-weight: normal !important;
-      font-size: 0.8125em;
-      font-style: italic;
-    }
-
-    &.notePosition::after {
-      content: " ";
-    }
-  
-    &.noteLemma {
-      font-style: italic;
-      font-weight: bold;
-    }
-
-    &.noteLemma::after {
-      content: " – ";
-    }
-  
-    &.lemmaBreak {
-      font-style: normal;
-    }
-  }
-
-  /* Används till vad? */
-  span:not([class]) {
-    font-size: 0.85rem;
-    line-height: 1.55;
-    text-indent: 0;
-    display: block;
-    margin-top: 0.5em;
-  }
-
-  /* Det här är stilen för asteriskerna i lästexten och sådana finns inte i kommentar-kolumnen
-  .tei .comment {
-    font-size: 1em;
-    vertical-align: initial;
-  }*/
-
-  div.ms {
-    padding-top: 2rem;
-  }
-
-  .ms li {
-    list-style: none;
-    line-height: 1.5rem;
-  }
-
-  .ms ul {
-    padding-left: 0;
   }
 }
 

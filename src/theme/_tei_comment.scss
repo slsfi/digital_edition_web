@@ -1,20 +1,52 @@
-.teiComment{
-    p[class*="p"]{
-        text-indent: 30px !important;
-    }    
+div.tei {
+    p.teiComment {
+        &.noteLegend {
+            text-indent: 0;
+            margin-bottom: 0.5rem;
+            font-size: 0.875em;
+        }
     
-    h3{
-        margin: 1.1em 0 .6em !important;
-        font-size: 1.4em !important;
-        font-variant: small-caps;
+        &.note {
+            margin-top: 1rem;
+            cursor: pointer;
+            padding-left: 0;
+            text-indent: 0;
+        }
+
+        &.paragraphSpace {
+            padding-bottom: 0 !important;
+        }
     }
 
-    h4{
-        margin: 1em 0 .5em !important;
-        font-size: 1.1em !important;
+    span.teiComment {
+        &.notePosition {
+            font-weight: normal !important;
+            font-size: 0.8125em;
+            font-style: italic;
+        }
+
+        &.notePosition::after {
+            content: " ";
+        }
+        
+        &.noteLemma {
+            font-style: italic;
+            font-weight: bold;
+        }
+
+        &.noteLemma::after {
+            content: " – ";
+            font-style: normal;
+            font-weight: normal;
+        }
+        
+        &.lemmaBreak {
+            font-style: normal;
+        }
     }
 }
 
-span.seg img{
+/* Used for? */
+span.seg img {
     width: 0.5em;
 }
