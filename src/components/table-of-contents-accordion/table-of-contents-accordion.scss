@@ -35,13 +35,11 @@ table-of-contents-accordion {
                 }
 
                 &.active {
-                    //background-color:#4a6770;
-                    box-shadow: inset 10000px 0 0 rgba(255, 255, 255, 0.5);
+                    background-color:#4a6770;
                     color: #fff !important;
 
                     &:hover {
-                        box-shadow: transparent;
-                        //background-color: color($colors, primary);
+                        background-color: color($colors, primary);
                     }
                 }
             }
