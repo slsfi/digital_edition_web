@@ -69,7 +69,7 @@ page-read {
   /* Style for tooltip boxes. The tooltips also inherit styles from div.tei in _tei.scss */
   .toolTip {
     z-index: 1000;
-    position: absolute;
+    position: fixed;
     background: #f8f8f8;
     border: 1px solid #222;
     box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
