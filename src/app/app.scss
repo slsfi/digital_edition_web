@@ -634,6 +634,25 @@ ion-nav{
   }
 }
 
+/* Style for tooltip boxes. The tooltips also inherit styles from div.tei in _tei.scss */
+page-introduction .toolTip, 
+page-read .toolTip {
+  z-index: 1000;
+  position: fixed;
+  background: #f1f1f1;
+  border: 1px solid #222;
+  border-radius: 3px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
+  padding: 0.5rem;
+  white-space: normal;
+  max-width: 400px;
+  text-align: left;
+
+  p {
+    line-height: 22px;
+  }
+}
+
 /* Set font-size for tab-container to smaller than inherited 1.4rem */
 div.tab-container {
   font-size: 1rem;
