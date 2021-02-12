@@ -5,7 +5,7 @@ comments {
     font-size: 0.875em;
   }
 
-  .teiComment {
+  p.teiComment {
     /* This is a <p> containing the entire annotation. */
     &.note {
       margin-top: 1rem;
@@ -36,11 +36,13 @@ comments {
     &.lemmaBreak {
       font-style: normal;
     }
+
+    &.paragraphSpace {
+      padding-bottom: 0 !important;
+    }
   }
 
-  p.paragraphSpace {
-    padding-bottom: 0 !important;
-  }
+  
 
   /* Används till vad? */
   span:not([class]) {
