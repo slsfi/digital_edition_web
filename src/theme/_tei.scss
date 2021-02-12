@@ -393,21 +393,23 @@ div.tei {
     }
     */
 
-    span.personDesc, span.placeDesc {
+    /* This rule doesn't seem to be used */
+    span.personDesc, 
+    span.placeDesc {
         cursor: pointer;
     }
     .sub {
         vertical-align: sub;
-        font-size: 0.8em;
+        font-size: 0.75em;
     }
     .sup {
         vertical-align: super;
-        font-size: 0.8em;
+        font-size: 0.75em;
     }
     .raised {
-        vertical-align: 20%;
+        vertical-align: 60%;
         line-height: 0.5em;
-        font-size: 0.8em;
+        font-size: 0.75em;
     }
 
     /* Maintext will show raised text differently */
@@ -495,6 +497,7 @@ div.tei {
     .encreasedSizeTT {
         font-size: 120%;
     }
+    /* Finns ingen .mainText på generiska, avser lästexten */
     .mainText .encreasedSize {
         font-style: italic;
         font-size: 100%;
@@ -516,56 +519,6 @@ div.tei {
         display: none;
     }*/
 
-
-    /* KOMMENTARER -- stilar definieras också i components/comments */
-    /*
-    p.note {
-        cursor: pointer;
-        padding-left: 30px !important;
-        text-indent: -30px !important;
-    }
-
-    p.noteLegend
-    {
-        text-indent: 0 !important;
-        margin-bottom: 1em;
-        font-size: 0.95em !important;
-    }
-    */
-    .tei p.note {
-        cursor: pointer;
-        padding-left: 0 !important;
-    }
-    p.teiComment.noteLegend {
-        text-indent: 0 !important;
-        margin-bottom: 0.5em !important;
-        font-size: 0.95em !important;
-    }
-    /*
-    .notePosition {
-        font-weight: bold;
-    }
-    */
-    .notePosition {
-        font-weight: normal !important;
-        font-size: 0.8rem;
-        font-style: italic;
-    }
-    .noteLemma {
-        font-style: italic;
-    }
-    .lemmaBreak {
-        font-style: normal !important;
-    }
-    .notePosition::after {
-        content: " ";
-    }
-    .noteLemma::after {
-        content: " – ";
-    }
-    .noteText {
-
-    }
 
     /* MANUSCRIPT */
     .symbol_red {
@@ -1208,7 +1161,6 @@ div.tei {
     width: 30px;
     font-size: 0.7rem;
 	text-indent: 0;
-	color: #000;
 }
 .tei.show_pageNumbering span.lNumber,
 .tei.show_pageNumbering p.parIndent span.paragraph_number {
@@ -1747,7 +1699,10 @@ p.teiCloser {
 	padding-left: 30px !important;
 	text-indent: -30px !important;
 }
-.poemP, .poemP.right, .poemP.normalizedIndent, .poemP.noIndent {
+.poemP, 
+.poemP.right, 
+.poemP.normalizedIndent, 
+.poemP.noIndent {
 	margin-left: 30px !important;
 	text-indent: -15px !important;
 	margin-bottom: 1em !important;
@@ -1792,20 +1747,9 @@ span.figure {
 .parIndent + span.pb_orig + :not(.parIndent) {
 	margin-top: 1em !important;
 }
-/*
-.parHalfIndent {
-	text-indent: 0 !important;
-	padding-left: 15px;
-}
-*/
 .frontmatterNext + span {
 	margin-top: 1em !important;
 }
-/*
-.halfLinePadding {
-	padding-bottom: 0.5em !important;
-}
-*/
 div.comment_background h3 {
 	color: #55524c;
 	font-size: 1.05em !important;
@@ -1852,6 +1796,8 @@ span.personDesc, span.placeDesc {
 	font-size: 0.8em;
 }
 */
+
+/* Används denna? */
 a.reference span.raised {
 	vertical-align: super;
 	line-height: 0.5em;
@@ -1861,6 +1807,7 @@ a.reference span.raised {
 	float: right !important;
 }
 
+/* Det finns inten .mainText på generiska plattformen */
 .mainText span.uppercase {
 	font-variant: small-caps;
 }
@@ -1920,6 +1867,7 @@ span.smallFont {
 .c_ms span.dashUnderline {
 	border-bottom: 1px dashed black;
 }
+/*Finns ingen .mainText på generiska plattformen */
 .mainText span.dashUnderline {
 	font-style: italic;
 }
