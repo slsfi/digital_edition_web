@@ -955,7 +955,7 @@ export class ReadPage /*implements OnDestroy*/ {
           } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
             this.showToolTip = true;
             clearTimeout(window['reload_timer']);
-            this.hideToolTip();
+            //this.hideToolTip();
             this.showCommentTooltip(eventTarget.getAttribute('data-id'), event);
           } else if (toolTipsSettings.footNotes
             && eventTarget['classList'].contains('ttFoot')) {
@@ -995,7 +995,7 @@ export class ReadPage /*implements OnDestroy*/ {
   hideToolTip() {
     window['reload_timer'] = setTimeout(() => {
       this.showToolTip = false;
-    }, 2000);
+    }, 4000);
   }
 
   showFootnoteTooltip(id: string, origin: any) {
