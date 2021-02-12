@@ -368,9 +368,18 @@ ion-toolbar.secondary {
   }
 }
 
-/* Remove default line-height from divs in secondary toolbar to vertically center button icons */
+/* Remove default line-height from divs in secondary toolbar to vertically center button icons --> This rule is not needed any more.
 ion-toolbar.secondary div {
 	line-height: unset !important;
+} */
+
+page-introduction .secondary-toolbar-icons-wrapper, 
+page-read .secondary-toolbar-icons-wrapper {
+  ion-icon {
+    font-size: 1.75rem;
+    padding: 0.5rem;
+    cursor: pointer;
+  }
 }
 
 ion-label{
@@ -643,9 +652,9 @@ page-read .toolTip {
   border: 1px solid #222;
   border-radius: 3px;
   box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
-  padding: 0.5rem;
+  padding: 0.5rem !important;
   white-space: normal;
-  max-width: 400px;
+  max-width: 400px !important;
   text-align: left;
 
   p {

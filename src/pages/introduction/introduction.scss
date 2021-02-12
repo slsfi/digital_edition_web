@@ -225,6 +225,7 @@ page-introduction {
     }
   }
 
+  /*
   .tooltip {
     display: none;
   }
@@ -232,12 +233,13 @@ page-introduction {
   .tooltiptrigger {
     cursor: pointer;
   }
-
+  */
+  
   .menuClosedTOC {
     width: 10% !important;
   }
 
-
+/* Move to app.scss since not the only page with icons in sec toolbar
   .secondary-toolbar-icons-wrapper {
     ion-icon {
       font-size: 1.75rem !important;
@@ -245,6 +247,7 @@ page-introduction {
       cursor: pointer;
     }
   }
+  */
 
   div[data-id="cont_introduction"] h2.tei.section {
     text-align: left !important;

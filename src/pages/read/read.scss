@@ -353,6 +353,7 @@ page-read {
     margin-bottom: 74px;
   }
 
+  /* Move to app.scss since not the only page with icons in sec toolbar
   .secondary-toolbar-icons-wrapper {
     ion-icon {
       font-size: 1.75rem !important;
@@ -360,6 +361,7 @@ page-read {
       cursor: pointer;
     }
   }
+  */
 
   .scroll-zoom-wrapper {
     padding: 6px;
