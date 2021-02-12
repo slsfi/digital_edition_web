@@ -1,11 +1,12 @@
 comments {
-  .noteLegend {
-    text-indent: 0;
-    margin-bottom: 0.5rem;
-    font-size: 0.875em;
-  }
 
   p.teiComment {
+    &.noteLegend {
+      text-indent: 0;
+      margin-bottom: 0.5rem;
+      font-size: 0.875em;
+    }
+    
     /* This is a <p> containing the entire annotation. */
     &.note {
       margin-top: 1rem;
