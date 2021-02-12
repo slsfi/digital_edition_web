@@ -31,12 +31,18 @@ table-of-contents-accordion {
 
             button {
                 .button-inner ion-icon {
-                    color: #ededed;
-                    font-size: 2rem;
+                    color: #e3e3e3;
+                    font-size: 1.5rem;
                 }
 
-                &.active, &:hover {
-                    background-color:#4a6770;
+                &.active {
+                    background-color: #4a6770;
+                    .button-inner ion-icon {
+                        color: #fff;
+                    }
+                }
+                &:hover {
+                    background-color: #4a6770 !important;
                     .button-inner ion-icon {
                         color: #fff;
                     }
