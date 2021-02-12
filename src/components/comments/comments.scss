@@ -1,44 +1,47 @@
 comments {
 
-  p.teiComment.noteLegend {
-    text-indent: 0;
-    margin-bottom: 0.5rem;
-    font-size: 0.875em;
-  }
+  p.teiComment {
+    &.noteLegend {
+      text-indent: 0;
+      margin-bottom: 0.5rem;
+      font-size: 0.875em;
+    }
     
-  /* This is a <p> containing the entire annotation. */
-  p.teiComment.note {
-    margin-top: 1rem;
-    cursor: pointer;
-    padding-left: 0;
-    text-indent: 0;
+    &.note {
+      margin-top: 1rem;
+      cursor: pointer;
+      padding-left: 0;
+      text-indent: 0;
+    }
+
+    &.paragraphSpace {
+      padding-bottom: 0 !important;
+    }
   }
 
-  /*These are <span> */
-  p.teiComment.notePosition {
-    font-weight: normal !important;
-    font-size: 0.8125em;
-    font-style: italic;
-  }
+  span.teiComment {
+    &.notePosition {
+      font-weight: normal !important;
+      font-size: 0.8125em;
+      font-style: italic;
+    }
 
-  p.teiComment.notePosition::after {
-    content: " ";
-  }
+    &.notePosition::after {
+      content: " ";
+    }
+  
+    &.noteLemma {
+      font-style: italic;
+      font-weight: bold;
+    }
 
-  p.teiComment.noteLemma {
-    font-style: italic;
-  }
-
-  p.teiComment.noteLemma::after {
-    content: " – ";
-  }
-
-  p.teiComment.lemmaBreak {
-    font-style: normal;
-  }
-
-  p.teiComment.paragraphSpace {
-    padding-bottom: 0 !important;
+    &.noteLemma::after {
+      content: " – ";
+    }
+  
+    &.lemmaBreak {
+      font-style: normal;
+    }
   }
 
   /* Används till vad? */
