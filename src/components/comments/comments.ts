@@ -199,10 +199,10 @@ export class CommentsComponent {
         }
         setTimeout(function() {
           if (event.target !== undefined && event.target.previousSibling) {
-            event.target.style.fontWeight = 'normal';
+            event.target.style.fontWeight = null;
             if (event.target.previousSibling.previousSibling !== null) {
               try {
-                event.target.previousSibling.style.fontWeight = 'normal';
+                event.target.previousSibling.style.fontWeight = null;
               } catch ( e ) {
 
               }
