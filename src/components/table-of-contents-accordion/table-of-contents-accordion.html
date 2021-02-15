@@ -9,7 +9,7 @@
     <ng-container *ngIf="sortableLetters.includes(collectionId)">
         <ion-item class="collection-filters">
             <button id="thematic" ion-button [ngClass]="{active: thematicOrderActive}" (click)="activeMenuTree = collapsableItems; setActiveSortingType($event)">
-            <ion-icon name="md-filing"></ion-icon>
+            <ion-icon name="md-albums"></ion-icon>
         </button>
             <button id="chronological" ion-button [ngClass]="{active: chronologicalOrderActive}" (click)="activeMenuTree = chronologicalactiveMenuTree; setActiveSortingType($event)">
             <ion-icon name="md-time"></ion-icon>
