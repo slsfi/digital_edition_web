@@ -880,7 +880,7 @@ export class ReadPage /*implements OnDestroy*/ {
         }
         setTimeout(function () {
           if (event.target !== undefined) {
-            event.target.style.fontWeight = 'normal';
+            event.target.style.fontWeight = null;
           }
         }, 1000);
       }
@@ -890,7 +890,7 @@ export class ReadPage /*implements OnDestroy*/ {
         }
         setTimeout(function () {
           if (event.target !== undefined) {
-            event.target.style.fontWeight = 'normal';
+            event.target.style.fontWeight = null;
           }
         }, 1000);
       }
