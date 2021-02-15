@@ -1570,13 +1570,13 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   private scrollToElement(element: HTMLElement) {
-    element.scrollIntoView();
+    element.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
     this.showToolTip = false;
     try {
       const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span');
       for (let i = 0; i < elems.length; i++) {
         if (elems[i].id === element.id) {
-          elems[i].scrollIntoView();
+          elems[i].scrollIntoView({'behavior': 'smooth', 'block': 'center'});
         }
       }
     } catch (e) {
