@@ -152,7 +152,7 @@ export class ReadPopoverPage {
     this.doAnalytics('togglePageBreakEdition - ' + this.show.pageBreakEdition);
   }
 
-  setFontSize(size: Fontsize) {
+  setFontSize(size: number) {
     this.fontsize = size;
     this.readPopoverService.fontsize = this.fontsize;
     this.doAnalytics('setFontSize - ' + this.fontsize);
