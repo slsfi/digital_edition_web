@@ -876,7 +876,7 @@ export class ReadPage /*implements OnDestroy*/ {
         if (event.target !== undefined) {
           event.target.style.fontWeight = 'bold';
           this.showVariationTooltip(event);
-          this.scrollToElement(event.target);
+          this.scrollToVariant(event.target);
         }
         setTimeout(function () {
           if (event.target !== undefined) {
@@ -1570,6 +1570,21 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   private scrollToElement(element: HTMLElement) {
+    element.scrollIntoView();
+    this.showToolTip = false;
+    try {
+      const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span');
+      for (let i = 0; i < elems.length; i++) {
+        if (elems[i].id === element.id) {
+          elems[i].scrollIntoView();
+        }
+      }
+    } catch (e) {
+
+    }
+  }
+
+  private scrollToVariant(element: HTMLElement) {
     element.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
     this.showToolTip = false;
     try {
