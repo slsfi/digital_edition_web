@@ -1,5 +1,7 @@
-.teiVariant{
-    font-family: "Muli", Georgia, serif  !important;
+.teiVariant {
+
+    cursor: pointer;
+
     span.anchorScrollTarget {
         cursor: pointer;
     }
@@ -11,10 +13,6 @@
     p[class*="p"]{
         text-indent: 30px !important;
     }    
-    
-    h1, h2, h3{
-        font-family: "Muli", Georgia, serif  !important;
-    }
     
     h4{
         margin: 1em 0 .5em !important;
@@ -34,8 +32,4 @@ span.seg img{
 
 p.strofeSpacing {
     padding-bottom: 1em !important;
-}
-
-comments{
-    font-family: "Muli", Georgia, serif  !important;
 }
