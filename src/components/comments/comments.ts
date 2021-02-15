@@ -181,9 +181,11 @@ export class CommentsComponent {
         if (event.target !== undefined) {
           if ( event.target.previousSibling !== null ) {
             event.target.style.fontWeight = 'bold';
+            event.target.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
             if (event.target.previousSibling.previousSibling !== null) {
               try {
                 event.target.previousSibling.style.fontWeight = 'bold';
+                event.target.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
               } catch ( e ) {
 
               }
@@ -191,9 +193,11 @@ export class CommentsComponent {
           }
           if ( event.target.nextSibling !== null && event.target.nextSibling.style !== undefined ) {
             event.target.nextSibling.style.fontWeight = 'bold';
+            event.target.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
           }
           if ( event.target.nextSibling !== null && event.target.nextSibling.nextSibling !== null ) {
             event.target.nextSibling.nextSibling.style.fontWeight = 'bold';
+            event.target.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
           }
           this.scrollToComment(event);
         }
@@ -219,9 +223,11 @@ export class CommentsComponent {
         if (event.target !== undefined) {
           if ( event.target.children[1] ) {
             event.target.children[1].style.fontWeight = 'bold';
+            event.target.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
           }
           if ( event.target.children[2] ) {
             event.target.children[2].style.fontWeight = 'bold';
+            event.target.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
           }
           this.scrollToComment(event);
         }
