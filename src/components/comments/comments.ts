@@ -270,7 +270,7 @@ export class CommentsComponent {
     }
   }
 
-  private scrollToHTMLElement(element: HTMLElement, addTag: boolean, timeOut = 8000) {
+  private scrollToHTMLElement(element: HTMLElement, addTag: boolean, timeOut = 5000) {
     try {
       element.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
       const tmp = element.previousElementSibling as HTMLElement;
@@ -280,7 +280,7 @@ export class CommentsComponent {
         tmp.style.display = 'inline';
         setTimeout(function() {
           tmp.style.display = 'none';
-        }, 2000);
+        }, 5000);
         addedArrow = true;
       } else {
         const tmpImage: HTMLImageElement = new Image();
