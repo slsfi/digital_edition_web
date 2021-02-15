@@ -155,7 +155,7 @@ export class ReadPopoverPage {
   setFontSize(size: Fontsize) {
     this.fontsize = size;
     this.readPopoverService.fontsize = this.fontsize;
-    this.doAnalytics('setFontSize - ' + Fontsize[this.fontsize]);
+    this.doAnalytics('setFontSize - ' + this.fontsize);
   }
 
   decreaseFontSize() {
