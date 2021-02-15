@@ -929,7 +929,7 @@ export class ReadPage /*implements OnDestroy*/ {
             left: x + 'px'
           };
         }
-        if (eventTarget['classList'].contains('ttVariant') && this.readPopoverService.show.comments) {
+        if (eventTarget['classList'].contains('ttVariant')) {
           if (event.target !== undefined) {
             this.showVariationTooltip(event);
           }
