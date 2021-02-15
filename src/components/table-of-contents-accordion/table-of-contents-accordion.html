@@ -9,14 +9,15 @@
     <ng-container *ngIf="sortableLetters.includes(collectionId)">
         <ion-item class="collection-filters">
             <button id="thematic" ion-button [ngClass]="{active: thematicOrderActive}" (click)="activeMenuTree = collapsableItems; setActiveSortingType($event)">
-            <ion-icon name="md-filing"></ion-icon>
-        </button>
+                <ion-icon name="md-filing"></ion-icon>
+            </button>
             <button id="chronological" ion-button [ngClass]="{active: chronologicalOrderActive}" (click)="activeMenuTree = chronologicalactiveMenuTree; setActiveSortingType($event)">
-            <ion-icon name="md-time"></ion-icon>
-        </button>
+                <ion-icon name="md-time"></ion-icon>
+            </button>
             <button id="alphabetical" ion-button [ngClass]="{active: alphabethicOrderActive}" (click)="activeMenuTree = alphabeticalactiveMenuTree; setActiveSortingType($event)">
-            <ion-icon name="md-list"></ion-icon>
-        </button>
+                ab
+                <!--<ion-icon name="md-list"></ion-icon>-->
+            </button>
         </ion-item>
     </ng-container>
     <ion-item *ngIf="hasCover && collectionName != 'About'" [ngClass]="coverSelected?'selected-toc-item':''">
