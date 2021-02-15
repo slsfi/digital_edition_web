@@ -155,7 +155,15 @@ export class ReadPopoverPage {
   setFontSize(size: number) {
     this.fontsize = size;
     this.readPopoverService.fontsize = this.fontsize;
-    this.doAnalytics('setFontSize - ' + this.fontsize);
+    let fontsizestring = "";
+    if (size == 0) {
+      fontsizestring = "small";
+    } else if (size == 1) {
+      fontsizestring = "medium";
+    } else if (size == 2) {
+      fontsizestring = "large";
+    }
+    this.doAnalytics('setFontSize - ' + fontsizestring);
   }
 
   decreaseFontSize() {
