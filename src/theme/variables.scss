@@ -44,18 +44,19 @@ $colors: (
 $system-font-stack:         -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 
 // These are part of Ionic's Sass variables
-$font-size-root:            16px;
-$font-size-base:            1rem;
-$font-family-base:          'Muli', $system-font-stack;
-$text-color:                #000;
-$background-color:          #ecebe4;
-$toolbar-background:        color($colors, primary);
-$toolbar-active-color:      #fff;
-$toolbar-inactive-color:    #fff;
-$tabs-background:           color($colors, primary);
-$tabs-tab-color-active:     #fff;
-$tabs-tab-color-inactive:   #fff;
-$fab-content-margin:        0;
+$font-size-root:                16px;
+$font-size-base:                1rem;
+$toolbar-md-title-font-size:    1.25rem;
+$font-family-base:              'Muli', $system-font-stack;
+$text-color:                  #000;
+$background-color:            #ecebe4;
+$toolbar-background:            color($colors, primary);
+$toolbar-active-color:        #fff;
+$toolbar-inactive-color:      #fff;
+$tabs-background:               color($colors, primary);
+$tabs-tab-color-active:       #fff;
+$tabs-tab-color-inactive:     #fff;
+$fab-content-margin:            0;
 
 
 
