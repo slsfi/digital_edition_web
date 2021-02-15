@@ -42,8 +42,7 @@ export class ReadPopoverPage {
       'pageBreakEdition': false
   };
 
-  public FontsizeEnum = Fontsize;
-  public fontsize = Fontsize.small;
+  fontsize = null;
 
   constructor(
     public viewCtrl: ViewController,
@@ -153,7 +152,7 @@ export class ReadPopoverPage {
     this.doAnalytics('togglePageBreakEdition - ' + this.show.pageBreakEdition);
   }
 
-  setFontSize(size: Fontsize) {
+  setFontSize(size: number) {
     this.fontsize = size;
     this.readPopoverService.fontsize = this.fontsize;
     let fontsizestring = "";
