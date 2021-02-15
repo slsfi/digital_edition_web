@@ -21,13 +21,13 @@ div.tei {
 
     span.teiComment {
         &.notePosition {
-            font-weight: normal !important;
+            font-weight: normal;
             font-size: 0.6875em;
         }
 
-        &.notePosition::after {
-            font-size: 1em;
+        &.noteLemma::before {
             content: " ";
+            font-size: 1.25em;
         }
         
         &.noteLemma {
