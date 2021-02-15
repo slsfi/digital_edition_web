@@ -884,6 +884,7 @@ export class ReadPage /*implements OnDestroy*/ {
           }
         }, 5000);
       }
+      /* This is too unspecific. It leads to all text with class tooltiptrigger to be clickable when comments are shown.
       if (event.target.classList.contains('tooltiptrigger') && this.readPopoverService.show.comments) {
         if (event.target !== undefined) {
           event.target.style.fontWeight = 'bold';
@@ -894,6 +895,7 @@ export class ReadPage /*implements OnDestroy*/ {
           }
         }, 1000);
       }
+      */
     }).bind(this);
 
     this.renderer.listen(nElement, 'mousewheel', (event) => {
