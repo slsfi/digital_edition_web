@@ -1,4 +1,16 @@
 div.tei {
+    h3.teiComment,
+    div.ms h3 {
+        font-size: 1.25em;
+        font-variant: small-caps;
+        margin: 1em 0 0.5em;
+    }
+    h4.teiComment {
+        font-size: 1.125em;
+        font-style: italic;
+        margin: 2em 0 0.5em;
+    }
+
     p.teiComment {
         &.noteLegend {
             text-indent: 0;
@@ -43,6 +55,29 @@ div.tei {
         
         &.lemmaBreak {
             font-style: normal;
+        }
+    }
+
+    /* Used for? */
+    span:not([class]) {
+        font-size: 0.85rem;
+        line-height: 1.55;
+        text-indent: 0;
+        display: block;
+        margin-top: 0.5em;
+    }
+
+    /* Manuscript description */
+    div.ms {
+        padding-top: 2rem;
+
+        li {
+            list-style: none;
+            line-height: 1.5rem;
+        }
+    
+        ul {
+            padding-left: 0;
         }
     }
 }

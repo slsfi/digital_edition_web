@@ -1,30 +1,6 @@
 comments {
 
-  /* Styles for comments are generally defined in _tei_comment.scss*/
+  /* Styles for comments are generally defined in src/theme/_tei_comment.scss */
 
-  div.tei {
-    /* Used for? */
-    span:not([class]) {
-        font-size: 0.85rem;
-        line-height: 1.55;
-        text-indent: 0;
-        display: block;
-        margin-top: 0.5em;
-    }
-
-    /* Manuscript description */
-    div.ms {
-        padding-top: 2rem;
-
-        li {
-            list-style: none;
-            line-height: 1.5rem;
-        }
-    
-        ul {
-            padding-left: 0;
-        }
-    }
-  }
 }
 
