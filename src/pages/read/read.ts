@@ -1576,7 +1576,13 @@ export class ReadPage /*implements OnDestroy*/ {
       const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span');
       for (let i = 0; i < elems.length; i++) {
         if (elems[i].id === element.id) {
+          elems[i].style.fontWeight = 'bold';
           elems[i].scrollIntoView({'behavior': 'smooth', 'block': 'center'});
+          setTimeout(function () {
+            if (elems[i] !== undefined) {
+              elems[i].style.fontWeight = null;
+            }
+          }, 5000);
         }
       }
     } catch (e) {
