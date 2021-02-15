@@ -1,5 +1,5 @@
 .teiManuscript{
-    font-family: "Muli", Georgia, serif  !important;
+    
     .immediate_symbol img{
         display: inline;
         width: 0.9rem;
@@ -57,8 +57,4 @@ span.seg img{
 p.teiManuscript.strofe[class*="lg"] {
 	line-height: 180%;
     text-indent: 0 !important;
-}
-
-comments{
-    font-family: "Muli", Georgia, serif  !important;
 }

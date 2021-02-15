@@ -90,6 +90,7 @@ div.tei {
     h3.title {
         text-align: center;
         font-weight: normal !important;
+        font-variant: small-caps !important;
     }
     h3.title1 {
         font-size: 1.5em !important;
@@ -102,12 +103,15 @@ div.tei {
         font-variant: small-caps;
         font-weight: normal !important;
     }
-    h1.poemtitle, h1.lettertitle {
+    h1.poemtitle, 
+    h1.lettertitle {
         font-variant: small-caps;
         font-weight: normal !important;
         font-size: 1.5em;
     }
-    h3.sub, h3.shortstory, h3.section {
+    h3.sub, 
+    h3.shortstory, 
+    h3.section {
         font-weight: normal !important;
         font-size: 1.2em !important;
     }
@@ -402,6 +406,15 @@ div.tei {
         vertical-align: sub;
         font-size: 0.75em;
     }
+    /* Är den här rätt? Jfr ovan. Definierades urspr i project_variables såhär */
+    /*
+    .tei.sub {
+        vertical-align: sub;
+        font-size: 1.1em;
+        margin-top: 0.8rem;
+        margin-bottom: 0.5rem;
+    }*/
+
     .sup {
         vertical-align: super;
         font-size: 0.75em;
@@ -725,7 +738,7 @@ div.tei {
     */
     .tei_deletion_editorial {
         text-decoration: none;
-        color: #000000;
+        color: #000;
     }
     .tei_deletion_add_editorial {
         text-decoration: none;
@@ -837,6 +850,8 @@ div.tei {
         position: relative;
         bottom: -2px;
     }
+/* MANUSCRIPT END? */
+
     .tei_editorial {
         color: #a66e37 !important;
     }
@@ -1019,6 +1034,10 @@ div.tei {
     .highlightWork {
       background-color: #cae4eb !important;
     }
+    /* Remove? */
+    .highlightXMLcomment {
+        background-color: #cae4eb !important;
+      }
 
     // these will be svg
     img.tooltiptrigger {
@@ -1218,8 +1237,11 @@ page-read .mobile-mode-established .tei.show_pageNumbering {
 	cursor: pointer;
 }
 
-
-.tei a.anchor, .tei a.anchor:hover {color: inherit; }
+.tei a.anchor, 
+.tei a.anchor:hover {
+    color: inherit;
+    opacity: 1;
+}
 
 h3.tei.chapter {
 	font-style: italic;
@@ -2215,7 +2237,7 @@ span.note_foot {
 
 .revision {
     border-radius: 5px;
-    border: 2px solid #000000;
+    border: 2px solid #000;
     padding: 2px;
 }
 
@@ -2228,8 +2250,7 @@ span.note_foot {
 .tit_figure_graphic {
     max-width: 50%;
     display: block;
-    /* margin-left: 165px; */
-    margin: 1rem auto 0 auto; /*centrera titelsidans bild*/
+    margin: 1rem auto 0 auto;
 }
 @media screen  and (max-width: 600px) {
     .tit_figure_graphic {
@@ -2253,7 +2274,7 @@ h1.tei.title {
 	font-weight: normal !important;
 	color: #111;
 	font-size: 1.5em !important;
-	margin: 1em 0 1em 0 !important;
+	margin: 1em 0 !important;
 }
 h1.tei.poemtitle {
 	font-variant: small-caps;
@@ -2261,15 +2282,16 @@ h1.tei.poemtitle {
 	font-weight: normal !important;
 	color: #111;
 	font-size: 1.5em !important;
-	margin: 1em 0 1em 0 !important;
+	margin: 1em 0 !important;
 }
-h1.tei.poemtitleFromMs, h1.tei.poemtitleSuite {
+h1.tei.poemtitleFromMs, 
+h1.tei.poemtitleSuite {
 	font-style: italic;
 	text-align: left;
 	font-weight: normal !important;
 	color: #111;
-	font-size: 1.5em!important;
-	margin: 1em 0 1em 0 !important;
+	font-size: 1.5em !important;
+	margin: 1em 0 !important;
 }
 h2.tei.zts {
 	font-variant: small-caps;
@@ -2277,29 +2299,37 @@ h2.tei.zts {
 	text-align: center;
 	font-weight: normal !important;
 	color: gray;
-	margin: 1em 0 1em 0 !important;
+	margin: 1em 0 !important;
 }
 
 h2.tei.section {
 	text-align: center !important;
 	font-weight: normal !important;
-	margin: 1em 0 1em 0 !important;
+	margin: 1em 0 !important;
 }
 h2.tei.poemsection {
 	font-style: italic;
 	text-align: left;
 	font-weight: normal !important;
-	margin: 1em 0 1em 0 !important;
+	margin: 1em 0 !important;
 }
 h2.tei.section2 {
 	font-style: italic;
 	text-align: center;
 	font-weight: normal !important;
-	margin: 1em 0 1em 0 !important;
+	margin: 1em 0 !important;
 }
 h2.tei.poemsection2 {
 	font-style: italic;
 	text-align: left;
 	font-weight: normal !important;
-	margin: 1em 0 1em 0 !important;
+	margin: 1em 0 !important;
 }
+
+.inl_ms_arrow {
+    height: 0.9rem;
+    display: inline !important;
+}
+
+
+
