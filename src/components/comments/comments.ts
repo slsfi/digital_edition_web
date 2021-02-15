@@ -209,12 +209,12 @@ export class CommentsComponent {
             }
           }
           if ( event.target.nextSibling !== null && event.target.nextSibling.style !== undefined ) {
-            event.target.nextSibling.style.fontWeight = 'normal';
+            event.target.nextSibling.style.fontWeight = null;
           }
           if ( event.target.nextSibling !== null && event.target.nextSibling.nextSibling !== null ) {
-            event.target.nextSibling.nextSibling.style.fontWeight = 'normal';
+            event.target.nextSibling.nextSibling.style.fontWeight = null;
           }
-        }, 1000);
+        }, 5000);
       } else if (event.target.classList.contains('commentScrollTarget') && this.readPopoverService.show.comments) {
         if (event.target !== undefined) {
           if ( event.target.children[1] ) {
@@ -227,12 +227,12 @@ export class CommentsComponent {
         }
         setTimeout(function() {
           if ( event.target.children[1] ) {
-            event.target.children[1].style.fontWeight = 'normal';
+            event.target.children[1].style.fontWeight = null;
           }
           if ( event.target.children[2] ) {
-            event.target.children[2].style.fontWeight = 'normal';
+            event.target.children[2].style.fontWeight = null;
           }
-        }, 1000);
+        }, 5000);
       }
     });
   }
