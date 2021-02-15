@@ -872,7 +872,7 @@ export class ReadPage /*implements OnDestroy*/ {
           this.scrollToElement(eventTarget.getAttribute('href'));
         }
       }
-      if (event.target.classList.contains('variantScrollTarget') && this.readPopoverService.show.comments) {
+      if (event.target.classList.contains('variantScrollTarget')) {
         if (event.target !== undefined) {
           event.target.style.fontWeight = 'bold';
           this.showVariationTooltip(event);
@@ -882,7 +882,7 @@ export class ReadPage /*implements OnDestroy*/ {
           if (event.target !== undefined) {
             event.target.style.fontWeight = null;
           }
-        }, 1000);
+        }, 5000);
       }
       if (event.target.classList.contains('tooltiptrigger') && this.readPopoverService.show.comments) {
         if (event.target !== undefined) {
