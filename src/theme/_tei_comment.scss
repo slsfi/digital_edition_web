@@ -21,7 +21,6 @@ div.tei {
         /* The paragraph which contains the entire note/annotation. */
         &.note {
             margin-top: 1rem;
-            cursor: pointer;
             padding-left: 0;
             text-indent: 0;
         }
@@ -80,6 +79,11 @@ div.tei {
             padding-left: 0;
         }
     }
+}
+
+/* Change cursor to pointer only when showComments is true */
+.show_comments .teiComment.note {
+    cursor: pointer;
 }
 
 /* Used for? */
