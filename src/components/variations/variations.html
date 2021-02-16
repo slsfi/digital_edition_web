@@ -1,3 +1,4 @@
+<ion-item *ngIf="textLoading"><ion-spinner class="loading" name="crescent"></ion-spinner></ion-item>
 <div class="tab-container">
   <div *ngFor="let variation of variations; let i = index" (click)="changeVariation(variation)" [ngClass]="(selectedVariation === variation)?'firts-tab':'tab'">
     {{variation.name}}
