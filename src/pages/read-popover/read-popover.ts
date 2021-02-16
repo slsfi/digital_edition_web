@@ -154,7 +154,7 @@ export class ReadPopoverPage {
 
   setFontSize(size: number) {
     if (size in Fontsize) {
-      this.fontsize = Fontsize[size];
+      this.fontsize = size;
       this.readPopoverService.fontsize = this.fontsize;
       /*
       let fontsizestring: string = "";
