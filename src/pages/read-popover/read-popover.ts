@@ -156,20 +156,6 @@ export class ReadPopoverPage {
     if (size in Fontsize) {
       this.fontsize = size;
       this.readPopoverService.fontsize = this.fontsize;
-      /*
-      let fontsizestring: string = "";
-      if (size == 0) {
-        fontsizestring = "xsmall";
-      } else if (size == 1) {
-        fontsizestring = "small";
-      } else if (size == 2) {
-        fontsizestring = "medium";
-      } else if (size == 3) {
-        fontsizestring = "large";
-      } else if (size == 4) {
-        fontsizestring = "xlarge";
-      }
-      */
       this.doAnalytics('setFontSize - ' + Fontsize[size]);
     }
   }
