@@ -48,6 +48,7 @@ export class ReadPopoverPage {
     public viewCtrl: ViewController,
     private config: ConfigService,
     public readPopoverService: ReadPopoverService,
+    public fontsizeEnum: Fontsize,
     public translate: TranslateService,
     private events: Events,
     public params: NavParams
@@ -152,7 +153,7 @@ export class ReadPopoverPage {
     this.doAnalytics('togglePageBreakEdition - ' + this.show.pageBreakEdition);
   }
 
-  setFontSize(size: number) {
+  setFontSize(size: Fontsize) {
     this.fontsize = size;
     this.readPopoverService.fontsize = this.fontsize;
     let fontsizestring: string = "";
