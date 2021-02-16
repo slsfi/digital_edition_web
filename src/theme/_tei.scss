@@ -35,8 +35,8 @@ manuscripts div.tei {
 .tei p,
 .tei.smallFontSize p {
     font-size: $text-fontsize-small;
-    line-height: 1.5rem;
-    text-indent: 1.25rem; // 20px if 1rem = 16px
+    line-height: calc(1.5 * #{$text-fontsize-small});  // 24px if 1rem = 16px
+    text-indent: calc(1.25 * #{$text-fontsize-small}); // 20px if 1rem = 16px
     margin: 0;
 }
 .tei.mediumFontSize p {
