@@ -1134,7 +1134,7 @@ div.tei {
   white-space: normal;
   max-width: 400px !important;
   text-align: left;
-  line-height: 1.25em !important;
+  line-height: 1.25em;
 
   /* Unnecessary when line-height defined above?
   p {
