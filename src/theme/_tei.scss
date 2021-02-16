@@ -27,47 +27,82 @@ manuscripts div.tei {
 }
 
 /* Text sizes, should be changed to affect all elements, not just p */
+.tei.xsmallFontSize p {
+    font-size: $text-fontsize-xsmall;
+    line-height: calc(1.5 * #{$text-fontsize-xsmall});
+    text-indent: calc(1.25 * #{$text-fontsize-xsmall});
+}
 .tei p,
-.tei.smallFont p {
+.tei.smallFontSize p {
     font-size: $text-fontsize-small;
     line-height: 1.5rem;
     text-indent: 1.25rem; // 20px if 1rem = 16px
     margin: 0;
 }
-.tei.mediumFont p {
+.tei.mediumFontSize p {
     font-size: $text-fontsize-medium;
     line-height: calc(1.5 * #{$text-fontsize-medium});
     text-indent: calc(1.25 * #{$text-fontsize-medium});
 }
-.tei.largeFont p {
+.tei.largeFontSize p {
     font-size: $text-fontsize-large;
     line-height: calc(1.5 * #{$text-fontsize-large});
     text-indent: 1calc(1.25 * #{$text-fontsize-large});
 }
-/* Kommentarasteriskernas storlekar vid större textstorlekar */
-div.tei.mediumFont img.comment {
+.tei.xlargeFontSize p {
+    font-size: $text-fontsize-xlarge;
+    line-height: calc(1.5 * #{$text-fontsize-xlarge});
+    text-indent: 1calc(1.25 * #{$text-fontsize-xlarge});
+}
+
+/* Kommentarasteriskernas storlekar vid olika textstorlekar */
+div.tei.xsmallFontSize img.comment {
+    width: calc(0.75 * #{$text-fontsize-xsmall}) !important;
+    height: calc(0.75 * #{$text-fontsize-xsmall}) !important;
+}
+div.tei.mediumFontSize img.comment {
     width: calc(0.75 * #{$text-fontsize-medium}) !important;
     height: calc(0.75 * #{$text-fontsize-medium}) !important;
 }
-div.tei.largeFont img.comment {
+div.tei.largeFontSize img.comment {
     width: calc(0.75 * #{$text-fontsize-large}) !important;
     height: calc(0.75 * #{$text-fontsize-large}) !important;
 }
-/* Sidnumreringarnas storlekar vid större textstorlekar*/
-div.tei.mediumFont.show_pageBreakOriginal,
-div.tei.mediumFont.show_pageBreakEdition {
+div.tei.xlargeFontSize img.comment {
+    width: calc(0.75 * #{$text-fontsize-xlarge}) !important;
+    height: calc(0.75 * #{$text-fontsize-xlarge}) !important;
+}
+/* Sidnumreringarnas storlekar vid olika textstorlekar*/
+div.tei.xsmallFontSize.show_pageBreakOriginal,
+div.tei.xsmallFontSize.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: calc(0.875 * #{$text-fontsize-xsmall});
+    }
+}
+div.tei.mediumFontSize.show_pageBreakOriginal,
+div.tei.mediumFontSize.show_pageBreakEdition {
     .pb_orig,
     .pb_zts,
     .pb_edition {
         font-size: calc(0.875 * #{$text-fontsize-medium});
     }
 }
-div.tei.largeFont.show_pageBreakOriginal,
-div.tei.largeFont.show_pageBreakEdition {
+div.tei.largeFontSize.show_pageBreakOriginal,
+div.tei.largeFontSize.show_pageBreakEdition {
     .pb_orig,
     .pb_zts,
     .pb_edition {
         font-size: calc(0.875 * #{$text-fontsize-large});
+    }
+}
+div.tei.xlargeFontSize.show_pageBreakOriginal,
+div.tei.xlargeFontSize.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: calc(0.875 * #{$text-fontsize-xlarge});
     }
 }
 

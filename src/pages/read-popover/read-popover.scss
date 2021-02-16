@@ -5,16 +5,24 @@ read-popover-page {
 		margin-left: 43%;
 	}
 
+	.text-xsmall {
+		font-size: 0.875rem !important;
+	}
+
 	.text-small {
 		font-size: 1rem !important;
 	}
 
 	.text-medium {
-		font-size: 1.25rem !important;
+		font-size: 1.125rem !important;
 	}
 
 	.text-large {
-		font-size: 1.625rem !important;
+		font-size: 1.25rem !important;
+	}
+
+	.text-xlarge {
+		font-size: 1.375rem !important;
 	}
 
 	ion-list-header {

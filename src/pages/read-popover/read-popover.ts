@@ -48,7 +48,6 @@ export class ReadPopoverPage {
     public viewCtrl: ViewController,
     private config: ConfigService,
     public readPopoverService: ReadPopoverService,
-    public fontsizeEnum: Fontsize,
     public translate: TranslateService,
     private events: Events,
     public params: NavParams
@@ -153,20 +152,25 @@ export class ReadPopoverPage {
     this.doAnalytics('togglePageBreakEdition - ' + this.show.pageBreakEdition);
   }
 
-  setFontSize(size: Fontsize) {
+  setFontSize(size: number) {
     this.fontsize = size;
     this.readPopoverService.fontsize = this.fontsize;
     let fontsizestring: string = "";
     if (size == 0) {
-      fontsizestring = "small";
+      fontsizestring = "xsmall";
     } else if (size == 1) {
-      fontsizestring = "medium";
+      fontsizestring = "small";
     } else if (size == 2) {
+      fontsizestring = "medium";
+    } else if (size == 3) {
       fontsizestring = "large";
+    } else if (size == 4) {
+      fontsizestring = "xlarge";
     }
     this.doAnalytics('setFontSize - ' + fontsizestring);
   }
-
+  
+/*
   decreaseFontSize() {
     try {
       this.fontsize = Fontsize.small;
@@ -202,6 +206,7 @@ export class ReadPopoverPage {
       this.doAnalytics('increaseFontSize - ' + this.fontsize);
     }
   }
+*/
 
   doAnalytics(type) {
     try {

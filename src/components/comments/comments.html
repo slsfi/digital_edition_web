@@ -4,7 +4,7 @@
   [class.show_workInfo]="readPopoverService.show.workInfo"
   [class.show_abbreviations]="readPopoverService.show.abbreviations"
   [class.show_pageNumbering]="readPopoverService.show.pageNumbering"
-  [ngClass]="(readPopoverService.fontsize==0)?'smallFont':(readPopoverService.fontsize==1)?'mediumFont':'largeFont'">
+  [ngClass]="(readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize'">
   <div [innerHTML]="text"></div>
   <div class="ms" *ngIf="letter">
     <h3>{{ "Read.Comments.Manuscript.Title" | translate }}</h3>
