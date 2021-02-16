@@ -27,37 +27,54 @@ manuscripts div.tei {
 }
 
 /* Text sizes, should be changed to affect all elements, not just p */
-.tei.xsmallFontSize p,
-.tei.toolTip.xsmallFontSize {
+.tei.xsmallFontSize p {
     font-size: $text-fontsize-xsmall;
     line-height: calc(1.5 * #{$text-fontsize-xsmall});
     text-indent: calc(1.25 * #{$text-fontsize-xsmall});
 }
 .tei p,
-.tei.smallFontSize p,
-.tei.toolTip.smallFontSize {
+.tei.smallFontSize p {
     font-size: $text-fontsize-small;
     line-height: calc(1.5 * #{$text-fontsize-small});  // 24px if 1rem = 16px
     text-indent: calc(1.25 * #{$text-fontsize-small}); // 20px if 1rem = 16px
     margin: 0;
 }
-.tei.mediumFontSize p,
-.tei.toolTip.mediumFontSize {
+.tei.mediumFontSize p {
     font-size: $text-fontsize-medium;
     line-height: calc(1.5 * #{$text-fontsize-medium});
     text-indent: calc(1.25 * #{$text-fontsize-medium});
 }
-.tei.largeFontSize p,
-.tei.toolTip.largeFontSize {
+.tei.largeFontSize p {
     font-size: $text-fontsize-large;
     line-height: calc(1.5 * #{$text-fontsize-large});
     text-indent: 1calc(1.25 * #{$text-fontsize-large});
 }
-.tei.xlargeFontSize p,
-.tei.toolTip.xlargeFontSize {
+.tei.xlargeFontSize p {
     font-size: $text-fontsize-xlarge;
     line-height: calc(1.5 * #{$text-fontsize-xlarge});
     text-indent: 1calc(1.25 * #{$text-fontsize-xlarge});
+}
+
+/* Font size for tooltips */
+.tei.toolTip.xsmallFontSize {
+    font-size: $text-fontsize-xsmall;
+    line-height: calc(1.25 * #{$text-fontsize-xsmall});
+}
+.tei.toolTip.smallFontSize {
+    font-size: $text-fontsize-small;
+    line-height: calc(1.25 * #{$text-fontsize-small});
+}
+.tei.toolTip.mediumFontSize {
+    font-size: $text-fontsize-medium;
+    line-height: calc(1.25 * #{$text-fontsize-medium});
+}
+.tei.toolTip.largeFontSize {
+    font-size: $text-fontsize-large;
+    line-height: calc(1.25 * #{$text-fontsize-large});
+}
+.tei.toolTip.xlargeFontSize {
+    font-size: $text-fontsize-xlarge;
+    line-height: calc(1.25 * #{$text-fontsize-xlarge});
 }
 
 /* Kommentarasteriskernas storlekar vid olika textstorlekar */
