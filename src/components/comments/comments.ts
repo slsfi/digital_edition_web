@@ -170,7 +170,7 @@ export class CommentsComponent {
         if ( elem.classList.contains('commentScrollTarget') ) {
           const targetId = elem.classList[elem.classList.length - 1];
           const target = document.getElementsByClassName('ttComment ' + targetId)[0] as HTMLElement;
-          if ( target !== null && target !== undefined ) {
+          if ( target !== null && target !== undefined && this.readPopoverService.show.comments) {
             this.scrollToHTMLElement(target, false);
           }
         }
