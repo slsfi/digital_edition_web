@@ -305,8 +305,9 @@ export class IntroductionPage {
       }
     }
     let foundElemSafe: any = this.sanitizer.bypassSecurityTrustHtml(foundElem);
-    let completeFootnote: string = ftnIndicatorElem.textContent + ' ' + foundElem;
-    this.setToolTipText(this.sanitizer.bypassSecurityTrustHtml(completeFootnote));
+    /* The footnoteindicator is prepended to the the footnote text */
+    let footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + ftnIndicatorElem.textContent + '</span>' + foundElem;
+    this.setToolTipText(this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
     this.tooltips.footnotes[id] = foundElemSafe;
     return foundElemSafe;
   }
