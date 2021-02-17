@@ -185,7 +185,7 @@ export class IntroductionPage {
         const y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
    
         /* Check if tooltip would be drawn outside viewport */
-        if (x + 400 > vh) {
+        if (x + 400 > vw) {
           x = x - 400 - (elem.offsetWidth - 10);
         }
 
