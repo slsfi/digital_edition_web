@@ -22,7 +22,7 @@
 <ion-content padding>
     <ion-card>
         <ion-card-content>
-            <div *ngIf="showToolTip" [ngClass]="'toolTip tei ' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')" [style.left.px]="toolTipPosition.left" [style.top.px]="toolTipPosition.top" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}" [innerHTML]="toolTipText"></div>
+            <div *ngIf="showToolTip" [ngClass]="'toolTip tei ' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')" [style.left.px]="toolTipPosition.left" [style.top.px]="toolTipPosition.top" [innerHTML]="toolTipText"></div>
             <ion-scroll scrollY="true" style="height:80vh;" class="card">
               <ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
                 <div class="tei"
