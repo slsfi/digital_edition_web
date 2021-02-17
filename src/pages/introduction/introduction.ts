@@ -198,8 +198,8 @@ export class IntroductionPage {
         } else {
           /*  Check if tooltip would be drawn outside viewport on the right.
             Move it to the left side of the trigger if there is enough space. */
-          if (x + 418 > vw && x > 418) {
-            x = x - 418 - 10;
+          if (x + 400 > vw && x > 400) {
+            x = elem.getBoundingClientRect().x - 10;
           }
           this.toolTipPosition = {
             top: y + 'px',
