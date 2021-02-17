@@ -42,7 +42,7 @@ export class IntroductionPage {
   public tocMenuOpen: boolean;
   public hasSeparateIntroToc: boolean;
   showToolTip: boolean;
-  public toolTipPosition: object;
+  toolTipPosition: object;
   toolTipText: string;
   tooltips = {
     'persons': {},
@@ -208,8 +208,8 @@ export class IntroductionPage {
         let x = -1000;
         let y = -1000;
         this.toolTipPosition = {
-          top: y,
-          left: x
+          top: y + 'px',
+          left: x + 'px'
         };
 
         if (eventTarget.hasAttribute('data-id')) {
@@ -351,8 +351,6 @@ export class IntroductionPage {
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
     let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
 
-    //tooltipElement.style.zIndex = "1";
-
     /* Get width and height of tooltip element which has been drawn outside the viewport */
     let ttWidth = tooltipElement.offsetWidth;
     let ttHeight = tooltipElement.offsetHeight;
@@ -373,18 +371,11 @@ export class IntroductionPage {
       x = elemRect.left - 400 - 10;
     }
 
-    /* Set tooltip position */
-    /*
-    tooltipElement.style.top = y + 'px';
-    tooltipElement.style.left = (x - sidePaneOffsetWidth) + 'px';
-    */
-    
     this.toolTipPosition = {
-      top: y,
-      left: (x - sidePaneOffsetWidth)
+      top: y + 'px',
+      left: (x - sidePaneOffsetWidth) + 'px'
     };
     
-    //tooltipElement.style.zIndex = "";
   }
 
   private scrollToElement(element: HTMLElement) {
