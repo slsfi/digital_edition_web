@@ -300,20 +300,15 @@ export class IntroductionPage {
     for (let i = 0; i < target.length; i++) {
       const elt = target[i] as HTMLElement;
       if ( elt.getAttribute('data-id') === id ) {
-        foundElem = this.sanitizer.bypassSecurityTrustHtml(elt.innerHTML);
+        foundElem = elt.innerHTML;
         break;
       }
     }
-    /*
-    let ftnIndElem = document.createElement(span);
-    ftnIndElem.className('ttFtnIndicator');
-    ftnIndElem.innerHTML = ftnIndicator;
-    let foundElemWithFtnInd = foundElem;
-    foundElemWithFtnInd.prepend(ftnIndElem);
-    */
-    this.setToolTipText(ftnIndicatorElem.textContent + ' ' + foundElem);
-    this.tooltips.footnotes[id] = foundElem;
-    return foundElem;
+    let foundElemSafe: any = this.sanitizer.bypassSecurityTrustHtml(foundElem);
+    let completeFootnote: string = ftnIndicatorElem.textContent + ' ' + foundElem;
+    this.setToolTipText(this.sanitizer.bypassSecurityTrustHtml(completeFootnote));
+    this.tooltips.footnotes[id] = foundElemSafe;
+    return foundElemSafe;
   }
 
   showPlaceTooltip(id: string, origin: any) {
