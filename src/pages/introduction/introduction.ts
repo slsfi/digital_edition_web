@@ -183,8 +183,8 @@ export class IntroductionPage {
       if (eventTarget['classList'].contains('tooltiptrigger')) {
         /* Get rectangle which contains tooltiptrigger element */
         let elemRect = elem.getBoundingClientRect();
-        let x = ((elemRect.right + vw) - vw) + 10;
-        let y = ((elemRect.bottom + vh) - vh) - 90;
+        let x = ((elemRect.left + vw) - vw) + (elem.offsetWidth + 10);
+        let y = ((elemRect.top + vh) - vh) - 90;
         let sidePaneOffsetWidth = 0;
 
         if (sidePaneIsOpen) {
@@ -203,28 +203,6 @@ export class IntroductionPage {
           top: y + 'px',
           left: (x - sidePaneOffsetWidth) + 'px'
         };
-
-
-        /*
-        if (sidePaneIsOpen) {
-          if ((x + 418 + 10 > vw) && (x - sidePaneOffsetWidth > 418 + 10)) {
-            x = x - 418 - 10;
-          }
-
-          this.toolTipPosition = {
-            top: y + 'px',
-            left: (x - sidePaneOffsetWidth) + 'px'
-          };
-        } else {
-          if (x + 400 > vw && elemRect.left > 400 + 10) {
-            x = elemRect.left - 400 - 10;
-          }
-          this.toolTipPosition = {
-            top: y + 'px',
-            left: x + 'px'
-          };
-        }
-        */
 
         if (eventTarget.hasAttribute('data-id')) {
           if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
