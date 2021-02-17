@@ -304,11 +304,14 @@ export class IntroductionPage {
         break;
       }
     }
+    /*
     let ftnIndElem = document.createElement(span);
     ftnIndElem.className('ttFtnIndicator');
     ftnIndElem.innerHTML = ftnIndicator;
     let foundElemWithFtnInd = foundElem;
     foundElemWithFtnInd.prepend(ftnIndElem);
+    */
+   let foundElemWithFtnInd = ftnIndicator + ' ' + foundElem;
     this.setToolTipText(foundElemWithFtnInd);
     this.tooltips.footnotes[id] = foundElem;
     return foundElem;
