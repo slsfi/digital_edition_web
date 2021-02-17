@@ -181,19 +181,7 @@ export class IntroductionPage {
       const eventTarget = this.getEventTarget(event);
       const elem = event.target;
       if (eventTarget['classList'].contains('tooltiptrigger')) {
-        const x = ((elem.getBoundingClientRect().x + vw) - vw) + (elem.offsetWidth + 10);
-        const y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
-        if (sidePaneIsOpen) {
-          this.toolTipPosition = {
-            top: y + 'px',
-            left: (x - 269) + 'px'
-          };
-        } else {
-          this.toolTipPosition = {
-            top: y + 'px',
-            left: x + 'px'
-          };
-        }
+        
 
         if (eventTarget.hasAttribute('data-id')) {
           if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
@@ -225,6 +213,21 @@ export class IntroductionPage {
         } else {
 
         }
+
+        const x = ((elem.getBoundingClientRect().x + vw) - vw) + (elem.offsetWidth + 10);
+        const y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
+        if (sidePaneIsOpen) {
+          this.toolTipPosition = {
+            top: y + 'px',
+            left: (x - 269) + 'px'
+          };
+        } else {
+          this.toolTipPosition = {
+            top: y + 'px',
+            left: x + 'px'
+          };
+        }
+
       } else if (eventTarget['classList'].contains('anchor')) {
         if (eventTarget.hasAttribute('href')) {
           this.scrollToElement(eventTarget.getAttribute('href'));
