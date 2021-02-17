@@ -210,26 +210,21 @@ export class IntroductionPage {
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
             this.showPersonTooltip(eventTarget.getAttribute('data-id'), event);
-          } else if (toolTipsSettings.placeInfo
-            && eventTarget['classList'].contains('placeName')
-            && this.readPopoverService.show.placeInfo) {
+          } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
             this.showToolTip = true;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
             this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
-          } else if (toolTipsSettings.workInfo
-            && eventTarget['classList'].contains('title')
-            && this.readPopoverService.show.workInfo) {
+          } else if (toolTipsSettings.workInfo && eventTarget['classList'].contains('title') && this.readPopoverService.show.workInfo) {
             this.showToolTip = true;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
             this.showWorkTooltip(eventTarget.getAttribute('data-id'), event);
-          } else if (toolTipsSettings.footNotes
-            && eventTarget['classList'].contains('ttFoot')) {
+          } else if (toolTipsSettings.footNotes && eventTarget['classList'].contains('ttFoot')) {
             this.showToolTip = true;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
-            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), event);
+            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), this.sanitizer.bypassSecurityTrustHtml(eventTarget.innerHTML), event);
           }
         } else {
 
@@ -299,7 +294,7 @@ export class IntroductionPage {
     );
   }
 
-  showFootnoteTooltip(id: string, origin: any) {
+  showFootnoteTooltip(id: string, ftnIndicator: string, origin: any) {
     const target = document.getElementsByClassName('ttFixed');
     let foundElem: any = '';
     for (let i = 0; i < target.length; i++) {
@@ -309,7 +304,12 @@ export class IntroductionPage {
         break;
       }
     }
-    this.setToolTipText(foundElem);
+    let ftnIndElem = document.createElement(span);
+    ftnIndElem.className('ttFtnIndicator');
+    ftnIndElem.innerHTML = ftnIndicator;
+    let foundElemWithFtnInd = foundElem;
+    foundElemWithFtnInd.prepend(ftnIndElem);
+    this.setToolTipText(foundElemWithFtnInd);
     this.tooltips.footnotes[id] = foundElem;
     return foundElem;
   }
