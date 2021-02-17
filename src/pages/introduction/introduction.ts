@@ -350,7 +350,7 @@ export class IntroductionPage {
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
     let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
 
-    tooltipElement.style.zIndex = "1";
+    //tooltipElement.style.zIndex = "1";
 
     /* Get width and height of tooltip element which has been drawn outside the viewport */
     let ttWidth = tooltipElement.offsetWidth;
@@ -368,8 +368,8 @@ export class IntroductionPage {
 
     /*  Check if tooltip would be drawn outside the viewport on the right.
         Move it to the left side of the trigger if there is enough space to show it there. */
-    if (x + ttWidth > vw && elemRect.left - sidePaneOffsetWidth > ttWidth + 10) {
-      x = elemRect.left - ttWidth - 10;
+    if (x + 400 > vw && elemRect.left - sidePaneOffsetWidth > 400 + 10) {
+      x = elemRect.left - 400 - 10;
     }
 
     /* Set tooltip position */
@@ -377,7 +377,7 @@ export class IntroductionPage {
       top: y + 'px',
       left: (x - sidePaneOffsetWidth) + 'px'
     };
-    tooltipElement.style.zIndex = "";
+    //tooltipElement.style.zIndex = "";
   }
 
   private scrollToElement(element: HTMLElement) {
