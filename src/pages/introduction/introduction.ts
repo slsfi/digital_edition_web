@@ -187,7 +187,7 @@ export class IntroductionPage {
         
 
         if (sidePaneIsOpen) {
-          if ((x + 418 > vw) && (x - 269 > 418)) {
+          if ((x + 418 + 10 > vw) && (x - 269 > 418 + 10)) {
             x = x - 418 - 10;
           }
 
