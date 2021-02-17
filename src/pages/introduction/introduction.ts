@@ -205,8 +205,8 @@ export class IntroductionPage {
         */
 
         /* Set tooltip position outside of viewport (move into view with a function) */
-        let x = 1;
-        let y = 1;
+        let x = -1000;
+        let y = -1000;
         this.toolTipPosition = {
           top: y + 'px',
           left: x + 'px'
@@ -232,8 +232,8 @@ export class IntroductionPage {
             this.showToolTip = true;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
-            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-            this.moveTooltipInPosition(elem);
+            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), elem, eventTarget, event);
+            
           }
         } else {
 
@@ -303,7 +303,7 @@ export class IntroductionPage {
     );
   }
 
-  showFootnoteTooltip(id: string, ftnIndicatorElem: HTMLElement, origin: any) {
+  showFootnoteTooltip(id: string, targetElem: HTMLElement, ftnIndicatorElem: HTMLElement, origin: any) {
     const target = document.getElementsByClassName('ttFixed');
     let foundElem: any = '';
     for (let i = 0; i < target.length; i++) {
@@ -317,6 +317,7 @@ export class IntroductionPage {
     /* The footnoteindicator is prepended to the the footnote text */
     let footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + ftnIndicatorElem.textContent + '</span>' + foundElem;
     this.setToolTipText(this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
+    this.moveTooltipInPosition(targetElem);
     this.tooltips.footnotes[id] = foundElemSafe;
     return foundElemSafe;
   }
