@@ -103,7 +103,7 @@ export class ManuscriptsComponent {
         this.manuscripts = res.manuscripts;
         this.setManuscript();
       },
-      err => console.error(err),
+      err => { console.error(err); this.textLoading = false; },
       () => {
         console.error('fetched manuscripts'); this.textLoading = false;
       }
