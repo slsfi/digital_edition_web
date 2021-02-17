@@ -185,8 +185,8 @@ export class IntroductionPage {
         const y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
    
         /* Check if tooltip would be drawn outside viewport */
-        if (x + 400 > vw) {
-          x = x - 400 - 16 - 10);
+        if (x + 418 > vw && x > 418) {
+          x = x - 418 - 10;
         }
 
         if (sidePaneIsOpen) {
