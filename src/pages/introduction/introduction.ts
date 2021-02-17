@@ -205,8 +205,8 @@ export class IntroductionPage {
         */
 
         /* Set tooltip position outside of viewport (move into view with a function) */
-        let x = -1000;
-        let y = -1000;
+        let x = 1;
+        let y = 1;
         this.toolTipPosition = {
           top: y + 'px',
           left: x + 'px'
