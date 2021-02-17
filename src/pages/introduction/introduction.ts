@@ -224,7 +224,7 @@ export class IntroductionPage {
             this.showToolTip = true;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
-            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), this.sanitizer.bypassSecurityTrustHtml(eventTarget.innerHTML), event);
+            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
           }
         } else {
 
@@ -294,7 +294,7 @@ export class IntroductionPage {
     );
   }
 
-  showFootnoteTooltip(id: string, ftnIndicator: string, origin: any) {
+  showFootnoteTooltip(id: string, ftnIndicatorElem: HTMLElement, origin: any) {
     const target = document.getElementsByClassName('ttFixed');
     let foundElem: any = '';
     for (let i = 0; i < target.length; i++) {
@@ -311,9 +311,7 @@ export class IntroductionPage {
     let foundElemWithFtnInd = foundElem;
     foundElemWithFtnInd.prepend(ftnIndElem);
     */
-   let foundElemWithFtnInd = foundElem;
-   foundElemWithFtnInd.insertAdjacentText('afterbegin', ftnIndicator);
-    this.setToolTipText(this.sanitizer.bypassSecurityTrustHtml(foundElemWithFtnInd));
+    this.setToolTipText(ftnIndicatorElem.textContent + ' ' + foundElem);
     this.tooltips.footnotes[id] = foundElem;
     return foundElem;
   }
