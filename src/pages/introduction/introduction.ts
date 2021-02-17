@@ -181,9 +181,9 @@ export class IntroductionPage {
       const eventTarget = this.getEventTarget(event);
       const elem = event.target;
       if (eventTarget['classList'].contains('tooltiptrigger')) {
-        let x = ((elem.getBoundingClientRect().x + vw) - vw) + (elem.offsetWidth + 10);
-        const y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
-        let elemXStartPos = elem.getBoundingClientRect().x;
+        let x = ((elem.getBoundingClientRect().left + vw) - vw) + (elem.offsetWidth + 10);
+        const y = ((elem.getBoundingClientRect().top + vh) - vh) - 108;
+        let elemLeftPos = elem.getBoundingClientRect().left;
         
 
         if (sidePaneIsOpen) {
@@ -197,9 +197,10 @@ export class IntroductionPage {
           };
         } else {
           /*  Check if tooltip would be drawn outside viewport on the right.
-            Move it to the left side of the trigger if there is enough space. */
-          if (x + 400 > vw && elemXStartPos > 400 + 10) {
-            x = x - elemXStartPos - 400 - 10;
+              Move it to the left side of the trigger if there is enough space. 
+              Tooltips have a max-width of 400px.  */
+          if (x + 400 > vw && elemLeftPos > 400 + 10) {
+            x = elemLeftPos - 400 - 10;
           }
           this.toolTipPosition = {
             top: y + 'px',
