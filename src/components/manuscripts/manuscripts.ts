@@ -29,6 +29,7 @@ export class ManuscriptsComponent {
   errorMessage: string;
   msID: string;
   chapter: string;
+  textLoading: Boolean = true;
 
   constructor(
     protected sanitizer: DomSanitizer,
@@ -96,6 +97,7 @@ export class ManuscriptsComponent {
   getManuscript() {
     this.textService.getManuscripts(this.itemId, this.chapter).subscribe(
       res => {
+        this.textLoading = false;
         // in order to get id attributes for tooltips
         console.log('recieved manuscript ,..,', res.manuscripts);
         this.manuscripts = res.manuscripts;
@@ -103,7 +105,7 @@ export class ManuscriptsComponent {
       },
       err => console.error(err),
       () => {
-        console.error('fetched manuscripts');
+        console.error('fetched manuscripts'); this.textLoading = false;
       }
     );
   }
@@ -145,6 +147,7 @@ export class ManuscriptsComponent {
 
   getCacheText(id: string) {
     this.storage.get(id).then((manuscripts) => {
+      this.textLoading = false;
       this.manuscripts = manuscripts;
       this.setManuscript();
     });
