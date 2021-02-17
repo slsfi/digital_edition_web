@@ -183,7 +183,7 @@ export class IntroductionPage {
       if (eventTarget['classList'].contains('tooltiptrigger')) {
         let x = ((elem.getBoundingClientRect().x + vw) - vw) + (elem.offsetWidth + 10);
         const y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
-   
+        let elemXStartPos = elem.getBoundingClientRect().x;
         
 
         if (sidePaneIsOpen) {
@@ -198,8 +198,8 @@ export class IntroductionPage {
         } else {
           /*  Check if tooltip would be drawn outside viewport on the right.
             Move it to the left side of the trigger if there is enough space. */
-          if (x + 418 > vw && x > 418) {
-            x = x - 418 - elem.offsetWidth - 10;
+          if (x + 400 > vw && elemXStartPos > 400 + 10) {
+            x = x - elemXStartPos - 400 - 10;
           }
           this.toolTipPosition = {
             top: y + 'px',
