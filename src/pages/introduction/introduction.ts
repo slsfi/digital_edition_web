@@ -183,8 +183,8 @@ export class IntroductionPage {
       if (eventTarget['classList'].contains('tooltiptrigger')) {
         /* Get rectangle which contains tooltiptrigger element */
         let elemRect = elem.getBoundingClientRect();
-        let x = ((elemRect.left + vw) - vw) + (elem.offsetWidth + 10);
-        let y = ((elemRect.top + vh) - vh) - 90;
+        let x = ((elemRect.right + vw) - vw) + 10;
+        let y = ((elemRect.bottom + vh) - vh) - 90;
         let sidePaneOffsetWidth = 0;
 
         if (sidePaneIsOpen) {
