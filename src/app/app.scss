@@ -648,6 +648,19 @@ div.tab-container {
   font-size: 1rem;
 }
 
+/* Center crescent ion-spinner */
+ion-spinner.loading.spinner-crescent {
+	position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+/* Increase size of crescent ion-spinner SVG */
+ion-spinner.loading.spinner-crescent * {
+  width: 48px;
+  height: 48px;
+}
+
 
 // Load TEI-stylesheets. Moved here from project-variables.scss
 @import '../theme/tei';
