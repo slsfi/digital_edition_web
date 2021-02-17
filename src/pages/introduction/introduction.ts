@@ -311,8 +311,9 @@ export class IntroductionPage {
     let foundElemWithFtnInd = foundElem;
     foundElemWithFtnInd.prepend(ftnIndElem);
     */
-   let foundElemWithFtnInd = this.sanitizer.bypassSecurityTrustHtml(ftnIndicator + ' ' + foundElem);
-    this.setToolTipText(foundElemWithFtnInd);
+   let foundElemWithFtnInd = foundElem;
+   foundElemWithFtnInd.insertAdjacentText('afterbegin', ftnIndicator);
+    this.setToolTipText(this.sanitizer.bypassSecurityTrustHtml(foundElemWithFtnInd));
     this.tooltips.footnotes[id] = foundElem;
     return foundElem;
   }
