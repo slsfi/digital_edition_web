@@ -174,10 +174,32 @@ export class IntroductionPage {
       console.error(e);
     }
     this.renderer.listen(this.elementRef.nativeElement, 'mouseover', (event) => {
+      const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+      const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+      const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
+
       const eventTarget = this.getEventTarget(event);
       const elem = event.target;
       if (eventTarget['classList'].contains('tooltiptrigger')) {
-        
+        let x = ((elem.getBoundingClientRect().x + vw) - vw) + (elem.offsetWidth + 10);
+        const y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
+   
+        /* Check if tooltip would be drawn outside viewport */
+        if (x + 400 > vh) {
+          x = x - 400 - (elem.offsetWidth - 10);
+        }
+
+        if (sidePaneIsOpen) {
+          this.toolTipPosition = {
+            top: y + 'px',
+            left: (x - 269) + 'px'
+          };
+        } else {
+          this.toolTipPosition = {
+            top: y + 'px',
+            left: x + 'px'
+          };
+        }
 
         if (eventTarget.hasAttribute('data-id')) {
           if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
@@ -209,32 +231,6 @@ export class IntroductionPage {
         } else {
 
         }
-
-        const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-        const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-        const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
-
-        const ttElem = document.querySelector("div.toolTip");
-        let x = ((elem.getBoundingClientRect().x + vw) - vw) + (elem.offsetWidth + 10);
-        let y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
-        
-        /* Check if tooltip would be drawn outside viewport */
-        if (y + ttElem.getBoundingClientRect().height > vh) {
-          y = y - ttElem.getBoundingClientRect().height;
-        }
-
-        if (sidePaneIsOpen) {
-          this.toolTipPosition = {
-            top: y + 'px',
-            left: (x - 269) + 'px'
-          };
-        } else {
-          this.toolTipPosition = {
-            top: y + 'px',
-            left: x + 'px'
-          };
-        }
-
       } else if (eventTarget['classList'].contains('anchor')) {
         if (eventTarget.hasAttribute('href')) {
           this.scrollToElement(eventTarget.getAttribute('href'));
