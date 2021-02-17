@@ -374,7 +374,7 @@ export class IntroductionPage {
 
     /* Set tooltip position */
     tooltipElement.style.top = y + 'px';
-    tooltipElement.style.left = x + 'px';
+    tooltipElement.style.left = (x - sidePaneOffsetWidth) + 'px';
     /*
     this.toolTipPosition = {
       top: y + 'px',
