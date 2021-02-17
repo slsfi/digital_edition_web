@@ -42,7 +42,7 @@ export class IntroductionPage {
   public tocMenuOpen: boolean;
   public hasSeparateIntroToc: boolean;
   showToolTip: boolean;
-  toolTipPosition: object;
+  public toolTipPosition: object;
   toolTipText: string;
   tooltips = {
     'persons': {},
@@ -208,8 +208,8 @@ export class IntroductionPage {
         let x = -1000;
         let y = -1000;
         this.toolTipPosition = {
-          top: y + 'px',
-          left: x + 'px'
+          top: y,
+          left: x
         };
 
         if (eventTarget.hasAttribute('data-id')) {
@@ -374,14 +374,16 @@ export class IntroductionPage {
     }
 
     /* Set tooltip position */
+    /*
     tooltipElement.style.top = y + 'px';
     tooltipElement.style.left = (x - sidePaneOffsetWidth) + 'px';
-    /*
-    this.toolTipPosition = {
-      top: y + 'px',
-      left: (x - sidePaneOffsetWidth) + 'px'
-    };
     */
+    
+    this.toolTipPosition = {
+      top: y,
+      left: (x - sidePaneOffsetWidth)
+    };
+    
     //tooltipElement.style.zIndex = "";
   }
 
