@@ -174,14 +174,17 @@ export class IntroductionPage {
       console.error(e);
     }
     this.renderer.listen(this.elementRef.nativeElement, 'mouseover', (event) => {
+      /*
       const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
       const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
       const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
+      */
 
       const eventTarget = this.getEventTarget(event);
       const elem = event.target;
       if (eventTarget['classList'].contains('tooltiptrigger')) {
         /* Get rectangle which contains tooltiptrigger element */
+        /*
         let elemRect = elem.getBoundingClientRect();
         let x = ((elemRect.left + vw) - vw) + (elem.offsetWidth + 10);
         let y = ((elemRect.top + vh) - vh) - 90;
@@ -190,18 +193,23 @@ export class IntroductionPage {
         if (sidePaneIsOpen) {
           sidePaneOffsetWidth = 269;
         }
+        */
 
         /*  Check if tooltip would be drawn outside viewport on the right.
             Move it to the left side of the trigger if there is enough space. 
             Tooltips have a max-width of 400px.*/
+        /*
         if (x + 400 > vw && elemRect.left - sidePaneOffsetWidth > 400 + 10) {
           x = elemRect.left - 400 - 10;
         }
+        */
 
         /* Set tooltip position */
+        let x = -1000;
+        let y = -1000;
         this.toolTipPosition = {
           top: y + 'px',
-          left: (x - sidePaneOffsetWidth) + 'px'
+          left: x + 'px'
         };
 
         if (eventTarget.hasAttribute('data-id')) {
@@ -225,6 +233,7 @@ export class IntroductionPage {
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
             this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+            this.moveTooltipInPosition(elem);
           }
         } else {
 
@@ -333,6 +342,35 @@ export class IntroductionPage {
         this.setToolTipText(noInfoFound);
       }
     );
+  }
+
+  moveTooltipInPosition(targetElem: HTMLElement) {
+    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
+
+    /* Get rectangle which contains tooltiptrigger element */
+    let elemRect = targetElem.getBoundingClientRect();
+    let x = ((elemRect.left + vw) - vw) + (targetElem.offsetWidth + 10);
+    let y = ((elemRect.top + vh) - vh) - 90;
+    let sidePaneOffsetWidth = 0;
+
+    if (sidePaneIsOpen) {
+      sidePaneOffsetWidth = 269;
+    }
+
+    /*  Check if tooltip would be drawn outside viewport on the right.
+        Move it to the left side of the trigger if there is enough space. 
+        Tooltips have a max-width of 400px.*/
+    if (x + 400 > vw && elemRect.left - sidePaneOffsetWidth > 400 + 10) {
+      x = elemRect.left - 400 - 10;
+    }
+
+    /* Set tooltip position */
+    this.toolTipPosition = {
+      top: y + 'px',
+      left: (x - sidePaneOffsetWidth) + 'px'
+    };
   }
 
   private scrollToElement(element: HTMLElement) {
