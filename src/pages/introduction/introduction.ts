@@ -181,32 +181,50 @@ export class IntroductionPage {
       const eventTarget = this.getEventTarget(event);
       const elem = event.target;
       if (eventTarget['classList'].contains('tooltiptrigger')) {
-        let x = ((elem.getBoundingClientRect().left + vw) - vw) + (elem.offsetWidth + 10);
-        const y = ((elem.getBoundingClientRect().top + vh) - vh) - 108;
-        let elemLeftPos = elem.getBoundingClientRect().left;
-        
+        /* Get rectangle which contains tooltiptrigger element */
+        let elemRect = elem.getBoundingClientRect();
+        let x = ((elemRect.left + vw) - vw) + (elem.offsetWidth + 10);
+        let y = ((elemRect.top + vh) - vh) - 108;
+        let sidePaneOffsetWidth = 0;
 
         if (sidePaneIsOpen) {
-          if ((x + 418 + 10 > vw) && (x - 269 > 418 + 10)) {
+          sidePaneOffsetWidth = 269;
+        }
+
+        /*  Check if tooltip would be drawn outside viewport on the right.
+            Move it to the left side of the trigger if there is enough space. 
+            Tooltips have a max-width of 400px.*/
+        if (x + 400 > vw && elemRect.left - sidePaneOffsetWidth > 400 + 10) {
+          x = elemRect.left - 400 - 10;
+        }
+
+        /* Set tooltip position */
+        this.toolTipPosition = {
+          top: y + 'px',
+          left: (x - sidePaneOffsetWidth) + 'px'
+        };
+
+
+        /*
+        if (sidePaneIsOpen) {
+          if ((x + 418 + 10 > vw) && (x - sidePaneOffsetWidth > 418 + 10)) {
             x = x - 418 - 10;
           }
 
           this.toolTipPosition = {
             top: y + 'px',
-            left: (x - 269) + 'px'
+            left: (x - sidePaneOffsetWidth) + 'px'
           };
         } else {
-          /*  Check if tooltip would be drawn outside viewport on the right.
-              Move it to the left side of the trigger if there is enough space. 
-              Tooltips have a max-width of 400px.  */
-          if (x + 400 > vw && elemLeftPos > 400 + 10) {
-            x = elemLeftPos - 400 - 10;
+          if (x + 400 > vw && elemRect.left > 400 + 10) {
+            x = elemRect.left - 400 - 10;
           }
           this.toolTipPosition = {
             top: y + 'px',
             left: x + 'px'
           };
         }
+        */
 
         if (eventTarget.hasAttribute('data-id')) {
           if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
