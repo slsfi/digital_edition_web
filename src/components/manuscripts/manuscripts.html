@@ -11,7 +11,7 @@
   </div>
 </div>
 
-<ion-item>
+<ion-item *ngIf="!textLoading">
   <ion-label>{{"Read.Manuscripts.ShowNormalized" | translate}}</ion-label>
   <ion-toggle [(ngModel)]="normalized" (ionChange)="changeManuscript()"></ion-toggle>
 </ion-item>
