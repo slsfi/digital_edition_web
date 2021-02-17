@@ -204,7 +204,7 @@ export class IntroductionPage {
         }
         */
 
-        /* Set tooltip position */
+        /* Set tooltip position outside of viewport (move into view with a function) */
         let x = -1000;
         let y = -1000;
         this.toolTipPosition = {
@@ -348,6 +348,11 @@ export class IntroductionPage {
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
+    let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
+
+    /* Get rectangle which contains tooltip element */
+    let ttWidth = tooltipElement.offsetWidth;
+    let ttHeight = tooltipElement.offsetHeight;
 
     /* Get rectangle which contains tooltiptrigger element */
     let elemRect = targetElem.getBoundingClientRect();
@@ -362,8 +367,8 @@ export class IntroductionPage {
     /*  Check if tooltip would be drawn outside viewport on the right.
         Move it to the left side of the trigger if there is enough space. 
         Tooltips have a max-width of 400px.*/
-    if (x + 400 > vw && elemRect.left - sidePaneOffsetWidth > 400 + 10) {
-      x = elemRect.left - 400 - 10;
+    if (x + ttWidth > vw && elemRect.left - sidePaneOffsetWidth > ttWidth + 10) {
+      x = elemRect.left - ttWidth - 10;
     }
 
     /* Set tooltip position */
