@@ -1158,6 +1158,7 @@ div.tei {
     text-align: left;
     line-height: 1.25em;
 
+    /* Style for reference numbers in footnote tooltips */
     span.ttFtnIndicator::after {
         content: " ";
     }
