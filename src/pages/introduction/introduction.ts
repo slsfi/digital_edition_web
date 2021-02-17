@@ -184,17 +184,23 @@ export class IntroductionPage {
         let x = ((elem.getBoundingClientRect().x + vw) - vw) + (elem.offsetWidth + 10);
         const y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
    
-        /* Check if tooltip would be drawn outside viewport */
-        if (x + 418 > vw && x > 418) {
-          x = x - 418 - 10;
-        }
+        
 
         if (sidePaneIsOpen) {
+          if ((x + 418 > vw) && (x - 269 > 418)) {
+            x = x - 418 - 10;
+          }
+
           this.toolTipPosition = {
             top: y + 'px',
             left: (x - 269) + 'px'
           };
         } else {
+          /*  Check if tooltip would be drawn outside viewport on the right.
+            Move it to the left side of the trigger if there is enough space. */
+          if (x + 418 > vw && x > 418) {
+            x = x - 418 - 10;
+          }
           this.toolTipPosition = {
             top: y + 'px',
             left: x + 'px'
