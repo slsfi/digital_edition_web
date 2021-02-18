@@ -1160,7 +1160,8 @@ div.tei {
 
     /* Style for reference numbers in footnote tooltips */
     span.ttFtnIndicator {
-        color: #999;
+        font-size: 0.875em;
+        vertical-align: super;
     }
     span.ttFtnIndicator::after {
         content: " ";
