@@ -82,6 +82,7 @@ export class IntroductionPage {
     if (this.platform.is('mobile')) {
       this.tocMenuOpen = false;
     }
+    this.showToolTip = true;
     this.toolTipPosition = {
       top: -100 + 'px',
       left: -100 + 'px'
@@ -488,7 +489,11 @@ export class IntroductionPage {
 
   hideToolTip() {
     window['reload_timer'] = setTimeout(() => {
-      this.showToolTip = false;
+      //this.showToolTip = false;
+      this.toolTipPosition = {
+        top: -100 + 'px',
+        left: -100 + 'px'
+      };
     }, 4000);
   }
 
