@@ -261,7 +261,7 @@ export class IntroductionPage {
     }).bind(this);
     this.renderer.listen(this.elementRef.nativeElement, 'mouseout', (event) => {
       this.showToolTip = false;
-    });
+    }).bind(this);
   }
 
   openExternal(external) {
@@ -508,19 +508,20 @@ export class IntroductionPage {
   }
 
   hideToolTip() {
+    this.toolTipPosition = {
+      top: -1000 + 'px',
+      left: -1000 + 'px'
+    };
+    /*
     window['reload_timer'] = setTimeout(() => {
       //this.showToolTip = false;
-
-      //tooltipElement.innerHTML = "";
-      /*while(tooltipElement.firstChild) { 
-        tooltipElement.removeChild(tooltipElement.firstChild); 
-      } */
 
       this.toolTipPosition = {
         top: -1000 + 'px',
         left: -1000 + 'px'
       };
     }, 4000);
+    */
   }
 
   private scrollToElementTOC(element: HTMLElement, event: Event) {
