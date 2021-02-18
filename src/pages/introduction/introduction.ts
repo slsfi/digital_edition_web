@@ -259,6 +259,9 @@ export class IntroductionPage {
         }
       }
     }).bind(this);
+    this.renderer.listen(this.elementRef.nativeElement, 'mouseleave', (event) => {
+      this.showToolTip = false;
+    }).bind(this);
   }
 
   openExternal(external) {
