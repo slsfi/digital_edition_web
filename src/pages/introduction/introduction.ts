@@ -263,12 +263,11 @@ export class IntroductionPage {
     }).bind(this);
 
     this.renderer.listen(this.elementRef.nativeElement, 'mouseout', (event) => {
+      //this.showToolTip = false;
       this.toolTipPosition = {
         top: -1000 + 'px',
         left: -1000 + 'px'
       };
-      this.setToolTipText("");
-      //this.showToolTip = false;
     }).bind(this);
   }
 
