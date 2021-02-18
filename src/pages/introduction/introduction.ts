@@ -491,8 +491,8 @@ export class IntroductionPage {
     window['reload_timer'] = setTimeout(() => {
       //this.showToolTip = false;
       this.toolTipPosition = {
-        top: -100 + 'px',
-        left: -100 + 'px'
+        top: -1000 + 'px',
+        left: -1000 + 'px'
       };
     }, 4000);
   }
