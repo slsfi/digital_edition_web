@@ -83,8 +83,8 @@ export class IntroductionPage {
       this.tocMenuOpen = false;
     }
     this.toolTipPosition = {
-      top: 1 + 'px',
-      left: 1 + 'px'
+      top: -100 + 'px',
+      left: -100 + 'px'
     };
 
     try {
@@ -319,10 +319,11 @@ export class IntroductionPage {
       }
     }
     let foundElemSafe: any = this.sanitizer.bypassSecurityTrustHtml(foundElem);
-    /* The footnoteindicator is prepended to the the footnote text */
+
+    /* Prepend the footnoteindicator to the the footnote text */
     let footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + ftnIndicatorElem.textContent + '</span>' + foundElem;
     this.setToolTipText(this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
-    //this.moveTooltipInPosition(targetElem);
+    this.moveTooltipInPosition(targetElem);
     this.tooltips.footnotes[id] = foundElemSafe;
     return foundElemSafe;
   }
@@ -363,7 +364,7 @@ export class IntroductionPage {
     /* Get rectangle which contains tooltiptrigger element */
     let elemRect = targetElem.getBoundingClientRect();
     let x = ((elemRect.left + vw) - vw) + (targetElem.offsetWidth + 10);
-    let y = ((elemRect.top + vh) - vh) - 90;
+    let y = ((elemRect.top + vh) - vh) - 100;
     let sidePaneOffsetWidth = 0;
 
     if (sidePaneIsOpen) {
