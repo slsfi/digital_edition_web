@@ -221,10 +221,12 @@ export class IntroductionPage {
         if (eventTarget.hasAttribute('data-id')) {
           if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
             //this.showToolTip = true;
+            this.showToolTip = false;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
             this.showPersonTooltip(eventTarget.getAttribute('data-id'), event);
             this.moveTooltipInPosition(elem);
+            this.showToolTip = true;
           } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
             //this.showToolTip = true;
             clearTimeout(window['reload_timer']);
