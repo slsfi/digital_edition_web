@@ -218,7 +218,7 @@ export class IntroductionPage {
         };
          */
 
-        this.showToolTip = false;
+        //this.showToolTip = false;
         /*
         this.toolTipPosition = {
           top: -1000 + 'px',
@@ -233,7 +233,7 @@ export class IntroductionPage {
             //this.hideToolTip();
             this.showPersonTooltip(eventTarget.getAttribute('data-id'), event);
             this.moveTooltipInPosition(elem);
-            this.showToolTip = true;
+            //this.showToolTip = true;
           } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
             //this.showToolTip = true;
             clearTimeout(window['reload_timer']);
@@ -250,7 +250,7 @@ export class IntroductionPage {
             //this.hideToolTip();
             this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
             this.moveTooltipInPosition(elem);
-            this.showToolTip = true;
+            //this.showToolTip = true;
           }
         } else {
 
@@ -261,8 +261,13 @@ export class IntroductionPage {
         }
       }
     }).bind(this);
+
     this.renderer.listen(this.elementRef.nativeElement, 'mouseout', (event) => {
-      this.showToolTip = false;
+      //this.showToolTip = false;
+      this.toolTipPosition = {
+        top: -1000 + 'px',
+        left: -1000 + 'px'
+      };
     }).bind(this);
   }
 
@@ -367,14 +372,11 @@ export class IntroductionPage {
   }
 
   moveTooltipInPosition(targetElem: HTMLElement) {
-    this.showToolTip = true;
+    //this.showToolTip = true;
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
     let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
-
-    tooltipElement.style.backgroundColor = "white";
-    tooltipElement.style.backgroundColor = null;
 
     /* Get width and height of tooltip element which has been drawn outside the viewport */
     let ttElemRect = tooltipElement.getBoundingClientRect();
@@ -382,7 +384,7 @@ export class IntroductionPage {
     //let ttWidth = tooltipElement.offsetWidth;
     //let ttHeight = tooltipElement.offsetHeight;
 
-    this.showToolTip = false;
+    //this.showToolTip = false;
 
     /* Get rectangle which contains tooltiptrigger element */
     let elemRect = targetElem.getBoundingClientRect();
