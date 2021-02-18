@@ -236,11 +236,12 @@ export class IntroductionPage {
             this.hideToolTip();
             this.showWorkTooltip(eventTarget.getAttribute('data-id'), event);
           } else if (toolTipsSettings.footNotes && eventTarget['classList'].contains('ttFoot')) {
-            //this.showToolTip = true;
+            this.showToolTip = false;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
             this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
             this.moveTooltipInPosition(elem);
+            this.showToolTip = true;
           }
         } else {
 
@@ -324,6 +325,7 @@ export class IntroductionPage {
 
     /* Prepend the footnoteindicator to the the footnote text */
     let footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + ftnIndicatorElem.textContent + '</span>' + foundElem;
+    
     this.setToolTipText(this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
     this.tooltips.footnotes[id] = foundElemSafe;
     return foundElemSafe;
@@ -353,6 +355,7 @@ export class IntroductionPage {
   }
 
   moveTooltipInPosition(targetElem: HTMLElement) {
+    this.showToolTip = true;
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
@@ -366,6 +369,8 @@ export class IntroductionPage {
     let ttWidth = ttElemRect.width;
     //let ttWidth = tooltipElement.offsetWidth;
     //let ttHeight = tooltipElement.offsetHeight;
+
+    this.showToolTip = false;
 
     /* Get rectangle which contains tooltiptrigger element */
     let elemRect = targetElem.getBoundingClientRect();
@@ -495,13 +500,11 @@ export class IntroductionPage {
   hideToolTip() {
     window['reload_timer'] = setTimeout(() => {
       //this.showToolTip = false;
-      let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
 
       //tooltipElement.innerHTML = "";
       /*while(tooltipElement.firstChild) { 
         tooltipElement.removeChild(tooltipElement.firstChild); 
       } */
-      this.setToolTipText("");
 
       this.toolTipPosition = {
         top: -1000 + 'px',
