@@ -82,6 +82,10 @@ export class IntroductionPage {
     if (this.platform.is('mobile')) {
       this.tocMenuOpen = false;
     }
+    this.toolTipPosition = {
+      top: 1 + 'px',
+      left: 1 + 'px'
+    };
 
     try {
       this.hasSeparateIntroToc = this.config.getSettings('separeateIntroductionToc');
@@ -204,13 +208,14 @@ export class IntroductionPage {
         }
         */
 
-        /* Set tooltip position outside of viewport (move into view with a function) */
+        /* Set tooltip position outside of viewport (move into view with a function)
         let x = -1000;
         let y = -1000;
         this.toolTipPosition = {
           top: y + 'px',
           left: x + 'px'
         };
+         */
 
         if (eventTarget.hasAttribute('data-id')) {
           if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
@@ -317,7 +322,7 @@ export class IntroductionPage {
     /* The footnoteindicator is prepended to the the footnote text */
     let footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + ftnIndicatorElem.textContent + '</span>' + foundElem;
     this.setToolTipText(this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
-    this.moveTooltipInPosition(targetElem);
+    //this.moveTooltipInPosition(targetElem);
     this.tooltips.footnotes[id] = foundElemSafe;
     return foundElemSafe;
   }
