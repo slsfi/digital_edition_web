@@ -359,8 +359,10 @@ export class IntroductionPage {
     let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
 
     /* Get width and height of tooltip element which has been drawn outside the viewport */
-    let ttWidth = tooltipElement.offsetWidth;
-    let ttHeight = tooltipElement.offsetHeight;
+    let ttElemRect = tooltipElement.getBoundingClientRect();
+    let ttWidth = ttElemRect.width;
+    //let ttWidth = tooltipElement.offsetWidth;
+    //let ttHeight = tooltipElement.offsetHeight;
 
     /* Get rectangle which contains tooltiptrigger element */
     let elemRect = targetElem.getBoundingClientRect();
