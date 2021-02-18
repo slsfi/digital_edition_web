@@ -84,8 +84,8 @@ export class IntroductionPage {
     }
     this.showToolTip = true;
     this.toolTipPosition = {
-      top: -100 + 'px',
-      left: -100 + 'px'
+      top: -1000 + 'px',
+      left: -1000 + 'px'
     };
 
     try {
@@ -220,26 +220,27 @@ export class IntroductionPage {
 
         if (eventTarget.hasAttribute('data-id')) {
           if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
-            this.showToolTip = true;
+            //this.showToolTip = true;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
             this.showPersonTooltip(eventTarget.getAttribute('data-id'), event);
+            this.moveTooltipInPosition(elem);
           } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
-            this.showToolTip = true;
+            //this.showToolTip = true;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
             this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
           } else if (toolTipsSettings.workInfo && eventTarget['classList'].contains('title') && this.readPopoverService.show.workInfo) {
-            this.showToolTip = true;
+            //this.showToolTip = true;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
             this.showWorkTooltip(eventTarget.getAttribute('data-id'), event);
           } else if (toolTipsSettings.footNotes && eventTarget['classList'].contains('ttFoot')) {
-            this.showToolTip = true;
+            //this.showToolTip = true;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
-            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), elem, eventTarget, event);
-            
+            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+            this.moveTooltipInPosition(elem);
           }
         } else {
 
@@ -309,7 +310,7 @@ export class IntroductionPage {
     );
   }
 
-  showFootnoteTooltip(id: string, targetElem: HTMLElement, ftnIndicatorElem: HTMLElement, origin: any) {
+  showFootnoteTooltip(id: string, ftnIndicatorElem: HTMLElement, origin: any) {
     const target = document.getElementsByClassName('ttFixed');
     let foundElem: any = '';
     for (let i = 0; i < target.length; i++) {
@@ -324,7 +325,6 @@ export class IntroductionPage {
     /* Prepend the footnoteindicator to the the footnote text */
     let footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + ftnIndicatorElem.textContent + '</span>' + foundElem;
     this.setToolTipText(this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
-    this.moveTooltipInPosition(targetElem);
     this.tooltips.footnotes[id] = foundElemSafe;
     return foundElemSafe;
   }
@@ -374,8 +374,8 @@ export class IntroductionPage {
 
     /*  Check if tooltip would be drawn outside the viewport on the right.
         Move it to the left side of the trigger if there is enough space to show it there. */
-    if (x + 400 > vw && elemRect.left - sidePaneOffsetWidth > 400 + 10) {
-      x = elemRect.left - 400 - 10;
+    if (x + ttWidth > vw && elemRect.left - sidePaneOffsetWidth > ttWidth + 10) {
+      x = elemRect.left - ttWidth - 10;
     }
 
     this.toolTipPosition = {
