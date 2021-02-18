@@ -233,7 +233,7 @@ export class IntroductionPage {
             //this.hideToolTip();
             this.showPersonTooltip(eventTarget.getAttribute('data-id'), event);
             this.moveTooltipInPosition(elem);
-            this.showToolTip = true;
+            //this.showToolTip = true;
           } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
             //this.showToolTip = true;
             clearTimeout(window['reload_timer']);
@@ -250,7 +250,7 @@ export class IntroductionPage {
             //this.hideToolTip();
             this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
             this.moveTooltipInPosition(elem);
-            this.showToolTip = true;
+            //this.showToolTip = true;
           }
         } else {
 
@@ -268,7 +268,7 @@ export class IntroductionPage {
         left: -1000 + 'px'
       };
       this.setToolTipText("");
-      this.showToolTip = false;
+      //this.showToolTip = false;
     }).bind(this);
   }
 
