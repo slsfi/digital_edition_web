@@ -232,7 +232,7 @@ export class IntroductionPage {
             this.showToolTip = true;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
-            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), elem, eventTarget, event);
+            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, eventTarget, event);
             
           }
         } else {
