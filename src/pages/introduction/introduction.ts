@@ -375,7 +375,8 @@ export class IntroductionPage {
   moveTooltipInPosition(targetElem: HTMLElement) {
     //this.showToolTip = true;
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    //const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    const vh = window.innerHeight;
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
     //let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
 
