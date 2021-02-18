@@ -494,7 +494,11 @@ export class IntroductionPage {
       //this.showToolTip = false;
       let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
 
-      tooltipElement.innerHTML = "";
+      //tooltipElement.innerHTML = "";
+      /*while(tooltipElement.firstChild) { 
+        tooltipElement.removeChild(tooltipElement.firstChild); 
+      } */
+      this.setToolTipText("");
 
       this.toolTipPosition = {
         top: -1000 + 'px',
