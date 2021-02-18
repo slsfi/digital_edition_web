@@ -358,6 +358,9 @@ export class IntroductionPage {
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
     let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
 
+    tooltipElement.style.backgroundColor = "white";
+    tooltipElement.style.backgroundColor = null;
+
     /* Get width and height of tooltip element which has been drawn outside the viewport */
     let ttElemRect = tooltipElement.getBoundingClientRect();
     let ttWidth = ttElemRect.width;
