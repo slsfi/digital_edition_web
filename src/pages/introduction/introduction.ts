@@ -389,8 +389,13 @@ export class IntroductionPage {
 
     /* Get rectangle which contains tooltiptrigger element */
     let elemRect = targetElem.getBoundingClientRect();
-    let x = ((elemRect.left + vw) - vw) + (targetElem.offsetWidth + 8);
-    let y = ((elemRect.top + vh) - vh) - 100;
+    //let x = ((elemRect.left + vw) - vw) + (targetElem.offsetWidth + 8);
+    //let y = ((elemRect.top + vh) - vh) - 100;
+
+    /* test placing tooltip below trigger */
+    let x = ((elemRect.left + vw) - vw);
+    let y = ((elemRect.bottom + vh) - vh) - 70;
+
     let sidePaneOffsetWidth = 0;
 
     if (sidePaneIsOpen) {
@@ -399,8 +404,8 @@ export class IntroductionPage {
 
     /*  Check if tooltip would be drawn outside the viewport on the right.
         Move it to the left side of the trigger if there is enough space to show it there. */
-    if (x + 250 > vw && elemRect.left - sidePaneOffsetWidth > 350 + 8) {
-      x = elemRect.left - 350 - 8;
+    if (x + 250 > vw && elemRect.left - sidePaneOffsetWidth > 350 + 0) {
+      x = elemRect.left - 350 - 0;
     }
 
     this.toolTipPosition = {
