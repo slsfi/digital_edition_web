@@ -375,8 +375,7 @@ export class IntroductionPage {
   moveTooltipInPosition(targetElem: HTMLElement) {
     //this.showToolTip = true;
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    //const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    const vh = document.documentElement.clientHeight;
+    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
     //let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
 
@@ -390,13 +389,8 @@ export class IntroductionPage {
 
     /* Get rectangle which contains tooltiptrigger element */
     let elemRect = targetElem.getBoundingClientRect();
-    //let x = ((elemRect.left + vw) - vw) + (targetElem.offsetWidth + 8);
-    //let y = ((elemRect.top + vh) - vh) - 100;
-
-    /* test placing tooltip below trigger */
-    let x = ((elemRect.left + vw) - vw);
-    let y = ((elemRect.bottom + vh) - vh) - 70 - 8;
-
+    let x = ((elemRect.left + vw) - vw) + (targetElem.offsetWidth + 8);
+    let y = ((elemRect.top + vh) - vh) - 100;
     let sidePaneOffsetWidth = 0;
 
     if (sidePaneIsOpen) {
@@ -405,7 +399,7 @@ export class IntroductionPage {
 
     /*  Check if tooltip would be drawn outside the viewport on the right.
         Move it to the left side of the trigger if there is enough space to show it there. */
-    if (x + 250 > vw && elemRect.left - sidePaneOffsetWidth > 350 + 0) {
+    if (x + 250 > vw && elemRect.left - sidePaneOffsetWidth > 350 + 8) {
       x = elemRect.left - 350 - 8;
     }
 
