@@ -236,7 +236,7 @@ export class IntroductionPage {
             this.hideToolTip();
             this.showWorkTooltip(eventTarget.getAttribute('data-id'), event);
           } else if (toolTipsSettings.footNotes && eventTarget['classList'].contains('ttFoot')) {
-            //this.showToolTip = true;
+            this.showToolTip = true;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
             this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
@@ -491,11 +491,11 @@ export class IntroductionPage {
 
   hideToolTip() {
     window['reload_timer'] = setTimeout(() => {
-      //this.showToolTip = false;
       this.toolTipPosition = {
         top: -1000 + 'px',
         left: -1000 + 'px'
       };
+      this.showToolTip = false;
     }, 4000);
   }
 
