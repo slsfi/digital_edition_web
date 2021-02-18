@@ -225,6 +225,7 @@ export class IntroductionPage {
           left: -1000 + 'px'
         };
         */
+       this.setToolTipText("");
 
         if (eventTarget.hasAttribute('data-id')) {
           if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
