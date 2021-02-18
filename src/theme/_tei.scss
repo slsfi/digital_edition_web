@@ -1160,11 +1160,10 @@ div.tei {
 
     /* Style for reference numbers in footnote tooltips */
     span.ttFtnIndicator {
-        font-size: 0.875em !important;
-        vertical-align: super;
-    }
-    span.ttFtnIndicator::after {
-        content: " ";
+        font-size: 0.625em;
+        padding-right: 0.75em;
+        display: inline-block;
+        vertical-align: middle;
     }
 
     /* Unnecessary when line-height defined above?
