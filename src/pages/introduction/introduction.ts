@@ -484,13 +484,14 @@ export class IntroductionPage {
             // There is room, check vertical space
             oversetY = elemRect.top + ttHeight - window.innerHeight;
             if (oversetY > 0) {
-              if (y - secToolbarHeight > oversetY) {
+              y = y - oversetY;
+              // if (y - secToolbarHeight > oversetY) {
                 // Move the y position upwards by oversetY
-                y = y - oversetY;
-              } else {
+                // y = y - oversetY;
+              // } else {
                 // The tooltip needs to be placed more freely and it's width increased.
                 freePosition = true;
-              }
+              // }
             }
           // }
         }
