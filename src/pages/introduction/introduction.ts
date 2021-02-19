@@ -430,23 +430,28 @@ export class IntroductionPage {
 
     /*  Check if tooltip would be drawn outside the viewport on the right.
         Move it to the left side of the trigger if there is enough space to show it there. */
+    let oversetX = x + ttWidth - vw;
+    if (oversetX > 0) {
+      // Check if there is 
+    }
+
+    // Old working code
     if (x + ttWidth > vw && elemRect.left - sidePaneOffsetWidth > ttWidth + 8) {
       x = elemRect.left - ttWidth - 8;
     }
 
     /*  Check if tooltip would be drawn outside the viewport on the bottom.
         Move it upwards if there is enough space to show it there. */
-    let overset = elemRect.top + ttHeight - window.innerHeight;
-    if (overset > 0) {
+    let oversetY = elemRect.top + ttHeight - window.innerHeight;
+    if (oversetY > 0) {
       // Check if there is enough room at the top to move the tooltip upwards
-      if (y > overset) {
-        // Move the y position upwards by overset
-        y = y - overset;
+      if (y > oversetY) {
+        // Move the y position upwards by oversetY
+        y = y - oversetY;
       } else {
         y = yOffset;
         x = sidePaneOffsetWidth + 16;
-        tooltipElement.style.maxWidth = 90 + '% !important';
-        tooltipElement.style.width = 90 + '% !important';
+        tooltipElement.style.setProperty('max-width', '90', 'important');
       }
     }
 
@@ -564,10 +569,15 @@ export class IntroductionPage {
     let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
     tooltipElement.innerHTML = "";
 
+    if (tooltipElement.style.getPropertyValue('max-width')) {
+      tooltipElement.style.removeProperty('max-width');
+    }
+
     this.toolTipPosition = {
       top: -1000 + 'px',
       left: -1000 + 'px'
     };
+
     /*
     window['reload_timer'] = setTimeout(() => {
       //this.showToolTip = false;
