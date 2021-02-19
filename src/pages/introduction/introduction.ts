@@ -451,7 +451,7 @@ export class IntroductionPage {
           const maxSpace = Math.max(spaceRight, spaceLeft);
           if (spaceLeft > spaceRight) {
             // Calc new horisontal position since the tooltip will be placed on the left
-            x = elemRect.left - maxSpace - 8;
+            x = elemRect.left - maxSpace;
           }
           // hiddenDiv.setAttribute('style', 'max-width: ' + spaceRight + 'px !important');
           
