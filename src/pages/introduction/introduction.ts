@@ -459,7 +459,7 @@ export class IntroductionPage {
           // Make div visible again to calculate its width and height
           hiddenDiv.style.visibility = 'hidden';
           hiddenDiv.style.display = 'block';
-          hiddenDiv.style.maxWidth = maxSpace + 'px';
+          hiddenDiv.style.width = maxSpace + 'px';
           ttHeight = hiddenDiv.offsetHeight;
           ttWidth = hiddenDiv.offsetWidth;
           // Make the hidden div display:none again
