@@ -473,7 +473,7 @@ export class IntroductionPage {
           ttHeight = hiddenDiv.offsetHeight;
           ttWidth = hiddenDiv.offsetWidth;
           // Make the hidden div display:none again.
-          hiddenDiv.style.marginLeft = document.documentElement.clientHeight + 'px';
+          hiddenDiv.style.marginLeft = ttHeight + 'px';
           hiddenDiv.style.visibility = 'visible';
           hiddenDiv.style.display = 'none';
           // Remove hidden div.
@@ -482,7 +482,7 @@ export class IntroductionPage {
           // Check if the narrower tooltip fits.
           if (ttWidth <= maxSpace) {
             // There is room, check vertical space.
-            oversetY = elemRect.top + ttHeight - window.innerHeight;
+            oversetY = elemRect.top + ttHeight - vh;
             if (oversetY > 0) {
               if (oversetY < y - secToolbarHeight) {
                 // Move the y position upwards by oversetY.
