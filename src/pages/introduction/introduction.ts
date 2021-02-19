@@ -466,7 +466,7 @@ export class IntroductionPage {
           hiddenDiv.style.display = 'none';
 
           // Check if the narrower tooltip fits
-          if (ttWidth < maxSpace) {
+          if (ttWidth <= maxSpace) {
             // There is room, check vertical space
             oversetY = elemRect.top + ttHeight - window.innerHeight;
             if (oversetY > 0) {
