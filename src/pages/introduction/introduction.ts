@@ -463,7 +463,7 @@ export class IntroductionPage {
           });
           hiddenDiv.style.display = 'none';
           // hiddenDiv.style.width = maxSpace + 'px';
-          hiddenDiv.setAttribute('style', 'width: ' + maxSpace + 'px !important');
+          hiddenDiv.setAttribute('style', 'max-width: ' + maxSpace + 'px !important');
           // Append hidden div to the parent of the tooltip div
           tooltipElement.parentNode.appendChild(hiddenDiv);
           // Add content to the hidden div
@@ -477,12 +477,13 @@ export class IntroductionPage {
           hiddenDiv.style.visibility = 'visible';
           hiddenDiv.style.display = 'none';
           // Remove hidden div
-          hiddenDiv.remove();
+          //hiddenDiv.remove();
 
           // Check if the narrower tooltip fits
           // if (ttWidth <= maxSpace) {
             // There is room, check vertical space
             oversetY = elemRect.top + ttHeight - window.innerHeight;
+            hiddenDiv.style.marginLeft = oversetY + 'px';
             if (oversetY > 0) {
               y = y - oversetY;
               // if (y - secToolbarHeight > oversetY) {
