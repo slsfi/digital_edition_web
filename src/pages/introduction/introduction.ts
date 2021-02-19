@@ -483,7 +483,7 @@ export class IntroductionPage {
           // if (ttWidth <= maxSpace) {
             // There is room, check vertical space
             oversetY = elemRect.top + ttHeight - window.innerHeight;
-            hiddenDiv.style.marginLeft = oversetY + 'px';
+            hiddenDiv.style.marginLeft = window.innerHeight + 'px';
             if (oversetY > 0) {
               y = y - oversetY;
               // if (y - secToolbarHeight > oversetY) {
