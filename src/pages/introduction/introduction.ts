@@ -249,8 +249,8 @@ export class IntroductionPage {
             //this.showToolTip = true;
             //clearTimeout(window['reload_timer']);
             //this.hideToolTip();
-            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-            this.moveTooltipInPosition(elem);
+            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), elem, eventTarget, event);
+            //this.moveTooltipInPosition();
             //this.showToolTip = true;
           }
         } else {
@@ -329,7 +329,7 @@ export class IntroductionPage {
     );
   }
 
-  showFootnoteTooltip(id: string, ftnIndicatorElem: HTMLElement, origin: any) {
+  showFootnoteTooltip(id: string, targetElem: HTMLElement, ftnIndicatorElem: HTMLElement, origin: any) {
     const target = document.getElementsByClassName('ttFixed');
     let foundElem: any = '';
     for (let i = 0; i < target.length; i++) {
@@ -344,6 +344,8 @@ export class IntroductionPage {
     /* Prepend the footnoteindicator to the the footnote text */
     let footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + ftnIndicatorElem.textContent + '</span>' + foundElem;
     
+    this.moveTooltipInPosition(targetElem, footnoteWithIndicator);
+
     this.setToolTipText(this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
     this.tooltips.footnotes[id] = foundElemSafe;
     return foundElemSafe;
@@ -372,17 +374,39 @@ export class IntroductionPage {
     );
   }
 
-  moveTooltipInPosition(targetElem: HTMLElement) {
+  moveTooltipInPosition(targetElem: HTMLElement, ttText: string) {
     //this.showToolTip = true;
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
 
     let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
+    let hiddenDiv: HTMLElement = document.createElement('div');
+
+    // Loop over each class in the tooltip div and add them to the hidden div
+    tooltipElement.classList; // DOMTokenList (pretty much an array)
+    tooltipElement.classList.forEach(className => {
+      hiddenDiv.classList.add(className);
+    });
+
+
+    hiddenDiv.style.display = 'none';
+    // Append hidden div to the parent of the tooltip div
+    tooltipElement.parentNode.appendChild(hiddenDiv);
+    // Add content to the hidden div
+    hiddenDiv.innerHTML = ttText;
+    // Briefly make the hidden div block but invisible. This is in order to read the height
+    hiddenDiv.style.visibility = 'hidden';
+    hiddenDiv.style.display = 'block';
+    let ttHeight = hiddenDiv.offsetHeight;
+    let ttWidth = hiddenDiv.offsetWidth;
+    // Make the hidden div display:none again
+    hiddenDiv.style.visibility = 'visible';
+    hiddenDiv.style.display = 'none';
 
     /* Get width and height of tooltip element which has been drawn outside the viewport */
-    let ttElemRect = tooltipElement.getBoundingClientRect();
-    let ttWidth = ttElemRect.width;
+    //let ttElemRect = tooltipElement.getBoundingClientRect();
+    //let ttWidth = ttElemRect.width;
     //let ttWidth = tooltipElement.offsetWidth;
     //let ttHeight = tooltipElement.offsetHeight;
 
