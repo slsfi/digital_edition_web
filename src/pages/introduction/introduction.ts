@@ -516,9 +516,7 @@ export class IntroductionPage {
   hideToolTip() {
     this.setToolTipText("");
     let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
-    while(tooltipElement.firstChild) {
-      tooltipElement.removeChild(tooltipElement.firstChild);
-    }
+    tooltipElement.innerHTML = "";
 
     this.toolTipPosition = {
       top: -1000 + 'px',
