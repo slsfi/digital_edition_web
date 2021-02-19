@@ -425,7 +425,7 @@ export class IntroductionPage {
     /*  Check if tooltip would be drawn outside the viewport on the right.
         Move it to the left side of the trigger if there is enough space to show it there. */
     const oversetX = x + ttWidth - vw;
-    let oversetY = elemRect.top + ttHeight - window.innerHeight;
+    let oversetY = elemRect.top + ttHeight - vh;
     if (oversetX > 0) {
       if (oversetY > 0) {
         // Overset both vertically and horisontally. Check if tooltip can be moved to the left
@@ -447,14 +447,8 @@ export class IntroductionPage {
           // There is not room on the left. The tooltip should be squeezed in on the right. 
           // Need to check if there is vertical room for a narrower tooltip there.
 
-          // Calc how much space there is on either side.
+          // Calc how much space there is on the right.
           const spaceRight = vw - x;
-          const spaceLeft = elemRect.left - sidePaneOffsetWidth - 8;
-          const maxSpace = Math.max(spaceRight, spaceLeft);
-          if (spaceLeft > spaceRight) {
-            // Calc new horisontal position since the tooltip will be placed on the left.
-            x = elemRect.left - maxSpace;
-          }
 
           // Create hidden div for calculating tooltip dimensions.
           hiddenDiv = document.createElement('div');
@@ -462,7 +456,7 @@ export class IntroductionPage {
             hiddenDiv.classList.add(className);
           });
           hiddenDiv.style.display = 'none';
-          hiddenDiv.setAttribute('style', 'max-width: ' + maxSpace + 'px !important');
+          hiddenDiv.setAttribute('style', 'max-width: ' + spaceRight + 'px !important');
           // Append hidden div to the parent of the tooltip div.
           tooltipElement.parentNode.appendChild(hiddenDiv);
           // Add content to the hidden div.
@@ -473,14 +467,13 @@ export class IntroductionPage {
           ttHeight = hiddenDiv.offsetHeight;
           ttWidth = hiddenDiv.offsetWidth;
           // Make the hidden div display:none again.
-          hiddenDiv.style.marginLeft = ttHeight + 'px';
           hiddenDiv.style.visibility = 'visible';
           hiddenDiv.style.display = 'none';
           // Remove hidden div.
-          //hiddenDiv.remove();
+          hiddenDiv.remove();
 
           // Check if the narrower tooltip fits.
-          if (ttWidth <= maxSpace) {
+          if (ttWidth <= spaceRight) {
             // There is room, check vertical space.
             oversetY = elemRect.top + ttHeight - vh;
             if (oversetY > 0) {
@@ -505,9 +498,6 @@ export class IntroductionPage {
         // side of the trigger so the width of the tooltip could be increased.
         
 
-
-
-        
         // The tooltip needs to be placed more freely and it's width increased.
         freePosition = true;
       }
@@ -517,6 +507,7 @@ export class IntroductionPage {
       // The tooltip could not be placed next to the trigger, so it has to be placed
       // more freely.
 
+      // Yet to be implemented ...
     }
 
 
