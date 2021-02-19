@@ -218,40 +218,41 @@ export class IntroductionPage {
         };
          */
 
-        //this.showToolTip = false;
+        // this.showToolTip = false;
         /*
         this.toolTipPosition = {
           top: -1000 + 'px',
           left: -1000 + 'px'
         };
         */
-       this.setToolTipText("");
+       this.setToolTipText('');
 
         if (eventTarget.hasAttribute('data-id')) {
-          if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
-            //this.showToolTip = true;
-            //clearTimeout(window['reload_timer']);
-            //this.hideToolTip();
-            this.showPersonTooltip(eventTarget.getAttribute('data-id'), event);
-            this.moveTooltipInPosition(elem);
-            //this.showToolTip = true;
-          } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
-            //this.showToolTip = true;
+          if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person')
+          && this.readPopoverService.show.personInfo) {
+            // this.showToolTip = true;
+            // clearTimeout(window['reload_timer']);
+            // this.hideToolTip();
+            this.showPersonTooltip(eventTarget.getAttribute('data-id'), elem, event);
+          } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName')
+          && this.readPopoverService.show.placeInfo) {
+            // this.showToolTip = true;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
             this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
-          } else if (toolTipsSettings.workInfo && eventTarget['classList'].contains('title') && this.readPopoverService.show.workInfo) {
-            //this.showToolTip = true;
+          } else if (toolTipsSettings.workInfo && eventTarget['classList'].contains('title')
+          && this.readPopoverService.show.workInfo) {
+            // this.showToolTip = true;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
             this.showWorkTooltip(eventTarget.getAttribute('data-id'), event);
           } else if (toolTipsSettings.footNotes && eventTarget['classList'].contains('ttFoot')) {
-            //this.showToolTip = true;
-            //clearTimeout(window['reload_timer']);
-            //this.hideToolTip();
+            // this.showToolTip = true;
+            // clearTimeout(window['reload_timer']);
+            // this.hideToolTip();
             this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), elem, eventTarget, event);
-            //this.moveTooltipInPosition();
-            //this.showToolTip = true;
+            // this.moveTooltipInPosition();
+            // this.showToolTip = true;
           }
         } else {
 
@@ -264,7 +265,7 @@ export class IntroductionPage {
     }).bind(this);
 
     this.renderer.listen(this.elementRef.nativeElement, 'mouseout', (event) => {
-      //this.showToolTip = false;
+      // this.showToolTip = false;
       this.toolTipPosition = {
         top: -1000 + 'px',
         left: -1000 + 'px'
@@ -339,11 +340,11 @@ export class IntroductionPage {
         break;
       }
     }
-    let foundElemSafe: any = this.sanitizer.bypassSecurityTrustHtml(foundElem);
+    const foundElemSafe: any = this.sanitizer.bypassSecurityTrustHtml(foundElem);
 
     /* Prepend the footnoteindicator to the the footnote text */
-    let footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + ftnIndicatorElem.textContent + '</span>' + foundElem;
-    
+    const footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + ftnIndicatorElem.textContent + '</span>' + foundElem;
+
     this.moveTooltipInPosition(targetElem, footnoteWithIndicator);
 
     this.setToolTipText(this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
@@ -379,8 +380,8 @@ export class IntroductionPage {
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
 
-    let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
-    let hiddenDiv: HTMLElement = document.createElement('div');
+    const tooltipElement: HTMLElement = document.querySelector('div.toolTip');
+    const hiddenDiv: HTMLElement = document.createElement('div');
 
     // Loop over each class in the tooltip div and add them to the hidden div
     tooltipElement.classList; // DOMTokenList (pretty much an array)
@@ -402,19 +403,12 @@ export class IntroductionPage {
     hiddenDiv.style.visibility = 'visible';
     hiddenDiv.style.display = 'none';
     
-
-    /* Get width and height of tooltip element which has been drawn outside the viewport */
-    //let ttElemRect = tooltipElement.getBoundingClientRect();
-    //let ttWidth = ttElemRect.width;
-    //let ttWidth = tooltipElement.offsetWidth;
-    //let ttHeight = tooltipElement.offsetHeight;
-
     /* Get rectangle which contains tooltiptrigger element */
-    let elemRect = targetElem.getBoundingClientRect();
+    const elemRect = targetElem.getBoundingClientRect();
 
     // Set vertical offset due to toolbar
-    let yOffset = 75;
-    let secToolbarHeight = 50;
+    const yOffset = 75;
+    const secToolbarHeight = 50;
 
     let freePosition: boolean = false;
 
@@ -428,13 +422,13 @@ export class IntroductionPage {
 
     /*  Check if tooltip would be drawn outside the viewport on the right.
         Move it to the left side of the trigger if there is enough space to show it there. */
-    let oversetX = x + ttWidth - vw;
+    const oversetX = x + ttWidth - vw;
     let oversetY = elemRect.top + ttHeight - window.innerHeight;
     if (oversetX > 0) {
       if (oversetY > 0) {
         // Overset both vertically and horisontally. Check if tooltip can be moved to the left
         // and upwards
-        if (elemRect.left - sidePaneOffsetWidth > ttWidth + 8 && y > oversetY && y > secToolbarHeight) {
+        if (elemRect.left - sidePaneOffsetWidth > ttWidth + 8 && y - secToolbarHeight > oversetY) {
           // Move tooltip to the left side of the trigger and upwards
           x = elemRect.left - ttWidth - 8;
           y = y - oversetY;
@@ -448,17 +442,18 @@ export class IntroductionPage {
           // There is room on the left --> move tooltip there
           x = elemRect.left - ttWidth - 8;
         } else {
-          // There is not room on the left. The tooltip should be squeezed in on the right. Need to check if there is vertical room for a narrower tooltip there.
+          // There is not room on the left. The tooltip should be squeezed in on the right. 
+          // Need to check if there is vertical room for a narrower tooltip there.
 
           // Calc how much space there is on either side
-          let spaceRight = vw - x;
-          let spaceLeft = elemRect.left - sidePaneOffsetWidth - 8;
-          let maxSpace = Math.max(spaceRight, spaceLeft);
+          const spaceRight = vw - x;
+          const spaceLeft = elemRect.left - sidePaneOffsetWidth - 8;
+          const maxSpace = Math.max(spaceRight, spaceLeft);
           if (spaceLeft > spaceRight) {
             // Calc new horisontal position since the tooltip will be placed on the left
             x = elemRect.left - maxSpace - 8;
           }
-          //hiddenDiv.setAttribute('style', 'max-width: ' + spaceRight + 'px !important');
+          // hiddenDiv.setAttribute('style', 'max-width: ' + spaceRight + 'px !important');
           hiddenDiv.style.maxWidth = maxSpace + 'px';
 
           // Make div visible again to calculate its width and height
@@ -475,7 +470,7 @@ export class IntroductionPage {
             // There is room, check vertical space
             oversetY = elemRect.top + ttHeight - window.innerHeight;
             if (oversetY > 0) {
-              if (y > oversetY && y > secToolbarHeight) {
+              if (y - secToolbarHeight > oversetY) {
                 // Move the y position upwards by oversetY
                 y = y - oversetY;
               } else {
@@ -488,17 +483,18 @@ export class IntroductionPage {
       }
     } else if (oversetY > 0) {
       // Overset only vertically. Check if there is room to move the tooltip upwards.
-      if (y > oversetY && y > secToolbarHeight) {
+      if (y - secToolbarHeight > oversetY) {
         // Move the y position upwards by oversetY
         y = y - oversetY;
       } else {
-        // There is not room to move the tooltip just upwards. Check if there is more room on either side of the trigger so the width of the tooltip could be increased.
+        // There is not room to move the tooltip just upwards. Check if there is more room on either 
+        // side of the trigger so the width of the tooltip could be increased.
         
 
 
 
         
-        //The tooltip needs to be placed more freely and it's width increased.
+        // The tooltip needs to be placed more freely and it's width increased.
         freePosition = true;
       }
     }
@@ -511,18 +507,18 @@ export class IntroductionPage {
 
 
     // OLD WORKING CODE
-    //if (x + ttWidth > vw && elemRect.left - sidePaneOffsetWidth > ttWidth + 8) {
-    //  x = elemRect.left - ttWidth - 8;
-    //}
+    // if (x + ttWidth > vw && elemRect.left - sidePaneOffsetWidth > ttWidth + 8) {
+    // x = elemRect.left - ttWidth - 8;
+    // }
 
     /*  Check if tooltip would be drawn outside the viewport on the bottom.
         Move it upwards if there is enough space to show it there. */
-    //let oversetY = elemRect.top + ttHeight - window.innerHeight;
-    //if (oversetY > 0) {
+    // let oversetY = elemRect.top + ttHeight - window.innerHeight;
+    // if (oversetY > 0) {
       // Check if there is enough room at the top to move the tooltip upwards
-    //  if (y > oversetY) {
+    // if (y > oversetY) {
         // Move the y position upwards by oversetY
-    //    y = y - oversetY;
+    // y = y - oversetY;
     //    if (y < yOffset) {
           // The top will be beneath the secondary toolbar --> do something
     //    }
@@ -531,7 +527,7 @@ export class IntroductionPage {
     //    x = sidePaneOffsetWidth + 16;
         //tooltipElement.style.setProperty('max-width', '90', 'important');
     //  }
-    //}
+    // }
     // OLD WORKING CODE END
 
 
@@ -579,14 +575,16 @@ export class IntroductionPage {
     return eventTarget;
   }
 
-  showPersonTooltip(id: string, origin: any) {
+  showPersonTooltip(id: string, targetElem: HTMLElement, origin: any) {
     if (this.tooltips.persons[id]) {
+      this.moveTooltipInPosition(targetElem, this.tooltips.persons[id]);
       this.setToolTipText(this.tooltips.persons[id]);
       return;
     }
 
     this.tooltipService.getPersonTooltip(id).subscribe(
       tooltip => {
+        this.moveTooltipInPosition(targetElem, tooltip.description);
         this.setToolTipText(tooltip.description);
         this.tooltips.persons[id] = tooltip.description;
       },
@@ -649,10 +647,11 @@ export class IntroductionPage {
   }
 
   hideToolTip() {
-    this.toolTipText = ""; // Is this necessary any more?
+    // Is this necessary any more?
+    this.toolTipText = '';
 
-    //let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
-    //tooltipElement.innerHTML = "";
+    // let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
+    // tooltipElement.innerHTML = '';
 
     /*
     if (tooltipElement.style.getPropertyValue('max-width')) {

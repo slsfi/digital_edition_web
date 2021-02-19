@@ -84,7 +84,7 @@ export class VariationsComponent {
   getVariation() {
     this.textService.getVariations(this.itemId).subscribe(
       res => {
-        this.textLoading = false;  
+        this.textLoading = false;
         // in order to get id attributes for tooltips
         console.log('recieved variations ,..,', res);
         this.variations = res.variations;
