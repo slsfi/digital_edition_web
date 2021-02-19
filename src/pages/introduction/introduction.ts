@@ -429,8 +429,8 @@ export class IntroductionPage {
     if (oversetX > 0) {
       if (oversetY > 0) {
         // Overset both vertically and horisontally. Check if tooltip can be moved to the left
-        // and upwards
-        if (elemRect.left - sidePaneOffsetWidth > ttWidth + 8 && y + 5 - secToolbarHeight > oversetY) {
+        // side of the trigger and upwards.
+        if (elemRect.left - sidePaneOffsetWidth > ttWidth + 8 && y - secToolbarHeight > oversetY) {
           // Move tooltip to the left side of the trigger and upwards
           x = elemRect.left - ttWidth - 8;
           y = y - oversetY;
@@ -447,46 +447,46 @@ export class IntroductionPage {
           // There is not room on the left. The tooltip should be squeezed in on the right. 
           // Need to check if there is vertical room for a narrower tooltip there.
 
-          // Calc how much space there is on either side
+          // Calc how much space there is on either side.
           const spaceRight = vw - x;
           const spaceLeft = elemRect.left - sidePaneOffsetWidth - 8;
           const maxSpace = Math.max(spaceRight, spaceLeft);
           if (spaceLeft > spaceRight) {
-            // Calc new horisontal position since the tooltip will be placed on the left
+            // Calc new horisontal position since the tooltip will be placed on the left.
             x = elemRect.left - maxSpace;
           }
 
-          // Create hidden div for calculating tooltip dimensions
+          // Create hidden div for calculating tooltip dimensions.
           hiddenDiv = document.createElement('div');
           ttClasses.forEach(className => {
             hiddenDiv.classList.add(className);
           });
           hiddenDiv.style.display = 'none';
           hiddenDiv.setAttribute('style', 'max-width: ' + maxSpace + 'px !important');
-          // Append hidden div to the parent of the tooltip div
+          // Append hidden div to the parent of the tooltip div.
           tooltipElement.parentNode.appendChild(hiddenDiv);
-          // Add content to the hidden div
+          // Add content to the hidden div.
           hiddenDiv.innerHTML = ttText;
-          // Make div visible again to calculate its width and height
+          // Make div visible again to calculate its width and height.
           hiddenDiv.style.visibility = 'hidden';
           hiddenDiv.style.display = 'block';
           ttHeight = hiddenDiv.offsetHeight;
           ttWidth = hiddenDiv.offsetWidth;
-          // Make the hidden div display:none again
+          // Make the hidden div display:none again.
           hiddenDiv.style.marginLeft = document.documentElement.clientHeight + 'px';
           hiddenDiv.style.visibility = 'visible';
           hiddenDiv.style.display = 'none';
-          // Remove hidden div
+          // Remove hidden div.
           //hiddenDiv.remove();
 
-          // Check if the narrower tooltip fits
+          // Check if the narrower tooltip fits.
           if (ttWidth <= maxSpace) {
-            // There is room, check vertical space
+            // There is room, check vertical space.
             oversetY = elemRect.top + ttHeight - window.innerHeight;
             if (oversetY > 0) {
-              if (oversetY < y + 5 - secToolbarHeight) {
-                // Move the y position upwards by oversetY
-                y = y + 5 - oversetY;
+              if (oversetY < y - secToolbarHeight) {
+                // Move the y position upwards by oversetY.
+                y = y - oversetY;
               } else {
                 // The tooltip needs to be placed more freely and it's width increased.
                 freePosition = true;
@@ -497,9 +497,9 @@ export class IntroductionPage {
       }
     } else if (oversetY > 0) {
       // Overset only vertically. Check if there is room to move the tooltip upwards.
-      if (oversetY < y + 5 - secToolbarHeight) {
+      if (oversetY < y - secToolbarHeight) {
         // Move the y position upwards by oversetY
-        y = y + 5 - oversetY;
+        y = y - oversetY;
       } else {
         // There is not room to move the tooltip just upwards. Check if there is more room on either 
         // side of the trigger so the width of the tooltip could be increased.
