@@ -17,7 +17,7 @@ page-introduction {
 
   /* This hides the vertical scrollbar on the right edge of the viewport area when it is not necessary to show it. Observe that there are two elements with class scroll-content, which is why this needs to be this specific. */
   ion-content > .scroll-content {
-    overflow: auto;
+    overflow: hidden;
     /* These margin and padding declarations fix the issue in Chrome where tooltips are incorrectly positioned vertically. .scroll-content has an inline style margin-top:50px which needs to be replaced with padding (The top padding is 16px by default, hence 66px). */
     margin-top: 0 !important;
     padding-top: 66px !important;
