@@ -377,6 +377,15 @@ export class IntroductionPage {
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
+
+    const pageIntroElem = document.querySelector('page-introduction');
+    let pageIntroElemRect = pageIntroElem.getBoundingClientRect();
+    let pageIntroTop = pageIntroElemRect.top;
+    let yOffset = 0;
+    if (pageIntroTop != 70) {
+      yOffset = pageIntroTop - 70;
+    }
+
     //let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
 
     /* Get width and height of tooltip element which has been drawn outside the viewport */
@@ -390,7 +399,7 @@ export class IntroductionPage {
     /* Get rectangle which contains tooltiptrigger element */
     let elemRect = targetElem.getBoundingClientRect();
     let x = ((elemRect.left + vw) - vw) + (targetElem.offsetWidth + 8);
-    let y = ((elemRect.top + vh) - vh) - 100;
+    let y = ((elemRect.top + vh) - vh) - 100 + yOffset;
     let sidePaneOffsetWidth = 0;
 
     if (sidePaneIsOpen) {
