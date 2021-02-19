@@ -391,7 +391,7 @@ export class IntroductionPage {
     /* Get rectangle which contains tooltiptrigger element */
     let elemRect = targetElem.getBoundingClientRect();
     let x = ((elemRect.left + vw) - vw) + (targetElem.offsetWidth + 8);
-    let y = ((elemRect.top + vh) - vh) - 65;
+    let y = ((elemRect.top + vh) - vh) - 75;
     let sidePaneOffsetWidth = 0;
 
     if (sidePaneIsOpen) {
@@ -514,6 +514,7 @@ export class IntroductionPage {
   }
 
   hideToolTip() {
+    this.setToolTipText("");
     this.toolTipPosition = {
       top: -1000 + 'px',
       left: -1000 + 'px'
