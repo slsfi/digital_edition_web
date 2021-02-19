@@ -457,7 +457,7 @@ export class IntroductionPage {
           }
 
 
-          let hiddenDiv: HTMLElement = document.createElement('div');
+          hiddenDiv = document.createElement('div');
           ttClasses.forEach(className => {
             hiddenDiv.classList.add(className);
           });
