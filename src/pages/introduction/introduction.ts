@@ -566,12 +566,14 @@ export class IntroductionPage {
 
   hideToolTip() {
     this.toolTipText = "";
-    let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
-    tooltipElement.innerHTML = "";
+    //let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
+    //tooltipElement.innerHTML = "";
 
+    /*
     if (tooltipElement.style.getPropertyValue('max-width')) {
       tooltipElement.style.removeProperty('max-width');
     }
+    */
 
     this.toolTipPosition = {
       top: -1000 + 'px',
