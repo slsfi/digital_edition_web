@@ -384,8 +384,8 @@ export class IntroductionPage {
     const hiddenDiv: HTMLElement = document.createElement('div');
 
     // Loop over each class in the tooltip div and add them to the hidden div
-    tooltipElement.classList; // DOMTokenList (pretty much an array)
-    tooltipElement.classList.forEach(className => {
+    const ttClasses = tooltipElement.classList; // DOMTokenList (pretty much an array)
+    ttClasses.forEach(className => {
       hiddenDiv.classList.add(className);
     });
 
