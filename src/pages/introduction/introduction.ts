@@ -456,13 +456,12 @@ export class IntroductionPage {
             x = elemRect.left - maxSpace;
           }
 
-
+          // Create hidden div for calculating tooltip dimensions
           hiddenDiv = document.createElement('div');
           ttClasses.forEach(className => {
             hiddenDiv.classList.add(className);
           });
           hiddenDiv.style.display = 'none';
-          // hiddenDiv.style.width = maxSpace + 'px';
           hiddenDiv.setAttribute('style', 'max-width: ' + maxSpace + 'px !important');
           // Append hidden div to the parent of the tooltip div
           tooltipElement.parentNode.appendChild(hiddenDiv);
@@ -485,7 +484,7 @@ export class IntroductionPage {
             oversetY = elemRect.top + ttHeight - window.innerHeight;
             hiddenDiv.style.marginLeft = window.innerHeight + 'px';
             if (oversetY > 0) {
-              y = y + yOffset - secToolbarHeight - oversetY;
+              y = y - secToolbarHeight - oversetY;
               // if (y - secToolbarHeight > oversetY) {
                 // Move the y position upwards by oversetY
                 // y = y - oversetY;
