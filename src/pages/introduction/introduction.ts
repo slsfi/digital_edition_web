@@ -454,11 +454,12 @@ export class IntroductionPage {
             x = elemRect.left - maxSpace - 8;
           }
           // hiddenDiv.setAttribute('style', 'max-width: ' + spaceRight + 'px !important');
-          hiddenDiv.style.maxWidth = maxSpace + 'px';
+          
 
           // Make div visible again to calculate its width and height
           hiddenDiv.style.visibility = 'hidden';
           hiddenDiv.style.display = 'block';
+          hiddenDiv.style.maxWidth = maxSpace + 'px';
           ttHeight = hiddenDiv.offsetHeight;
           ttWidth = hiddenDiv.offsetWidth;
           // Make the hidden div display:none again
