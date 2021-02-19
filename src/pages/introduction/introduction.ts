@@ -514,7 +514,7 @@ export class IntroductionPage {
   }
 
   hideToolTip() {
-    this.setToolTipText("");
+    this.toolTipText = "";
     let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
     tooltipElement.innerHTML = "";
 
