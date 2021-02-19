@@ -403,6 +403,8 @@ export class IntroductionPage {
     // Make the hidden div display:none again
     hiddenDiv.style.visibility = 'visible';
     hiddenDiv.style.display = 'none';
+    // Remove hidden div
+    hiddenDiv.remove();
 
     /* Get width and height of tooltip element which has been drawn outside the viewport */
     //let ttElemRect = tooltipElement.getBoundingClientRect();
@@ -440,6 +442,9 @@ export class IntroductionPage {
       if (y > overset) {
         // Move the y position upwards by overset
         y = y - overset;
+      } else {
+        y = yOffset;
+        tooltipElement.style.maxWidth = 90 + '%';
       }
     }
 
