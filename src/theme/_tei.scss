@@ -1157,6 +1157,7 @@ div.tei {
     max-width: 350px !important;
     text-align: left;
     line-height: 1.25em;
+    will-change: width, top, left;
 
     /* Style for reference numbers in footnote tooltips */
     span.ttFtnIndicator {
