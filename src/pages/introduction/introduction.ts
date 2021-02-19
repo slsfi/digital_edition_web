@@ -444,7 +444,9 @@ export class IntroductionPage {
         y = y - overset;
       } else {
         y = yOffset;
-        tooltipElement.style.maxWidth = 90 + '%';
+        x = sidePaneOffsetWidth + 16;
+        tooltipElement.style.maxWidth = 90 + '% !important';
+        tooltipElement.style.width = 90 + '% !important';
       }
     }
 
