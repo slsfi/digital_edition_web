@@ -434,7 +434,7 @@ export class IntroductionPage {
 
     /*  Check if tooltip would be drawn outside the viewport on the bottom.
         Move it upwards if there is enough space to show it there. */
-    let overset = y + ttHeight - vh - yOffset;
+    let overset = elemRect.top + ttHeight - window.innerHeight;
     if (overset > 0) {
       // Check if there is enough room at the top to move the tooltip upwards
       if (y > overset) {
