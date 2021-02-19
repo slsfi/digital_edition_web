@@ -437,7 +437,7 @@ export class IntroductionPage {
     let overset = y + ttHeight - vh - yOffset;
     if (overset > 0) {
       // Check if there is enough room at the top to move the tooltip upwards
-      if (elemRect.top - yOffset > overset) {
+      if (y > overset) {
         // Move the y position upwards by overset
         y = y - overset;
       }
