@@ -375,7 +375,6 @@ export class IntroductionPage {
   }
 
   moveTooltipInPosition(targetElem: HTMLElement, ttText: string) {
-    //this.showToolTip = true;
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
@@ -388,7 +387,6 @@ export class IntroductionPage {
     tooltipElement.classList.forEach(className => {
       hiddenDiv.classList.add(className);
     });
-
 
     hiddenDiv.style.display = 'none';
     // Append hidden div to the parent of the tooltip div
@@ -412,8 +410,6 @@ export class IntroductionPage {
     //let ttWidth = tooltipElement.offsetWidth;
     //let ttHeight = tooltipElement.offsetHeight;
 
-    //this.showToolTip = false;
-
     /* Get rectangle which contains tooltiptrigger element */
     let elemRect = targetElem.getBoundingClientRect();
 
@@ -431,29 +427,75 @@ export class IntroductionPage {
     /*  Check if tooltip would be drawn outside the viewport on the right.
         Move it to the left side of the trigger if there is enough space to show it there. */
     let oversetX = x + ttWidth - vw;
-    if (oversetX > 0) {
-      // Check if there is 
-    }
-
-    // Old working code
-    if (x + ttWidth > vw && elemRect.left - sidePaneOffsetWidth > ttWidth + 8) {
-      x = elemRect.left - ttWidth - 8;
-    }
-
-    /*  Check if tooltip would be drawn outside the viewport on the bottom.
-        Move it upwards if there is enough space to show it there. */
     let oversetY = elemRect.top + ttHeight - window.innerHeight;
-    if (oversetY > 0) {
-      // Check if there is enough room at the top to move the tooltip upwards
-      if (y > oversetY) {
+    if (oversetX > 0) {
+      if (oversetY > 0) {
+        // Overset both vertically and horisontally. Check if tooltip can be moved to the left
+        // and upwards
+        if (elemRect.left - sidePaneOffsetWidth > ttWidth + 8 && y > oversetY && y > yOffset) {
+          // Move tooltip to the left side of the trigger and upwards
+          x = elemRect.left - ttWidth - 8;
+          y = y - oversetY;
+        } else {
+          // Some other placement. The tooltips width need to be increased.
+        }
+      } else {
+        // Overset only horisontally. Check if there is room on the left side of the trigger.
+        if (elemRect.left - sidePaneOffsetWidth > ttWidth + 8) {
+          // There is room on the left --> move tooltip there
+          x = elemRect.left - ttWidth - 8;
+        } else {
+          // There is not room on the left. The tooltip should be squeezed in on the right.
+          // Need to check if there is vertical room for a narrower tooltip there.
+          // Alternatively, show to tooltip centered or something.
+
+          // Calc how much space there is on the right
+          let spaceRight = vw - x;
+        }
+      }
+    } else if (oversetY > 0) {
+      // Overset only vertically. Check if there is room to move the tooltip upwards.
+      if (y > oversetY && y > yOffset) {
         // Move the y position upwards by oversetY
         y = y - oversetY;
       } else {
-        y = yOffset;
-        x = sidePaneOffsetWidth + 16;
-        tooltipElement.style.setProperty('max-width', '90', 'important');
+        // There is not room to move the tooltip just upwards. It's width need to be increased
+        // and it needs to be placed somewhere else.
+        
+        //y = yOffset;
+        //x = sidePaneOffsetWidth + 16;
       }
     }
+
+
+
+
+    // OLD WORKING CODE
+    //if (x + ttWidth > vw && elemRect.left - sidePaneOffsetWidth > ttWidth + 8) {
+    //  x = elemRect.left - ttWidth - 8;
+    //}
+
+    /*  Check if tooltip would be drawn outside the viewport on the bottom.
+        Move it upwards if there is enough space to show it there. */
+    //let oversetY = elemRect.top + ttHeight - window.innerHeight;
+    //if (oversetY > 0) {
+      // Check if there is enough room at the top to move the tooltip upwards
+    //  if (y > oversetY) {
+        // Move the y position upwards by oversetY
+    //    y = y - oversetY;
+    //    if (y < yOffset) {
+          // The top will be beneath the secondary toolbar --> do something
+    //    }
+    //  } else {
+    //    y = yOffset;
+    //    x = sidePaneOffsetWidth + 16;
+        //tooltipElement.style.setProperty('max-width', '90', 'important');
+    //  }
+    //}
+    // OLD WORKING CODE END
+
+
+
 
     this.toolTipPosition = {
       top: y + 'px',
@@ -565,7 +607,8 @@ export class IntroductionPage {
   }
 
   hideToolTip() {
-    this.toolTipText = "";
+    this.toolTipText = ""; // Is this necessary any more?
+
     //let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
     //tooltipElement.innerHTML = "";
 
