@@ -381,7 +381,7 @@ export class IntroductionPage {
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
 
     const tooltipElement: HTMLElement = document.querySelector('div.toolTip');
-    const hiddenDiv: HTMLElement = document.createElement('div');
+    let hiddenDiv: HTMLElement = document.createElement('div');
 
     // Loop over each class in the tooltip div and add them to the hidden div
     const ttClasses = tooltipElement.classList;
@@ -402,6 +402,8 @@ export class IntroductionPage {
     // Make the hidden div display:none again
     hiddenDiv.style.visibility = 'visible';
     hiddenDiv.style.display = 'none';
+    // Remove hidden div
+    hiddenDiv.remove();
     
     /* Get rectangle which contains tooltiptrigger element */
     const elemRect = targetElem.getBoundingClientRect();
@@ -453,19 +455,29 @@ export class IntroductionPage {
             // Calc new horisontal position since the tooltip will be placed on the left
             x = elemRect.left - maxSpace;
           }
-          // hiddenDiv.setAttribute('style', 'max-width: ' + spaceRight + 'px !important');
-          
 
+
+          let hiddenDiv: HTMLElement = document.createElement('div');
+          ttClasses.forEach(className => {
+            hiddenDiv.classList.add(className);
+          });
+          hiddenDiv.style.display = 'none';
+          // hiddenDiv.style.width = maxSpace + 'px';
+          hiddenDiv.setAttribute('style', 'max-width: ' + maxSpace + 'px !important');
+          // Append hidden div to the parent of the tooltip div
+          tooltipElement.parentNode.appendChild(hiddenDiv);
+          // Add content to the hidden div
+          hiddenDiv.innerHTML = ttText;
           // Make div visible again to calculate its width and height
           hiddenDiv.style.visibility = 'hidden';
           hiddenDiv.style.display = 'block';
-          // hiddenDiv.style.width = maxSpace + 'px';
-          hiddenDiv.setAttribute('style', 'max-width: ' + maxSpace + 'px !important');
           ttHeight = hiddenDiv.offsetHeight;
           ttWidth = hiddenDiv.offsetWidth;
           // Make the hidden div display:none again
           hiddenDiv.style.visibility = 'visible';
           hiddenDiv.style.display = 'none';
+          // Remove hidden div
+          hiddenDiv.remove();
 
           // Check if the narrower tooltip fits
           // if (ttWidth <= maxSpace) {
@@ -533,8 +545,7 @@ export class IntroductionPage {
     // OLD WORKING CODE END
 
 
-    // Remove hidden div
-    hiddenDiv.remove();
+
 
     // Set tooltip position
     this.toolTipPosition = {
