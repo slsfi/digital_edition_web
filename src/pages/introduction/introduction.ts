@@ -384,7 +384,7 @@ export class IntroductionPage {
     const hiddenDiv: HTMLElement = document.createElement('div');
 
     // Loop over each class in the tooltip div and add them to the hidden div
-    const ttClasses = tooltipElement.classList; // DOMTokenList (pretty much an array)
+    const ttClasses = tooltipElement.classList;
     ttClasses.forEach(className => {
       hiddenDiv.classList.add(className);
     });
@@ -428,10 +428,10 @@ export class IntroductionPage {
       if (oversetY > 0) {
         // Overset both vertically and horisontally. Check if tooltip can be moved to the left
         // and upwards
-        if (elemRect.left - sidePaneOffsetWidth > ttWidth + 8 && y - secToolbarHeight > oversetY) {
+        if (elemRect.left - sidePaneOffsetWidth > ttWidth + 8 && elemRect.top - secToolbarHeight > oversetY) {
           // Move tooltip to the left side of the trigger and upwards
           x = elemRect.left - ttWidth - 8;
-          y = y - oversetY;
+          y = y + yOffset - secToolbarHeight - oversetY;
         } else {
           // The tooltip needs to be placed more freely and it's width increased.
           freePosition = true;
@@ -470,9 +470,9 @@ export class IntroductionPage {
             // There is room, check vertical space
             oversetY = elemRect.top + ttHeight - window.innerHeight;
             if (oversetY > 0) {
-              if (y - secToolbarHeight > oversetY) {
+              if (elemRect.top - secToolbarHeight > oversetY) {
                 // Move the y position upwards by oversetY
-                y = y - oversetY;
+                y = y + yOffset - secToolbarHeight - oversetY;
               } else {
                 // The tooltip needs to be placed more freely and it's width increased.
                 freePosition = true;
@@ -483,9 +483,9 @@ export class IntroductionPage {
       }
     } else if (oversetY > 0) {
       // Overset only vertically. Check if there is room to move the tooltip upwards.
-      if (y - secToolbarHeight > oversetY) {
+      if (elemRect.top - secToolbarHeight > oversetY) {
         // Move the y position upwards by oversetY
-        y = y - oversetY;
+        y = y + yOffset - secToolbarHeight - oversetY;
       } else {
         // There is not room to move the tooltip just upwards. Check if there is more room on either 
         // side of the trigger so the width of the tooltip could be increased.
