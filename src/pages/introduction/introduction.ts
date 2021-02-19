@@ -441,7 +441,7 @@ export class IntroductionPage {
       } else {
         // Overset only horisontally. Check if there is room on the left side of the trigger.
         if (elemRect.left - sidePaneOffsetWidth > ttWidth + 8) {
-          // There is room on the left --> move tooltip there
+          // There is room on the left --> move tooltip there.
           x = elemRect.left - ttWidth - 8;
         } else {
           // There is not room on the left. The tooltip should be squeezed in on the right. 
