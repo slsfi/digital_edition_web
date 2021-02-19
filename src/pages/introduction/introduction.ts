@@ -485,7 +485,7 @@ export class IntroductionPage {
             oversetY = elemRect.top + ttHeight - window.innerHeight;
             hiddenDiv.style.marginLeft = window.innerHeight + 'px';
             if (oversetY > 0) {
-              y = y - oversetY;
+              y = y + yOffset - secToolbarHeight - oversetY;
               // if (y - secToolbarHeight > oversetY) {
                 // Move the y position upwards by oversetY
                 // y = y - oversetY;
