@@ -479,21 +479,20 @@ export class IntroductionPage {
           //hiddenDiv.remove();
 
           // Check if the narrower tooltip fits
-          // if (ttWidth <= maxSpace) {
+          if (ttWidth <= maxSpace) {
             // There is room, check vertical space
             oversetY = elemRect.top + ttHeight - window.innerHeight;
-            hiddenDiv.style.marginLeft = window.innerHeight + 'px';
             if (oversetY > 0) {
-              y = y - secToolbarHeight - oversetY;
-              // if (y - secToolbarHeight > oversetY) {
+              y = y - 5 - secToolbarHeight - oversetY;
+              if (y - secToolbarHeight > oversetY) {
                 // Move the y position upwards by oversetY
                 // y = y - oversetY;
-              // } else {
+              } else {
                 // The tooltip needs to be placed more freely and it's width increased.
                 freePosition = true;
-              // }
+              }
             }
-          // }
+          }
         }
       }
     } else if (oversetY > 0) {
