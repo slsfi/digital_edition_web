@@ -395,14 +395,13 @@ export class IntroductionPage {
       },
     );
 
-    
-
     hiddenDiv.style.display = 'none';
     // Append hidden div to the parent of the tooltip div
     tooltipElement.parentNode.appendChild(hiddenDiv);
     // Add content to the hidden div
     hiddenDiv.innerHTML = ttText;
-    // Briefly make the hidden div block but invisible. This is in order to read the height
+    // Briefly make the hidden div block but invisible.
+    // This is in order to read the height and width of it, and the computed max-width css-property.
     hiddenDiv.style.visibility = 'hidden';
     hiddenDiv.style.display = 'block';
     // Get default tooltip max-width from css
@@ -415,7 +414,7 @@ export class IntroductionPage {
     hiddenDiv.style.visibility = 'visible';
     hiddenDiv.style.display = 'none';
     // Remove hidden div
-    // hiddenDiv.remove();
+    hiddenDiv.remove();
 
     /* Get rectangle which contains tooltiptrigger element */
     const elemRect = targetElem.getBoundingClientRect();
