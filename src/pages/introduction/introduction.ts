@@ -253,7 +253,7 @@ export class IntroductionPage {
             // clearTimeout(window['reload_timer']);
             // this.hideToolTip();
             this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), elem, eventTarget, event);
-            // this.moveTooltipInPosition();
+            // this.setToolTipPosition();
             // this.showToolTip = true;
           }
         } else {
@@ -349,7 +349,7 @@ export class IntroductionPage {
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
-    this.moveTooltipInPosition(targetElem, footnoteWithIndicator);
+    this.setToolTipPosition(targetElem, footnoteWithIndicator);
 
     this.setToolTipText(footNoteHTML);
     this.tooltips.footnotes[id] = foundElemSafe;
@@ -379,71 +379,82 @@ export class IntroductionPage {
     );
   }
 
-  moveTooltipInPosition(targetElem: HTMLElement, ttText: string) {
+  setToolTipPosition(targetElem: HTMLElement, ttText: string) {
+    // Get viewport width and height.
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
+    
+    // Get rectangle which contains tooltiptrigger element.
+    const elemRect = targetElem.getBoundingClientRect();
 
+    // Set vertical offset due to toolbar.
+    const yOffset = 75;
+    const secToolbarHeight = 50;
+
+    // Set "padding" around tooltip trigger – this is how close to the trigger element the tooltip will be placed.
+    const triggerPadding = 8;
+
+    // Set horisontal offset due to possible side pane on the left.
+    const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
+    let sidePaneOffsetWidth = 0;
+    if (sidePaneIsOpen) {
+      sidePaneOffsetWidth = 269;
+    }
+
+    // Set variable for determining if the tooltip should be placed above or below the trigger rather than beside it.
+    let positionAboveOrBelowTrigger: Boolean = false;
+
+    // Get the tooltip element.
     const tooltipElement: HTMLElement = document.querySelector('div.toolTip');
+
+    // Create hidden div and make it into a copy of the tooltip div. Calculations are done on the hiddenDiv
+    // before applied to the tooltip element.
     let hiddenDiv: HTMLElement = document.createElement('div');
 
-    // Loop over each class in the tooltip div and add them to the hidden div
+    // Loop over each class in the tooltip div and add them to the hidden div.
     const ttClasses: string[] = Array.from(tooltipElement.classList);
     ttClasses.forEach(
       function(currentValue, currentIndex, listObj) {
         hiddenDiv.classList.add(currentValue);
       },
     );
-
+    
+    // Hide the hidden div.
     hiddenDiv.style.display = 'none';
-    // Append hidden div to the parent of the tooltip div
+    // Append hidden div to the parent of the tooltip div.
     tooltipElement.parentNode.appendChild(hiddenDiv);
-    // Add content to the hidden div
+    // Add content to the hidden div.
     hiddenDiv.innerHTML = ttText;
     // Briefly make the hidden div block but invisible.
     // This is in order to read the height and width of it, and the computed max-width css-property.
     hiddenDiv.style.visibility = 'hidden';
     hiddenDiv.style.display = 'block';
-    // Get default tooltip max-width from css
+    // Get default tooltip max-width from css.
     const hiddenDivCompStyles = window.getComputedStyle(hiddenDiv);
     const defaultToolTipMaxWidth = hiddenDivCompStyles.getPropertyValue('max-width');
     this.toolTipMaxWidth = defaultToolTipMaxWidth;
     let ttHeight = hiddenDiv.offsetHeight;
     let ttWidth = hiddenDiv.offsetWidth;
-    // Make the hidden div display:none again
+    // Make the hidden div invisible again.
     hiddenDiv.style.visibility = 'visible';
     hiddenDiv.style.display = 'none';
-    // Remove hidden div
+    // Remove hidden div.
     hiddenDiv.remove();
 
-    /* Get rectangle which contains tooltiptrigger element */
-    const elemRect = targetElem.getBoundingClientRect();
-
-    // Set vertical offset due to toolbar
-    const yOffset = 75;
-    const secToolbarHeight = 50;
-
-    let positionAboveOrBelowTrigger: Boolean = false;
-
-    let x = ((elemRect.left + vw) - vw) + (targetElem.offsetWidth + 8);
+    // Calculate default position.
+    let x = ((elemRect.left + vw) - vw) + (targetElem.offsetWidth + triggerPadding);
     let y = ((elemRect.top + vh) - vh) - yOffset;
-    let sidePaneOffsetWidth = 0;
 
-    if (sidePaneIsOpen) {
-      sidePaneOffsetWidth = 269;
-    }
-
-    /*  Check if tooltip would be drawn outside the viewport on the right.
-        Move it to the left side of the trigger if there is enough space to show it there. */
+    // Check if tooltip would be drawn outside the viewport.
     const oversetX = x + ttWidth - vw;
     let oversetY = elemRect.top + ttHeight - vh;
     if (oversetX > 0) {
       if (oversetY > 0) {
         // Overset both vertically and horisontally. Check if tooltip can be moved to the left
         // side of the trigger and upwards.
-        if (elemRect.left - sidePaneOffsetWidth > ttWidth + 8 && y - secToolbarHeight > oversetY) {
+        if (elemRect.left - sidePaneOffsetWidth > ttWidth + triggerPadding && y - secToolbarHeight > oversetY) {
           // Move tooltip to the left side of the trigger and upwards
-          x = elemRect.left - ttWidth - 8;
+          x = elemRect.left - ttWidth - triggerPadding;
           y = y - oversetY;
         } else {
           // FIX HERE: Try to move upwards on the right side before trying to position above or below!!!
@@ -453,16 +464,16 @@ export class IntroductionPage {
         }
       } else {
         // Overset only horisontally. Check if there is room on the left side of the trigger.
-        if (elemRect.left - sidePaneOffsetWidth > ttWidth + 8) {
+        if (elemRect.left - sidePaneOffsetWidth > ttWidth + triggerPadding) {
           // There is room on the left --> move tooltip there.
-          x = elemRect.left - ttWidth - 8;
+          x = elemRect.left - ttWidth - triggerPadding;
         } else {
           // There is not room on the left. The tooltip should be squeezed in on the right.
           // Need to check if there is vertical room for a narrower tooltip there.
 
           // Calc how much space there is on either side.
           const spaceRight = vw - x;
-          const spaceLeft = elemRect.left - sidePaneOffsetWidth - 8;
+          const spaceLeft = elemRect.left - sidePaneOffsetWidth - triggerPadding;
           const maxSpace = Math.max(spaceRight, spaceLeft);
 
           // Create hidden div for calculating tooltip dimensions.
@@ -495,7 +506,7 @@ export class IntroductionPage {
             this.toolTipMaxWidth = maxSpace + 'px';
             if (spaceLeft > spaceRight) {
               // Calc new horisontal position since an attempt to place the tooltip on the left will be made.
-              x = elemRect.left - maxSpace - 8;
+              x = elemRect.left - maxSpace - triggerPadding;
             }
             // Check vertical space.
             oversetY = elemRect.top + ttHeight - vh;
@@ -592,14 +603,14 @@ export class IntroductionPage {
 
   showPersonTooltip(id: string, targetElem: HTMLElement, origin: any) {
     if (this.tooltips.persons[id]) {
-      this.moveTooltipInPosition(targetElem, this.tooltips.persons[id]);
+      this.setToolTipPosition(targetElem, this.tooltips.persons[id]);
       this.setToolTipText(this.tooltips.persons[id]);
       return;
     }
 
     this.tooltipService.getPersonTooltip(id).subscribe(
       tooltip => {
-        this.moveTooltipInPosition(targetElem, tooltip.description);
+        this.setToolTipPosition(targetElem, tooltip.description);
         this.setToolTipText(tooltip.description);
         this.tooltips.persons[id] = tooltip.description;
       },
