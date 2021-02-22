@@ -43,6 +43,7 @@ export class IntroductionPage {
   public hasSeparateIntroToc: boolean;
   showToolTip: boolean;
   toolTipPosition: object;
+  toolTipMaxWidth: string;
   toolTipText: string;
   tooltips = {
     'persons': {},
@@ -412,7 +413,7 @@ export class IntroductionPage {
     const yOffset = 75;
     const secToolbarHeight = 50;
 
-    let freePosition: boolean = false;
+    let positionAboveOrBelowTrigger: boolean = false;
 
     let x = ((elemRect.left + vw) - vw) + (targetElem.offsetWidth + 8);
     let y = ((elemRect.top + vh) - vh) - yOffset;
@@ -436,7 +437,7 @@ export class IntroductionPage {
           y = y - oversetY;
         } else {
           // The tooltip needs to be placed more freely and it's width increased.
-          freePosition = true;
+          positionAboveOrBelowTrigger = true;
         }
       } else {
         // Overset only horisontally. Check if there is room on the left side of the trigger.
@@ -447,8 +448,10 @@ export class IntroductionPage {
           // There is not room on the left. The tooltip should be squeezed in on the right. 
           // Need to check if there is vertical room for a narrower tooltip there.
 
-          // Calc how much space there is on the right.
+          // Calc how much space there is on either side.
           const spaceRight = vw - x;
+          const spaceLeft = elemRect.left - sidePaneOffsetWidth - 8;
+          const maxSpace = Math.max(spaceRight, spaceLeft);
 
           // Create hidden div for calculating tooltip dimensions.
           hiddenDiv = document.createElement('div');
@@ -456,7 +459,7 @@ export class IntroductionPage {
             hiddenDiv.classList.add(className);
           });
           hiddenDiv.style.display = 'none';
-          hiddenDiv.setAttribute('style', 'max-width: ' + spaceRight + 'px !important');
+          hiddenDiv.setAttribute('style', 'max-width: ' + maxSpace + 'px !important');
           // Append hidden div to the parent of the tooltip div.
           tooltipElement.parentNode.appendChild(hiddenDiv);
           // Add content to the hidden div.
@@ -472,19 +475,28 @@ export class IntroductionPage {
           // Remove hidden div.
           hiddenDiv.remove();
 
-          // Check if the narrower tooltip fits.
-          if (ttWidth <= spaceRight) {
-            // There is room, check vertical space.
+          // Double-check that the narrower tooltip fits.
+          if (ttWidth <= maxSpace) {
+            // There is room, set new max-width.
+            this.toolTipMaxWidth = maxSpace + 'px';
+            if (spaceLeft > spaceRight) {
+              // Calc new horisontal position since an attempt to place the tooltip on the left will be made.
+              x = elemRect.left - maxSpace;
+            }
+            // Check vertical space.
             oversetY = elemRect.top + ttHeight - vh;
             if (oversetY > 0) {
               if (oversetY < y - secToolbarHeight) {
                 // Move the y position upwards by oversetY.
                 y = y - oversetY;
               } else {
-                // The tooltip needs to be placed more freely and it's width increased.
-                freePosition = true;
+                // There is not enough vertical space for the tooltip, so it needs to be placed above or below the trigger.
+                positionAboveOrBelowTrigger = true;
               }
             }
+          } else {
+            // The tooltip needs to be placed more freely and it's width increased.
+            positionAboveOrBelowTrigger = true;
           }
         }
       }
@@ -499,11 +511,11 @@ export class IntroductionPage {
         
 
         // The tooltip needs to be placed more freely and it's width increased.
-        freePosition = true;
+        positionAboveOrBelowTrigger = true;
       }
     }
 
-    if (freePosition) {
+    if (positionAboveOrBelowTrigger) {
       // The tooltip could not be placed next to the trigger, so it has to be placed
       // more freely.
 
