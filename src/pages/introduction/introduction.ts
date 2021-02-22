@@ -681,7 +681,7 @@ export class IntroductionPage {
     }
     */
 
-   this.toolTipMaxWidth = null;
+   this.toolTipMaxWidth = 350 + 'px';
 
     this.toolTipPosition = {
       top: -1000 + 'px',
