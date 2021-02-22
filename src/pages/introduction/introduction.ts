@@ -471,7 +471,7 @@ export class IntroductionPage {
           // Double-check that the narrower tooltip fits.
           if (ttWidth <= maxSpace) {
             // There is room, set new max-width.
-            this.toolTipMaxWidth = maxSpace + 'px !important';
+            this.toolTipMaxWidth = maxSpace + 'px';
             if (spaceLeft > spaceRight) {
               // Calc new horisontal position since an attempt to place the tooltip on the left will be made.
               x = elemRect.left - maxSpace - 8;
@@ -528,7 +528,7 @@ export class IntroductionPage {
           // Double-check that the narrower tooltip fits.
           if (ttWidth <= maxSpace) {
             // There is room, set new max-width.
-            this.toolTipMaxWidth = maxSpace + 'px !important';
+            this.toolTipMaxWidth = maxSpace + 'px';
             if (spaceLeft > spaceRight) {
               // Calc new horisontal position since an attempt to place the tooltip on the left will be made.
               x = elemRect.left - maxSpace - 8;
