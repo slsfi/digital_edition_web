@@ -203,7 +203,7 @@ export class IntroductionPage {
         */
 
         /*  Check if tooltip would be drawn outside viewport on the right.
-            Move it to the left side of the trigger if there is enough space. 
+            Move it to the left side of the trigger if there is enough space.
             Tooltips have a max-width of 400px.*/
         /*
         if (x + 400 > vw && elemRect.left - sidePaneOffsetWidth > 400 + 10) {
@@ -346,7 +346,8 @@ export class IntroductionPage {
 
     /* Prepend the footnoteindicator to the the footnote text */
     const footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + ftnIndicatorElem.textContent + '</span>' + foundElem;
-    const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
+    const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
+      this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
     this.moveTooltipInPosition(targetElem, footnoteWithIndicator);
 
@@ -380,7 +381,7 @@ export class IntroductionPage {
 
   moveTooltipInPosition(targetElem: HTMLElement, ttText: string) {
     this.toolTipMaxWidth = 350 + 'px';
-    
+
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
@@ -389,7 +390,7 @@ export class IntroductionPage {
     let hiddenDiv: HTMLElement = document.createElement('div');
 
     // Loop over each class in the tooltip div and add them to the hidden div
-    let ttClasses = tooltipElement.classList;
+    const ttClasses: string[] = Array.from(tooltipElement.classList);
     ttClasses.forEach(
       function(currentValue, currentIndex, listObj) {
         hiddenDiv.classList.add(currentValue);
@@ -411,7 +412,7 @@ export class IntroductionPage {
     hiddenDiv.style.display = 'none';
     // Remove hidden div
     hiddenDiv.remove();
-    
+
     /* Get rectangle which contains tooltiptrigger element */
     const elemRect = targetElem.getBoundingClientRect();
 
@@ -419,7 +420,7 @@ export class IntroductionPage {
     const yOffset = 75;
     const secToolbarHeight = 50;
 
-    let positionAboveOrBelowTrigger: boolean = false;
+    let positionAboveOrBelowTrigger: Boolean = false;
 
     let x = ((elemRect.left + vw) - vw) + (targetElem.offsetWidth + 8);
     let y = ((elemRect.top + vh) - vh) - yOffset;
@@ -453,7 +454,7 @@ export class IntroductionPage {
           // There is room on the left --> move tooltip there.
           x = elemRect.left - ttWidth - 8;
         } else {
-          // There is not room on the left. The tooltip should be squeezed in on the right. 
+          // There is not room on the left. The tooltip should be squeezed in on the right.
           // Need to check if there is vertical room for a narrower tooltip there.
 
           // Calc how much space there is on either side.
@@ -516,9 +517,9 @@ export class IntroductionPage {
         // Move the y position upwards by oversetY
         y = y - oversetY;
       } else {
-        // There is not room to move the tooltip just upwards. Check if there is more room on either 
+        // There is not room to move the tooltip just upwards. Check if there is more room on either
         // side of the trigger so the width of the tooltip could be increased.
-        
+
 
         // The tooltip needs to be placed more freely and it's width increased.
         positionAboveOrBelowTrigger = true;
@@ -552,7 +553,7 @@ export class IntroductionPage {
     //  } else {
     //    y = yOffset;
     //    x = sidePaneOffsetWidth + 16;
-        //tooltipElement.style.setProperty('max-width', '90', 'important');
+        // tooltipElement.style.setProperty('max-width', '90', 'important');
     //  }
     // }
     // OLD WORKING CODE END
@@ -565,7 +566,7 @@ export class IntroductionPage {
       top: y + 'px',
       left: (x - sidePaneOffsetWidth) + 'px'
     };
-    
+
   }
 
   private scrollToElement(element: HTMLElement) {
