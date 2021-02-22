@@ -496,8 +496,9 @@ export class IntroductionPage {
           // Make the hidden div invisible again.
           hiddenDiv.style.visibility = 'visible';
           hiddenDiv.style.display = 'none';
+          hiddenDiv.style.marginLeft = ttWidth + 'px';
           // Remove hidden div.
-          hiddenDiv.remove();
+          // hiddenDiv.remove();
 
           // Double-check that the narrower tooltip fits.
           if (ttWidth <= maxSpace) {
