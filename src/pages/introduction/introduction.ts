@@ -379,6 +379,8 @@ export class IntroductionPage {
   }
 
   moveTooltipInPosition(targetElem: HTMLElement, ttText: string) {
+    this.toolTipMaxWidth = 350 + 'px';
+    
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
@@ -680,8 +682,6 @@ export class IntroductionPage {
       tooltipElement.style.removeProperty('max-width');
     }
     */
-
-   this.toolTipMaxWidth = 350 + 'px';
 
     this.toolTipPosition = {
       top: -1000 + 'px',
