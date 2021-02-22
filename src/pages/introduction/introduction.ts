@@ -421,6 +421,8 @@ export class IntroductionPage {
     
     // Hide the "hidden div".
     hiddenDiv.style.display = 'none';
+    hiddenDiv.style.top = '0';
+    hiddenDiv.style.left = '0';
     // Append hidden div to the parent of the tooltip div.
     tooltipElement.parentNode.appendChild(hiddenDiv);
     // Add content to the hidden div.
@@ -473,7 +475,7 @@ export class IntroductionPage {
           // Calc how much space there is on either side.
           const spaceRight = vw - x;
           const spaceLeft = elemRect.left - sidePaneOffsetWidth - triggerPadding;
-          const maxSpace = Math.max(spaceRight, spaceLeft);
+          const maxSpace = Math.floor(Math.max(spaceRight, spaceLeft));
 
           // Create hidden div for calculating tooltip dimensions.
           hiddenDiv = document.createElement('div');
@@ -483,6 +485,8 @@ export class IntroductionPage {
             },
           );
           hiddenDiv.style.display = 'none';
+          hiddenDiv.style.top = '0';
+          hiddenDiv.style.left = '0';
           hiddenDiv.setAttribute('style', 'max-width: ' + maxSpace + 'px');
           // Append hidden div to the parent of the tooltip div.
           tooltipElement.parentNode.appendChild(hiddenDiv);
@@ -498,7 +502,7 @@ export class IntroductionPage {
           hiddenDiv.style.display = 'none';
           hiddenDiv.style.marginLeft = ttWidth + 'px';
           // Remove hidden div.
-          // hiddenDiv.remove();
+          hiddenDiv.remove();
 
           // Double-check that the narrower tooltip fits.
           if (ttWidth <= maxSpace) {
