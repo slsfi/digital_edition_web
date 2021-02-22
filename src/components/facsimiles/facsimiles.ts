@@ -251,7 +251,7 @@ export class FacsimilesComponent {
             }
             const f_url = this.facsimileService.getFacsimileImage(f.publication_facsimile_collection_id, i, this.facsimileDefaultZoomLevel);
             facsimile.images.push(f_url);
-            const zf_url = this.facsimileService.getFacsimileImage(f.publication_facsimile_collection_id, i, 4);
+            const zf_url = this.facsimileService.getFacsimileImage(f.publication_facsimile_collection_id, i, 1);
             facsimile.zoomedImages.push(zf_url);
           }
           facsimile.itemId = this.itemId;
