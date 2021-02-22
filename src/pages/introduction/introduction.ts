@@ -387,7 +387,7 @@ export class IntroductionPage {
     let hiddenDiv: HTMLElement = document.createElement('div');
 
     // Loop over each class in the tooltip div and add them to the hidden div
-    const ttClasses = tooltipElement.classList;
+    let ttClasses = tooltipElement.classList;
     ttClasses.forEach(
       function(currentValue, currentIndex, listObj) {
         hiddenDiv.classList.add(currentValue);
@@ -680,6 +680,8 @@ export class IntroductionPage {
       tooltipElement.style.removeProperty('max-width');
     }
     */
+
+   this.toolTipMaxWidth = null;
 
     this.toolTipPosition = {
       top: -1000 + 'px',
