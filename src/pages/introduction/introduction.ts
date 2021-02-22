@@ -458,19 +458,14 @@ export class IntroductionPage {
           );
           hiddenDiv.style.display = 'none';
           hiddenDiv.setAttribute('style', 'max-width: ' + maxSpace + 'px !important');
-          // Append hidden div to the parent of the tooltip div.
           tooltipElement.parentNode.appendChild(hiddenDiv);
-          // Add content to the hidden div.
           hiddenDiv.innerHTML = ttText;
-          // Make div visible again to calculate its width and height.
           hiddenDiv.style.visibility = 'hidden';
           hiddenDiv.style.display = 'block';
           ttHeight = hiddenDiv.offsetHeight;
           ttWidth = hiddenDiv.offsetWidth;
-          // Make the hidden div display:none again.
           hiddenDiv.style.visibility = 'visible';
           hiddenDiv.style.display = 'none';
-          // Remove hidden div.
           hiddenDiv.remove();
 
           // Double-check that the narrower tooltip fits.
@@ -520,19 +515,14 @@ export class IntroductionPage {
           );
           hiddenDiv.style.display = 'none';
           hiddenDiv.setAttribute('style', 'max-width: ' + maxSpace + 'px !important');
-          // Append hidden div to the parent of the tooltip div.
           tooltipElement.parentNode.appendChild(hiddenDiv);
-          // Add content to the hidden div.
           hiddenDiv.innerHTML = ttText;
-          // Make div visible again to calculate its width and height.
           hiddenDiv.style.visibility = 'hidden';
           hiddenDiv.style.display = 'block';
           ttHeight = hiddenDiv.offsetHeight;
           ttWidth = hiddenDiv.offsetWidth;
-          // Make the hidden div display:none again.
           hiddenDiv.style.visibility = 'visible';
           hiddenDiv.style.display = 'none';
-          // Remove hidden div.
           hiddenDiv.remove();
 
           // Double-check that the narrower tooltip fits.
@@ -584,14 +574,14 @@ export class IntroductionPage {
 
     // Set tooltip position
     x = x - sidePaneOffsetWidth;
-    let topPosition: string = '';
-    let leftPosition: string = '';
-    if (x == 0) {
+    let topPosition = '';
+    let leftPosition = '';
+    if (x === 0) {
       leftPosition = '0';
     } else {
       leftPosition = x + 'px';
     }
-    if (y == 0) {
+    if (y === 0) {
       topPosition = '0';
     } else {
       topPosition = y + 'px';
