@@ -379,7 +379,7 @@ export class IntroductionPage {
   }
 
   moveTooltipInPosition(targetElem: HTMLElement, ttText: string) {
-    // this.toolTipMaxWidth = 350 + 'px';
+    this.toolTipMaxWidth = 350 + 'px';
     
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
