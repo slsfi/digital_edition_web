@@ -1,5 +1,5 @@
 import { TranslateService } from '@ngx-translate/core';
-import { Component, Renderer, ElementRef } from '@angular/core';
+import { Component, Renderer, ElementRef, SecurityContext } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, Platform, PopoverController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LanguageService } from '../../app/services/languages/language.service';
@@ -84,6 +84,7 @@ export class IntroductionPage {
       this.tocMenuOpen = false;
     }
     this.showToolTip = true;
+    this.toolTipMaxWidth = null;
     this.toolTipPosition = {
       top: -1000 + 'px',
       left: -1000 + 'px'
@@ -345,10 +346,11 @@ export class IntroductionPage {
 
     /* Prepend the footnoteindicator to the the footnote text */
     const footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + ftnIndicatorElem.textContent + '</span>' + foundElem;
+    const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
     this.moveTooltipInPosition(targetElem, footnoteWithIndicator);
 
-    this.setToolTipText(this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
+    this.setToolTipText(footNoteHTML);
     this.tooltips.footnotes[id] = foundElemSafe;
     return foundElemSafe;
   }
@@ -386,9 +388,11 @@ export class IntroductionPage {
 
     // Loop over each class in the tooltip div and add them to the hidden div
     const ttClasses = tooltipElement.classList;
-    ttClasses.forEach(className => {
-      hiddenDiv.classList.add(className);
-    });
+    ttClasses.forEach(
+      function(currentValue, currentIndex, listObj) {
+        hiddenDiv.classList.add(currentValue);
+      },
+    );
 
     hiddenDiv.style.display = 'none';
     // Append hidden div to the parent of the tooltip div
@@ -455,9 +459,11 @@ export class IntroductionPage {
 
           // Create hidden div for calculating tooltip dimensions.
           hiddenDiv = document.createElement('div');
-          ttClasses.forEach(className => {
-            hiddenDiv.classList.add(className);
-          });
+          ttClasses.forEach(
+            function(currentValue, currentIndex, listObj) {
+              hiddenDiv.classList.add(currentValue);
+            },
+          );
           hiddenDiv.style.display = 'none';
           hiddenDiv.setAttribute('style', 'max-width: ' + maxSpace + 'px !important');
           // Append hidden div to the parent of the tooltip div.
