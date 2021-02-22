@@ -379,7 +379,7 @@ export class IntroductionPage {
   }
 
   moveTooltipInPosition(targetElem: HTMLElement, ttText: string) {
-    this.toolTipMaxWidth = 350 + 'px';
+    // this.toolTipMaxWidth = 350 + 'px';
     
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
@@ -442,6 +442,8 @@ export class IntroductionPage {
           x = elemRect.left - ttWidth - 8;
           y = y - oversetY;
         } else {
+          // FIX HERE: Try to move upwards on the right side before trying to position above or below!!!
+
           // The tooltip needs to be placed more freely and it's width increased.
           positionAboveOrBelowTrigger = true;
         }
@@ -489,7 +491,7 @@ export class IntroductionPage {
             this.toolTipMaxWidth = maxSpace + 'px';
             if (spaceLeft > spaceRight) {
               // Calc new horisontal position since an attempt to place the tooltip on the left will be made.
-              x = elemRect.left - maxSpace;
+              x = elemRect.left - maxSpace - 8;
             }
             // Check vertical space.
             oversetY = elemRect.top + ttHeight - vh;
