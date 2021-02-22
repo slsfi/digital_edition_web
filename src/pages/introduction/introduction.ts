@@ -380,8 +380,6 @@ export class IntroductionPage {
   }
 
   moveTooltipInPosition(targetElem: HTMLElement, ttText: string) {
-    this.toolTipMaxWidth = 350 + 'px';
-
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
@@ -396,6 +394,11 @@ export class IntroductionPage {
         hiddenDiv.classList.add(currentValue);
       },
     );
+
+    // Get default tooltip max-width from css
+    const hiddenDivCompStyles = window.getComputedStyle(hiddenDiv);
+    const defaultToolTipMaxWidth = hiddenDivCompStyles.getPropertyValue('max-width');
+    this.toolTipMaxWidth = defaultToolTipMaxWidth;
 
     hiddenDiv.style.display = 'none';
     // Append hidden div to the parent of the tooltip div
