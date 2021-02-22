@@ -443,54 +443,10 @@ export class IntroductionPage {
           x = elemRect.left - ttWidth - 8;
           y = y - oversetY;
         } else {
-          // Check if there is room to narrow the tooltip and move it upwards.
-          // Calc how much space there is on either side.
-          const spaceRight = vw - x;
-          const spaceLeft = elemRect.left - sidePaneOffsetWidth - 8;
-          const maxSpace = Math.max(spaceRight, spaceLeft);
+          // FIX HERE: Try to move upwards on the right side before trying to position above or below!!!
 
-          // Create hidden div for calculating tooltip dimensions.
-          hiddenDiv = document.createElement('div');
-          ttClasses.forEach(
-            function(currentValue, currentIndex, listObj) {
-              hiddenDiv.classList.add(currentValue);
-            },
-          );
-          hiddenDiv.style.display = 'none';
-          hiddenDiv.setAttribute('style', 'max-width: ' + maxSpace + 'px !important');
-          tooltipElement.parentNode.appendChild(hiddenDiv);
-          hiddenDiv.innerHTML = ttText;
-          hiddenDiv.style.visibility = 'hidden';
-          hiddenDiv.style.display = 'block';
-          ttHeight = hiddenDiv.offsetHeight;
-          ttWidth = hiddenDiv.offsetWidth;
-          hiddenDiv.style.visibility = 'visible';
-          hiddenDiv.style.display = 'none';
-          hiddenDiv.remove();
-
-          // Double-check that the narrower tooltip fits.
-          if (ttWidth <= maxSpace) {
-            // There is room, set new max-width.
-            this.toolTipMaxWidth = maxSpace + 'px';
-            if (spaceLeft > spaceRight) {
-              // Calc new horisontal position since an attempt to place the tooltip on the left will be made.
-              x = elemRect.left - maxSpace - 8;
-            }
-            // Check vertical space.
-            oversetY = elemRect.top + ttHeight - vh;
-            if (oversetY > 0) {
-              if (oversetY < y - secToolbarHeight) {
-                // Move the y position upwards by oversetY.
-                y = y - oversetY;
-              } else {
-                // There is not enough vertical space for the tooltip, so it needs to be placed above or below the trigger.
-                positionAboveOrBelowTrigger = true;
-              }
-            }
-          } else {
-            // The tooltip needs to be placed above or below the trigger and it's width increased.
-            positionAboveOrBelowTrigger = true;
-          }
+          // The tooltip needs to be placed more freely and it's width increased.
+          positionAboveOrBelowTrigger = true;
         }
       } else {
         // Overset only horisontally. Check if there is room on the left side of the trigger.
@@ -515,14 +471,19 @@ export class IntroductionPage {
           );
           hiddenDiv.style.display = 'none';
           hiddenDiv.setAttribute('style', 'max-width: ' + maxSpace + 'px !important');
+          // Append hidden div to the parent of the tooltip div.
           tooltipElement.parentNode.appendChild(hiddenDiv);
+          // Add content to the hidden div.
           hiddenDiv.innerHTML = ttText;
+          // Make div visible again to calculate its width and height.
           hiddenDiv.style.visibility = 'hidden';
           hiddenDiv.style.display = 'block';
           ttHeight = hiddenDiv.offsetHeight;
           ttWidth = hiddenDiv.offsetWidth;
+          // Make the hidden div display:none again.
           hiddenDiv.style.visibility = 'visible';
           hiddenDiv.style.display = 'none';
+          // Remove hidden div.
           hiddenDiv.remove();
 
           // Double-check that the narrower tooltip fits.
@@ -573,23 +534,9 @@ export class IntroductionPage {
     }
 
     // Set tooltip position
-    x = x - sidePaneOffsetWidth;
-    let topPosition = '';
-    let leftPosition = '';
-    if (x === 0) {
-      leftPosition = '0';
-    } else {
-      leftPosition = x + 'px';
-    }
-    if (y === 0) {
-      topPosition = '0';
-    } else {
-      topPosition = y + 'px';
-    }
-
     this.toolTipPosition = {
-      top: topPosition,
-      left: leftPosition
+      top: y + 'px',
+      left: (x - sidePaneOffsetWidth) + 'px'
     };
 
   }
