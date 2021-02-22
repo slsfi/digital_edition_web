@@ -419,7 +419,7 @@ export class IntroductionPage {
       },
     );
     
-    // Hide the hidden div.
+    // Hide the "hidden div".
     hiddenDiv.style.display = 'none';
     // Append hidden div to the parent of the tooltip div.
     tooltipElement.parentNode.appendChild(hiddenDiv);
@@ -468,8 +468,7 @@ export class IntroductionPage {
           // There is room on the left --> move tooltip there.
           x = elemRect.left - ttWidth - triggerPadding;
         } else {
-          // There is not room on the left. The tooltip should be squeezed in on the right.
-          // Need to check if there is vertical room for a narrower tooltip there.
+          // There is not enough room on the left. Try to squeeze in the tooltip on whichever side has more room.
 
           // Calc how much space there is on either side.
           const spaceRight = vw - x;
@@ -484,7 +483,7 @@ export class IntroductionPage {
             },
           );
           hiddenDiv.style.display = 'none';
-          hiddenDiv.setAttribute('style', 'max-width: ' + maxSpace + 'px !important');
+          hiddenDiv.setAttribute('style', 'max-width: ' + maxSpace + 'px');
           // Append hidden div to the parent of the tooltip div.
           tooltipElement.parentNode.appendChild(hiddenDiv);
           // Add content to the hidden div.
@@ -494,7 +493,7 @@ export class IntroductionPage {
           hiddenDiv.style.display = 'block';
           ttHeight = hiddenDiv.offsetHeight;
           ttWidth = hiddenDiv.offsetWidth;
-          // Make the hidden div display:none again.
+          // Make the hidden div invisible again.
           hiddenDiv.style.visibility = 'visible';
           hiddenDiv.style.display = 'none';
           // Remove hidden div.
@@ -503,10 +502,10 @@ export class IntroductionPage {
           // Double-check that the narrower tooltip fits.
           if (ttWidth <= maxSpace) {
             // There is room, set new max-width.
-            this.toolTipMaxWidth = maxSpace + 'px';
+            this.toolTipMaxWidth = ttWidth + 'px';
             if (spaceLeft > spaceRight) {
               // Calc new horisontal position since an attempt to place the tooltip on the left will be made.
-              x = elemRect.left - maxSpace - triggerPadding;
+              x = elemRect.left - triggerPadding - ttWidth;
             }
             // Check vertical space.
             oversetY = elemRect.top + ttHeight - vh;
