@@ -1458,6 +1458,11 @@ span.footnoteindicator {
     cursor: pointer;
 }
 
+/* Ge färg åt fotnotsmarkörerna i inledningarna. */
+page-introduction span.footnoteindicator {
+    color: color($colors, primary);
+}
+
 /*toc: textfärgen
 .item-md p {
 	color: #404040;
