@@ -631,7 +631,7 @@ export class IntroductionPage {
           const scaleRatio = Math.min(ratioX, ratioY);
 
           const ttScaledDimensions = this.getToolTipDimensions(tooltipElement, ttText,
-             Math.ceil(ttNewDimensions.width * scaleRatio), false, scaleRatio);
+            ttNewDimensions.width, false, scaleRatio);
           if (ttScaledDimensions.height <= availableHeight && ttScaledDimensions.width <= availableWidth) {
             // Scaling successful. Calculate position and adjust if overset.
             this.toolTipScaleValue = scaleRatio;
