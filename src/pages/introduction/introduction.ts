@@ -407,6 +407,7 @@ export class IntroductionPage {
 
     // Set variable for determining if the tooltip should be placed above or below the trigger rather than beside it.
     let positionAboveOrBelowTrigger: Boolean = false;
+    let positionAbove: Boolean = false;
 
     // Get rectangle which contains tooltiptrigger element. For trigger elements spanning multiple lines
     // tooltips are always placed above or below the trigger.
@@ -418,6 +419,7 @@ export class IntroductionPage {
       positionAboveOrBelowTrigger = true;
       if (elemRects[0].top - yOffset - secToolbarHeight > vh - elemRects[elemRects.length - 1].bottom) {
         elemRect = elemRects[0];
+        positionAbove = true;
       } else {
         elemRect = elemRects[elemRects.length - 1];
       }
@@ -558,11 +560,17 @@ export class IntroductionPage {
     if (positionAboveOrBelowTrigger) {
       // The tooltip could not be placed next to the trigger, so it has to be placed above or below it.
       // Check if there is more space above or below the tooltip trigger.
-      let positionAbove: Boolean = false;
-      let availableHeight = vh - elemRect.bottom - triggerPadding - edgePadding;
-      if (elemRect.top - yOffset - secToolbarHeight > vh - elemRect.bottom) {
+      let availableHeight = 0;
+      if (elemRects.length > 1 && positionAbove) {
+        availableHeight = elemRect.top - yOffset - secToolbarHeight - triggerPadding - edgePadding;
+      } else if (elemRects.length > 1) {
+        availableHeight = vh - elemRect.bottom - triggerPadding - edgePadding;
+      } else if (elemRect.top - yOffset - secToolbarHeight > vh - elemRect.bottom) {
         positionAbove = true;
         availableHeight = elemRect.top - yOffset - secToolbarHeight - triggerPadding - edgePadding;
+      } else {
+        positionAbove = false;
+        availableHeight = vh - elemRect.bottom - triggerPadding - edgePadding;
       }
 
       const availableWidth = vw - sidePaneOffsetWidth - (2 * edgePadding);
