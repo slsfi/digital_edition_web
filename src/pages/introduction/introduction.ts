@@ -630,7 +630,8 @@ export class IntroductionPage {
           const ratioY = ttNewDimensions.height / availableHeight;
           const scaleRatio = Math.min(ratioX, ratioY);
 
-          const ttScaledDimensions = this.getToolTipDimensions(tooltipElement, ttText, Math.ceil(ttNewDimensions.width * scaleRatio), false, scaleRatio);
+          const ttScaledDimensions = this.getToolTipDimensions(tooltipElement, ttText,
+             Math.ceil(ttNewDimensions.width * scaleRatio), false, scaleRatio);
           if (ttScaledDimensions.height <= availableHeight && ttScaledDimensions.width <= availableWidth) {
             // Scaling successful. Calculate position and adjust if overset.
             this.toolTipScaleValue = scaleRatio;
@@ -676,7 +677,8 @@ export class IntroductionPage {
     };
   }
 
-  private getToolTipDimensions(toolTipElem: HTMLElement, toolTipText: string, maxWidth = 0, returnCompMaxWidth: Boolean = false, scaleRatio: number = 1) {
+  private getToolTipDimensions(toolTipElem: HTMLElement, toolTipText: string, maxWidth = 0,
+     returnCompMaxWidth: Boolean = false, scaleRatio = 1) {
     // Create hidden div and make it into a copy of the tooltip div. Calculations are done on the hidden div.
     const hiddenDiv: HTMLElement = document.createElement('div');
 
