@@ -576,10 +576,11 @@ export class IntroductionPage {
         availableHeight = vh - elemRect.bottom - triggerPaddingY - edgePadding;
       }
 
-      const availableWidth = vw - sidePaneOffsetWidth - (2 * edgePadding);
+      availableHeight = Math.floor(availableHeight);
+      const availableWidth = Math.floor(vw - sidePaneOffsetWidth - (2 * edgePadding));
 
       if (initialTTDimensions.height < availableHeight && initialTTDimensions.width < availableWidth) {
-        // The tooltip fits without resizing. Calculation position, check for possible overset and adjust.
+        // The tooltip fits without resizing. Calculate position, check for possible overset and adjust.
         x = elemRect.left;
         if (positionAbove) {
           y = elemRect.top - initialTTDimensions.height - primaryToolbarHeight - triggerPaddingY;
@@ -592,8 +593,39 @@ export class IntroductionPage {
         if (oversetX > 0) {
           x = x - oversetX - edgePadding;
         }
-      }
+      } else {
+        // Try to resize the tooltip so it would fit in view.
+        let newTTMaxWidth = availableWidth;
+        if (newTTMaxWidth > 550) {
+          newTTMaxWidth = 550;
+        }
+        // Calculate tooltip dimensions with new max-width
+        const ttNewDimensions = this.getToolTipDimensions(tooltipElement, ttText, newTTMaxWidth);
 
+        if (ttNewDimensions.height < availableHeight && ttNewDimensions.width < availableWidth) {
+          // Set new max-width and calculate position. Adjust if overset.
+          this.toolTipMaxWidth = ttNewDimensions.width + 'px';
+          x = elemRect.left;
+          if (positionAbove) {
+            y = elemRect.top - ttNewDimensions.height - primaryToolbarHeight - triggerPaddingY;
+          } else {
+            y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
+          }
+  
+          // Check if tooltip would be drawn outside the viewport horisontally.
+          oversetX = x + ttNewDimensions.width - vw;
+          if (oversetX > 0) {
+            x = x - oversetX - edgePadding;
+          }
+        } else {
+          // Resizing the width and height of the tooltip element won't make it fit in view.
+          // As a last resort, scale the tooltip so it fits in view.
+          const ratioX = ttNewDimensions.width / availableWidth;
+          const ratioY = ttNewDimensions.height / availableHeight;
+          const scaleRatio = Math.min(ratioX, ratioY);
+
+        }
+      }
     }
 
     // Set tooltip position
