@@ -383,7 +383,7 @@ export class IntroductionPage {
     // Get viewport width and height.
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    
+
     // Get rectangle which contains tooltiptrigger element.
     const elemRect = targetElem.getBoundingClientRect();
 
@@ -418,7 +418,7 @@ export class IntroductionPage {
         hiddenDiv.classList.add(currentValue);
       },
     );
-    
+
     // Hide the "hidden div".
     hiddenDiv.style.display = 'none';
     hiddenDiv.style.top = '0';
