@@ -632,7 +632,7 @@ export class IntroductionPage {
 
           const ttScaledDimensions = this.getToolTipDimensions(tooltipElement, ttText,
             ttNewDimensions.width, false, scaleRatio);
-          if (ttScaledDimensions.height * scaleRatio <= availableHeight && ttScaledDimensions.width * scaleRatio <= availableWidth) {
+          if (ttScaledDimensions.height <= availableHeight && ttScaledDimensions.width <= availableWidth) {
             // Scaling successful. Calculate position and adjust if overset.
             this.toolTipScaleValue = scaleRatio;
             this.toolTipMaxWidth = ttScaledDimensions.width + 'px';
@@ -704,11 +704,14 @@ export class IntroductionPage {
     // Make div visible again to calculate its width and height.
     hiddenDiv.style.visibility = 'hidden';
     hiddenDiv.style.display = 'block';
+    let ttHeight = hiddenDiv.offsetHeight;
+    let ttWidth = hiddenDiv.offsetWidth;
     if (scaleRatio !== 1) {
       hiddenDiv.style.transform = 'scale(' + scaleRatio + ')';
+      const elemRect = hiddenDiv.getBoundingClientRect();
+      ttHeight = elemRect.height;
+      ttWidth = elemRect.width;
     }
-    const ttHeight = hiddenDiv.offsetHeight;
-    const ttWidth = hiddenDiv.offsetWidth;
     let compToolTipMaxWidth = '';
     if (returnCompMaxWidth) {
       // Get default tooltip max-width from css of hidden div if possible.
@@ -719,7 +722,7 @@ export class IntroductionPage {
     hiddenDiv.style.visibility = 'visible';
     hiddenDiv.style.display = 'none';
     // Remove hidden div.
-    // hiddenDiv.remove();
+    hiddenDiv.remove();
 
     const dimensions = {
       width: ttWidth,
