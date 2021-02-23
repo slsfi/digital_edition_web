@@ -453,16 +453,68 @@ export class IntroductionPage {
     if (oversetX > 0) {
       if (oversetY > 0) {
         // Overset both vertically and horisontally. Check if tooltip can be moved to the left
-        // side of the trigger and upwards.
+        // side of the trigger and upwards without modifying its dimensions.
         if (elemRect.left - sidePaneOffsetWidth > ttWidth + triggerPadding && y - secToolbarHeight > oversetY) {
           // Move tooltip to the left side of the trigger and upwards
           x = elemRect.left - ttWidth - triggerPadding;
           y = y - oversetY;
         } else {
-          // FIX HERE: Try to move upwards on the right side before trying to position above or below!!!
+          // Calc how much space there is on either side and attempt to place the tooltip on the
+          // side with more space.
+          const spaceRight = vw - x;
+          const spaceLeft = elemRect.left - sidePaneOffsetWidth - triggerPadding;
+          const maxSpace = Math.floor(Math.max(spaceRight, spaceLeft));
 
-          // The tooltip needs to be placed more freely and it's width increased.
-          positionAboveOrBelowTrigger = true;
+          // Create hidden div for calculating tooltip dimensions.
+          hiddenDiv = document.createElement('div');
+          ttClasses.forEach(
+            function(currentValue, currentIndex, listObj) {
+              hiddenDiv.classList.add(currentValue);
+            },
+          );
+          hiddenDiv.style.display = 'none';
+          hiddenDiv.style.top = '0';
+          hiddenDiv.style.left = '0';
+          hiddenDiv.setAttribute('style', 'max-width: ' + maxSpace + 'px');
+          // Append hidden div to the parent of the tooltip div.
+          tooltipElement.parentNode.appendChild(hiddenDiv);
+          // Add content to the hidden div.
+          hiddenDiv.innerHTML = ttText;
+          // Make div visible again to calculate its width and height.
+          hiddenDiv.style.visibility = 'hidden';
+          hiddenDiv.style.display = 'block';
+          ttHeight = hiddenDiv.offsetHeight;
+          ttWidth = hiddenDiv.offsetWidth;
+          // Make the hidden div invisible again.
+          hiddenDiv.style.visibility = 'visible';
+          hiddenDiv.style.display = 'none';
+          hiddenDiv.style.marginLeft = ttWidth + 'px';
+          // Remove hidden div.
+          hiddenDiv.remove();
+
+          // Double-check that the narrower tooltip fits.
+          if (ttWidth <= maxSpace) {
+            // There is room, set new max-width.
+            this.toolTipMaxWidth = ttWidth + 'px';
+            if (spaceLeft > spaceRight) {
+              // Calc new horisontal position since an attempt to place the tooltip on the left will be made.
+              x = elemRect.left - triggerPadding - ttWidth;
+            }
+            // Check vertical space.
+            oversetY = elemRect.top + ttHeight - vh;
+            if (oversetY > 0) {
+              if (oversetY < y - secToolbarHeight) {
+                // Move the y position upwards by oversetY.
+                y = y - oversetY;
+              } else {
+                // There is not enough vertical space for the tooltip, so it needs to be placed above or below the trigger.
+                positionAboveOrBelowTrigger = true;
+              }
+            }
+          } else {
+            // The tooltip needs to be placed above or below the trigger.
+            positionAboveOrBelowTrigger = true;
+          }
         }
       } else {
         // Overset only horisontally. Check if there is room on the left side of the trigger.
@@ -524,7 +576,7 @@ export class IntroductionPage {
               }
             }
           } else {
-            // The tooltip needs to be placed more freely and it's width increased.
+            // The tooltip needs to be placed above or below the trigger.
             positionAboveOrBelowTrigger = true;
           }
         }
@@ -539,7 +591,7 @@ export class IntroductionPage {
         // side of the trigger so the width of the tooltip could be increased.
 
 
-        // The tooltip needs to be placed more freely and it's width increased.
+        // The tooltip needs to be placed above or below the trigger.
         positionAboveOrBelowTrigger = true;
       }
     }
