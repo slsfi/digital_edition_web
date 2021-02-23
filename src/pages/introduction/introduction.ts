@@ -643,7 +643,7 @@ export class IntroductionPage {
               y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
             }
             // Check if tooltip would be drawn outside the viewport horisontally.
-            oversetX = x + (ttScaledDimensions.width * scaleRatio) - vw;
+            oversetX = x + ttScaledDimensions.width - vw;
             if (oversetX > 0) {
               x = x - oversetX - edgePadding;
             }
@@ -704,12 +704,9 @@ export class IntroductionPage {
     // Make div visible again to calculate its width and height.
     hiddenDiv.style.visibility = 'hidden';
     hiddenDiv.style.display = 'block';
-    if (scaleRatio < 1) {
+    if (scaleRatio !== 1) {
       hiddenDiv.style.transform = 'scale(' + scaleRatio + ')';
     }
-    /*const elemRect = hiddenDiv.getBoundingClientRect();
-      ttHeight = elemRect.height;
-      ttWidth = elemRect.width;*/
     const ttHeight = hiddenDiv.offsetHeight;
     const ttWidth = hiddenDiv.offsetWidth;
     let compToolTipMaxWidth = '';
