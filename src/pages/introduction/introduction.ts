@@ -391,6 +391,10 @@ export class IntroductionPage {
     // Set "padding" around tooltip trigger – this is how close to the trigger element the tooltip will be placed.
     const triggerPadding = 8;
 
+    // Set how close to the edges of the "window" the tooltip can be placed. Currently this only applies if the
+    // tooltip is set above or below the trigger.
+    const edgePadding = 3;
+
     // Set min-width for resized tooltips.
     const resizedToolTipMinWidth = 200;
 
@@ -437,7 +441,7 @@ export class IntroductionPage {
     let y = elemRect.top - yOffset;
 
     // Check if tooltip would be drawn outside the viewport.
-    const oversetX = x + ttWidth - vw;
+    let oversetX = x + ttWidth - vw;
     let oversetY = elemRect.top + ttHeight - vh;
     if (!positionAboveOrBelowTrigger) {
       if (oversetX > 0) {
@@ -554,11 +558,31 @@ export class IntroductionPage {
     if (positionAboveOrBelowTrigger) {
       // The tooltip could not be placed next to the trigger, so it has to be placed above or below it.
       // Check if there is more space above or below the tooltip trigger.
+      let positionAbove: Boolean = false;
+      let availableHeight = vh - elemRect.bottom - triggerPadding - edgePadding;
       if (elemRect.top - yOffset - secToolbarHeight > vh - elemRect.bottom) {
-        const availableHeight = elemRect.top - yOffset - secToolbarHeight - triggerPadding;
-      } else {
-        const availableHeight = vh - elemRect.bottom - triggerPadding;
+        positionAbove = true;
+        availableHeight = elemRect.top - yOffset - secToolbarHeight - triggerPadding - edgePadding;
       }
+
+      const availableWidth = vw - sidePaneOffsetWidth - (2 * edgePadding);
+
+      if (initialTTDimensions.height < availableHeight && initialTTDimensions.width < availableWidth) {
+        // The tooltip fits without resizing. Calculation position, check for possible overset and adjust.
+        x = elemRect.left;
+        if (positionAbove) {
+          y = elemRect.top - yOffset - secToolbarHeight - triggerPadding;
+        } else {
+          y = elemRect.bottom - yOffset - secToolbarHeight + triggerPadding;
+        }
+
+        // Check if tooltip would be drawn outside the viewport horisontally.
+        oversetX = x + initialTTDimensions.width - vw;
+        if (oversetX > 0) {
+          x = x - oversetX - edgePadding;
+        }
+      }
+
     }
 
     // Set tooltip position
