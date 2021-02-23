@@ -625,7 +625,7 @@ export class IntroductionPage {
           }
         } else {
           // Resizing the width and height of the tooltip element won't make it fit in view.
-          // As a last resort, scale the tooltip so it fits in view.
+          // As a last resort, try to scale the tooltip so it fits in view.
           const ratioX = availableWidth / ttNewDimensions.width;
           const ratioY = availableHeight / ttNewDimensions.height;
           const scaleRatio = Math.min(ratioX, ratioY) - 0.05;
@@ -697,9 +697,6 @@ export class IntroductionPage {
     if (maxWidth > 0) {
       hiddenDiv.style.maxWidth = maxWidth + 'px';
     }
-    if (scaleRatio !== 1) {
-      hiddenDiv.style.transform = 'scale(' + scaleRatio + ')';
-    }
     // Append hidden div to the parent of the tooltip element.
     toolTipElem.parentNode.appendChild(hiddenDiv);
     // Add content to the hidden div.
@@ -707,6 +704,9 @@ export class IntroductionPage {
     // Make div visible again to calculate its width and height.
     hiddenDiv.style.visibility = 'hidden';
     hiddenDiv.style.display = 'block';
+    if (scaleRatio !== 1) {
+      hiddenDiv.style.transform = 'scale(' + scaleRatio + ')';
+    }
     const ttHeight = hiddenDiv.offsetHeight;
     const ttWidth = hiddenDiv.offsetWidth;
     let compToolTipMaxWidth = '';
