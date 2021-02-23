@@ -638,12 +638,12 @@ export class IntroductionPage {
             this.toolTipMaxWidth = ttScaledDimensions.width + 'px';
             x = elemRect.left;
             if (positionAbove) {
-              y = elemRect.top - ttScaledDimensions.height - primaryToolbarHeight - triggerPaddingY;
+              y = elemRect.top - (ttScaledDimensions.height * scaleRatio) - primaryToolbarHeight - triggerPaddingY;
             } else {
               y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
             }
             // Check if tooltip would be drawn outside the viewport horisontally.
-            oversetX = x + ttScaledDimensions.width - vw;
+            oversetX = x + (ttScaledDimensions.width * scaleRatio) - vw;
             if (oversetX > 0) {
               x = x - oversetX - edgePadding;
             }
