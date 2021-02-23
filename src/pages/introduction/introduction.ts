@@ -628,7 +628,7 @@ export class IntroductionPage {
           // As a last resort, scale the tooltip so it fits in view.
           const ratioX = availableWidth / ttNewDimensions.width;
           const ratioY = availableHeight / ttNewDimensions.height;
-          const scaleRatio = Math.min(ratioX, ratioY);
+          const scaleRatio = Math.min(ratioX, ratioY) - 0.05;
 
           const ttScaledDimensions = this.getToolTipDimensions(tooltipElement, ttText,
             ttNewDimensions.width, false, scaleRatio);
