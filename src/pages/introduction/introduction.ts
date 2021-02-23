@@ -697,9 +697,6 @@ export class IntroductionPage {
     if (maxWidth > 0) {
       hiddenDiv.style.maxWidth = maxWidth + 'px';
     }
-    if (scaleRatio < 1) {
-      hiddenDiv.style.transform = 'scale(' + scaleRatio + ')';
-    }
     // Append hidden div to the parent of the tooltip element.
     toolTipElem.parentNode.appendChild(hiddenDiv);
     // Add content to the hidden div.
@@ -707,11 +704,12 @@ export class IntroductionPage {
     // Make div visible again to calculate its width and height.
     hiddenDiv.style.visibility = 'hidden';
     hiddenDiv.style.display = 'block';
-    /*
-    const hiddenDivRect = hiddenDiv.getBoundingClientRect();
-    const ttHeight = hiddenDivRect.height;
-    const ttWidth = hiddenDivRect.width;
-    */
+    if (scaleRatio < 1) {
+      hiddenDiv.style.transform = 'scale(' + scaleRatio + ')';
+    }
+    /*const elemRect = hiddenDiv.getBoundingClientRect();
+      ttHeight = elemRect.height;
+      ttWidth = elemRect.width;*/
     const ttHeight = hiddenDiv.offsetHeight;
     const ttWidth = hiddenDiv.offsetWidth;
     let compToolTipMaxWidth = '';
