@@ -719,7 +719,7 @@ export class IntroductionPage {
     hiddenDiv.style.visibility = 'visible';
     hiddenDiv.style.display = 'none';
     // Remove hidden div.
-    hiddenDiv.remove();
+    // hiddenDiv.remove();
 
     const dimensions = {
       width: ttWidth,
