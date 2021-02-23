@@ -580,9 +580,9 @@ export class IntroductionPage {
         // The tooltip fits without resizing. Calculation position, check for possible overset and adjust.
         x = elemRect.left;
         if (positionAbove) {
-          y = elemRect.top - initialTTDimensions.height - yOffset - triggerPaddingY;
+          y = elemRect.top - initialTTDimensions.height - yOffset + 5 - triggerPaddingY;
         } else {
-          y = elemRect.bottom + triggerPaddingY - yOffset;
+          y = elemRect.bottom + triggerPaddingY - yOffset + 5;
         }
 
         // Check if tooltip would be drawn outside the viewport horisontally.
