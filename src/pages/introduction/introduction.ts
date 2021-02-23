@@ -626,8 +626,8 @@ export class IntroductionPage {
         } else {
           // Resizing the width and height of the tooltip element won't make it fit in view.
           // As a last resort, scale the tooltip so it fits in view.
-          const ratioX = ttNewDimensions.width / availableWidth;
-          const ratioY = ttNewDimensions.height / availableHeight;
+          const ratioX = availableWidth / ttNewDimensions.width;
+          const ratioY = availableHeight / ttNewDimensions.height;
           const scaleRatio = Math.min(ratioX, ratioY);
 
           const ttScaledDimensions = this.getToolTipDimensions(tooltipElement, ttText,
