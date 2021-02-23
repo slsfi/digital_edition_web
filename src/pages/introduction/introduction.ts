@@ -397,7 +397,7 @@ export class IntroductionPage {
 
     // Set "padding" around tooltip trigger – this is how close to the trigger element the tooltip will be placed.
     const triggerPaddingX = 8;
-    const triggerPaddingY = 5;
+    const triggerPaddingY = 8;
 
     // Set min-width for resized tooltips.
     const resizedToolTipMinWidth = 250;
