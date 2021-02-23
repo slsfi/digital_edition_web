@@ -581,7 +581,7 @@ export class IntroductionPage {
     };
   }
 
-  private getToolTipDimensions(toolTipElem: HTMLElement, toolTipText: string, maxWidth: number = 0, returnCompMaxWidth: Boolean = false) {
+  private getToolTipDimensions(toolTipElem: HTMLElement, toolTipText: string, maxWidth = 0, returnCompMaxWidth: Boolean = false) {
     // Create hidden div and make it into a copy of the tooltip div. Calculations are done on the hidden div.
     const hiddenDiv: HTMLElement = document.createElement('div');
 
