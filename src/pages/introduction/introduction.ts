@@ -632,7 +632,7 @@ export class IntroductionPage {
 
           const ttScaledDimensions = this.getToolTipDimensions(tooltipElement, ttText,
             ttNewDimensions.width, false, scaleRatio);
-          if (ttScaledDimensions.height <= availableHeight && ttScaledDimensions.width <= availableWidth) {
+          if (ttScaledDimensions.height * scaleRatio <= availableHeight && ttScaledDimensions.width * scaleRatio <= availableWidth) {
             // Scaling successful. Calculate position and adjust if overset.
             this.toolTipScaleValue = scaleRatio;
             this.toolTipMaxWidth = ttScaledDimensions.width + 'px';
@@ -643,7 +643,7 @@ export class IntroductionPage {
               y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
             }
             // Check if tooltip would be drawn outside the viewport horisontally.
-            oversetX = x + ttScaledDimensions.width - vw;
+            oversetX = x + (ttScaledDimensions.width * scaleRatio) - vw;
             if (oversetX > 0) {
               x = x - oversetX - edgePadding;
             }
@@ -707,13 +707,13 @@ export class IntroductionPage {
     // Make div visible again to calculate its width and height.
     hiddenDiv.style.visibility = 'hidden';
     hiddenDiv.style.display = 'block';
+    /*
     const hiddenDivRect = hiddenDiv.getBoundingClientRect();
     const ttHeight = hiddenDivRect.height;
     const ttWidth = hiddenDivRect.width;
-    /*
+    */
     const ttHeight = hiddenDiv.offsetHeight;
     const ttWidth = hiddenDiv.offsetWidth;
-    */
     let compToolTipMaxWidth = '';
     if (returnCompMaxWidth) {
       // Get default tooltip max-width from css of hidden div if possible.
