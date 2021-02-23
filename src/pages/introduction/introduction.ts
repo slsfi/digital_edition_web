@@ -389,7 +389,8 @@ export class IntroductionPage {
     const secToolbarHeight = 50;
 
     // Set "padding" around tooltip trigger – this is how close to the trigger element the tooltip will be placed.
-    const triggerPadding = 8;
+    const triggerPaddingX = 8;
+    const triggerPaddingY = 3;
 
     // Set how close to the edges of the "window" the tooltip can be placed. Currently this only applies if the
     // tooltip is set above or below the trigger.
@@ -439,7 +440,7 @@ export class IntroductionPage {
     }
 
     // Calculate default position.
-    let x = elemRect.right + triggerPadding;
+    let x = elemRect.right + triggerPaddingX;
     let y = elemRect.top - yOffset;
 
     // Check if tooltip would be drawn outside the viewport.
@@ -450,14 +451,14 @@ export class IntroductionPage {
         if (oversetY > 0) {
           // Overset both vertically and horisontally. Check if tooltip can be moved to the left
           // side of the trigger and upwards without modifying its dimensions.
-          if (elemRect.left - sidePaneOffsetWidth > ttWidth + triggerPadding && y - secToolbarHeight > oversetY) {
+          if (elemRect.left - sidePaneOffsetWidth > ttWidth + triggerPaddingX && y - secToolbarHeight > oversetY) {
             // Move tooltip to the left side of the trigger and upwards
-            x = elemRect.left - ttWidth - triggerPadding;
+            x = elemRect.left - ttWidth - triggerPaddingX;
             y = y - oversetY;
           } else {
             // Calc how much space there is on either side and attempt to place the tooltip on the side with more space.
             const spaceRight = vw - x;
-            const spaceLeft = elemRect.left - sidePaneOffsetWidth - triggerPadding;
+            const spaceLeft = elemRect.left - sidePaneOffsetWidth - triggerPaddingX;
             const maxSpace = Math.floor(Math.max(spaceRight, spaceLeft));
 
             const ttDimensions = this.getToolTipDimensions(tooltipElement, ttText, maxSpace);
@@ -470,7 +471,7 @@ export class IntroductionPage {
               this.toolTipMaxWidth = ttWidth + 'px';
               if (spaceLeft > spaceRight) {
                 // Calc new horisontal position since an attempt to place the tooltip on the left will be made.
-                x = elemRect.left - triggerPadding - ttWidth;
+                x = elemRect.left - triggerPaddingX - ttWidth;
               }
               // Check vertical space.
               oversetY = elemRect.top + ttHeight - vh;
@@ -488,14 +489,14 @@ export class IntroductionPage {
           }
         } else {
           // Overset only horisontally. Check if there is room on the left side of the trigger.
-          if (elemRect.left - sidePaneOffsetWidth - triggerPadding > ttWidth) {
+          if (elemRect.left - sidePaneOffsetWidth - triggerPaddingX > ttWidth) {
             // There is room on the left --> move tooltip there.
-            x = elemRect.left - ttWidth - triggerPadding;
+            x = elemRect.left - ttWidth - triggerPaddingX;
           } else {
             // There is not enough room on the left. Try to squeeze in the tooltip on whichever side has more room.
             // Calc how much space there is on either side.
             const spaceRight = vw - x;
-            const spaceLeft = elemRect.left - sidePaneOffsetWidth - triggerPadding;
+            const spaceLeft = elemRect.left - sidePaneOffsetWidth - triggerPaddingX;
             const maxSpace = Math.floor(Math.max(spaceRight, spaceLeft));
 
             const ttDimensions = this.getToolTipDimensions(tooltipElement, ttText, maxSpace);
@@ -508,7 +509,7 @@ export class IntroductionPage {
               this.toolTipMaxWidth = ttWidth + 'px';
               if (spaceLeft > spaceRight) {
                 // Calc new horisontal position since an attempt to place the tooltip on the left will be made.
-                x = elemRect.left - triggerPadding - ttWidth;
+                x = elemRect.left - triggerPaddingX - ttWidth;
               }
               // Check vertical space.
               oversetY = elemRect.top + ttHeight - vh;
@@ -534,7 +535,7 @@ export class IntroductionPage {
           // There is not room to move the tooltip just upwards. Check if there is more room on the
           // left side of the trigger so the width of the tooltip could be increased there.
           const spaceRight = vw - x;
-          const spaceLeft = elemRect.left - sidePaneOffsetWidth - triggerPadding;
+          const spaceLeft = elemRect.left - sidePaneOffsetWidth - triggerPaddingX;
 
           if (spaceLeft > spaceRight) {
             const ttDimensions = this.getToolTipDimensions(tooltipElement, ttText, spaceLeft);
@@ -544,7 +545,7 @@ export class IntroductionPage {
             if (ttWidth <= spaceLeft && ttWidth > resizedToolTipMinWidth && ttHeight < vh - yOffset - secToolbarHeight) {
               // There is enough space on the left side of the trigger. Calc new positions.
               this.toolTipMaxWidth = ttWidth + 'px';
-              x = elemRect.left - triggerPadding - ttWidth;
+              x = elemRect.left - triggerPaddingX - ttWidth;
               oversetY = elemRect.top + ttHeight - vh;
               y = y - oversetY;
             } else {
@@ -562,15 +563,15 @@ export class IntroductionPage {
       // Check if there is more space above or below the tooltip trigger.
       let availableHeight = 0;
       if (elemRects.length > 1 && positionAbove) {
-        availableHeight = elemRect.top - yOffset - secToolbarHeight - triggerPadding - edgePadding;
+        availableHeight = elemRect.top - yOffset - secToolbarHeight - triggerPaddingY - edgePadding;
       } else if (elemRects.length > 1) {
-        availableHeight = vh - elemRect.bottom - triggerPadding - edgePadding;
+        availableHeight = vh - elemRect.bottom - triggerPaddingY - edgePadding;
       } else if (elemRect.top - yOffset - secToolbarHeight > vh - elemRect.bottom) {
         positionAbove = true;
-        availableHeight = elemRect.top - yOffset - secToolbarHeight - triggerPadding - edgePadding;
+        availableHeight = elemRect.top - yOffset - secToolbarHeight - triggerPaddingY - edgePadding;
       } else {
         positionAbove = false;
-        availableHeight = vh - elemRect.bottom - triggerPadding - edgePadding;
+        availableHeight = vh - elemRect.bottom - triggerPaddingY - edgePadding;
       }
 
       const availableWidth = vw - sidePaneOffsetWidth - (2 * edgePadding);
@@ -579,9 +580,9 @@ export class IntroductionPage {
         // The tooltip fits without resizing. Calculation position, check for possible overset and adjust.
         x = elemRect.left;
         if (positionAbove) {
-          y = elemRect.top - yOffset - secToolbarHeight - triggerPadding;
+          y = elemRect.top - initialTTDimensions.height - yOffset - secToolbarHeight - triggerPaddingY;
         } else {
-          y = elemRect.bottom - yOffset - secToolbarHeight + triggerPadding;
+          y = elemRect.bottom + triggerPaddingY - yOffset - secToolbarHeight;
         }
 
         // Check if tooltip would be drawn outside the viewport horisontally.
