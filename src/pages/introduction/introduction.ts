@@ -441,6 +441,7 @@ export class IntroductionPage {
     } else {
       this.toolTipMaxWidth = '350px';
     }
+    const defaultToolTipMaxWidth = this.toolTipMaxWidth;
     // Reset scale value for tooltip.
     if (this.toolTipScaleValue) {
       this.toolTipScaleValue = 1;
@@ -617,7 +618,6 @@ export class IntroductionPage {
           } else {
             y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
           }
-
           // Check if tooltip would be drawn outside the viewport horisontally.
           oversetX = x + ttNewDimensions.width - vw;
           if (oversetX > 0) {
@@ -629,8 +629,29 @@ export class IntroductionPage {
           const ratioX = ttNewDimensions.width / availableWidth;
           const ratioY = ttNewDimensions.height / availableHeight;
           const scaleRatio = Math.min(ratioX, ratioY);
-          this.toolTipMaxWidth = Math.ceil(ttNewDimensions.width * scaleRatio) + 'px';
-          this.toolTipScaleValue = scaleRatio;
+
+          const ttScaledDimensions = this.getToolTipDimensions(tooltipElement, ttText, Math.ceil(ttNewDimensions.width * scaleRatio), false, scaleRatio);
+          if (ttScaledDimensions.height <= availableHeight && ttScaledDimensions.width <= availableWidth) {
+            // Scaling successful. Calculate position and adjust if overset.
+            this.toolTipScaleValue = scaleRatio;
+            this.toolTipMaxWidth = ttScaledDimensions.width + 'px';
+            x = elemRect.left;
+            if (positionAbove) {
+              y = elemRect.top - ttScaledDimensions.height - primaryToolbarHeight - triggerPaddingY;
+            } else {
+              y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
+            }
+            // Check if tooltip would be drawn outside the viewport horisontally.
+            oversetX = x + ttScaledDimensions.width - vw;
+            if (oversetX > 0) {
+              x = x - oversetX - edgePadding;
+            }
+          } else {
+            // Use the default position, which means that the tooltip will not fit in view.
+            x = elemRect.right + triggerPaddingX;
+            y = elemRect.top - primaryToolbarHeight - yOffset;
+            this.toolTipMaxWidth = defaultToolTipMaxWidth;
+          }
         }
       }
     }
@@ -655,7 +676,7 @@ export class IntroductionPage {
     };
   }
 
-  private getToolTipDimensions(toolTipElem: HTMLElement, toolTipText: string, maxWidth = 0, returnCompMaxWidth: Boolean = false) {
+  private getToolTipDimensions(toolTipElem: HTMLElement, toolTipText: string, maxWidth = 0, returnCompMaxWidth: Boolean = false, scaleRatio: number = 1) {
     // Create hidden div and make it into a copy of the tooltip div. Calculations are done on the hidden div.
     const hiddenDiv: HTMLElement = document.createElement('div');
 
@@ -673,6 +694,9 @@ export class IntroductionPage {
     hiddenDiv.style.left = '0';
     if (maxWidth > 0) {
       hiddenDiv.style.maxWidth = maxWidth + 'px';
+    }
+    if (scaleRatio !== 1) {
+      hiddenDiv.style.transform = 'scale(' + scaleRatio + ')';
     }
     // Append hidden div to the parent of the tooltip element.
     toolTipElem.parentNode.appendChild(hiddenDiv);
