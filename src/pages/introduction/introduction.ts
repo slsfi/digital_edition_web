@@ -639,12 +639,12 @@ export class IntroductionPage {
             this.toolTipScaleValue = scaleRatio;
             x = elemRect.left;
             if (positionAbove) {
-              y = elemRect.top - (ttNewDimensions.height * scaleRatio) - primaryToolbarHeight - triggerPaddingY;
+              y = elemRect.top - ttNewDimensions.height - primaryToolbarHeight - triggerPaddingY;
             } else {
               y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
             }
             // Check if tooltip would be drawn outside the viewport horisontally.
-            oversetX = x + (ttNewDimensions.width * scaleRatio) - vw;
+            oversetX = x + ttNewDimensions.width - vw;
             if (oversetX > 0) {
               x = x - oversetX - edgePadding;
             }
