@@ -603,7 +603,7 @@ export class IntroductionPage {
       } else {
         // Try to resize the tooltip so it would fit in view.
         let newTTMaxWidth = availableWidth;
-        if (newTTMaxWidth > 600) {
+        if (availableWidth > 600) {
           newTTMaxWidth = 600;
         }
         // Calculate tooltip dimensions with new max-width
@@ -639,12 +639,12 @@ export class IntroductionPage {
             this.toolTipScaleValue = scaleRatio;
             x = elemRect.left;
             if (positionAbove) {
-              y = elemRect.top - ttNewDimensions.height - primaryToolbarHeight - triggerPaddingY;
+              y = elemRect.top - triggerPaddingY - (ttNewDimensions.height * scaleRatio) - primaryToolbarHeight;
             } else {
               y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
             }
             // Check if tooltip would be drawn outside the viewport horisontally.
-            oversetX = x + ttNewDimensions.width - vw;
+            oversetX = x + (ttNewDimensions.width * scaleRatio) - vw;
             if (oversetX > 0) {
               x = x - oversetX - edgePadding;
             }
