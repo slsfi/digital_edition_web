@@ -639,7 +639,7 @@ export class IntroductionPage {
             this.toolTipScaleValue = scaleRatio;
             x = elemRect.left;
             if (positionAbove) {
-              y = elemRect.top - availableHeight; // (ttNewDimensions.height * scaleRatio) - primaryToolbarHeight;
+              y = elemRect.top - availableHeight - triggerPaddingY; // (ttNewDimensions.height * scaleRatio) - primaryToolbarHeight;
             } else {
               y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
             }
