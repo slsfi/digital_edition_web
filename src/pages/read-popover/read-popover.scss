@@ -5,6 +5,7 @@ read-popover-page {
 	}
 	.text-button:hover {
 		background-color: rgba(color($colors, primary), 0.2);
+		border-radius: 3px;
 	}
 
 	.text-xsmall {
@@ -55,7 +56,8 @@ read-popover-page {
 		cursor: pointer;
 	}
 
-	.selected-font-size {
+	.selected-font-size,
+	.selected-font-size:hover {
 		background-color: color($colors, primary);
 		color: #fff;
 		font-weight: bold;
