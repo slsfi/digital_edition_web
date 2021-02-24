@@ -603,8 +603,8 @@ export class IntroductionPage {
       } else {
         // Try to resize the tooltip so it would fit in view.
         let newTTMaxWidth = availableWidth;
-        if (newTTMaxWidth > 550) {
-          newTTMaxWidth = 550;
+        if (newTTMaxWidth > 600) {
+          newTTMaxWidth = 600;
         }
         // Calculate tooltip dimensions with new max-width
         const ttNewDimensions = this.getToolTipDimensions(tooltipElement, ttText, newTTMaxWidth);
@@ -625,34 +625,35 @@ export class IntroductionPage {
           }
         } else {
           // Resizing the width and height of the tooltip element won't make it fit in view.
+          // Basically this means that the width is ok, but the height isn't.
           // As a last resort, try to scale the tooltip so it fits in view.
           const ratioX = availableWidth / ttNewDimensions.width;
           const ratioY = availableHeight / ttNewDimensions.height;
           const scaleRatio = Math.min(ratioX, ratioY) - 0.05;
 
-          const ttScaledDimensions = this.getToolTipDimensions(tooltipElement, ttText,
-            ttNewDimensions.width, false, scaleRatio);
-          if (ttScaledDimensions.height * scaleRatio <= availableHeight && ttScaledDimensions.width * scaleRatio <= availableWidth) {
+          /*const ttScaledDimensions = this.getToolTipDimensions(tooltipElement, ttText,
+            ttNewDimensions.width, false, scaleRatio);*/
+          // if (ttScaledDimensions.height * scaleRatio <= availableHeight && ttScaledDimensions.width * scaleRatio <= availableWidth) {
             // Scaling successful. Calculate position and adjust if overset.
+            this.toolTipMaxWidth = ttNewDimensions.width + 'px';
             this.toolTipScaleValue = scaleRatio;
-            this.toolTipMaxWidth = ttScaledDimensions.width + 'px';
             x = elemRect.left;
             if (positionAbove) {
-              y = elemRect.top - (ttScaledDimensions.height * scaleRatio) - primaryToolbarHeight - triggerPaddingY;
+              y = elemRect.top - (ttNewDimensions.height * scaleRatio) - primaryToolbarHeight - triggerPaddingY;
             } else {
               y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
             }
             // Check if tooltip would be drawn outside the viewport horisontally.
-            oversetX = x + (ttScaledDimensions.width * scaleRatio) - vw;
+            oversetX = x + (ttNewDimensions.width * scaleRatio) - vw;
             if (oversetX > 0) {
               x = x - oversetX - edgePadding;
             }
-          } else {
+          /*} else {
             // Use the default position, which means that the tooltip will not fit in view.
             x = elemRect.right + triggerPaddingX;
             y = elemRect.top - primaryToolbarHeight - yOffset;
             this.toolTipMaxWidth = defaultToolTipMaxWidth;
-          }
+          }*/
         }
       }
     }
