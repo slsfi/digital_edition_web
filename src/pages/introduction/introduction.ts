@@ -182,6 +182,7 @@ export class IntroductionPage {
     } catch (e) {
       console.error(e);
     }
+    
     this.renderer.listen(this.elementRef.nativeElement, 'mouseover', (event) => {
       const eventTarget = this.getEventTarget(event);
       const elem = event.target;
