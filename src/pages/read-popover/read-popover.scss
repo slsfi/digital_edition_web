@@ -3,6 +3,9 @@ read-popover-page {
 		justify-content: center;
 		background: transparent;
 	}
+	.text-button:hover {
+		background-color: rgba(color($colors, primary), 0.2);
+	}
 
 	.text-xsmall {
 		font-size: 0.75rem !important;
@@ -53,8 +56,10 @@ read-popover-page {
 	}
 
 	.selected-font-size {
+		background-color: color($colors, primary);
+		color: #fff;
 		font-weight: bold;
-		color: color($colors, primary);
+		border-radius: 3px;
 	}
 
 	.appearence {
