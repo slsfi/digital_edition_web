@@ -421,7 +421,8 @@ export class IntroductionPage {
       elemRect = elemRects[0];
     } else {
       positionAboveOrBelowTrigger = true;
-      if (elemRects[0].top - triggerPaddingY - primaryToolbarHeight - secToolbarHeight - edgePadding > vh - elemRects[elemRects.length - 1].bottom - triggerPaddingY - edgePadding) {
+      if (elemRects[0].top - triggerPaddingY - primaryToolbarHeight - secToolbarHeight - edgePadding >
+         vh - elemRects[elemRects.length - 1].bottom - triggerPaddingY - edgePadding) {
         elemRect = elemRects[0];
         positionAbove = true;
       } else {
