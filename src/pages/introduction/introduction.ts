@@ -183,80 +183,24 @@ export class IntroductionPage {
       console.error(e);
     }
     this.renderer.listen(this.elementRef.nativeElement, 'mouseover', (event) => {
-      /*
-      const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-      const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-      const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
-      */
-
       const eventTarget = this.getEventTarget(event);
       const elem = event.target;
       if (eventTarget['classList'].contains('tooltiptrigger')) {
-        /* Get rectangle which contains tooltiptrigger element */
-        /*
-        let elemRect = elem.getBoundingClientRect();
-        let x = ((elemRect.left + vw) - vw) + (elem.offsetWidth + 10);
-        let y = ((elemRect.top + vh) - vh) - 90;
-        let sidePaneOffsetWidth = 0;
-
-        if (sidePaneIsOpen) {
-          sidePaneOffsetWidth = 269;
-        }
-        */
-
-        /*  Check if tooltip would be drawn outside viewport on the right.
-            Move it to the left side of the trigger if there is enough space.
-            Tooltips have a max-width of 400px.*/
-        /*
-        if (x + 400 > vw && elemRect.left - sidePaneOffsetWidth > 400 + 10) {
-          x = elemRect.left - 400 - 10;
-        }
-        */
-
-        /* Set tooltip position outside of viewport (move into view with a function)
-        let x = -1000;
-        let y = -1000;
-        this.toolTipPosition = {
-          top: y + 'px',
-          left: x + 'px'
-        };
-         */
-
-        // this.showToolTip = false;
-        /*
-        this.toolTipPosition = {
-          top: -1000 + 'px',
-          left: -1000 + 'px'
-        };
-        */
-       this.setToolTipText('');
+        // Is this necessary here if the text is cleared on mouseout anyway?
+        this.setToolTipText('');
 
         if (eventTarget.hasAttribute('data-id')) {
           if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person')
           && this.readPopoverService.show.personInfo) {
-            // this.showToolTip = true;
-            // clearTimeout(window['reload_timer']);
-            // this.hideToolTip();
             this.showPersonTooltip(eventTarget.getAttribute('data-id'), elem, event);
           } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName')
           && this.readPopoverService.show.placeInfo) {
-            // this.showToolTip = true;
-            clearTimeout(window['reload_timer']);
-            this.hideToolTip();
             this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
           } else if (toolTipsSettings.workInfo && eventTarget['classList'].contains('title')
           && this.readPopoverService.show.workInfo) {
-            // this.showToolTip = true;
-            clearTimeout(window['reload_timer']);
-            this.hideToolTip();
             this.showWorkTooltip(eventTarget.getAttribute('data-id'), event);
           } else if (toolTipsSettings.footNotes && eventTarget['classList'].contains('ttFoot')) {
-            // this.showToolTip = true;
-            // clearTimeout(window['reload_timer']);
-            // this.hideToolTip();
             this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), elem, eventTarget, event);
-            // this.setToolTipPosition();
-            // this.showToolTip = true;
           }
         } else {
 
@@ -269,11 +213,7 @@ export class IntroductionPage {
     }).bind(this);
 
     this.renderer.listen(this.elementRef.nativeElement, 'mouseout', (event) => {
-      // this.showToolTip = false;
-      this.toolTipPosition = {
-        top: -1000 + 'px',
-        left: -1000 + 'px'
-      };
+      this.hideToolTip();
     }).bind(this);
   }
 
@@ -335,27 +275,30 @@ export class IntroductionPage {
   }
 
   showFootnoteTooltip(id: string, targetElem: HTMLElement, ftnIndicatorElem: HTMLElement, origin: any) {
+    if (this.tooltips.footnotes[id]) {
+      this.setToolTipPosition(targetElem, this.tooltips.footnotes[id]);
+      this.setToolTipText(this.tooltips.footnotes[id]);
+      return;
+    }
     const target = document.getElementsByClassName('ttFixed');
     let foundElem: any = '';
     for (let i = 0; i < target.length; i++) {
       const elt = target[i] as HTMLElement;
-      if ( elt.getAttribute('data-id') === id ) {
+      if (elt.getAttribute('data-id') === id) {
         foundElem = elt.innerHTML;
         break;
       }
     }
-    const foundElemSafe: any = this.sanitizer.bypassSecurityTrustHtml(foundElem);
 
-    /* Prepend the footnoteindicator to the the footnote text */
+    // Prepend the footnoteindicator to the the footnote text.
     const footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + ftnIndicatorElem.textContent + '</span>' + foundElem;
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
-    this.setToolTipPosition(targetElem, footnoteWithIndicator);
-
+    this.setToolTipPosition(targetElem, footNoteHTML);
     this.setToolTipText(footNoteHTML);
-    this.tooltips.footnotes[id] = foundElemSafe;
-    return foundElemSafe;
+    this.tooltips.footnotes[id] = footNoteHTML;
+    return footNoteHTML;
   }
 
   showPlaceTooltip(id: string, origin: any) {
@@ -803,33 +746,11 @@ export class IntroductionPage {
   }
 
   hideToolTip() {
-    // Is this necessary any more?
-    this.toolTipText = '';
-
-    // let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
-    // tooltipElement.innerHTML = '';
-
-    /*
-    if (tooltipElement.style.getPropertyValue('max-width')) {
-      tooltipElement.style.removeProperty('max-width');
-    }
-    */
-
+    this.setToolTipText('');
     this.toolTipPosition = {
       top: -1000 + 'px',
       left: -1000 + 'px'
     };
-
-    /*
-    window['reload_timer'] = setTimeout(() => {
-      //this.showToolTip = false;
-
-      this.toolTipPosition = {
-        top: -1000 + 'px',
-        left: -1000 + 'px'
-      };
-    }, 4000);
-    */
   }
 
   private scrollToElementTOC(element: HTMLElement, event: Event) {
