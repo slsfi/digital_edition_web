@@ -1157,7 +1157,7 @@ div.tei {
     max-width: 350px;
     text-align: left;
     line-height: 1.25em;
-    will-change: width, max-width, top, left, transform;
+    /*will-change: width, max-width, top, left, transform;*/
     transform-origin: left top; /* This is necessary for the scaling to work properly. */
 
     /* Style for reference numbers in footnote tooltips */
