@@ -400,7 +400,7 @@ export class IntroductionPage {
     const triggerPaddingY = 8;
 
     // Set min-width for resized tooltips.
-    const resizedToolTipMinWidth = 250;
+    const resizedToolTipMinWidth = 280;
 
     // Set horisontal offset due to possible side pane on the left.
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
@@ -421,7 +421,7 @@ export class IntroductionPage {
       elemRect = elemRects[0];
     } else {
       positionAboveOrBelowTrigger = true;
-      if (elemRects[0].top - yOffset - primaryToolbarHeight - secToolbarHeight > vh - elemRects[elemRects.length - 1].bottom) {
+      if (elemRects[0].top - triggerPaddingY - primaryToolbarHeight - secToolbarHeight - edgePadding > vh - elemRects[elemRects.length - 1].bottom - triggerPaddingY - edgePadding) {
         elemRect = elemRects[0];
         positionAbove = true;
       } else {
@@ -441,7 +441,6 @@ export class IntroductionPage {
     } else {
       this.toolTipMaxWidth = '350px';
     }
-    const defaultToolTipMaxWidth = this.toolTipMaxWidth;
     // Reset scale value for tooltip.
     if (this.toolTipScaleValue) {
       this.toolTipScaleValue = 1;
@@ -583,7 +582,6 @@ export class IntroductionPage {
         availableHeight = vh - elemRect.bottom - triggerPaddingY - edgePadding;
       }
 
-      // availableHeight = Math.floor(availableHeight);
       const availableWidth = vw - sidePaneOffsetWidth - (2 * edgePadding);
 
       if (initialTTDimensions.height <= availableHeight && initialTTDimensions.width <= availableWidth) {
@@ -626,34 +624,23 @@ export class IntroductionPage {
         } else {
           // Resizing the width and height of the tooltip element won't make it fit in view.
           // Basically this means that the width is ok, but the height isn't.
-          // As a last resort, try to scale the tooltip so it fits in view.
+          // As a last resort, scale the tooltip so it fits in view.
           const ratioX = availableWidth / ttNewDimensions.width;
           const ratioY = availableHeight / ttNewDimensions.height;
           const scaleRatio = Math.min(ratioX, ratioY) - 0.01;
 
-          /*const ttScaledDimensions = this.getToolTipDimensions(tooltipElement, ttText,
-            ttNewDimensions.width, false, scaleRatio);*/
-          // if (ttScaledDimensions.height * scaleRatio <= availableHeight && ttScaledDimensions.width * scaleRatio <= availableWidth) {
-            // Scaling successful. Calculate position and adjust if overset.
-            this.toolTipMaxWidth = ttNewDimensions.width + 'px';
-            this.toolTipScaleValue = scaleRatio;
-            x = elemRect.left;
-            if (positionAbove) {
-              y = elemRect.top - availableHeight - triggerPaddingY - primaryToolbarHeight;
-            } else {
-              y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
-            }
-            // Check if tooltip would be drawn outside the viewport horisontally.
-            oversetX = x + ttNewDimensions.width - vw;
-            if (oversetX > 0) {
-              x = x - oversetX - edgePadding;
-            }
-          /*} else {
-            // Use the default position, which means that the tooltip will not fit in view.
-            x = elemRect.right + triggerPaddingX;
-            y = elemRect.top - primaryToolbarHeight - yOffset;
-            this.toolTipMaxWidth = defaultToolTipMaxWidth;
-          }*/
+          this.toolTipMaxWidth = ttNewDimensions.width + 'px';
+          this.toolTipScaleValue = scaleRatio;
+          x = elemRect.left;
+          if (positionAbove) {
+            y = elemRect.top - availableHeight - triggerPaddingY - primaryToolbarHeight;
+          } else {
+            y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
+          }
+          oversetX = x + ttNewDimensions.width - vw;
+          if (oversetX > 0) {
+            x = x - oversetX - edgePadding;
+          }
         }
       }
     }
@@ -678,8 +665,7 @@ export class IntroductionPage {
     };
   }
 
-  private getToolTipDimensions(toolTipElem: HTMLElement, toolTipText: string, maxWidth = 0,
-     returnCompMaxWidth: Boolean = false, scaleRatio = 1) {
+  private getToolTipDimensions(toolTipElem: HTMLElement, toolTipText: string, maxWidth = 0, returnCompMaxWidth: Boolean = false) {
     // Create hidden div and make it into a copy of the tooltip div. Calculations are done on the hidden div.
     const hiddenDiv: HTMLElement = document.createElement('div');
 
@@ -705,9 +691,6 @@ export class IntroductionPage {
     // Make div visible again to calculate its width and height.
     hiddenDiv.style.visibility = 'hidden';
     hiddenDiv.style.display = 'block';
-    if (scaleRatio !== 1) {
-      hiddenDiv.style.transform = 'scale(' + scaleRatio + ')';
-    }
     const ttHeight = hiddenDiv.offsetHeight;
     const ttWidth = hiddenDiv.offsetWidth;
     let compToolTipMaxWidth = '';
