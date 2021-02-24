@@ -36,12 +36,12 @@
           "Changes": "Ändringar",
           "Abbreviations": "Förkortningar",
           "PageNumbering": "Stycke-/versnummer",
-          "PageBreakOriginal": "Sidnummer / sidbrytning i orig.",
+          "PageBreakOriginal": "Sidnummer/-brytning i originalet",
           "PageBreakEdition": "Sidnummer i den tryckta utgåvan"
       },
       "DownloadDigitalVersion": "Ladda ner digital version",
       "DownloadPDF": "Ladda ner PDF",
-      "CommentsFor": "Kommentarer till",
+      "CommentsFor": "Kommentar till",
       "ReadFromBeginning": "Läs från början",
       "Established": {
           "Title": "Lästext",
@@ -195,6 +195,9 @@
   "Text": "PDF",
   "Reference": {
       "title": "Hänvisa",
+      "urn": "Länka",
+      "share": "Dela",
+      "mail": "E-post",
       "thisPage": "Hänvisa till denna sida",
       "established": "Hänvisa till denna lästext",
       "intro": "Hänvisa till denna inledning"

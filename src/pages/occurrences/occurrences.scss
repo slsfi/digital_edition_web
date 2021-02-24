@@ -3,8 +3,6 @@ page-occurrences {
         background-color: white;
     }
 
-
-
     .grid{
       padding: 0%;
     }
@@ -122,6 +120,9 @@ page-occurrences {
     .forward-arrow-span ion-icon{
       font-size: 1.4rem;
     }
+    .collection_name_label {
+      background-color: $background-color;
+    }
     .collection_name_label ion-label{
       white-space: normal;
       padding-top: 0.8rem;
@@ -133,18 +134,8 @@ page-occurrences {
     .occurrences_list ion-label{
       margin: auto;
     }
-    .occurrences_list_group {
-      // padding-bottom: 2rem;
-    }
-    .list_of_occurrences_item ion-label{
-      // margin-top: 0px;
-    }
-
-    .description_header{
-
-    }
     .row{
-      border-bottom: color($colors, secondary) 1px solid;
+      border-bottom: $background-color 1px solid;
     }
     ion-label{
       color: $text-color;

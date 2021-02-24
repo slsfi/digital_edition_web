@@ -170,7 +170,7 @@ export class CommentsComponent {
         if ( elem.classList.contains('commentScrollTarget') ) {
           const targetId = elem.classList[elem.classList.length - 1];
           const target = document.getElementsByClassName('ttComment ' + targetId)[0] as HTMLElement;
-          if ( target !== null && target !== undefined ) {
+          if ( target !== null && target !== undefined && this.readPopoverService.show.comments) {
             this.scrollToHTMLElement(target, false);
           }
         }
@@ -181,9 +181,11 @@ export class CommentsComponent {
         if (event.target !== undefined) {
           if ( event.target.previousSibling !== null ) {
             event.target.style.fontWeight = 'bold';
+            event.target.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
             if (event.target.previousSibling.previousSibling !== null) {
               try {
                 event.target.previousSibling.style.fontWeight = 'bold';
+                event.target.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
               } catch ( e ) {
 
               }
@@ -191,48 +193,52 @@ export class CommentsComponent {
           }
           if ( event.target.nextSibling !== null && event.target.nextSibling.style !== undefined ) {
             event.target.nextSibling.style.fontWeight = 'bold';
+            event.target.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
           }
           if ( event.target.nextSibling !== null && event.target.nextSibling.nextSibling !== null ) {
             event.target.nextSibling.nextSibling.style.fontWeight = 'bold';
+            event.target.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
           }
           this.scrollToComment(event);
         }
         setTimeout(function() {
           if (event.target !== undefined && event.target.previousSibling) {
-            event.target.style.fontWeight = 'normal';
+            event.target.style.fontWeight = null;
             if (event.target.previousSibling.previousSibling !== null) {
               try {
-                event.target.previousSibling.style.fontWeight = 'normal';
+                event.target.previousSibling.style.fontWeight = null;
               } catch ( e ) {
 
               }
             }
           }
           if ( event.target.nextSibling !== null && event.target.nextSibling.style !== undefined ) {
-            event.target.nextSibling.style.fontWeight = 'normal';
+            event.target.nextSibling.style.fontWeight = null;
           }
           if ( event.target.nextSibling !== null && event.target.nextSibling.nextSibling !== null ) {
-            event.target.nextSibling.nextSibling.style.fontWeight = 'normal';
+            event.target.nextSibling.nextSibling.style.fontWeight = null;
           }
-        }, 1000);
+        }, 5000);
       } else if (event.target.classList.contains('commentScrollTarget') && this.readPopoverService.show.comments) {
         if (event.target !== undefined) {
           if ( event.target.children[1] ) {
             event.target.children[1].style.fontWeight = 'bold';
+            event.target.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
           }
           if ( event.target.children[2] ) {
             event.target.children[2].style.fontWeight = 'bold';
+            event.target.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
           }
           this.scrollToComment(event);
         }
         setTimeout(function() {
           if ( event.target.children[1] ) {
-            event.target.children[1].style.fontWeight = 'normal';
+            event.target.children[1].style.fontWeight = null;
           }
           if ( event.target.children[2] ) {
-            event.target.children[2].style.fontWeight = 'normal';
+            event.target.children[2].style.fontWeight = null;
           }
-        }, 1000);
+        }, 5000);
       }
     });
   }
@@ -270,7 +276,7 @@ export class CommentsComponent {
     }
   }
 
-  private scrollToHTMLElement(element: HTMLElement, addTag: boolean, timeOut = 8000) {
+  private scrollToHTMLElement(element: HTMLElement, addTag: boolean, timeOut = 5000) {
     try {
       element.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
       const tmp = element.previousElementSibling as HTMLElement;
@@ -280,7 +286,7 @@ export class CommentsComponent {
         tmp.style.display = 'inline';
         setTimeout(function() {
           tmp.style.display = 'none';
-        }, 2000);
+        }, 5000);
         addedArrow = true;
       } else {
         const tmpImage: HTMLImageElement = new Image();

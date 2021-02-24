@@ -1,10 +1,19 @@
 page-comment-modal {
+
+  /* Styles for the notes that the modal contains are defined in src/theme/_tei_comment.scss */
+
+  /* This hides the vertical scrollbar on the right edge of the modal when it is not necessary to show it. */
+  ion-content > .scroll-content {
+    overflow: auto;
+  }
+
+  /*
   .pos44 {
     color: #fe0000;
   }
+  */
 
-  .note {}
-
+  /*
   .tei {
     font-family: $font-comment-modal-tei;
     line-height: 2.2rem;
@@ -49,8 +58,9 @@ page-comment-modal {
   span:not([class]) {
     font-size: 9pt;
     line-height: 150%;
-}
-.noteLemma {
-  line-height: 2rem;
-}
+  }
+  .noteLemma {
+    line-height: 2rem;
+  }
+  */
 }

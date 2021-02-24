@@ -1,7 +1,17 @@
 page-read {
+  .read_facsimiles {
+    max-height: 100%;
+    height: 100%;
+  }
 
-  .tei.show_pageNumbering {
-    padding-left: 20px !important;
+  .scroll-zoom-wrapper {
+    max-height: 100%;
+    height: 100%;
+  }
+
+  /* This hides the vertical scrollbar on the entire column area when it is not necessary, giving a few additional pixels in width. Observe that there are two elements with class scroll-content, which is why this needs to be this specific. */
+  ion-content > .scroll-content {
+    overflow: auto;
   }
 
   .work_title {
@@ -12,22 +22,18 @@ page-read {
     position: absolute;
   }
 
-  .notePosition,
-  .noteLemma {
-    font-weight: 700;
-  }
-
-  .notePosition {
-    margin-right: 5px;
-  }
-
   .read-fab-menu {
     bottom: 50px;
+    position: fixed; /* default is absolute */
   }
 
-  .toolbar-content {
+  .secondary > .toolbar-content {
+    /*
     display: grid;
     grid-template-columns: auto max-content;
+    */
+    display: flex;
+    justify-content: flex-end;
 
     ion-buttons {
       order: 0;
@@ -38,6 +44,7 @@ page-read {
     }
   }
 
+  /*
   @media screen and (max-width: 800px) {
     .secondary .toolbar-content {
       display: flex;
@@ -45,17 +52,18 @@ page-read {
 
       .bar-buttons:last-child {
         margin-left: 0;
-        flex-grow: 1;
-        min-width: 30%;
       }
     }
   }
+  */
 
+  /* Moved to app.scss
   .toolTip {
     z-index: 1000;
-    position: absolute;
+    position: fixed;
     background: #f1f1f1;
     border: 1px solid #222;
+    border-radius: 3px;
     box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
     padding: 0.5rem;
     white-space: normal;
@@ -65,7 +73,7 @@ page-read {
     p {
       line-height: 22px;
     }
-  }
+  }*/
 
   .segment-header {
     font-size: 1rem !important;
@@ -75,12 +83,13 @@ page-read {
   }
 
   .segment-button {
-    border: 0px !important;
-    border-radius: 0px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
     height: 2rem !important;
     line-height: 2rem !important;
     font-size: 1rem !important;
     min-width: max-content;
+    background-color: #9f9f9f !important;
   }
 
   .segment-activated {
@@ -100,9 +109,11 @@ page-read {
     text-align: left;
   }
 
+  /* Settings icons should not have different sizes from the other icons in the secondary toolbar
   ion-icon.settings-icon.icon {
     font-size: 1.8em;
   }
+  */
 
   .settings-icon,
   .facebook-icon,
@@ -115,7 +126,7 @@ page-read {
     position: absolute;
     top: 0;
     right: 0;
-    margin-top: 0px;
+    margin-top: 0;
     margin-right: -8px;
     z-index: 1000;
   }
@@ -132,18 +143,20 @@ page-read {
   .read-columns {
     margin-bottom: 0.5rem;
     -webkit-overflow-scrolling: touch;
-    overflow-x: scroll;
-    overflow-y: hidden;
+    /*overflow-x: auto;
+    overflow-y: hidden;  overflow is now set on the parent element div.scroll-content */
     white-space: nowrap;
 
+    /*the bar with a heading for the column*/
     &__title {
-      background: #E4DCCB !important;
-      font-size: 0.8rem !important;
-      font-weight: bold !important;
+      background: color($colors, secondary);
+      font-size: 0.75rem;
+      font-weight: bold;
+      padding: 16px 22px;
     }
 
     &.single-column .read-column {
-      max-width: 50%;
+      max-width: initial !important;
       margin-left: auto;
       margin-right: auto;
       display: block;
@@ -158,30 +171,41 @@ page-read {
       width: 97%;
 
       ion-card {
+        /*
         background-color: #fff;
+        */
+        background-color: $read-columns-background-color;
         margin-bottom: 0;
 
+        /*
         .card-content {
           padding-right: 0;
         }
+        */
+        .card-content {
+          padding: 0;
+        }
 
         ion-scroll {
-          max-height: calc(100vh - 197px);
+          max-height: calc(100vh - 225px);
         }
       }
     }
 
+    /* Font family inherited instead
     p {
       font-family: $font-read-column-p;
     }
+    */
 
   }
 
-
+  /* Moved to tei.scss
   .tooltip {
     display: none;
-  }
+  }*/
 
+  /*
   .tooltiptrigger {
     cursor: pointer;
   }
@@ -193,6 +217,7 @@ page-read {
   .pb_zts {
     display: none;
   }
+  */
 
   .swipeCenter {
     position: absolute;
@@ -213,20 +238,18 @@ page-read {
     padding-right: 1em;
   }
 
+  /* Flyttad till tei.scss
   @media screen and (max-width: 480px) {
-    .tei {
+    div.tei {
       padding-left: 5px !important;
       padding-right: 5px !important;
     }
   }
+  */
 
   .tei {
     transition-property: padding-left;
     transition-duration: 0.2s;
-  }
-
-  .tei.show_pageNumbering {
-    padding-left: 50px !important;
   }
 
   ion-slides {
@@ -321,15 +344,27 @@ page-read {
     margin-bottom: 74px;
   }
 
+  /* Move to app.scss since not the only page with icons in sec toolbar
   .secondary-toolbar-icons-wrapper {
     ion-icon {
-      font-size: 1.6rem !important;
+      font-size: 1.75rem !important;
       padding: 0.5rem;
       cursor: pointer;
     }
   }
+  */
+
+  .scroll-zoom-wrapper {
+    padding: 6px;
+  }
 
   @media screen and (max-width: 800px) {
+    .read-columns__title {
+      padding-left: 12px;
+    }
+    .scroll-zoom-wrapper {
+      padding: 16px 12px;
+    }
     .text-changer-desktop-view {
       max-width: 80%;
     }
@@ -342,12 +377,15 @@ page-read {
       display: none;
     }
   }
-  .read-columns__title {
-    background: #f2f2f2 !important;
+
+  /* Rule already defined above
+  .read-column.single-column {
+    max-width: initial !important;
   }
-    .read-column.single-column {
-      max-width: initial !important;
-  }
+  */
+
+
+
 }
 
 .md,
@@ -376,6 +414,12 @@ ion-fab .fab-list-active .fab-backdrop {
   left: 0;
   background: rgba(0, 0, 0, 0.60);
   z-index: -1;
+}
+
+/* Adjust padding and background color of text column in mobile mode. */
+page-read div.mobile-mode-established {
+  padding: 12px;
+  background-color: $read-columns-background-color;
 }
 
 @media(max-width: 800px) {

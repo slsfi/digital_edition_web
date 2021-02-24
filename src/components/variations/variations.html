@@ -1,3 +1,4 @@
+<ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
 <div class="tab-container">
   <div *ngFor="let variation of variations; let i = index" (click)="changeVariation(variation)" [ngClass]="(selectedVariation === variation)?'firts-tab':'tab'">
     {{variation.name}}
@@ -14,5 +15,5 @@
 [class.show_pageNumbering]="readPopoverService.show.pageNumbering"
 [class.show_pageBreakOriginal]="readPopoverService.show.pageBreakOriginal"
 [class.show_pageBreakEdition]="readPopoverService.show.pageBreakEdition"
-[ngClass]="(readPopoverService.fontsize==0)?'smallFont':(readPopoverService.fontsize==1)?'mediumFont':'largeFont'"
+[ngClass]="(readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize'"
 ></div>

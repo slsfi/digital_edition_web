@@ -20,20 +20,20 @@ top-menu {
 
   .mobile_row{
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     .enable{
       order: 0;
-      flex-grow: 1;
-      padding-left: 0px;
-      margin-left: 0px;
+      /*flex-grow: 1;*/
+      padding-left: 0;
+      margin-left: 0;
     }
     .homeButton{
       order: 1;
-      flex-grow: 2;
+      /*flex-grow: 2;*/
     }
     .searchButton{
       order: 2;
-      flex-grow: 1;
+      /*flex-grow: 1;*/
     }
   }
   ion-buttons{
@@ -50,6 +50,9 @@ top-menu {
     margin-left: 0 !important;
   }
 
+  .toolbar-content ion-title.title {
+    height: 100%;
+  }
 
 }
 
@@ -70,12 +73,12 @@ top-menu {
 }
 
 .mobile_row {
-  background-color: color($colors, primary) !important;
+  background-color: transparent;
 }
 
 .mobile_row > button{
-  background-color: color($colors, primary) !important;
-  box-shadow: none !important;
+  background-color: transparent !important; // imp needed to override hover bg-color
+  box-shadow: none !important;  // imp needed to override shadow on click
 }
 
 .secondary.toolbar{

@@ -31,7 +31,7 @@
       "OpenInTab": "Öppna i ny flik",
       "Popover": {
           "All": "Välj alla",
-          "Appearance": "Utseende",
+          "Appearance": "Textstorlek",
           "Show": "Visningsalternativ",
           "Comments": "Kommentarer",
           "PersonInfo": "Personupplysningar",
@@ -40,12 +40,12 @@
           "Changes": "Utgivarens ändringar",
           "Abbreviations": "Förkortningar",
           "PageNumbering": "Stycke-/radnumrering",
-          "PageBreakOriginal": "Sidnummer/sidbrytning i originalet",
-          "PageBreakEdition": "Sidnummer i ZTS tryckta utgåva"
+          "PageBreakOriginal": "Sidnummer/-brytning i originalet",
+          "PageBreakEdition": "Sidnummer i den tryckta utgåvan"
       },
       "DownloadDigitalVersion": "Ladda ner digital version",
       "DownloadPDF": "Ladda ner PDF",
-      "CommentsFor": "Kommentarer till",
+      "CommentsFor": "Kommentar till",
       "ReadFromBeginning": "Läs från början",
       "Established": {
           "Title": "Lästext",
@@ -281,6 +281,8 @@
   "Reference": {
       "title": "Hänvisa",
       "urn": "Länka",
+      "share": "Dela",
+      "mail": "E-post",
       "thisPage": "Hänvisa till denna sida",
       "established": "Hänvisa till denna lästext",
       "intro": "Hänvisa till denna inledning"

@@ -228,40 +228,28 @@ export class SingleEditionPage {
   }
 
   getTocRoot(id: string) {
-    this.storage.get('toc_' + id).then((tocItemsC) => {
-      if (tocItemsC) {
-        this.tocItems = tocItemsC;
-        console.log('get toc root... --- --- in single edition');
-        const tocLoadedParams = { tocItems: tocItemsC };
-        tocLoadedParams['collectionID'] = this.collection;
-        tocLoadedParams['searchTocItem'] = true;
-        this.events.publish('tableOfContents:loaded', tocLoadedParams);
-        console.log('toc from cache');
-      } else {
-        if ( id !== 'mediaCollections' ) {
-          this.tableOfContentsService.getTableOfContents(id)
-          .subscribe(
-            tocItems => {
-              this.tocItems = tocItems;
-              console.log('get toc root... --- --- in single edition');
-              const tocLoadedParams = { tocItems: tocItems };
-              tocLoadedParams['collectionID'] = this.collection;
-              tocLoadedParams['searchTocItem'] = true;
-              this.events.publish('tableOfContents:loaded', tocLoadedParams);
-              this.storage.set('toc_' + id, tocItems);
-            },
-            error => { this.errorMessage = <any>error });
-        } else {
-          this.tocItems = this.collection['accordionToc']['toc'];
-          const tocLoadedParams = { tocItems: this.tocItems };
-          tocLoadedParams['collectionID'] = 'mediaCollections';
+    if ( id !== 'mediaCollections' ) {
+      this.tableOfContentsService.getTableOfContents(id)
+      .subscribe(
+        tocItems => {
+          this.tocItems = tocItems;
+          console.log('get toc root... --- --- in single edition');
+          const tocLoadedParams = { tocItems: tocItems };
+          tocLoadedParams['collectionID'] = this.collection;
           tocLoadedParams['searchTocItem'] = true;
           this.events.publish('tableOfContents:loaded', tocLoadedParams);
-          this.storage.set('toc_' + id, this.tocItems);
-          console.log('media');
-        }
-      }
-    });
+          this.storage.set('toc_' + id, tocItems);
+        },
+        error => { this.errorMessage = <any>error });
+    } else {
+      this.tocItems = this.collection['accordionToc']['toc'];
+      const tocLoadedParams = { tocItems: this.tocItems };
+      tocLoadedParams['collectionID'] = 'mediaCollections';
+      tocLoadedParams['searchTocItem'] = true;
+      this.events.publish('tableOfContents:loaded', tocLoadedParams);
+      this.storage.set('toc_' + id, this.tocItems);
+      console.log('media');
+    }
   }
 
   getTableOfContents(id: string) {

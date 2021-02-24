@@ -1,5 +1,5 @@
 import { TranslateService } from '@ngx-translate/core';
-import { Component, Renderer, ElementRef } from '@angular/core';
+import { Component, Renderer, ElementRef, SecurityContext } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, Platform, PopoverController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LanguageService } from '../../app/services/languages/language.service';
@@ -43,6 +43,7 @@ export class IntroductionPage {
   public hasSeparateIntroToc: boolean;
   showToolTip: boolean;
   toolTipPosition: object;
+  toolTipMaxWidth: string;
   toolTipText: string;
   tooltips = {
     'persons': {},
@@ -82,13 +83,21 @@ export class IntroductionPage {
     if (this.platform.is('mobile')) {
       this.tocMenuOpen = false;
     }
+    this.showToolTip = true;
+    this.toolTipMaxWidth = null;
+    this.toolTipPosition = {
+      top: -1000 + 'px',
+      left: -1000 + 'px'
+    };
 
     try {
       this.hasSeparateIntroToc = this.config.getSettings('separeateIntroductionToc');
     } catch (error) {
       this.hasSeparateIntroToc = false;
     }
-    this.getTocRoot(this.id);
+    if ( this.id !== undefined ) {
+      this.getTocRoot(this.id);
+    }
   }
 
   ionViewDidLoad() {
@@ -107,7 +116,11 @@ export class IntroductionPage {
             this.textMenu = the_string;
           },
         error =>  {this.errorMessage = <any>error; this.textLoading = false; }
+
       );
+      const selectedStatic = [];
+      selectedStatic['isIntroduction'] = true;
+      this.events.publish('setSelectedStatic:true', selectedStatic);
     });
 
     this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
@@ -123,11 +136,21 @@ export class IntroductionPage {
           if ( targetId === null ) {
             targetId = elem.parentElement.getAttribute('href');
           }
-          targetId = String(targetId).split('#')[1];
-          const dataIdSelector = '[name="' + String(targetId).replace('#', '') + '"]';
-          const target = elem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
-          if ( target !== null ) {
-            this.scrollToElementTOC(target, event);
+          if ( String(targetId).indexOf('#') !== -1 ) {
+            targetId = String(targetId).split('#')[1];
+            const dataIdSelector = '[name="' + String(targetId).replace('#', '') + '"]';
+            const target = elem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
+            if ( target !== null ) {
+              this.scrollToElementTOC(target, event);
+            } else {
+              this.textService.getCollectionAndPublicationByLegacyId(targetId[0]).subscribe(data => {
+                if ( data[0] !== undefined ) {
+                  const ref = window.open('#/publication-introduction/' + data[0]['coll_id'], '_blank');
+                }
+              });
+            }
+          } else {
+            window.open('#/publication-introduction/' + String(targetId), '_blank');
           }
         } else if ( event.target.classList.contains('ref_external') ) {
           let targetId = elem.getAttribute('href');
@@ -158,53 +181,80 @@ export class IntroductionPage {
       console.error(e);
     }
     this.renderer.listen(this.elementRef.nativeElement, 'mouseover', (event) => {
+      /*
       const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
       const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
       const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
+      */
 
       const eventTarget = this.getEventTarget(event);
       const elem = event.target;
       if (eventTarget['classList'].contains('tooltiptrigger')) {
-        const x = ((elem.getBoundingClientRect().x + vw) - vw) + (elem.offsetWidth + 10);
-        const y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
+        /* Get rectangle which contains tooltiptrigger element */
+        /*
+        let elemRect = elem.getBoundingClientRect();
+        let x = ((elemRect.left + vw) - vw) + (elem.offsetWidth + 10);
+        let y = ((elemRect.top + vh) - vh) - 90;
+        let sidePaneOffsetWidth = 0;
+
         if (sidePaneIsOpen) {
-          this.toolTipPosition = {
-            top: y + 'px',
-            left: (x - 269) + 'px'
-          };
-        } else {
-          this.toolTipPosition = {
-            top: y + 'px',
-            left: x + 'px'
-          };
+          sidePaneOffsetWidth = 269;
         }
+        */
+
+        /*  Check if tooltip would be drawn outside viewport on the right.
+            Move it to the left side of the trigger if there is enough space.
+            Tooltips have a max-width of 400px.*/
+        /*
+        if (x + 400 > vw && elemRect.left - sidePaneOffsetWidth > 400 + 10) {
+          x = elemRect.left - 400 - 10;
+        }
+        */
+
+        /* Set tooltip position outside of viewport (move into view with a function)
+        let x = -1000;
+        let y = -1000;
+        this.toolTipPosition = {
+          top: y + 'px',
+          left: x + 'px'
+        };
+         */
+
+        // this.showToolTip = false;
+        /*
+        this.toolTipPosition = {
+          top: -1000 + 'px',
+          left: -1000 + 'px'
+        };
+        */
+       this.setToolTipText('');
 
         if (eventTarget.hasAttribute('data-id')) {
-          if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
-            this.showToolTip = true;
-            clearTimeout(window['reload_timer']);
-            this.hideToolTip();
-            this.showPersonTooltip(eventTarget.getAttribute('data-id'), event);
-          } else if (toolTipsSettings.placeInfo
-            && eventTarget['classList'].contains('placeName')
-            && this.readPopoverService.show.placeInfo) {
-            this.showToolTip = true;
+          if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person')
+          && this.readPopoverService.show.personInfo) {
+            // this.showToolTip = true;
+            // clearTimeout(window['reload_timer']);
+            // this.hideToolTip();
+            this.showPersonTooltip(eventTarget.getAttribute('data-id'), elem, event);
+          } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName')
+          && this.readPopoverService.show.placeInfo) {
+            // this.showToolTip = true;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
             this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
-          } else if (toolTipsSettings.workInfo
-            && eventTarget['classList'].contains('title')
-            && this.readPopoverService.show.workInfo) {
-            this.showToolTip = true;
+          } else if (toolTipsSettings.workInfo && eventTarget['classList'].contains('title')
+          && this.readPopoverService.show.workInfo) {
+            // this.showToolTip = true;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
             this.showWorkTooltip(eventTarget.getAttribute('data-id'), event);
-          } else if (toolTipsSettings.footNotes
-            && eventTarget['classList'].contains('ttFoot')) {
-            this.showToolTip = true;
-            clearTimeout(window['reload_timer']);
-            this.hideToolTip();
-            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), event);
+          } else if (toolTipsSettings.footNotes && eventTarget['classList'].contains('ttFoot')) {
+            // this.showToolTip = true;
+            // clearTimeout(window['reload_timer']);
+            // this.hideToolTip();
+            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), elem, eventTarget, event);
+            // this.moveTooltipInPosition();
+            // this.showToolTip = true;
           }
         } else {
 
@@ -214,6 +264,14 @@ export class IntroductionPage {
           this.scrollToElement(eventTarget.getAttribute('href'));
         }
       }
+    }).bind(this);
+
+    this.renderer.listen(this.elementRef.nativeElement, 'mouseout', (event) => {
+      // this.showToolTip = false;
+      this.toolTipPosition = {
+        top: -1000 + 'px',
+        left: -1000 + 'px'
+      };
     }).bind(this);
   }
 
@@ -228,7 +286,7 @@ export class IntroductionPage {
         if ( extParts[3] !== undefined && String(extParts[3]).includes('#') !== false ) {
           link += String(extParts[3]).replace('#', ';');
         }
-        const ref = window.open(link + '/nochapter/not/infinite/nosong/established&comments', '_blank');
+        const ref = window.open(link + '/nochapter/not/infinite/nosong/searchtitle/established&comments', '_blank');
       }
     });
   }
@@ -274,19 +332,28 @@ export class IntroductionPage {
     );
   }
 
-  showFootnoteTooltip(id: string, origin: any) {
+  showFootnoteTooltip(id: string, targetElem: HTMLElement, ftnIndicatorElem: HTMLElement, origin: any) {
     const target = document.getElementsByClassName('ttFixed');
     let foundElem: any = '';
     for (let i = 0; i < target.length; i++) {
       const elt = target[i] as HTMLElement;
       if ( elt.getAttribute('data-id') === id ) {
-        foundElem = this.sanitizer.bypassSecurityTrustHtml(elt.innerHTML);
+        foundElem = elt.innerHTML;
         break;
       }
     }
-    this.setToolTipText(foundElem);
-    this.tooltips.footnotes[id] = foundElem;
-    return foundElem;
+    const foundElemSafe: any = this.sanitizer.bypassSecurityTrustHtml(foundElem);
+
+    /* Prepend the footnoteindicator to the the footnote text */
+    const footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + ftnIndicatorElem.textContent + '</span>' + foundElem;
+    const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
+      this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
+
+    this.moveTooltipInPosition(targetElem, footnoteWithIndicator);
+
+    this.setToolTipText(footNoteHTML);
+    this.tooltips.footnotes[id] = foundElemSafe;
+    return foundElemSafe;
   }
 
   showPlaceTooltip(id: string, origin: any) {
@@ -310,6 +377,196 @@ export class IntroductionPage {
         this.setToolTipText(noInfoFound);
       }
     );
+  }
+
+  moveTooltipInPosition(targetElem: HTMLElement, ttText: string) {
+    this.toolTipMaxWidth = 350 + 'px';
+
+    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
+
+    const tooltipElement: HTMLElement = document.querySelector('div.toolTip');
+    let hiddenDiv: HTMLElement = document.createElement('div');
+
+    // Loop over each class in the tooltip div and add them to the hidden div
+    const ttClasses: string[] = Array.from(tooltipElement.classList);
+    ttClasses.forEach(
+      function(currentValue, currentIndex, listObj) {
+        hiddenDiv.classList.add(currentValue);
+      },
+    );
+
+    hiddenDiv.style.display = 'none';
+    // Append hidden div to the parent of the tooltip div
+    tooltipElement.parentNode.appendChild(hiddenDiv);
+    // Add content to the hidden div
+    hiddenDiv.innerHTML = ttText;
+    // Briefly make the hidden div block but invisible. This is in order to read the height
+    hiddenDiv.style.visibility = 'hidden';
+    hiddenDiv.style.display = 'block';
+    let ttHeight = hiddenDiv.offsetHeight;
+    let ttWidth = hiddenDiv.offsetWidth;
+    // Make the hidden div display:none again
+    hiddenDiv.style.visibility = 'visible';
+    hiddenDiv.style.display = 'none';
+    // Remove hidden div
+    hiddenDiv.remove();
+
+    /* Get rectangle which contains tooltiptrigger element */
+    const elemRect = targetElem.getBoundingClientRect();
+
+    // Set vertical offset due to toolbar
+    const yOffset = 75;
+    const secToolbarHeight = 50;
+
+    let positionAboveOrBelowTrigger: Boolean = false;
+
+    let x = ((elemRect.left + vw) - vw) + (targetElem.offsetWidth + 8);
+    let y = ((elemRect.top + vh) - vh) - yOffset;
+    let sidePaneOffsetWidth = 0;
+
+    if (sidePaneIsOpen) {
+      sidePaneOffsetWidth = 269;
+    }
+
+    /*  Check if tooltip would be drawn outside the viewport on the right.
+        Move it to the left side of the trigger if there is enough space to show it there. */
+    const oversetX = x + ttWidth - vw;
+    let oversetY = elemRect.top + ttHeight - vh;
+    if (oversetX > 0) {
+      if (oversetY > 0) {
+        // Overset both vertically and horisontally. Check if tooltip can be moved to the left
+        // side of the trigger and upwards.
+        if (elemRect.left - sidePaneOffsetWidth > ttWidth + 8 && y - secToolbarHeight > oversetY) {
+          // Move tooltip to the left side of the trigger and upwards
+          x = elemRect.left - ttWidth - 8;
+          y = y - oversetY;
+        } else {
+          // FIX HERE: Try to move upwards on the right side before trying to position above or below!!!
+
+          // The tooltip needs to be placed more freely and it's width increased.
+          positionAboveOrBelowTrigger = true;
+        }
+      } else {
+        // Overset only horisontally. Check if there is room on the left side of the trigger.
+        if (elemRect.left - sidePaneOffsetWidth > ttWidth + 8) {
+          // There is room on the left --> move tooltip there.
+          x = elemRect.left - ttWidth - 8;
+        } else {
+          // There is not room on the left. The tooltip should be squeezed in on the right.
+          // Need to check if there is vertical room for a narrower tooltip there.
+
+          // Calc how much space there is on either side.
+          const spaceRight = vw - x;
+          const spaceLeft = elemRect.left - sidePaneOffsetWidth - 8;
+          const maxSpace = Math.max(spaceRight, spaceLeft);
+
+          // Create hidden div for calculating tooltip dimensions.
+          hiddenDiv = document.createElement('div');
+          ttClasses.forEach(
+            function(currentValue, currentIndex, listObj) {
+              hiddenDiv.classList.add(currentValue);
+            },
+          );
+          hiddenDiv.style.display = 'none';
+          hiddenDiv.setAttribute('style', 'max-width: ' + maxSpace + 'px !important');
+          // Append hidden div to the parent of the tooltip div.
+          tooltipElement.parentNode.appendChild(hiddenDiv);
+          // Add content to the hidden div.
+          hiddenDiv.innerHTML = ttText;
+          // Make div visible again to calculate its width and height.
+          hiddenDiv.style.visibility = 'hidden';
+          hiddenDiv.style.display = 'block';
+          ttHeight = hiddenDiv.offsetHeight;
+          ttWidth = hiddenDiv.offsetWidth;
+          // Make the hidden div display:none again.
+          hiddenDiv.style.visibility = 'visible';
+          hiddenDiv.style.display = 'none';
+          // Remove hidden div.
+          hiddenDiv.remove();
+
+          // Double-check that the narrower tooltip fits.
+          if (ttWidth <= maxSpace) {
+            // There is room, set new max-width.
+            this.toolTipMaxWidth = maxSpace + 'px';
+            if (spaceLeft > spaceRight) {
+              // Calc new horisontal position since an attempt to place the tooltip on the left will be made.
+              x = elemRect.left - maxSpace - 8;
+            }
+            // Check vertical space.
+            oversetY = elemRect.top + ttHeight - vh;
+            if (oversetY > 0) {
+              if (oversetY < y - secToolbarHeight) {
+                // Move the y position upwards by oversetY.
+                y = y - oversetY;
+              } else {
+                // There is not enough vertical space for the tooltip, so it needs to be placed above or below the trigger.
+                positionAboveOrBelowTrigger = true;
+              }
+            }
+          } else {
+            // The tooltip needs to be placed more freely and it's width increased.
+            positionAboveOrBelowTrigger = true;
+          }
+        }
+      }
+    } else if (oversetY > 0) {
+      // Overset only vertically. Check if there is room to move the tooltip upwards.
+      if (oversetY < y - secToolbarHeight) {
+        // Move the y position upwards by oversetY
+        y = y - oversetY;
+      } else {
+        // There is not room to move the tooltip just upwards. Check if there is more room on either
+        // side of the trigger so the width of the tooltip could be increased.
+
+
+        // The tooltip needs to be placed more freely and it's width increased.
+        positionAboveOrBelowTrigger = true;
+      }
+    }
+
+    if (positionAboveOrBelowTrigger) {
+      // The tooltip could not be placed next to the trigger, so it has to be placed
+      // more freely.
+
+      // Yet to be implemented ...
+    }
+
+
+    // OLD WORKING CODE
+    // if (x + ttWidth > vw && elemRect.left - sidePaneOffsetWidth > ttWidth + 8) {
+    // x = elemRect.left - ttWidth - 8;
+    // }
+
+    /*  Check if tooltip would be drawn outside the viewport on the bottom.
+        Move it upwards if there is enough space to show it there. */
+    // let oversetY = elemRect.top + ttHeight - window.innerHeight;
+    // if (oversetY > 0) {
+      // Check if there is enough room at the top to move the tooltip upwards
+    // if (y > oversetY) {
+        // Move the y position upwards by oversetY
+    // y = y - oversetY;
+    //    if (y < yOffset) {
+          // The top will be beneath the secondary toolbar --> do something
+    //    }
+    //  } else {
+    //    y = yOffset;
+    //    x = sidePaneOffsetWidth + 16;
+        // tooltipElement.style.setProperty('max-width', '90', 'important');
+    //  }
+    // }
+    // OLD WORKING CODE END
+
+
+
+
+    // Set tooltip position
+    this.toolTipPosition = {
+      top: y + 'px',
+      left: (x - sidePaneOffsetWidth) + 'px'
+    };
+
   }
 
   private scrollToElement(element: HTMLElement) {
@@ -345,14 +602,16 @@ export class IntroductionPage {
     return eventTarget;
   }
 
-  showPersonTooltip(id: string, origin: any) {
+  showPersonTooltip(id: string, targetElem: HTMLElement, origin: any) {
     if (this.tooltips.persons[id]) {
+      this.moveTooltipInPosition(targetElem, this.tooltips.persons[id]);
       this.setToolTipText(this.tooltips.persons[id]);
       return;
     }
 
     this.tooltipService.getPersonTooltip(id).subscribe(
       tooltip => {
+        this.moveTooltipInPosition(targetElem, tooltip.description);
         this.setToolTipText(tooltip.description);
         this.tooltips.persons[id] = tooltip.description;
       },
@@ -369,40 +628,27 @@ export class IntroductionPage {
   }
 
   getTocRoot(id: string) {
-    this.storage.get('toc_' + id).then((tocItemsC) => {
-      if (tocItemsC) {
-        this.tocItems = tocItemsC;
-        console.log('get toc root... --- --- in single edition');
-        const tocLoadedParams = { tocItems: tocItemsC };
-        tocLoadedParams['collectionID'] = this.id;
-        tocLoadedParams['searchTocItem'] = true;
-        this.events.publish('tableOfContents:loaded', tocLoadedParams);
-        console.log('toc from cache');
-      } else {
-        if ( id !== 'mediaCollections' ) {
-          this.tableOfContentsService.getTableOfContents(id)
-          .subscribe(
-            tocItems => {
-              this.tocItems = tocItems;
-              console.log('get toc root... --- --- in single edition');
-              const tocLoadedParams = { tocItems: tocItems };
-              tocLoadedParams['collectionID'] = this.collection;
-              tocLoadedParams['searchTocItem'] = true;
-              this.events.publish('tableOfContents:loaded', tocLoadedParams);
-              this.storage.set('toc_' + id, tocItems);
-            },
-            error => { this.errorMessage = <any>error });
-        } else {
-          this.tocItems = this.collection['accordionToc']['toc'];
-          const tocLoadedParams = { tocItems: this.tocItems };
-          tocLoadedParams['collectionID'] = 'mediaCollections';
+    if ( id !== 'mediaCollections' ) {
+      this.tableOfContentsService.getTableOfContents(id)
+      .subscribe(
+        tocItems => {
+          this.tocItems = tocItems;
+          console.log('get toc root... --- --- in single edition');
+          const tocLoadedParams = { tocItems: tocItems };
+          tocLoadedParams['collectionID'] = this.tocItems['collectionId'];
           tocLoadedParams['searchTocItem'] = true;
           this.events.publish('tableOfContents:loaded', tocLoadedParams);
-          this.storage.set('toc_' + id, this.tocItems);
-          console.log('media');
-        }
-      }
-    });
+          this.storage.set('toc_' + id, tocItems);
+        },
+        error => { this.errorMessage = <any>error });
+    } else {
+      this.tocItems = this.collection['accordionToc']['toc'];
+      const tocLoadedParams = { tocItems: this.tocItems };
+      tocLoadedParams['collectionID'] = 'mediaCollections';
+      tocLoadedParams['searchTocItem'] = true;
+      this.events.publish('tableOfContents:loaded', tocLoadedParams);
+      this.storage.set('toc_' + id, this.tocItems);
+    }
   }
 
   showPopover(myEvent) {
@@ -428,9 +674,33 @@ export class IntroductionPage {
   }
 
   hideToolTip() {
+    // Is this necessary any more?
+    this.toolTipText = '';
+
+    // let tooltipElement: HTMLElement = document.querySelector('div.toolTip');
+    // tooltipElement.innerHTML = '';
+
+    /*
+    if (tooltipElement.style.getPropertyValue('max-width')) {
+      tooltipElement.style.removeProperty('max-width');
+    }
+    */
+
+    this.toolTipPosition = {
+      top: -1000 + 'px',
+      left: -1000 + 'px'
+    };
+
+    /*
     window['reload_timer'] = setTimeout(() => {
-      this.showToolTip = false;
+      //this.showToolTip = false;
+
+      this.toolTipPosition = {
+        top: -1000 + 'px',
+        left: -1000 + 'px'
+      };
     }, 4000);
+    */
   }
 
   private scrollToElementTOC(element: HTMLElement, event: Event) {

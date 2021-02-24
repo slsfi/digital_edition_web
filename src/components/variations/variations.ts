@@ -31,6 +31,7 @@ export class VariationsComponent {
   errorMessage: string;
   normalized = true;
   varID: string;
+  textLoading: Boolean = true;
 
   constructor(
     protected sanitizer: DomSanitizer,
@@ -83,12 +84,13 @@ export class VariationsComponent {
   getVariation() {
     this.textService.getVariations(this.itemId).subscribe(
       res => {
-          // in order to get id attributes for tooltips
-          console.log('recieved variations ,..,', res);
-          this.variations = res.variations;
-          this.setVariation();
-        },
-      error =>  {this.errorMessage = <any>error}
+        this.textLoading = false;
+        // in order to get id attributes for tooltips
+        console.log('recieved variations ,..,', res);
+        this.variations = res.variations;
+        this.setVariation();
+      },
+      error =>  { this.errorMessage = <any>error; this.textLoading = false; }
     );
   }
 
@@ -107,6 +109,7 @@ export class VariationsComponent {
 
   getCacheText(id: string) {
     this.storage.get(id).then((variations) => {
+      this.textLoading = false;
       this.variations = this.variations;
       this.setVariation();
     });

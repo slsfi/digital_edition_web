@@ -8,18 +8,18 @@
             <ion-row class="secondary-toolbar-icons-wrapper">
               <ion-col>
                   <div id="share-icon" (click)="showSharePopover($event)">
-                    <ion-icon class="share-icon" name="ios-share-outline" ios="ios-share-outline"></ion-icon>
+                    <ion-icon class="share-icon" name="share"></ion-icon>
                   </div>
               </ion-col>
               <ion-col>
                   <div name="download" id="download-icon" (click)="download()">
-                  <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
-                  <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
+                  <ion-icon class="settings-icon" *ngIf="!cacheItem" name="cloud-download"></ion-icon>
+                  <ion-icon class="settings-icon" *ngIf="cacheItem" name="cloud-done"></ion-icon>
                   </div>
               </ion-col>
               <ion-col>
                   <div #settingsIconElement (click)="showPopover($event)" id="settings-icon">
-                  <ion-icon  class="settings-icon" name="settings"></ion-icon>
+                  <ion-icon class="settings-icon" name="settings"></ion-icon>
                   </div>
               </ion-col>
             </ion-row>
@@ -45,7 +45,7 @@
 
     <div class="read-columns" drag-scroll-y-disabled scrollbar-hidden="true" reachesRightBound="true"
       snap-disabled="true" snap-offset="0" [ngClass]="views.length > 1 ? 'multiple-columns' : 'single-column'">
-      <div *ngIf="showToolTip" class="toolTip" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}" [innerHTML]="toolTipText"></div>
+      <div *ngIf="showToolTip" [ngClass]="'toolTip tei ' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}" [innerHTML]="toolTipText"></div>
       <div [ngClass]="views.length > 1 ? 'read-column multiple-columns' : 'read-column single-column'" *ngFor="let view of views; let i = index;" id="read_div_{{i}}" scrollY="true"
         [ngStyle]="{'position': 'relative','max-width':((maxSingleWindowWidth)/((views.length>1)?views.length:1))+'%','min-width':'25%'}"
         #readColumn>
@@ -67,7 +67,7 @@
               </button>
               <ion-fab-list *ngIf="views.length>1">
                 <button ion-fab *ngIf="displayToggle" (click)="removeSlide(i)">
-                  <ion-icon name="close"></ion-icon>
+                  <ion-icon name="trash"></ion-icon>
                 </button>
                 <button ion-fab (click)="swipeTabs('read_div_', i)">
                   <ion-icon name="swap"></ion-icon>
@@ -83,7 +83,7 @@
                 <comments [link]="establishedText.link" [matches]="matches" [external]="external" (openNewIntroView)="openNewView($event)">
                 </comments>
               </div>
-              <div *ngIf="view.facsimiles.show">
+              <div *ngIf="view.facsimiles.show" class="read_facsimiles">
                 <facsimiles [itemId]="establishedText.link" [selectedFacsimile]="view.facsimiles.id" [matches]="matches"
                   [facsID]="facs_id" [facsNr]="facs_nr" [songID]="song_id" (openNewFacsimileView)="openNewView($event)">
                 </facsimiles>
@@ -119,7 +119,7 @@
       </button>
       <ion-fab-list side="top">
       <div class="fab-backdrop" (click)="fab.close()"></div>
-        <button ion-fab (click)="showAllViews()" *ngIf="displayToggles['showAll']">
+        <button ion-fab (click)="showAllViews(); fab.close()" *ngIf="displayToggles['showAll']">
           <ion-icon name="albums"></ion-icon>
           <ion-label>{{ "Read.ShowAll" | translate }}</ion-label>
         </button>
@@ -179,7 +179,7 @@
         </ion-segment>
       </div>
       <div [ngSwitch]="show">
-        <div *ngSwitchCase="'established'">
+        <div *ngSwitchCase="'established'" class="mobile-mode-established">
           <read-text [link]="establishedText.link" [matches]="matches"></read-text>
         </div>
         <div *ngSwitchCase="'facsimiles'" class="no-scroll">

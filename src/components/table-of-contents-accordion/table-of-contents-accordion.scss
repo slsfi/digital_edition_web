@@ -6,10 +6,22 @@ table-of-contents-accordion {
     cursor: pointer;
   }
 
-  .collection-name-top{
-    background-color: rgba(color($colors, primary), $alpha: 0.2) !important;
+  /* The toc items should not have a background color in them selves, thus the background color for the entire navigation panel shines through. */
+  ion-item.item {
+    background-color: unset;
   }
-  .collection-name-top ion-label{
+
+  ion-item.item.selected-toc-item {
+    /*background-color: #eee;*/
+    font-weight: bold;
+  }
+
+  ion-item.item.collection-name-top {
+    background-color: color($colors, secondary);
+    min-height: 50px;
+    font-weight: bold;
+  }
+  .collection-name-top ion-label {
     white-space: pre-wrap !important;
   }
     .collection-filters {
@@ -19,15 +31,20 @@ table-of-contents-accordion {
 
             button {
                 .button-inner ion-icon {
-                    color: #ddd;
+                    color: #e3e3e3;
+                    font-size: 1.5rem;
                 }
 
                 &.active {
-                    background-color:#4a6770;
-                    color: #fff;
-
-                    &:hover {
-                        background-color: #547a86;
+                    background-color: #4a6770;
+                    .button-inner ion-icon {
+                        color: #fff;
+                    }
+                }
+                &:hover {
+                    background-color: #4a6770 !important;
+                    .button-inner ion-icon {
+                        color: #fff;
                     }
                 }
             }
@@ -64,7 +81,7 @@ table-of-contents-accordion {
     }
 
     .accordion-menu .list .list-md {
-        background-color: #ecece4;
+        background-color: #ecece4; /* should changed into variable */
     }
 
     ion-list.accordion-menu ion-item.header ion-icon.header-icon.rotate {
@@ -95,9 +112,11 @@ table-of-contents-accordion {
         overflow-x: hidden;
     }
 
-    ion-item.selected-toc-item {
-        background-color: #eee;
+    ion-item ion-label span.description {
+        color: #666;
+        font-weight: normal !important;
     }
+
 }
 .list-ios > .item-block:first-child {
     border-top: none !important;

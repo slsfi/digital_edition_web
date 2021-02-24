@@ -5,7 +5,7 @@
             <ion-row class="secondary-toolbar-icons-wrapper">
               <ion-col>
                   <div id="share-icon" (click)="showSharePopover($event)">
-                    <ion-icon class="share-icon" name="ios-share-outline" ios="ios-share-outline"></ion-icon>
+                    <ion-icon class="share-icon" name="share"></ion-icon>
                   </div>
               </ion-col>
               <ion-col>
@@ -22,9 +22,9 @@
 <ion-content padding>
     <ion-card>
         <ion-card-content>
-            <div *ngIf="showToolTip" class="toolTip" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left}" [innerHTML]="toolTipText"></div>
+            <div *ngIf="showToolTip" [ngClass]="'toolTip tei ' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left, 'max-width': toolTipMaxWidth}" [innerHTML]="toolTipText"></div>
             <ion-scroll scrollY="true" style="height:80vh;" class="card">
-                <ion-item *ngIf="textLoading"><ion-spinner class="loading" name="dots"></ion-spinner></ion-item>
+              <ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
                 <div class="tei"
                   [class.show_personInfo]="readPopoverService.show.personInfo"
                   [class.show_placeInfo]="readPopoverService.show.placeInfo"
@@ -34,7 +34,7 @@
                   [class.show_pageBreakOriginal]="readPopoverService.show.pageBreakOriginal"
                   [class.show_pageBreakEdition]="readPopoverService.show.pageBreakEdition"
                 [innerHTML]="text" [ngClass]="(hasSeparateIntroToc ? 'hideIntro' : '') + ' ' +
-                ((readPopoverService.fontsize==0)?'smallFont':(readPopoverService.fontsize==1)?'mediumFont':'largeFont')"></div>
+                ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')"></div>
             </ion-scroll>
         </ion-card-content>
     </ion-card>

@@ -1,19 +1,19 @@
 <ion-list>
   <ion-item-group>
-    <ion-item-divider color="light">
+    <ion-item-divider color="secondary">
       {{'Reference.title' | translate }}
       <div class="close" (click)="dismiss()"><ion-icon name="close"></ion-icon></div>
     </ion-item-divider>
     <ion-item (click)="shareURI()">
-      <ion-icon item-start name="ios-link"></ion-icon>
+      <ion-icon item-start name="link"></ion-icon>
       <p>{{'Reference.urn' | translate }}</p>
     </ion-item>
   </ion-item-group>
   <ion-item-group>
-    <ion-item-divider color="light">Dela</ion-item-divider>
+    <ion-item-divider color="secondary">{{'Reference.share' | translate }}</ion-item-divider>
     <ion-item *ngIf="showSocial.email" (click)="shareEmail()">
       <ion-icon item-start name="mail"></ion-icon>
-      <p>Mail</p>
+      <p>{{'Reference.mail' | translate }}</p>
     </ion-item>
     <ion-item *ngIf="showSocial.facebook" (click)="shareFacebook()">
       <ion-icon item-start name="logo-facebook"></ion-icon>

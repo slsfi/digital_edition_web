@@ -338,6 +338,9 @@ export class TableOfContentsAccordionComponent {
     }
 
     this.events.subscribe('SelectedItemInMenu', (menu) => {
+      if ( this.collectionId === undefined || this.collectionId === null ) {
+        this.collectionId = menu.menuID;
+      }
       if (this.collectionId !== menu.menuID && this.currentOption) {
         this.currentOption.selected = false;
         this.currentOption = null;
@@ -516,6 +519,20 @@ export class TableOfContentsAccordionComponent {
           this.chronologicalactiveMenuTree = toc;
         }
       });
+    });
+
+    this.events.subscribe('setSelectedStatic:true', (data) => {
+      this.introductionSelected = false;
+      this.coverSelected = false;
+      this.titleSelected = false;
+      if ( data['isCover'] !== undefined ) {
+        this.coverSelected = true;
+      } else if ( data['isTitle'] !== undefined ) {
+        this.titleSelected = true;
+      } else if ( data['isIntroduction'] !== undefined ) {
+        this.introductionSelected = true;
+      }
+      this.cdRef.detectChanges();
     });
   }
 
@@ -736,6 +753,9 @@ export class TableOfContentsAccordionComponent {
     if (this.isMarkdown) {
       this.selectMarkdown(item);
     } else if (item.is_gallery) {
+      this.titleSelected = false;
+      this.introductionSelected = false;
+      this.coverSelected = false;
       this.selectGallery(item);
     } else if ( item.itemId !== undefined ) {
 
@@ -804,9 +824,6 @@ export class TableOfContentsAccordionComponent {
       } else {
         this.events.publish('title-logo:show', false);
       }
-
-      console.log('Opening read from TableOfContentsAccordionComponent.openFirstPage()');
-      console.log(params);
       nav[0].setRoot('read', params);
     } else {
       this.storage.set('currentTOCItem', item);
@@ -854,9 +871,9 @@ export class TableOfContentsAccordionComponent {
     }
   }
 
-  openIntroduction() {
+  openIntroduction(id) {
     const params = {root: this.root, tocItem: null, collection: {title: 'Introduction'}};
-    params['collectionID'] = this.collectionId;
+    params['collectionID'] = id;
     this.introductionSelected = true;
     this.titleSelected = false;
     this.coverSelected = false;
@@ -868,9 +885,9 @@ export class TableOfContentsAccordionComponent {
     }
   }
 
-  openTitlePage() {
+  openTitlePage(id) {
     const params = {root: this.root, tocItem: null, collection: {title: 'Title Page'}};
-    params['collectionID'] = this.collectionId;
+    params['collectionID'] = id;
     params['firstItem'] = '1';
     this.titleSelected = true;
     this.coverSelected = false;
@@ -883,9 +900,9 @@ export class TableOfContentsAccordionComponent {
     }
   }
 
-  openCoverPage() {
+  openCoverPage(id) {
     const params = {root: this.root, tocItem: null, collection: {title: 'Cover Page'}};
-    params['collectionID'] = this.collectionId;
+    params['collectionID'] = id;
     params['firstItem'] = '1';
     this.titleSelected = false;
     this.coverSelected = true;
@@ -968,17 +985,16 @@ export class TableOfContentsAccordionComponent {
   }
 
   exit() {
-    this.collectionId = null;
-    this.collectionName = null;
+    // this.collectionId = null;
+    this.collectionName = undefined;
 
     this.events.publish('exitActiveCollection');
 
-    this.activeMenuTree = [];
-    this.collapsableItems = [];
+    // this.activeMenuTree = [];
+    // this.collapsableItems = [];
 
     const nav = this.app.getActiveNavs();
-    nav[0].setRoot('EditionsPage', [], {animate: false, direction: 'back', animation: 'ios-transition'});
-
+    nav[0].goToRoot({animate: false});
     this.alphabethicOrderActive = false;
     this.chronologicalOrderActive = false;
     this.thematicOrderActive = false;

@@ -29,6 +29,8 @@ export class DigitalEditionList implements OnInit {
   pdfsAreDownloadOnly = false;
   tocItems: GeneralTocItem[];
   hasCover = true;
+  hasIntro = true;
+  hasTitle = true;
   hideBooks = false;
   collectionSortOrder: any;
 
@@ -55,6 +57,16 @@ export class DigitalEditionList implements OnInit {
       this.hasCover = this.config.getSettings('HasCover');
     } catch (e) {
       this.hasCover = true;
+    }
+    try {
+      this.hasTitle = this.config.getSettings('HasTitle');
+    } catch (e) {
+      this.hasTitle = true;
+    }
+    try {
+      this.hasIntro = this.config.getSettings('HasIntro');
+    } catch (e) {
+      this.hasIntro = true;
     }
     try {
       this.collectionSortOrder = this.config.getSettings('app.CollectionSortOrder');
@@ -184,9 +196,13 @@ export class DigitalEditionList implements OnInit {
         tresh = true;
       }
 
-      if ((this.collectionDownloads['pdf'] !== undefined && de[i].id in this.collectionDownloads['pdf']) ||
-        (this.collectionDownloads['epub'] !== undefined && de[i].id in this.collectionDownloads['epub'])) {
-        de[i].url = this.collectionDownloads[de[i].title];
+      if ( this.collectionDownloads['pdf'] !== undefined &&  this.collectionDownloads['pdf'][String(de[i].id)] !== undefined ) {
+        de[i].url = this.collectionDownloads['pdf'][String(de[i].id)].title;
+        de[i].isDownload = (String(de[i].url).length > 0) ? true : false;
+      }
+
+      if ( this.collectionDownloads['epub'] !== undefined && de[i].id in this.collectionDownloads['epub'] ) {
+        de[i].url = this.collectionDownloads['epub'][String(de[i].id)].title;
         de[i].isDownload = (String(de[i].url).length > 0) ? true : false;
       }
 
@@ -202,12 +218,12 @@ export class DigitalEditionList implements OnInit {
     if (collection.isDownload) {
       if (collection.id in this.collectionDownloads['pdf']) {
         const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.id + '/pdf/' +
-          this.collectionDownloads['pdf'][collection.id] + '/';
-        const ref = window.open(dURL, '_self', 'location=no');
+          this.collectionDownloads['pdf'][collection.id].title + '/';
+        const ref = window.open(dURL);
       } else if (collection.id in this.collectionDownloads['epub']) {
         const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.id + '/epub/' +
-          this.collectionDownloads['epub'][collection.id] + '/';
-        const ref = window.open(dURL, '_self', 'location=no');
+          this.collectionDownloads['epub'][collection.id].title + '/';
+        const ref = window.open(dURL);
       }
     }
     this.doAnalytics('Download', 'PDF', this.collectionDownloads['pdf'][collection.id]);
@@ -217,7 +233,7 @@ export class DigitalEditionList implements OnInit {
     try {
       (<any>window).ga('send', 'event', {
         eventCategory: action,
-        eventLabel: 'Song',
+        eventLabel: 'digital-edition-list',
         eventAction: type + ' - ' + name,
         eventValue: 10
       });
@@ -240,8 +256,8 @@ export class DigitalEditionList implements OnInit {
   }
 
   openCollection(collection: DigitalEdition, animate = true) {
-    if (!collection.isDownload) {
-      if (this.hasCover === false) {
+    if ( collection.isDownload === undefined && !collection.isDownload) {
+      if (this.hasCover === false && this.hasIntro === false  && this.hasTitle === false) {
         this.getTocRoot(collection);
       } else {
         this.events.publish('digital-edition-list:open', collection);

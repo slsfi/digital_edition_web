@@ -405,80 +405,19 @@ export class ReadPage /*implements OnDestroy*/ {
    * @param searchTocItem
    */
   getTocRoot(id: string, searchTocItem?: boolean) {
-
-    this.storage.get('toc_' + id).then((tocItemsC) => {
-      if (tocItemsC) {
-        console.log('get toc root from cache... --- --- in read');
-        tocItemsC.selectedCollId = null;
-        tocItemsC.selectedPubId = null;
-        if (this.params.get('collectionID') && this.params.get('publicationID')) {
-          tocItemsC.selectedCollId = this.params.get('collectionID');
-          tocItemsC.selectedPubId = this.params.get('publicationID');
-        }
-
-        if ( this.params.get('chapterID') ) {
-          tocItemsC.selectedChapterId = this.params.get('chapterID');
-        }
-
-        const tocLoadedParams = { tocItems: tocItemsC };
-        if (searchTocItem && this.appUsesAccordionToc) {
-          tocLoadedParams['searchTocItem'] = true;
-          tocLoadedParams['collectionID'] = this.params.get('collectionID');
-          tocLoadedParams['publicationID'] = this.params.get('publicationID');
-          tocLoadedParams['chapterID'] = this.params.get('chapterID');
-          tocLoadedParams['itemId'] = this.params.get('collectionID') + '_' + this.params.get('publicationID');
-
-          if (this.search_title) {
-            tocLoadedParams['search_title'] = this.search_title;
-          }
-        }
-        this.events.publish('tableOfContents:loaded', tocLoadedParams);
-        console.log('toc from cache - read');
-      } else {
-        this.tocService.getTableOfContents(id)
-        .subscribe(
-          tocItems => {
-            console.log('get toc root... --- --- in read');
-            tocItems.selectedCollId = null;
-            tocItems.selectedPubId = null;
-            if (this.params.get('collectionID') && this.params.get('publicationID')) {
-              tocItems.selectedCollId = this.params.get('collectionID');
-              tocItems.selectedPubId = this.params.get('publicationID');
-            }
-
-            if ( this.params.get('chapterID') ) {
-              tocItems.selectedChapterId = this.params.get('chapterID');
-            }
-
-            const tocLoadedParams = { tocItems: tocItems };
-
-            if (searchTocItem && this.appUsesAccordionToc) {
-              tocLoadedParams['searchTocItem'] = true;
-              tocLoadedParams['collectionID'] = this.params.get('collectionID');
-              tocLoadedParams['publicationID'] = this.params.get('publicationID');
-              tocLoadedParams['chapterID'] = this.params.get('chapterID');
-
-              if (this.search_title) {
-                tocLoadedParams['search_title'] = this.search_title;
-              }
-            }
-            this.events.publish('tableOfContents:loaded', tocLoadedParams);
-            this.storage.set('toc_' + id, tocItems);
-          },
-          error => { this.errorMessage = <any>error });
-      }
-    });
-
     this.tocService.getTableOfContents(id)
       .subscribe(
         tocItems => {
           console.log('get toc root... --- --- in read');
-          this.storage.set('currentTOCItem', tocItems.children[0][0]);
           tocItems.selectedCollId = null;
           tocItems.selectedPubId = null;
           if (this.params.get('collectionID') && this.params.get('publicationID')) {
             tocItems.selectedCollId = this.params.get('collectionID');
             tocItems.selectedPubId = this.params.get('publicationID');
+          }
+
+          if ( this.params.get('chapterID') ) {
+            tocItems.selectedChapterId = this.params.get('chapterID');
           }
 
           const tocLoadedParams = { tocItems: tocItems };
@@ -487,12 +426,14 @@ export class ReadPage /*implements OnDestroy*/ {
             tocLoadedParams['searchTocItem'] = true;
             tocLoadedParams['collectionID'] = this.params.get('collectionID');
             tocLoadedParams['publicationID'] = this.params.get('publicationID');
+            tocLoadedParams['chapterID'] = this.params.get('chapterID');
 
             if (this.search_title) {
               tocLoadedParams['search_title'] = this.search_title;
             }
           }
           this.events.publish('tableOfContents:loaded', tocLoadedParams);
+          this.storage.set('toc_' + id, tocItems);
         },
         error => { this.errorMessage = <any>error });
   }
@@ -931,28 +872,30 @@ export class ReadPage /*implements OnDestroy*/ {
           this.scrollToElement(eventTarget.getAttribute('href'));
         }
       }
-      if (event.target.classList.contains('variantScrollTarget') && this.readPopoverService.show.comments) {
+      if (event.target.classList.contains('variantScrollTarget')) {
         if (event.target !== undefined) {
           event.target.style.fontWeight = 'bold';
           this.showVariationTooltip(event);
-          this.scrollToElement(event.target);
+          this.scrollToVariant(event.target);
         }
         setTimeout(function () {
           if (event.target !== undefined) {
-            event.target.style.fontWeight = 'normal';
+            event.target.style.fontWeight = null;
           }
-        }, 1000);
+        }, 5000);
       }
+      /* This is too unspecific. It leads to all text with class tooltiptrigger to be clickable when comments are shown.
       if (event.target.classList.contains('tooltiptrigger') && this.readPopoverService.show.comments) {
         if (event.target !== undefined) {
           event.target.style.fontWeight = 'bold';
         }
         setTimeout(function () {
           if (event.target !== undefined) {
-            event.target.style.fontWeight = 'normal';
+            event.target.style.fontWeight = null;
           }
         }, 1000);
       }
+      */
     }).bind(this);
 
     this.renderer.listen(nElement, 'mousewheel', (event) => {
@@ -986,7 +929,7 @@ export class ReadPage /*implements OnDestroy*/ {
             left: x + 'px'
           };
         }
-        if (eventTarget['classList'].contains('ttVariant') && this.readPopoverService.show.comments) {
+        if (eventTarget['classList'].contains('ttVariant')) {
           if (event.target !== undefined) {
             this.showVariationTooltip(event);
           }
@@ -1634,6 +1577,27 @@ export class ReadPage /*implements OnDestroy*/ {
       for (let i = 0; i < elems.length; i++) {
         if (elems[i].id === element.id) {
           elems[i].scrollIntoView();
+        }
+      }
+    } catch (e) {
+
+    }
+  }
+
+  private scrollToVariant(element: HTMLElement) {
+    element.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
+    this.showToolTip = false;
+    try {
+      const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span');
+      for (let i = 0; i < elems.length; i++) {
+        if (elems[i].id === element.id) {
+          elems[i].style.fontWeight = 'bold';
+          elems[i].scrollIntoView({'behavior': 'smooth', 'block': 'center'});
+          setTimeout(function () {
+            if (elems[i] !== undefined) {
+              elems[i].style.fontWeight = null;
+            }
+          }, 5000);
         }
       }
     } catch (e) {

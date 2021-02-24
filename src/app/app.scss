@@ -15,6 +15,125 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+// @font-face rules should go here!
+
+
+
+
+
+// START OF ORIGINAL _PROJECT-VARIABLES.SCSS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// START OF ORIGINAL VARIABLES.SCSS RULES
+.searchbar-search-icon{
+	left: 1rem !important;
+	top: 0.5rem !important;
+	width: 2rem !important;
+	height: 2rem !important;
+}
+
+.filter-button {
+	font-size: 2rem !important;
+}
+
+.button-md{
+	height: 2.3rem !important;
+}
+
+.tei.heading{
+    font-size: 1.3rem !important;
+    text-transform: none;
+}
+
+.tei.places{
+    font-size: 1.0rem;
+    color: #78756f;
+}
+
+.tei.collections{
+    font-size: 1rem;
+    color: #78756f;
+}
+
+.tei h2{
+    padding-top: 1em;
+    font-size: 1em !important;
+}
+
+.tei.place_name,.onki_province,.collection{
+    color: #78756f;
+}
+
+match {
+	background-color: transparent !important;
+}
+
+img[src*="#fsfd_bild_md_left"] {
+    padding: 2px;
+    border: 1px solid #c4c4b1;
+    float: left;
+    margin-right: 10px;
+}
+
+img[src*="#fsfd_bild_md_right"] {
+    padding: 2px;
+    border: 1px solid #c4c4b1;
+    float: right;
+    margin-left: 10px;
+}
+
+blockquote{
+    font-style: italic;
+    font-weight: 600;
+}
+
+/* These overrides are unnecessary here, primary and secondary colors are used instead by default.
+.toolbar-background{
+    background-color: #a6aebd;
+}
+.content {
+    background-color: #ecebe4 !important;
+}
+.item {
+    background-color: #ECEBE4 !important;
+}*/
+
+/* This applies to descriptions in TOC, but unclear why declared here and not in table-of-contents-accordion.scss */
+.description {
+    white-space: normal;
+    line-height: 1.4rem !important;
+}
+.media_description {
+    float: left;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// START OF ORIGINAL APP.SCSS RULES
+
 body {
   -webkit-user-select: text;
   -moz-user-select: text;
@@ -37,11 +156,12 @@ ion-label {
   overflow: visible!important;
 }
 
+/* Defined in tei.scss instead
 .tei {
   font-family: $font-app-tei;
   // user-select: text !important;
 
-}
+}*/
 
 .selectable { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
 
@@ -69,9 +189,9 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
 
-.card-md p{
+.card-md p {
   font-size: 1.2rem;
-  font-weight: 100;
+  /*font-weight: 100;*/
 }
 
 p, blockquote {
@@ -127,7 +247,7 @@ p, blockquote {
 }
 
 .back-to-list-button {
-  background-color: $back-button-color;
+  background-color: $back-button-color !important;
 
   .back-button-text {
     color: $back-button-text-color;
@@ -248,6 +368,20 @@ ion-toolbar.secondary {
   }
 }
 
+/* Remove default line-height from divs in secondary toolbar to vertically center button icons --> This rule is not needed any more.
+ion-toolbar.secondary div {
+	line-height: unset !important;
+} */
+
+page-introduction .secondary-toolbar-icons-wrapper, 
+page-read .secondary-toolbar-icons-wrapper {
+  ion-icon {
+    font-size: 1.75rem;
+    padding: 0.5rem;
+    cursor: pointer;
+  }
+}
+
 ion-label{
   font-size: 1rem;
 }
@@ -266,7 +400,7 @@ ion-list{
 
 ion-toolbar{
   ion-icon{
-    font-size: 2rem !important;
+    font-size: 2rem;
   }
 }
 
@@ -386,11 +520,13 @@ input{
   }
 }
 
-.item-md p{
+.item-md p {
   font-size: 1rem;
+  color: color($colors, dark);
 }
 
-.searchbar input, div, button{
+/* Previously this rule affected all divs and buttons, testing to limit the scope since it's otherwise a very problematic rule. The intention was probably to just affect the searchbar. */
+.searchbar input, .searchbar div, .searchbar button {
   font-size: 1rem !important;
   line-height: 1rem !important;
 }
@@ -432,15 +568,17 @@ ion-list.accordion-menu div.options {
   margin-left: 20px;
 }
 
+/* Definieras redan i table-of-contents-accordion.scss
 ion-item.selected-toc-item {
   background-color: #eee;
 }
+*/
 
 .mainMenuItem{
   font-weight: 400;
 }
 
-ion-label > p{
+ion-label > p {
   white-space: normal;
   font-size: 1rem !important;
 }
@@ -469,7 +607,7 @@ ion-list.accordion-menu{
 ion-nav{
   transform: none !important;
   z-index: 1 !important;
-  background-color: #ECEBE4 !important;
+  background-color: $background-color !important;
 }
 
 #tableOfContentsMenu{
@@ -485,6 +623,54 @@ ion-nav{
 .split-pane-ios.split-pane-visible > .split-pane-side{
   box-shadow: 6px 0 6px rgba(0,0,0,.1) !important;
 }
+
+/* Adjust placement of read-page/intro settings and share popovers */
+.popover_settings .popover-content,
+.share-popover .popover-content {
+  top: 70px !important;
+  left: unset !important;
+  right: 12px !important;
+  transform-origin: right top 0 !important;
+}
+.popover_settings .popover-content {
+  width: min-content !important;
+}
+/* on very small screens, place popovers further right */
+@media screen and (max-width: 360px) {
+  .popover_settings .popover-content,
+  .share-popover .popover-content {
+    right: 6px !important;
+  }
+}
+
+/* Set font-size for tab-container to smaller than inherited 1.4rem */
+div.tab-container {
+  font-size: 1rem;
+}
+
+/* Center crescent ion-spinner */
+ion-spinner.loading.spinner-crescent {
+	position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+/* Increase size of crescent ion-spinner SVG */
+ion-spinner.loading.spinner-crescent * {
+  width: 32px;
+  height: 32px;
+}
+
+
+// Load TEI-stylesheets. Moved here from project-variables.scss
+@import '../theme/tei';
+@import '../theme/tei_comment';
+@import '../theme/tei_variant';
+@import '../theme/tei_manuscript';
+
+
+
+
 
 /* Intro.js core  */
 .introjs-overlay {

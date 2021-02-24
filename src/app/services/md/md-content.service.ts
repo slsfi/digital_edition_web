@@ -25,7 +25,8 @@ export class MdContentService {
       fileID = id_parts.join('-');
     }
 
-    const url = this.config.getSettings('app.apiEndpoint') + '/' + this.config.getSettings('app.machineName') + this.mdUrl + fileID
+    const url = this.config.getSettings('app.apiEndpoint') + '/' + this.config.getSettings('app.machineName') + this.mdUrl + fileID;
+    console.log(url)
     return this.http.get(url)
                     .map(this.extractData)
                     .catch(this.handleError);

@@ -56,7 +56,6 @@ export class TitlePage {
   ) {
     this.titleSelected = true;
     this.id = this.params.get('collectionID');
-    console.log(`Titlepage id is ${this.id}`);
 
     this.collection = this.params.get('collection');
     if ( this.params.get('publicationID') === undefined ) {
@@ -78,12 +77,24 @@ export class TitlePage {
       });
     });
 
-    this.checkIfCollectionHasChildrenPdfs();
-    if (!isNaN(Number(this.id))) {
+    // Check if not a Number
+    let idNaN = isNaN(Number(this.id));
+    if ( this.id === null || this.id === 'null' ) {
+      idNaN = true;
+    }
+
+    // idNaN === false, id is a number
+    if ( idNaN === false ) {
+      this.checkIfCollectionHasChildrenPdfs();
+    }
+
+    // idNaN === false, id is a number
+    if ( idNaN === false ) {
       if (this.hasMDTitle) {
-        const folder = this.hasMDTitle;
-        this.getMdContent(`${this.lang}-${folder}-${this.id}`);
+        this.getMdContent(`${this.lang}-${this.hasMDTitle}-${this.id}`);
       }
+    } else {
+      this.getMdContent(`${this.lang}-gallery-intro`);
     }
   }
 
@@ -92,17 +103,16 @@ export class TitlePage {
   }
 
   checkIfCollectionHasChildrenPdfs() {
-    this.collectionID = this.params.get('collectionID');
     let configChildrenPdfs = [];
 
     try {
-      configChildrenPdfs = this.config.getSettings(`collectionChildrenPdfs.${this.collectionID}`);
+      configChildrenPdfs = this.config.getSettings(`collectionChildrenPdfs.${this.id}`);
     } catch (e) {}
 
     if (configChildrenPdfs.length) {
       this.childrenPdfs = configChildrenPdfs;
       this.hasDigitalEditionListChildren = true;
-      this.events.publish('CollectionWithChildrenPdfs:highlight', this.collectionID);
+      this.events.publish('CollectionWithChildrenPdfs:highlight', this.id);
     }
   }
 
@@ -122,6 +132,7 @@ export class TitlePage {
   }
 
   getMdContent(fileID: string) {
+    console.log('fileID'  + fileID);
     this.mdContentService.getMdContent(fileID)
         .subscribe(
             text => { this.mdContent = text.content; },
@@ -130,21 +141,17 @@ export class TitlePage {
   }
 
   getTocRoot(id: string) {
-    this.storage.get('toc_' + id).then((tocItemsC) => {
-      if (tocItemsC) {
-        tocItemsC.titleSelected = this.titleSelected;
-        this.events.publish('tableOfContents:loaded', {tocItems: tocItemsC, searchTocItem: true, collectionID: tocItemsC.collectionId, 'caller':  'title'});
-      } else {
-        this.tableOfContentsService.getTableOfContents(id)
-        .subscribe(
-            tocItems => {
-              tocItems.titleSelected = this.titleSelected;
-              this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId, 'caller':  'title'});
-              this.storage.set('toc_' + id, tocItems);
-            },
-          error =>  {this.errorMessage = <any>error});
-          }
-    });
+    if ( id === 'mediaCollections' || id === undefined ) {
+      return [{}];
+    }
+    this.tableOfContentsService.getTableOfContents(id)
+    .subscribe(
+        tocItems => {
+          tocItems.titleSelected = this.titleSelected;
+          this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId, 'caller':  'title'});
+          this.storage.set('toc_' + id, tocItems);
+        },
+      error =>  {this.errorMessage = <any>error});
   }
 
   ionViewDidLoad() {

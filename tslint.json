@@ -23,9 +23,7 @@
     ],
     "member-access": false,
     "member-ordering": [
-      true,
-      "static-before-instance",
-      "variables-before-functions"
+      false
     ],
     "no-arg": true,
     "no-bitwise": true,

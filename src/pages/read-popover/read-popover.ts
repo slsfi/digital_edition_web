@@ -152,6 +152,15 @@ export class ReadPopoverPage {
     this.doAnalytics('togglePageBreakEdition - ' + this.show.pageBreakEdition);
   }
 
+  setFontSize(size: number) {
+    if (size in Fontsize) {
+      this.fontsize = size;
+      this.readPopoverService.fontsize = this.fontsize;
+      this.doAnalytics('setFontSize - ' + Fontsize[size]);
+    }
+  }
+
+/*
   decreaseFontSize() {
     try {
       this.fontsize = Fontsize.small;
@@ -187,6 +196,7 @@ export class ReadPopoverPage {
       this.doAnalytics('increaseFontSize - ' + this.fontsize);
     }
   }
+*/
 
   doAnalytics(type) {
     try {

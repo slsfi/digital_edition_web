@@ -1,13 +1,14 @@
-<div class="tab-container" id="tabs-text-container" *ngIf="platform.is('core') && isExternal === false && numberOfPages > 1" >
-  <div *ngFor="let facsimile of facsimiles; let i = index" (click)="changeFacsimile(facsimile)"
-    [ngClass]="(selectedFacsimile.title === facsimile.title)?'firts-tab':'tab'">
-    <span [innerHTML]='facsimile.title'></span>
-    <div [ngClass]="(selectedFacsimile.title === facsimile.title)?'open-in-tab':'open-in-tab-hidden'"
-      (click)="openNewFacs($event, facsimile)">{{"Read.OpenInTab" | translate}}</div>
-    <div
-      [ngClass]="(selectedFacsimile.title === facsimile.title)?'open-manuscript-in-tab':'open-manuscript-in-tab-hidden'"
-      (click)="openNewManuscriptFacs($event, facsimile)" *ngIf="facsimile.manuscript_id">
-      {{"Read.Facsimiles.OpenManuscript" | translate}}</div>
+<div class="tab-container" id="tabs-text-container" *ngIf="platform.is('core') && isExternal === false" >
+  <div *ngFor="let facsimile of facsimiles; let i = index" (click)="changeFacsimile(facsimile)">
+    <div [ngClass]="(selectedFacsimile.title === facsimile.title)?'firts-tab':'tab'" *ngIf="facsimile.manuscript_id || facsimiles.length > 1">
+      <span *ngIf="facsimiles.length > 1" [innerHTML]='facsimile.title'></span>
+      <div [ngClass]="(selectedFacsimile.title === facsimile.title)?'open-in-tab':'open-in-tab-hidden'" (click)="openNewFacs($event, facsimile)">
+        {{"Read.OpenInTab" | translate}}
+      </div>
+      <div [ngClass]="(selectedFacsimile.title === facsimile.title)?'open-manuscript-in-tab':'open-manuscript-in-tab-hidden'" (click)="openNewManuscriptFacs($event, facsimile)" *ngIf="facsimile.manuscript_id">
+        {{"Read.Facsimiles.OpenManuscript" | translate}}
+      </div>
+    </div>
   </div>
 </div>
 
@@ -24,10 +25,9 @@
     type="number"></ion-input>
 </ion-item>
 
-<div id="facsimilies-image">
-  <img *ngIf="!facsimilePagesInfinite && externalURLs.length===0"
+<div id="facsimilies-image" *ngIf="!facsimilePagesInfinite && externalURLs.length===0">
+  <img
     [src]="images ? images[activeImage] : ''"
-    style="width: 100%;"
     [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
     (wheel)="onMouseWheel($event)"
     (pan)="handleSwipeEvent($event)"
@@ -40,10 +40,9 @@
   </span>
 </div>
 
-<div>
-  <img *ngIf="facsimilePagesInfinite && facsNumber && externalURLs.length===0"
+<div id="facsimilies-image" *ngIf="facsimilePagesInfinite && facsNumber && externalURLs.length===0">
+  <img
     [src]="facsUrl + facsNumber + (facsSize ? '/' + facsSize : '')"
-    style="width: 100%;"
     [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
     (wheel)="onMouseWheel($event)"
     (pan)="handleSwipeEvent($event)"

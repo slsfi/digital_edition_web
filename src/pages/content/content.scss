@@ -49,10 +49,15 @@ page-content {
     }
 
     ion-content{
-        padding-left: 0px;
+        padding-left: 0;
     }
     .scroll-content{
-        padding-left: 0px !important;
+        padding-left: 0 !important;
+    }
+
+    /* This hides the vertical scrollbar on the right edge of the viewport area when it is not necessary to show it. Observe that there are two elements with class scroll-content, which is why this needs to be this specific. */
+    ion-content > .scroll-content {
+        overflow: auto;
     }
 }
 

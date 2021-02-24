@@ -28,20 +28,20 @@
       "OpenInTab": "Open in new tab",
       "Popover": {
           "All": "Choose all",
-          "Appearance": "Appearance",
-          "Show": "Show",
+          "Appearance": "Text size",
+          "Show": "Options",
           "Comments": "Comments",
           "PersonInfo": "People",
           "PlaceInfo": "Places",
           "Changes": "Changes",
           "Abbreviations": "Abbreviations",
-          "PageNumbering": "Page Numbering",
-          "PageBreakOriginal": "Original Page Breaks",
-          "PageBreakEdition": "Edition Page Breaks"
+          "PageNumbering": "Paragraph/Stanza numbering",
+          "PageBreakOriginal": "Original page breaks",
+          "PageBreakEdition": "Edition page breaks"
       },
       "DownloadDigitalVersion": "Download a Digital Version",
       "DownloadPDF": "",
-      "CommentsFor": "Comments to",
+      "CommentsFor": "Comment to",
       "ReadFromBeginning": "From the beginning",
       "Established": {
           "Title": "Established text",
@@ -223,6 +223,8 @@
   "Reference": {
       "title": "Refer",
       "urn": "Link",
+      "share": "Share",
+      "mail": "Mail",
       "thisPage": "Refer to this page",
       "established": "Refer to this text",
       "intro": "Refer to this introduction"

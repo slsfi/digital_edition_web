@@ -185,7 +185,9 @@ export class FacsimilesComponent {
           this.facsPage = facs[0];
         }
 
-        this.manualPageNumber = this.activeImage = this.facsimilePage = this.facsNumber = (this.facsPage['page_nr'] + this.facsPage['start_page_number']);
+        this.manualPageNumber = this.activeImage = this.facsNumber = (
+          this.facsPage['page_nr'] + this.facsPage['start_page_number'] + this.facsimilePage
+        );
         this.numberOfPages = this.facsPage['number_of_pages'];
 
         this.facsPage['title'] = this.sanitizer.bypassSecurityTrustHtml(this.facsPage['title']);
@@ -249,7 +251,7 @@ export class FacsimilesComponent {
             }
             const f_url = this.facsimileService.getFacsimileImage(f.publication_facsimile_collection_id, i, this.facsimileDefaultZoomLevel);
             facsimile.images.push(f_url);
-            const zf_url = this.facsimileService.getFacsimileImage(f.publication_facsimile_collection_id, i, 4);
+            const zf_url = this.facsimileService.getFacsimileImage(f.publication_facsimile_collection_id, i, 1);
             facsimile.zoomedImages.push(zf_url);
           }
           facsimile.itemId = this.itemId;

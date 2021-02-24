@@ -1,26 +1,41 @@
 read-popover-page {
 	.text-button {
-		text-align: center;
+		justify-content: center;
 		background: transparent;
-		margin-left: 43%;
 	}
 
-	.text-smaller {
-		font-size: 1rem;
+	.text-xsmall {
+		font-size: 0.75rem !important;
+	}
+
+	.text-small {
+		font-size: 1rem !important;
 	}
 
 	.text-medium {
-		font-size: 1.2rem;
+		font-size: 1.25rem !important;
 	}
 
-	.text-larger {
-		font-size: 1.6rem;
+	.text-large {
+		font-size: 1.5rem !important;
+	}
+
+	.text-xlarge {
+		font-size: 1.75rem !important;
 	}
 
 	ion-list-header {
 		font-weight: bold;
-		margin-bottom: 0px !important;
+		margin-bottom: 0 !important;
 		min-height: 1rem !important;
+	}
+	ion-item ion-label.label {
+		line-height: 1.5;
+		margin: 9px 8px 9px 0;
+	}
+
+	ion-list:last-child {
+		margin-bottom: 8px;
 	}
 
 	.read-popover-header ion-label {
@@ -29,36 +44,45 @@ read-popover-page {
 		margin-top: 2px;
 	}
 
-	.close{
+	.close {
 		font-size: 1rem;
+		position: absolute;
+		top: 0.5rem;
+		right: 0.75rem;
+		cursor: pointer;
 	}
 
-	.appearence{
+	.selected-font-size {
+		font-weight: bold;
+		color: color($colors, primary);
+	}
+
+	.appearence {
 		margin-top: 0.8rem;
 	}
 
-	.asterix{
-		height: 0.8em;
-		padding-right: 0.1em;
+	.asterix {
+		height: 0.75rem;
+		padding-right: 0.125rem;
 	}
 
-	.show_personInfo{
+	.show_personInfo {
 		display: inline;
 		background-color: $persName-color;
 	}
-	.show_workInfo{
+	.show_workInfo {
 		display: inline;
 		background-color: $workTitle-color;
 	}
-	.show_placeInfo{
+	.show_placeInfo {
 		display: inline;
 		background-color: $placeName-color;
 	}
-	.show_abbreviations{
+	.show_abbreviations {
 		display: inline;
 		background-color: $abbreviations-color;
 	}
-	.show_changesInfo{
+	.show_changesInfo {
 		display: inline;
 		background-color: $changes-color;
 	}

@@ -1,5 +1,5 @@
 .teiManuscript{
-    font-family: "Muli", Georgia, serif  !important;
+    
     .immediate_symbol img{
         display: inline;
         width: 0.9rem;
@@ -45,7 +45,7 @@
     h3{
         margin: 1.1em 0 .6em !important;
         font-size: 1.3em !important;
-        font-variant: small-caps;
+        font-variant: normal;
     }
 }
 
@@ -55,10 +55,6 @@ span.seg img{
 }
 
 p.teiManuscript.strofe[class*="lg"] {
-	line-height: 200% !important;
-	position: relative;
-}
-
-comments{
-    font-family: "Muli", Georgia, serif  !important;
+	line-height: 180%;
+    text-indent: 0 !important;
 }

@@ -1,25 +1,92 @@
-.teiComment{
-    font-family: "Muli", Georgia, serif  !important;
-    p[class*="p"]{
-        text-indent: 30px !important;
-    }    
-    
-    h4{
-        margin: 1em 0 .5em !important;
-        font-size: 1.1em !important;
-    }
-    
-    h3{
-        margin: 1.1em 0 .6em !important;
-        font-size: 1.4em !important;
+div.tei {
+    h3.teiComment,
+    div.ms h3 {
+        font-size: 1.25em;
         font-variant: small-caps;
+        margin: 0 0 0.5em;
+    }
+    h4.teiComment {
+        font-size: 1.125em;
+        font-style: italic;
+        margin: 2em 0 0.5em;
+    }
+
+    p.teiComment {
+        &.noteLegend {
+            text-indent: 0;
+            margin-bottom: 0.5rem;
+            font-size: 0.875em;
+        }
+    
+        /* The paragraph which contains the entire note/annotation. */
+        &.note {
+            margin-top: 1rem;
+            padding-left: 0;
+            text-indent: 0;
+        }
+
+        &.paragraphSpace {
+            padding-bottom: 0 !important;
+        }
+    }
+
+    span.teiComment {
+        &.notePosition {
+            font-weight: normal;
+            font-size: 0.6875em;
+        }
+
+        &.noteLemma::before {
+            content: " ";
+            font-size: 1.25em;
+        }
+        
+        &.noteLemma {
+            font-style: italic;
+            font-weight: bold;
+        }
+
+        &.noteLemma::after {
+            content: " – ";
+            font-style: normal;
+            font-weight: normal;
+        }
+        
+        &.lemmaBreak {
+            font-style: normal;
+        }
+    }
+
+    /* Used for? */
+    span:not([class]) {
+        font-size: 0.85rem;
+        line-height: 1.55;
+        text-indent: 0;
+        display: block;
+        margin-top: 0.5em;
+    }
+
+    /* Manuscript description */
+    div.ms {
+        margin-top: 3rem;
+
+        li {
+            list-style: none;
+            line-height: 1.5rem;
+        }
+    
+        ul {
+            padding-left: 0;
+        }
     }
 }
 
-span.seg img{
-    width: 0.5em;
+/* Change cursor to pointer only when showComments is true */
+.show_comments .teiComment.note {
+    cursor: pointer;
 }
 
-comments{
-    font-family: "Muli", Georgia, serif  !important;
+/* Used for? */
+span.seg img {
+    width: 0.5em;
 }

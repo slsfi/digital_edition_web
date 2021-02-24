@@ -131,21 +131,17 @@ export class CoverPage {
   }
 
   getTocRoot(id: string) {
-    this.storage.get('toc_' + id).then((tocItemsC) => {
-      if (tocItemsC) {
-        tocItemsC.coverSelected = this.coverSelected;
-        this.events.publish('tableOfContents:loaded', {tocItems: tocItemsC, searchTocItem: true, collectionID: tocItemsC.collectionId, 'caller':  'cover'});
-      } else {
-        this.tableOfContentsService.getTableOfContents(id)
-        .subscribe(
-            tocItems => {
-              tocItems.coverSelected = this.coverSelected;
-              this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId, 'caller':  'cover'});
-              this.storage.set('toc_' + id, tocItems);
-            },
-          error =>  {this.errorMessage = <any>error});
-          }
-    });
+    if ( id === 'mediaCollections' || id === undefined ) {
+      return [{}];
+    }
+    this.tableOfContentsService.getTableOfContents(id)
+    .subscribe(
+        tocItems => {
+          tocItems.coverSelected = this.coverSelected;
+          this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId, 'caller':  'cover'});
+          this.storage.set('toc_' + id, tocItems);
+        },
+      error =>  {this.errorMessage = <any>error});
   }
 
   ionViewDidLoad() {

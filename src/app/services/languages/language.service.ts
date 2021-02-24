@@ -58,7 +58,8 @@ export class LanguageService {
           subscriber.complete();
         } else {
           const browserLang = translate.getBrowserLang();
-          subscriber.next(browserLang.match(/sv|fi/) ? browserLang : translate.getDefaultLang())
+          const availableLanguages: string[] = this.config.getSettings('i18n.languages');
+          subscriber.next(browserLang.match(availableLanguages.join('|')) ? browserLang : translate.getDefaultLang())
           subscriber.complete();
         }
       }).catch(() => {
