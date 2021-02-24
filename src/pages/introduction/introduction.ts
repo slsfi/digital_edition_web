@@ -644,7 +644,7 @@ export class IntroductionPage {
               y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
             }
             // Check if tooltip would be drawn outside the viewport horisontally.
-            oversetX = x + triggerPaddingX + (ttNewDimensions.width * scaleRatio) + edgePadding - vw;
+            oversetX = x + ttNewDimensions.width - vw;
             if (oversetX > 0) {
               x = x - oversetX - edgePadding;
             }
