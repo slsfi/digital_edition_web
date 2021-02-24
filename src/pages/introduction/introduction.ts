@@ -638,7 +638,7 @@ export class IntroductionPage {
           } else {
             y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
           }
-          oversetX = x + ttNewDimensions.width - vw;
+          oversetX = x + (scaleRatio * ttNewDimensions.width) - vw;
           if (oversetX > 0) {
             x = x - oversetX - edgePadding;
           }
