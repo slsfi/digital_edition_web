@@ -687,9 +687,6 @@ export class IntroductionPage {
       const hiddenDivCompStyles = window.getComputedStyle(hiddenDiv);
       compToolTipMaxWidth = hiddenDivCompStyles.getPropertyValue('max-width');
     }
-    // Make the hidden div invisible again.
-    hiddenDiv.style.visibility = 'visible';
-    hiddenDiv.style.display = 'none';
     // Remove hidden div.
     hiddenDiv.remove();
 
@@ -698,7 +695,6 @@ export class IntroductionPage {
       height: ttHeight,
       compMaxWidth: compToolTipMaxWidth
     }
-
     return dimensions;
   }
 
