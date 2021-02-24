@@ -186,24 +186,19 @@ export class IntroductionPage {
       const eventTarget = this.getEventTarget(event);
       const elem = event.target;
       if (eventTarget['classList'].contains('tooltiptrigger')) {
-        // Is this necessary here if the text is cleared on mouseout anyway?
-        this.setToolTipText('');
-
         if (eventTarget.hasAttribute('data-id')) {
           if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person')
           && this.readPopoverService.show.personInfo) {
             this.showPersonTooltip(eventTarget.getAttribute('data-id'), elem, event);
           } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName')
           && this.readPopoverService.show.placeInfo) {
-            this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
+            this.showPlaceTooltip(eventTarget.getAttribute('data-id'), elem, event);
           } else if (toolTipsSettings.workInfo && eventTarget['classList'].contains('title')
           && this.readPopoverService.show.workInfo) {
-            this.showWorkTooltip(eventTarget.getAttribute('data-id'), event);
+            this.showWorkTooltip(eventTarget.getAttribute('data-id'), elem, event);
           } else if (toolTipsSettings.footNotes && eventTarget['classList'].contains('ttFoot')) {
             this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), elem, eventTarget, event);
           }
-        } else {
-
         }
       } else if (eventTarget['classList'].contains('anchor')) {
         if (eventTarget.hasAttribute('href')) {
@@ -240,8 +235,61 @@ export class IntroductionPage {
     this.events.publish('ionViewWillEnter', this.constructor.name);
   }
 
-  showWorkTooltip(id: string, origin: any) {
+  showPersonTooltip(id: string, targetElem: HTMLElement, origin: any) {
+    if (this.tooltips.persons[id]) {
+      this.setToolTipPosition(targetElem, this.tooltips.persons[id]);
+      this.setToolTipText(this.tooltips.persons[id]);
+      return;
+    }
+
+    this.tooltipService.getPersonTooltip(id).subscribe(
+      tooltip => {
+        this.setToolTipPosition(targetElem, tooltip.description);
+        this.setToolTipText(tooltip.description);
+        this.tooltips.persons[id] = tooltip.description;
+      },
+      error => {
+        let noInfoFound = 'Could not get person information';
+        this.translate.get('Occurrences.NoInfoFound').subscribe(
+          translation => {
+            noInfoFound = translation;
+          }, errorT => { }
+        );
+        this.setToolTipPosition(targetElem, noInfoFound);
+        this.setToolTipText(noInfoFound);
+      }
+    );
+  }
+
+  showPlaceTooltip(id: string, targetElem: HTMLElement, origin: any) {
+    if (this.tooltips.places[id]) {
+      this.setToolTipPosition(targetElem, this.tooltips.places[id]);
+      this.setToolTipText(this.tooltips.places[id]);
+      return;
+    }
+
+    this.tooltipService.getPlaceTooltip(id).subscribe(
+      tooltip => {
+        this.setToolTipPosition(targetElem, tooltip.description);
+        this.setToolTipText((tooltip.description) ? tooltip.description : tooltip.name);
+        this.tooltips.places[id] = tooltip.description;
+      },
+      error => {
+        let noInfoFound = 'Could not get place information';
+        this.translate.get('Occurrences.NoInfoFound').subscribe(
+          translation => {
+            noInfoFound = translation;
+          }, errorT => { }
+        );
+        this.setToolTipPosition(targetElem, noInfoFound);
+        this.setToolTipText(noInfoFound);
+      }
+    );
+  }
+
+  showWorkTooltip(id: string, targetElem: HTMLElement, origin: any) {
     if (this.tooltips.works[id]) {
+      this.setToolTipPosition(targetElem, this.tooltips.works[id]);
       this.setToolTipText(this.tooltips.works[id]);
       return;
     }
@@ -254,11 +302,13 @@ export class IntroductionPage {
               noInfoFound = translation;
             }, err => { }
           );
+          this.setToolTipPosition(targetElem, noInfoFound);
           this.setToolTipText(noInfoFound);
           return;
         }
         tooltip = tooltip.hits.hits[0]['_source'];
         const description = '<span class="work_title">' + tooltip.title  + '</span><br/>' + tooltip.reference;
+        this.setToolTipPosition(targetElem, description);
         this.setToolTipText(description);
         this.tooltips.works[id] = description;
       },
@@ -299,29 +349,6 @@ export class IntroductionPage {
     this.setToolTipText(footNoteHTML);
     this.tooltips.footnotes[id] = footNoteHTML;
     return footNoteHTML;
-  }
-
-  showPlaceTooltip(id: string, origin: any) {
-    if (this.tooltips.places[id]) {
-      this.setToolTipText(this.tooltips.places[id]);
-      return;
-    }
-
-    this.tooltipService.getPlaceTooltip(id).subscribe(
-      tooltip => {
-        this.setToolTipText((tooltip.description) ? tooltip.description : tooltip.name);
-        this.tooltips.places[id] = tooltip.description;
-      },
-      error => {
-        let noInfoFound = 'Could not get place information';
-        this.translate.get('Occurrences.NoInfoFound').subscribe(
-          translation => {
-            noInfoFound = translation;
-          }, errorT => { }
-        );
-        this.setToolTipText(noInfoFound);
-      }
-    );
   }
 
   setToolTipPosition(targetElem: HTMLElement, ttText: string) {
@@ -672,31 +699,6 @@ export class IntroductionPage {
       eventTarget = event.target;
     }
     return eventTarget;
-  }
-
-  showPersonTooltip(id: string, targetElem: HTMLElement, origin: any) {
-    if (this.tooltips.persons[id]) {
-      this.setToolTipPosition(targetElem, this.tooltips.persons[id]);
-      this.setToolTipText(this.tooltips.persons[id]);
-      return;
-    }
-
-    this.tooltipService.getPersonTooltip(id).subscribe(
-      tooltip => {
-        this.setToolTipPosition(targetElem, tooltip.description);
-        this.setToolTipText(tooltip.description);
-        this.tooltips.persons[id] = tooltip.description;
-      },
-      error => {
-        let noInfoFound = 'Could not get person information';
-        this.translate.get('Occurrences.NoInfoFound').subscribe(
-          translation => {
-            noInfoFound = translation;
-          }, errorT => { }
-        );
-        this.setToolTipText(noInfoFound);
-      }
-    );
   }
 
   getTocRoot(id: string) {
