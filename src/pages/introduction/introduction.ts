@@ -41,7 +41,6 @@ export class IntroductionPage {
   protected collection: any;
   public tocMenuOpen: boolean;
   public hasSeparateIntroToc: boolean;
-  showToolTip: boolean;
   toolTipPosition: object;
   toolTipMaxWidth: string;
   toolTipScaleValue: number;
@@ -84,7 +83,6 @@ export class IntroductionPage {
     if (this.platform.is('mobile')) {
       this.tocMenuOpen = false;
     }
-    this.showToolTip = true;
     this.toolTipMaxWidth = null;
     this.toolTipScaleValue = null;
     this.toolTipPosition = {
@@ -671,7 +669,6 @@ export class IntroductionPage {
   private scrollToElement(element: HTMLElement) {
     this.hideToolTip();
     element.scrollIntoView();
-    // this.showToolTip = false;
     try {
       const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span');
       for (let i = 0; i < elems.length; i++) {
