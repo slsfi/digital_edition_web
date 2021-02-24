@@ -182,7 +182,7 @@ export class IntroductionPage {
     } catch (e) {
       console.error(e);
     }
-    
+
     this.renderer.listen(this.elementRef.nativeElement, 'mouseover', (event) => {
       const eventTarget = this.getEventTarget(event);
       const elem = event.target;
@@ -340,7 +340,6 @@ export class IntroductionPage {
         break;
       }
     }
-
     // Prepend the footnoteindicator to the the footnote text.
     const footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + ftnIndicatorElem.textContent + '</span>' + foundElem;
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
