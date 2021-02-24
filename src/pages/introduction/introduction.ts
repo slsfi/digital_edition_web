@@ -647,22 +647,9 @@ export class IntroductionPage {
     }
 
     // Set tooltip position
-    x = x - sidePaneOffsetWidth;
-    let topPosition = '';
-    let leftPosition = '';
-    if (x === 0) {
-      leftPosition = '0';
-    } else {
-      leftPosition = x + 'px';
-    }
-    if (y === 0) {
-      topPosition = '0';
-    } else {
-      topPosition = y + 'px';
-    }
     this.toolTipPosition = {
-      top: topPosition,
-      left: leftPosition
+      top: y + 'px',
+      left: (x - sidePaneOffsetWidth) + 'px'
     };
   }
 
