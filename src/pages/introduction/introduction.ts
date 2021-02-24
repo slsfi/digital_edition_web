@@ -669,8 +669,9 @@ export class IntroductionPage {
   }
 
   private scrollToElement(element: HTMLElement) {
+    this.hideToolTip();
     element.scrollIntoView();
-    this.showToolTip = false;
+    // this.showToolTip = false;
     try {
       const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span');
       for (let i = 0; i < elems.length; i++) {
