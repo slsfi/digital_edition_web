@@ -82,6 +82,10 @@ div.tei.xsmallFontSize img.comment {
     width: calc(0.75 * #{$text-fontsize-xsmall}) !important;
     height: calc(0.75 * #{$text-fontsize-xsmall}) !important;
 }
+div.tei.smallFontSize img.comment {
+    width: calc(0.75 * #{$text-fontsize-small}) !important;
+    height: calc(0.75 * #{$text-fontsize-small}) !important;
+}
 div.tei.mediumFontSize img.comment {
     width: calc(0.75 * #{$text-fontsize-medium}) !important;
     height: calc(0.75 * #{$text-fontsize-medium}) !important;
@@ -101,6 +105,14 @@ div.tei.xsmallFontSize.show_pageBreakEdition {
     .pb_zts,
     .pb_edition {
         font-size: calc(0.875 * #{$text-fontsize-xsmall});
+    }
+}
+div.tei.smallFontSize.show_pageBreakOriginal,
+div.tei.smallFontSize.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: calc(0.875 * #{$text-fontsize-small});
     }
 }
 div.tei.mediumFontSize.show_pageBreakOriginal,
@@ -393,7 +405,7 @@ div.tei {
         border: 0;
         background-color: rgb(64, 64, 64);
         padding: 0;
-        margin: 1.5rem auto;
+        margin: 1.5em auto;
         width: 5.625em;
     }
     hr.milestoneSmallBar {
@@ -1094,7 +1106,7 @@ div.tei {
     /* Remove? */
     .highlightXMLcomment {
         background-color: #cae4eb !important;
-      }
+    }
 
     // these will be svg
     img.tooltiptrigger {
@@ -1120,8 +1132,6 @@ div.tei {
         /*font-size: 3em;*/
         cursor: pointer;
         top: 0;
-        width: 0.75rem !important;
-        height: 0.75rem !important;
     }
 
     /* Tables */
@@ -2401,7 +2411,8 @@ h2.tei.poemsection2 {
 }
 
 .inl_ms_arrow {
-    height: 0.9rem;
+    height: 0.75em;
+    width: 0.75em;
     display: inline !important;
 }
 
