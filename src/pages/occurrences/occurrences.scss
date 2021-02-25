@@ -13,23 +13,20 @@ page-occurrences {
 
     .col{
         white-space: normal !important;
-        padding: 0;
+        padding: 0 0 4px 0;
     }
 
     .custom-card {
         background-color: white;
+        margin-bottom: 24px;
     }
 
     .grid{
-      padding: 0%;
+      padding: 0;
     }
 
     .grid ion-col{
-      padding-left: 0%;
-    }
-
-    .description {
-      padding-left: 0.3rem;
+      padding-left: 0;
     }
 
     .info{
@@ -142,6 +139,6 @@ page-occurrences {
       color: $text-color;
     }
     .list_of_occurrences_item ion-label.label {
-        padding-left: 1em;
+        padding-left: 1rem;
     }
   }
