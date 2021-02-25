@@ -26,8 +26,14 @@ manuscripts div.tei {
     padding-bottom: 20vh;
 }
 
+div.tei {
+    font-family: $font-app-tei;
+    font-size: $text-fontsize-xsmall;
+    line-height: 1.6em;
+    white-space: normal;
+}
+
 /* Textstorlekar. */
-div.tei,
 div.tei.xsmallFontSize {
     font-size: $text-fontsize-xsmall;
 }
@@ -113,9 +119,6 @@ div.tei.xlargeFontSize.show_pageBreakEdition {
 }
 
 div.tei {
-
-    font-family: $font-app-tei;
-    white-space: normal;
 
     p {
         font-size: 1em;
