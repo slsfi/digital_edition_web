@@ -1899,7 +1899,6 @@ a.reference span.raised {
 }
 */
 /*dramatik, scen- och personanvisningar*/
-/* KONFLIKT med klassnamnet som ändrar texten storlek i UI:n */
 span.smallFont {
 	font-size: 0.9em;
 }
@@ -2302,23 +2301,6 @@ span.note_foot {
 .est_figure_graphic {
 	max-width: 100%;
 	padding-right: 0.2rem;
-}
-
-/*titelsidans omslag --> flytta till page-title */
-.tit_figure_graphic {
-    max-width: 50%;
-    display: block;
-    margin: 1rem auto 0 auto;
-}
-@media screen  and (max-width: 600px) {
-    .tit_figure_graphic {
-        max-width: 70%;
-    }
-}
-@media screen  and (max-width: 450px) {
-    .tit_figure_graphic {
-        max-width: 90%;
-    }
 }
 
 .pdf_figure_graphic {
