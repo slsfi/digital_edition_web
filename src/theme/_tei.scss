@@ -30,28 +30,28 @@ manuscripts div.tei {
 .tei p,
 .tei.xsmallFontSize p {
     font-size: $text-fontsize-xsmall;
-    line-height: calc(1.5 * #{$text-fontsize-xsmall});
+    line-height: calc(#{$lineheight-multiplier-fontsize-xsmall} * #{$text-fontsize-xsmall});
     text-indent: calc(1.25 * #{$text-fontsize-xsmall});
     margin: 0;
 }
 .tei.smallFontSize p {
     font-size: $text-fontsize-small;
-    line-height: calc(1.5 * #{$text-fontsize-small});
+    line-height: calc(#{$lineheight-multiplier-fontsize-small} * #{$text-fontsize-small});
     text-indent: calc(1.25 * #{$text-fontsize-small});
 }
 .tei.mediumFontSize p {
     font-size: $text-fontsize-medium;
-    line-height: calc(1.5 * #{$text-fontsize-medium});
+    line-height: calc(#{$lineheight-multiplier-fontsize-medium} * #{$text-fontsize-medium});
     text-indent: calc(1.25 * #{$text-fontsize-medium});
 }
 .tei.largeFontSize p {
     font-size: $text-fontsize-large;
-    line-height: calc(1.5 * #{$text-fontsize-large});
+    line-height: calc(#{$lineheight-multiplier-fontsize-large} * #{$text-fontsize-large});
     text-indent: 1calc(1.25 * #{$text-fontsize-large});
 }
 .tei.xlargeFontSize p {
     font-size: $text-fontsize-xlarge;
-    line-height: calc(1.5 * #{$text-fontsize-xlarge});
+    line-height: calc(#{$lineheight-multiplier-fontsize-xlarge} * #{$text-fontsize-xlarge});
     text-indent: 1calc(1.25 * #{$text-fontsize-xlarge});
 }
 
