@@ -23,19 +23,20 @@ read-text {
             margin-left: 10px;
         }
     }
-    match{
+    match {
         background-color: rgba( yellow, 0.4 ) !important;
     }
-    .tei.anchor_lemma img{
-        width: 0.9rem;
+    .tei.anchor_lemma img {
+        width: 0.75em;
+        height: 0.75em;
         display: initial;
     }
 
-    .tei.anchor_lemma{
+    .tei.anchor_lemma {
         display: none;
     }
 
-    .toolTip{
+    .toolTip {
         z-index: 1000;
         position: absolute;
         background: #88b7d5;
@@ -74,7 +75,8 @@ read-text {
     }
 
     img.inl_ms_arrow{
-        width: 0.9rem;
+        width: 0.75em;
+        height: 0.75em;
     }
 
     .inl_ms_arrow{
