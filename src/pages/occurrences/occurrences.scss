@@ -141,4 +141,7 @@ page-occurrences {
     ion-label{
       color: $text-color;
     }
+    .list_of_occurrences_item ion-label.label {
+        padding-left: 1em;
+    }
   }
