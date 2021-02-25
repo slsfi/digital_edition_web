@@ -3,6 +3,14 @@ page-occurrences {
         overflow: auto;
     }
 
+    ion-title {
+        margin-left: 4px;
+    }
+
+    .close-button {
+        margin-right: 10px;
+    }
+
     .custom-card {
         background-color: white;
     }
@@ -17,10 +25,6 @@ page-occurrences {
 
     .description {
       padding-left: 0.3rem;
-    }
-
-    .close-button {
-        margin-right: 10px;
     }
 
     .info{
@@ -38,16 +42,6 @@ page-occurrences {
         .title{
             font-size: 1.6rem;
         }
-    }
-
-    ion-title {
-        margin-left: 14px;
-
-        /*
-        div {
-            font-size: 1.4rem !important;
-        }
-        */
     }
 
     .collectionName{
