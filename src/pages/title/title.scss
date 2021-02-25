@@ -43,4 +43,20 @@ page-title {
     padding: 6px;
   }
 
+  /* Cover image on title page. */
+  .tit_figure_graphic {
+    max-width: 50%;
+    display: block;
+    margin: 1rem auto 0 auto;
+  }
+  @media screen and (max-width: 600px) {
+    .tit_figure_graphic {
+        max-width: 70%;
+    }
+  }
+  @media screen and (max-width: 450px) {
+    .tit_figure_graphic {
+        max-width: 90%;
+    }
+  }
 }
