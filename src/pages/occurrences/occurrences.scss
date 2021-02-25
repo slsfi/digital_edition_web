@@ -11,6 +11,11 @@ page-occurrences {
         margin-right: 10px;
     }
 
+    .col{
+        white-space: normal !important;
+        padding: 0;
+    }
+
     .custom-card {
         background-color: white;
     }
@@ -74,10 +79,6 @@ page-occurrences {
 
     .map_item_hidden{
         display: none;
-    }
-
-    .col{
-        white-space: normal !important;
     }
 
     span{
