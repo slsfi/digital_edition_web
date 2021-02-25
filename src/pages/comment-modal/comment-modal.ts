@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ViewController, NavParams } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CommentService } from '../../app/services/comments/comment.service';
+import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 
 /*
   Generated class for the CommentModal page.
@@ -21,6 +22,7 @@ export class CommentModalPage {
   constructor(
     public navCtrl: NavController,
     public viewCtrl: ViewController,
+    public readPopoverService: ReadPopoverService,
     private sanitizer: DomSanitizer,
     private commentService: CommentService,
     params: NavParams,

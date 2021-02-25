@@ -10,5 +10,5 @@
 </ion-header>
 
 <ion-content padding>
-  <div class="tei" [innerHTML]="comment"></div>
+  <div [ngClass]="'tei' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')" [innerHTML]="comment"></div>
 </ion-content>
