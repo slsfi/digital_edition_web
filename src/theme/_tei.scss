@@ -1147,18 +1147,12 @@ div.tei {
     max-width: 23em;
     font-size: 1em;
     text-align: left;
-    line-height: 1.25em;
+    line-height: 1.3em;
     transform-origin: left top; /* This is necessary for the scaling to work properly if the tooltip wouldn't fit in view otherwise. */
 
     /* Style for reference numbers in footnote tooltips */
     span.ttFtnIndicator {
-        /*font-size: 0.75em;*/
-        /*padding-right: 0.5em;*/
-        /*display: inline-block;*/
-        /*vertical-align: text-top;*/
-    }
-    span.ttFtnIndicator::after {
-        content: ". ";
+        display: none;
     }
 
     /* Unnecessary when line-height defined above?
