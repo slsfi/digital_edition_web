@@ -60,7 +60,7 @@ read-popover-page {
 	.selected-font-size:hover {
 		background-color: color($colors, primary);
 		color: #fff;
-		border-radius: 3px;
+		border-radius: $corner-roundness;
 	}
 
 	.appearence {
