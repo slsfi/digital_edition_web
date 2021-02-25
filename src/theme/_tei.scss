@@ -26,117 +26,22 @@ manuscripts div.tei {
     padding-bottom: 20vh;
 }
 
-/* Text sizes, should be changed to affect all elements, not just p */
+/* Text sizes. */
 div.tei,
-.tei.xsmallFontSize {
+div.tei.xsmallFontSize {
     font-size: $text-fontsize-xsmall;
-    line-height: calc(#{$lineheight-multiplier-fontsize-xsmall} * #{$text-fontsize-xsmall});
-    text-indent: calc(1.25 * #{$text-fontsize-xsmall});
 }
-.tei.smallFontSize {
+div.tei.smallFontSize {
     font-size: $text-fontsize-small;
-    line-height: calc(#{$lineheight-multiplier-fontsize-small} * #{$text-fontsize-small});
-    text-indent: calc(1.25 * #{$text-fontsize-small});
 }
-.tei.mediumFontSize {
+div.tei.mediumFontSize {
     font-size: $text-fontsize-medium;
-    line-height: calc(#{$lineheight-multiplier-fontsize-medium} * #{$text-fontsize-medium});
-    text-indent: calc(1.25 * #{$text-fontsize-medium});
 }
-.tei.largeFontSize {
+div.tei.largeFontSize {
     font-size: $text-fontsize-large;
-    line-height: calc(#{$lineheight-multiplier-fontsize-large} * #{$text-fontsize-large});
-    text-indent: 1calc(1.25 * #{$text-fontsize-large});
 }
-.tei.xlargeFontSize {
+div.tei.xlargeFontSize {
     font-size: $text-fontsize-xlarge;
-    line-height: calc(#{$lineheight-multiplier-fontsize-xlarge} * #{$text-fontsize-xlarge});
-    text-indent: 1calc(1.25 * #{$text-fontsize-xlarge});
-}
-
-/* Font size for tooltips */
-.tei.toolTip.xsmallFontSize {
-    font-size: $text-fontsize-xsmall;
-    line-height: calc(1.25 * #{$text-fontsize-xsmall});
-}
-.tei.toolTip.smallFontSize {
-    font-size: $text-fontsize-small;
-    line-height: calc(1.25 * #{$text-fontsize-small});
-}
-.tei.toolTip.mediumFontSize {
-    font-size: $text-fontsize-medium;
-    line-height: calc(1.25 * #{$text-fontsize-medium});
-}
-.tei.toolTip.largeFontSize {
-    font-size: $text-fontsize-large;
-    line-height: calc(1.25 * #{$text-fontsize-large});
-}
-.tei.toolTip.xlargeFontSize {
-    font-size: $text-fontsize-xlarge;
-    line-height: calc(1.25 * #{$text-fontsize-xlarge});
-}
-
-/* Kommentarasteriskernas storlekar vid olika textstorlekar */
-div.tei.xsmallFontSize img.comment {
-    width: calc(0.75 * #{$text-fontsize-xsmall}) !important;
-    height: calc(0.75 * #{$text-fontsize-xsmall}) !important;
-}
-div.tei.smallFontSize img.comment {
-    width: calc(0.75 * #{$text-fontsize-small}) !important;
-    height: calc(0.75 * #{$text-fontsize-small}) !important;
-}
-div.tei.mediumFontSize img.comment {
-    width: calc(0.75 * #{$text-fontsize-medium}) !important;
-    height: calc(0.75 * #{$text-fontsize-medium}) !important;
-}
-div.tei.largeFontSize img.comment {
-    width: calc(0.75 * #{$text-fontsize-large}) !important;
-    height: calc(0.75 * #{$text-fontsize-large}) !important;
-}
-div.tei.xlargeFontSize img.comment {
-    width: calc(0.75 * #{$text-fontsize-xlarge}) !important;
-    height: calc(0.75 * #{$text-fontsize-xlarge}) !important;
-}
-/* Sidnumreringarnas storlekar vid olika textstorlekar*/
-div.tei.xsmallFontSize.show_pageBreakOriginal,
-div.tei.xsmallFontSize.show_pageBreakEdition {
-    .pb_orig,
-    .pb_zts,
-    .pb_edition {
-        font-size: calc(0.875 * #{$text-fontsize-xsmall});
-    }
-}
-div.tei.smallFontSize.show_pageBreakOriginal,
-div.tei.smallFontSize.show_pageBreakEdition {
-    .pb_orig,
-    .pb_zts,
-    .pb_edition {
-        font-size: calc(0.875 * #{$text-fontsize-small});
-    }
-}
-div.tei.mediumFontSize.show_pageBreakOriginal,
-div.tei.mediumFontSize.show_pageBreakEdition {
-    .pb_orig,
-    .pb_zts,
-    .pb_edition {
-        font-size: calc(0.875 * #{$text-fontsize-medium});
-    }
-}
-div.tei.largeFontSize.show_pageBreakOriginal,
-div.tei.largeFontSize.show_pageBreakEdition {
-    .pb_orig,
-    .pb_zts,
-    .pb_edition {
-        font-size: calc(0.875 * #{$text-fontsize-large});
-    }
-}
-div.tei.xlargeFontSize.show_pageBreakOriginal,
-div.tei.xlargeFontSize.show_pageBreakEdition {
-    .pb_orig,
-    .pb_zts,
-    .pb_edition {
-        font-size: calc(0.875 * #{$text-fontsize-xlarge});
-    }
 }
 
 div.tei {
@@ -146,7 +51,8 @@ div.tei {
 
     p {
         font-size: 1em;
-        line-height: inherit;
+        line-height: 1.6em;
+        text-indent: 1.25em;
         margin: 0;
     }
 
@@ -1133,6 +1039,8 @@ div.tei {
     /*Regel för kommentarasteriskerna i lästexten / har lagt till img för att regeln inte ska tillämpas i kommentarkolumnen*/
     img.comment {
         /*font-size: 3em;*/
+        width: 0.75em;
+        height: 0.75em;
         cursor: pointer;
         top: 0;
     }
@@ -1168,6 +1076,7 @@ div.tei {
     padding: 0.5rem !important;
     white-space: normal;
     max-width: 23em;
+    font-size: 1em;
     text-align: left;
     line-height: 1.25em;
     transform-origin: left top; /* This is necessary for the scaling to work properly if the tooltip wouldn't fit in view otherwise. */
@@ -1294,21 +1203,21 @@ page-read .mobile-mode-established .tei.show_pageNumbering {
 .pb_edition {
     display: none;
 }
-.show_pageBreakOriginal .pb_orig,
-.show_pageBreakEdition .pb_zts,
-.show_pageBreakEdition .pb_edition {
+div.tei.show_pageBreakOriginal .pb_orig,
+div.tei.show_pageBreakEdition .pb_zts,
+div.tei.show_pageBreakEdition .pb_edition {
     display: contents;
     position: absolute;
     margin-left: -40px;
     text-align: right;
     width: 30px;
-    font-size: 0.875rem;
+    font-size: 0.875em;
 }
-.show_pageBreakOriginal .pb_orig {
+div.tei.show_pageBreakOriginal .pb_orig {
     color: $pageBreakOriginal-color;
 }
-.show_pageBreakEdition .pb_zts,
-.show_pageBreakEdition .pb_edition {
+div.tei.show_pageBreakEdition .pb_zts,
+div.tei.show_pageBreakEdition .pb_edition {
     color: $pageBreakEdition-color;
 }
 
