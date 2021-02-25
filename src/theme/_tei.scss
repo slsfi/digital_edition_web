@@ -27,29 +27,28 @@ manuscripts div.tei {
 }
 
 /* Text sizes, should be changed to affect all elements, not just p */
-.tei p,
-.tei.xsmallFontSize p {
+div.tei,
+.tei.xsmallFontSize {
     font-size: $text-fontsize-xsmall;
     line-height: calc(#{$lineheight-multiplier-fontsize-xsmall} * #{$text-fontsize-xsmall});
     text-indent: calc(1.25 * #{$text-fontsize-xsmall});
-    margin: 0;
 }
-.tei.smallFontSize p {
+.tei.smallFontSize {
     font-size: $text-fontsize-small;
     line-height: calc(#{$lineheight-multiplier-fontsize-small} * #{$text-fontsize-small});
     text-indent: calc(1.25 * #{$text-fontsize-small});
 }
-.tei.mediumFontSize p {
+.tei.mediumFontSize {
     font-size: $text-fontsize-medium;
     line-height: calc(#{$lineheight-multiplier-fontsize-medium} * #{$text-fontsize-medium});
     text-indent: calc(1.25 * #{$text-fontsize-medium});
 }
-.tei.largeFontSize p {
+.tei.largeFontSize {
     font-size: $text-fontsize-large;
     line-height: calc(#{$lineheight-multiplier-fontsize-large} * #{$text-fontsize-large});
     text-indent: 1calc(1.25 * #{$text-fontsize-large});
 }
-.tei.xlargeFontSize p {
+.tei.xlargeFontSize {
     font-size: $text-fontsize-xlarge;
     line-height: calc(#{$lineheight-multiplier-fontsize-xlarge} * #{$text-fontsize-xlarge});
     text-indent: 1calc(1.25 * #{$text-fontsize-xlarge});
@@ -143,9 +142,11 @@ div.tei.xlargeFontSize.show_pageBreakEdition {
 div.tei {
 
     font-family: $font-app-tei;
-    font-size: 1rem;
-    line-height: 1.5rem;
     white-space: normal;
+
+    p {
+        margin: 0;
+    }
 
     /* CONTAINERS FOR COLUMNS */
     .padded {
