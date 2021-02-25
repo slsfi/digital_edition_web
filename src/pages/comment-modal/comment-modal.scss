@@ -7,13 +7,19 @@ page-comment-modal {
     overflow: auto;
   }
 
-  .close-button {
-    margin-right: 26px;
+  ion-title {
+    margin-left: 4px;
   }
 
+  .close-button {
+    margin-right: 10px;
+  }
+
+  /*
   div.tei {
     line-height: 1.6em;
   }
+  */
 
   /*
   .pos44 {
