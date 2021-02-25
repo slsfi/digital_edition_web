@@ -27,17 +27,17 @@ manuscripts div.tei {
 }
 
 /* Text sizes, should be changed to affect all elements, not just p */
+.tei p,
 .tei.xsmallFontSize p {
     font-size: $text-fontsize-xsmall;
     line-height: calc(1.5 * #{$text-fontsize-xsmall});
     text-indent: calc(1.25 * #{$text-fontsize-xsmall});
+    margin: 0;
 }
-.tei p,
 .tei.smallFontSize p {
     font-size: $text-fontsize-small;
-    line-height: calc(1.5 * #{$text-fontsize-small});  // 24px if 1rem = 16px
-    text-indent: calc(1.25 * #{$text-fontsize-small}); // 20px if 1rem = 16px
-    margin: 0;
+    line-height: calc(1.5 * #{$text-fontsize-small});
+    text-indent: calc(1.25 * #{$text-fontsize-small});
 }
 .tei.mediumFontSize p {
     font-size: $text-fontsize-medium;
