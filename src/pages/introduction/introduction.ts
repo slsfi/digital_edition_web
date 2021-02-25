@@ -368,7 +368,7 @@ export class IntroductionPage {
     const triggerPaddingY = 8;
 
     // Set min and max width for resized tooltips.
-    const resizedToolTipMinWidth = 280;
+    const resizedToolTipMinWidth = 300;
     const resizedToolTipMaxWidth = 600;
 
     // Set horisontal offset due to possible side pane on the left.
@@ -409,7 +409,7 @@ export class IntroductionPage {
     if (initialTTDimensions.compMaxWidth) {
       this.toolTipMaxWidth = initialTTDimensions.compMaxWidth;
     } else {
-      this.toolTipMaxWidth = '391px'; // = 23em on default font-size 17px
+      this.toolTipMaxWidth = '425px';
     }
     // Reset scale value for tooltip.
     if (this.toolTipScaleValue) {
