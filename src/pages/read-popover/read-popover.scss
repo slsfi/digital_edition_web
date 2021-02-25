@@ -5,7 +5,7 @@ read-popover-page {
 	}
 	.text-button:hover {
 		background-color: rgba(color($colors, primary), 0.2);
-		border-radius: 3px;
+		border-radius: $corner-roundness;
 	}
 
 	.text-xsmall {
