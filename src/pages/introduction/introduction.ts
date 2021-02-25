@@ -367,8 +367,9 @@ export class IntroductionPage {
     const triggerPaddingX = 8;
     const triggerPaddingY = 8;
 
-    // Set min-width for resized tooltips.
+    // Set min and max width for resized tooltips.
     const resizedToolTipMinWidth = 280;
+    const resizedToolTipMaxWidth = 600;
 
     // Set horisontal offset due to possible side pane on the left.
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
@@ -408,7 +409,7 @@ export class IntroductionPage {
     if (initialTTDimensions.compMaxWidth) {
       this.toolTipMaxWidth = initialTTDimensions.compMaxWidth;
     } else {
-      this.toolTipMaxWidth = '350px';
+      this.toolTipMaxWidth = '391px'; // = 23em on default font-size 17px
     }
     // Reset scale value for tooltip.
     if (this.toolTipScaleValue) {
@@ -570,8 +571,8 @@ export class IntroductionPage {
       } else {
         // Try to resize the tooltip so it would fit in view.
         let newTTMaxWidth = Math.floor(availableWidth);
-        if (newTTMaxWidth > 600) {
-          newTTMaxWidth = 600;
+        if (newTTMaxWidth > resizedToolTipMaxWidth) {
+          newTTMaxWidth = resizedToolTipMaxWidth;
         }
         // Calculate tooltip dimensions with new max-width
         const ttNewDimensions = this.getToolTipDimensions(tooltipElement, ttText, newTTMaxWidth);
