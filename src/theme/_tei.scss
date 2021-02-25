@@ -1154,18 +1154,17 @@ div.tei {
     box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
     padding: 0.5rem !important;
     white-space: normal;
-    max-width: 350px;
+    max-width: 22em;
     text-align: left;
     line-height: 1.25em;
-    /*will-change: width, max-width, top, left, transform;*/
-    transform-origin: left top; /* This is necessary for the scaling to work properly. */
+    transform-origin: left top; /* This is necessary for the scaling to work properly if the tooltip wouldn't fit in view otherwise. */
 
     /* Style for reference numbers in footnote tooltips */
     span.ttFtnIndicator {
-        /*font-size: 0.625em;*/
+        /*font-size: 0.75em;*/
         /*padding-right: 0.75em;*/
-        /*display: inline-block;
-        vertical-align: text-top;*/
+        /*display: inline-block;*/
+        /*vertical-align: text-top;*/
     }
     span.ttFtnIndicator::after {
         content: ". ";
