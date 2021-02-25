@@ -26,7 +26,7 @@ manuscripts div.tei {
     padding-bottom: 20vh;
 }
 
-/* Text sizes. */
+/* Textstorlekar. */
 div.tei,
 div.tei.xsmallFontSize {
     font-size: $text-fontsize-xsmall;
@@ -42,6 +42,74 @@ div.tei.largeFontSize {
 }
 div.tei.xlargeFontSize {
     font-size: $text-fontsize-xlarge;
+}
+
+/* Kommentarasteriskernas storlekar vid olika textstorlekar.
+   De här och sidnumreringarnas storlekar måste definieras såhär eftersom
+   de ska påverkas av den valda textstorleken men inte storleken på det text-
+   element som de ingår i. Kommentarasteriskerna ska t.ex. inte vara större i 
+   rubriker. */
+div.tei.xsmallFontSize img.comment {
+    width: calc(0.75 * #{$text-fontsize-xsmall}) !important;
+    height: calc(0.75 * #{$text-fontsize-xsmall}) !important;
+}
+div.tei.smallFontSize img.comment {
+    width: calc(0.75 * #{$text-fontsize-small}) !important;
+    height: calc(0.75 * #{$text-fontsize-small}) !important;
+}
+div.tei.mediumFontSize img.comment {
+    width: calc(0.75 * #{$text-fontsize-medium}) !important;
+    height: calc(0.75 * #{$text-fontsize-medium}) !important;
+}
+div.tei.largeFontSize img.comment {
+    width: calc(0.75 * #{$text-fontsize-large}) !important;
+    height: calc(0.75 * #{$text-fontsize-large}) !important;
+}
+div.tei.xlargeFontSize img.comment {
+    width: calc(0.75 * #{$text-fontsize-xlarge}) !important;
+    height: calc(0.75 * #{$text-fontsize-xlarge}) !important;
+}
+
+/* Sidnumreringarnas storlekar vid olika textstorlekar */
+div.tei.xsmallFontSize.show_pageBreakOriginal,
+div.tei.xsmallFontSize.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: calc(0.875 * #{$text-fontsize-xsmall});
+    }
+}
+div.tei.smallFontSize.show_pageBreakOriginal,
+div.tei.smallFontSize.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: calc(0.875 * #{$text-fontsize-small});
+    }
+}
+div.tei.mediumFontSize.show_pageBreakOriginal,
+div.tei.mediumFontSize.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: calc(0.875 * #{$text-fontsize-medium});
+    }
+}
+div.tei.largeFontSize.show_pageBreakOriginal,
+div.tei.largeFontSize.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: calc(0.875 * #{$text-fontsize-large});
+    }
+}
+div.tei.xlargeFontSize.show_pageBreakOriginal,
+div.tei.xlargeFontSize.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: calc(0.875 * #{$text-fontsize-xlarge});
+    }
 }
 
 div.tei {
@@ -1017,9 +1085,9 @@ div.tei {
         background-color: #cae4eb !important;
     }
 
-    // these will be svg
+    /*these will be svg --> vilka alla svg gäller detta? finns skilda stilar för kommentarasteriskerna img.comment som definierar deras storlekar. Ska vara i förhållande till den valda textstorleken. */
     img.tooltiptrigger {
-        height: 10px !important;
+        height: 10px;
         width: 10px;
         position: relative;
         top: 4px;
@@ -1039,8 +1107,6 @@ div.tei {
     /*Regel för kommentarasteriskerna i lästexten / har lagt till img för att regeln inte ska tillämpas i kommentarkolumnen*/
     img.comment {
         /*font-size: 3em;*/
-        width: 0.75em;
-        height: 0.75em;
         cursor: pointer;
         top: 0;
     }
@@ -1211,7 +1277,6 @@ div.tei.show_pageBreakEdition .pb_edition {
     margin-left: -40px;
     text-align: right;
     width: 30px;
-    font-size: 0.875em;
 }
 div.tei.show_pageBreakOriginal .pb_orig {
     color: $pageBreakOriginal-color;
