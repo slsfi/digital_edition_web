@@ -54,6 +54,10 @@ read-popover-page {
 		top: 0.5rem;
 		right: 0.75rem;
 		cursor: pointer;
+		transition: $opacity-hover-transition;
+	}
+	.close:hover {
+		opacity: $opacity-hover;
 	}
 
 	.selected-font-size,
