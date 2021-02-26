@@ -1,5 +1,5 @@
 <ion-list *ngIf="enableLanguageChanges" radio-group [(ngModel)]="languageService.language">
-    <ion-list-header color="secondary">
+    <ion-list-header class="user-settings-popover-header" color="secondary">
         <div class="lang-header">{{'About.Language' | translate}}</div>
         <div class="close" (click)="close()"><ion-icon name="close"></ion-icon></div>
     </ion-list-header>
