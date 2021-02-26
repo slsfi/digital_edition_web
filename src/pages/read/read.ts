@@ -907,7 +907,6 @@ export class ReadPage /*implements OnDestroy*/ {
 
     this.renderer.listen(nElement, 'mousewheel', (event) => {
       this.hideToolTip();
-      // this.showToolTip = false;
     }).bind(this)
 
     let toolTipsSettings;
@@ -917,30 +916,9 @@ export class ReadPage /*implements OnDestroy*/ {
       console.error(e);
     }
     this.renderer.listen(nElement, 'mouseover', (event) => {
-      /*
-      const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-      const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-      const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
-      */
-
       const eventTarget = this.getEventTarget(event);
       const elem = event.target;
       if (eventTarget['classList'].contains('tooltiptrigger')) {
-        /*
-        const x = ((elem.getBoundingClientRect().x + vw) - vw) + (elem.offsetWidth + 10);
-        const y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
-        if (sidePaneIsOpen) {
-          this.toolTipPosition = {
-            top: y + 'px',
-            left: (x - 269) + 'px'
-          };
-        } else {
-          this.toolTipPosition = {
-            top: y + 'px',
-            left: x + 'px'
-          };
-        }
-        */
         if (eventTarget['classList'].contains('ttVariant')) {
           if (event.target !== undefined) {
             this.showVariationTooltip(elem, event);
@@ -948,44 +926,19 @@ export class ReadPage /*implements OnDestroy*/ {
         }
         if (eventTarget.hasAttribute('data-id')) {
           if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
-            /*
-            this.showToolTip = true;
-            clearTimeout(window['reload_timer']);
-            this.hideToolTip();
-            */
             this.showPersonTooltip(eventTarget.getAttribute('data-id'), elem, event);
           } else if (toolTipsSettings.placeInfo
             && eventTarget['classList'].contains('placeName')
             && this.readPopoverService.show.placeInfo) {
-            /*
-              this.showToolTip = true;
-            clearTimeout(window['reload_timer']);
-            this.hideToolTip();
-            */
             this.showPlaceTooltip(eventTarget.getAttribute('data-id'), elem, event);
           } else if (toolTipsSettings.workInfo
             && eventTarget['classList'].contains('title')
             && this.readPopoverService.show.workInfo) {
-            /*
-            this.showToolTip = true;
-            clearTimeout(window['reload_timer']);
-            this.hideToolTip();
-            */
             this.showWorkTooltip(eventTarget.getAttribute('data-id'), elem, event);
           } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
-            /*
-            this.showToolTip = true;
-            clearTimeout(window['reload_timer']);
-            this.hideToolTip();
-            */
             this.showCommentTooltip(eventTarget.getAttribute('data-id'), elem, event);
           } else if (toolTipsSettings.footNotes
             && eventTarget['classList'].contains('ttFoot')) {
-            /*
-            this.showToolTip = true;
-            clearTimeout(window['reload_timer']);
-            this.hideToolTip();
-            */
             this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), elem, eventTarget, event);
           }
         }
