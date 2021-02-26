@@ -85,7 +85,6 @@ export class ReadPage /*implements OnDestroy*/ {
   hasOccurrenceResults = false;
   showOccurrencesModal = false;
   searchResult: string;
-  showToolTip: boolean;
   toolTipPosition: object;
   toolTipMaxWidth: string;
   toolTipScaleValue: number;
