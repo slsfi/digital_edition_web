@@ -318,6 +318,7 @@ export class IntroductionPage {
             noInfoFound = translation;
           }, err => { }
         );
+        this.setToolTipPosition(targetElem, noInfoFound);
         this.setToolTipText(noInfoFound);
       }
     );
