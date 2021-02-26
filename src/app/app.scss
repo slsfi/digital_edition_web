@@ -651,7 +651,7 @@ div.tab-container {
 
 /* Center crescent ion-spinner */
 ion-spinner.loading.spinner-crescent {
-	position: absolute;
+	position: relative;
   top: 2rem;
   left: 50%;
   transform: translate(-50%, 0%);
