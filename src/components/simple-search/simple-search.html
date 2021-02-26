@@ -38,7 +38,7 @@
   </ion-scroll>
   <ion-list>
     <div text-center *ngIf="isLoading && searchTypesMade !== searchTypesTotal">
-      <ion-spinner class="loading" name="dots"></ion-spinner>
+      <ion-spinner class="loading" name="crescent"></ion-spinner>
     </div>
     <div class="result-container">
       <div class="facetsContainer">
@@ -128,7 +128,7 @@
     <ion-row class="scrollable-simple-search">
       <ion-col>
         <div text-center *ngIf="isLoading && searchTypesMade !== searchTypesTotal">
-          <ion-spinner class="loading" name="dots"></ion-spinner>
+          <ion-spinner class="loading" name="crescent"></ion-spinner>
         </div>
         <ion-scroll [ngStyle]="displayResults && displayResults.length > 0 && simpleSearchHeight > 0 ? {'height.px': simpleSearchHeight} : {'height': 0}" style="width:100%;" scrollY="true">
            <ion-list scroll="true">
