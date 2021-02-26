@@ -815,6 +815,7 @@ export class ReadPage /*implements OnDestroy*/ {
         console.log(e);
       }
     }.bind(this), 1000);
+    /* SebKoh: Why is this here and not in setUpTextListeners() below as the other tooltiptriggers on mouseover? */
     this.renderer.listen(this.elementRef.nativeElement, 'mouseover', (event) => {
       if ((event.target.parentNode.classList.contains('tooltiptrigger') || event.target.classList.contains('tooltiptrigger')) &&
         this.readPopoverService.show.changes) {
