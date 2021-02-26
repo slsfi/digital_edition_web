@@ -116,7 +116,9 @@ page-occurrences {
       float: right;
     }
     .forward-arrow-span ion-icon{
-      font-size: 1.4rem;
+      font-size: 1.5rem;
+        position: relative;
+        top: -5px; /* This center aligns the arrow vertically with the label text. */
     }
     .collection_name_label {
       background-color: $background-color;
