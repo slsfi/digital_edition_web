@@ -1,6 +1,7 @@
 <ion-list *ngIf="enableLanguageChanges" radio-group [(ngModel)]="languageService.language">
-    <ion-list-header>
-        {{"About.Language" | translate}}
+    <ion-list-header color="secondary">
+        <div class="lang-header">{{'About.Language' | translate}}</div>
+        <div class="close" (click)="close()"><ion-icon name="close"></ion-icon></div>
     </ion-list-header>
     <ion-item *ngFor="let lang of languageService.languages">
         <ion-label color="dark">{{lang}}</ion-label>
@@ -9,21 +10,21 @@
 </ion-list>
 
 <ion-list radio-group [(ngModel)]="userSettingsService.mode">
-    <ion-list-header>
-        View mode
+    <ion-list-header color="secondary">
+        {{'About.ViewMode' | translate}}
     </ion-list-header>
     <ion-item>
-        <ion-label color="dark">Auto</ion-label>
+        <ion-label color="dark">{{'About.ViewModeAuto' | translate}}</ion-label>
         <ion-radio value="auto" checked></ion-radio>
         <ion-icon name="color-wand" item-start></ion-icon>
     </ion-item>
     <ion-item>
-        <ion-label color="dark">Desktop</ion-label>
+        <ion-label color="dark">{{'About.ViewModeDesktop' | translate}}</ion-label>
         <ion-radio value="desktop"></ion-radio>
         <ion-icon item-start name="desktop"></ion-icon>
     </ion-item>
     <ion-item>
-        <ion-label color="dark">Mobile</ion-label>
+        <ion-label color="dark">{{'About.ViewModeMobile' | translate}}</ion-label>
         <ion-radio value="mobile"></ion-radio>
         <ion-icon name="phone-portrait" item-start></ion-icon>
     </ion-item>
