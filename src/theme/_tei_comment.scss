@@ -57,15 +57,6 @@ div.tei {
         }
     }
 
-    /* Used for? */
-    span:not([class]) {
-        font-size: 0.85rem;
-        line-height: 1.55;
-        text-indent: 0;
-        display: block;
-        margin-top: 0.5em;
-    }
-
     /* Manuscript description */
     div.ms {
         margin-top: 3rem;
@@ -89,4 +80,13 @@ div.tei {
 /* Used for? */
 span.seg img {
     width: 0.5em;
+}
+
+/* Used for? */
+comments span:not([class]) {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    text-indent: 0;
+    display: block;
+    margin-top: 0.5em;
 }
