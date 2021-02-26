@@ -416,11 +416,6 @@ ion-fab .fab-list-active .fab-backdrop {
   z-index: -1;
 }
 
-/* This is the opacity of the darkened background around modals. */
-ion-backdrop {
-  opacity: 0.3;
-}
-
 /* Adjust padding and background color of text column in mobile mode. */
 page-read div.mobile-mode-established {
   padding: 12px;

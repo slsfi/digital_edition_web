@@ -681,6 +681,11 @@ ion-spinner.loading.spinner-crescent * {
   height: 32px;
 }
 
+/* This is the opacity of the darkened background around modals. */
+ion-backdrop {
+  opacity: 0.3 !important;
+}
+
 
 // Load TEI-stylesheets. Moved here from project-variables.scss
 @import '../theme/tei';
