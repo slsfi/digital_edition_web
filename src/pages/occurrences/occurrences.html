@@ -11,7 +11,7 @@
 
 
 <ion-content padding>
-  <ion-item *ngIf="infoLoading"><ion-spinner class="loading" name="dots"></ion-spinner></ion-item>
+  <ion-spinner *ngIf="infoLoading" class="loading" name="crescent"></ion-spinner>
   <ion-item *ngIf="noData"><p>{{"Occurrences.NoInfoFound" | translate}}</p></ion-item>
   <ion-col>
       <ion-card *ngIf="title" class="custom-card">
