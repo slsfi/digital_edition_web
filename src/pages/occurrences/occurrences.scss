@@ -11,7 +11,7 @@ page-occurrences {
         margin-right: 10px;
         transition: $opacity-hover-transition;
     }
-    .close-button {
+    .close-button:hover {
         opacity: $opacity-hover;
     }
 
