@@ -159,8 +159,8 @@
                   <button ion-button outline item-end>{{"TOC.MediaCollections" | translate}}</button>
                 </ion-item>
                 <ion-item-divider>{{"Occurrences.Title" | translate}}</ion-item-divider>
-                <ion-spinner *ngIf="isLoading" class="loading" name="crescent"></ion-spinner>
                 <ion-list class="occurrences_list">
+                  <ion-item *ngIf="isLoading"><ion-spinner class="loading" name="crescent"></ion-spinner></ion-item>
                   <ion-item *ngFor="let collection of groupedTexts">
                     <ion-item-group class="occurrences_list_group">
                       <ion-item-divider (click)="toggleList(collection.collection_id)" class="collection_name_label">
