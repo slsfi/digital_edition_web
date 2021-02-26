@@ -13,6 +13,10 @@ page-comment-modal {
 
   .close-button {
     margin-right: 10px;
+    transition: $opacity-hover-transition;
+  }
+  .close-button {
+      opacity: $opacity-hover;
   }
 
   div.tei {

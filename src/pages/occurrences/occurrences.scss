@@ -9,6 +9,10 @@ page-occurrences {
 
     .close-button {
         margin-right: 10px;
+        transition: $opacity-hover-transition;
+    }
+    .close-button {
+        opacity: $opacity-hover;
     }
 
     .col{
