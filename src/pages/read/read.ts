@@ -1,4 +1,4 @@
-import { Component, Renderer, ElementRef, OnDestroy, ViewChild, Input, EventEmitter } from '@angular/core';
+import { Component, Renderer, ElementRef, OnDestroy, ViewChild, Input, EventEmitter, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import {
   App, ViewController, NavController, NavParams, PopoverController, ActionSheetController,
@@ -87,6 +87,8 @@ export class ReadPage /*implements OnDestroy*/ {
   searchResult: string;
   showToolTip: boolean;
   toolTipPosition: object;
+  toolTipMaxWidth: string;
+  toolTipScaleValue: number;
   toolTipText: string;
 
   maxSingleWindowWidth: Number;
@@ -197,6 +199,13 @@ export class ReadPage /*implements OnDestroy*/ {
   ) {
     this.isCached();
     this.searchResult = null;
+
+    this.toolTipMaxWidth = null;
+    this.toolTipScaleValue = null;
+    this.toolTipPosition = {
+      top: -1000 + 'px',
+      left: -1000 + 'px'
+    };
 
     try {
       this.appUsesAccordionToc = this.config.getSettings('AccordionTOC');
@@ -811,7 +820,7 @@ export class ReadPage /*implements OnDestroy*/ {
       if ((event.target.parentNode.classList.contains('tooltiptrigger') || event.target.classList.contains('tooltiptrigger')) &&
         this.readPopoverService.show.changes) {
         if (event.target !== undefined) {
-          this.showChangesTooltip(event);
+          this.showChangesTooltip(event.target, event);
         }
       }
     });
@@ -848,6 +857,7 @@ export class ReadPage /*implements OnDestroy*/ {
   private setUpTextListeners() {
     // We must do it like this since we want to trigger an event on a dynamically loaded innerhtml.
     const nElement: any = this.elementRef.nativeElement;
+
     this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
       const eventTarget = this.getEventTarget(event);
 
@@ -864,8 +874,6 @@ export class ReadPage /*implements OnDestroy*/ {
           } else if (eventTarget['classList'].contains('ttVariant') && this.readPopoverService.show.comments) {
             this.showCommentModal(eventTarget.getAttribute('data-id'));
           }
-        } else {
-
         }
       } else if (eventTarget['classList'].contains('anchor')) {
         if (eventTarget.hasAttribute('href')) {
@@ -875,7 +883,7 @@ export class ReadPage /*implements OnDestroy*/ {
       if (event.target.classList.contains('variantScrollTarget')) {
         if (event.target !== undefined) {
           event.target.style.fontWeight = 'bold';
-          this.showVariationTooltip(event);
+          this.showVariationTooltip(event.target, event);
           this.scrollToVariant(event.target);
         }
         setTimeout(function () {
@@ -899,7 +907,8 @@ export class ReadPage /*implements OnDestroy*/ {
     }).bind(this);
 
     this.renderer.listen(nElement, 'mousewheel', (event) => {
-      this.showToolTip = false;
+      this.hideToolTip();
+      // this.showToolTip = false;
     }).bind(this)
 
     let toolTipsSettings;
@@ -909,13 +918,16 @@ export class ReadPage /*implements OnDestroy*/ {
       console.error(e);
     }
     this.renderer.listen(nElement, 'mouseover', (event) => {
+      /*
       const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
       const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
       const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
+      */
 
       const eventTarget = this.getEventTarget(event);
       const elem = event.target;
       if (eventTarget['classList'].contains('tooltiptrigger')) {
+        /*
         const x = ((elem.getBoundingClientRect().x + vw) - vw) + (elem.offsetWidth + 10);
         const y = ((elem.getBoundingClientRect().y + vh) - vh) - 108;
         if (sidePaneIsOpen) {
@@ -929,45 +941,54 @@ export class ReadPage /*implements OnDestroy*/ {
             left: x + 'px'
           };
         }
+        */
         if (eventTarget['classList'].contains('ttVariant')) {
           if (event.target !== undefined) {
-            this.showVariationTooltip(event);
+            this.showVariationTooltip(elem, event);
           }
         }
         if (eventTarget.hasAttribute('data-id')) {
           if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
+            /*
             this.showToolTip = true;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
-            this.showPersonTooltip(eventTarget.getAttribute('data-id'), event);
+            */
+            this.showPersonTooltip(eventTarget.getAttribute('data-id'), elem, event);
           } else if (toolTipsSettings.placeInfo
             && eventTarget['classList'].contains('placeName')
             && this.readPopoverService.show.placeInfo) {
-            this.showToolTip = true;
+            /*
+              this.showToolTip = true;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
-            this.showPlaceTooltip(eventTarget.getAttribute('data-id'), event);
+            */
+            this.showPlaceTooltip(eventTarget.getAttribute('data-id'), elem, event);
           } else if (toolTipsSettings.workInfo
             && eventTarget['classList'].contains('title')
             && this.readPopoverService.show.workInfo) {
+            /*
             this.showToolTip = true;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
-            this.showWorkTooltip(eventTarget.getAttribute('data-id'), event);
+            */
+            this.showWorkTooltip(eventTarget.getAttribute('data-id'), elem, event);
           } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
+            /*
             this.showToolTip = true;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
-            this.showCommentTooltip(eventTarget.getAttribute('data-id'), event);
+            */
+            this.showCommentTooltip(eventTarget.getAttribute('data-id'), elem, event);
           } else if (toolTipsSettings.footNotes
             && eventTarget['classList'].contains('ttFoot')) {
+            /*
             this.showToolTip = true;
             clearTimeout(window['reload_timer']);
             this.hideToolTip();
-            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), event);
+            */
+            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), elem, eventTarget, event);
           }
-        } else {
-
         }
       } else if (eventTarget['classList'].contains('anchor')) {
         if (eventTarget.hasAttribute('href')) {
@@ -976,7 +997,9 @@ export class ReadPage /*implements OnDestroy*/ {
       }
     }).bind(this);
 
-
+    this.renderer.listen(nElement, 'mouseout', (event) => {
+      this.hideToolTip();
+    }).bind(this);
   }
   public get isIntroduction() {
     return this.textType === TextType.Introduction;
@@ -993,29 +1016,6 @@ export class ReadPage /*implements OnDestroy*/ {
     this.establishedText.content = '';
     this.getIntroduction(this.params.get('collectionID'), this.translate.currentLang);
   }
-
-  hideToolTip() {
-    window['reload_timer'] = setTimeout(() => {
-      this.showToolTip = false;
-    }, 4000);
-  }
-
-  showFootnoteTooltip(id: string, origin: any) {
-    const target = document.getElementsByClassName('ttFixed');
-    let foundElem: any = '';
-    for (let i = 0; i < target.length; i++) {
-      const elt = target[i] as HTMLElement;
-      if ( elt.getAttribute('data-id') === id ) {
-        foundElem = this.sanitizer.bypassSecurityTrustHtml(elt.innerHTML);
-        break;
-      }
-    }
-    this.setToolTipText(foundElem);
-    this.tooltips.footnotes[id] = foundElem;
-    return foundElem;
-  }
-
-
 
   private showText() {
     this.textType = TextType.ReadText;
@@ -1128,8 +1128,9 @@ export class ReadPage /*implements OnDestroy*/ {
     );
   }
 
-  showPersonTooltip(id: string, origin: any) {
+  showPersonTooltip(id: string, targetElem: HTMLElement, origin: any) {
     if (this.tooltips.persons[id]) {
+      this.setToolTipPosition(targetElem, this.tooltips.persons[id]);
       this.setToolTipText(this.tooltips.persons[id]);
       return;
     }
@@ -1156,6 +1157,7 @@ export class ReadPage /*implements OnDestroy*/ {
           text += ', ' + tooltip.description
         }
 
+        this.setToolTipPosition(targetElem, text);
         this.setToolTipText(text);
         this.tooltips.persons[id] = text;
       },
@@ -1166,45 +1168,22 @@ export class ReadPage /*implements OnDestroy*/ {
             noInfoFound = translation;
           }, err => { }
         );
+        this.setToolTipPosition(targetElem, noInfoFound);
         this.setToolTipText(noInfoFound);
       }
     );
   }
 
-  showVariationTooltip(origin: any) {
-    if (origin.target.nextSibling.className !== undefined && String(origin.target.nextSibling.className).includes('tooltip')) {
-      this.showToolTip = true;
-      this.toolTipText = origin.target.nextSibling.textContent;
-      clearTimeout(window['reload_timer']);
-      this.hideToolTip();
-    }
-  }
-
-
-  showChangesTooltip(origin: any) {
-    let elem = [];
-    if (origin.target.nextSibling !== null && origin.target.nextSibling !== undefined &&
-      !String(origin.target.nextSibling.className).includes('tooltiptrigger')) {
-      elem = origin.target;
-    } else if (origin.target.parentNode.nextSibling !== null && origin.target.parentNode.nextSibling !== undefined) {
-      elem = origin.target.parentNode;
-    }
-    if (elem['nextSibling'] !== null && elem['nextSibling'] !== undefined) {
-      if (elem['nextSibling'].className !== undefined && String(elem['nextSibling'].className).includes('tooltip')) {
-        this.showToolTip = true;
-        this.toolTipText = elem['nextSibling'].textContent;
-      }
-    }
-  }
-
-  showPlaceTooltip(id: string, origin: any) {
+  showPlaceTooltip(id: string, targetElem: HTMLElement, origin: any) {
     if (this.tooltips.places[id]) {
+      this.setToolTipPosition(targetElem, this.tooltips.places[id]);
       this.setToolTipText(this.tooltips.places[id]);
       return;
     }
 
     this.tooltipService.getPlaceTooltip(id).subscribe(
       tooltip => {
+        this.setToolTipPosition(targetElem, (tooltip.description) ?  tooltip.name + ', ' + tooltip.description : tooltip.name);
         this.setToolTipText((tooltip.description) ?  tooltip.name + ', ' + tooltip.description : tooltip.name);
         this.tooltips.places[id] = (tooltip.description) ?  tooltip.name + ', ' + tooltip.description : tooltip.name;
       },
@@ -1215,13 +1194,15 @@ export class ReadPage /*implements OnDestroy*/ {
             noInfoFound = translation;
           }, err => { }
         );
+        this.setToolTipPosition(targetElem, noInfoFound);
         this.setToolTipText(noInfoFound);
       }
     );
   }
 
-  showWorkTooltip(id: string, origin: any) {
+  showWorkTooltip(id: string, targetElem: HTMLElement, origin: any) {
     if (this.tooltips.works[id]) {
+      this.setToolTipPosition(targetElem, this.tooltips.works[id]);
       this.setToolTipText(this.tooltips.works[id]);
       return;
     }
@@ -1234,11 +1215,13 @@ export class ReadPage /*implements OnDestroy*/ {
               noInfoFound = translation;
             }, err => { }
           );
+          this.setToolTipPosition(targetElem, noInfoFound);
           this.setToolTipText(noInfoFound);
           return;
         }
         tooltip = tooltip.hits.hits[0]['_source'];
         const description = '<span class="work_title">' + tooltip.title  + '</span><br/>' + tooltip.reference;
+        this.setToolTipPosition(targetElem, description);
         this.setToolTipText(description);
         this.tooltips.works[id] = description;
       },
@@ -1249,13 +1232,57 @@ export class ReadPage /*implements OnDestroy*/ {
             noInfoFound = translation;
           }, err => { }
         );
+        this.setToolTipPosition(targetElem, noInfoFound);
         this.setToolTipText(noInfoFound);
       }
     );
   }
 
-  showCommentTooltip(id: string, origin: any) {
+  showFootnoteTooltip(id: string, targetElem: HTMLElement, ftnIndicatorElem: HTMLElement, origin: any) {
+    if (this.tooltips.footnotes[id]) {
+      this.setToolTipPosition(targetElem, this.tooltips.footnotes[id]);
+      this.setToolTipText(this.tooltips.footnotes[id]);
+      return;
+    }
+    const target = document.getElementsByClassName('ttFixed');
+    let foundElem: any = '';
+    for (let i = 0; i < target.length; i++) {
+      const elt = target[i] as HTMLElement;
+      if ( elt.getAttribute('data-id') === id ) {
+        foundElem = elt.innerHTML;
+        break;
+      }
+    }
+    // Prepend the footnoteindicator to the the footnote text.
+    const footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + ftnIndicatorElem.textContent + '</span>' + '<span class="ttFtnText">' + foundElem  + '</span>';
+    const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
+      this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
+
+    this.setToolTipPosition(targetElem, footNoteHTML);
+    this.setToolTipText(footNoteHTML);
+    this.tooltips.footnotes[id] = footNoteHTML;
+    return footNoteHTML;
+  }
+
+  showChangesTooltip(targetElem: HTMLElement, origin: any) {
+    let elem = [];
+    if (origin.target.nextSibling !== null && origin.target.nextSibling !== undefined &&
+      !String(origin.target.nextSibling.className).includes('tooltiptrigger')) {
+      elem = origin.target;
+    } else if (origin.target.parentNode.nextSibling !== null && origin.target.parentNode.nextSibling !== undefined) {
+      elem = origin.target.parentNode;
+    }
+    if (elem['nextSibling'] !== null && elem['nextSibling'] !== undefined) {
+      if (elem['nextSibling'].className !== undefined && String(elem['nextSibling'].className).includes('tooltip')) {
+        this.setToolTipPosition(targetElem, elem['nextSibling'].textContent);
+        this.setToolTipText(elem['nextSibling'].textContent);
+      }
+    }
+  }
+
+  showCommentTooltip(id: string, targetElem: HTMLElement, origin: any) {
     if (this.tooltips.comments[id]) {
+      this.setToolTipPosition(targetElem, this.tooltips.comments[id]);
       this.setToolTipText(this.tooltips.comments[id]);
       return;
     }
@@ -1263,19 +1290,367 @@ export class ReadPage /*implements OnDestroy*/ {
     id = this.establishedText.link + ';' + id;
     this.tooltipService.getCommentTooltip(id).subscribe(
       tooltip => {
+        this.setToolTipPosition(targetElem, tooltip.description);
         this.setToolTipText(tooltip.description);
         this.tooltips.comments[id] = tooltip.description
       },
       error => {
-        this.setToolTipText('Could not get comment');
+        let noInfoFound = 'Could not get comment information';
+        this.translate.get('Occurrences.NoInfoFound').subscribe(
+          translation => {
+            noInfoFound = translation;
+          }, errorT => { }
+        );
+        this.setToolTipPosition(targetElem, noInfoFound);
+        this.setToolTipText(noInfoFound);
       }
     );
   }
 
-
+  showVariationTooltip(targetElem: HTMLElement, origin: any) {
+    if (origin.target.nextSibling.className !== undefined && String(origin.target.nextSibling.className).includes('tooltip')) {
+      this.setToolTipPosition(targetElem, origin.target.nextSibling.textContent);
+      this.setToolTipText(origin.target.nextSibling.textContent);
+      /*
+      clearTimeout(window['reload_timer']);
+      this.hideToolTip();
+      */
+    }
+  }
 
   setToolTipText(text: string) {
     this.toolTipText = text;
+  }
+
+  hideToolTip() {
+    /*
+    window['reload_timer'] = setTimeout(() => {
+      this.showToolTip = false;
+    }, 4000);
+    */
+    this.setToolTipText('');
+    this.toolTipPosition = {
+      top: -1000 + 'px',
+      left: -1000 + 'px'
+    };
+  }
+
+  setToolTipPosition(targetElem: HTMLElement, ttText: string) {
+    // Get viewport width and height.
+    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+    // Set vertical offset and toolbar heights.
+    const yOffset = 5;
+    const primaryToolbarHeight = 70;
+    const secToolbarHeight = 50;
+
+    // Set how close to the edges of the "window" the tooltip can be placed. Currently this only applies if the
+    // tooltip is set above or below the trigger.
+    const edgePadding = 5;
+
+    // Set "padding" around tooltip trigger – this is how close to the trigger element the tooltip will be placed.
+    const triggerPaddingX = 8;
+    const triggerPaddingY = 8;
+
+    // Set min and max width for resized tooltips.
+    const resizedToolTipMinWidth = 300;
+    const resizedToolTipMaxWidth = 600;
+
+    // Set horisontal offset due to possible side pane on the left.
+    const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
+    let sidePaneOffsetWidth = 0;
+    if (sidePaneIsOpen) {
+      sidePaneOffsetWidth = 269;
+    }
+
+    // Set variable for determining if the tooltip should be placed above or below the trigger rather than beside it.
+    let positionAboveOrBelowTrigger: Boolean = false;
+    let positionAbove: Boolean = false;
+
+    // Get rectangle which contains tooltiptrigger element. For trigger elements spanning multiple lines
+    // tooltips are always placed above or below the trigger.
+    const elemRects = targetElem.getClientRects();
+    let elemRect = null;
+    if (elemRects.length === 1) {
+      elemRect = elemRects[0];
+    } else {
+      positionAboveOrBelowTrigger = true;
+      if (elemRects[0].top - triggerPaddingY - primaryToolbarHeight - secToolbarHeight - edgePadding >
+         vh - elemRects[elemRects.length - 1].bottom - triggerPaddingY - edgePadding) {
+        elemRect = elemRects[0];
+        positionAbove = true;
+      } else {
+        elemRect = elemRects[elemRects.length - 1];
+      }
+    }
+
+    // Find the tooltip element.
+    const tooltipElement: HTMLElement = document.querySelector('div.toolTip');
+
+    // Get tooltip element's default dimensions and computed max-width (latter set by css).
+    const initialTTDimensions = this.getToolTipDimensions(tooltipElement, ttText, 0, true);
+    let ttHeight = initialTTDimensions.height;
+    let ttWidth = initialTTDimensions.width;
+    if (initialTTDimensions.compMaxWidth) {
+      this.toolTipMaxWidth = initialTTDimensions.compMaxWidth;
+    } else {
+      this.toolTipMaxWidth = '425px';
+    }
+    // Reset scale value for tooltip.
+    if (this.toolTipScaleValue) {
+      this.toolTipScaleValue = 1;
+    }
+
+    // Calculate default position.
+    let x = elemRect.right + triggerPaddingX;
+    let y = elemRect.top - primaryToolbarHeight - yOffset;
+
+    // Check if tooltip would be drawn outside the viewport.
+    let oversetX = x + ttWidth - vw;
+    let oversetY = elemRect.top + ttHeight - vh;
+    if (!positionAboveOrBelowTrigger) {
+      if (oversetX > 0) {
+        if (oversetY > 0) {
+          // Overset both vertically and horisontally. Check if tooltip can be moved to the left
+          // side of the trigger and upwards without modifying its dimensions.
+          if (elemRect.left - sidePaneOffsetWidth > ttWidth + triggerPaddingX && y - secToolbarHeight > oversetY) {
+            // Move tooltip to the left side of the trigger and upwards
+            x = elemRect.left - ttWidth - triggerPaddingX;
+            y = y - oversetY;
+          } else {
+            // Calc how much space there is on either side and attempt to place the tooltip on the side with more space.
+            const spaceRight = vw - x;
+            const spaceLeft = elemRect.left - sidePaneOffsetWidth - triggerPaddingX;
+            const maxSpace = Math.floor(Math.max(spaceRight, spaceLeft));
+
+            const ttDimensions = this.getToolTipDimensions(tooltipElement, ttText, maxSpace);
+            ttHeight = ttDimensions.height;
+            ttWidth = ttDimensions.width;
+
+            // Double-check that the narrower tooltip fits, but isn't too narrow.
+            if (ttWidth <= maxSpace && ttWidth > resizedToolTipMinWidth) {
+              // There is room, set new max-width.
+              this.toolTipMaxWidth = ttWidth + 'px';
+              if (spaceLeft > spaceRight) {
+                // Calc new horisontal position since an attempt to place the tooltip on the left will be made.
+                x = elemRect.left - triggerPaddingX - ttWidth;
+              }
+              // Check vertical space.
+              oversetY = elemRect.top + ttHeight - vh;
+              if (oversetY > 0) {
+                if (oversetY < y - secToolbarHeight) {
+                  // Move the y position upwards by oversetY.
+                  y = y - oversetY;
+                } else {
+                  positionAboveOrBelowTrigger = true;
+                }
+              }
+            } else {
+              positionAboveOrBelowTrigger = true;
+            }
+          }
+        } else {
+          // Overset only horisontally. Check if there is room on the left side of the trigger.
+          if (elemRect.left - sidePaneOffsetWidth - triggerPaddingX > ttWidth) {
+            // There is room on the left --> move tooltip there.
+            x = elemRect.left - ttWidth - triggerPaddingX;
+          } else {
+            // There is not enough room on the left. Try to squeeze in the tooltip on whichever side has more room.
+            // Calc how much space there is on either side.
+            const spaceRight = vw - x;
+            const spaceLeft = elemRect.left - sidePaneOffsetWidth - triggerPaddingX;
+            const maxSpace = Math.floor(Math.max(spaceRight, spaceLeft));
+
+            const ttDimensions = this.getToolTipDimensions(tooltipElement, ttText, maxSpace);
+            ttHeight = ttDimensions.height;
+            ttWidth = ttDimensions.width;
+
+            // Double-check that the narrower tooltip fits, but isn't too narrow.
+            if (ttWidth <= maxSpace && ttWidth > resizedToolTipMinWidth) {
+              // There is room, set new max-width.
+              this.toolTipMaxWidth = ttWidth + 'px';
+              if (spaceLeft > spaceRight) {
+                // Calc new horisontal position since an attempt to place the tooltip on the left will be made.
+                x = elemRect.left - triggerPaddingX - ttWidth;
+              }
+              // Check vertical space.
+              oversetY = elemRect.top + ttHeight - vh;
+              if (oversetY > 0) {
+                if (oversetY < y - secToolbarHeight) {
+                  // Move the y position upwards by oversetY.
+                  y = y - oversetY;
+                } else {
+                  positionAboveOrBelowTrigger = true;
+                }
+              }
+            } else {
+              positionAboveOrBelowTrigger = true;
+            }
+          }
+        }
+      } else if (oversetY > 0) {
+        // Overset only vertically. Check if there is room to move the tooltip upwards.
+        if (oversetY < y - secToolbarHeight) {
+          // Move the y position upwards by oversetY.
+          y = y - oversetY;
+        } else {
+          // There is not room to move the tooltip just upwards. Check if there is more room on the
+          // left side of the trigger so the width of the tooltip could be increased there.
+          const spaceRight = vw - x;
+          const spaceLeft = elemRect.left - sidePaneOffsetWidth - triggerPaddingX;
+
+          if (spaceLeft > spaceRight) {
+            const ttDimensions = this.getToolTipDimensions(tooltipElement, ttText, spaceLeft);
+            ttHeight = ttDimensions.height;
+            ttWidth = ttDimensions.width;
+
+            if (ttWidth <= spaceLeft && ttWidth > resizedToolTipMinWidth &&
+               ttHeight < vh - yOffset - primaryToolbarHeight - secToolbarHeight) {
+              // There is enough space on the left side of the trigger. Calc new positions.
+              this.toolTipMaxWidth = ttWidth + 'px';
+              x = elemRect.left - triggerPaddingX - ttWidth;
+              oversetY = elemRect.top + ttHeight - vh;
+              y = y - oversetY;
+            } else {
+              positionAboveOrBelowTrigger = true;
+            }
+          } else {
+            positionAboveOrBelowTrigger = true;
+          }
+        }
+      }
+    }
+
+    if (positionAboveOrBelowTrigger) {
+      // The tooltip could not be placed next to the trigger, so it has to be placed above or below it.
+      // Check if there is more space above or below the tooltip trigger.
+      let availableHeight = 0;
+      if (elemRects.length > 1 && positionAbove) {
+        availableHeight = elemRect.top - primaryToolbarHeight - secToolbarHeight - triggerPaddingY - edgePadding;
+      } else if (elemRects.length > 1) {
+        availableHeight = vh - elemRect.bottom - triggerPaddingY - edgePadding;
+      } else if (elemRect.top - primaryToolbarHeight - secToolbarHeight > vh - elemRect.bottom) {
+        positionAbove = true;
+        availableHeight = elemRect.top - primaryToolbarHeight - secToolbarHeight - triggerPaddingY - edgePadding;
+      } else {
+        positionAbove = false;
+        availableHeight = vh - elemRect.bottom - triggerPaddingY - edgePadding;
+      }
+
+      const availableWidth = vw - sidePaneOffsetWidth - (2 * edgePadding);
+
+      if (initialTTDimensions.height <= availableHeight && initialTTDimensions.width <= availableWidth) {
+        // The tooltip fits without resizing. Calculate position, check for possible overset and adjust.
+        x = elemRect.left;
+        if (positionAbove) {
+          y = elemRect.top - initialTTDimensions.height - primaryToolbarHeight - triggerPaddingY;
+        } else {
+          y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
+        }
+
+        // Check if tooltip would be drawn outside the viewport horisontally.
+        oversetX = x + initialTTDimensions.width - vw;
+        if (oversetX > 0) {
+          x = x - oversetX - edgePadding;
+        }
+      } else {
+        // Try to resize the tooltip so it would fit in view.
+        let newTTMaxWidth = Math.floor(availableWidth);
+        if (newTTMaxWidth > resizedToolTipMaxWidth) {
+          newTTMaxWidth = resizedToolTipMaxWidth;
+        }
+        // Calculate tooltip dimensions with new max-width
+        const ttNewDimensions = this.getToolTipDimensions(tooltipElement, ttText, newTTMaxWidth);
+
+        if (ttNewDimensions.height <= availableHeight && ttNewDimensions.width <= availableWidth) {
+          // Set new max-width and calculate position. Adjust if overset.
+          this.toolTipMaxWidth = ttNewDimensions.width + 'px';
+          x = elemRect.left;
+          if (positionAbove) {
+            y = elemRect.top - ttNewDimensions.height - primaryToolbarHeight - triggerPaddingY;
+          } else {
+            y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
+          }
+          // Check if tooltip would be drawn outside the viewport horisontally.
+          oversetX = x + ttNewDimensions.width - vw;
+          if (oversetX > 0) {
+            x = x - oversetX - edgePadding;
+          }
+        } else {
+          // Resizing the width and height of the tooltip element won't make it fit in view.
+          // Basically this means that the width is ok, but the height isn't.
+          // As a last resort, scale the tooltip so it fits in view.
+          const ratioX = availableWidth / ttNewDimensions.width;
+          const ratioY = availableHeight / ttNewDimensions.height;
+          const scaleRatio = Math.min(ratioX, ratioY) - 0.01;
+
+          this.toolTipMaxWidth = ttNewDimensions.width + 'px';
+          this.toolTipScaleValue = scaleRatio;
+          x = elemRect.left;
+          if (positionAbove) {
+            y = elemRect.top - availableHeight - triggerPaddingY - primaryToolbarHeight;
+          } else {
+            y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
+          }
+          oversetX = x + ttNewDimensions.width - vw;
+          if (oversetX > 0) {
+            x = x - oversetX - edgePadding;
+          }
+        }
+      }
+    }
+
+    // Set tooltip position
+    this.toolTipPosition = {
+      top: y + 'px',
+      left: (x - sidePaneOffsetWidth) + 'px'
+    };
+  }
+
+  private getToolTipDimensions(toolTipElem: HTMLElement, toolTipText: string, maxWidth = 0, returnCompMaxWidth: Boolean = false) {
+    // Create hidden div and make it into a copy of the tooltip div. Calculations are done on the hidden div.
+    const hiddenDiv: HTMLElement = document.createElement('div');
+
+    // Loop over each class in the tooltip element and add them to the hidden div.
+    const ttClasses: string[] = Array.from(toolTipElem.classList);
+    ttClasses.forEach(
+      function(currentValue, currentIndex, listObj) {
+        hiddenDiv.classList.add(currentValue);
+      },
+    );
+
+    // Don't display the hidden div initially. Set max-width if defined, otherwise the max-width will be determined by css.
+    hiddenDiv.style.display = 'none';
+    hiddenDiv.style.top = '0';
+    hiddenDiv.style.left = '0';
+    if (maxWidth > 0) {
+      hiddenDiv.style.maxWidth = maxWidth + 'px';
+    }
+    // Append hidden div to the parent of the tooltip element.
+    toolTipElem.parentNode.appendChild(hiddenDiv);
+    // Add content to the hidden div.
+    hiddenDiv.innerHTML = toolTipText;
+    // Make div visible again to calculate its width and height.
+    hiddenDiv.style.visibility = 'hidden';
+    hiddenDiv.style.display = 'block';
+    const ttHeight = hiddenDiv.offsetHeight;
+    const ttWidth = hiddenDiv.offsetWidth;
+    let compToolTipMaxWidth = '';
+    if (returnCompMaxWidth) {
+      // Get default tooltip max-width from css of hidden div if possible.
+      const hiddenDivCompStyles = window.getComputedStyle(hiddenDiv);
+      compToolTipMaxWidth = hiddenDivCompStyles.getPropertyValue('max-width');
+    }
+    // Remove hidden div.
+    hiddenDiv.remove();
+
+    const dimensions = {
+      width: ttWidth,
+      height: ttHeight,
+      compMaxWidth: compToolTipMaxWidth
+    }
+    return dimensions;
   }
 
   showCommentModal(id: string) {
