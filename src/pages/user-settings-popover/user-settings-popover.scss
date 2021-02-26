@@ -31,4 +31,9 @@ user-settings-popover-page {
 	.close:hover {
 		opacity: $opacity-hover;
 	}
+
+	ion-list.view-mode ion-icon{
+		font-size: 2rem !important;
+		min-height: 2rem !important;
+	}
 }
