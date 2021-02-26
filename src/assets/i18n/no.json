@@ -89,6 +89,10 @@
       "Title": "Arkivverket kildeutgivelser",
       "UI": "Brukergrensesnitt",
       "Language": "Språk",
+      "ViewMode": "Visningsläge",
+      "ViewModeAuto": "Auto",
+      "ViewModeDesktop": "Fullskärm",
+      "ViewModeMobile": "Mobil",
       "Information": "Informasjon"
   },
   "TOC": {

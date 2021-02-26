@@ -87,6 +87,10 @@
       "Title": "About the Edition",
       "UI": "User Interface",
       "Language": "Language",
+      "ViewMode": "View mode",
+      "ViewModeAuto": "Auto",
+      "ViewModeDesktop": "Desktop",
+      "ViewModeMobile": "Mobile",
       "Information": "Information"
   },
   "TOC": {

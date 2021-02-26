@@ -123,6 +123,10 @@
       "Title": "Om",
       "UI": "Användargränssnitt",
       "Language": "Språk",
+      "ViewMode": "Visningsläge",
+      "ViewModeAuto": "Auto",
+      "ViewModeDesktop": "Desktop",
+      "ViewModeMobile": "Mobil",
       "Information": "Information"
   },
   "MediaCollections": {

@@ -123,6 +123,10 @@
       "Title": "Topeliuksesta ja editiosta",
       "UI": "Käyttöliittymä",
       "Language": "Kieli",
+      "ViewMode": "Näkymän tila",
+      "ViewModeAuto": "Auto",
+      "ViewModeDesktop": "Desktop",
+      "ViewModeMobile": "Mobiili",
       "Information": "Tietoa"
   },
   "MediaCollections": {
