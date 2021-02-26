@@ -181,11 +181,11 @@ export class CommentsComponent {
         if (event.target !== undefined) {
           if ( event.target.previousSibling !== null ) {
             event.target.style.fontWeight = 'bold';
-            event.target.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
+            event.target.scrollIntoView({'behavior': 'smooth', 'block': 'center', inline: "nearest"});
             if (event.target.previousSibling.previousSibling !== null) {
               try {
                 event.target.previousSibling.style.fontWeight = 'bold';
-                event.target.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
+                event.target.scrollIntoView({'behavior': 'smooth', 'block': 'center', inline: "nearest"});
               } catch ( e ) {
 
               }
