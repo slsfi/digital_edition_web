@@ -882,8 +882,8 @@ export class ReadPage /*implements OnDestroy*/ {
       if (event.target.classList.contains('variantScrollTarget')) {
         if (event.target !== undefined) {
           event.target.style.fontWeight = 'bold';
-          this.showVariationTooltip(event.target, event);
           this.scrollToVariant(event.target);
+          this.showVariationTooltip(event.target, event);
         }
         setTimeout(function () {
           if (event.target !== undefined) {
