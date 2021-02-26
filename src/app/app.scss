@@ -204,6 +204,10 @@ p, blockquote {
   overflow: hidden;
 }
 
+.modal-wrapper {
+  border-radius: $popover-md-border-radius;
+}
+
 .facsimile-zoom-modal, .illustration-modal {
 
   .close-button {
@@ -218,7 +222,7 @@ p, blockquote {
     display: block;
     width: 100%;
     height: 100%;
-    border-radius: $popover-md-border-radius;
+    border-radius: 0;
 
     .content {
       background-color: rgba(0,0,0,0.0) !important;
