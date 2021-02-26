@@ -1,17 +1,4 @@
 page-title {
-  .card-content {
-    height: 100% !important;
-  }
-
-  .scroll-content {
-    overflow: hidden;
-    margin-bottom: 1rem;
-  }
-
-  ion-scroll {
-    height: 100% !important;
-    padding: 0 !important;
-  }
 
   ion-card {
     height: 100% !important;
@@ -35,12 +22,33 @@ page-title {
   }
 
   .scroll-content {
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+
+  ion-scroll {
+    height: 100% !important;
+    padding: 0 !important;
+  }
+
+  .scroll-content {
     display: flex;
   }
 
   .scroll-zoom-wrapper {
     width: 100%;
     padding: 6px;
+  }
+
+  @media screen and (max-width: 450px) {
+ 
+    /* Minska padding på mycket små skärmar. */
+    ion-content > .scroll-content {
+      padding: 0 !important;
+    }
+    ion-scroll > .scroll-content {
+      padding: 6px !important;
+    }
   }
 
   /* Cover image on title page. */
