@@ -218,6 +218,7 @@ p, blockquote {
     display: block;
     width: 100%;
     height: 100%;
+    border-radius: $popover-md-border-radius;
 
     .content {
       background-color: rgba(0,0,0,0.0) !important;
