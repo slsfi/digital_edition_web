@@ -265,8 +265,7 @@ export class CommentsComponent {
    * simultaneously on elements in different containers, unlike the native scrollIntoView
    * function which cannot be called multiple times simultaneously in Chrome due to a bug.
    */
-  private scrollElementIntoView(element: HTMLElement) {
-    const yOffset = 10;
+  private scrollElementIntoView(element: HTMLElement, yOffset = 10) {
     // Find the scrollable container of the element which is to be scrolled into view
     let container = element.parentElement;
     while (!container.classList.contains('scroll-content') &&
