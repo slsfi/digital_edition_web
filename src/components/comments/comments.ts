@@ -159,20 +159,24 @@ export class CommentsComponent {
         }
       } catch ( e ) {}
 
-      // This is linking to a comment
+      // This is linking to a comment lemma ("asterisk") in the reading text
       try {
         let elem: HTMLElement = event.target as HTMLElement;
         if ( elem.classList.contains('commentScrollTarget') ) {
         } else if ( elem.parentElement.classList.contains('commentScrollTarget') ) {
+          // elem is the comment-element in the comments-column
           elem = elem.parentElement;
         }
 
         if ( elem.classList.contains('commentScrollTarget') ) {
           const targetId = elem.classList[elem.classList.length - 1];
-          /* target is the lemma in the reading text */
+          // target is the lemma in the reading text
           const target = document.getElementsByClassName('ttComment ' + targetId)[0] as HTMLElement;
           if ( target !== null && target !== undefined && this.readPopoverService.show.comments) {
+            // Scroll to lemma in reading text and temporarily prepend arrow
             this.scrollToHTMLElement(target, false);
+            // Scroll the comment in the comments-column
+            elem.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'nearest'});
           }
         }
       } catch ( e ) {}
