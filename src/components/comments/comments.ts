@@ -176,10 +176,10 @@ export class CommentsComponent {
           if (elem !== null && elem !== undefined) {
             // Find the lemma in the reading text.
             const targetId = elem.classList[elem.classList.length - 1];
-            const target = document.getElementsByClassName('ttComment ' + targetId)[0] as HTMLElement;
-            if (target !== null && target !== undefined) {
+            const lemmaEnd = document.getElementsByClassName('ttComment ' + targetId)[0] as HTMLElement;
+            if (lemmaEnd !== null && lemmaEnd !== undefined) {
               // Scroll to lemma in reading text and temporarily prepend arrow.
-              this.scrollToHTMLElement(target, false);
+              this.scrollToHTMLElement(lemmaEnd, false);
               // Scroll comment.
               this.scrollElementIntoView(elem);
             }
@@ -208,6 +208,7 @@ export class CommentsComponent {
     });
   }
 
+  // Function is not used.
   private scrollToComment(event: any) {
     let scrollTarget: Array<any> = [];
     if ( String(event.target.parentElement.className).match(/en[0-9]{1,9}/g) ) {
@@ -225,12 +226,12 @@ export class CommentsComponent {
   private scrollToHTMLElement(element: HTMLElement, addTag: boolean, timeOut = 5000) {
     try {
       // element.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'nearest'});
-      this.scrollElementIntoView(element);
       const tmp = element.previousElementSibling as HTMLElement;
       let addedArrow = false;
 
       if ( tmp !== null && tmp !== undefined && tmp.classList.contains('anchor_lemma') ) {
         tmp.style.display = 'inline';
+        this.scrollElementIntoView(tmp);
         setTimeout(function() {
           tmp.style.display = 'none';
         }, 5000);
@@ -240,6 +241,7 @@ export class CommentsComponent {
         tmpImage.src = 'assets/images/ms_arrow_right.svg';
         tmpImage.classList.add('inl_ms_arrow');
         element.parentElement.insertBefore(tmpImage, element);
+        this.scrollElementIntoView(tmpImage);
         setTimeout(function() {
           element.parentElement.removeChild(tmpImage);
         }, timeOut);
@@ -248,6 +250,7 @@ export class CommentsComponent {
 
       if ( addTag && !addedArrow ) {
         element.innerHTML = '<img class="inl_ms_arrow" src="assets/images/ms_arrow_right.svg"/>';
+        this.scrollElementIntoView(element);
         setTimeout(function() {
           element.innerHTML = '';
         }, timeOut);
