@@ -1910,7 +1910,8 @@ export class ReadPage /*implements OnDestroy*/ {
 
   private scrollToElement(element: HTMLElement) {
     element.scrollIntoView();
-    this.showToolTip = false;
+    // this.showToolTip = false;
+    this.hideToolTip();
     try {
       const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span');
       for (let i = 0; i < elems.length; i++) {
@@ -1925,7 +1926,8 @@ export class ReadPage /*implements OnDestroy*/ {
 
   private scrollToVariant(element: HTMLElement) {
     element.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
-    this.showToolTip = false;
+    // this.showToolTip = false;
+    this.hideToolTip();
     try {
       const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span');
       for (let i = 0; i < elems.length; i++) {
