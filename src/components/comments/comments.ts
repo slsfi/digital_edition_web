@@ -169,6 +169,7 @@ export class CommentsComponent {
 
         if ( elem.classList.contains('commentScrollTarget') ) {
           const targetId = elem.classList[elem.classList.length - 1];
+          /* target is the lemma in the reading text */
           const target = document.getElementsByClassName('ttComment ' + targetId)[0] as HTMLElement;
           if ( target !== null && target !== undefined && this.readPopoverService.show.comments) {
             this.scrollToHTMLElement(target, false);
@@ -181,11 +182,9 @@ export class CommentsComponent {
         if (event.target !== undefined) {
           if ( event.target.previousSibling !== null ) {
             event.target.style.fontWeight = 'bold';
-            event.target.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'nearest'});
             if (event.target.previousSibling.previousSibling !== null) {
               try {
                 event.target.previousSibling.style.fontWeight = 'bold';
-                event.target.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'nearest'});
               } catch ( e ) {
 
               }
@@ -193,11 +192,9 @@ export class CommentsComponent {
           }
           if ( event.target.nextSibling !== null && event.target.nextSibling.style !== undefined ) {
             event.target.nextSibling.style.fontWeight = 'bold';
-            event.target.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'nearest'});
           }
           if ( event.target.nextSibling !== null && event.target.nextSibling.nextSibling !== null ) {
             event.target.nextSibling.nextSibling.style.fontWeight = 'bold';
-            event.target.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'nearest'});
           }
           this.scrollToComment(event);
         }
@@ -223,11 +220,9 @@ export class CommentsComponent {
         if (event.target !== undefined) {
           if ( event.target.children[1] ) {
             event.target.children[1].style.fontWeight = 'bold';
-            event.target.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'nearest'});
           }
           if ( event.target.children[2] ) {
             event.target.children[2].style.fontWeight = 'bold';
-            event.target.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'nearest'});
           }
           this.scrollToComment(event);
         }
@@ -278,6 +273,7 @@ export class CommentsComponent {
 
   private scrollToHTMLElement(element: HTMLElement, addTag: boolean, timeOut = 5000) {
     try {
+      element.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'nearest'});
       const tmp = element.previousElementSibling as HTMLElement;
       let addedArrow = false;
 
@@ -304,7 +300,6 @@ export class CommentsComponent {
           element.innerHTML = '';
         }, timeOut);
       }
-      element.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'nearest'});
     } catch ( e ) {
       console.error(e);
     }
