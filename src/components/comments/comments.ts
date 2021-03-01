@@ -198,6 +198,7 @@ export class CommentsComponent {
           if ( event.target.nextSibling !== null && event.target.nextSibling.nextSibling !== null ) {
             event.target.nextSibling.nextSibling.style.fontWeight = 'bold';
           }
+          this.scrollElementIntoView(event.target);
           this.scrollToComment(event);
         }
         setTimeout(function() {
@@ -226,6 +227,7 @@ export class CommentsComponent {
           if ( event.target.children[2] ) {
             event.target.children[2].style.fontWeight = 'bold';
           }
+          this.scrollElementIntoView(event.target);
           this.scrollToComment(event);
         }
         setTimeout(function() {
@@ -275,7 +277,8 @@ export class CommentsComponent {
 
   private scrollToHTMLElement(element: HTMLElement, addTag: boolean, timeOut = 5000) {
     try {
-      element.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'nearest'});
+      // element.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'nearest'});
+      this.scrollElementIntoView(element);
       const tmp = element.previousElementSibling as HTMLElement;
       let addedArrow = false;
 
@@ -305,6 +308,23 @@ export class CommentsComponent {
     } catch ( e ) {
       console.error(e);
     }
+  }
+
+  private scrollElementIntoView(element: HTMLElement) {
+    const yOffset = 10;
+    
+    // Find the scrollable container of the element which is to be scrolled into view
+    let container = element.parentElement;
+    while (!container.classList.contains('scroll-content') &&
+     container.parentElement.tagName !== 'ION-SCROLL') {
+      container = container.parentElement;
+      if (container == null) {
+        return;
+      }
+    }
+
+    const y = element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top;
+    container.scrollTo({top: y - yOffset, behavior: 'smooth'});
   }
 
   getCorrespondanceMetadata() {
