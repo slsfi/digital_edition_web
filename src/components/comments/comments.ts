@@ -159,7 +159,7 @@ export class CommentsComponent {
         }
       } catch ( e ) {}
 
-      // This is linking to a comment lemma ("asterisk") in the reading text
+      // This is linking to a comment lemma ("asterisk") in the reading text, i.e. the user has clicked a comment in the comments-column
       try {
         let elem: HTMLElement = event.target as HTMLElement;
         if ( elem.classList.contains('commentScrollTarget') ) {
@@ -176,7 +176,9 @@ export class CommentsComponent {
             // Scroll to lemma in reading text and temporarily prepend arrow
             this.scrollToHTMLElement(target, false);
             // Scroll the comment in the comments-column
-            elem.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'nearest'});
+            setTimeout(function() {
+              event.target.scrollIntoView({behavior: 'smooth', block: 'center'});
+            }.bind(this), 500);
           }
         }
       } catch ( e ) {}
