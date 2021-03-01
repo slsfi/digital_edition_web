@@ -312,7 +312,7 @@ export class CommentsComponent {
 
   private scrollElementIntoView(element: HTMLElement) {
     const yOffset = 10;
-    
+
     // Find the scrollable container of the element which is to be scrolled into view
     let container = element.parentElement;
     while (!container.classList.contains('scroll-content') &&
