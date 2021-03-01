@@ -278,7 +278,6 @@ export class CommentsComponent {
 
   private scrollToHTMLElement(element: HTMLElement, addTag: boolean, timeOut = 5000) {
     try {
-      element.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'nearest'});
       const tmp = element.previousElementSibling as HTMLElement;
       let addedArrow = false;
 
@@ -305,6 +304,7 @@ export class CommentsComponent {
           element.innerHTML = '';
         }, timeOut);
       }
+      element.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'nearest'});
     } catch ( e ) {
       console.error(e);
     }
