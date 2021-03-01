@@ -237,7 +237,7 @@ export class ReadTextComponent {
     );
   }
 
-  private scrollToHTMLElement(element: HTMLElement, addTag: boolean, timeOut = 8000) {
+  private scrollToHTMLElement(element: HTMLElement, addTag: boolean, timeOut = 5000) {
     try {
       element.scrollIntoView({'behavior': 'smooth', 'block': 'start'});
       const tmp = element.previousElementSibling as HTMLElement;

@@ -19,6 +19,7 @@ export class ReadPopoverService {
     'placeInfo': false,
     'workInfo': false,
     'changes': false,
+    'normalisations': false,
     'pageNumbering': false,
     'pageBreakOriginal': false,
     'pageBreakEdition': false

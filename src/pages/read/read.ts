@@ -817,10 +817,21 @@ export class ReadPage /*implements OnDestroy*/ {
     }.bind(this), 1000);
     /* SebKoh: Why is this here and not in setUpTextListeners() below as the other tooltiptriggers on mouseover? */
     this.renderer.listen(this.elementRef.nativeElement, 'mouseover', (event) => {
-      if ((event.target.parentNode.classList.contains('tooltiptrigger') || event.target.classList.contains('tooltiptrigger')) &&
-        this.readPopoverService.show.changes) {
+      if (((event.target.parentNode.classList.contains('tooltiptrigger') &&
+      event.target.parentNode.classList.contains('ttChanges')) ||
+      (event.target.classList.contains('tooltiptrigger') &&
+      event.target.classList.contains('ttChanges'))) &&
+       this.readPopoverService.show.changes) {
         if (event.target !== undefined) {
-          this.showChangesTooltip(event.target, event);
+          this.showChangesOrNormalisationsTooltip(event.target, event);
+        }
+      } else if (((event.target.parentNode.classList.contains('tooltiptrigger') &&
+       event.target.parentNode.classList.contains('ttNormalisations')) ||
+       (event.target.classList.contains('tooltiptrigger') &&
+       event.target.classList.contains('ttNormalisations'))) &&
+       this.readPopoverService.show.normalisations) {
+        if (event.target !== undefined) {
+          this.showChangesOrNormalisationsTooltip(event.target, event);
         }
       }
     });
@@ -1217,7 +1228,7 @@ export class ReadPage /*implements OnDestroy*/ {
     return footNoteHTML;
   }
 
-  showChangesTooltip(targetElem: HTMLElement, origin: any) {
+  showChangesOrNormalisationsTooltip(targetElem: HTMLElement, origin: any) {
     let elem = [];
     if (origin.target.nextSibling !== null && origin.target.nextSibling !== undefined &&
       !String(origin.target.nextSibling.className).includes('tooltiptrigger')) {

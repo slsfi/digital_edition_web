@@ -24,6 +24,7 @@ export class ReadPopoverPage {
       'placeInfo': boolean,
       'workInfo': boolean,
       'changes': boolean,
+      'normalisations': boolean,
       'abbreviations': boolean,
       'pageNumbering': boolean,
       'pageBreakOriginal': boolean,
@@ -36,6 +37,7 @@ export class ReadPopoverPage {
       'placeInfo': false,
       'workInfo': false,
       'changes': false,
+      'normalisations': false,
       'abbreviations': false,
       'pageNumbering': false,
       'pageBreakOriginal': false,
@@ -81,6 +83,7 @@ export class ReadPopoverPage {
       this.show.placeInfo = true;
       this.show.workInfo = true;
       this.show.changes = true;
+      this.show.normalisations = true;
       this.show.abbreviations = true;
       this.show.pageNumbering = true;
       this.show.pageBreakOriginal = true;
@@ -91,6 +94,7 @@ export class ReadPopoverPage {
       this.show.placeInfo = false;
       this.show.workInfo = false;
       this.show.changes = false;
+      this.show.normalisations = false;
       this.show.abbreviations = false;
       this.show.pageNumbering = false;
       this.show.pageBreakOriginal = false;
@@ -101,6 +105,7 @@ export class ReadPopoverPage {
     this.togglePlaceInfo();
     this.toggleWorkInfo();
     this.toggleChanges();
+    this.toggleNormalisations();
     this.toggleAbbreviations();
     this.togglePageNumbering();
     this.togglePageBreakOriginal();
@@ -130,6 +135,11 @@ export class ReadPopoverPage {
   toggleChanges() {
     this.readPopoverService.show.changes = this.show.changes;
     this.doAnalytics('toggleChanges - ' + this.show.changes);
+  }
+
+  toggleNormalisations() {
+    this.readPopoverService.show.normalisations = this.show.normalisations;
+    this.doAnalytics('toggleNormalisations - ' + this.show.normalisations);
   }
 
   toggleAbbreviations() {

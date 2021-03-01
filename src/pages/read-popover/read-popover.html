@@ -52,6 +52,11 @@
         <ion-toggle [(ngModel)]="show.changes" (ionChange)="toggleChanges()"></ion-toggle>
       </ion-item>
 
+      <ion-item *ngIf="readToggles.normalisations">
+        <ion-label class="show_normalisationsInfo">{{'Read.Popover.Normalisations' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="show.normalisations" (ionChange)="toggleNormalisations()"></ion-toggle>
+      </ion-item>
+
       <ion-item *ngIf="readToggles.pageNumbering">
         <ion-label>{{'Read.Popover.PageNumbering' | translate}}</ion-label>
         <ion-toggle [(ngModel)]="show.pageNumbering" (ionChange)="togglePageNumbering()"></ion-toggle>
