@@ -159,86 +159,33 @@ export class CommentsComponent {
         }
       } catch ( e ) {}
 
-      // This is linking to a comment lemma ("asterisk") in the reading text, i.e. the user has clicked a comment in the comments-column
+      // This is linking to a comment lemma ("asterisk") in the reading text, i.e. the user has clicked a comment in the comments-column.
       try {
-        let elem: HTMLElement = event.target as HTMLElement;
-        if ( elem.classList.contains('commentScrollTarget') ) {
-        } else if ( elem.parentElement.classList.contains('commentScrollTarget') ) {
-          // elem is the comment-element in the comments-column
-          elem = elem.parentElement;
-        }
-
-        if ( elem.classList.contains('commentScrollTarget') ) {
-          const targetId = elem.classList[elem.classList.length - 1];
-          // target is the lemma in the reading text
-          const target = document.getElementsByClassName('ttComment ' + targetId)[0] as HTMLElement;
-          if ( target !== null && target !== undefined && this.readPopoverService.show.comments) {
-            // Scroll to lemma in reading text and temporarily prepend arrow
-            this.scrollToHTMLElement(target, false);
+        if (this.readPopoverService.show.comments) {
+          let elem: HTMLElement = event.target as HTMLElement;
+          // Find the comment element that has been clicked in the comment-column.
+          if (!elem.classList.contains('commentScrollTarget')) {
+            elem = elem.parentElement;
+            while (!elem.classList.contains('commentScrollTarget')) {
+              elem = elem.parentElement;
+              if (elem === null || elem === undefined) {
+                break;
+              }
+            }
+          }
+          if (elem !== null && elem !== undefined) {
+            // Find the lemma in the reading text.
+            const targetId = elem.classList[elem.classList.length - 1];
+            const target = document.getElementsByClassName('ttComment ' + targetId)[0] as HTMLElement;
+            if (target !== null && target !== undefined) {
+              // Scroll to lemma in reading text and temporarily prepend arrow.
+              this.scrollToHTMLElement(target, false);
+              // Scroll comment.
+              this.scrollElementIntoView(elem);
+            }
           }
         }
       } catch ( e ) {}
-
-      if (( event.target.parentElement.classList.contains('commentScrollTarget') ||
-            event.target.parentElement.parentElement.classList.contains('commentScrollTarget') ) && this.readPopoverService.show.comments) {
-        if (event.target !== undefined) {
-          if ( event.target.previousSibling !== null ) {
-            event.target.style.fontWeight = 'bold';
-            if (event.target.previousSibling.previousSibling !== null) {
-              try {
-                event.target.previousSibling.style.fontWeight = 'bold';
-              } catch ( e ) {
-
-              }
-            }
-          }
-          if ( event.target.nextSibling !== null && event.target.nextSibling.style !== undefined ) {
-            event.target.nextSibling.style.fontWeight = 'bold';
-          }
-          if ( event.target.nextSibling !== null && event.target.nextSibling.nextSibling !== null ) {
-            event.target.nextSibling.nextSibling.style.fontWeight = 'bold';
-          }
-          this.scrollElementIntoView(event.target);
-          this.scrollToComment(event);
-        }
-        setTimeout(function() {
-          if (event.target !== undefined && event.target.previousSibling) {
-            event.target.style.fontWeight = null;
-            if (event.target.previousSibling.previousSibling !== null) {
-              try {
-                event.target.previousSibling.style.fontWeight = null;
-              } catch ( e ) {
-
-              }
-            }
-          }
-          if ( event.target.nextSibling !== null && event.target.nextSibling.style !== undefined ) {
-            event.target.nextSibling.style.fontWeight = null;
-          }
-          if ( event.target.nextSibling !== null && event.target.nextSibling.nextSibling !== null ) {
-            event.target.nextSibling.nextSibling.style.fontWeight = null;
-          }
-        }, 5000);
-      } else if (event.target.classList.contains('commentScrollTarget') && this.readPopoverService.show.comments) {
-        if (event.target !== undefined) {
-          if ( event.target.children[1] ) {
-            event.target.children[1].style.fontWeight = 'bold';
-          }
-          if ( event.target.children[2] ) {
-            event.target.children[2].style.fontWeight = 'bold';
-          }
-          this.scrollElementIntoView(event.target);
-          this.scrollToComment(event);
-        }
-        setTimeout(function() {
-          if ( event.target.children[1] ) {
-            event.target.children[1].style.fontWeight = null;
-          }
-          if ( event.target.children[2] ) {
-            event.target.children[2].style.fontWeight = null;
-          }
-        }, 5000);
-      }
     });
   }
 
@@ -310,19 +257,22 @@ export class CommentsComponent {
     }
   }
 
+  /* This function can be used to scroll a container so that the element which it contains
+   * is placed at the top edge of the container. This function can be called multiple times
+   * simultaneously on elements in different containers, unlike the native scrollIntoView
+   * function which cannot be called multiple times simultaneously in Chrome due to a bug.
+   */
   private scrollElementIntoView(element: HTMLElement) {
     const yOffset = 10;
-
     // Find the scrollable container of the element which is to be scrolled into view
     let container = element.parentElement;
     while (!container.classList.contains('scroll-content') &&
      container.parentElement.tagName !== 'ION-SCROLL') {
       container = container.parentElement;
-      if (container == null) {
+      if (container === null || container === undefined) {
         return;
       }
     }
-
     const y = element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top;
     container.scrollTo({top: y - yOffset, behavior: 'smooth'});
   }
