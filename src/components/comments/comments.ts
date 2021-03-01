@@ -175,10 +175,6 @@ export class CommentsComponent {
           if ( target !== null && target !== undefined && this.readPopoverService.show.comments) {
             // Scroll to lemma in reading text and temporarily prepend arrow
             this.scrollToHTMLElement(target, false);
-            // Scroll the comment in the comments-column
-            setTimeout(function() {
-              event.target.scrollIntoView({behavior: 'smooth', block: 'center'});
-            }.bind(this), 500);
           }
         }
       } catch ( e ) {}
