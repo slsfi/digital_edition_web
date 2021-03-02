@@ -823,7 +823,7 @@ export class ReadPage /*implements OnDestroy*/ {
       event.target.classList.contains('ttChanges'))) &&
        this.readPopoverService.show.changes) {
         if (event.target !== undefined) {
-          this.showChangesNormalisationsOrAbbreviationsTooltip(event.target, event);
+          this.showTooltipFromInlineHtml(event.target, event);
         }
       } else if (((event.target.parentNode.classList.contains('tooltiptrigger') &&
        event.target.parentNode.classList.contains('ttNormalisations')) ||
@@ -831,7 +831,7 @@ export class ReadPage /*implements OnDestroy*/ {
        event.target.classList.contains('ttNormalisations'))) &&
        this.readPopoverService.show.normalisations) {
         if (event.target !== undefined) {
-          this.showChangesNormalisationsOrAbbreviationsTooltip(event.target, event);
+          this.showTooltipFromInlineHtml(event.target, event);
         }
       } else if (((event.target.parentNode.classList.contains('tooltiptrigger') &&
       event.target.parentNode.classList.contains('ttAbbreviations')) ||
@@ -839,7 +839,7 @@ export class ReadPage /*implements OnDestroy*/ {
       event.target.classList.contains('ttAbbreviations'))) &&
       this.readPopoverService.show.abbreviations) {
        if (event.target !== undefined) {
-         this.showChangesNormalisationsOrAbbreviationsTooltip(event.target, event);
+         this.showTooltipFromInlineHtml(event.target, event);
        }
      }
     });
@@ -1236,7 +1236,8 @@ export class ReadPage /*implements OnDestroy*/ {
     return footNoteHTML;
   }
 
-  showChangesNormalisationsOrAbbreviationsTooltip(targetElem: HTMLElement, origin: any) {
+  /* This function is used for showing tooltips for changes, normalisations and abbreviations. */
+  showTooltipFromInlineHtml(targetElem: HTMLElement, origin: any) {
     let elem = [];
     if (origin.target.nextSibling !== null && origin.target.nextSibling !== undefined &&
       !String(origin.target.nextSibling.className).includes('tooltiptrigger')) {
