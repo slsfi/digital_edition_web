@@ -36,4 +36,7 @@ page-share-popover {
   .close:hover {
 		opacity: $opacity-hover;
 	}
+  .close:active {
+		opacity: 1;
+	}
 }
