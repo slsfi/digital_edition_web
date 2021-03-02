@@ -1102,9 +1102,6 @@ div.tei {
         */
         margin: 0 !important;
     }
-    .tooltip {
-        display: none;
-    }
 
     /* Tables */
     table {
@@ -1624,7 +1621,7 @@ div.tei {
 
 
 /*** Advanced mode styles */
-
+div.tei .tooltip { display: none; }
 .tei                        img.comment { display: none; }
 .tei.show_comments          img.comment { display: inline-block; cursor: pointer; top: 0; }
 
@@ -1639,11 +1636,11 @@ div.tei {
 .tei.show_changes           span.corr, 
 .tei.show_changes           span.corr_red { background-color: $changes-color; cursor: default; }
 .tei                        span.corr_hide { display: none; }
-.tei.show_changes           span.corr_hide { display: inline-block; width: 0.625em; height: 0.625em; background-color: transparent; }
+.tei.show_changes           span.corr_hide { display: inline-block; width: 0.625em; height: 0.625em; background-color: transparent; cursor: default; }
 
 .tei.show_normalisations    span.reg.ttNormalisations { background-color: $normalisations-color; cursor: default; }
 .tei                        span.reg_hide { display: none; }
-.tei.show_normalisations    span.reg_hide { display: inline-block; width: 0.625em; height: 0.625em; background-color: transparent; }
+.tei.show_normalisations    span.reg_hide { display: inline-block; width: 0.625em; height: 0.625em; background-color: transparent; cursor: default; }
 
 /*ändra pekaren till en hand över personer och platser när visningsalternativen är påslagna eftersom dessa går att klicka på för att öppna registren
 .tei.show_personInfo span.person.tooltiptrigger,
