@@ -59,6 +59,9 @@ read-popover-page {
 	.close:hover {
 		opacity: $opacity-hover;
 	}
+	.close:active {
+		opacity: 1;
+	}
 
 	.selected-font-size,
 	.selected-font-size:hover {
@@ -95,6 +98,10 @@ read-popover-page {
 	.show_changesInfo {
 		display: inline;
 		background-color: $changes-color;
+	}
+	.show_changesInfo {
+		display: inline;
+		background-color: $normalisations-color;
 	}
 }
 
