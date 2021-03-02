@@ -28,6 +28,7 @@ export class CommentsComponent {
   sender: any;
   receiver: any;
   letter: any;
+  textLoading: Boolean = true;
 
   constructor(
     protected readPopoverService: ReadPopoverService,
@@ -59,17 +60,19 @@ export class CommentsComponent {
   setText() {
     this.commentService.getComment(this.link).subscribe(
       text => {
-          // in order to get id attributes for tooltips
-          this.text = this.sanitizer.bypassSecurityTrustHtml (
-            String(text).replace(/images\//g, 'assets/images/')
-              .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiComment $1\"')
-              .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
-          );
-          this.doAnalytics();
-        },
+        this.textLoading = false;
+        // in order to get id attributes for tooltips
+        this.text = this.sanitizer.bypassSecurityTrustHtml (
+          String(text).replace(/images\//g, 'assets/images/')
+            .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiComment $1\"')
+            .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
+        );
+        this.doAnalytics();
+      },
       error =>  {
         console.error('Error loading comments...', this.link);
-        this.errorMessage = <any>error
+        this.errorMessage = <any>error;
+        this.textLoading = false;
       }
     );
   }
