@@ -1106,15 +1106,6 @@ div.tei {
         display: none;
     }
 
-
-
-    /*Regel för kommentarasteriskerna i lästexten / har lagt till img för att regeln inte ska tillämpas i kommentarkolumnen*/
-    img.comment {
-        /*font-size: 3em;*/
-        cursor: pointer;
-        top: 0;
-    }
-
     /* Tables */
     table {
         table-layout: fixed;
@@ -1634,47 +1625,37 @@ div.tei {
 
 /*** Advanced mode styles */
 
-.tei                .ttChanges {display: inline;}
-.tei.show_changes   .ttChanges {display: inline;}
-.tei                .tooltip.ttChanges {display: none;}
+.tei                        img.comment { display: none; }
+.tei.show_comments          img.comment { display: inline-block; cursor: pointer; top: 0; }
 
-.tei                img.comment {display: none;}
-.tei.show_comments  img.comment {display: inline-block;}
+.tei.show_personInfo        span.person { background-color: $persName-color; cursor: pointer; }
 
-.tei                span.reg_hide {display: none;}
-.tei.show_regStyle  span.reg_hide {display: inherit;}
-.tei.show_regStyle  span.reg {background-color: color($colors, primary); cursor: default;}
+.tei.show_placeInfo         span.placeName { background-color: $placeName-color; cursor: pointer; }
 
-.tei.show_personInfo    span.person {background-color: $persName-color;}
-.tei.show_personInfo    span.person[id] {cursor: pointer;}
-/*ovanstående sätt att visa cursor:pointer fungerar inte*/
+.tei.show_workInfo          span.title { background-color: $workTitle-color; cursor: pointer; }
 
-.tei.show_placeInfo    span.placeName {background-color: $placeName-color;}
-.tei.show_placeInfo    span.placeName[id] {cursor: pointer;}
+.tei.show_abbreviations     span.abbr { background-color: $abbreviations-color; cursor: default; }
 
-.tei.show_workInfo    span.title {background-color: $workTitle-color;}
-.tei.show_workInfo    span.title[id] {cursor: pointer;}
+.tei.show_changes           span.corr, 
+.tei.show_changes           span.corr_red { background-color: $changes-color; cursor: default; }
+.tei                        span.corr_hide { display: none; }
+.tei.show_changes           span.corr_hide { display: inline-block; width: 0.625em; height: 0.625em; background-color: transparent; }
 
-.tei                     span.corr_hide {display: none;}
+.tei.show_normalisations    span.reg.ttNormalisations { background-color: $normalisations-color; cursor: default; }
+.tei                        span.reg_hide { display: none; }
+.tei.show_normalisations    span.reg_hide { display: inline-block; width: 0.625em; height: 0.625em; background-color: transparent; }
+
+/*ändra pekaren till en hand över personer och platser när visningsalternativen är påslagna eftersom dessa går att klicka på för att öppna registren
+.tei.show_personInfo span.person.tooltiptrigger,
+.tei.show_placeInfo span.placeName.tooltiptrigger,
+.tei.show_workInfo span.title.tooltiptrigger {
+	cursor: pointer;
+}*/
+
+/* Dessa existerar inte
 .tei.show_choiceStyle    span.corr_hide {display: inherit;}
 .tei.show_choiceStyle    span.corr {background-color: color($colors, light); cursor: default;}
 .tei.show_choiceStyle    span.corr_red {background-color: $changes-color; cursor: default;}
-
-.tei                     span.reg_hide {display: none;}
-.tei.show_regShow        span.reg_hide {display: inherit;}
-.tei.show_regShow        span.reg {background-color: color($colors, light); cursor: default;}
-
-.tei                     span.reg_hide {display: none;}
-.tei.show_regStyle       span.reg_hide {display: inherit;}
-.tei.show_regStyle       span.reg {background-color: color($colors, light); cursor: default;}
-
-/* For now, show normalizations when showing changes since show_regStyle is not implemented yet. */
-.tei.show_changes         span.tei.ttNormalisations { background-color: $normalisations-color; cursor: default; }
-
-.tei.show_abbreviations   span.abbr {background-color: $abbreviations-color; cursor: default;}
-
-.tei.show_changes         span.corr_red {background-color: $changes-color; cursor: default;}
-.tei.show_changes         span.tei.corr {background-color: $changes-color; cursor: default;}
 
 .tei.show_placeStyle        span.placeName {background-color: color($colors, light);}
 .tei.show_placeStyle        span.placeName[id] {cursor: pointer;}
@@ -1683,11 +1664,6 @@ div.tei {
 
 .tei.show_titleStyle        span.title {background-color: $workTitle-color;}
 .tei.show_titleStyle        span.title[id] {cursor: pointer;}
-
-/*.tei                        .pb_zts {display: none;}*/
-/* .show_pbztsStyle verkar inte användas
-.tei.show_pbztsStyle        .pb_zts {display: inherit;}
-.tei.show_pbztsStyle        .pb_zts {color: $pageBreakEdition-color;}
 */
 
 /* PARAGRAPH AND LINE NUMBERING */
@@ -1751,13 +1727,6 @@ div.tei.show_pageBreakOriginal .pb_orig {
 div.tei.show_pageBreakEdition .pb_zts,
 div.tei.show_pageBreakEdition .pb_edition {
     color: $pageBreakEdition-color;
-}
-
-/*ändra pekaren till en hand över personer och platser när visningsalternativen är påslagna eftersom dessa går att klicka på för att öppna registren*/
-.tei.show_personInfo span.person.tooltiptrigger,
-.tei.show_placeInfo span.placeName.tooltiptrigger,
-.tei.show_workInfo span.title.tooltiptrigger {
-	cursor: pointer;
 }
 
 .tei a.anchor, 
