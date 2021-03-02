@@ -823,7 +823,7 @@ export class ReadPage /*implements OnDestroy*/ {
       event.target.classList.contains('ttChanges'))) &&
        this.readPopoverService.show.changes) {
         if (event.target !== undefined) {
-          this.showChangesOrNormalisationsTooltip(event.target, event);
+          this.showChangesNormalisationsOrAbbreviationsTooltip(event.target, event);
         }
       } else if (((event.target.parentNode.classList.contains('tooltiptrigger') &&
        event.target.parentNode.classList.contains('ttNormalisations')) ||
@@ -831,9 +831,17 @@ export class ReadPage /*implements OnDestroy*/ {
        event.target.classList.contains('ttNormalisations'))) &&
        this.readPopoverService.show.normalisations) {
         if (event.target !== undefined) {
-          this.showChangesOrNormalisationsTooltip(event.target, event);
+          this.showChangesNormalisationsOrAbbreviationsTooltip(event.target, event);
         }
-      }
+      } else if (((event.target.parentNode.classList.contains('tooltiptrigger') &&
+      event.target.parentNode.classList.contains('ttAbbreviations')) ||
+      (event.target.classList.contains('tooltiptrigger') &&
+      event.target.classList.contains('ttAbbreviations'))) &&
+      this.readPopoverService.show.abbreviations) {
+       if (event.target !== undefined) {
+         this.showChangesNormalisationsOrAbbreviationsTooltip(event.target, event);
+       }
+     }
     });
   }
 
@@ -1228,7 +1236,7 @@ export class ReadPage /*implements OnDestroy*/ {
     return footNoteHTML;
   }
 
-  showChangesOrNormalisationsTooltip(targetElem: HTMLElement, origin: any) {
+  showChangesNormalisationsOrAbbreviationsTooltip(targetElem: HTMLElement, origin: any) {
     let elem = [];
     if (origin.target.nextSibling !== null && origin.target.nextSibling !== undefined &&
       !String(origin.target.nextSibling.className).includes('tooltiptrigger')) {
