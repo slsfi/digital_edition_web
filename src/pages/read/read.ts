@@ -2041,7 +2041,11 @@ export class ReadPage /*implements OnDestroy*/ {
     const viewElements = document.getElementsByClassName('read-column');
     if (viewElements !== undefined) {
       const lastViewElement = viewElements[viewElements.length - 1];
-      lastViewElement.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
+      const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
+      if (scrollingContainer !== undefined) {
+        scrollingContainer.scrollTo({top: 0, left: lastViewElement.getBoundingClientRect().right, behavior: 'smooth'});
+      }
+      // lastViewElement.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
     }
   }
 }
