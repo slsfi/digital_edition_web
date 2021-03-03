@@ -907,9 +907,6 @@ export class ReadPage /*implements OnDestroy*/ {
         if (eventTarget !== undefined) {
           eventTarget.style.fontWeight = 'bold';
           this.scrollToVariant(eventTarget);
-          if (eventTarget['classList'].contains('tooltiptrigger')) {
-            this.showVariationTooltip(eventTarget, event);
-          }
         }
         setTimeout(function () {
           if (eventTarget !== undefined) {
@@ -946,8 +943,8 @@ export class ReadPage /*implements OnDestroy*/ {
       const elem = event.target;
       if (eventTarget['classList'].contains('tooltiptrigger')) {
         if (eventTarget['classList'].contains('ttVariant')) {
-          if (event.target !== undefined) {
-            this.showVariationTooltip(elem, event);
+          if (eventTarget !== undefined) {
+            this.showVariationTooltip(eventTarget, event);
           }
         }
         if (eventTarget.hasAttribute('data-id')) {
