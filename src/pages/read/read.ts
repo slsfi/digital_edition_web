@@ -1733,6 +1733,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
       this.updateURL();
       this.updateCachedViewModes();
+      this.scrollLastViewIntoView();
       if (fab) {
         fab.close();
       }
@@ -2034,5 +2035,13 @@ export class ReadPage /*implements OnDestroy*/ {
         nav[0].setRoot('read', params);
       }
     }).catch(err => console.error(err));
+  }
+
+  private scrollLastViewIntoView() {
+    const viewElements = document.getElementsByClassName('read-column');
+    if (viewElements !== undefined) {
+      const lastViewElement = viewElements[viewElements.length - 1];
+      lastViewElement.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'end'});
+  }
   }
 }
