@@ -899,7 +899,7 @@ export class ReadPage /*implements OnDestroy*/ {
           this.scrollToElement(eventTarget.getAttribute('href'));
         }
       }
-      if (eventTarget.classList.contains('variantScrollTarget')) {
+      if (eventTarget['classList'].contains('variantScrollTarget')) {
         if (eventTarget !== undefined) {
           eventTarget.style.fontWeight = 'bold';
           this.scrollToVariant(eventTarget);
