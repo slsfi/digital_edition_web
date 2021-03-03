@@ -283,7 +283,7 @@ export class CommentsComponent {
    * times simultaneously in Chrome due to a bug.
    * Valid values for yPosition are 'top' and 'center'. 
    */
-  private scrollElementIntoView(element: HTMLElement, yPosition = 'top') {
+  private scrollElementIntoView(element: HTMLElement, yPosition = 'center') {
     // Find the scrollable container of the element which is to be scrolled into view
     let container = element.parentElement;
     while (!container.classList.contains('scroll-content') &&
