@@ -494,6 +494,7 @@ export class ReadPage /*implements OnDestroy*/ {
         this.addView(viewmode);
       }
     }.bind(this));
+    this.scrollLastViewIntoView();
   }
 
   viewModeShouldBeShown(viewmode) {
@@ -1733,7 +1734,6 @@ export class ReadPage /*implements OnDestroy*/ {
 
       this.updateURL();
       this.updateCachedViewModes();
-      this.scrollLastViewIntoView();
       if (fab) {
         fab.close();
       }
@@ -2042,6 +2042,6 @@ export class ReadPage /*implements OnDestroy*/ {
     if (viewElements !== undefined) {
       const lastViewElement = viewElements[viewElements.length - 1];
       lastViewElement.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'end'});
-  }
+    }
   }
 }
