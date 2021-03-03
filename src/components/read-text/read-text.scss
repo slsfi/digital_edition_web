@@ -27,6 +27,7 @@ read-text {
         background-color: rgba( yellow, 0.4 ) !important;
     }
 
+    /* Tooltips are not children of read-text in the DOM, so these have no effect.
     .toolTip {
         z-index: 1000;
         position: absolute;
@@ -60,6 +61,7 @@ read-text {
         border-width: 5px;
         margin-top: -5px;
     }
+    */
 
     .tei.XMLcomment{
         display: none;
