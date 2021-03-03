@@ -304,7 +304,7 @@ export class CommentsComponent {
     const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
     let baseOffset = 10;
     if (yPosition === 'center') {
-      let baseOffset = Math.floor(container.offsetHeight / 2);
+      baseOffset = Math.floor(container.offsetHeight / 2);
       if (baseOffset > 45) {
         baseOffset = baseOffset - 45;
       }
