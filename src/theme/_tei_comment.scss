@@ -34,19 +34,22 @@ div.tei {
         &.notePosition {
             font-weight: normal;
             font-size: 0.6875em;
+            padding-right: 0.5em;
         }
 
+        /*
         &.noteLemma::before {
             content: " ";
             font-size: 1.25em;
         }
+        */
         
         &.noteLemma {
             font-style: italic;
             font-weight: bold;
         }
 
-        &.noteLemma::after {
+        &.noteText::before {
             content: " – ";
             font-style: normal;
             font-weight: normal;
