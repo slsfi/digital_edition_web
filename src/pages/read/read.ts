@@ -2049,6 +2049,6 @@ export class ReadPage /*implements OnDestroy*/ {
            scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
         }
       }
-    }.bind(this), 700);
+    }.bind(this), 500);
   }
 }
