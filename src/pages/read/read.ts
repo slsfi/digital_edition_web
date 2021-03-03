@@ -2042,7 +2042,9 @@ export class ReadPage /*implements OnDestroy*/ {
       const lastViewElement = viewElements[viewElements.length - 1];
       const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
       if (scrollingContainer !== undefined) {
-        scrollingContainer.scrollTo({top: 0, left: lastViewElement.getBoundingClientRect().right, behavior: 'smooth'});
+        setTimeout(function () {
+          scrollingContainer.scrollTo({top: 0, left: lastViewElement.getBoundingClientRect().right, behavior: 'smooth'});
+        }.bind(this), 500);
       }
       // lastViewElement.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
     }
