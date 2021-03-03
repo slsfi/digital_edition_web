@@ -1934,15 +1934,16 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   private scrollToVariant(element: HTMLElement) {
-    element.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
-    // this.showToolTip = false;
+    // element.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
+    this.scrollElementIntoView(element, 'center');
     this.hideToolTip();
     try {
       const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span');
       for (let i = 0; i < elems.length; i++) {
         if (elems[i].id === element.id) {
           elems[i].style.fontWeight = 'bold';
-          elems[i].scrollIntoView({'behavior': 'smooth', 'block': 'center'});
+          // elems[i].scrollIntoView({'behavior': 'smooth', 'block': 'center'});
+          this.scrollElementIntoView(elems[i], 'center');
           setTimeout(function () {
             if (elems[i] !== undefined) {
               elems[i].style.fontWeight = null;
@@ -2034,6 +2035,35 @@ export class ReadPage /*implements OnDestroy*/ {
         nav[0].setRoot('read', params);
       }
     }).catch(err => console.error(err));
+  }
+
+  /* This function can be used to scroll a container so that the element which it contains
+   * is placed either at the top edge of the container or in the center of the container.
+   * This function can be called multiple times simultaneously on elements in different
+   * containers, unlike the native scrollIntoView function which cannot be called multiple
+   * times simultaneously in Chrome due to a bug.
+   * Valid values for yPosition are 'top' and 'center'.
+   */
+  private scrollElementIntoView(element: HTMLElement, yPosition = 'top', offset = 0) {
+    // Find the scrollable container of the element which is to be scrolled into view
+    let container = element.parentElement;
+    while (!container.classList.contains('scroll-content') &&
+     container.parentElement.tagName !== 'ION-SCROLL') {
+      container = container.parentElement;
+      if (container === null || container === undefined) {
+        return;
+      }
+    }
+
+    const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
+    let baseOffset = 10;
+    if (yPosition === 'center') {
+      baseOffset = Math.floor(container.offsetHeight / 2);
+      if (baseOffset > 45) {
+        baseOffset = baseOffset - 45;
+      }
+    }
+    container.scrollTo({top: y - baseOffset - offset, behavior: 'smooth'});
   }
 
   /* This function scrolls the read-view horisontally to the last read column.
