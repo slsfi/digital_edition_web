@@ -297,7 +297,7 @@ export class CommentsComponent {
     const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
     let baseOffset = 10;
     if (yPosition === 'center') {
-      baseOffset = Math.floor(container.offsetHeight / 2) - 15;
+      baseOffset = Math.floor(container.offsetHeight / 2) - 35;
     }
     container.scrollTo({top: y - baseOffset - offset, behavior: 'smooth'});
   }
