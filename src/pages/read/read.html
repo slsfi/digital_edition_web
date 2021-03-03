@@ -119,7 +119,7 @@
       </button>
       <ion-fab-list side="top">
       <div class="fab-backdrop" (click)="fab.close()"></div>
-        <button ion-fab (click)="showAllViews(); fab.close(); scrollLastViewIntoView()" *ngIf="displayToggles['showAll']">
+        <button ion-fab (click)="showAllViews();  scrollLastViewIntoView(); fab.close()" *ngIf="displayToggles['showAll']">
           <ion-icon name="albums"></ion-icon>
           <ion-label>{{ "Read.ShowAll" | translate }}</ion-label>
         </button>
