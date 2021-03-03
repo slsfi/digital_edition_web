@@ -123,35 +123,35 @@
           <ion-icon name="albums"></ion-icon>
           <ion-label>{{ "Read.ShowAll" | translate }}</ion-label>
         </button>
-        <button ion-fab (click)="addView('established', fab); fab.close()" *ngIf="displayToggles['established']">
+        <button ion-fab (click)="addView('established', fab); scrollLastViewIntoView(); fab.close()" *ngIf="displayToggles['established']">
           <ion-icon name="book"></ion-icon>
           <ion-label>{{ "Read.Established.AddButtonText" | translate }}</ion-label>
         </button>
-        <button ion-fab (click)="addView('comments', fab); fab.close()" *ngIf="displayToggles['comments']">
+        <button ion-fab (click)="addView('comments', fab); scrollLastViewIntoView(); fab.close()" *ngIf="displayToggles['comments']">
           <ion-icon name="chatbubbles"></ion-icon>
           <ion-label>{{ "Read.Comments.AddButtonText" | translate }}</ion-label>
         </button>
-        <button ion-fab (click)="addView('manuscripts', fab); fab.close()" *ngIf="displayToggles['manuscripts']">
+        <button ion-fab (click)="addView('manuscripts', fab); scrollLastViewIntoView(); fab.close()" *ngIf="displayToggles['manuscripts']">
           <ion-icon name="clipboard"></ion-icon>
           <ion-label>{{ "Read.Manuscripts.AddButtonText" | translate }}</ion-label>
         </button>
-        <button ion-fab (click)="addView('variations', fab); fab.close()" *ngIf="displayToggles['variations']">
+        <button ion-fab (click)="addView('variations', fab); scrollLastViewIntoView(); fab.close()" *ngIf="displayToggles['variations']">
           <ion-icon name="copy"></ion-icon>
           <ion-label>{{ "Read.Variations.AddButtonText" | translate }}</ion-label>
         </button>
-        <button ion-fab (click)="addView('facsimiles', fab); fab.close()" *ngIf="displayToggles['facsimiles']">
+        <button ion-fab (click)="addView('facsimiles', fab); scrollLastViewIntoView(); fab.close()" *ngIf="displayToggles['facsimiles']">
           <ion-icon name="image"></ion-icon>
           <ion-label>{{ "Read.Facsimiles.AddButtonText" | translate }}</ion-label>
         </button>
-        <button ion-fab (click)="addView('songexample', fab); fab.close()" *ngIf="displayToggles['song-example']">
+        <button ion-fab (click)="addView('songexample', fab); scrollLastViewIntoView(); fab.close()" *ngIf="displayToggles['song-example']">
           <ion-icon name="musical-note"></ion-icon>
           <ion-label>{{ "Read.SongExample.AddButtonText" | translate }}</ion-label>
         </button>
-        <button ion-fab (click)="addView('introduction', fab); fab.close()" *ngIf="displayToggles['introduction']">
+        <button ion-fab (click)="addView('introduction', fab); scrollLastViewIntoView(); fab.close()" *ngIf="displayToggles['introduction']">
           <ion-icon name="information-circle"></ion-icon>
           <ion-label>{{ "Read.Introduction.AddButtonText" | translate }}</ion-label>
         </button>
-        <button ion-fab (click)="addView('illustrations', fab); fab.close()" *ngIf="displayToggles['illustrations']">
+        <button ion-fab (click)="addView('illustrations', fab); scrollLastViewIntoView(); fab.close()" *ngIf="displayToggles['illustrations']">
           <ion-icon name="images"></ion-icon>
           <ion-label>{{ "Read.Illustrations.AddButtonText" | translate }}</ion-label>
         </button>
