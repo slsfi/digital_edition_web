@@ -298,8 +298,8 @@ export class CommentsComponent {
     let baseOffset = 10;
     if (yPosition === 'center') {
       baseOffset = Math.floor(container.offsetHeight / 2);
-      if (baseOffset > 35) {
-        baseOffset = baseOffset - 35;
+      if (baseOffset > 55) {
+        baseOffset = baseOffset - 55;
       }
     }
     container.scrollTo({top: y - baseOffset - offset, behavior: 'smooth'});
