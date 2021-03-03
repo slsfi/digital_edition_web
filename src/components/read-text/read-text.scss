@@ -26,15 +26,6 @@ read-text {
     match {
         background-color: rgba( yellow, 0.4 ) !important;
     }
-    .tei.anchor_lemma img {
-        width: 0.75em;
-        height: 0.75em;
-        display: initial;
-    }
-
-    .tei.anchor_lemma {
-        display: none;
-    }
 
     .toolTip {
         z-index: 1000;

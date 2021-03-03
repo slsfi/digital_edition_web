@@ -57,23 +57,23 @@ div.tei.xlargeFontSize {
    element som de ingår i. Kommentarasteriskerna ska t.ex. inte vara större i 
    rubriker. */
 div.tei.xsmallFontSize img.comment {
-    width: calc(0.75 * #{$text-fontsize-xsmall}) !important;
+    width:  calc(0.75 * #{$text-fontsize-xsmall}) !important;
     height: calc(0.75 * #{$text-fontsize-xsmall}) !important;
 }
 div.tei.smallFontSize img.comment {
-    width: calc(0.75 * #{$text-fontsize-small}) !important;
+    width:  calc(0.75 * #{$text-fontsize-small}) !important;
     height: calc(0.75 * #{$text-fontsize-small}) !important;
 }
 div.tei.mediumFontSize img.comment {
-    width: calc(0.75 * #{$text-fontsize-medium}) !important;
+    width:  calc(0.75 * #{$text-fontsize-medium}) !important;
     height: calc(0.75 * #{$text-fontsize-medium}) !important;
 }
 div.tei.largeFontSize img.comment {
-    width: calc(0.75 * #{$text-fontsize-large}) !important;
+    width:  calc(0.75 * #{$text-fontsize-large}) !important;
     height: calc(0.75 * #{$text-fontsize-large}) !important;
 }
 div.tei.xlargeFontSize img.comment {
-    width: calc(0.75 * #{$text-fontsize-xlarge}) !important;
+    width:  calc(0.75 * #{$text-fontsize-xlarge}) !important;
     height: calc(0.75 * #{$text-fontsize-xlarge}) !important;
 }
 
@@ -122,37 +122,62 @@ div.tei.xlargeFontSize.show_pageBreakEdition {
 /* Storlek på squared times symbolen som indikerar en normalisering där något tagits bort ur texten. */
 div.tei.show_normalisations span.reg_hide img,
 div.tei.show_changes span.corr_hide img {
-    /* Default om textstorleken inte fungerar. */
     display: inline-block;
-    width: 0.625em;
-    height: 0.625em;
+    width:   0.625em; /* Default om textstorleken inte fungerar. */
+    height:  0.625em;
 }
 div.tei.xsmallFontSize.show_normalisations span.reg_hide img,
 div.tei.xsmallFontSize.show_changes span.corr_hide img {
-    width: calc(0.625 * #{$text-fontsize-xsmall});
+    width:  calc(0.625 * #{$text-fontsize-xsmall});
     height: calc(0.625 * #{$text-fontsize-xsmall});
 }
 div.tei.smallFontSize.show_normalisations span.reg_hide img,
 div.tei.smallFontSize.show_changes span.corr_hide img {
-    width: calc(0.625 * #{$text-fontsize-small});
+    width:  calc(0.625 * #{$text-fontsize-small});
     height: calc(0.625 * #{$text-fontsize-small});
 }
 div.tei.mediumFontSize.show_normalisations span.reg_hide img,
 div.tei.mediumFontSize.show_changes span.corr_hide img {
-    width: calc(0.625 * #{$text-fontsize-medium});
+    width:  calc(0.625 * #{$text-fontsize-medium});
     height: calc(0.625 * #{$text-fontsize-medium});
 }
 div.tei.largeFontSize.show_normalisations span.reg_hide img,
 div.tei.largeFontSize.show_changes span.corr_hide img {
-    width: calc(0.625 * #{$text-fontsize-large});
+    width:  calc(0.625 * #{$text-fontsize-large});
     height: calc(0.625 * #{$text-fontsize-large});
 }
 div.tei.xlargeFontSize.show_normalisations span.reg_hide img,
 div.tei.xlargeFontSize.show_changes span.corr_hide img {
-    width: calc(0.625 * #{$text-fontsize-xlarge});
+    width:  calc(0.625 * #{$text-fontsize-xlarge});
     height: calc(0.625 * #{$text-fontsize-xlarge});
 }
 
+/* Storlek på röda triangeln som indikerar början på ett lemma. */
+div.tei span.anchor_lemma img {
+    display: inline-block;
+    width:   0.75em; /* Default om textstorleken inte fungerar. */
+    height:  0.75em;
+}
+div.tei.xsmallFontSize span.anchor_lemma img {
+    width:  calc(0.75 * #{$text-fontsize-xsmall});
+    height: calc(0.75 * #{$text-fontsize-xsmall});
+}
+div.tei.smallFontSize span.anchor_lemma img {
+    width:  calc(0.75 * #{$text-fontsize-small});
+    height: calc(0.75 * #{$text-fontsize-small});
+}
+div.tei.mediumFontSize span.anchor_lemma img {
+    width:  calc(0.75 * #{$text-fontsize-medium});
+    height: calc(0.75 * #{$text-fontsize-medium});
+}
+div.tei.largeFontSize span.anchor_lemma img {
+    width:  calc(0.75 * #{$text-fontsize-large});
+    height: calc(0.75 * #{$text-fontsize-large});
+}
+div.tei.xlargeFontSize span.anchor_lemma img {
+    width:  calc(0.75 * #{$text-fontsize-xlarge});
+    height: calc(0.75 * #{$text-fontsize-xlarge});
+}
 
 div.tei {
 
@@ -604,7 +629,6 @@ div.tei {
     }
     .anchor_lemma {
         display: none;
-        font-weight: bold;
     }
     a.textreference {
         color: #000 !important;
