@@ -2041,7 +2041,7 @@ export class ReadPage /*implements OnDestroy*/ {
     const viewElements = document.getElementsByClassName('read-column');
     if (viewElements !== undefined) {
       const lastViewElement = viewElements[viewElements.length - 1];
-      lastViewElement.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'end'});
+      lastViewElement.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
     }
   }
 }
