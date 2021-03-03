@@ -2043,7 +2043,7 @@ export class ReadPage /*implements OnDestroy*/ {
         const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
         const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
         if (scrollingContainer !== null) {
-          scrollingContainer.scrollTo({top: 0, left: lastViewElement.scrollWidth, behavior: 'smooth'});
+          scrollingContainer.scrollTo({top: 0, left: scrollingContainer.scrollWidth, behavior: 'smooth'});
         }
       }
     }.bind(this), 700);
