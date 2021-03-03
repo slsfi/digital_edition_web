@@ -281,7 +281,7 @@ export class CommentsComponent {
    * This function can be called multiple times simultaneously on elements in different
    * containers, unlike the native scrollIntoView function which cannot be called multiple
    * times simultaneously in Chrome due to a bug.
-   * Valid values for yPosition are 'top' and 'center'. 
+   * Valid values for yPosition are 'top' and 'center'.
    */
   private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0) {
     // Find the scrollable container of the element which is to be scrolled into view
@@ -293,7 +293,7 @@ export class CommentsComponent {
         return;
       }
     }
-    
+
     const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
     let baseOffset = 10;
     if (yPosition === 'center') {
