@@ -298,7 +298,7 @@ export class CommentsComponent {
     let baseOffset = 10;
     if (yPosition === 'center') {
       baseOffset = Math.floor(container.offsetHeight / 2);
-      if (baseOffset > 55) {
+      if (baseOffset > 45) {
         baseOffset = baseOffset - 45;
       }
     }
