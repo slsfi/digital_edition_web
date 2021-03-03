@@ -2037,20 +2037,15 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   scrollLastViewIntoView() {
-    const viewElements = document.getElementsByClassName('read-column');
-    if (viewElements !== undefined) {
-      const lastViewElement = viewElements[viewElements.length - 1];
-      const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
-      if (scrollingContainer !== undefined) {
-        setTimeout(function () {
-          scrollingContainer.scrollTo({top: 0, left: lastViewElement.getBoundingClientRect().right, behavior: 'smooth'});
-        }.bind(this), 1000);
+    setTimeout(function () {
+      const viewElements = document.getElementsByClassName('read-column');
+      if (viewElements !== undefined) {
+        const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
+        const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
+        if (scrollingContainer !== undefined) {
+          scrollingContainer.scrollTo({top: 0, left: lastViewElement.offsetWidth, behavior: 'smooth'});
+        }
       }
-     /*
-      setTimeout(function () {
-        lastViewElement.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
-      }.bind(this), 500);
-      */
-    }
+    }.bind(this), 1000);
   }
 }
