@@ -187,7 +187,7 @@ export class CommentsComponent {
               // this.scrollToHTMLElement(lemmaStart, false);
               this.scrollToCommentLemma(lemmaStart);
               // Scroll to comment in the comments-column.
-              this.scrollElementIntoView(elem, 'center', -5);
+              this.scrollElementIntoView(elem, 'center', -6);
             }
           }
         }
@@ -297,7 +297,10 @@ export class CommentsComponent {
     const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
     let baseOffset = 10;
     if (yPosition === 'center') {
-      baseOffset = Math.floor(container.offsetHeight / 2) - 35;
+      baseOffset = Math.floor(container.offsetHeight / 2);
+      if (baseOffset > 35) {
+        baseOffset = baseOffset - 35;
+      }
     }
     container.scrollTo({top: y - baseOffset - offset, behavior: 'smooth'});
   }
