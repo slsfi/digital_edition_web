@@ -2048,7 +2048,9 @@ export class ReadPage /*implements OnDestroy*/ {
         }.bind(this), 500);
       }
       */
-      lastViewElement.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
+      setTimeout(function () {
+        lastViewElement.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
+      }.bind(this), 500);
     }
   }
 }
