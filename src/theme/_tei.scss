@@ -52,7 +52,7 @@ div.tei.xlargeFontSize {
 }
 
 /* Kommentarasteriskernas storlekar vid olika textstorlekar.
-   De här och sidnumreringarnas storlekar måste definieras såhär eftersom
+   De här, sidnumreringarnas och squared times symbolens (normaliseringar) storlekar måste definieras såhär eftersom
    de ska påverkas av den valda textstorleken men inte storleken på det text-
    element som de ingår i. Kommentarasteriskerna ska t.ex. inte vara större i 
    rubriker. */
@@ -118,6 +118,41 @@ div.tei.xlargeFontSize.show_pageBreakEdition {
         font-size: calc(0.875 * #{$text-fontsize-xlarge});
     }
 }
+
+/* Storlek på squared times symbolen som indikerar en normalisering där något tagits bort ur texten. */
+div.tei.show_normalisations span.reg_hide img,
+div.tei.show_changes span.corr_hide img {
+    /* Default om textstorleken inte fungerar. */
+    display: inline-block;
+    width: 0.625em;
+    height: 0.625em;
+}
+div.tei.xsmallFontSize.show_normalisations span.reg_hide img,
+div.tei.xsmallFontSize.show_changes span.corr_hide img {
+    width: calc(0.625 * #{$text-fontsize-xsmall});
+    height: calc(0.625 * #{$text-fontsize-xsmall});
+}
+div.tei.smallFontSize.show_normalisations span.reg_hide img,
+div.tei.smallFontSize.show_changes span.corr_hide img {
+    width: calc(0.625 * #{$text-fontsize-small});
+    height: calc(0.625 * #{$text-fontsize-small});
+}
+div.tei.mediumFontSize.show_normalisations span.reg_hide img,
+div.tei.mediumFontSize.show_changes span.corr_hide img {
+    width: calc(0.625 * #{$text-fontsize-medium});
+    height: calc(0.625 * #{$text-fontsize-medium});
+}
+div.tei.largeFontSize.show_normalisations span.reg_hide img,
+div.tei.largeFontSize.show_changes span.corr_hide img {
+    width: calc(0.625 * #{$text-fontsize-large});
+    height: calc(0.625 * #{$text-fontsize-large});
+}
+div.tei.xlargeFontSize.show_normalisations span.reg_hide img,
+div.tei.xlargeFontSize.show_changes span.corr_hide img {
+    width: calc(0.625 * #{$text-fontsize-xlarge});
+    height: calc(0.625 * #{$text-fontsize-xlarge});
+}
+
 
 div.tei {
 
@@ -1636,11 +1671,11 @@ div.tei .tooltip { display: none; }
 .tei.show_changes           span.corr, 
 .tei.show_changes           span.corr_red { background-color: $changes-color; cursor: default; }
 .tei                        span.corr_hide { display: none; }
-.tei.show_changes           span.corr_hide { display: inline-block; width: 0.625em; height: 0.625em; background-color: transparent; cursor: default; }
 
 .tei.show_normalisations    span.reg.ttNormalisations { background-color: $normalisations-color; cursor: default; }
 .tei                        span.reg_hide { display: none; }
-.tei.show_normalisations    span.reg_hide { display: inline-block; width: 0.625em; height: 0.625em; background-color: transparent; cursor: default; }
+.tei.show_normalisations    span.reg_hide,
+.tei.show_changes           span.corr_hide { display: inline; cursor: default; }
 
 /*ändra pekaren till en hand över personer och platser när visningsalternativen är påslagna eftersom dessa går att klicka på för att öppna registren
 .tei.show_personInfo span.person.tooltiptrigger,
