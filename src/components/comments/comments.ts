@@ -264,11 +264,13 @@ export class CommentsComponent {
   }
 
   /* This function can be used to scroll a container so that the element which it contains
-   * is placed at the top edge of the container. This function can be called multiple times
-   * simultaneously on elements in different containers, unlike the native scrollIntoView
-   * function which cannot be called multiple times simultaneously in Chrome due to a bug.
+   * is placed either at the top edge of the container or in the center of the container.
+   * This function can be called multiple times simultaneously on elements in different
+   * containers, unlike the native scrollIntoView function which cannot be called multiple
+   * times simultaneously in Chrome due to a bug.
+   * Valid values for yPosition are 'top' and 'center'. 
    */
-  private scrollElementIntoView(element: HTMLElement, yOffset = 10) {
+  private scrollElementIntoView(element: HTMLElement, yPosition = 'top') {
     // Find the scrollable container of the element which is to be scrolled into view
     let container = element.parentElement;
     while (!container.classList.contains('scroll-content') &&
@@ -278,7 +280,12 @@ export class CommentsComponent {
         return;
       }
     }
-    const y = element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top;
+    
+    const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
+    let yOffset = 10;
+    if (yPosition === 'center') {
+      yOffset = Math.floor(container.offsetHeight / 2);
+    }
     container.scrollTo({top: y - yOffset, behavior: 'smooth'});
   }
 
