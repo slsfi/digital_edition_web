@@ -177,13 +177,16 @@ export class CommentsComponent {
             }
           }
           if (elem !== null && elem !== undefined) {
-            // Find the lemma in the reading text.
-            const targetId = elem.classList[elem.classList.length - 1];
-            const lemmaEnd = document.getElementsByClassName('ttComment ' + targetId)[0] as HTMLElement;
-            if (lemmaEnd !== null && lemmaEnd !== undefined) {
-              // Scroll to lemma in reading text and temporarily prepend arrow.
-              this.scrollToHTMLElement(lemmaEnd, false);
-              // Scroll comment.
+            // Find the lemma in the reading text. Replace all non-digits at the start of the comment's id with nothing.
+            const numId = elem.classList[elem.classList.length - 1].replace( /^\D+/g, '');
+            const targetId = 'start' + numId;
+            // const lemmaStart = document.getElementsByClassName('ttComment ' + targetId)[0] as HTMLElement;
+            const lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[0] as HTMLElement;
+            if (lemmaStart !== null && lemmaStart !== undefined) {
+              // Scroll to start of lemma in reading text and temporarily prepend arrow.
+              // this.scrollToHTMLElement(lemmaStart, false);
+              this.scrollToCommentLemma(lemmaStart);
+              // Scroll to comment in the comments-column.
               this.scrollElementIntoView(elem);
             }
           }
@@ -226,6 +229,16 @@ export class CommentsComponent {
     }
   }
 
+  private scrollToCommentLemma(lemmaStartElem: HTMLElement, timeOut = 5000) {
+    if (lemmaStartElem !== null && lemmaStartElem !== undefined && lemmaStartElem.classList.contains('anchor_lemma')) {
+      lemmaStartElem.style.display = 'inline';
+      this.scrollElementIntoView(lemmaStartElem);
+      setTimeout(function() {
+        lemmaStartElem.style.display = null;
+      }, timeOut);
+    }
+  }
+
   private scrollToHTMLElement(element: HTMLElement, addTag: boolean, timeOut = 5000) {
     try {
       // element.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'nearest'});
@@ -237,7 +250,7 @@ export class CommentsComponent {
         this.scrollElementIntoView(tmp);
         setTimeout(function() {
           tmp.style.display = 'none';
-        }, 5000);
+        }, timeOut);
         addedArrow = true;
       } else {
         const tmpImage: HTMLImageElement = new Image();
