@@ -869,6 +869,10 @@ export class ReadPage /*implements OnDestroy*/ {
       eventTarget = event.target;
     } else if (event.target !== undefined && eventTarget['classList'].contains('anchor')) {
       eventTarget = event.target;
+    } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('variantScrollTarget')) {
+      eventTarget = event['target']['parentNode'];
+    } else if (event.target !== undefined && event['target']['classList'].contains('variantScrollTarget')) {
+      eventTarget = event.target;
     }
     return eventTarget;
   }
@@ -903,7 +907,9 @@ export class ReadPage /*implements OnDestroy*/ {
         if (eventTarget !== undefined) {
           eventTarget.style.fontWeight = 'bold';
           this.scrollToVariant(eventTarget);
-          this.showVariationTooltip(eventTarget, event);
+          if (eventTarget['classList'].contains('tooltiptrigger')) {
+            this.showVariationTooltip(eventTarget, event);
+          }
         }
         setTimeout(function () {
           if (eventTarget !== undefined) {
