@@ -184,7 +184,6 @@ export class CommentsComponent {
             const lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[0] as HTMLElement;
             if (lemmaStart !== null && lemmaStart !== undefined) {
               // Scroll to start of lemma in reading text and temporarily prepend arrow.
-              // this.scrollToHTMLElement(lemmaStart, false);
               this.scrollToCommentLemma(lemmaStart);
               // Scroll to comment in the comments-column.
               this.scrollElementIntoView(elem, 'center', -5);
