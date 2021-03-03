@@ -899,15 +899,15 @@ export class ReadPage /*implements OnDestroy*/ {
           this.scrollToElement(eventTarget.getAttribute('href'));
         }
       }
-      if (event.target.classList.contains('variantScrollTarget')) {
-        if (event.target !== undefined) {
-          event.target.style.fontWeight = 'bold';
-          this.scrollToVariant(event.target);
-          this.showVariationTooltip(event.target, event);
+      if (eventTarget.classList.contains('variantScrollTarget')) {
+        if (eventTarget !== undefined) {
+          eventTarget.style.fontWeight = 'bold';
+          this.scrollToVariant(eventTarget);
+          this.showVariationTooltip(eventTarget, event);
         }
         setTimeout(function () {
-          if (event.target !== undefined) {
-            event.target.style.fontWeight = null;
+          if (eventTarget !== undefined) {
+            eventTarget.style.fontWeight = null;
           }
         }, 5000);
       }
