@@ -2046,7 +2046,7 @@ export class ReadPage /*implements OnDestroy*/ {
           // scrollingContainer.scrollTo({top: 0, left: scrollingContainer.scrollWidth, behavior: 'smooth'});
           const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
            scrollingContainer.getBoundingClientRect().left;
-           scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
+          scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
         }
       }
     }.bind(this), 500);
