@@ -1712,6 +1712,9 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   addView(type: string, id?: string, fab?: FabContainer, external?: boolean) {
+    if (fab !== undefined) {
+      fab.close();
+    }
     if (external === true) {
       this.external = id;
     } else {
@@ -1733,9 +1736,6 @@ export class ReadPage /*implements OnDestroy*/ {
 
       this.updateURL();
       this.updateCachedViewModes();
-      if (fab) {
-        fab.close();
-      }
 
       // Always open two variations if no variation is yet open
       // if (type === 'variations' && this.hasKey('variations', this.views) === false) {
@@ -2036,6 +2036,8 @@ export class ReadPage /*implements OnDestroy*/ {
     }).catch(err => console.error(err));
   }
 
+  /* This function scrolls the read-view horisontally to the last read column.
+   * It's called after adding new views. */
   scrollLastViewIntoView() {
     setTimeout(function () {
       const viewElements = document.getElementsByClassName('read-column');
