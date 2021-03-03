@@ -188,6 +188,10 @@ export class CommentsComponent {
               this.scrollToCommentLemma(lemmaStart);
               // Scroll to comment in the comments-column.
               this.scrollElementIntoView(elem, 'center', -5);
+              elem.style.textShadow = '0 0 #000';
+              setTimeout(function() {
+                elem.style.textShadow = null;
+              }, 5000);
             }
           }
         }
@@ -284,6 +288,9 @@ export class CommentsComponent {
    * Valid values for yPosition are 'top' and 'center'.
    */
   private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0) {
+    if (element === undefined || element === null || (yPosition !== 'center' && yPosition !== 'top')) {
+      return;
+    }
     // Find the scrollable container of the element which is to be scrolled into view
     let container = element.parentElement;
     while (!container.classList.contains('scroll-content') &&
@@ -297,7 +304,7 @@ export class CommentsComponent {
     const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
     let baseOffset = 10;
     if (yPosition === 'center') {
-      baseOffset = Math.floor(container.offsetHeight / 2);
+      let baseOffset = Math.floor(container.offsetHeight / 2);
       if (baseOffset > 45) {
         baseOffset = baseOffset - 45;
       }
