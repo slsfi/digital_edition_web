@@ -494,7 +494,6 @@ export class ReadPage /*implements OnDestroy*/ {
         this.addView(viewmode);
       }
     }.bind(this));
-    this.scrollLastViewIntoView();
   }
 
   viewModeShouldBeShown(viewmode) {
@@ -2037,7 +2036,7 @@ export class ReadPage /*implements OnDestroy*/ {
     }).catch(err => console.error(err));
   }
 
-  private scrollLastViewIntoView() {
+  scrollLastViewIntoView() {
     const viewElements = document.getElementsByClassName('read-column');
     if (viewElements !== undefined) {
       const lastViewElement = viewElements[viewElements.length - 1];
