@@ -123,7 +123,7 @@
           <ion-icon name="albums"></ion-icon>
           <ion-label>{{ "Read.ShowAll" | translate }}</ion-label>
         </button>
-        <button ion-fab (click)="addView('established', fab); scrollLastViewIntoView(); fab.close()" *ngIf="displayToggles['established']">
+        <button ion-fab (click)="addView('established', fab); scrollLastViewIntoView()" *ngIf="displayToggles['established']">
           <ion-icon name="book"></ion-icon>
           <ion-label>{{ "Read.Established.AddButtonText" | translate }}</ion-label>
         </button>
