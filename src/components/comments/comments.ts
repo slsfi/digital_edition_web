@@ -187,7 +187,7 @@ export class CommentsComponent {
               // this.scrollToHTMLElement(lemmaStart, false);
               this.scrollToCommentLemma(lemmaStart);
               // Scroll to comment in the comments-column.
-              this.scrollElementIntoView(elem, 'center', 5);
+              this.scrollElementIntoView(elem, 'center', -5);
             }
           }
         }
