@@ -900,7 +900,7 @@ export class ReadPage /*implements OnDestroy*/ {
             // Check if comments view is shown
             const viewTypesShown = this.getViewTypesShown();
             const commentsViewIsShown = viewTypesShown.includes('comments');
-            if (commentsViewIsShown) {
+            if (commentsViewIsShown && !this.userSettingsService.isMobile()) {
               // Scroll to comment i comments view and scroll lemma in reading-text view
               const numId = eventTarget.getAttribute('data-id').replace( /^\D+/g, '');
               const targetId = 'start' + numId;
