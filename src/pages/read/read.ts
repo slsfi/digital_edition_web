@@ -894,14 +894,8 @@ export class ReadPage /*implements OnDestroy*/ {
             this.showWorkModal(eventTarget.getAttribute('data-id'));
           } else if (eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
             // Check if comments view is shown
-            let commentsViewIsShown = false;
             const viewTypesShown = this.getViewTypesShown();
-            for (let i = 0; i < (viewTypesShown.length - 1); i++) {
-              if (viewTypesShown[i] === 'comments') {
-                commentsViewIsShown = true;
-                break;
-              }
-            }
+            const commentsViewIsShown = viewTypesShown.includes('comments');
             if (commentsViewIsShown) {
               // Scroll to comment i comments view and scroll lemma in reading-text view
               const numId = eventTarget.getAttribute('data-id').replace( /^\D+/g, '');
