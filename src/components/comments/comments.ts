@@ -180,7 +180,6 @@ export class CommentsComponent {
             // Find the lemma in the reading text. Replace all non-digits at the start of the comment's id with nothing.
             const numId = elem.classList[elem.classList.length - 1].replace( /^\D+/g, '');
             const targetId = 'start' + numId;
-            // const lemmaStart = document.getElementsByClassName('ttComment ' + targetId)[0] as HTMLElement;
             const lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[0] as HTMLElement;
             if (lemmaStart !== null && lemmaStart !== undefined) {
               // Scroll to start of lemma in reading text and temporarily prepend arrow.
@@ -188,7 +187,7 @@ export class CommentsComponent {
               // Scroll to comment in the comments-column.
               this.scrollElementIntoView(elem, 'center', -5);
               const noteLemmaElem = elem.getElementsByClassName('noteLemma')[0] as HTMLElement;
-              noteLemmaElem.style.color = '#b1010a';
+              noteLemmaElem.style.color = '#980202';
               setTimeout(function() {
                 noteLemmaElem.style.color = null;
               }, 5000);
@@ -233,6 +232,7 @@ export class CommentsComponent {
     }
   }
 
+  /* Use this function to scroll the lemma of a comment into view in the reading text view. */
   private scrollToCommentLemma(lemmaStartElem: HTMLElement, timeOut = 5000) {
     if (lemmaStartElem !== null && lemmaStartElem !== undefined && lemmaStartElem.classList.contains('anchor_lemma')) {
       lemmaStartElem.style.display = 'inline';
