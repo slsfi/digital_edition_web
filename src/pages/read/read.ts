@@ -916,8 +916,6 @@ export class ReadPage /*implements OnDestroy*/ {
             } else {
               this.showCommentModal(eventTarget.getAttribute('data-id'));
             }
-          } else if (eventTarget['classList'].contains('ttVariant') && this.readPopoverService.show.comments) {
-            this.showCommentModal(eventTarget.getAttribute('data-id'));
           }
         }
       } else if (eventTarget['classList'].contains('anchor')) {
