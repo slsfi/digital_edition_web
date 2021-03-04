@@ -859,15 +859,18 @@ export class ReadPage /*implements OnDestroy*/ {
     let eventTarget: any = document.createElement('div');
     eventTarget['classList'] = [];
 
-    if ( event.target.getAttribute('data-id') ) {
+    if (event.target.getAttribute('data-id')) {
       return event.target;
     }
 
-    if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
+    if (event.target.parentNode.parentNode !== undefined && event.target.parentNode.parentNode.classList.contains('tooltiptrigger')) {
+      eventTarget = event.target.parentNode.parentNode;
+    } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
       eventTarget = event['target']['parentNode'];
     } else if (event.target !== undefined && event['target']['classList'].contains('tooltiptrigger')) {
       eventTarget = event.target;
-    } else if (event.target !== undefined && eventTarget['classList'].contains('anchor')) {
+    } else if (event.target !== undefined && event['target']['classList'].contains('anchor')) {
+      /* Raden ovan ändrad till event['target']['classList'] från eventTarget['classList'] som alltid är tom. */
       eventTarget = event.target;
     } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('variantScrollTarget')) {
       eventTarget = event['target']['parentNode'];
