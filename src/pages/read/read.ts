@@ -819,16 +819,13 @@ export class ReadPage /*implements OnDestroy*/ {
     this.renderer.listen(this.elementRef.nativeElement, 'mouseover', (event) => {
       if (((event.target.parentNode.classList.contains('tooltiptrigger') &&
       event.target.parentNode.classList.contains('ttChanges')) ||
+      (event.target.parentNode.parentNode.classList.contains('tooltiptrigger') &&
+      event.target.parentNode.parentNode.classList.contains('ttChanges')) ||
       (event.target.classList.contains('tooltiptrigger') &&
       event.target.classList.contains('ttChanges'))) &&
        this.readPopoverService.show.changes) {
         if (event.target !== undefined) {
           this.showTooltipFromInlineHtml(event.target, event);
-        }
-      } else if (event.target.parentNode.parentNode.classList.contains('tooltiptrigger') &&
-      event.target.parentNode.parentNode.classList.contains('ttChanges')) {
-        if (event.target.parentNode.parentNode !== undefined) {
-          this.showTooltipFromInlineHtml(event.target.parentNode.parentNode, event);
         }
       } else if (((event.target.parentNode.classList.contains('tooltiptrigger') &&
        event.target.parentNode.classList.contains('ttNormalisations')) ||
@@ -1260,6 +1257,8 @@ export class ReadPage /*implements OnDestroy*/ {
       elem = origin.target;
     } else if (origin.target.parentNode.nextSibling !== null && origin.target.parentNode.nextSibling !== undefined) {
       elem = origin.target.parentNode;
+    } else if (origin.target.parentNode.parentNode.nextSibling !== null && origin.target.parentNode.parentNode.nextSibling !== undefined) {
+      elem = origin.target.parentNode.parentNode;
     }
     if (elem['nextSibling'] !== null && elem['nextSibling'] !== undefined) {
       if (elem['nextSibling'].className !== undefined && String(elem['nextSibling'].className).includes('tooltip')) {
