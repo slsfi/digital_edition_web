@@ -825,6 +825,11 @@ export class ReadPage /*implements OnDestroy*/ {
         if (event.target !== undefined) {
           this.showTooltipFromInlineHtml(event.target, event);
         }
+      } else if (event.target.parentNode.parentNode.classList.contains('tooltiptrigger') &&
+      event.target.parentNode.parentNode.classList.contains('ttChanges')) {
+        if (event.target.parentNode.parentNode !== undefined) {
+          this.showTooltipFromInlineHtml(event.target.parentNode.parentNode, event);
+        }
       } else if (((event.target.parentNode.classList.contains('tooltiptrigger') &&
        event.target.parentNode.classList.contains('ttNormalisations')) ||
        (event.target.classList.contains('tooltiptrigger') &&
@@ -863,12 +868,7 @@ export class ReadPage /*implements OnDestroy*/ {
       return event.target;
     }
 
-    let parentOfParent = event.target.parentElement;
-    parentOfParent = parentOfParent.parentElement;
-
-    if (parentOfParent !== undefined && parentOfParent.classList.contains('tooltiptrigger')) {
-      eventTarget = parentOfParent;
-    } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
+    if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
       eventTarget = event['target']['parentNode'];
     } else if (event.target !== undefined && event['target']['classList'].contains('tooltiptrigger')) {
       eventTarget = event.target;
