@@ -881,6 +881,7 @@ export class ReadPage /*implements OnDestroy*/ {
     // We must do it like this since we want to trigger an event on a dynamically loaded innerhtml.
     const nElement: any = this.elementRef.nativeElement;
 
+    /* CLICK EVENTS */
     this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
       const eventTarget = this.getEventTarget(event);
 
@@ -929,20 +930,9 @@ export class ReadPage /*implements OnDestroy*/ {
           }
         }, 5000);
       }
-      /* This is too unspecific. It leads to all text with class tooltiptrigger to be clickable when comments are shown.
-      if (event.target.classList.contains('tooltiptrigger') && this.readPopoverService.show.comments) {
-        if (event.target !== undefined) {
-          event.target.style.fontWeight = 'bold';
-        }
-        setTimeout(function () {
-          if (event.target !== undefined) {
-            event.target.style.fontWeight = null;
-          }
-        }, 1000);
-      }
-      */
     }).bind(this);
 
+    /* MOUSEWHEEL EVENTS */
     this.renderer.listen(nElement, 'mousewheel', (event) => {
       this.hideToolTip();
     }).bind(this)
@@ -953,6 +943,8 @@ export class ReadPage /*implements OnDestroy*/ {
     } catch (e) {
       console.error(e);
     }
+
+    /* MOUSE OVER EVENTS */
     this.renderer.listen(nElement, 'mouseover', (event) => {
       const eventTarget = this.getEventTarget(event);
       const elem = event.target;
