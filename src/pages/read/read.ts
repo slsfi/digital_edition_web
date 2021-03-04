@@ -908,6 +908,7 @@ export class ReadPage /*implements OnDestroy*/ {
                 this.scrollToComment(numId);
               }
             } else {
+              // If a comments view isn't shown, show comment in modal
               this.showCommentModal(eventTarget.getAttribute('data-id'));
             }
           }
@@ -919,12 +920,12 @@ export class ReadPage /*implements OnDestroy*/ {
       }
       if (eventTarget['classList'].contains('variantScrollTarget')) {
         if (eventTarget !== undefined) {
-          eventTarget.style.fontWeight = 'bold';
+          eventTarget.classList.toggle('highlight');
           this.scrollToVariant(eventTarget);
         }
         setTimeout(function () {
           if (eventTarget !== undefined) {
-            eventTarget.style.fontWeight = null;
+            eventTarget.classList.toggle('highlight');
           }
         }, 5000);
       }

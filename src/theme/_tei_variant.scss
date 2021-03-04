@@ -22,10 +22,14 @@
         font-size: 1.4em !important;
         font-variant: initial !important;
     }
-}
 
-.teiVariant.variantScrollTarget {
-    cursor: pointer;
+    &.variantScrollTarget {
+        cursor: pointer;
+    }
+
+    &.variantScrollTarget.highlight {
+        font-weight: bold;
+    }
 }
 
 span.seg img{
