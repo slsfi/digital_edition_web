@@ -2001,9 +2001,9 @@ export class ReadPage /*implements OnDestroy*/ {
     // Scroll the comment into view.
     this.scrollElementIntoView(commentElement, 'center', -5);
     const noteLemmaElem = commentElement.getElementsByClassName('noteLemma')[0] as HTMLElement;
-    noteLemmaElem.style.color = '#980202';
+    noteLemmaElem.classList.toggle('highlight');
     setTimeout(function() {
-      noteLemmaElem.style.color = null;
+      noteLemmaElem.classList.toggle('highlight');
     }, 5000);
   }
 

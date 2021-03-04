@@ -41,6 +41,9 @@ div.tei {
             font-style: italic;
             font-weight: bold;
         }
+        &.noteLemma.highlight {
+            color: #980202;
+        }
 
         &.noteText::before {
             content: " – ";

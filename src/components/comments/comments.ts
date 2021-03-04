@@ -187,9 +187,9 @@ export class CommentsComponent {
               // Scroll to comment in the comments-column.
               this.scrollElementIntoView(elem, 'center', -5);
               const noteLemmaElem = elem.getElementsByClassName('noteLemma')[0] as HTMLElement;
-              noteLemmaElem.style.color = '#980202';
+              noteLemmaElem.classList.toggle('highlight');
               setTimeout(function() {
-                noteLemmaElem.style.color = null;
+                noteLemmaElem.classList.toggle('highlight');
               }, 5000);
             }
           }
