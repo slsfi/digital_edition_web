@@ -901,7 +901,7 @@ export class ReadPage /*implements OnDestroy*/ {
             const viewTypesShown = this.getViewTypesShown();
             const commentsViewIsShown = viewTypesShown.includes('comments');
             if (commentsViewIsShown && !this.userSettingsService.isMobile()) {
-              // Scroll to comment i comments view and scroll lemma in reading-text view
+              // Scroll to comment in comments view and scroll lemma in reading-text view
               const numId = eventTarget.getAttribute('data-id').replace( /^\D+/g, '');
               const targetId = 'start' + numId;
               const lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[0] as HTMLElement;
@@ -912,7 +912,7 @@ export class ReadPage /*implements OnDestroy*/ {
                 this.scrollToComment(numId);
               }
             } else {
-              // If a comments view isn't shown, show comment in modal
+              // If a comments view isn't shown or viewmode is mobile, show comment in modal
               this.showCommentModal(eventTarget.getAttribute('data-id'));
             }
           }
