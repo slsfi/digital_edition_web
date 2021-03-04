@@ -180,19 +180,19 @@ div.tei.xlargeFontSize span.anchor_lemma img {
     height: calc(0.75 * #{$text-fontsize-xlarge});
 }
 
+/* Gör så att röda tringeln för början på lemman i lästexten blinkar ljusare. */
 @keyframes filter-animation-anchor-lemma {
     0% {
         filter: brightness(100%);
     }
     25% {
-        filter: brightness(125%);
+        filter: brightness(135%);
     }
-
     50% {
-        filter: brightness(150%);
+        filter: brightness(170%);
     }
     75% {
-        filter: brightness(125%);
+        filter: brightness(135%);
     }
     100% {
         filter: brightness(100%);
