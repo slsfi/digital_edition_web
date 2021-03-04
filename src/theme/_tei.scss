@@ -157,6 +157,7 @@ div.tei span.anchor_lemma img {
     display: inline-block;
     width:   0.75em; /* Default om textstorleken inte fungerar. */
     height:  0.75em;
+    animation: filter-animation-anchor-lemma 1.5s infinite;
 }
 div.tei.xsmallFontSize span.anchor_lemma img {
     width:  calc(0.75 * #{$text-fontsize-xsmall});
@@ -177,6 +178,20 @@ div.tei.largeFontSize span.anchor_lemma img {
 div.tei.xlargeFontSize span.anchor_lemma img {
     width:  calc(0.75 * #{$text-fontsize-xlarge});
     height: calc(0.75 * #{$text-fontsize-xlarge});
+}
+
+@keyframes filter-animation-anchor-lemma {
+    0% {
+        filter: invert(8%) sepia(95%) saturate(4961%) hue-rotate(359deg) brightness(96%) contrast(108%);
+    }
+  
+    50% {
+        filter: invert(11%) sepia(90%) saturate(5380%) hue-rotate(2deg) brightness(85%) contrast(111%);
+    }
+  
+    100% {
+        filter: invert(9%) sepia(88%) saturate(6317%) hue-rotate(8deg) brightness(107%) contrast(113%);
+    }
 }
 
 div.tei {
