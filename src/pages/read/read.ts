@@ -893,7 +893,29 @@ export class ReadPage /*implements OnDestroy*/ {
           } else if (eventTarget['classList'].contains('title') && this.readPopoverService.show.workInfo) {
             this.showWorkModal(eventTarget.getAttribute('data-id'));
           } else if (eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
-            this.showCommentModal(eventTarget.getAttribute('data-id'));
+            // Check if comments view is shown
+            let commentsViewIsShown = false;
+            const viewTypesShown = this.getViewTypesShown();
+            for (let i = 0; i < (viewTypesShown.length - 1); i++) {
+              if (viewTypesShown[i] === 'comments') {
+                commentsViewIsShown = true;
+                break;
+              }
+            }
+            if (commentsViewIsShown) {
+              // Scroll to comment i comments view and scroll lemma in reading-text view
+              const numId = eventTarget.getAttribute('data-id').replace( /^\D+/g, '');
+              const targetId = 'start' + numId;
+              const lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[0] as HTMLElement;
+              if (lemmaStart !== null && lemmaStart !== undefined) {
+                // Scroll to start of lemma in reading text and temporarily prepend arrow.
+                this.scrollToCommentLemma(lemmaStart);
+                // Scroll to comment in the comments-column.
+                this.scrollToComment(numId);
+              }
+            } else {
+              this.showCommentModal(eventTarget.getAttribute('data-id'));
+            }
           } else if (eventTarget['classList'].contains('ttVariant') && this.readPopoverService.show.comments) {
             this.showCommentModal(eventTarget.getAttribute('data-id'));
           }
@@ -1957,6 +1979,32 @@ export class ReadPage /*implements OnDestroy*/ {
     } catch (e) {
 
     }
+  }
+
+  /* Use this function to scroll the lemma of a comment into view in the reading text view. */
+  private scrollToCommentLemma(lemmaStartElem: HTMLElement, timeOut = 5000) {
+    if (lemmaStartElem !== null && lemmaStartElem !== undefined && lemmaStartElem.classList.contains('anchor_lemma')) {
+      lemmaStartElem.style.display = 'inline';
+      this.scrollElementIntoView(lemmaStartElem);
+      setTimeout(function() {
+        lemmaStartElem.style.display = null;
+      }, timeOut);
+    }
+  }
+
+  /* Use this function to scroll to the comment with the specified numeric id
+   * (excluding prefixes like 'end') in the first comments view on the page. */
+  private scrollToComment(numericId: string) {
+    // Find the comment in the comments view.
+    const commentsWrapper = document.querySelectorAll('comments')[0] as HTMLElement;
+    const commentElement = commentsWrapper.getElementsByClassName('en' + numericId)[0] as HTMLElement;
+    // Scroll the comment into view.
+    this.scrollElementIntoView(commentElement, 'center', -5);
+    const noteLemmaElem = commentElement.getElementsByClassName('noteLemma')[0] as HTMLElement;
+    noteLemmaElem.style.color = '#980202';
+    setTimeout(function() {
+      noteLemmaElem.style.color = null;
+    }, 5000);
   }
 
   keyPress(event) {
