@@ -863,10 +863,10 @@ export class ReadPage /*implements OnDestroy*/ {
       return event.target;
     }
 
-    let parentOfParent = event['target']['parentNode'];
-    parentOfParent = parentOfParent.parentNode;
+    let parentOfParent = event.target.parentElement;
+    parentOfParent = parentOfParent.parentElement;
 
-    if (parentOfParent !== undefined && parentOfParent['classList'].contains('tooltiptrigger')) {
+    if (parentOfParent !== undefined && parentOfParent.classList.contains('tooltiptrigger')) {
       eventTarget = parentOfParent;
     } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
       eventTarget = event['target']['parentNode'];
