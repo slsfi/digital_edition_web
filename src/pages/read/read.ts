@@ -989,24 +989,23 @@ export class ReadPage /*implements OnDestroy*/ {
 
       let tooltipShown = false;
       let eventTarget = this.getEventTarget(event);
-      const elem = event.target;
       while (!tooltipShown && eventTarget['classList'].contains('tooltiptrigger')) {
         if (eventTarget.hasAttribute('data-id')) {
           if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
-            this.showPersonTooltip(eventTarget.getAttribute('data-id'), elem, event);
+            this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
             tooltipShown = true;
           } else if (toolTipsSettings.placeInfo
             && eventTarget['classList'].contains('placeName')
             && this.readPopoverService.show.placeInfo) {
-            this.showPlaceTooltip(eventTarget.getAttribute('data-id'), elem, event);
+            this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
             tooltipShown = true;
           } else if (toolTipsSettings.workInfo
             && eventTarget['classList'].contains('title')
             && this.readPopoverService.show.workInfo) {
-            this.showWorkTooltip(eventTarget.getAttribute('data-id'), elem, event);
+            this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
             tooltipShown = true;
           } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
-            this.showCommentTooltip(eventTarget.getAttribute('data-id'), elem, event);
+            this.showCommentTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
             tooltipShown = true;
           } else if (toolTipsSettings.footNotes
             && eventTarget['classList'].contains('ttFoot')) {
