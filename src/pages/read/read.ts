@@ -974,6 +974,7 @@ export class ReadPage /*implements OnDestroy*/ {
         if (!tooltipShown) {
           eventTarget = eventTarget['parentNode'];
           if (!eventTarget['classList'].contains('tooltiptrigger') && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
+            /* The parent isn't a tooltiptrigger, but the parent of the parent is, use it for the next iteration. */
             eventTarget = eventTarget['parentNode'];
           }
         }
