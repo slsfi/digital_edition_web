@@ -815,44 +815,12 @@ export class ReadPage /*implements OnDestroy*/ {
         console.log(e);
       }
     }.bind(this), 1000);
-    /* SebKoh: Why is this here and not in setUpTextListeners() below as the other tooltiptriggers on mouseover? */
-    /*
-    this.renderer.listen(this.elementRef.nativeElement, 'mouseover', (event) => {
-      if (((event.target.parentNode.classList.contains('tooltiptrigger') &&
-       event.target.parentNode.classList.contains('ttChanges')) ||
-       (event.target.parentNode.parentNode.classList.contains('tooltiptrigger') &&
-       event.target.parentNode.parentNode.classList.contains('ttChanges')) ||
-       (event.target.classList.contains('tooltiptrigger') &&
-       event.target.classList.contains('ttChanges'))) &&
-       this.readPopoverService.show.changes) {
-        if (event.target !== undefined) {
-          this.showTooltipFromInlineHtml(event.target, event);
-        }
-      } else if (((event.target.parentNode.classList.contains('tooltiptrigger') &&
-       event.target.parentNode.classList.contains('ttNormalisations')) ||
-       (event.target.classList.contains('tooltiptrigger') &&
-       event.target.classList.contains('ttNormalisations'))) &&
-       this.readPopoverService.show.normalisations) {
-        if (event.target !== undefined) {
-          this.showTooltipFromInlineHtml(event.target, event);
-        }
-      } else if (((event.target.parentNode.classList.contains('tooltiptrigger') &&
-       event.target.parentNode.classList.contains('ttAbbreviations')) ||
-       (event.target.classList.contains('tooltiptrigger') &&
-       event.target.classList.contains('ttAbbreviations'))) &&
-       this.readPopoverService.show.abbreviations) {
-        if (event.target !== undefined) {
-          this.showTooltipFromInlineHtml(event.target, event);
-        }
-      }
-    });
-    */
   }
 
   scrollToTOC(element: HTMLElement) {
     try {
       if (element !== null) {
-        element.scrollIntoView({ 'behavior': 'smooth', 'block': 'center' });
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     } catch (e) {
       console.log(e);
@@ -957,36 +925,6 @@ export class ReadPage /*implements OnDestroy*/ {
 
     /* MOUSE OVER EVENTS */
     this.renderer.listen(nElement, 'mouseover', (event) => {
-      /*
-      if (((event.target.parentNode.classList.contains('tooltiptrigger') &&
-       event.target.parentNode.classList.contains('ttChanges')) ||
-       (event.target.parentNode.parentNode.classList.contains('tooltiptrigger') &&
-       event.target.parentNode.parentNode.classList.contains('ttChanges')) ||
-       (event.target.classList.contains('tooltiptrigger') &&
-       event.target.classList.contains('ttChanges'))) &&
-       this.readPopoverService.show.changes) {
-        if (event.target !== undefined) {
-          this.showTooltipFromInlineHtml(event.target, event);
-        }
-      } else if (((event.target.parentNode.classList.contains('tooltiptrigger') &&
-       event.target.parentNode.classList.contains('ttNormalisations')) ||
-       (event.target.classList.contains('tooltiptrigger') &&
-       event.target.classList.contains('ttNormalisations'))) &&
-       this.readPopoverService.show.normalisations) {
-        if (event.target !== undefined) {
-          this.showTooltipFromInlineHtml(event.target, event);
-        }
-      } else if (((event.target.parentNode.classList.contains('tooltiptrigger') &&
-       event.target.parentNode.classList.contains('ttAbbreviations')) ||
-       (event.target.classList.contains('tooltiptrigger') &&
-       event.target.classList.contains('ttAbbreviations'))) &&
-       this.readPopoverService.show.abbreviations) {
-        if (event.target !== undefined) {
-          this.showTooltipFromInlineHtml(event.target, event);
-        }
-      }
-      */
-
       let tooltipShown = false;
       let eventTarget = this.getEventTarget(event);
       while (!tooltipShown && eventTarget['classList'].contains('tooltiptrigger')) {
@@ -2043,15 +1981,13 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   private scrollToVariant(element: HTMLElement) {
-    // element.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
     this.scrollElementIntoView(element);
     this.hideToolTip();
     try {
-      const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span');
+      const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span.teiVariant');
       for (let i = 0; i < elems.length; i++) {
         if (elems[i].id === element.id) {
           elems[i].style.fontWeight = 'bold';
-          // elems[i].scrollIntoView({'behavior': 'smooth', 'block': 'center'});
           this.scrollElementIntoView(elems[i]);
           setTimeout(function () {
             if (elems[i] !== undefined) {
