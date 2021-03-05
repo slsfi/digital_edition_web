@@ -1035,6 +1035,9 @@ export class ReadPage /*implements OnDestroy*/ {
          * This is for finding nested tooltiptriggers, i.e. a person can be a child of a change. */
         if (!tooltipShown) {
           eventTarget = eventTarget['parentNode'];
+          if (!eventTarget['classList'].contains('tooltiptrigger') && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
+            eventTarget = eventTarget['parentNode'];
+          }
         }
       }
     }).bind(this);
