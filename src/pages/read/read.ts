@@ -1015,7 +1015,7 @@ export class ReadPage /*implements OnDestroy*/ {
           this.showTooltipFromInlineHtml(eventTarget, event);
         } else if (eventTarget['classList'].contains('ttVariant')) {
           if (eventTarget !== undefined) {
-            this.showVariationTooltip(eventTarget, event);
+            this.showVariantTooltip(eventTarget, event);
           }
         } else if (toolTipsSettings.footNotes && eventTarget.hasAttribute('id') &&
          eventTarget['classList'].contains('teiVariant') &&
@@ -1327,11 +1327,9 @@ export class ReadPage /*implements OnDestroy*/ {
     if (origin.target.nextSibling !== null && origin.target.nextSibling !== undefined &&
      !String(origin.target.nextSibling.className).includes('tooltiptrigger')) {
       elem = origin.target;
-    } else if (origin.target.parentNode.nextSibling !== null && origin.target.parentNode.nextSibling !== undefined &&
-     !String(origin.target.nextSibling.className).includes('tooltiptrigger')) {
+    } else if (origin.target.parentNode.nextSibling !== null && origin.target.parentNode.nextSibling !== undefined) {
       elem = origin.target.parentNode;
-    } else if (origin.target.parentNode.parentNode.nextSibling !== null && origin.target.parentNode.parentNode.nextSibling !== undefined &&
-     !String(origin.target.nextSibling.className).includes('tooltiptrigger')) {
+    } else if (origin.target.parentNode.parentNode.nextSibling !== null && origin.target.parentNode.parentNode.nextSibling !== undefined) {
       elem = origin.target.parentNode.parentNode;
     }
     if (elem['nextSibling'] !== null && elem['nextSibling'] !== undefined) {
@@ -1369,7 +1367,7 @@ export class ReadPage /*implements OnDestroy*/ {
     );
   }
 
-  showVariationTooltip(targetElem: HTMLElement, origin: any) {
+  showVariantTooltip(targetElem: HTMLElement, origin: any) {
     if (origin.target.nextSibling.className !== undefined && String(origin.target.nextSibling.className).includes('tooltip')) {
       this.setToolTipPosition(targetElem, origin.target.nextSibling.textContent);
       this.setToolTipText(origin.target.nextSibling.textContent);
