@@ -974,6 +974,10 @@ export class ReadPage /*implements OnDestroy*/ {
             && eventTarget['classList'].contains('ttFoot')) {
             this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), elem, eventTarget, event);
           }
+        } else if (toolTipsSettings.footNotes && eventTarget.hasAttribute('id') &&
+         eventTarget['classList'].contains('teiVariant') &&
+         eventTarget['classList'].contains('ttFoot')) {
+          this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), elem, eventTarget, event);
         }
       } else if (eventTarget['classList'].contains('anchor')) {
         if (eventTarget.hasAttribute('href')) {
@@ -1246,7 +1250,25 @@ export class ReadPage /*implements OnDestroy*/ {
     this.setToolTipPosition(targetElem, footNoteHTML);
     this.setToolTipText(footNoteHTML);
     this.tooltips.footnotes[id] = footNoteHTML;
-    return footNoteHTML;
+  }
+
+  showVariantFootnoteTooltip(id: string, targetElem: HTMLElement, ftnIndicatorElem: HTMLElement, origin: any) {
+    const target = document.getElementsByClassName('ttFixed');
+    let foundElem: any = '';
+    for (let i = 0; i < target.length; i++) {
+      const elt = target[i] as HTMLElement;
+      if (elt.getAttribute('data-id') === id && elt.classList.contains('teiVariant')) {
+        foundElem = elt.innerHTML;
+        break;
+      }
+    }
+    // Prepend the footnoteindicator to the the footnote text.
+    const footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + ftnIndicatorElem.textContent + '</span>' + '<span class="ttFtnText">' + foundElem  + '</span>';
+    const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
+      this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
+
+    this.setToolTipPosition(targetElem, footNoteHTML);
+    this.setToolTipText(footNoteHTML);
   }
 
   /* This function is used for showing tooltips for changes, normalisations and abbreviations. */
