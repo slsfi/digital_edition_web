@@ -1257,7 +1257,7 @@ export class ReadPage /*implements OnDestroy*/ {
     let foundElem: any = '';
     for (let i = 0; i < target.length; i++) {
       const elt = target[i] as HTMLElement;
-      if (elt.getAttribute('data-id') === id && elt.classList.contains('teiVariant')) {
+      if (elt.getAttribute('id') === id && elt.classList.contains('teiVariant')) {
         foundElem = elt.innerHTML;
         break;
       }
