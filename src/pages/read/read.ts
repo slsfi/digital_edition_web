@@ -957,6 +957,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
     /* MOUSE OVER EVENTS */
     this.renderer.listen(nElement, 'mouseover', (event) => {
+      /*
       if (((event.target.parentNode.classList.contains('tooltiptrigger') &&
        event.target.parentNode.classList.contains('ttChanges')) ||
        (event.target.parentNode.parentNode.classList.contains('tooltiptrigger') &&
@@ -984,15 +985,11 @@ export class ReadPage /*implements OnDestroy*/ {
           this.showTooltipFromInlineHtml(event.target, event);
         }
       }
+      */
 
       const eventTarget = this.getEventTarget(event);
       const elem = event.target;
       if (eventTarget['classList'].contains('tooltiptrigger')) {
-        if (eventTarget['classList'].contains('ttVariant')) {
-          if (eventTarget !== undefined) {
-            this.showVariationTooltip(eventTarget, event);
-          }
-        }
         if (eventTarget.hasAttribute('data-id')) {
           if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
             this.showPersonTooltip(eventTarget.getAttribute('data-id'), elem, event);
@@ -1009,6 +1006,16 @@ export class ReadPage /*implements OnDestroy*/ {
           } else if (toolTipsSettings.footNotes
             && eventTarget['classList'].contains('ttFoot')) {
             this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+          }
+        } else if ((toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges') && this.readPopoverService.show.changes) ||
+         (toolTipsSettings.normalisations && eventTarget['classList'].contains('ttNormalisations') &&
+         this.readPopoverService.show.normalisations) ||
+         (toolTipsSettings.abbreviations && eventTarget['classList'].contains('ttAbbreviations') &&
+         this.readPopoverService.show.abbreviations)) {
+          this.showTooltipFromInlineHtml(eventTarget, event);
+        } else if (eventTarget['classList'].contains('ttVariant')) {
+          if (eventTarget !== undefined) {
+            this.showVariationTooltip(eventTarget, event);
           }
         } else if (toolTipsSettings.footNotes && eventTarget.hasAttribute('id') &&
          eventTarget['classList'].contains('teiVariant') &&
