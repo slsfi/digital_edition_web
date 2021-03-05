@@ -867,17 +867,19 @@ export class ReadPage /*implements OnDestroy*/ {
       return event.target;
     }
 
-    if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
-      eventTarget = event['target']['parentNode'];
-    } else if (event.target !== undefined && event['target']['classList'].contains('tooltiptrigger')) {
+    if (event.target !== undefined && event['target']['classList'].contains('tooltiptrigger')) {
       eventTarget = event.target;
+    } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
+      eventTarget = event['target']['parentNode'];
+    } else if (event['target']['parentNode']['parentNode'] !== undefined &&
+     event['target']['parentNode']['parentNode']['classList'].contains('tooltiptrigger')) {
+      eventTarget = event['target']['parentNode']['parentNode'];
     } else if (event.target !== undefined && event['target']['classList'].contains('anchor')) {
-      /* Raden ovan ändrad till event['target']['classList'] från eventTarget['classList'] som alltid är tom. */
+      eventTarget = event.target;
+    } else if (event.target !== undefined && event['target']['classList'].contains('variantScrollTarget')) {
       eventTarget = event.target;
     } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('variantScrollTarget')) {
       eventTarget = event['target']['parentNode'];
-    } else if (event.target !== undefined && event['target']['classList'].contains('variantScrollTarget')) {
-      eventTarget = event.target;
     }
     return eventTarget;
   }
