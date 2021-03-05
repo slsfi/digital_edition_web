@@ -92,7 +92,7 @@ facsimiles {
         background-color: $read-columns-background-color;
         /*border-bottom: 1px solid red;*/
         font-weight: 600;
-        color: black;
+        color: black !important;
     }
 
     .open-manuscript-in-tab-hidden {
