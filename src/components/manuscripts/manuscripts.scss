@@ -1,5 +1,5 @@
 manuscripts {
-    .tab-container{
+    .tab-container {
         display: flex;
         justify-content: flex-start;
         flex-wrap: nowrap;
@@ -19,23 +19,26 @@ manuscripts {
         color: #c9c9c9;
         font-weight: 600;
         white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
         padding-left: 0.5rem;
         padding-right: 1rem;
         padding-top: 1rem;
         padding-bottom: 0.2rem;
-        align-self: flex-end;
         background-color: $read-columns-background-color;
         border-bottom: 1px solid black;
     }
 
-    .first-tab{
+    .tab {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        align-self: flex-end;
+    }
+
+    .first-tab {
         border-bottom: 1px solid red;
         color: black;
     }
 
-    .open-in-tab-hidden{
+    .open-in-tab-hidden {
         display: none;
         position: absolute;
         margin-top: 0.3rem;
@@ -43,7 +46,7 @@ manuscripts {
         font-size: 0.8rem !important;
     }
 
-    .open-facsimile-in-tab-hidden{
+    .open-facsimile-in-tab-hidden {
         display: none;
         position: absolute;
         margin-top: 0.3rem;
@@ -51,7 +54,7 @@ manuscripts {
         font-size: 0.8rem !important;
     }
 
-    .open-facsimile-in-tab{
+    .open-facsimile-in-tab {
         display: block;
         position: absolute;
         margin-top: 0.3rem;
@@ -59,11 +62,11 @@ manuscripts {
         font-size: 0.8rem !important;
     }
 
-    .tab-container > div:hover .open-in-tab-hidden{
+    .tab-container > div:hover .open-in-tab-hidden {
         display: block;
     }
 
-    .tab-container > div:hover{
+    .tab-container > div:hover {
         white-space: nowrap;
         overflow: initial;
         text-overflow: unset;
@@ -76,15 +79,15 @@ manuscripts {
         color: black;
     }
 
-    .open-in-tab{
+    .open-in-tab {
         display: none;
     }
 
-    .XMLcomment{
+    .XMLcomment {
         display: none;
     }
 
-    img.teiManuscript.symbol{
+    img.teiManuscript.symbol {
       width: 0.7rem;
       display: inline;
     }

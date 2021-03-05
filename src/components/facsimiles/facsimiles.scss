@@ -46,18 +46,21 @@ facsimiles {
         color: #c9c9c9;
         font-weight: 600;
         white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
         padding-left: 0.5rem;
         padding-right: 1rem;
         padding-top: 1rem;
         padding-bottom: 0.2rem;
-        align-self: flex-end;
         background-color: $read-columns-background-color;
         border-bottom: 1px solid black;
     }
 
-    .first-tab{
+    .tab {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        align-self: flex-end;
+    }
+
+    .first-tab {
         border-bottom: 1px solid red;
         color: black;
     }
