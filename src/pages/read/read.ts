@@ -1325,11 +1325,13 @@ export class ReadPage /*implements OnDestroy*/ {
   showTooltipFromInlineHtml(targetElem: HTMLElement, origin: any) {
     let elem = [];
     if (origin.target.nextSibling !== null && origin.target.nextSibling !== undefined &&
-      !String(origin.target.nextSibling.className).includes('tooltiptrigger')) {
+     !String(origin.target.nextSibling.className).includes('tooltiptrigger')) {
       elem = origin.target;
-    } else if (origin.target.parentNode.nextSibling !== null && origin.target.parentNode.nextSibling !== undefined) {
+    } else if (origin.target.parentNode.nextSibling !== null && origin.target.parentNode.nextSibling !== undefined &&
+     !String(origin.target.nextSibling.className).includes('tooltiptrigger')) {
       elem = origin.target.parentNode;
-    } else if (origin.target.parentNode.parentNode.nextSibling !== null && origin.target.parentNode.parentNode.nextSibling !== undefined) {
+    } else if (origin.target.parentNode.parentNode.nextSibling !== null && origin.target.parentNode.parentNode.nextSibling !== undefined &&
+     !String(origin.target.nextSibling.className).includes('tooltiptrigger')) {
       elem = origin.target.parentNode.parentNode;
     }
     if (elem['nextSibling'] !== null && elem['nextSibling'] !== undefined) {
