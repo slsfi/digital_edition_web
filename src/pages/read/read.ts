@@ -982,7 +982,7 @@ export class ReadPage /*implements OnDestroy*/ {
           this.showTooltipFromInlineHtml(event.target, event);
         }
       }
-      
+
       const eventTarget = this.getEventTarget(event);
       const elem = event.target;
       if (eventTarget['classList'].contains('tooltiptrigger')) {
