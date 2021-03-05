@@ -1,6 +1,6 @@
 <ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
 <div class="tab-container">
-  <div *ngFor="let variation of variations; let i = index" (click)="changeVariation(variation)" [ngClass]="(selectedVariation === variation)?'firts-tab':'tab'">
+  <div *ngFor="let variation of variations; let i = index" (click)="changeVariation(variation)" [ngClass]="(selectedVariation === variation)?'first-tab':'tab'">
     {{variation.name}}
     <div [ngClass]="(selectedVariation === variation)?'open-in-tab':'open-in-tab-hidden'" (click)="openNewVar($event, variation)">{{"Read.OpenInTab" | translate}}</div>
   </div>

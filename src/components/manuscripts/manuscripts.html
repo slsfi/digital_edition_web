@@ -1,7 +1,7 @@
 <ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
 <div class="tab-container">
   <div *ngFor="let manuscript of manuscripts" (click)="changeManuscript(manuscript)"
-    [ngClass]="(selectedManuscript === manuscript)?'firts-tab':'tab'">
+    [ngClass]="(selectedManuscript === manuscript)?'first-tab':'tab'">
     {{manuscript.name}}
     <div [ngClass]="(selectedManuscript === manuscript)?'open-facsimile-in-tab':'open-facsimile-in-tab-hidden'"
       (click)="openFacsimileMan($event, manuscript)">{{"Read.Manuscripts.OpenFacsimile" | translate}}</div>
