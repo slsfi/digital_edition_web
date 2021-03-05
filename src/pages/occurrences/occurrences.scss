@@ -10,14 +10,16 @@ page-occurrences {
     .close-button {
         margin-right: 12.8px;
     }
+
     .close-button:hover {
         opacity: $opacity-hover;
     }
+
     .close-button:active {
 		opacity: 1;
 	}
 
-    .col{
+    .col {
         white-space: normal !important;
         padding: 0 0 4px 0;
     }
@@ -27,64 +29,64 @@ page-occurrences {
         margin-bottom: 24px;
     }
 
-    .grid{
+    .grid {
       padding: 0;
     }
 
-    .grid ion-col{
+    .grid ion-col {
       padding-left: 0;
     }
 
-    .info{
+    .info {
         white-space: normal;
     }
 
-    .info h3{
+    .info h3 {
         font-size: 2rem;
     }
 
-    .info{
-        .occupation{
+    .info {
+        .occupation {
             font-size: 1.375rem;
         }
-        .title{
+        .title {
             font-size: 1.375rem;
         }
     }
 
-    .collectionName{
+    .collectionName {
         max-width: 60%;
         min-width: max-content;
     }
 
-    .displayName{
+    .displayName {
         min-width: min-content;
     }
 
-    .map{
+    .map {
         height: 200px;
         position: inherit;
     }
 
-    .map_hidden{
+    .map_hidden {
         display: none;
     }
 
-    .map_icon{
+    .map_icon {
         position: absolute;
         right: 0.3em;
         top: 0;
     }
 
-    .header{
+    .header {
         font-weight: normal;
     }
 
-    .map_item_hidden{
+    .map_item_hidden {
         display: none;
     }
 
-    span{
+    span {
         font-size: 1rem;
     }
 
@@ -92,7 +94,7 @@ page-occurrences {
         margin-top: 1rem;
     }
 
-    .media_image_wrapper img{
+    .media_image_wrapper img {
         width: auto !important;
     }
 
@@ -101,27 +103,27 @@ page-occurrences {
         margin-bottom: 2rem;
     }
 
-    .toolbar-title{
+    .toolbar-title {
         text-align: left;
     }
 
-    .article_count{
+    .article_count {
         float:left;
         margin-right: 1rem;
         height: 100%;
     }
-    .article_description{
+    .article_description {
         white-space: normal;
         max-width: 100%;
 
     }
-    .article_link{
+    .article_link {
         margin-bottom: 1rem;
     }
-    .forward-arrow-span{
+    .forward-arrow-span {
       float: right;
     }
-    .forward-arrow-span ion-icon{
+    .forward-arrow-span ion-icon {
       font-size: 1.5rem;
         position: relative;
         top: -5px; /* This center aligns the arrow vertically with the label text. */
@@ -129,21 +131,21 @@ page-occurrences {
     .collection_name_label {
       background-color: $background-color;
     }
-    .collection_name_label ion-label{
+    .collection_name_label ion-label {
       white-space: normal;
       padding-top: 0.8rem;
     }
-    .publication_name_label ion-label{
+    .publication_name_label ion-label {
       white-space: normal;
       margin-top: middle;
     }
-    .occurrences_list ion-label{
+    .occurrences_list ion-label {
       margin: auto;
     }
-    .row{
+    .row {
       border-bottom: $background-color 1px solid;
     }
-    ion-label{
+    ion-label {
       color: $text-color;
     }
     .list_of_occurrences_item ion-label.label {

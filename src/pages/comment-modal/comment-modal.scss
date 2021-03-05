@@ -12,7 +12,15 @@ page-comment-modal {
   }
 
   .close-button {
-    margin-right: 12.6px;
+    margin-right: 12.8px;
+  }
+
+  .close-button:hover {
+    opacity: $opacity-hover;
+  }
+  
+  .close-button:active {
+  opacity: 1;
   }
 
   div.tei {
