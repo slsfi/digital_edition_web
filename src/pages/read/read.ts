@@ -987,25 +987,31 @@ export class ReadPage /*implements OnDestroy*/ {
       }
       */
 
-      const eventTarget = this.getEventTarget(event);
+      let tooltipShown = false;
+      let eventTarget = this.getEventTarget(event);
       const elem = event.target;
-      if (eventTarget['classList'].contains('tooltiptrigger')) {
+      while (!tooltipShown && eventTarget['classList'].contains('tooltiptrigger')) {
         if (eventTarget.hasAttribute('data-id')) {
           if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
             this.showPersonTooltip(eventTarget.getAttribute('data-id'), elem, event);
+            tooltipShown = true;
           } else if (toolTipsSettings.placeInfo
             && eventTarget['classList'].contains('placeName')
             && this.readPopoverService.show.placeInfo) {
             this.showPlaceTooltip(eventTarget.getAttribute('data-id'), elem, event);
+            tooltipShown = true;
           } else if (toolTipsSettings.workInfo
             && eventTarget['classList'].contains('title')
             && this.readPopoverService.show.workInfo) {
             this.showWorkTooltip(eventTarget.getAttribute('data-id'), elem, event);
+            tooltipShown = true;
           } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
             this.showCommentTooltip(eventTarget.getAttribute('data-id'), elem, event);
+            tooltipShown = true;
           } else if (toolTipsSettings.footNotes
             && eventTarget['classList'].contains('ttFoot')) {
             this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+            tooltipShown = true;
           }
         } else if ((toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges') && this.readPopoverService.show.changes) ||
          (toolTipsSettings.normalisations && eventTarget['classList'].contains('ttNormalisations') &&
@@ -1013,18 +1019,23 @@ export class ReadPage /*implements OnDestroy*/ {
          (toolTipsSettings.abbreviations && eventTarget['classList'].contains('ttAbbreviations') &&
          this.readPopoverService.show.abbreviations)) {
           this.showTooltipFromInlineHtml(eventTarget, event);
+          tooltipShown = true;
         } else if (eventTarget['classList'].contains('ttVariant')) {
           if (eventTarget !== undefined) {
             this.showVariantTooltip(eventTarget, event);
+            tooltipShown = true;
           }
         } else if (toolTipsSettings.footNotes && eventTarget.hasAttribute('id') &&
          eventTarget['classList'].contains('teiVariant') &&
          eventTarget['classList'].contains('ttFoot')) {
           this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), eventTarget);
+          tooltipShown = true;
         }
-      } else if (eventTarget['classList'].contains('anchor')) {
-        if (eventTarget.hasAttribute('href')) {
-          this.scrollToElement(eventTarget.getAttribute('href'));
+
+        /* Get the parent node of the event target for the next iteration if a tooltip hasn't been shown already.
+         * This is for finding nested tooltiptriggers, i.e. a person can be a child of a change. */
+        if (!tooltipShown) {
+          eventTarget = eventTarget['parentNode'];
         }
       }
     }).bind(this);
