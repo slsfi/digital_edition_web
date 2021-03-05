@@ -1008,7 +1008,7 @@ export class ReadPage /*implements OnDestroy*/ {
             this.showCommentTooltip(eventTarget.getAttribute('data-id'), elem, event);
           } else if (toolTipsSettings.footNotes
             && eventTarget['classList'].contains('ttFoot')) {
-            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), elem, eventTarget, event);
+            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
           }
         } else if (toolTipsSettings.footNotes && eventTarget.hasAttribute('id') &&
          eventTarget['classList'].contains('teiVariant') &&
@@ -1263,7 +1263,7 @@ export class ReadPage /*implements OnDestroy*/ {
     );
   }
 
-  showFootnoteTooltip(id: string, targetElem: HTMLElement, ftnIndicatorElem: HTMLElement, origin: any) {
+  showFootnoteTooltip(id: string, targetElem: HTMLElement, origin: any) {
     if (this.tooltips.footnotes[id]) {
       this.setToolTipPosition(targetElem, this.tooltips.footnotes[id]);
       this.setToolTipText(this.tooltips.footnotes[id]);
@@ -1279,7 +1279,7 @@ export class ReadPage /*implements OnDestroy*/ {
       }
     }
     // Prepend the footnoteindicator to the the footnote text.
-    const footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + ftnIndicatorElem.textContent + '</span>' + '<span class="ttFtnText">' + foundElem  + '</span>';
+    const footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + targetElem.textContent + '</span>' + '<span class="ttFtnText">' + foundElem  + '</span>';
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
