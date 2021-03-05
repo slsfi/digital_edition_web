@@ -180,7 +180,11 @@ export class CommentsComponent {
             // Find the lemma in the reading text. Replace all non-digits at the start of the comment's id with nothing.
             const numId = elem.classList[elem.classList.length - 1].replace( /^\D+/g, '');
             const targetId = 'start' + numId;
-            const lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[0] as HTMLElement;
+            let lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[0] as HTMLElement;
+            if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
+              // The lemma is in a footnote, so we should get the second element with targetId
+              lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
+            }
             if (lemmaStart !== null && lemmaStart !== undefined) {
               // Scroll to start of lemma in reading text and temporarily prepend arrow.
               this.scrollToCommentLemma(lemmaStart);
