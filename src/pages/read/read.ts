@@ -904,7 +904,11 @@ export class ReadPage /*implements OnDestroy*/ {
               // Scroll to comment in comments view and scroll lemma in reading-text view
               const numId = eventTarget.getAttribute('data-id').replace( /^\D+/g, '');
               const targetId = 'start' + numId;
-              const lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[0] as HTMLElement;
+              let lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[0] as HTMLElement;
+              if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
+                // The lemma is in a footnote, so we should get the second element with targetId
+                lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
+              }
               if (lemmaStart !== null && lemmaStart !== undefined) {
                 // Scroll to start of lemma in reading text and temporarily prepend arrow.
                 this.scrollToCommentLemma(lemmaStart);
@@ -1258,6 +1262,7 @@ export class ReadPage /*implements OnDestroy*/ {
     this.setToolTipText(footNoteHTML);
   }
 
+  /* Use this method to get a footnote text of a variant. Returns a string with the footnote html. */
   private getVariantFootnoteText(id: string, triggerElem: HTMLElement) {
     if (triggerElem.nextElementSibling !== null && triggerElem.nextElementSibling !== undefined &&
      triggerElem.nextElementSibling.classList.contains('teiVariant') &&
@@ -1275,7 +1280,7 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 
-  /* This function is used for showing tooltips for changes, normalisations and abbreviations. */
+  /* This method is used for showing tooltips for changes, normalisations and abbreviations. */
   showTooltipFromInlineHtml(targetElem: HTMLElement, origin: any) {
     let elem = [];
     if (origin.target.nextSibling !== null && origin.target.nextSibling !== undefined &&
