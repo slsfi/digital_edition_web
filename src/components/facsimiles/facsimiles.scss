@@ -41,8 +41,10 @@ facsimiles {
         background-color: transparent;
     }
 
-    .tab {
+    .tab,
+    .first-tab {
         color: #c9c9c9;
+        font-weight: 600;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -55,15 +57,8 @@ facsimiles {
         border-bottom: 1px solid black;
     }
 
-    .first-tab {
-        white-space: nowrap;
-        padding-right: 1rem;
-        padding-top: 1rem;
-        padding-bottom: 0.2rem;
-        padding-left: 0.5rem;
-        background-color: $read-columns-background-color;
+    .first-tab{
         border-bottom: 1px solid red;
-        font-weight: 600;
         color: black;
     }
 
@@ -89,7 +84,6 @@ facsimiles {
         padding-left: 0.5rem;
         background-color: $read-columns-background-color;
         border-bottom: 1px solid red;
-        font-weight: 600;
         color: black;
     }
 
