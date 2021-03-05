@@ -977,7 +977,7 @@ export class ReadPage /*implements OnDestroy*/ {
         } else if (toolTipsSettings.footNotes && eventTarget.hasAttribute('id') &&
          eventTarget['classList'].contains('teiVariant') &&
          eventTarget['classList'].contains('ttFoot')) {
-          this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), elem, eventTarget, event);
+          this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), eventTarget);
         }
       } else if (eventTarget['classList'].contains('anchor')) {
         if (eventTarget.hasAttribute('href')) {
@@ -1252,23 +1252,26 @@ export class ReadPage /*implements OnDestroy*/ {
     this.tooltips.footnotes[id] = footNoteHTML;
   }
 
-  showVariantFootnoteTooltip(id: string, targetElem: HTMLElement, ftnIndicatorElem: HTMLElement, origin: any) {
-    if (targetElem.nextElementSibling !== null && targetElem.nextElementSibling !== undefined &&
-     targetElem.nextElementSibling.classList.contains('teiVariant') &&
-     targetElem.nextElementSibling.classList.contains('ttFoot')) {
-      if (targetElem.nextElementSibling.firstElementChild.classList.contains('ttFixed') &&
-       targetElem.nextElementSibling.firstElementChild.getAttribute('id') === id) {
-        
-        const ttText = targetElem.nextElementSibling.firstElementChild.innerHTML;
+  showVariantFootnoteTooltip(id: string, targetElem: HTMLElement) {
+    const footNoteHTML: string = this.getVariantFootnoteText(id, targetElem);
+    this.setToolTipPosition(targetElem, footNoteHTML);
+    this.setToolTipText(footNoteHTML);
+  }
 
-        // Prepend the footnoteindicator to the the footnote text.
-        const footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + ftnIndicatorElem.textContent + '</span>' + '<span class="ttFtnText">' + ttText  + '</span>';
-        const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
-          this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
-
-        this.setToolTipPosition(targetElem, footNoteHTML);
-        this.setToolTipText(footNoteHTML);
-      }
+  private getVariantFootnoteText(id: string, triggerElem: HTMLElement) {
+    if (triggerElem.nextElementSibling !== null && triggerElem.nextElementSibling !== undefined &&
+     triggerElem.nextElementSibling.classList.contains('teiVariant') &&
+     triggerElem.nextElementSibling.classList.contains('ttFoot') &&
+     triggerElem.nextElementSibling.firstElementChild.classList.contains('ttFixed') &&
+     triggerElem.nextElementSibling.firstElementChild.getAttribute('id') === id) {
+      const ttText = triggerElem.nextElementSibling.firstElementChild.innerHTML;
+      // Prepend the footnoteindicator to the the footnote text.
+      const footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + triggerElem.textContent + '</span>' + '<span class="ttFtnText">' + ttText  + '</span>';
+      const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
+       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
+      return footNoteHTML;
+    } else {
+      return '';
     }
   }
 
