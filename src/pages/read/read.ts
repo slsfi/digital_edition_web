@@ -816,13 +816,14 @@ export class ReadPage /*implements OnDestroy*/ {
       }
     }.bind(this), 1000);
     /* SebKoh: Why is this here and not in setUpTextListeners() below as the other tooltiptriggers on mouseover? */
+    /*
     this.renderer.listen(this.elementRef.nativeElement, 'mouseover', (event) => {
       if (((event.target.parentNode.classList.contains('tooltiptrigger') &&
-      event.target.parentNode.classList.contains('ttChanges')) ||
-      (event.target.parentNode.parentNode.classList.contains('tooltiptrigger') &&
-      event.target.parentNode.parentNode.classList.contains('ttChanges')) ||
-      (event.target.classList.contains('tooltiptrigger') &&
-      event.target.classList.contains('ttChanges'))) &&
+       event.target.parentNode.classList.contains('ttChanges')) ||
+       (event.target.parentNode.parentNode.classList.contains('tooltiptrigger') &&
+       event.target.parentNode.parentNode.classList.contains('ttChanges')) ||
+       (event.target.classList.contains('tooltiptrigger') &&
+       event.target.classList.contains('ttChanges'))) &&
        this.readPopoverService.show.changes) {
         if (event.target !== undefined) {
           this.showTooltipFromInlineHtml(event.target, event);
@@ -836,15 +837,16 @@ export class ReadPage /*implements OnDestroy*/ {
           this.showTooltipFromInlineHtml(event.target, event);
         }
       } else if (((event.target.parentNode.classList.contains('tooltiptrigger') &&
-      event.target.parentNode.classList.contains('ttAbbreviations')) ||
-      (event.target.classList.contains('tooltiptrigger') &&
-      event.target.classList.contains('ttAbbreviations'))) &&
-      this.readPopoverService.show.abbreviations) {
-       if (event.target !== undefined) {
-         this.showTooltipFromInlineHtml(event.target, event);
-       }
-     }
+       event.target.parentNode.classList.contains('ttAbbreviations')) ||
+       (event.target.classList.contains('tooltiptrigger') &&
+       event.target.classList.contains('ttAbbreviations'))) &&
+       this.readPopoverService.show.abbreviations) {
+        if (event.target !== undefined) {
+          this.showTooltipFromInlineHtml(event.target, event);
+        }
+      }
     });
+    */
   }
 
   scrollToTOC(element: HTMLElement) {
@@ -953,6 +955,34 @@ export class ReadPage /*implements OnDestroy*/ {
 
     /* MOUSE OVER EVENTS */
     this.renderer.listen(nElement, 'mouseover', (event) => {
+      if (((event.target.parentNode.classList.contains('tooltiptrigger') &&
+       event.target.parentNode.classList.contains('ttChanges')) ||
+       (event.target.parentNode.parentNode.classList.contains('tooltiptrigger') &&
+       event.target.parentNode.parentNode.classList.contains('ttChanges')) ||
+       (event.target.classList.contains('tooltiptrigger') &&
+       event.target.classList.contains('ttChanges'))) &&
+       this.readPopoverService.show.changes) {
+        if (event.target !== undefined) {
+          this.showTooltipFromInlineHtml(event.target, event);
+        }
+      } else if (((event.target.parentNode.classList.contains('tooltiptrigger') &&
+       event.target.parentNode.classList.contains('ttNormalisations')) ||
+       (event.target.classList.contains('tooltiptrigger') &&
+       event.target.classList.contains('ttNormalisations'))) &&
+       this.readPopoverService.show.normalisations) {
+        if (event.target !== undefined) {
+          this.showTooltipFromInlineHtml(event.target, event);
+        }
+      } else if (((event.target.parentNode.classList.contains('tooltiptrigger') &&
+       event.target.parentNode.classList.contains('ttAbbreviations')) ||
+       (event.target.classList.contains('tooltiptrigger') &&
+       event.target.classList.contains('ttAbbreviations'))) &&
+       this.readPopoverService.show.abbreviations) {
+        if (event.target !== undefined) {
+          this.showTooltipFromInlineHtml(event.target, event);
+        }
+      }
+      
       const eventTarget = this.getEventTarget(event);
       const elem = event.target;
       if (eventTarget['classList'].contains('tooltiptrigger')) {
