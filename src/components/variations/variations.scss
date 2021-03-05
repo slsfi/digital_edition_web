@@ -1,45 +1,11 @@
 variations {
-    .toolTip{
-        z-index: 1000;
-        position: absolute;
-        background: #88b7d5;
-        border: 1px solid #c2e1f5;
-        box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
-        padding-left: 4px;
-        padding-right: 4px;
-        white-space: normal;
-    }
-    .toolTip:after, .toolTip:before {
-        right: 100%;
-        top: 50%;
-        border: solid transparent;
-        content: " ";
-        height: 0;
-        width: 0;
-        position: absolute;
-        pointer-events: none;
-    }
-    
-    .toolTip:after {
-        border-color: rgba(136, 183, 213, 0);
-        border-right-color: #88b7d5;
-        border-width: 4px;
-        margin-top: -4px;
-    }
-    .toolTip:before {
-        border-color: rgba(194, 225, 245, 0);
-        border-right-color: #c2e1f5;
-        border-width: 5px;
-        margin-top: -5px;
-    }
-
     .tab-container{
         display: flex;
         justify-content: flex-start;
         flex-wrap: nowrap;
         flex-direction: row;
         width: 90%;
-        background: #efefef;
+        background: $read-columns-background-color;
         align-items: flex-end;
         position: relative;
         cursor: pointer;
@@ -58,7 +24,7 @@ variations {
         padding-top: 1rem;
         padding-bottom: 0.2rem;
         align-self: flex-end;
-        background-color: white;
+        background-color: $read-columns-background-color;
         border-bottom: 1px solid black;
     }
 
@@ -69,7 +35,7 @@ variations {
         padding-top: 1rem;
         padding-bottom: 0.2rem;
         padding-left: 0.5rem;
-        background-color: white;
+        background-color: $read-columns-background-color;
         border-bottom: 1px solid red;
         font-weight: 600;
         color: black;
@@ -95,7 +61,7 @@ variations {
         padding-top: 1rem;
         padding-bottom: 0.2rem;
         padding-left: 0.5rem;
-        background-color: white;
+        background-color: $read-columns-background-color;
         border-bottom: 1px solid red;
         font-weight: 600;
         color: black;

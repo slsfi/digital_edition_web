@@ -32,7 +32,7 @@ facsimiles {
         flex-wrap: nowrap;
         flex-direction: row;
         width: 90%;
-        background: #efefef;
+        background: $read-columns-background-color;
         align-items: flex-end;
         position: relative;
         cursor: pointer;
@@ -51,7 +51,7 @@ facsimiles {
         padding-top: 1rem;
         padding-bottom: 0.2rem;
         align-self: flex-end;
-        background-color: white;
+        background-color: $read-columns-background-color;
         border-bottom: 1px solid black;
     }
 
@@ -62,7 +62,7 @@ facsimiles {
         padding-top: 1rem;
         padding-bottom: 0.2rem;
         padding-left: 0.5rem;
-        background-color: white;
+        background-color: $read-columns-background-color;
         border-bottom: 1px solid red;
         font-weight: 600;
         color: black;
@@ -88,7 +88,7 @@ facsimiles {
         padding-top: 1rem;
         padding-bottom: 0.2rem;
         padding-left: 0.5rem;
-        background-color: white;
+        background-color: $read-columns-background-color;
         border-bottom: 1px solid red;
         font-weight: 600;
         color: black;
