@@ -5,6 +5,7 @@
     <div [ngClass]="(selectedVariation === variation)?'open-in-tab':'open-in-tab-hidden'" (click)="openNewVar($event, variation)">{{"Read.OpenInTab" | translate}}</div>
   </div>
 </div>
+
 <div class="tei" [innerHTML]="text"
 [class.show_comments]="readPopoverService.show.comments"
 [class.show_personInfo]="readPopoverService.show.personInfo"
