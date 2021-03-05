@@ -83,12 +83,14 @@ facsimiles {
         white-space: nowrap;
         overflow: initial;
         text-overflow: unset;
+        /*
         padding-right: 1rem;
         padding-top: 1rem;
         padding-bottom: 0.2rem;
         padding-left: 0.5rem;
+        */
         background-color: $read-columns-background-color;
-        border-bottom: 1px solid red;
+        /*border-bottom: 1px solid red;*/
         font-weight: 600;
         color: black;
     }
