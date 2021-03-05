@@ -1253,22 +1253,23 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   showVariantFootnoteTooltip(id: string, targetElem: HTMLElement, ftnIndicatorElem: HTMLElement, origin: any) {
-    const target = document.getElementsByClassName('ttFixed');
-    let foundElem: any = '';
-    for (let i = 0; i < target.length; i++) {
-      const elt = target[i] as HTMLElement;
-      if (elt.getAttribute('id') === id && elt.classList.contains('teiVariant')) {
-        foundElem = elt.innerHTML;
-        break;
+    if (targetElem.nextElementSibling !== null && targetElem.nextElementSibling !== undefined &&
+     targetElem.nextElementSibling.classList.contains('teiVariant') &&
+     targetElem.nextElementSibling.classList.contains('ttFoot')) {
+      if (targetElem.nextElementSibling.firstElementChild.classList.contains('ttFixed') &&
+       targetElem.nextElementSibling.firstElementChild.getAttribute('id') === id) {
+        
+        const ttText = targetElem.nextElementSibling.firstElementChild.innerHTML;
+
+        // Prepend the footnoteindicator to the the footnote text.
+        const footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + ftnIndicatorElem.textContent + '</span>' + '<span class="ttFtnText">' + ttText  + '</span>';
+        const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
+          this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
+
+        this.setToolTipPosition(targetElem, footNoteHTML);
+        this.setToolTipText(footNoteHTML);
       }
     }
-    // Prepend the footnoteindicator to the the footnote text.
-    const footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + ftnIndicatorElem.textContent + '</span>' + '<span class="ttFtnText">' + foundElem  + '</span>';
-    const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
-      this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
-
-    this.setToolTipPosition(targetElem, footNoteHTML);
-    this.setToolTipText(footNoteHTML);
   }
 
   /* This function is used for showing tooltips for changes, normalisations and abbreviations. */
