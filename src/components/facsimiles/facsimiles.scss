@@ -1,32 +1,32 @@
 facsimiles {
-    .leftFacsimileArrow{
+    .leftFacsimileArrow {
         left: 0;
         right: auto !important;
     }
 
-    #facsimilies-image{
+    #facsimilies-image {
         max-height: 100%;
         height: 100%;
     }
-    #facsimilies-image img{
+    #facsimilies-image img {
       max-height: -webkit-fill-available;
       max-height: fill-available;
       object-fit: scale-down;
       object-position: top;
     }
 
-    #facsimilies-image img{
+    #facsimilies-image img {
       max-height: -webkit-fill-available;
       max-height: fill-available;
       object-fit: scale-down;
       object-position: top;
     }
 
-    .external_url a{
+    .external_url a {
       white-space: normal;
     }
 
-    .tab-container{
+    .tab-container {
         display: flex;
         justify-content: flex-start;
         flex-wrap: nowrap;
@@ -41,7 +41,7 @@ facsimiles {
         background-color: transparent;
     }
 
-    .tab{
+    .tab {
         color: #dedede;
         white-space: nowrap;
         overflow: hidden;
@@ -56,7 +56,7 @@ facsimiles {
     }
 
 
-    .first-tab{
+    .first-tab {
         white-space: nowrap;
         padding-right: 1rem;
         padding-top: 1rem;
@@ -68,7 +68,7 @@ facsimiles {
         color: black;
     }
 
-    .open-in-tab-hidden{
+    .open-in-tab-hidden {
         display: none;
         position: absolute;
         margin-top: 0.3rem;
@@ -76,11 +76,11 @@ facsimiles {
         font-size: 0.8rem !important;
     }
 
-    .tab-container > div:hover .open-in-tab-hidden{
+    .tab-container > div:hover .open-in-tab-hidden {
         display: block;
     }
 
-    .tab-container > div:hover{
+    .tab-container > div:hover {
         white-space: nowrap;
         overflow: initial;
         text-overflow: unset;
@@ -94,7 +94,7 @@ facsimiles {
         color: black;
     }
 
-    .open-manuscript-in-tab-hidden{
+    .open-manuscript-in-tab-hidden {
         display: none;
         position: absolute;
         margin-top: 0.3rem;
@@ -102,7 +102,7 @@ facsimiles {
         font-size: 0.8rem !important;
     }
 
-    .open-manuscript-in-tab{
+    .open-manuscript-in-tab {
         display: block;
         position: absolute;
         margin-top: 0.3rem;
@@ -110,18 +110,18 @@ facsimiles {
         font-size: 0.8rem !important;
     }
 
-    .open-in-tab{
+    .open-in-tab {
         display: none;
     }
 
-    img{
+    img {
         cursor: move;
         // https://github.com/hammerjs/hammer.js/issues/1050#issuecomment-267595556
         // Need to use !important because something is trying to override the value.
         touch-action: none !important;
     }
 
-    .external_url{
+    .external_url {
         display: grid;
         line-height: 2;
     }
