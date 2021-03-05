@@ -1333,7 +1333,8 @@ export class ReadPage /*implements OnDestroy*/ {
 
   /* This method is used for showing tooltips for changes, normalisations and abbreviations. */
   showTooltipFromInlineHtml(targetElem: HTMLElement, origin: any) {
-    let elem = [];
+    
+    /*let elem = [];
     if (origin.target.nextSibling !== null && origin.target.nextSibling !== undefined &&
      !String(origin.target.nextSibling.className).includes('tooltiptrigger')) {
       elem = origin.target;
@@ -1346,6 +1347,14 @@ export class ReadPage /*implements OnDestroy*/ {
       if (elem['nextSibling'].className !== undefined && String(elem['nextSibling'].className).includes('tooltip')) {
         this.setToolTipPosition(targetElem, elem['nextSibling'].textContent);
         this.setToolTipText(elem['nextSibling'].textContent);
+      }
+    }
+    */
+
+    if (targetElem.nextElementSibling !== null && targetElem.nextElementSibling !== undefined) {
+      if (targetElem.nextElementSibling.className !== undefined && targetElem.nextElementSibling.className.includes('tooltip')) {
+        this.setToolTipPosition(targetElem, targetElem.nextElementSibling.textContent);
+        this.setToolTipText(targetElem.nextElementSibling.textContent);
       }
     }
   }
