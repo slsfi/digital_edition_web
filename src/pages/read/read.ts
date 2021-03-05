@@ -943,7 +943,7 @@ export class ReadPage /*implements OnDestroy*/ {
             this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
             tooltipShown = true;
           } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
-            this.showCommentTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+            this.showCommentTooltip(eventTarget.getAttribute('data-id'), eventTarget);
             tooltipShown = true;
           } else if (toolTipsSettings.footNotes
             && eventTarget['classList'].contains('ttFoot')) {
@@ -955,7 +955,7 @@ export class ReadPage /*implements OnDestroy*/ {
          this.readPopoverService.show.normalisations) ||
          (toolTipsSettings.abbreviations && eventTarget['classList'].contains('ttAbbreviations') &&
          this.readPopoverService.show.abbreviations)) {
-          this.showTooltipFromInlineHtml(eventTarget, event);
+          this.showTooltipFromInlineHtml(eventTarget);
           tooltipShown = true;
         } else if (eventTarget['classList'].contains('ttVariant')) {
           if (eventTarget !== undefined) {
@@ -1273,25 +1273,7 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   /* This method is used for showing tooltips for changes, normalisations and abbreviations. */
-  showTooltipFromInlineHtml(targetElem: HTMLElement, origin: any) {
-    
-    /*let elem = [];
-    if (origin.target.nextSibling !== null && origin.target.nextSibling !== undefined &&
-     !String(origin.target.nextSibling.className).includes('tooltiptrigger')) {
-      elem = origin.target;
-    } else if (origin.target.parentNode.nextSibling !== null && origin.target.parentNode.nextSibling !== undefined) {
-      elem = origin.target.parentNode;
-    } else if (origin.target.parentNode.parentNode.nextSibling !== null && origin.target.parentNode.parentNode.nextSibling !== undefined) {
-      elem = origin.target.parentNode.parentNode;
-    }
-    if (elem['nextSibling'] !== null && elem['nextSibling'] !== undefined) {
-      if (elem['nextSibling'].className !== undefined && String(elem['nextSibling'].className).includes('tooltip')) {
-        this.setToolTipPosition(targetElem, elem['nextSibling'].textContent);
-        this.setToolTipText(elem['nextSibling'].textContent);
-      }
-    }
-    */
-
+  showTooltipFromInlineHtml(targetElem: HTMLElement) {
     if (targetElem.nextElementSibling !== null && targetElem.nextElementSibling !== undefined) {
       if (targetElem.nextElementSibling.className !== undefined && targetElem.nextElementSibling.className.includes('tooltip')) {
         this.setToolTipPosition(targetElem, targetElem.nextElementSibling.textContent);
@@ -1300,7 +1282,7 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 
-  showCommentTooltip(id: string, targetElem: HTMLElement, origin: any) {
+  showCommentTooltip(id: string, targetElem: HTMLElement) {
     if (this.tooltips.comments[id]) {
       this.setToolTipPosition(targetElem, this.tooltips.comments[id]);
       this.setToolTipText(this.tooltips.comments[id]);
@@ -1966,7 +1948,6 @@ export class ReadPage /*implements OnDestroy*/ {
 
   private scrollToElement(element: HTMLElement) {
     element.scrollIntoView();
-    // this.showToolTip = false;
     this.hideToolTip();
     try {
       const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span');
