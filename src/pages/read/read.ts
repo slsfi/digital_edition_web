@@ -2009,7 +2009,6 @@ export class ReadPage /*implements OnDestroy*/ {
         lemmaTimeOutId: settimeoutId,
         lemmaElement: lemmaStartElem
       }
-
     }
   }
 
@@ -2039,19 +2038,16 @@ export class ReadPage /*implements OnDestroy*/ {
       noteLemmaElem.classList.toggle('highlight');
       const settimeoutId = setTimeout(function() {
         noteLemmaElem.classList.toggle('highlight');
-
         this.commentService.activeCommentHighlight = {
           commentTimeOutId: null,
           commentLemmaElement: null
         }
-
       }, 5000);
 
       this.commentService.activeCommentHighlight = {
         commentTimeOutId: settimeoutId,
         commentLemmaElement: noteLemmaElem
       }
-
     }
   }
 
