@@ -876,7 +876,7 @@ export class ReadPage /*implements OnDestroy*/ {
               // Scroll to comment in comments view and scroll lemma in reading-text view
               const numId = eventTarget.getAttribute('data-id').replace( /^\D+/g, '');
               const targetId = 'start' + numId;
-              let lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[0] as HTMLElement;
+              let lemmaStart = document.querySelector('[data-id="' + targetId + '"]') as HTMLElement;
               if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
                 // The lemma is in a footnote, so we should get the second element with targetId
                 lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
@@ -2003,7 +2003,7 @@ export class ReadPage /*implements OnDestroy*/ {
     let elem = commentElement;
     if (elem === undefined || elem === null || !elem.classList.contains('en' + numericId)) {
       // Find the comment in the comments view.
-      const commentsWrapper = document.querySelectorAll('comments')[0] as HTMLElement;
+      const commentsWrapper = document.querySelector('comments') as HTMLElement;
       elem = commentsWrapper.getElementsByClassName('en' + numericId)[0] as HTMLElement;
     }
     // Scroll the comment into view.
