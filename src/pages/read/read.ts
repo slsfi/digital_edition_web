@@ -89,8 +89,6 @@ export class ReadPage /*implements OnDestroy*/ {
   toolTipMaxWidth: string;
   toolTipScaleValue: number;
   toolTipText: string;
-  activeCommentHighlight: any;
-  activeLemmaHighlight: any;
 
   maxSingleWindowWidth: Number;
 
@@ -206,15 +204,6 @@ export class ReadPage /*implements OnDestroy*/ {
     this.toolTipPosition = {
       top: -1000 + 'px',
       left: -1000 + 'px'
-    };
-
-    this.activeCommentHighlight = {
-      commentTimeOutId: null,
-      commentLemmaElement: null
-    };
-    this.activeLemmaHighlight = {
-      lemmaTimeOutId: null,
-      lemmaElement: null
     };
 
     try {
@@ -1998,10 +1987,10 @@ export class ReadPage /*implements OnDestroy*/ {
   private scrollToCommentLemma(lemmaStartElem: HTMLElement, timeOut = 5000) {
     if (lemmaStartElem !== null && lemmaStartElem !== undefined && lemmaStartElem.classList.contains('anchor_lemma')) {
 
-      if (this.activeLemmaHighlight.lemmaTimeOutId !== null) {
+      if (this.commentService.activeLemmaHighlight.lemmaTimeOutId !== null) {
         // Clear previous lemma highlight if still active
-        this.activeLemmaHighlight.lemmaElement.style.display = null;
-        window.clearTimeout(this.activeLemmaHighlight.lemmaTimeOutId);
+        this.commentService.activeLemmaHighlight.lemmaElement.style.display = null;
+        window.clearTimeout(this.commentService.activeLemmaHighlight.lemmaTimeOutId);
       }
 
       lemmaStartElem.style.display = 'inline';
@@ -2009,12 +1998,14 @@ export class ReadPage /*implements OnDestroy*/ {
       const settimeoutId = setTimeout(function() {
         lemmaStartElem.style.display = null;
 
-        this.activeLemmaHighlight.lemmaTimeOutId = null;
-        this.activeLemmaHighlight.lemmaElement = null;
+        this.commentService.activeLemmaHighlight = {
+          lemmaTimeOutId: null,
+          lemmaElement: null
+        }
 
       }, timeOut);
 
-      this.activeLemmaHighlight = {
+      this.commentService.activeLemmaHighlight = {
         lemmaTimeOutId: settimeoutId,
         lemmaElement: lemmaStartElem
       }
@@ -2035,11 +2026,11 @@ export class ReadPage /*implements OnDestroy*/ {
     }
     if (elem !== null && elem !== undefined) {
 
-      if (this.activeCommentHighlight.commentTimeOutId !== null) {
+      if (this.commentService.activeCommentHighlight.commentTimeOutId !== null) {
         // Clear previous comment highlight if still active
-        const temp = this.activeCommentHighlight.commentLemmaElement as HTMLElement;
+        const temp = this.commentService.activeCommentHighlight.commentLemmaElement as HTMLElement;
         temp.classList.toggle('highlight');
-        window.clearTimeout(this.activeCommentHighlight.commentTimeOutId);
+        window.clearTimeout(this.commentService.activeCommentHighlight.commentTimeOutId);
       }
 
       // Scroll the comment into view.
@@ -2049,12 +2040,14 @@ export class ReadPage /*implements OnDestroy*/ {
       const settimeoutId = setTimeout(function() {
         noteLemmaElem.classList.toggle('highlight');
 
-        this.activeCommentHighlight.commentTimeOutId = null;
-        this.activeCommentHighlight.commentLemmaElement = null;
+        this.commentService.activeCommentHighlight = {
+          commentTimeOutId: null,
+          commentLemmaElement: null
+        }
 
       }, 5000);
 
-      this.activeCommentHighlight = {
+      this.commentService.activeCommentHighlight = {
         commentTimeOutId: settimeoutId,
         commentLemmaElement: noteLemmaElem
       }
