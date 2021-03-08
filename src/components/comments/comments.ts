@@ -105,10 +105,35 @@ export class CommentsComponent {
   }
 
   ngAfterViewInit() {
-    this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
+    
+  }
 
+  private setUpTextListeners() {
+    // We must do it like this since we want to trigger an event on a dynamically loaded innerhtml.
+    const nElement: HTMLElement = this.elementRef.nativeElement;
+    this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
+
+      /*
       event.stopPropagation();
       event.preventDefault();
+      */
+
+      /*
+      if (event.target.classList.contains('xreference')) {
+        // get the parts for the targetted text
+        const hrefTargetItems: Array<string> = decodeURI(String(event.target.href).split('/').pop()).split(' ');
+        // check if we are already on the same page
+        const baseURI: string = String(event.target.baseURI).split('#').pop();
+        if ( (baseURI === '/publication/' + hrefTargetItems[0] + '/text/' + hrefTargetItems[1]) ||
+              ( hrefTargetItems[1] === event.target.hash ) ) {
+          if ( event.target.classList.contains('ref_readingtext') ) {
+            this.events.publish('scrollToContent', event.target.hash);
+          }
+        }
+        event.preventDefault();
+      }
+      */
+
       // This is tagging in href to another page e.g. introduction
       try {
         const elem: HTMLAnchorElement = event.target as HTMLAnchorElement;
@@ -159,12 +184,9 @@ export class CommentsComponent {
         } else if ( elem.classList !== undefined && elem.classList.contains('ext') ) {
           const anchor = <HTMLAnchorElement>elem;
           const ref = window.open(anchor.href, '_blank', 'location=no');
-        }
-      } catch ( e ) {}
-
-      // This is linking to a comment lemma ("asterisk") in the reading text, i.e. the user has clicked a comment in the comments-column.
-      try {
-        if (this.readPopoverService.show.comments) {
+        } else if (this.readPopoverService.show.comments) {
+          // This is linking to a comment lemma ("asterisk") in the reading text,
+          // i.e. the user has clicked a comment in the comments-column.
           let elem: HTMLElement = event.target as HTMLElement;
           // Find the comment element that has been clicked in the comment-column.
           if (!elem.classList.contains('commentScrollTarget')) {
@@ -193,26 +215,9 @@ export class CommentsComponent {
             }
           }
         }
-      } catch ( e ) {}
-    });
-  }
 
-  private setUpTextListeners() {
-    // We must do it like this since we want to trigger an event on a dynamically loaded innerhtml.
-    this.listenFunc = this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
-      if (event.target.classList.contains('xreference')) {
-        // get the parts for the targetted text
-        const hrefTargetItems: Array<string> = decodeURI(String(event.target.href).split('/').pop()).split(' ');
-        // check if we are already on the same page
-        const baseURI: string = String(event.target.baseURI).split('#').pop();
-        if ( (baseURI === '/publication/' + hrefTargetItems[0] + '/text/' + hrefTargetItems[1]) ||
-              ( hrefTargetItems[1] === event.target.hash ) ) {
-          if ( event.target.classList.contains('ref_readingtext') ) {
-            this.events.publish('scrollToContent', event.target.hash);
-          }
-        }
-        event.preventDefault();
-      }
+      } catch ( e ) {}
+
     });
   }
 
