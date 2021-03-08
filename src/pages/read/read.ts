@@ -848,21 +848,21 @@ export class ReadPage /*implements OnDestroy*/ {
     } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('variantScrollTarget')) {
       eventTarget = event['target']['parentNode'];
     } else if (event.target !== undefined && event.target !== null) {
-      let elem = event.target as HTMLElement;
+      let elem = event['target'];
       let commentTargetFound = true;
       // Check if a comment has been clicked in the comment-column.
-      if (!elem.classList.contains('commentScrollTarget')) {
-        elem = elem.parentElement;
-        while (!elem.classList.contains('commentScrollTarget')) {
-          elem = elem.parentElement;
-          if ((elem.classList.contains('tei') && elem.tagName === 'DIV') || elem === null || elem === undefined) {
+      if (!elem['classList'].contains('commentScrollTarget')) {
+        elem = elem['parentNode'];
+        while (!elem['classList'].contains('commentScrollTarget')) {
+          elem = elem['parentNode'];
+          if ((elem['classList'].contains('tei') && elem['nodeName'] === 'DIV') || elem === null || elem === undefined) {
             commentTargetFound = false;
             break;
           }
         }
       }
       if (commentTargetFound) {
-        eventTarget = elem;
+        return elem;
       }
     }
     return eventTarget;
@@ -919,7 +919,7 @@ export class ReadPage /*implements OnDestroy*/ {
         /* A comment has been clicked in the comments-column. Find the lemma in
             the reading text. Replace all non-digits at the start of the comment's
             id with nothing. */
-        const numId = eventTarget.classList[eventTarget.classList.length - 1].replace( /^\D+/g, '');
+        const numId = eventTarget['classList'][eventTarget.classList.length - 1].replace( /^\D+/g, '');
         const targetId = 'start' + numId;
         let lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[0] as HTMLElement;
         if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
@@ -2031,7 +2031,7 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   /* Use this function to scroll to the comment with the specified numeric id
-   * (excluding prefixes like 'end') in the first comments view on the page. 
+   * (excluding prefixes like 'end') in the first comments view on the page.
    * Alternatively, the comment element can be passed as an optional parameter.
    * The method return the id of the settimeout function. */
   private scrollToComment(numericId: string, commentElement?: HTMLElement) {
