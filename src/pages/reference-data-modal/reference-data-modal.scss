@@ -1,14 +1,31 @@
 page-reference-data-modal {
-	.tei{
-		font-family: $font-semantic-data-model-tei;
-		line-height: 2.2rem;
-		font-size: 1.5rem;
+	/* This hides the vertical scrollbar on the right edge of the modal when it is not necessary to show it. */
+	ion-content > .scroll-content {
+		overflow: auto;
+		padding: 16px 24px 24px 24px;
 	}
-	.header{
+
+	ion-title {
+		margin-left: 12px;
+	}
+
+	.close-button {
+		margin-right: 12.8px;
+		transition: $opacity-hover-transition;
+	}
+
+	.close-button:hover {
+		opacity: $opacity-hover;
+	}
+	
+	.close-button:active {
+		opacity: 1;
+	}
+
+	.header {
 		font-size: 1.5rem;
-		font-weight: 400;
-  }
-  .urn{
-    white-space: normal;
-  }
+  	}
+  	.urn {
+   		white-space: normal;
+  	}
 }

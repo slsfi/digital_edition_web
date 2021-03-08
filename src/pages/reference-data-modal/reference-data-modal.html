@@ -8,23 +8,32 @@
   <ion-navbar>
     <ion-title>{{'Reference.title' | translate }}</ion-title>
     <ion-buttons end>
-      <button ion-button (click)="dismiss()">
-        <ion-icon name="close-circle"></ion-icon>
+      <button class="close-button" ion-button (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
+
 <ion-content padding>
-  <label class="header">{{"Reference.thisPage" | translate}}</label>
-  <ion-item>
-      <div class="urn" ><a target="_blank" href="{{ 'http://urn.fi/' + referenceData['urn']}}">{{referenceData['urn']}}</a></div>
-  </ion-item>
-  <ion-item *ngIf="referenceData['intro_reference_text']">
-      <label>{{'Reference.established' | translate}}:</label>
-      <div class="urn" [innerHTML]="referenceData['reference_text'] + ' ' + referenceData['urn']">...</div>
-  </ion-item>
-  <ion-item *ngIf="referenceData['reference_text']">
-      <label>{{'Reference.intro' | translate}}:</label>
-      <div class="urn" [innerHTML]="referenceData['intro_reference_text']">...</div>
-  </ion-item>
+  <ion-col>
+    <ion-card>
+      <ion-card-header>
+        <label class="header">{{"Reference.thisPage" | translate}}</label>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <div class="urn" ><a target="_blank" href="{{ 'http://urn.fi/' + referenceData['urn']}}">{{referenceData['urn']}}</a></div>
+        </ion-item>
+        <ion-item *ngIf="referenceData['intro_reference_text']">
+            <label>{{'Reference.established' | translate}}:</label>
+            <div class="urn" [innerHTML]="referenceData['reference_text'] + ' ' + referenceData['urn']">...</div>
+        </ion-item>
+        <ion-item *ngIf="referenceData['reference_text']">
+            <label>{{'Reference.intro' | translate}}:</label>
+            <div class="urn" [innerHTML]="referenceData['intro_reference_text']">...</div>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </ion-col>
 </ion-content>
