@@ -219,10 +219,16 @@ export class CommentsComponent {
   /* Use this function to scroll the lemma of a comment into view in the reading text view. */
   private scrollToCommentLemma(lemmaStartElem: HTMLElement, timeOut = 5000) {
     if (lemmaStartElem !== null && lemmaStartElem !== undefined && lemmaStartElem.classList.contains('anchor_lemma')) {
+      if (this.commentService.activeLemmaHighlight !== null) {
+        // Clear previous lemma highlight if still active
+        this.commentService.activeLemmaHighlight.lemmaElement.style.display = null;
+        window.clearTimeout(this.commentService.activeLemmaHighlight.lemmaTimeOutId);
+      }
       lemmaStartElem.style.display = 'inline';
       this.scrollElementIntoView(lemmaStartElem);
       const settimeoutId = setTimeout(function() {
         lemmaStartElem.style.display = null;
+        this.commentService.activeLemmaHighlight = null;
       }, timeOut);
       this.commentService.activeLemmaHighlight = {
         lemmaTimeOutId: settimeoutId,
@@ -234,7 +240,7 @@ export class CommentsComponent {
   /* Use this function to scroll to the comment with the specified numeric id
    * (excluding prefixes like 'end') in the first comments view on the page.
    * Alternatively, the comment element can be passed as an optional parameter.
-   * The method return the id of the settimeout function. */
+   */
   private scrollToComment(numericId: string, commentElement?: HTMLElement) {
     let elem = commentElement;
     if (elem === undefined || elem === null || !elem.classList.contains('en' + numericId)) {
@@ -242,16 +248,24 @@ export class CommentsComponent {
       const commentsWrapper = document.querySelector('comments') as HTMLElement;
       elem = commentsWrapper.getElementsByClassName('en' + numericId)[0] as HTMLElement;
     }
-    // Scroll the comment into view.
-    this.scrollElementIntoView(elem, 'center', -5);
-    const noteLemmaElem = elem.getElementsByClassName('noteLemma')[0] as HTMLElement;
-    noteLemmaElem.classList.toggle('highlight');
-    const settimeoutId = setTimeout(function() {
+    if (elem !== null && elem !== undefined) {
+      if (this.commentService.activeCommentHighlight !== null) {
+        // Clear previous comment highlight if still active
+        this.commentService.activeCommentHighlight.commentLemmaElement.classList.toggle('highlight');
+        window.clearTimeout(this.commentService.activeCommentHighlight.commentTimeOutId);
+      }
+      // Scroll the comment into view.
+      this.scrollElementIntoView(elem, 'center', -5);
+      const noteLemmaElem = elem.getElementsByClassName('noteLemma')[0] as HTMLElement;
       noteLemmaElem.classList.toggle('highlight');
-    }, 5000);
-    this.commentService.activeCommentHighlight = {
-      commentTimeOutId: settimeoutId,
-      commentElement: elem
+      const settimeoutId = setTimeout(function() {
+        noteLemmaElem.classList.toggle('highlight');
+        this.commentService.activeCommentHighlight = null;
+      }, 5000);
+      this.commentService.activeCommentHighlight = {
+        commentTimeOutId: settimeoutId,
+        commentLemmaElement: noteLemmaElem
+      }
     }
   }
 
