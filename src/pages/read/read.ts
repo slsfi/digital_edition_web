@@ -2009,7 +2009,8 @@ export class ReadPage /*implements OnDestroy*/ {
       const settimeoutId = setTimeout(function() {
         lemmaStartElem.style.display = null;
         
-        this.activeLemmaHighlight = null;
+        this.activeLemmaHighlight.lemmaTimeOutId = null;
+        this.activeLemmaHighlight.lemmaElement = null;
         
       }, timeOut);
       
@@ -2034,9 +2035,10 @@ export class ReadPage /*implements OnDestroy*/ {
     }
     if (elem !== null && elem !== undefined) {
       
-      if (this.activeCommentHighlight !== null) {
+      if (this.activeCommentHighlight.commentTimeOutId !== null) {
         // Clear previous comment highlight if still active
-        this.activeCommentHighlight.commentLemmaElement.classList.toggle('highlight');
+        const temp = this.activeCommentHighlight.commentLemmaElement as HTMLElement;
+        temp.classList.toggle('highlight');
         window.clearTimeout(this.activeCommentHighlight.commentTimeOutId);
       }
       
@@ -2047,7 +2049,8 @@ export class ReadPage /*implements OnDestroy*/ {
       const settimeoutId = setTimeout(function() {
         noteLemmaElem.classList.toggle('highlight');
         
-        this.activeCommentHighlight = null;
+        this.activeCommentHighlight.commentTimeOutId = null;
+        this.activeCommentHighlight.commentLemmaElement = null;
         
       }, 5000);
       
