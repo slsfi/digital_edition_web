@@ -266,7 +266,7 @@ export class CommentsComponent {
       // Scroll the comment into view.
       this.scrollElementIntoView(elem, 'center', -5);
       const noteLemmaElem = elem.getElementsByClassName('noteLemma')[0] as HTMLElement;
-      noteLemmaElem.classList.toggle('highlight');
+      noteLemmaElem.classList.add('highlight');
       const settimeoutId = setTimeout(function() {
         noteLemmaElem.classList.remove('highlight');
         this.commentService.activeCommentHighlight = {
