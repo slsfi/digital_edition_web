@@ -47,8 +47,13 @@ export class TextService {
             const body = res.json();
 
           try {
-            if (this.config.getSettings('settings.showReadTextIllustrations')) {
-              const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
+            let showReadTextIllustrations = [];
+            try {
+              showReadTextIllustrations = this.config.getSettings('settings.showReadTextIllustrations');
+            } catch ( e ) {
+              showReadTextIllustrations = [];
+            }
+            if (showReadTextIllustrations.length > 0) {
               let galleryId = 44;
               try {
                 galleryId = this.config.getSettings('settings.galleryCollectionMapping')[c_id];
@@ -56,7 +61,7 @@ export class TextService {
 
               }
 
-              if (!showIllustration.includes(c_id)) {
+              if (!showReadTextIllustrations.includes(c_id)) {
                 const parser = new DOMParser();
                 body.content = parser.parseFromString(body.content, 'text/html');
                 const images: any = body.content.querySelectorAll('img.est_figure_graphic');
@@ -88,6 +93,9 @@ export class TextService {
             const parser = new DOMParser();
             body.content = parser.parseFromString(body.content, 'text/html');
             body.content = se.serializeToString(body.content);
+            if ( String(body.content).includes('images/verk/http') ) {
+              body.content = body.content.replace(/images\/verk\//g, '');
+            }
             this.cache.setHtmlCache(textId, body.content);
           } catch ( err ) {
             console.log(err);
