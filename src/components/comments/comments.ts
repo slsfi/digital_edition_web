@@ -105,7 +105,7 @@ export class CommentsComponent {
   }
 
   ngAfterViewInit() {
-    
+
   }
 
   private setUpTextListeners() {
@@ -187,21 +187,21 @@ export class CommentsComponent {
         } else if (this.readPopoverService.show.comments) {
           // This is linking to a comment lemma ("asterisk") in the reading text,
           // i.e. the user has clicked a comment in the comments-column.
-          let elem: HTMLElement = event.target as HTMLElement;
+          let commElem: HTMLElement = event.target as HTMLElement;
           // Find the comment element that has been clicked in the comment-column.
-          if (!elem.classList.contains('commentScrollTarget')) {
-            elem = elem.parentElement;
-            while (!elem.classList.contains('commentScrollTarget')) {
-              elem = elem.parentElement;
-              if (elem === null || elem === undefined) {
+          if (!commElem.classList.contains('commentScrollTarget')) {
+            commElem = commElem.parentElement;
+            while (!commElem.classList.contains('commentScrollTarget')) {
+              commElem = commElem.parentElement;
+              if (commElem === null || commElem === undefined) {
                 break;
               }
             }
           }
-          if (elem !== null && elem !== undefined) {
+          if (commElem !== null && commElem !== undefined) {
             // Find the lemma in the reading text. Replace all non-digits at the start of the comment's id with nothing.
-            const numId = elem.classList[elem.classList.length - 1].replace( /^\D+/g, '');
-            const targetId = 'start' + numId;
+            const numId = commElem.classList[commElem.classList.length - 1].replace( /^\D+/g, '');
+            targetId = 'start' + numId;
             let lemmaStart = document.querySelector('[data-id="' + targetId + '"]') as HTMLElement;
             if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
               // The lemma is in a footnote, so we should get the second element with targetId
@@ -211,7 +211,7 @@ export class CommentsComponent {
               // Scroll to start of lemma in reading text and temporarily prepend arrow.
               this.scrollToCommentLemma(lemmaStart);
               // Scroll to comment in the comments-column.
-              this.scrollToComment(numId, elem);
+              this.scrollToComment(numId, commElem);
             }
           }
         }
