@@ -230,7 +230,6 @@ export class CommentsComponent {
       this.scrollElementIntoView(lemmaStartElem);
       const settimeoutId = setTimeout(function() {
         lemmaStartElem.style.display = null;
-
         this.commentService.activeLemmaHighlight = {
           lemmaTimeOutId: null,
           lemmaElement: null
@@ -261,7 +260,7 @@ export class CommentsComponent {
       if (this.commentService.activeCommentHighlight.commentTimeOutId !== null) {
         // Clear previous comment highlight if still active
         const temp = this.commentService.activeCommentHighlight.commentLemmaElement as HTMLElement;
-        temp.classList.toggle('highlight');
+        temp.classList.remove('highlight');
         window.clearTimeout(this.commentService.activeCommentHighlight.commentTimeOutId);
       }
 
@@ -270,7 +269,7 @@ export class CommentsComponent {
       const noteLemmaElem = elem.getElementsByClassName('noteLemma')[0] as HTMLElement;
       noteLemmaElem.classList.toggle('highlight');
       const settimeoutId = setTimeout(function() {
-        noteLemmaElem.classList.toggle('highlight');
+        noteLemmaElem.classList.remove('highlight');
         this.commentService.activeCommentHighlight = {
           commentTimeOutId: null,
           commentLemmaElement: null
