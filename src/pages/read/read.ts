@@ -828,8 +828,7 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   private getEventTarget(event) {
-    let eventTarget: any = document.createElement('div');
-    eventTarget['classList'] = [];
+    let eventTarget = null;
 
     if (event.target.getAttribute('data-id')) {
       return event.target;
@@ -848,6 +847,23 @@ export class ReadPage /*implements OnDestroy*/ {
       eventTarget = event.target;
     } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('variantScrollTarget')) {
       eventTarget = event['target']['parentNode'];
+    } else if (event.target !== undefined && event.target !== null) {
+      let elem = event.target as HTMLElement;
+      let commentTargetFound = true;
+      // Check if a comment has been clicked in the comment-column.
+      if (!elem.classList.contains('commentScrollTarget')) {
+        elem = elem.parentElement;
+        while (!elem.classList.contains('commentScrollTarget')) {
+          elem = elem.parentElement;
+          if ((elem.classList.contains('tei') && elem.tagName === 'DIV') || elem === null || elem === undefined) {
+            commentTargetFound = false;
+            break;
+          }
+        }
+      }
+      if (commentTargetFound) {
+        eventTarget = elem;
+      }
     }
     return eventTarget;
   }
@@ -869,7 +885,8 @@ export class ReadPage /*implements OnDestroy*/ {
           } else if (eventTarget['classList'].contains('title') && this.readPopoverService.show.workInfo) {
             this.showWorkModal(eventTarget.getAttribute('data-id'));
           } else if (eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
-            // Check if comments view is shown
+            /* The user has clicked a comment lemma ("asterisk") in the reading-text.
+               Check if comments view is shown. */
             const viewTypesShown = this.getViewTypesShown();
             const commentsViewIsShown = viewTypesShown.includes('comments');
             if (commentsViewIsShown && !this.userSettingsService.isMobile()) {
@@ -883,9 +900,9 @@ export class ReadPage /*implements OnDestroy*/ {
               }
               if (lemmaStart !== null && lemmaStart !== undefined) {
                 // Scroll to start of lemma in reading text and temporarily prepend arrow.
-                this.scrollToCommentLemma(lemmaStart);
+                const lemmaSettimeoutId = this.scrollToCommentLemma(lemmaStart);
                 // Scroll to comment in the comments-column.
-                this.scrollToComment(numId);
+                const commentSettimeoutId = this.scrollToComment(numId);
               }
             } else {
               // If a comments view isn't shown or viewmode is mobile, show comment in modal
@@ -896,6 +913,24 @@ export class ReadPage /*implements OnDestroy*/ {
       } else if (eventTarget['classList'].contains('anchor')) {
         if (eventTarget.hasAttribute('href')) {
           this.scrollToElement(eventTarget.getAttribute('href'));
+        }
+      } else if (eventTarget['classList'].contains('commentScrollTarget') &&
+       this.readPopoverService.show.comments) {
+        /* A comment has been clicked in the comments-column. Find the lemma in
+            the reading text. Replace all non-digits at the start of the comment's
+            id with nothing. */
+        const numId = eventTarget.classList[eventTarget.classList.length - 1].replace( /^\D+/g, '');
+        const targetId = 'start' + numId;
+        let lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[0] as HTMLElement;
+        if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
+          // The lemma is in a footnote, so we should get the second element with targetId
+          lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
+        }
+        if (lemmaStart !== null && lemmaStart !== undefined) {
+          // Scroll to start of lemma in reading text and temporarily prepend arrow.
+          const lemmaSettimeoutId = this.scrollToCommentLemma(lemmaStart);
+          // Scroll to comment in the comments-column.
+          const commentSettimeoutId = this.scrollToComment(numId, eventTarget);
         }
       }
       if (eventTarget['classList'].contains('variantScrollTarget')) {
@@ -1988,25 +2023,32 @@ export class ReadPage /*implements OnDestroy*/ {
     if (lemmaStartElem !== null && lemmaStartElem !== undefined && lemmaStartElem.classList.contains('anchor_lemma')) {
       lemmaStartElem.style.display = 'inline';
       this.scrollElementIntoView(lemmaStartElem);
-      setTimeout(function() {
+      const settimeoutId = setTimeout(function() {
         lemmaStartElem.style.display = null;
       }, timeOut);
+      return settimeoutId;
     }
   }
 
   /* Use this function to scroll to the comment with the specified numeric id
-   * (excluding prefixes like 'end') in the first comments view on the page. */
-  private scrollToComment(numericId: string) {
-    // Find the comment in the comments view.
-    const commentsWrapper = document.querySelectorAll('comments')[0] as HTMLElement;
-    const commentElement = commentsWrapper.getElementsByClassName('en' + numericId)[0] as HTMLElement;
+   * (excluding prefixes like 'end') in the first comments view on the page. 
+   * Alternatively, the comment element can be passed as an optional parameter.
+   * The method return the id of the settimeout function. */
+  private scrollToComment(numericId: string, commentElement?: HTMLElement) {
+    let elem = commentElement;
+    if (elem === undefined || elem === null || !elem.classList.contains('en' + numericId)) {
+      // Find the comment in the comments view.
+      const commentsWrapper = document.querySelectorAll('comments')[0] as HTMLElement;
+      elem = commentsWrapper.getElementsByClassName('en' + numericId)[0] as HTMLElement;
+    }
     // Scroll the comment into view.
-    this.scrollElementIntoView(commentElement, 'center', -5);
-    const noteLemmaElem = commentElement.getElementsByClassName('noteLemma')[0] as HTMLElement;
+    this.scrollElementIntoView(elem, 'center', -5);
+    const noteLemmaElem = elem.getElementsByClassName('noteLemma')[0] as HTMLElement;
     noteLemmaElem.classList.toggle('highlight');
-    setTimeout(function() {
+    const settimeoutId = setTimeout(function() {
       noteLemmaElem.classList.toggle('highlight');
     }, 5000);
+    return settimeoutId;
   }
 
   keyPress(event) {
