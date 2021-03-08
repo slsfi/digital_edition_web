@@ -116,12 +116,21 @@ export class CommentsComponent {
       event.stopPropagation();
       // event.preventDefault();
 
-      let targetElem: HTMLElement = event.target as HTMLElement;
-      if (targetElem.classList.contains('xreference') && targetElem.classList.contains('ref_external')) {
-        const anchor = <HTMLAnchorElement>targetElem;
-        const ref = window.open(anchor.href, '_blank');
+      // WORK IN PROGRESS!
+      const targetElem: HTMLAnchorElement = event.target as HTMLAnchorElement;
+      if (targetElem.classList.contains('xreference')) {
+        if (targetElem.classList.contains('ref_external')) {
+          // Link to external web page, open in new window/tab.
+          window.open(targetElem.href, '_blank');
+        } else if (targetElem.classList.contains('ref_readingtext')) {
+
+        } else if (targetElem.classList.contains('ref_comment')) {
+
+        } else if (targetElem.classList.contains('ref_introduction')) {
+
+        }
       }
-      
+
       if (event.target.classList.contains('xreference')) {
         // get the parts for the targetted text
         const hrefTargetItems: Array<string> = decodeURI(String(event.target.href).split('/').pop()).split(' ');
@@ -135,7 +144,6 @@ export class CommentsComponent {
         }
         event.preventDefault();
       }
-      
 
       // This is tagging in href to another page e.g. introduction
       try {
@@ -188,6 +196,7 @@ export class CommentsComponent {
           const anchor = <HTMLAnchorElement>elem;
           const ref = window.open(anchor.href, '_blank', 'location=no');
         } else if (this.readPopoverService.show.comments) {
+
           // This is linking to a comment lemma ("asterisk") in the reading text,
           // i.e. the user has clicked a comment in the comments-column.
           let commElem: HTMLElement = event.target as HTMLElement;
