@@ -2009,7 +2009,7 @@ export class ReadPage /*implements OnDestroy*/ {
       const settimeoutId = setTimeout(function() {
         lemmaStartElem.style.display = null;
         
-        this.commentService.activeLemmaHighlight = null;
+        this.activeLemmaHighlight = null;
         
       }, timeOut);
       
