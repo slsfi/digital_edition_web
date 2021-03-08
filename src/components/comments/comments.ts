@@ -187,14 +187,9 @@ export class CommentsComponent {
             }
             if (lemmaStart !== null && lemmaStart !== undefined) {
               // Scroll to start of lemma in reading text and temporarily prepend arrow.
-              this.scrollToCommentLemma(lemmaStart);
+              const lemmaSettimeoutId = this.scrollToCommentLemma(lemmaStart);
               // Scroll to comment in the comments-column.
-              this.scrollElementIntoView(elem, 'center', -5);
-              const noteLemmaElem = elem.getElementsByClassName('noteLemma')[0] as HTMLElement;
-              noteLemmaElem.classList.toggle('highlight');
-              setTimeout(function() {
-                noteLemmaElem.classList.toggle('highlight');
-              }, 5000);
+              const commentSettimeoutId = this.scrollToComment(numId, elem);
             }
           }
         }
@@ -221,35 +216,41 @@ export class CommentsComponent {
     });
   }
 
-  // Function is not used.
-  private scrollToComment(event: any) {
-    let scrollTarget: Array<any> = [];
-    if ( String(event.target.parentElement.className).match(/en[0-9]{1,9}/g) ) {
-      scrollTarget = String(event.target.parentElement.className).match(/en[0-9]{1,9}/g);
-    } else if ( String(event.target.className).match(/en[0-9]{1,9}/g) ) {
-      scrollTarget = String(event.target.className).match(/en[0-9]{1,9}/g);
-    } else if ( String(event.target.parentElement.parentElement.className).match(/en[0-9]{1,9}/g) ) {
-      scrollTarget = String(event.target.parentElement.parentElement.className).match(/en[0-9]{1,9}/g);
-    }
-    if ( scrollTarget != null && scrollTarget.length > 0 ) {
-      this.events.publish('scrollToContent', scrollTarget[0]);
-    }
-  }
-
   /* Use this function to scroll the lemma of a comment into view in the reading text view. */
   private scrollToCommentLemma(lemmaStartElem: HTMLElement, timeOut = 5000) {
     if (lemmaStartElem !== null && lemmaStartElem !== undefined && lemmaStartElem.classList.contains('anchor_lemma')) {
       lemmaStartElem.style.display = 'inline';
       this.scrollElementIntoView(lemmaStartElem);
-      setTimeout(function() {
+      const settimeoutId = setTimeout(function() {
         lemmaStartElem.style.display = null;
       }, timeOut);
+      return settimeoutId;
     }
+  }
+
+  /* Use this function to scroll to the comment with the specified numeric id
+   * (excluding prefixes like 'end') in the first comments view on the page.
+   * Alternatively, the comment element can be passed as an optional parameter.
+   * The method return the id of the settimeout function. */
+  private scrollToComment(numericId: string, commentElement?: HTMLElement) {
+    let elem = commentElement;
+    if (elem === undefined || elem === null || !elem.classList.contains('en' + numericId)) {
+      // Find the comment in the comments view.
+      const commentsWrapper = document.querySelectorAll('comments')[0] as HTMLElement;
+      elem = commentsWrapper.getElementsByClassName('en' + numericId)[0] as HTMLElement;
+    }
+    // Scroll the comment into view.
+    this.scrollElementIntoView(elem, 'center', -5);
+    const noteLemmaElem = elem.getElementsByClassName('noteLemma')[0] as HTMLElement;
+    noteLemmaElem.classList.toggle('highlight');
+    const settimeoutId = setTimeout(function() {
+      noteLemmaElem.classList.toggle('highlight');
+    }, 5000);
+    return settimeoutId;
   }
 
   private scrollToHTMLElement(element: HTMLElement, addTag: boolean, timeOut = 5000) {
     try {
-      // element.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'nearest'});
       const tmp = element.previousElementSibling as HTMLElement;
       let addedArrow = false;
 
