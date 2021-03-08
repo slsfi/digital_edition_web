@@ -259,8 +259,7 @@ export class CommentsComponent {
 
       if (this.commentService.activeCommentHighlight.commentTimeOutId !== null) {
         // Clear previous comment highlight if still active
-        const temp = this.commentService.activeCommentHighlight.commentLemmaElement as HTMLElement;
-        temp.classList.remove('highlight');
+        this.commentService.activeCommentHighlight.commentLemmaElement.classList.remove('highlight');
         window.clearTimeout(this.commentService.activeCommentHighlight.commentTimeOutId);
       }
 
