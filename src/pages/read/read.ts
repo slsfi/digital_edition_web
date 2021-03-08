@@ -847,23 +847,6 @@ export class ReadPage /*implements OnDestroy*/ {
       eventTarget = event.target;
     } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('variantScrollTarget')) {
       eventTarget = event['target']['parentNode'];
-    } else if (event.target !== undefined && event.target !== null) {
-      let elem = event['target'];
-      let commentTargetFound = true;
-      // Check if a comment has been clicked in the comment-column.
-      if (!elem['classList'].contains('commentScrollTarget')) {
-        elem = elem['parentNode'];
-        while (!elem['classList'].contains('commentScrollTarget')) {
-          elem = elem['parentNode'];
-          if ((elem['classList'].contains('tei') && elem['nodeName'] === 'DIV') || elem === null || elem === undefined) {
-            commentTargetFound = false;
-            break;
-          }
-        }
-      }
-      if (commentTargetFound) {
-        return elem;
-      }
     }
     return eventTarget;
   }
