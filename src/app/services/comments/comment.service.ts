@@ -10,6 +10,14 @@ export class CommentService {
 
   private readTextUrl = '/text/com/';
   textCache: any;
+  activeCommentHighlight = {
+    commentTimeOutId: null,
+    commentLemmaElement: null
+  };
+  activeLemmaHighlight = {
+    lemmaTimeOutId: null,
+    lemmaElement: null
+  };
 
   constructor(private http: Http, private config: ConfigService, private cache: CommentCacheService) {
 

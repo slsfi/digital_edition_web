@@ -187,9 +187,9 @@ export class CommentsComponent {
             }
             if (lemmaStart !== null && lemmaStart !== undefined) {
               // Scroll to start of lemma in reading text and temporarily prepend arrow.
-              const lemmaSettimeoutId = this.scrollToCommentLemma(lemmaStart);
+              this.scrollToCommentLemma(lemmaStart);
               // Scroll to comment in the comments-column.
-              const commentSettimeoutId = this.scrollToComment(numId, elem);
+              this.scrollToComment(numId, elem);
             }
           }
         }
@@ -224,7 +224,10 @@ export class CommentsComponent {
       const settimeoutId = setTimeout(function() {
         lemmaStartElem.style.display = null;
       }, timeOut);
-      return settimeoutId;
+      this.commentService.activeLemmaHighlight = {
+        lemmaTimeOutId: settimeoutId,
+        lemmaElement: lemmaStartElem
+      }
     }
   }
 
@@ -246,7 +249,10 @@ export class CommentsComponent {
     const settimeoutId = setTimeout(function() {
       noteLemmaElem.classList.toggle('highlight');
     }, 5000);
-    return settimeoutId;
+    this.commentService.activeCommentHighlight = {
+      commentTimeOutId: settimeoutId,
+      commentElement: elem
+    }
   }
 
   private scrollToHTMLElement(element: HTMLElement, addTag: boolean, timeOut = 5000) {
