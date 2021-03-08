@@ -113,12 +113,15 @@ export class CommentsComponent {
     const nElement: HTMLElement = this.elementRef.nativeElement;
     this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
 
-      /*
       event.stopPropagation();
-      event.preventDefault();
-      */
+      // event.preventDefault();
 
-      /*
+      let targetElem: HTMLElement = event.target as HTMLElement;
+      if (targetElem.classList.contains('xreference') && targetElem.classList.contains('ref_external')) {
+        const anchor = <HTMLAnchorElement>targetElem;
+        const ref = window.open(anchor.href, '_blank');
+      }
+      
       if (event.target.classList.contains('xreference')) {
         // get the parts for the targetted text
         const hrefTargetItems: Array<string> = decodeURI(String(event.target.href).split('/').pop()).split(' ');
@@ -132,7 +135,7 @@ export class CommentsComponent {
         }
         event.preventDefault();
       }
-      */
+      
 
       // This is tagging in href to another page e.g. introduction
       try {
