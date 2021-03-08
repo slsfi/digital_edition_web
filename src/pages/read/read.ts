@@ -914,24 +914,6 @@ export class ReadPage /*implements OnDestroy*/ {
         if (eventTarget.hasAttribute('href')) {
           this.scrollToElement(eventTarget.getAttribute('href'));
         }
-      } else if (eventTarget['classList'].contains('commentScrollTarget') &&
-       this.readPopoverService.show.comments) {
-        /* A comment has been clicked in the comments-column. Find the lemma in
-            the reading text. Replace all non-digits at the start of the comment's
-            id with nothing. */
-        const numId = eventTarget['classList'][eventTarget.classList.length - 1].replace( /^\D+/g, '');
-        const targetId = 'start' + numId;
-        let lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[0] as HTMLElement;
-        if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
-          // The lemma is in a footnote, so we should get the second element with targetId
-          lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
-        }
-        if (lemmaStart !== null && lemmaStart !== undefined) {
-          // Scroll to start of lemma in reading text and temporarily prepend arrow.
-          const lemmaSettimeoutId = this.scrollToCommentLemma(lemmaStart);
-          // Scroll to comment in the comments-column.
-          const commentSettimeoutId = this.scrollToComment(numId, eventTarget);
-        }
       }
       if (eventTarget['classList'].contains('variantScrollTarget')) {
         if (eventTarget !== undefined) {

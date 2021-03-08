@@ -163,7 +163,6 @@ export class CommentsComponent {
       } catch ( e ) {}
 
       // This is linking to a comment lemma ("asterisk") in the reading text, i.e. the user has clicked a comment in the comments-column.
-      /*
       try {
         if (this.readPopoverService.show.comments) {
           let elem: HTMLElement = event.target as HTMLElement;
@@ -200,7 +199,6 @@ export class CommentsComponent {
           }
         }
       } catch ( e ) {}
-      */
     });
   }
 
