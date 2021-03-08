@@ -828,24 +828,29 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   private getEventTarget(event) {
-    let eventTarget = null;
+    let eventTarget: HTMLElement = document.createElement('div');
 
     if (event.target.getAttribute('data-id')) {
       return event.target;
     }
 
-    if (event.target !== undefined && event['target']['classList'].contains('tooltiptrigger')) {
+    if (event.target !== undefined && event.target['classList'] !== undefined
+    && event.target['classList'].contains('tooltiptrigger')) {
       eventTarget = event.target;
-    } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
+    } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'] !== undefined
+    && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
       eventTarget = event['target']['parentNode'];
-    } else if (event['target']['parentNode']['parentNode'] !== undefined &&
+    } else if (event['target']['parentNode']['parentNode'] !== undefined && event['target']['parentNode']['classList'] !== undefined &&
      event['target']['parentNode']['parentNode']['classList'].contains('tooltiptrigger')) {
       eventTarget = event['target']['parentNode']['parentNode'];
-    } else if (event.target !== undefined && event['target']['classList'].contains('anchor')) {
+    } else if (event.target !== undefined && event['target']['classList'] !== undefined &&
+    event['target']['classList'].contains('anchor')) {
       eventTarget = event.target;
-    } else if (event.target !== undefined && event['target']['classList'].contains('variantScrollTarget')) {
+    } else if (event.target !== undefined && event['target']['classList'] !== undefined &&
+    event['target']['classList'].contains('variantScrollTarget')) {
       eventTarget = event.target;
-    } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('variantScrollTarget')) {
+    } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'] !== undefined &&
+    event['target']['parentNode']['classList'].contains('variantScrollTarget')) {
       eventTarget = event['target']['parentNode'];
     }
     return eventTarget;
@@ -853,12 +858,10 @@ export class ReadPage /*implements OnDestroy*/ {
 
   private setUpTextListeners() {
     // We must do it like this since we want to trigger an event on a dynamically loaded innerhtml.
-    const nElement: any = this.elementRef.nativeElement;
-
+    const nElement: HTMLElement = this.elementRef.nativeElement;
     /* CLICK EVENTS */
     this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
       const eventTarget = this.getEventTarget(event);
-
       if (eventTarget['classList'].contains('tooltiptrigger')) {
         if (eventTarget.hasAttribute('data-id')) {
           if (eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
