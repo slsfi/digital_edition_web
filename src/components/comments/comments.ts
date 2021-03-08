@@ -180,7 +180,7 @@ export class CommentsComponent {
             // Find the lemma in the reading text. Replace all non-digits at the start of the comment's id with nothing.
             const numId = elem.classList[elem.classList.length - 1].replace( /^\D+/g, '');
             const targetId = 'start' + numId;
-            let lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[0] as HTMLElement;
+            let lemmaStart = document.querySelector('[data-id="' + targetId + '"]') as HTMLElement;
             if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
               // The lemma is in a footnote, so we should get the second element with targetId
               lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
@@ -236,7 +236,7 @@ export class CommentsComponent {
     let elem = commentElement;
     if (elem === undefined || elem === null || !elem.classList.contains('en' + numericId)) {
       // Find the comment in the comments view.
-      const commentsWrapper = document.querySelectorAll('comments')[0] as HTMLElement;
+      const commentsWrapper = document.querySelector('comments') as HTMLElement;
       elem = commentsWrapper.getElementsByClassName('en' + numericId)[0] as HTMLElement;
     }
     // Scroll the comment into view.
