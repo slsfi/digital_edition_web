@@ -146,11 +146,12 @@ export class CommentsComponent {
                 textId = hrefTargetItems[1];
                 this.textService.getCollectionAndPublicationByLegacyId(publicationId + '_' + textId).subscribe(data => {
                   if (data[0] !== undefined) {
-                    /*publicationId = data[0]['coll_id'];
-                    textId = data[0]['pub_id'];*/
-                    alert(data[0]['coll_id'] + ' ' + data[0]['pub_id']);
+                    publicationId = data[0]['coll_id'];
+                    textId = data[0]['pub_id'];
+                    alert(publicationId + ' ' + textId);
                   }
                 });
+                
 
                 let compURI = '/publication/' + publicationId + '/text/' + textId;
                 if (hrefTargetItems.length > 2 && hrefTargetItems[2].startsWith('ch')) {
