@@ -149,10 +149,7 @@ export class CommentsComponent {
                     publicationId = data[0]['coll_id'];
                     textId = data[0]['pub_id'];
                   }
-                });
-
-                setTimeout(function () {
-                  alert(publicationId + ' ' + textId);
+                  
                   let compURI = '/publication/' + publicationId + '/text/' + textId;
                   if (hrefTargetItems.length > 2 && hrefTargetItems[2].startsWith('ch')) {
                     chapterId = hrefTargetItems[2];
@@ -167,7 +164,7 @@ export class CommentsComponent {
                   } else {
                     // we are not on the same page
                   }
-                }.bind(this), 500);
+                });
 
               } else if (anchorElem.classList.contains('ref_comment')) {
 
