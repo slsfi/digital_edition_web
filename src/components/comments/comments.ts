@@ -137,6 +137,7 @@ export class CommentsComponent {
               let publicationId = '';
               let textId = '';
               let chapterId = '';
+              let posId ='';
 
               if (anchorElem.classList.contains('ref_readingtext') || anchorElem.classList.contains('ref_comment')) {
                 // Link to reading text or comment
@@ -154,14 +155,13 @@ export class CommentsComponent {
                     chapterId = hrefTargetItems[2];
                     compURI = compURI + '/' + chapterId;
                   }
-                  // alert(hrefTargetItems.length + ': ' + publicationId + ' ' + textId + ' ' + chapterId);
 
                   // check if we are already on the same page
                   const baseURI: string = decodeURI(String(anchorElem.baseURI).split('#').pop());
                   if (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';')) {
-                    // we are on the same page, should check if readingtext column open
-                    const posName = hrefTargetItems[hrefTargetItems.length - 1].replace('#', '');
-                    const targetElement = document.getElementsByName(posName)[0] as HTMLElement;
+                    // we are on the same page
+                    posId = hrefTargetItems[hrefTargetItems.length - 1].replace('#', '');
+                    const targetElement = document.getElementsByName(posId)[0] as HTMLElement;
                     if (targetElement.classList.length !== 0 && targetElement.classList.contains('anchor')) {
                       this.scrollToHTMLElement(targetElement, false);
                     }
@@ -179,13 +179,27 @@ export class CommentsComponent {
                       hrefString = hrefString + 'nochapter';
                     }
                     hrefString = hrefString + '/not/infinite/nosong/searchtitle/established&comments';
+                    // Needs to be supplemented with handling of position but no chapter
                     const ref = window.open(hrefString, '_blank');
                   }
                 });
 
               } else if (anchorElem.classList.contains('ref_introduction')) {
                 // Link to introduction
+                publicationId = hrefTargetItems[0];
+                if (hrefTargetItems[1] !== undefined) {
+                  posId = hrefTargetItems[1];
+                }
 
+                this.textService.getCollectionAndPublicationByLegacyId(publicationId).subscribe(data => {
+                  if (data[0] !== undefined) {
+                    publicationId = data[0]['coll_id'];
+                  }
+
+                  // Needs to be supplemented with handling of position
+                  const hrefString = '#/publication-introduction/' + publicationId;
+                  const ref = window.open(hrefString, '_blank');
+                });
               }
             }
           }
