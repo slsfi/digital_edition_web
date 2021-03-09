@@ -148,11 +148,8 @@ export class CommentsComponent {
                   if (data[0] !== undefined) {
                     publicationId = data[0]['coll_id'];
                     textId = data[0]['pub_id'];
-                    // alert(publicationId + ' ' + textId);
-                    // alert(hrefTargetItems.length);
                   }
                 });
-                alert(publicationId + ' ' + textId);
 
                 let compURI = '/publication/' + publicationId + '/text/' + textId;
                 if (hrefTargetItems.length > 2 && hrefTargetItems[2].startsWith('ch')) {
@@ -164,7 +161,7 @@ export class CommentsComponent {
                 const baseURI: string = String(anchorElem.baseURI).split('#').pop();
                 if (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';')) {
                   // we are on the same page, check if readingtext column open
-                  const ref = window.open(baseURI, '_blank');
+                  const ref = window.open('#' + baseURI, '_blank');
                 } else {
                   // we are not on the same page
                 }
