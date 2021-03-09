@@ -415,6 +415,7 @@ export class CommentsComponent {
         const tmpImage: HTMLImageElement = new Image();
         tmpImage.src = 'assets/images/ms_arrow_right.svg';
         tmpImage.classList.add('inl_ms_arrow');
+        tmpImage.classList.add('animated_arrow');
         element.parentElement.insertBefore(tmpImage, element);
         this.scrollElementIntoView(tmpImage);
         setTimeout(function() {
