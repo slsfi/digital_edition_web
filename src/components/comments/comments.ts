@@ -150,6 +150,7 @@ export class CommentsComponent {
                     textId = data[0]['pub_id'];
                   }
                 });
+                alert(publicationId + ' ' + textId);
 
                 let compURI = '/publication/' + publicationId + '/text/' + textId;
                 if (hrefTargetItems.length > 2 && hrefTargetItems[2].startsWith('ch')) {
