@@ -138,8 +138,8 @@ export class CommentsComponent {
               let textId = '';
               let chapterId = '';
 
-              if (anchorElem.classList.contains('ref_readingtext')) {
-                // Link to reading text
+              if (anchorElem.classList.contains('ref_readingtext') || anchorElem.classList.contains('ref_comment')) {
+                // Link to reading text or comment
 
                 publicationId = hrefTargetItems[0];
                 textId = hrefTargetItems[1];
@@ -183,9 +183,8 @@ export class CommentsComponent {
                   }
                 });
 
-              } else if (anchorElem.classList.contains('ref_comment')) {
-
               } else if (anchorElem.classList.contains('ref_introduction')) {
+                // Link to introduction
 
               }
             }
