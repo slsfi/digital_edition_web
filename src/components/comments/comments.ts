@@ -154,15 +154,32 @@ export class CommentsComponent {
                     chapterId = hrefTargetItems[2];
                     compURI = compURI + '/' + chapterId;
                   }
-                  alert(hrefTargetItems.length + ': ' + publicationId + ' ' + textId + ' ' + chapterId);
+                  // alert(hrefTargetItems.length + ': ' + publicationId + ' ' + textId + ' ' + chapterId);
 
                   // check if we are already on the same page
                   const baseURI: string = decodeURI(String(anchorElem.baseURI).split('#').pop());
                   if (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';')) {
                     // we are on the same page, check if readingtext column open
-                    const ref = window.open('#' + baseURI, '_blank');
+                    const posName = hrefTargetItems[hrefTargetItems.length - 1].replace('#', '');
+                    const targetElement = document.getElementsByName(posName)[0] as HTMLElement;
+                    if (targetElement.classList.length !== 0 && targetElement.classList.contains('anchor')) {
+                      this.scrollToHTMLElement(targetElement, false);
+                    }
                   } else {
-                    // we are not on the same page
+                    // we are not on the same page, open in new window
+                    let hrefString = '#/publication/' + publicationId + '/text/' + textId + '/';
+                    if (chapterId) {
+                      hrefString = hrefString + chapterId;
+                      if (hrefTargetItems.length > 3 && hrefTargetItems[3].startsWith('#')) {
+                        const textPos = hrefTargetItems[3].replace('#', ';');
+                        hrefString = hrefString + textPos;
+                      }
+                      hrefString = hrefString;
+                    } else {
+                      hrefString = hrefString + 'nochapter';
+                    }
+                    hrefString = hrefString + '/not/infinite/nosong/searchtitle/established&comments';
+                    const ref = window.open(hrefString, '_blank');
                   }
                 });
 
