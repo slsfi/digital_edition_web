@@ -116,26 +116,30 @@ export class CommentsComponent {
         event.stopPropagation();
 
         let targetIsLink = false;
+        let targetElem: HTMLElement = event.target as HTMLElement;
+        if (targetElem.classList.length == 0) {
+          targetElem = targetElem.parentElement;
+        }
         // WORK IN PROGRESS!
         // Vad om event.target är ett kursiverat ord i länken? Borde också parentNode kollas för xreference?
-        if (event.target.classList !== undefined) {
-          if (event.target.classList.contains('xreference')) {
+        if (targetElem.classList.length !== 0) {
+          if (targetElem.classList.contains('xreference')) {
             targetIsLink = true;
             event.preventDefault();
-            const targetElem: HTMLAnchorElement = event.target as HTMLAnchorElement;
+            const anchorElem: HTMLAnchorElement = targetElem as HTMLAnchorElement;
 
-            if (targetElem.classList.contains('ref_external')) {
+            if (anchorElem.classList.contains('ref_external')) {
               // Link to external web page, open in new window/tab.
-              const ref = window.open(targetElem.href, '_blank');
+              const ref = window.open(anchorElem.href, '_blank');
 
             } else {
               // get the parts for the targeted text
-              const hrefTargetItems: Array<string> = decodeURI(String(targetElem.href).split('/').pop()).split(' ');
+              const hrefTargetItems: Array<string> = decodeURI(String(anchorElem.href).split('/').pop()).split(' ');
               let publicationId = '';
               let textId = '';
               let chapterId = '';
 
-              if (targetElem.classList.contains('ref_readingtext')) {
+              if (anchorElem.classList.contains('ref_readingtext')) {
                 // Link to reading text
 
                 publicationId = hrefTargetItems[0];
@@ -154,7 +158,7 @@ export class CommentsComponent {
                 }
 
                 // check if we are already on the same page
-                const baseURI: string = String(targetElem.baseURI).split('#').pop();
+                const baseURI: string = String(anchorElem.baseURI).split('#').pop();
                 if (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';')) {
                   // we are on the same page, check if readingtext column open
                   const ref = window.open(baseURI, '_blank');
@@ -162,9 +166,9 @@ export class CommentsComponent {
                   // we are not on the same page
                 }
 
-              } else if (targetElem.classList.contains('ref_comment')) {
+              } else if (anchorElem.classList.contains('ref_comment')) {
 
-              } else if (targetElem.classList.contains('ref_introduction')) {
+              } else if (anchorElem.classList.contains('ref_introduction')) {
 
               }
             }
@@ -174,7 +178,6 @@ export class CommentsComponent {
         if (!targetIsLink && this.readPopoverService.show.comments) {
           // This is linking to a comment lemma ("asterisk") in the reading text,
           // i.e. the user has clicked a comment in the comments-column.
-          let targetElem = event.target as HTMLElement;
 
           // Find the comment element that has been clicked in the comment-column.
           if (!targetElem.classList.contains('commentScrollTarget')) {
