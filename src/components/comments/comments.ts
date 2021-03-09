@@ -159,7 +159,7 @@ export class CommentsComponent {
                   // check if we are already on the same page
                   const baseURI: string = decodeURI(String(anchorElem.baseURI).split('#').pop());
                   if (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';')) {
-                    // we are on the same page, check if readingtext column open
+                    // we are on the same page, should check if readingtext column open
                     const posName = hrefTargetItems[hrefTargetItems.length - 1].replace('#', '');
                     const targetElement = document.getElementsByName(posName)[0] as HTMLElement;
                     if (targetElement.classList.length !== 0 && targetElement.classList.contains('anchor')) {
