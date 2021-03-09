@@ -1672,7 +1672,10 @@ div.tei {
     .inl_ms_arrow {
         height: 0.75em;
         width: 0.75em;
-        display: inline !important;
+        display: inline-block !important;
+    }
+    .animated_arrow {
+        animation: filter-animation-anchor-lemma 1.5s infinite;
     }
 }
 
