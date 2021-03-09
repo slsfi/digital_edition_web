@@ -112,40 +112,102 @@ export class CommentsComponent {
     // We must do it like this since we want to trigger an event on a dynamically loaded innerhtml.
     const nElement: HTMLElement = this.elementRef.nativeElement;
     this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
+      try {
+        event.stopPropagation();
 
-      event.stopPropagation();
-      // event.preventDefault();
+        // WORK IN PROGRESS!
+        // Vad om event.target är ett kursiverat ord i länken? Borde också parentNode kollas för xreference?
+        if (event.target.classList !== undefined) {
+          if (event.target.classList.contains('xreference')) {
+            event.preventDefault();
+            const targetElem: HTMLAnchorElement = event.target as HTMLAnchorElement;
 
-      // WORK IN PROGRESS!
-      const targetElem: HTMLAnchorElement = event.target as HTMLAnchorElement;
-      if (targetElem.classList.contains('xreference')) {
-        if (targetElem.classList.contains('ref_external')) {
-          // Link to external web page, open in new window/tab.
-          window.open(targetElem.href, '_blank');
-        } else if (targetElem.classList.contains('ref_readingtext')) {
+            if (targetElem.classList.contains('ref_external')) {
+              // Link to external web page, open in new window/tab.
+              const ref = window.open(targetElem.href, '_blank');
 
-        } else if (targetElem.classList.contains('ref_comment')) {
+            } else {
+              // get the parts for the targeted text
+              const hrefTargetItems: Array<string> = decodeURI(String(targetElem.href).split('/').pop()).split(' ');
+              let compURI = '/publication/' + hrefTargetItems[0] + '/text/' + hrefTargetItems[1];
+              let noChapterInTarget = true;
+              if (hrefTargetItems[2].startsWith('ch')) {
+                noChapterInTarget = false;
+                compURI = compURI + '/' + hrefTargetItems[2];
+              }
 
-        } else if (targetElem.classList.contains('ref_introduction')) {
+              // check if we are already on the same page
+              const baseURI: string = String(targetElem.baseURI).split('#').pop();
 
-        }
-      }
+              if (targetElem.classList.contains('ref_readingtext')) {
+                if (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';')) {
+                  // we are on the same page, check if readingtext column open
 
-      if (event.target.classList.contains('xreference')) {
-        // get the parts for the targetted text
-        const hrefTargetItems: Array<string> = decodeURI(String(event.target.href).split('/').pop()).split(' ');
-        // check if we are already on the same page
-        const baseURI: string = String(event.target.baseURI).split('#').pop();
-        if ( (baseURI === '/publication/' + hrefTargetItems[0] + '/text/' + hrefTargetItems[1]) ||
-              ( hrefTargetItems[1] === event.target.hash ) ) {
-          if ( event.target.classList.contains('ref_readingtext') ) {
-            this.events.publish('scrollToContent', event.target.hash);
+                } else {
+                  // we are not on the same page
+                }
+              } else if (targetElem.classList.contains('ref_comment')) {
+    
+              } else if (targetElem.classList.contains('ref_introduction')) {
+    
+              }
+            }
           }
         }
-        event.preventDefault();
-      }
+        
+        if (this.readPopoverService.show.comments) {
+          // This is linking to a comment lemma ("asterisk") in the reading text,
+          // i.e. the user has clicked a comment in the comments-column.
+          let targetElem = event.target as HTMLElement;
+
+          // Find the comment element that has been clicked in the comment-column.
+          if (!targetElem.classList.contains('commentScrollTarget')) {
+            targetElem = targetElem.parentElement;
+            while (!targetElem.classList.contains('commentScrollTarget')) {
+              targetElem = targetElem.parentElement;
+              if (targetElem === null || targetElem === undefined) {
+                break;
+              }
+            }
+          }
+          if (targetElem !== null && targetElem !== undefined) {
+            // Find the lemma in the reading text. Replace all non-digits at the start of the comment's id with nothing.
+            const numId = targetElem.classList[targetElem.classList.length - 1].replace( /^\D+/g, '');
+            const targetId = 'start' + numId;
+            let lemmaStart = document.querySelector('[data-id="' + targetId + '"]') as HTMLElement;
+            if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
+              // The lemma is in a footnote, so we should get the second element with targetId
+              lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
+            }
+            if (lemmaStart !== null && lemmaStart !== undefined) {
+              // Scroll to start of lemma in reading text and temporarily prepend arrow.
+              this.scrollToCommentLemma(lemmaStart);
+              // Scroll to comment in the comments-column.
+              this.scrollToComment(numId, targetElem);
+            }
+          }
+        }
+
+        /* OLD CODE
+        if (event.target.classList.contains('xreference')) {
+          // get the parts for the targeted text
+          const hrefTargetItems: Array<string> = decodeURI(String(event.target.href).split('/').pop()).split(' ');
+          // check if we are already on the same page
+          const baseURI: string = String(event.target.baseURI).split('#').pop();
+          if ( (baseURI === '/publication/' + hrefTargetItems[0] + '/text/' + hrefTargetItems[1]) ||
+                ( hrefTargetItems[1] === event.target.hash ) ) {
+            if ( event.target.classList.contains('ref_readingtext') ) {
+              this.events.publish('scrollToContent', event.target.hash);
+            }
+          }
+          event.preventDefault();
+        }
+        */
+
+      } catch (e) {}
 
       // This is tagging in href to another page e.g. introduction
+      /* OLD CODE
       try {
         const elem: HTMLAnchorElement = event.target as HTMLAnchorElement;
         let targetId = '';
@@ -195,10 +257,11 @@ export class CommentsComponent {
         } else if ( elem.classList !== undefined && elem.classList.contains('ext') ) {
           const anchor = <HTMLAnchorElement>elem;
           const ref = window.open(anchor.href, '_blank', 'location=no');
-        } else if (this.readPopoverService.show.comments) {
 
+        } else if (this.readPopoverService.show.comments) {
           // This is linking to a comment lemma ("asterisk") in the reading text,
           // i.e. the user has clicked a comment in the comments-column.
+
           let commElem: HTMLElement = event.target as HTMLElement;
           // Find the comment element that has been clicked in the comment-column.
           if (!commElem.classList.contains('commentScrollTarget')) {
@@ -229,6 +292,7 @@ export class CommentsComponent {
         }
 
       } catch ( e ) {}
+      */
 
     });
   }
