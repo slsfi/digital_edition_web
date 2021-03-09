@@ -149,12 +149,13 @@ export class CommentsComponent {
                     publicationId = data[0]['coll_id'];
                     textId = data[0]['pub_id'];
                   }
-                  
+
                   let compURI = '/publication/' + publicationId + '/text/' + textId;
                   if (hrefTargetItems.length > 2 && hrefTargetItems[2].startsWith('ch')) {
                     chapterId = hrefTargetItems[2];
                     compURI = compURI + '/' + chapterId;
                   }
+                  alert(hrefTargetItems.length);
 
                   // check if we are already on the same page
                   const baseURI: string = String(anchorElem.baseURI).split('#').pop();
