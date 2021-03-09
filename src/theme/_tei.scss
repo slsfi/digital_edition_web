@@ -153,7 +153,8 @@ div.tei.xlargeFontSize.show_changes span.corr_hide img {
 }
 
 /* Storlek på röda triangeln som indikerar början på ett lemma. */
-div.tei span.anchor_lemma img {
+div.tei span.anchor_lemma img,
+div.tei img.inl_ms_arrow {
     display: inline-block;
     width:   0.75em; /* Default om textstorleken inte fungerar. */
     height:  0.75em;
@@ -1667,15 +1668,6 @@ div.tei {
         text-align: left;
         font-weight: normal !important;
         margin: 1em 0 !important;
-    }
-    
-    .inl_ms_arrow {
-        height: 0.75em;
-        width: 0.75em;
-        display: inline-block !important;
-    }
-    .animated_arrow {
-        animation: filter-animation-anchor-lemma 1.5s infinite;
     }
 }
 
