@@ -117,7 +117,7 @@ export class CommentsComponent {
 
         let targetIsLink = false;
         let targetElem: HTMLElement = event.target as HTMLElement;
-        if (targetElem.classList.length == 0) {
+        if (targetElem.classList.length === 0) {
           targetElem = targetElem.parentElement;
         }
         // WORK IN PROGRESS!
@@ -144,13 +144,13 @@ export class CommentsComponent {
 
                 publicationId = hrefTargetItems[0];
                 textId = hrefTargetItems[1];
-                this.textService.getCollectionAndPublicationByLegacyId(hrefTargetItems[0] + '_' + hrefTargetItems[1]).subscribe(data => {
+                this.textService.getCollectionAndPublicationByLegacyId(publicationId + '_' + textId).subscribe(data => {
                   if (data[0] !== undefined) {
-                    publicationId = data[0]['coll_id'];
-                    textId = data[0]['pub_id'];
+                    /*publicationId = data[0]['coll_id'];
+                    textId = data[0]['pub_id'];*/
+                    alert(data[0]['coll_id'] + ' ' + data[0]['pub_id']);
                   }
                 });
-                alert(publicationId + ' ' + textId);
 
                 let compURI = '/publication/' + publicationId + '/text/' + textId;
                 if (hrefTargetItems.length > 2 && hrefTargetItems[2].startsWith('ch')) {
