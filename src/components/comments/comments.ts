@@ -115,10 +115,12 @@ export class CommentsComponent {
       try {
         event.stopPropagation();
 
+        let targetIsLink = false;
         // WORK IN PROGRESS!
         // Vad om event.target är ett kursiverat ord i länken? Borde också parentNode kollas för xreference?
         if (event.target.classList !== undefined) {
           if (event.target.classList.contains('xreference')) {
+            targetIsLink = true;
             event.preventDefault();
             const targetElem: HTMLAnchorElement = event.target as HTMLAnchorElement;
 
@@ -142,7 +144,8 @@ export class CommentsComponent {
               if (targetElem.classList.contains('ref_readingtext')) {
                 if (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';')) {
                   // we are on the same page, check if readingtext column open
-
+                  const newHref = String(targetElem.baseURI).split('#').shift();
+                  const ref = window.open(String(targetElem.baseURI), '_blank');
                 } else {
                   // we are not on the same page
                 }
@@ -155,7 +158,7 @@ export class CommentsComponent {
           }
         }
 
-        if (this.readPopoverService.show.comments) {
+        if (!targetIsLink && this.readPopoverService.show.comments) {
           // This is linking to a comment lemma ("asterisk") in the reading text,
           // i.e. the user has clicked a comment in the comments-column.
           let targetElem = event.target as HTMLElement;
