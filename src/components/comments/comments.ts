@@ -131,24 +131,37 @@ export class CommentsComponent {
             } else {
               // get the parts for the targeted text
               const hrefTargetItems: Array<string> = decodeURI(String(targetElem.href).split('/').pop()).split(' ');
-              let compURI = '/publication/' + hrefTargetItems[0] + '/text/' + hrefTargetItems[1];
-              let noChapterInTarget = true;
-              if (hrefTargetItems[2].startsWith('ch')) {
-                noChapterInTarget = false;
-                compURI = compURI + '/' + hrefTargetItems[2];
-              }
-
-              // check if we are already on the same page
-              const baseURI: string = String(targetElem.baseURI).split('#').pop();
+              let publicationId = '';
+              let textId = '';
+              let chapterId = '';
 
               if (targetElem.classList.contains('ref_readingtext')) {
+                // Link to reading text
+
+                publicationId = hrefTargetItems[0];
+                textId = hrefTargetItems[1];
+                this.textService.getCollectionAndPublicationByLegacyId(hrefTargetItems[0] + '_' + hrefTargetItems[1]).subscribe(data => {
+                  if (data[0] !== undefined) {
+                    publicationId = data[0]['coll_id'];
+                    textId = data[0]['pub_id'];
+                  }
+                });
+
+                let compURI = '/publication/' + publicationId + '/text/' + textId;
+                if (hrefTargetItems.length > 2 && hrefTargetItems[2].startsWith('ch')) {
+                  chapterId = hrefTargetItems[2];
+                  compURI = compURI + '/' + chapterId;
+                }
+
+                // check if we are already on the same page
+                const baseURI: string = String(targetElem.baseURI).split('#').pop();
                 if (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';')) {
                   // we are on the same page, check if readingtext column open
-                  const newHref = String(targetElem.baseURI).split('#').shift();
-                  const ref = window.open(String(targetElem.baseURI), '_blank');
+                  const ref = window.open(baseURI, '_blank');
                 } else {
                   // we are not on the same page
                 }
+
               } else if (targetElem.classList.contains('ref_comment')) {
 
               } else if (targetElem.classList.contains('ref_introduction')) {
