@@ -147,14 +147,14 @@ export class CommentsComponent {
                   // we are not on the same page
                 }
               } else if (targetElem.classList.contains('ref_comment')) {
-    
+
               } else if (targetElem.classList.contains('ref_introduction')) {
-    
+
               }
             }
           }
         }
-        
+
         if (this.readPopoverService.show.comments) {
           // This is linking to a comment lemma ("asterisk") in the reading text,
           // i.e. the user has clicked a comment in the comments-column.
