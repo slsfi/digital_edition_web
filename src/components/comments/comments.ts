@@ -155,7 +155,7 @@ export class CommentsComponent {
                     chapterId = hrefTargetItems[2];
                     compURI = compURI + '/' + chapterId;
                   }
-                  alert(hrefTargetItems.length);
+                  alert(hrefTargetItems.length + ': ' + publicationId + ' ' + textId + ' ' + chapterId);
 
                   // check if we are already on the same page
                   const baseURI: string = String(anchorElem.baseURI).split('#').pop();
