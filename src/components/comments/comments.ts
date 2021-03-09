@@ -398,14 +398,14 @@ export class CommentsComponent {
     }
   }
 
-  private scrollToHTMLElement(element: HTMLElement, addTag: boolean, timeOut = 5000) {
+  private scrollToHTMLElement(element: HTMLElement, addTag: boolean, position = 'top', timeOut = 5000) {
     try {
       const tmp = element.previousElementSibling as HTMLElement;
       let addedArrow = false;
 
       if ( tmp !== null && tmp !== undefined && tmp.classList.contains('anchor_lemma') ) {
         tmp.style.display = 'inline';
-        this.scrollElementIntoView(tmp);
+        this.scrollElementIntoView(tmp, position);
         setTimeout(function() {
           tmp.style.display = 'none';
         }, timeOut);
@@ -415,7 +415,7 @@ export class CommentsComponent {
         tmpImage.src = 'assets/images/ms_arrow_right.svg';
         tmpImage.classList.add('inl_ms_arrow');
         element.parentElement.insertBefore(tmpImage, element);
-        this.scrollElementIntoView(tmpImage);
+        this.scrollElementIntoView(tmpImage, position);
         setTimeout(function() {
           element.parentElement.removeChild(tmpImage);
         }, timeOut);
@@ -424,7 +424,7 @@ export class CommentsComponent {
 
       if ( addTag && !addedArrow ) {
         element.innerHTML = '<img class="inl_ms_arrow" src="assets/images/ms_arrow_right.svg"/>';
-        this.scrollElementIntoView(element);
+        this.scrollElementIntoView(element, position);
         setTimeout(function() {
           element.innerHTML = '';
         }, timeOut);
