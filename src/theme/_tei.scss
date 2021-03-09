@@ -160,23 +160,28 @@ div.tei img.inl_ms_arrow {
     height:  0.75em;
     animation: filter-animation-anchor-lemma 1.5s infinite;
 }
-div.tei.xsmallFontSize span.anchor_lemma img {
+div.tei.xsmallFontSize span.anchor_lemma img,
+div.tei.xsmallFontSize img.inl_ms_arrow {
     width:  calc(0.75 * #{$text-fontsize-xsmall});
     height: calc(0.75 * #{$text-fontsize-xsmall});
 }
-div.tei.smallFontSize span.anchor_lemma img {
+div.tei.smallFontSize span.anchor_lemma img,
+div.tei.smallFontSize img.inl_ms_arrow {
     width:  calc(0.75 * #{$text-fontsize-small});
     height: calc(0.75 * #{$text-fontsize-small});
 }
-div.tei.mediumFontSize span.anchor_lemma img {
+div.tei.mediumFontSize span.anchor_lemma img,
+div.tei.mediumFontSize img.inl_ms_arrow {
     width:  calc(0.75 * #{$text-fontsize-medium});
     height: calc(0.75 * #{$text-fontsize-medium});
 }
-div.tei.largeFontSize span.anchor_lemma img {
+div.tei.largeFontSize span.anchor_lemma img,
+div.tei.largeFontSize img.inl_ms_arrow {
     width:  calc(0.75 * #{$text-fontsize-large});
     height: calc(0.75 * #{$text-fontsize-large});
 }
-div.tei.xlargeFontSize span.anchor_lemma img {
+div.tei.xlargeFontSize span.anchor_lemma img,
+div.tei.xlargeFontSize img.inl_ms_arrow {
     width:  calc(0.75 * #{$text-fontsize-xlarge});
     height: calc(0.75 * #{$text-fontsize-xlarge});
 }
