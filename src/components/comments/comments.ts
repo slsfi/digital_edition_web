@@ -151,20 +151,22 @@ export class CommentsComponent {
                   }
                 });
 
-                let compURI = '/publication/' + publicationId + '/text/' + textId;
-                if (hrefTargetItems.length > 2 && hrefTargetItems[2].startsWith('ch')) {
-                  chapterId = hrefTargetItems[2];
-                  compURI = compURI + '/' + chapterId;
-                }
-
-                // check if we are already on the same page
-                const baseURI: string = String(anchorElem.baseURI).split('#').pop();
-                if (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';')) {
-                  // we are on the same page, check if readingtext column open
-                  const ref = window.open('#' + baseURI, '_blank');
-                } else {
-                  // we are not on the same page
-                }
+                setTimeout(function () {
+                  let compURI = '/publication/' + publicationId + '/text/' + textId;
+                  if (hrefTargetItems.length > 2 && hrefTargetItems[2].startsWith('ch')) {
+                    chapterId = hrefTargetItems[2];
+                    compURI = compURI + '/' + chapterId;
+                  }
+  
+                  // check if we are already on the same page
+                  const baseURI: string = String(anchorElem.baseURI).split('#').pop();
+                  if (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';')) {
+                    // we are on the same page, check if readingtext column open
+                    const ref = window.open('#' + baseURI, '_blank');
+                  } else {
+                    // we are not on the same page
+                  }
+                }.bind(this), 500);
 
               } else if (anchorElem.classList.contains('ref_comment')) {
 
