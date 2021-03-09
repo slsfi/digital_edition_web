@@ -121,7 +121,6 @@ export class CommentsComponent {
           targetElem = targetElem.parentElement;
         }
         // WORK IN PROGRESS!
-        // Vad om event.target är ett kursiverat ord i länken? Borde också parentNode kollas för xreference?
         if (targetElem.classList.length !== 0) {
           if (targetElem.classList.contains('xreference')) {
             targetIsLink = true;
@@ -158,7 +157,7 @@ export class CommentsComponent {
                   alert(hrefTargetItems.length + ': ' + publicationId + ' ' + textId + ' ' + chapterId);
 
                   // check if we are already on the same page
-                  const baseURI: string = String(anchorElem.baseURI).split('#').pop();
+                  const baseURI: string = decodeURI(String(anchorElem.baseURI).split('#').pop());
                   if (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';')) {
                     // we are on the same page, check if readingtext column open
                     const ref = window.open('#' + baseURI, '_blank');
