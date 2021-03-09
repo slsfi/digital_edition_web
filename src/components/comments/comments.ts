@@ -152,12 +152,13 @@ export class CommentsComponent {
                 });
 
                 setTimeout(function () {
+                  alert(publicationId + ' ' + textId);
                   let compURI = '/publication/' + publicationId + '/text/' + textId;
                   if (hrefTargetItems.length > 2 && hrefTargetItems[2].startsWith('ch')) {
                     chapterId = hrefTargetItems[2];
                     compURI = compURI + '/' + chapterId;
                   }
-  
+
                   // check if we are already on the same page
                   const baseURI: string = String(anchorElem.baseURI).split('#').pop();
                   if (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';')) {
