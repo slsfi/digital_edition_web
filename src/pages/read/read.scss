@@ -144,7 +144,7 @@ page-read {
   }
 
   .read-columns {
-    margin-bottom: 0.5rem;
+    /*margin-bottom: 0.5rem;*/
     -webkit-overflow-scrolling: touch;
     /*overflow-x: auto;
     overflow-y: hidden;  overflow is now set on the parent element div.scroll-content */
@@ -190,7 +190,7 @@ page-read {
         }
 
         ion-scroll {
-          max-height: calc(100vh - 240px);
+          max-height: calc(100vh - 235px);
         }
       }
     }
