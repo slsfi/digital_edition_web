@@ -137,7 +137,7 @@ export class CommentsComponent {
               let publicationId = '';
               let textId = '';
               let chapterId = '';
-              let posId ='';
+              let posId = '';
 
               if (anchorElem.classList.contains('ref_readingtext') || anchorElem.classList.contains('ref_comment')) {
                 // Link to reading text or comment
