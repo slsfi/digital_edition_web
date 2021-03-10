@@ -195,16 +195,15 @@ export class CommentsComponent {
                     // Needs to be supplemented with handling of position but no chapter.
                     let hrefString = '#/publication/' + publicationId + '/text/' + textId + '/';
                     if (chapterId) {
-                      hrefString = hrefString + chapterId;
+                      hrefString += chapterId;
                       if (hrefTargetItems.length > 3 && hrefTargetItems[3].startsWith('#')) {
                         positionId = hrefTargetItems[3].replace('#', ';');
-                        hrefString = hrefString + positionId;
+                        hrefString += positionId;
                       }
-                      hrefString = hrefString;
                     } else {
-                      hrefString = hrefString + 'nochapter';
+                      hrefString += 'nochapter';
                     }
-                    hrefString = hrefString + '/not/infinite/nosong/searchtitle/established&comments';
+                    hrefString += '/not/infinite/nosong/searchtitle/established&comments';
                     const ref = window.open(hrefString, '_blank');
                   }
                 });
@@ -212,7 +211,7 @@ export class CommentsComponent {
               } else if (anchorElem.classList.contains('ref_introduction')) {
                 // Link to introduction.
                 publicationId = hrefTargetItems[0];
-                if (hrefTargetItems[1] !== undefined) {
+                if (hrefTargetItems.length > 1) {
                   positionId = hrefTargetItems[1];
                 }
 
