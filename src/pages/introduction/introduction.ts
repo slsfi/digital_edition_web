@@ -98,6 +98,8 @@ export class IntroductionPage {
     if ( this.id !== undefined ) {
       this.getTocRoot(this.id);
     }
+
+    this.setUpTextListeners();
   }
 
   ionViewDidLoad() {
@@ -122,8 +124,20 @@ export class IntroductionPage {
       selectedStatic['isIntroduction'] = true;
       this.events.publish('setSelectedStatic:true', selectedStatic);
     });
+  }
 
-    this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
+  ionViewWillLeave() {
+    this.events.publish('ionViewWillLeave', this.constructor.name);
+  }
+  ionViewWillEnter() {
+    this.events.publish('ionViewWillEnter', this.constructor.name);
+  }
+
+  private setUpTextListeners() {
+    const nElement: HTMLElement = this.elementRef.nativeElement;
+
+    /* CLICK EVENTS */
+    this.renderer.listen(nElement, 'click', (event) => {
       try {
         event.stopPropagation();
         event.preventDefault();
@@ -174,6 +188,11 @@ export class IntroductionPage {
       } catch ( e ) {}
     });
 
+    /* MOUSEWHEEL EVENTS */
+    this.renderer.listen(nElement, 'mousewheel', (event) => {
+      this.hideToolTip();
+    }).bind(this);
+
     let toolTipsSettings;
     try {
       toolTipsSettings = this.config.getSettings('settings.toolTips');
@@ -181,7 +200,8 @@ export class IntroductionPage {
       console.error(e);
     }
 
-    this.renderer.listen(this.elementRef.nativeElement, 'mouseover', (event) => {
+    /* MOUSE OVER EVENTS */
+    this.renderer.listen(nElement, 'mouseover', (event) => {
       const eventTarget = this.getEventTarget(event);
       const elem = event.target;
       if (eventTarget['classList'].contains('tooltiptrigger')) {
@@ -206,7 +226,8 @@ export class IntroductionPage {
       }
     }).bind(this);
 
-    this.renderer.listen(this.elementRef.nativeElement, 'mouseout', (event) => {
+    /* MOUSE OUT EVENTS */
+    this.renderer.listen(nElement, 'mouseout', (event) => {
       this.hideToolTip();
     }).bind(this);
   }
@@ -225,13 +246,6 @@ export class IntroductionPage {
         const ref = window.open(link + '/nochapter/not/infinite/nosong/searchtitle/established&comments', '_blank');
       }
     });
-  }
-
-  ionViewWillLeave() {
-    this.events.publish('ionViewWillLeave', this.constructor.name);
-  }
-  ionViewWillEnter() {
-    this.events.publish('ionViewWillEnter', this.constructor.name);
   }
 
   showPersonTooltip(id: string, targetElem: HTMLElement, origin: any) {
