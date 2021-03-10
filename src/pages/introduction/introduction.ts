@@ -219,10 +219,6 @@ export class IntroductionPage {
             this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
           }
         }
-      } else if (eventTarget['classList'].contains('anchor')) {
-        if (eventTarget.hasAttribute('href')) {
-          this.scrollToElement(eventTarget.getAttribute('href'));
-        }
       }
     }).bind(this);
 
@@ -705,10 +701,10 @@ export class IntroductionPage {
       return event.target;
     }
 
-    if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
-      eventTarget = event['target']['parentNode'];
-    } else if (event.target !== undefined && event['target']['classList'].contains('tooltiptrigger')) {
+    if (event.target !== undefined && event['target']['classList'].contains('tooltiptrigger')) {
       eventTarget = event.target;
+    } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
+        eventTarget = event['target']['parentNode'];
     } else if (event.target !== undefined && eventTarget['classList'].contains('anchor')) {
       eventTarget = event.target;
     }
