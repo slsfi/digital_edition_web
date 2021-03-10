@@ -117,7 +117,7 @@ export class CommentsComponent {
 
         let targetIsLink = false;
         let targetElem: HTMLElement = event.target as HTMLElement;
-        if (targetElem.classList.length === 0) {
+        if (targetElem.classList.length === 0 || !targetElem.classList.contains('xreference')) {
           targetElem = targetElem.parentElement;
         }
 
