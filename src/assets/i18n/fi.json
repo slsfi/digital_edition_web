@@ -13,6 +13,7 @@
       "ReadTocItemText": "Täällä voit nähdä kaikki digitaaliset julkaisut.",
       "DownloadCacheText": "Tällä painikkeella voit tallentaa tiedot paikallisesti, niin se on nopeampaa seuraavan kerran."
   },
+  "media": "Kuvat",
   "TopMenu": {
       "Home": "Etusivu",
       "Read": "Lue",

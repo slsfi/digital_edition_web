@@ -13,6 +13,7 @@
       "ReadTocItemText": "Here you can see all digital publications and volumes.",
       "DownloadCacheText": "With this button you can save the data locally, and it will be faster next time."
   },
+  "media": "Photos",
   "TopMenu": {
       "Home": "Home",
       "Read": "Content",
