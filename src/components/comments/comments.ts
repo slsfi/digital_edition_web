@@ -195,15 +195,16 @@ export class CommentsComponent {
                     // Needs to be supplemented with handling of position but no chapter.
                     let hrefString = '#/publication/' + publicationId + '/text/' + textId + '/';
                     if (chapterId) {
-                      hrefString += chapterId;
+                      hrefString = hrefString + chapterId;
                       if (hrefTargetItems.length > 3 && hrefTargetItems[3].startsWith('#')) {
-                        positionId = hrefTargetItems[3].replace('#', ';');
-                        hrefString += positionId;
+                        const positionId = hrefTargetItems[3].replace('#', ';');
+                        hrefString = hrefString + positionId;
                       }
+                      hrefString = hrefString;
                     } else {
-                      hrefString += 'nochapter';
+                      hrefString = hrefString + 'nochapter';
                     }
-                    hrefString += '/not/infinite/nosong/searchtitle/established&comments';
+                    hrefString = hrefString + '/not/infinite/nosong/searchtitle/established&comments';
                     const ref = window.open(hrefString, '_blank');
                   }
                 });
