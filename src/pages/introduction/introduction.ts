@@ -211,13 +211,14 @@ export class IntroductionPage {
                     publicationId = data[0]['coll_id'];
                   }
 
-                  console.log(publicationId + ' ' + positionId);
-
                   // Check if we are already on the same page.
                   const baseURI: string = decodeURI(String(anchorElem.baseURI).split('#').pop());
                   if (baseURI.endsWith('/publication-introduction/' + publicationId) && positionId) {
                     // Same introduction.
                     positionId = positionId.replace('#', '');
+
+                    console.log(publicationId + ' ' + positionId);
+
                     // Find the element in the correct parent element.
                     const matchingElements = document.getElementsByName(positionId);
                     let targetElement = null;
