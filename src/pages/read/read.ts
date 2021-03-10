@@ -1317,10 +1317,6 @@ export class ReadPage /*implements OnDestroy*/ {
     if (origin.target.nextSibling.className !== undefined && String(origin.target.nextSibling.className).includes('tooltip')) {
       this.setToolTipPosition(targetElem, origin.target.nextSibling.textContent);
       this.setToolTipText(origin.target.nextSibling.textContent);
-      /*
-      clearTimeout(window['reload_timer']);
-      this.hideToolTip();
-      */
     }
   }
 
@@ -1329,11 +1325,6 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   hideToolTip() {
-    /*
-    window['reload_timer'] = setTimeout(() => {
-      this.showToolTip = false;
-    }, 4000);
-    */
     this.setToolTipText('');
     this.toolTipPosition = {
       top: -1000 + 'px',
