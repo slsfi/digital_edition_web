@@ -155,7 +155,7 @@ export class CommentsComponent {
                     chapterId = hrefTargetItems[2];
                     compURI += '/' + chapterId;
                   }
-
+                  console.log(publicationId + ' ' + textId + ' ' + chapterId);
                   // Check if we are already on the same page.
                   const baseURI: string = decodeURI(String(anchorElem.baseURI).split('#').pop());
                   if ( (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';')) &&
@@ -197,7 +197,7 @@ export class CommentsComponent {
                     if (chapterId) {
                       hrefString = hrefString + chapterId;
                       if (hrefTargetItems.length > 3 && hrefTargetItems[3].startsWith('#')) {
-                        const positionId = hrefTargetItems[3].replace('#', ';');
+                        positionId = hrefTargetItems[3].replace('#', ';');
                         hrefString = hrefString + positionId;
                       }
                       hrefString = hrefString;
