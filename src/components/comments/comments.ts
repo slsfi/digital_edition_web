@@ -151,18 +151,37 @@ export class CommentsComponent {
                   }
 
                   let compURI = '/publication/' + publicationId + '/text/' + textId;
-                  if (hrefTargetItems.length > 2 && hrefTargetItems[2].startsWith('ch')) {
+                  if (hrefTargetItems.length > 2 && !hrefTargetItems[2].startsWith('#')) {
                     chapterId = hrefTargetItems[2];
-                    compURI = compURI + '/' + chapterId;
+                    compURI += '/' + chapterId;
                   }
 
-                  // check if we are already on the same page
+                  // Check if we are already on the same page
                   const baseURI: string = decodeURI(String(anchorElem.baseURI).split('#').pop());
-                  if (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';')) {
-                    // we are on the same page
+                  if ( (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';')) &&
+                   hrefTargetItems[hrefTargetItems.length - 1].startsWith('#') ) {
+                    // We are on the same page and the last item in the target href is a textposition
                     posId = hrefTargetItems[hrefTargetItems.length - 1].replace('#', '');
-                    const targetElement = document.getElementsByName(posId)[0] as HTMLElement;
-                    if (targetElement.classList.length !== 0 && targetElement.classList.contains('anchor')) {
+
+                    // Find the element in the correct column (reading-text or comments) based on ref type
+                    const matchingElements = document.getElementsByName(posId);
+                    let targetElement = null;
+                    let refType = 'READ-TEXT';
+                    if (anchorElem.classList.contains('ref_comment')) {
+                      refType = 'COMMENTS';
+                    }
+                    for (let i = 0; i < matchingElements.length; i++) {
+                      let parentElem = matchingElements[i].parentElement;
+                      while (parentElem !== null && parentElem.tagName !== refType) {
+                        parentElem = parentElem.parentElement;
+                      }
+                      if (parentElem !== null && parentElem.tagName !== refType) {
+                        targetElement = matchingElements[i] as HTMLElement;
+                        break;
+                      }
+                    }
+                    if (targetElement !== null && targetElement.classList.length !== 0 &&
+                     targetElement.classList.contains('anchor')) {
                       this.scrollToHTMLElement(targetElement, false);
                     }
                   } else {
@@ -179,7 +198,6 @@ export class CommentsComponent {
                       hrefString = hrefString + 'nochapter';
                     }
                     hrefString = hrefString + '/not/infinite/nosong/searchtitle/established&comments';
-                    // Needs to be supplemented with handling of position but no chapter
                     const ref = window.open(hrefString, '_blank');
                   }
                 });
