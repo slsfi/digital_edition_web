@@ -176,9 +176,13 @@ export class CommentsComponent {
                         parentElem = parentElem.parentElement;
                       }
                       if (parentElem !== null && parentElem.tagName === refType) {
-                        // Should also check if position in footnote.
                         targetElement = matchingElements[i] as HTMLElement;
-                        break;
+                        if (targetElement.parentElement.classList.length !== 0 &&
+                         targetElement.parentElement.classList.contains('ttFixed')) {
+                          // Found position is in footnote --> look for next occurence.
+                        } else {
+                          break;
+                        }
                       }
                     }
                     if (targetElement !== null && targetElement.classList.length !== 0 &&
