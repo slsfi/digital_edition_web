@@ -175,7 +175,7 @@ export class CommentsComponent {
                       while (parentElem !== null && parentElem.tagName !== refType) {
                         parentElem = parentElem.parentElement;
                       }
-                      if (parentElem !== null && parentElem.tagName !== refType) {
+                      if (parentElem !== null && parentElem.tagName === refType) {
                         targetElement = matchingElements[i] as HTMLElement;
                         break;
                       }
