@@ -137,7 +137,7 @@ export class CommentsComponent {
               let publicationId = '';
               let textId = '';
               let chapterId = '';
-              let posId = '';
+              let positionId = '';
 
               if (anchorElem.classList.contains('ref_readingtext') || anchorElem.classList.contains('ref_comment')) {
                 // Link to reading text or comment.
@@ -161,10 +161,10 @@ export class CommentsComponent {
                   if ( (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';')) &&
                    hrefTargetItems[hrefTargetItems.length - 1].startsWith('#') ) {
                     // We are on the same page and the last item in the target href is a textposition.
-                    posId = hrefTargetItems[hrefTargetItems.length - 1].replace('#', '');
+                    positionId = hrefTargetItems[hrefTargetItems.length - 1].replace('#', '');
 
                     // Find the element in the correct column (reading-text or comments) based on ref type.
-                    const matchingElements = document.getElementsByName(posId);
+                    const matchingElements = document.getElementsByName(positionId);
                     let targetElement = null;
                     let refType = 'READ-TEXT';
                     if (anchorElem.classList.contains('ref_comment')) {
@@ -179,7 +179,8 @@ export class CommentsComponent {
                         targetElement = matchingElements[i] as HTMLElement;
                         if (targetElement.parentElement.classList.length !== 0 &&
                          targetElement.parentElement.classList.contains('ttFixed')) {
-                          // Found position is in footnote --> look for next occurence.
+                          // Found position is in footnote --> look for next occurence since the first footnote element
+                          // is not displayed (footnote elements are copied to a list at the end of the reading text).
                         } else {
                           break;
                         }
@@ -194,17 +195,48 @@ export class CommentsComponent {
                     // Needs to be supplemented with handling of position but no chapter.
                     let hrefString = '#/publication/' + publicationId + '/text/' + textId + '/';
                     if (chapterId) {
-                      hrefString = hrefString + chapterId;
+                      hrefString += chapterId;
+                      /*
                       if (hrefTargetItems.length > 3 && hrefTargetItems[3].startsWith('#')) {
-                        const textPos = hrefTargetItems[3].replace('#', ';');
-                        hrefString = hrefString + textPos;
+                        const positionId = hrefTargetItems[3].replace('#', ';');
+                        hrefString += positionId;
                       }
-                      hrefString = hrefString;
+                      */
                     } else {
-                      hrefString = hrefString + 'nochapter';
+                      hrefString += 'nochapter';
                     }
-                    hrefString = hrefString + '/not/infinite/nosong/searchtitle/established&comments';
-                    const ref = window.open(hrefString, '_blank');
+                    hrefString += '/not/infinite/nosong/searchtitle/established&comments';
+                    const externalWindow = window.open(hrefString, '_blank');
+                    if (hrefTargetItems.length > 3 && hrefTargetItems[3].startsWith('#')) {
+                      const positionId = hrefTargetItems[3].replace('#', '');
+                      // Find the element in the correct column (reading-text or comments) based on ref type.
+                      const matchingElements = externalWindow.document.getElementsByName(positionId);
+                      let targetElement = null;
+                      let refType = 'READ-TEXT';
+                      if (anchorElem.classList.contains('ref_comment')) {
+                        refType = 'COMMENTS';
+                      }
+                      for (let i = 0; i < matchingElements.length; i++) {
+                        let parentElem = matchingElements[i].parentElement;
+                        while (parentElem !== null && parentElem.tagName !== refType) {
+                          parentElem = parentElem.parentElement;
+                        }
+                        if (parentElem !== null && parentElem.tagName === refType) {
+                          targetElement = matchingElements[i] as HTMLElement;
+                          if (targetElement.parentElement.classList.length !== 0 &&
+                          targetElement.parentElement.classList.contains('ttFixed')) {
+                            // Found position is in footnote --> look for next occurence since the first footnote element
+                            // is not displayed (footnote elements are copied to a list at the end of the reading text).
+                          } else {
+                            break;
+                          }
+                        }
+                      }
+                      if (targetElement !== null && targetElement.classList.length !== 0 &&
+                      targetElement.classList.contains('anchor')) {
+                        this.scrollToHTMLElement(targetElement, false);
+                      }
+                    }
                   }
                 });
 
@@ -212,7 +244,7 @@ export class CommentsComponent {
                 // Link to introduction.
                 publicationId = hrefTargetItems[0];
                 if (hrefTargetItems[1] !== undefined) {
-                  posId = hrefTargetItems[1];
+                  positionId = hrefTargetItems[1];
                 }
 
                 this.textService.getCollectionAndPublicationByLegacyId(publicationId).subscribe(data => {
