@@ -163,7 +163,7 @@ export class CommentsComponent {
                     // We are on the same page and the last item in the target href is a textposition.
                     positionId = hrefTargetItems[hrefTargetItems.length - 1].replace('#', '');
 
-                    // Find the element in the correct column (reading-text or comments) based on ref type.
+                    // Find the element in the correct column (read-text or comments) based on ref type.
                     const matchingElements = document.getElementsByName(positionId);
                     let targetElement = null;
                     let refType = 'READ-TEXT';
