@@ -280,7 +280,7 @@ export class ReadTextComponent {
    * times simultaneously in Chrome due to a bug.
    * Valid values for yPosition are 'top' and 'center'.
    */
-  private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 50) {
+  private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0) {
     if (element === undefined || element === null || (yPosition !== 'center' && yPosition !== 'top')) {
       return;
     }
