@@ -105,11 +105,158 @@ export class CommentsComponent {
   }
 
   ngAfterViewInit() {
-    this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
 
-      event.stopPropagation();
-      event.preventDefault();
+  }
+
+  private setUpTextListeners() {
+    // We must do it like this since we want to trigger an event on a dynamically loaded innerhtml.
+    const nElement: HTMLElement = this.elementRef.nativeElement;
+    this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
+      try {
+        event.stopPropagation();
+
+        let targetIsLink = false;
+        let targetElem: HTMLElement = event.target as HTMLElement;
+        if (targetElem.classList.length === 0) {
+          targetElem = targetElem.parentElement;
+        }
+        // WORK IN PROGRESS!
+        if (targetElem.classList.length !== 0) {
+          if (targetElem.classList.contains('xreference')) {
+            targetIsLink = true;
+            event.preventDefault();
+            const anchorElem: HTMLAnchorElement = targetElem as HTMLAnchorElement;
+
+            if (anchorElem.classList.contains('ref_external')) {
+              // Link to external web page, open in new window/tab.
+              const ref = window.open(anchorElem.href, '_blank');
+
+            } else {
+              // get the parts for the targeted text
+              const hrefTargetItems: Array<string> = decodeURI(String(anchorElem.href).split('/').pop()).split(' ');
+              let publicationId = '';
+              let textId = '';
+              let chapterId = '';
+              let posId = '';
+
+              if (anchorElem.classList.contains('ref_readingtext') || anchorElem.classList.contains('ref_comment')) {
+                // Link to reading text or comment
+
+                publicationId = hrefTargetItems[0];
+                textId = hrefTargetItems[1];
+                this.textService.getCollectionAndPublicationByLegacyId(publicationId + '_' + textId).subscribe(data => {
+                  if (data[0] !== undefined) {
+                    publicationId = data[0]['coll_id'];
+                    textId = data[0]['pub_id'];
+                  }
+
+                  let compURI = '/publication/' + publicationId + '/text/' + textId;
+                  if (hrefTargetItems.length > 2 && hrefTargetItems[2].startsWith('ch')) {
+                    chapterId = hrefTargetItems[2];
+                    compURI = compURI + '/' + chapterId;
+                  }
+
+                  // check if we are already on the same page
+                  const baseURI: string = decodeURI(String(anchorElem.baseURI).split('#').pop());
+                  if (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';')) {
+                    // we are on the same page
+                    posId = hrefTargetItems[hrefTargetItems.length - 1].replace('#', '');
+                    const targetElement = document.getElementsByName(posId)[0] as HTMLElement;
+                    if (targetElement.classList.length !== 0 && targetElement.classList.contains('anchor')) {
+                      this.scrollToHTMLElement(targetElement, false);
+                    }
+                  } else {
+                    // we are not on the same page, open in new window
+                    let hrefString = '#/publication/' + publicationId + '/text/' + textId + '/';
+                    if (chapterId) {
+                      hrefString = hrefString + chapterId;
+                      if (hrefTargetItems.length > 3 && hrefTargetItems[3].startsWith('#')) {
+                        const textPos = hrefTargetItems[3].replace('#', ';');
+                        hrefString = hrefString + textPos;
+                      }
+                      hrefString = hrefString;
+                    } else {
+                      hrefString = hrefString + 'nochapter';
+                    }
+                    hrefString = hrefString + '/not/infinite/nosong/searchtitle/established&comments';
+                    // Needs to be supplemented with handling of position but no chapter
+                    const ref = window.open(hrefString, '_blank');
+                  }
+                });
+
+              } else if (anchorElem.classList.contains('ref_introduction')) {
+                // Link to introduction
+                publicationId = hrefTargetItems[0];
+                if (hrefTargetItems[1] !== undefined) {
+                  posId = hrefTargetItems[1];
+                }
+
+                this.textService.getCollectionAndPublicationByLegacyId(publicationId).subscribe(data => {
+                  if (data[0] !== undefined) {
+                    publicationId = data[0]['coll_id'];
+                  }
+
+                  // Needs to be supplemented with handling of position
+                  const hrefString = '#/publication-introduction/' + publicationId;
+                  const ref = window.open(hrefString, '_blank');
+                });
+              }
+            }
+          }
+        }
+
+        if (!targetIsLink && this.readPopoverService.show.comments) {
+          // This is linking to a comment lemma ("asterisk") in the reading text,
+          // i.e. the user has clicked a comment in the comments-column.
+
+          // Find the comment element that has been clicked in the comment-column.
+          if (!targetElem.classList.contains('commentScrollTarget')) {
+            targetElem = targetElem.parentElement;
+            while (!targetElem.classList.contains('commentScrollTarget')) {
+              targetElem = targetElem.parentElement;
+              if (targetElem === null || targetElem === undefined) {
+                break;
+              }
+            }
+          }
+          if (targetElem !== null && targetElem !== undefined) {
+            // Find the lemma in the reading text. Replace all non-digits at the start of the comment's id with nothing.
+            const numId = targetElem.classList[targetElem.classList.length - 1].replace( /^\D+/g, '');
+            const targetId = 'start' + numId;
+            let lemmaStart = document.querySelector('[data-id="' + targetId + '"]') as HTMLElement;
+            if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
+              // The lemma is in a footnote, so we should get the second element with targetId
+              lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
+            }
+            if (lemmaStart !== null && lemmaStart !== undefined) {
+              // Scroll to start of lemma in reading text and temporarily prepend arrow.
+              this.scrollToCommentLemma(lemmaStart);
+              // Scroll to comment in the comments-column.
+              this.scrollToComment(numId, targetElem);
+            }
+          }
+        }
+
+        /* OLD CODE
+        if (event.target.classList.contains('xreference')) {
+          // get the parts for the targeted text
+          const hrefTargetItems: Array<string> = decodeURI(String(event.target.href).split('/').pop()).split(' ');
+          // check if we are already on the same page
+          const baseURI: string = String(event.target.baseURI).split('#').pop();
+          if ( (baseURI === '/publication/' + hrefTargetItems[0] + '/text/' + hrefTargetItems[1]) ||
+                ( hrefTargetItems[1] === event.target.hash ) ) {
+            if ( event.target.classList.contains('ref_readingtext') ) {
+              this.events.publish('scrollToContent', event.target.hash);
+            }
+          }
+          event.preventDefault();
+        }
+        */
+
+      } catch (e) {}
+
       // This is tagging in href to another page e.g. introduction
+      /* OLD CODE
       try {
         const elem: HTMLAnchorElement = event.target as HTMLAnchorElement;
         let targetId = '';
@@ -159,27 +306,26 @@ export class CommentsComponent {
         } else if ( elem.classList !== undefined && elem.classList.contains('ext') ) {
           const anchor = <HTMLAnchorElement>elem;
           const ref = window.open(anchor.href, '_blank', 'location=no');
-        }
-      } catch ( e ) {}
 
-      // This is linking to a comment lemma ("asterisk") in the reading text, i.e. the user has clicked a comment in the comments-column.
-      try {
-        if (this.readPopoverService.show.comments) {
-          let elem: HTMLElement = event.target as HTMLElement;
+        } else if (this.readPopoverService.show.comments) {
+          // This is linking to a comment lemma ("asterisk") in the reading text,
+          // i.e. the user has clicked a comment in the comments-column.
+
+          let commElem: HTMLElement = event.target as HTMLElement;
           // Find the comment element that has been clicked in the comment-column.
-          if (!elem.classList.contains('commentScrollTarget')) {
-            elem = elem.parentElement;
-            while (!elem.classList.contains('commentScrollTarget')) {
-              elem = elem.parentElement;
-              if (elem === null || elem === undefined) {
+          if (!commElem.classList.contains('commentScrollTarget')) {
+            commElem = commElem.parentElement;
+            while (!commElem.classList.contains('commentScrollTarget')) {
+              commElem = commElem.parentElement;
+              if (commElem === null || commElem === undefined) {
                 break;
               }
             }
           }
-          if (elem !== null && elem !== undefined) {
+          if (commElem !== null && commElem !== undefined) {
             // Find the lemma in the reading text. Replace all non-digits at the start of the comment's id with nothing.
-            const numId = elem.classList[elem.classList.length - 1].replace( /^\D+/g, '');
-            const targetId = 'start' + numId;
+            const numId = commElem.classList[commElem.classList.length - 1].replace( /^\D+/g, '');
+            targetId = 'start' + numId;
             let lemmaStart = document.querySelector('[data-id="' + targetId + '"]') as HTMLElement;
             if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
               // The lemma is in a footnote, so we should get the second element with targetId
@@ -189,30 +335,14 @@ export class CommentsComponent {
               // Scroll to start of lemma in reading text and temporarily prepend arrow.
               this.scrollToCommentLemma(lemmaStart);
               // Scroll to comment in the comments-column.
-              this.scrollToComment(numId, elem);
+              this.scrollToComment(numId, commElem);
             }
           }
         }
-      } catch ( e ) {}
-    });
-  }
 
-  private setUpTextListeners() {
-    // We must do it like this since we want to trigger an event on a dynamically loaded innerhtml.
-    this.listenFunc = this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
-      if (event.target.classList.contains('xreference')) {
-        // get the parts for the targetted text
-        const hrefTargetItems: Array<string> = decodeURI(String(event.target.href).split('/').pop()).split(' ');
-        // check if we are already on the same page
-        const baseURI: string = String(event.target.baseURI).split('#').pop();
-        if ( (baseURI === '/publication/' + hrefTargetItems[0] + '/text/' + hrefTargetItems[1]) ||
-              ( hrefTargetItems[1] === event.target.hash ) ) {
-          if ( event.target.classList.contains('ref_readingtext') ) {
-            this.events.publish('scrollToContent', event.target.hash);
-          }
-        }
-        event.preventDefault();
-      }
+      } catch ( e ) {}
+      */
+
     });
   }
 
@@ -282,14 +412,14 @@ export class CommentsComponent {
     }
   }
 
-  private scrollToHTMLElement(element: HTMLElement, addTag: boolean, timeOut = 5000) {
+  private scrollToHTMLElement(element: HTMLElement, addTag: boolean, position = 'top', timeOut = 5000) {
     try {
       const tmp = element.previousElementSibling as HTMLElement;
       let addedArrow = false;
 
       if ( tmp !== null && tmp !== undefined && tmp.classList.contains('anchor_lemma') ) {
         tmp.style.display = 'inline';
-        this.scrollElementIntoView(tmp);
+        this.scrollElementIntoView(tmp, position);
         setTimeout(function() {
           tmp.style.display = 'none';
         }, timeOut);
@@ -299,7 +429,7 @@ export class CommentsComponent {
         tmpImage.src = 'assets/images/ms_arrow_right.svg';
         tmpImage.classList.add('inl_ms_arrow');
         element.parentElement.insertBefore(tmpImage, element);
-        this.scrollElementIntoView(tmpImage);
+        this.scrollElementIntoView(tmpImage, position);
         setTimeout(function() {
           element.parentElement.removeChild(tmpImage);
         }, timeOut);
@@ -308,7 +438,7 @@ export class CommentsComponent {
 
       if ( addTag && !addedArrow ) {
         element.innerHTML = '<img class="inl_ms_arrow" src="assets/images/ms_arrow_right.svg"/>';
-        this.scrollElementIntoView(element);
+        this.scrollElementIntoView(element, position);
         setTimeout(function() {
           element.innerHTML = '';
         }, timeOut);
