@@ -216,7 +216,7 @@ export class IntroductionPage {
                     // Find the element in the correct parent element.
                     const matchingElements = document.getElementsByName(positionId);
                     let targetElement = null;
-                    let refType = 'PAGE-INTRODUCTION';
+                    const refType = 'PAGE-INTRODUCTION';
                     for (let i = 0; i < matchingElements.length; i++) {
                       let parentElem = matchingElements[i].parentElement;
                       while (parentElem !== null && parentElem.tagName !== refType) {
