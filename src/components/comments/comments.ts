@@ -209,33 +209,35 @@ export class CommentsComponent {
                     const externalWindow = window.open(hrefString, '_blank');
                     if (hrefTargetItems.length > 3 && hrefTargetItems[3].startsWith('#')) {
                       positionId = hrefTargetItems[3].replace('#', '');
-                      // Find the element in the correct column (reading-text or comments) based on ref type.
-                      const matchingElements = externalWindow.document.getElementsByName(positionId);
-                      let targetElement = null;
-                      let refType = 'READ-TEXT';
-                      if (anchorElem.classList.contains('ref_comment')) {
-                        refType = 'COMMENTS';
-                      }
-                      for (let i = 0; i < matchingElements.length; i++) {
-                        let parentElem = matchingElements[i].parentElement;
-                        while (parentElem !== null && parentElem.tagName !== refType) {
-                          parentElem = parentElem.parentElement;
+                      setTimeout(function() {
+                        // Find the element in the correct column (reading-text or comments) based on ref type.
+                        const matchingElements = externalWindow.document.getElementsByName(positionId);
+                        let targetElement = null;
+                        let refType = 'READ-TEXT';
+                        if (anchorElem.classList.contains('ref_comment')) {
+                          refType = 'COMMENTS';
                         }
-                        if (parentElem !== null && parentElem.tagName === refType) {
-                          targetElement = matchingElements[i] as HTMLElement;
-                          if (targetElement.parentElement.classList.length !== 0 &&
-                          targetElement.parentElement.classList.contains('ttFixed')) {
-                            // Found position is in footnote --> look for next occurence since the first footnote element
-                            // is not displayed (footnote elements are copied to a list at the end of the reading text).
-                          } else {
-                            break;
+                        for (let i = 0; i < matchingElements.length; i++) {
+                          let parentElem = matchingElements[i].parentElement;
+                          while (parentElem !== null && parentElem.tagName !== refType) {
+                            parentElem = parentElem.parentElement;
+                          }
+                          if (parentElem !== null && parentElem.tagName === refType) {
+                            targetElement = matchingElements[i] as HTMLElement;
+                            if (targetElement.parentElement.classList.length !== 0 &&
+                            targetElement.parentElement.classList.contains('ttFixed')) {
+                              // Found position is in footnote --> look for next occurence since the first footnote element
+                              // is not displayed (footnote elements are copied to a list at the end of the reading text).
+                            } else {
+                              break;
+                            }
                           }
                         }
-                      }
-                      if (targetElement !== null && targetElement.classList.length !== 0 &&
-                      targetElement.classList.contains('anchor')) {
-                        this.scrollToHTMLElement(targetElement, false);
-                      }
+                        if (targetElement !== null && targetElement.classList.length !== 0 &&
+                        targetElement.classList.contains('anchor')) {
+                          this.scrollToHTMLElement(targetElement, false);
+                        }
+                      }, 4000)
                     }
                   }
                 });
