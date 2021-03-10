@@ -980,6 +980,7 @@ export class ReadPage /*implements OnDestroy*/ {
       }
     }).bind(this);
 
+    /* MOUSE OUT EVENTS */
     this.renderer.listen(nElement, 'mouseout', (event) => {
       this.hideToolTip();
     }).bind(this);
