@@ -132,7 +132,7 @@ export class CommentsComponent {
               const ref = window.open(anchorElem.href, '_blank');
 
             } else {
-              // get the parts for the targeted text
+              // Get the href parts for the targeted text.
               const hrefTargetItems: Array<string> = decodeURI(String(anchorElem.href).split('/').pop()).split(' ');
               let publicationId = '';
               let textId = '';
@@ -140,7 +140,7 @@ export class CommentsComponent {
               let posId = '';
 
               if (anchorElem.classList.contains('ref_readingtext') || anchorElem.classList.contains('ref_comment')) {
-                // Link to reading text or comment
+                // Link to reading text or comment.
 
                 publicationId = hrefTargetItems[0];
                 textId = hrefTargetItems[1];
@@ -156,14 +156,14 @@ export class CommentsComponent {
                     compURI += '/' + chapterId;
                   }
 
-                  // Check if we are already on the same page
+                  // Check if we are already on the same page.
                   const baseURI: string = decodeURI(String(anchorElem.baseURI).split('#').pop());
                   if ( (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';')) &&
                    hrefTargetItems[hrefTargetItems.length - 1].startsWith('#') ) {
-                    // We are on the same page and the last item in the target href is a textposition
+                    // We are on the same page and the last item in the target href is a textposition.
                     posId = hrefTargetItems[hrefTargetItems.length - 1].replace('#', '');
 
-                    // Find the element in the correct column (reading-text or comments) based on ref type
+                    // Find the element in the correct column (reading-text or comments) based on ref type.
                     const matchingElements = document.getElementsByName(posId);
                     let targetElement = null;
                     let refType = 'READ-TEXT';
@@ -176,6 +176,7 @@ export class CommentsComponent {
                         parentElem = parentElem.parentElement;
                       }
                       if (parentElem !== null && parentElem.tagName === refType) {
+                        // Should also check if position in footnote.
                         targetElement = matchingElements[i] as HTMLElement;
                         break;
                       }
@@ -185,7 +186,8 @@ export class CommentsComponent {
                       this.scrollToHTMLElement(targetElement, false);
                     }
                   } else {
-                    // we are not on the same page, open in new window
+                    // We are not on the same page, open in new window.
+                    // Needs to be supplemented with handling of position but no chapter.
                     let hrefString = '#/publication/' + publicationId + '/text/' + textId + '/';
                     if (chapterId) {
                       hrefString = hrefString + chapterId;
@@ -203,7 +205,7 @@ export class CommentsComponent {
                 });
 
               } else if (anchorElem.classList.contains('ref_introduction')) {
-                // Link to introduction
+                // Link to introduction.
                 publicationId = hrefTargetItems[0];
                 if (hrefTargetItems[1] !== undefined) {
                   posId = hrefTargetItems[1];
