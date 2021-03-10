@@ -180,7 +180,8 @@ export class CommentsComponent {
                         if (targetElement.parentElement.classList.length !== 0 &&
                          targetElement.parentElement.classList.contains('ttFixed')) {
                           // Found position is in footnote --> look for next occurence since the first footnote element
-                          // is not displayed (footnote elements are copied to a list at the end of the reading text).
+                          // is not displayed (footnote elements are copied to a list at the end of the reading text and that's
+                          // the position we need to find).
                         } else {
                           break;
                         }
@@ -221,8 +222,7 @@ export class CommentsComponent {
                   }
 
                   // Needs to be supplemented with handling of position
-                  const hrefString = '#/publication-introduction/' + publicationId;
-                  const ref = window.open(hrefString, '_blank');
+                  const ref = window.open('#/publication-introduction/' + publicationId, '_blank');
                 });
               }
             }
