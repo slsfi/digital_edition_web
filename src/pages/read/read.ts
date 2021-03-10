@@ -913,7 +913,7 @@ export class ReadPage /*implements OnDestroy*/ {
     /* MOUSEWHEEL EVENTS */
     this.renderer.listen(nElement, 'mousewheel', (event) => {
       this.hideToolTip();
-    }).bind(this)
+    }).bind(this);
 
     let toolTipsSettings;
     try {
