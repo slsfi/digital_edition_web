@@ -203,55 +203,47 @@ export class IntroductionPage {
                   positionId = hrefTargetItems[hrefTargetItems.length - 1];
                 }
 
-                // Check if we are already on the same page.
-                const baseURI: string = decodeURI(String(anchorElem.baseURI).split('#').pop());
-                if (baseURI.endsWith('/publication-introduction/' + publicationId) && positionId) {
-                  // Same introduction.
-                  positionId = positionId.replace('#', '');
-                  // Find the element in the correct parent element.
-                  const matchingElements = document.getElementsByName(positionId);
-                  let targetElement = null;
-                  let refType = 'PAGE-INTRODUCTION';
-                  for (let i = 0; i < matchingElements.length; i++) {
-                    let parentElem = matchingElements[i].parentElement;
-                    while (parentElem !== null && parentElem.tagName !== refType) {
-                      parentElem = parentElem.parentElement;
-                    }
-                    if (parentElem !== null && parentElem.tagName === refType) {
-                      targetElement = matchingElements[i] as HTMLElement;
-                      if (targetElement.parentElement.classList.length !== 0 &&
-                       targetElement.parentElement.classList.contains('ttFixed')) {
-                        // Found position is in footnote --> look for next occurence since the first footnote element
-                        // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
-                        // the position we need to find).
-                      } else {
-                        break;
-                      }
-                    }
-                  }
-                  if (targetElement !== null && targetElement.classList.length !== 0 &&
-                   targetElement.classList.contains('anchor')) {
-                    this.scrollToHTMLElement(targetElement);
-                  }
-                } else {
-                  // Different introduction, open in new window.
-                  this.textService.getCollectionAndPublicationByLegacyId(publicationId).subscribe(data => {
-                    if (data[0] !== undefined) {
-                      publicationId = data[0]['coll_id'];
-                    }
-  
-                    // Needs to be supplemented with handling of position
-                    const ref = window.open('#/publication-introduction/' + publicationId, '_blank');
-                  });
-                }
-
-                this.textService.getCollectionAndPublicationByLegacyId(publicationId).subscribe(data => {
+                this.textService.getCollectionAndPublicationByLegacyId(publicationId + '_' + textId).subscribe(data => {
                   if (data[0] !== undefined) {
                     publicationId = data[0]['coll_id'];
                   }
 
-                  // Needs to be supplemented with handling of position
-                  const ref = window.open('#/publication-introduction/' + publicationId, '_blank');
+                  // Check if we are already on the same page.
+                  const baseURI: string = decodeURI(String(anchorElem.baseURI).split('#').pop());
+                  if (baseURI.endsWith('/publication-introduction/' + publicationId) && positionId) {
+                    // Same introduction.
+                    positionId = positionId.replace('#', '');
+                    // Find the element in the correct parent element.
+                    const matchingElements = document.getElementsByName(positionId);
+                    let targetElement = null;
+                    let refType = 'PAGE-INTRODUCTION';
+                    for (let i = 0; i < matchingElements.length; i++) {
+                      let parentElem = matchingElements[i].parentElement;
+                      while (parentElem !== null && parentElem.tagName !== refType) {
+                        parentElem = parentElem.parentElement;
+                      }
+                      if (parentElem !== null && parentElem.tagName === refType) {
+                        targetElement = matchingElements[i] as HTMLElement;
+                        if (targetElement.parentElement.classList.length !== 0 &&
+                        targetElement.parentElement.classList.contains('ttFixed')) {
+                          // Found position is in footnote --> look for next occurence since the first footnote element
+                          // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
+                          // the position we need to find).
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    if (targetElement !== null && targetElement.classList.length !== 0 &&
+                    targetElement.classList.contains('anchor')) {
+                      this.scrollToHTMLElement(targetElement);
+                    }
+                  } else {
+                    // Different introduction, open in new window.
+    
+                    // Needs to be supplemented with handling of position
+                    const ref = window.open('#/publication-introduction/' + publicationId, '_blank');
+                  }
                 });
               }
             }
