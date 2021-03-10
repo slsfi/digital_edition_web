@@ -886,7 +886,7 @@ export class ReadPage /*implements OnDestroy*/ {
               }
               if (lemmaStart !== null && lemmaStart !== undefined) {
                 // Scroll to start of lemma in reading text and temporarily prepend arrow.
-                const lemmaSettimeoutId = this.scrollToCommentLemma(lemmaStart);
+                this.scrollToCommentLemma(lemmaStart);
                 // Scroll to comment in the comments-column.
                 const commentSettimeoutId = this.scrollToComment(numId);
               }
@@ -896,19 +896,15 @@ export class ReadPage /*implements OnDestroy*/ {
             }
           }
         }
-      } else if (eventTarget['classList'].contains('anchor')) {
-        if (eventTarget.hasAttribute('href')) {
-          this.scrollToElement(eventTarget.getAttribute('href'));
-        }
       }
       if (eventTarget['classList'].contains('variantScrollTarget')) {
         if (eventTarget !== undefined) {
-          eventTarget.classList.toggle('highlight');
+          eventTarget.classList.add('highlight');
           this.scrollToVariant(eventTarget);
         }
         setTimeout(function () {
           if (eventTarget !== undefined) {
-            eventTarget.classList.toggle('highlight');
+            eventTarget.classList.remove('highlight');
           }
         }, 5000);
       }
