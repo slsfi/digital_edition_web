@@ -158,7 +158,10 @@ export class IntroductionPage {
               // Link to external web page, open in new window/tab.
               const ref = window.open(anchorElem.href, '_blank');
 
-            } else {
+            } else if (anchorElem.classList.contains('ref_readingtext') ||
+             anchorElem.classList.contains('ref_comment') ||
+             anchorElem.classList.contains('ref_introduction')) {
+              // Link to reading text, comment or introduction
               // Get the href parts for the targeted text.
               const hrefTargetItems: Array<string> = decodeURI(String(anchorElem.href).split('/').pop()).split(' ');
               let publicationId = '';
@@ -244,6 +247,16 @@ export class IntroductionPage {
                     const ref = window.open('#/publication-introduction/' + publicationId, '_blank');
                   }
                 });
+              }
+            } else {
+              let targetId = anchorElem.getAttribute('href');
+              if ( targetId === null ) {
+                targetId = anchorElem.parentElement.getAttribute('href');
+              }
+              const dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
+              const target = anchorElem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
+              if ( target !== null ) {
+                this.scrollToElementTOC(target, event);
               }
             }
           }
