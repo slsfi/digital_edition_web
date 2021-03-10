@@ -240,7 +240,6 @@ export class IntroductionPage {
                     }
                   } else {
                     // Different introduction, open in new window.
-    
                     // Needs to be supplemented with handling of position
                     const ref = window.open('#/publication-introduction/' + publicationId, '_blank');
                   }
