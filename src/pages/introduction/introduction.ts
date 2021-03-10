@@ -203,7 +203,7 @@ export class IntroductionPage {
                   positionId = hrefTargetItems[hrefTargetItems.length - 1];
                 }
 
-                this.textService.getCollectionAndPublicationByLegacyId(publicationId + '_' + textId).subscribe(data => {
+                this.textService.getCollectionAndPublicationByLegacyId(publicationId).subscribe(data => {
                   if (data[0] !== undefined) {
                     publicationId = data[0]['coll_id'];
                   }
