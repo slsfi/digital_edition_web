@@ -211,6 +211,8 @@ export class IntroductionPage {
                     publicationId = data[0]['coll_id'];
                   }
 
+                  console.log(publicationId + ' ' + positionId);
+
                   // Check if we are already on the same page.
                   const baseURI: string = decodeURI(String(anchorElem.baseURI).split('#').pop());
                   if (baseURI.endsWith('/publication-introduction/' + publicationId) && positionId) {
