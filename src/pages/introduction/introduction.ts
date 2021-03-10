@@ -140,6 +140,125 @@ export class IntroductionPage {
     this.renderer.listen(nElement, 'click', (event) => {
       try {
         event.stopPropagation();
+
+        // Links in the introduction
+        let targetIsLink = false;
+        let targetElem: HTMLElement = event.target as HTMLElement;
+        if (targetElem.classList.length === 0 || !targetElem.classList.contains('xreference')) {
+          targetElem = targetElem.parentElement;
+        }
+
+        if (targetElem.classList.length !== 0) {
+          if (targetElem.classList.contains('xreference')) {
+            targetIsLink = true;
+            event.preventDefault();
+            const anchorElem: HTMLAnchorElement = targetElem as HTMLAnchorElement;
+
+            if (anchorElem.classList.contains('ref_external')) {
+              // Link to external web page, open in new window/tab.
+              const ref = window.open(anchorElem.href, '_blank');
+
+            } else {
+              // Get the href parts for the targeted text.
+              const hrefTargetItems: Array<string> = decodeURI(String(anchorElem.href).split('/').pop()).split(' ');
+              let publicationId = '';
+              let textId = '';
+              let chapterId = '';
+              let positionId = '';
+
+              if (anchorElem.classList.contains('ref_readingtext') || anchorElem.classList.contains('ref_comment')) {
+                // Link to reading text or comment.
+
+                publicationId = hrefTargetItems[0];
+                textId = hrefTargetItems[1];
+                this.textService.getCollectionAndPublicationByLegacyId(publicationId + '_' + textId).subscribe(data => {
+                  if (data[0] !== undefined) {
+                    publicationId = data[0]['coll_id'];
+                    textId = data[0]['pub_id'];
+                  }
+
+                  if (hrefTargetItems.length > 2 && !hrefTargetItems[2].startsWith('#')) {
+                    chapterId = hrefTargetItems[2];
+                  }
+
+                  // @TODO Needs to be supplemented with handling of position but no chapter.
+                  let hrefString = '#/publication/' + publicationId + '/text/' + textId + '/';
+                  if (chapterId) {
+                    hrefString += chapterId;
+                    if (hrefTargetItems.length > 3 && hrefTargetItems[3].startsWith('#')) {
+                      positionId = hrefTargetItems[3].replace('#', ';');
+                      hrefString += positionId;
+                    }
+                  } else {
+                    hrefString += 'nochapter';
+                  }
+                  hrefString += '/not/infinite/nosong/searchtitle/established&comments';
+                  const ref = window.open(hrefString, '_blank');
+                });
+
+              } else if (anchorElem.classList.contains('ref_introduction')) {
+                // Link to introduction.
+                publicationId = hrefTargetItems[0];
+                if (hrefTargetItems.length > 1 && hrefTargetItems[hrefTargetItems.length - 1].startsWith('#')) {
+                  positionId = hrefTargetItems[hrefTargetItems.length - 1];
+                }
+
+                // Check if we are already on the same page.
+                const baseURI: string = decodeURI(String(anchorElem.baseURI).split('#').pop());
+                if (baseURI.endsWith('/publication-introduction/' + publicationId) && positionId) {
+                  // Same introduction.
+                  positionId = positionId.replace('#', '');
+                  // Find the element in the correct parent element.
+                  const matchingElements = document.getElementsByName(positionId);
+                  let targetElement = null;
+                  let refType = 'PAGE-INTRODUCTION';
+                  for (let i = 0; i < matchingElements.length; i++) {
+                    let parentElem = matchingElements[i].parentElement;
+                    while (parentElem !== null && parentElem.tagName !== refType) {
+                      parentElem = parentElem.parentElement;
+                    }
+                    if (parentElem !== null && parentElem.tagName === refType) {
+                      targetElement = matchingElements[i] as HTMLElement;
+                      if (targetElement.parentElement.classList.length !== 0 &&
+                       targetElement.parentElement.classList.contains('ttFixed')) {
+                        // Found position is in footnote --> look for next occurence since the first footnote element
+                        // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
+                        // the position we need to find).
+                      } else {
+                        break;
+                      }
+                    }
+                  }
+                  if (targetElement !== null && targetElement.classList.length !== 0 &&
+                   targetElement.classList.contains('anchor')) {
+                    this.scrollToHTMLElement(targetElement);
+                  }
+                } else {
+                  // Different introduction, open in new window.
+                  this.textService.getCollectionAndPublicationByLegacyId(publicationId).subscribe(data => {
+                    if (data[0] !== undefined) {
+                      publicationId = data[0]['coll_id'];
+                    }
+  
+                    // Needs to be supplemented with handling of position
+                    const ref = window.open('#/publication-introduction/' + publicationId, '_blank');
+                  });
+                }
+
+                this.textService.getCollectionAndPublicationByLegacyId(publicationId).subscribe(data => {
+                  if (data[0] !== undefined) {
+                    publicationId = data[0]['coll_id'];
+                  }
+
+                  // Needs to be supplemented with handling of position
+                  const ref = window.open('#/publication-introduction/' + publicationId, '_blank');
+                });
+              }
+            }
+          }
+        }
+
+        /* THIS IS THE OLD CODE FOR HANDLING CLICKS ON LINKS
         event.preventDefault();
         const elem: HTMLElement = event.target as HTMLElement;
         if ( event.target.classList.contains('ref_readingtext') || event.target.classList.contains('ref_comment')) {
@@ -185,6 +304,7 @@ export class IntroductionPage {
             this.scrollToElementTOC(target, event);
           }
         }
+        */
       } catch ( e ) {}
     });
 
@@ -693,6 +813,59 @@ export class IntroductionPage {
     }
   }
 
+  private scrollToHTMLElement(element: HTMLElement, position = 'top', timeOut = 5000) {
+    try {
+      const tmp = element.previousElementSibling as HTMLElement;
+      let addedArrow = false;
+
+      if (tmp !== null && tmp !== undefined) {
+        const tmpImage: HTMLImageElement = new Image();
+        tmpImage.src = 'assets/images/ms_arrow_right.svg';
+        tmpImage.classList.add('inl_ms_arrow');
+        element.parentElement.insertBefore(tmpImage, element);
+        this.scrollElementIntoView(tmpImage, position);
+        setTimeout(function() {
+          element.parentElement.removeChild(tmpImage);
+        }, timeOut);
+        addedArrow = true;
+      }
+    } catch ( e ) {
+      console.error(e);
+    }
+  }
+
+  /* This function can be used to scroll a container so that the element which it contains
+   * is placed either at the top edge of the container or in the center of the container.
+   * This function can be called multiple times simultaneously on elements in different
+   * containers, unlike the native scrollIntoView function which cannot be called multiple
+   * times simultaneously in Chrome due to a bug.
+   * Valid values for yPosition are 'top' and 'center'.
+   */
+  private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0) {
+    if (element === undefined || element === null || (yPosition !== 'center' && yPosition !== 'top')) {
+      return;
+    }
+    // Find the scrollable container of the element which is to be scrolled into view
+    let container = element.parentElement;
+    while (!container.classList.contains('scroll-content') &&
+     container.parentElement.tagName !== 'ION-SCROLL') {
+      container = container.parentElement;
+      if (container === null || container === undefined) {
+        return;
+      }
+    }
+
+    const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
+    let baseOffset = 10;
+    if (yPosition === 'center') {
+      baseOffset = Math.floor(container.offsetHeight / 2);
+      if (baseOffset > 45) {
+        baseOffset = baseOffset - 45;
+      }
+    }
+    container.scrollTo({top: y - baseOffset - offset, behavior: 'smooth'});
+  }
+
   private getEventTarget(event) {
     let eventTarget: any = document.createElement('div');
     eventTarget['classList'] = [];
@@ -767,7 +940,7 @@ export class IntroductionPage {
 
   private scrollToElementTOC(element: HTMLElement, event: Event) {
     try {
-      element.scrollIntoView({'behavior': 'smooth', 'block': 'start'});
+      element.scrollIntoView({behavior: 'smooth', block: 'start'});
     } catch ( e ) {
     }
   }
