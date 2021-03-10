@@ -120,7 +120,7 @@ export class CommentsComponent {
         if (targetElem.classList.length === 0) {
           targetElem = targetElem.parentElement;
         }
-        // WORK IN PROGRESS!
+
         if (targetElem.classList.length !== 0) {
           if (targetElem.classList.contains('xreference')) {
             targetIsLink = true;
@@ -155,7 +155,7 @@ export class CommentsComponent {
                     chapterId = hrefTargetItems[2];
                     compURI += '/' + chapterId;
                   }
-                  console.log(publicationId + ' ' + textId + ' ' + chapterId);
+
                   // Check if we are already on the same page.
                   const baseURI: string = decodeURI(String(anchorElem.baseURI).split('#').pop());
                   if ( (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';')) &&
@@ -193,7 +193,7 @@ export class CommentsComponent {
                     }
                   } else {
                     // We are not on the same page, open in new window.
-                    // Needs to be supplemented with handling of position but no chapter.
+                    // @TODO Needs to be supplemented with handling of position but no chapter.
                     let hrefString = '#/publication/' + publicationId + '/text/' + textId + '/';
                     if (chapterId) {
                       hrefString += chapterId;
