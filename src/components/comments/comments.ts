@@ -208,7 +208,7 @@ export class CommentsComponent {
                     hrefString += '/not/infinite/nosong/searchtitle/established&comments';
                     const externalWindow = window.open(hrefString, '_blank');
                     if (hrefTargetItems.length > 3 && hrefTargetItems[3].startsWith('#')) {
-                      const positionId = hrefTargetItems[3].replace('#', '');
+                      positionId = hrefTargetItems[3].replace('#', '');
                       // Find the element in the correct column (reading-text or comments) based on ref type.
                       const matchingElements = externalWindow.document.getElementsByName(positionId);
                       let targetElement = null;
