@@ -4,10 +4,9 @@ table-of-contents-accordion {
     }
     ion-label {
         cursor: pointer;
-        transition: $opacity-hover-transition;
     }
 
-    /* The toc items should not have a background color in them selves, thus the background color for the entire navigation panel shines through. */
+    /* The toc items should not have a background color, thus the background color for the entire navigation panel shines through. */
     ion-item.item {
         background-color: unset;
     }
