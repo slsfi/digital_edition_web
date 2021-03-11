@@ -826,20 +826,14 @@ export class IntroductionPage {
 
   private scrollToHTMLElement(element: HTMLElement, position = 'top', timeOut = 5000) {
     try {
-      const tmp = element.previousElementSibling as HTMLElement;
-      let addedArrow = false;
-
-      if (tmp !== null && tmp !== undefined) {
-        const tmpImage: HTMLImageElement = new Image();
-        tmpImage.src = 'assets/images/ms_arrow_right.svg';
-        tmpImage.classList.add('inl_ms_arrow');
-        element.parentElement.insertBefore(tmpImage, element);
-        this.scrollElementIntoView(tmpImage, position);
-        setTimeout(function() {
-          element.parentElement.removeChild(tmpImage);
-        }, timeOut);
-        addedArrow = true;
-      }
+      const tmpImage: HTMLImageElement = new Image();
+      tmpImage.src = 'assets/images/ms_arrow_right.svg';
+      tmpImage.classList.add('inl_ms_arrow');
+      element.parentElement.insertBefore(tmpImage, element);
+      this.scrollElementIntoView(tmpImage, position);
+      setTimeout(function() {
+        element.parentElement.removeChild(tmpImage);
+      }, timeOut);
     } catch ( e ) {
       console.error(e);
     }
