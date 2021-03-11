@@ -426,6 +426,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
           if ( this.params.get('chapterID') ) {
             tocItems.selectedChapterId = this.params.get('chapterID');
+            console.log(tocItems.selectedChapterId);
           }
 
           const tocLoadedParams = { tocItems: tocItems };
