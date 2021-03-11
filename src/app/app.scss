@@ -686,6 +686,17 @@ ion-backdrop {
   opacity: 0.3 !important;
 }
 
+/* Hover effect for button-icons in the secondary toolbar. */
+.sec-menu-button {
+  transition: $opacity-hover-transition;
+}
+.sec-menu-button:hover {
+  opacity: $opacity-hover;
+}
+.sec-menu-button:active {
+  opacity: 1;
+}
+
 
 // Load TEI-stylesheets. Moved here from project-variables.scss
 @import '../theme/tei';

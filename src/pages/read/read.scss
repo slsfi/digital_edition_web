@@ -447,15 +447,3 @@ page-read div.mobile-mode-established {
   */
 
 }
-
-.sec-menu-button {
-  transition: $opacity-hover-transition;
-}
-
-.sec-menu-button:hover {
-  opacity: $opacity-hover;
-}
-
-.sec-menu-button:active {
-  opacity: 1;
-}
