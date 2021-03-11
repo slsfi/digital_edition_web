@@ -42,4 +42,8 @@ digital-editions-list {
       display: flex;
       font-size: 1.2em;
     }
+
+    .list .book_download_container {
+      justify-content: start;
+    }
 }

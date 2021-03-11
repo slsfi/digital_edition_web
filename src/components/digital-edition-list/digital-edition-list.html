@@ -42,7 +42,10 @@
           <ion-card-content class="digital-edition-list-card-content">
             <div style="background-color: white; text-align: center;">
               <h2>{{edition.title}}</h2>
-              <p *ngFor="let row of shortText(edition.id)">{{row}}</p>
+              <div class="book_download_container">
+                <p class="download_pdf" *ngIf="edition['pdf']" (click)="downloadBook(edition, 'pdf')">PDF</p>
+                <p class="download_epub" *ngIf="edition['epub']" (click)="downloadBook(edition, 'epub')">EPUB</p>
+              </div>
             </div>
           </ion-card-content>
         </ion-card>
@@ -62,7 +65,10 @@
                 name="cloud-download"></ion-icon>
             </ion-thumbnail>
             <h2>{{edition.title}}</h2>
-            <p *ngFor="let row of shortText(edition.id)">{{row}}</p>
+            <div class="book_download_container">
+                <p class="download_pdf" *ngIf="edition['pdf']" (click)="downloadBook(edition, 'pdf')">PDF</p>
+                <p class="download_epub" *ngIf="edition['epub']" (click)="downloadBook(edition, 'epub')">EPUB</p>
+              </div>
           </ion-item>
         </ion-list>
       </ion-col>
@@ -87,7 +93,10 @@
           <ion-card-content class="digital-edition-list-card-content">
             <div style="background-color: white; text-align: center;">
               <h2>{{edition.title}}</h2>
-              <p *ngFor="let row of shortText(edition.id)">{{row}}</p>
+              <div class="book_download_container">
+                <p class="download_pdf" *ngIf="edition['pdf']" (click)="downloadBook(edition, 'pdf')">PDF</p>
+                <p class="download_epub" *ngIf="edition['epub']" (click)="downloadBook(edition, 'epub')">EPUB</p>
+              </div>
             </div>
           </ion-card-content>
         </ion-card>
@@ -111,7 +120,10 @@
                 name="cloud-download"></ion-icon>
             </ion-thumbnail>
             <h2>{{edition.title}}</h2>
-            <p *ngFor="let row of shortText(edition.id)">{{row}}</p>
+            <div class="book_download_container">
+                <p class="download_pdf" *ngIf="edition['pdf']" (click)="downloadBook(edition, 'pdf')">PDF</p>
+                <p class="download_epub" *ngIf="edition['epub']" (click)="downloadBook(edition, 'epub')">EPUB</p>
+              </div>
           </ion-item>
         </ion-list>
       </ion-col>
@@ -126,7 +138,10 @@
                 name="cloud-download"></ion-icon>
             </ion-thumbnail>
             <h2>{{edition.title}}</h2>
-            <p *ngFor="let row of shortText(edition.id)">{{row}}</p>
+            <div class="book_download_container">
+                <p class="download_pdf" *ngIf="edition['pdf']" (click)="downloadBook(edition, 'pdf')">PDF</p>
+                <p class="download_epub" *ngIf="edition['epub']" (click)="downloadBook(edition, 'epub')">EPUB</p>
+              </div>
           </ion-item>
         </ion-list>
       </ion-col>
@@ -143,7 +158,10 @@
                 name="cloud-download"></ion-icon>
             </ion-thumbnail>
             <h2>{{edition.title}}</h2>
-            <p *ngFor="let row of shortText(edition.id)">{{row}}</p>
+           <div class="book_download_container">
+                <p class="download_pdf" *ngIf="edition['pdf']" (click)="downloadBook(edition, 'pdf')">PDF</p>
+                <p class="download_epub" *ngIf="edition['epub']" (click)="downloadBook(edition, 'epub')">EPUB</p>
+              </div>
           </ion-item>
         </ion-list>
       </ion-col>
