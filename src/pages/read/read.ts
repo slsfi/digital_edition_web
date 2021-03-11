@@ -811,7 +811,7 @@ export class ReadPage /*implements OnDestroy*/ {
     setTimeout(function () {
       try {
         const itemId = 'toc_' + this.legacyId;
-        console.log('itemId: ' + itemId);
+        console.log('itemId: ' + itemId + 'est.link: ' + this.establishedText.link);
         this.scrollToTOC(document.getElementById(itemId));
       } catch (e) {
         console.log(e);
