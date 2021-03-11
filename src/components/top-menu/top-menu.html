@@ -1,7 +1,7 @@
 <ion-toolbar>
   <ion-grid>
     <ion-row>
-      <ion-col *ngIf="(showLogo || !userSettingsService.isTablet()) && !(splitPaneMobile && userSettingsService.isMobile())" col-8>
+      <ion-col *ngIf="(showLogo || !userSettingsService.isTablet()) && !(splitPaneMobile && userSettingsService.isMobile())">
         <ion-grid>
           <ion-row>
             <ion-col *ngIf="userSettingsService.isDesktop() || userSettingsService.isTablet()">
