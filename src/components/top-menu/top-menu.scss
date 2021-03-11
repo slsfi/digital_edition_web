@@ -57,6 +57,15 @@ top-menu {
     }
   }
 
+  @media only screen and (max-width: 750px) {
+    ion-buttons {
+      button.bar-button-default {
+        padding-left: 10px;
+        padding-right: 10px !important;
+      }
+    }
+  }
+
   ion-toolbar ion-buttons {
     margin-left: -60px !important;
     transition: 0.3s margin-left ease-in;
