@@ -810,8 +810,9 @@ export class ReadPage /*implements OnDestroy*/ {
   ngAfterViewInit() {
     setTimeout(function () {
       try {
-        const itemId = 'toc_' + this.legacyId;
-        console.log('itemId: ' + itemId + 'est.link: ' + this.establishedText.link);
+        // this.legacyId doesn't work for texts with chapters and positions since legacyId only contains collectionId and publicationId
+        // const itemId = 'toc_' + this.legacyId;
+        const itemId = 'toc_' + this.establishedText.link;
         this.scrollToTOC(document.getElementById(itemId));
       } catch (e) {
         console.log(e);
