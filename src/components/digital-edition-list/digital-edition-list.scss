@@ -21,18 +21,25 @@ digital-editions-list {
         ion-card-content {
             h2 {
                word-break: keep-all;
-               margin-bottom: 1rem;
+               margin-bottom: 1em;
             }
             p {
                 text-align: left;
-                font-size: 1rem;
-                color: #ccc;
+                font-size: 0.9em;
                 margin-bottom: 0.8rem;
-                line-height: 1rem;
+                line-height: 1em;
             }
         }
     }
     .digital-edition-list-card-content{
       padding-top: 35px;
+    }
+    .book_download_container {
+      display: flex;
+      justify-content: space-evenly;
+    }
+    .book_download_container p{
+      display: flex;
+      font-size: 1.2em;
     }
 }

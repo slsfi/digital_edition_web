@@ -8,14 +8,17 @@
           <ion-card-header class="digital-edition-list-card-header">
             <img
               src="{{editionImages[edition.id] ? (editionImages[edition.id]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
-            <ion-icon (click)="downloadPDF(edition)" class="download" *ngIf="edition.isDownload" name="cloud-download">
+            <ion-icon class="download" *ngIf="edition.isDownload" name="cloud-download">
             </ion-icon>
             <ion-icon class="download" *ngIf="!edition.isDownload" name="book"></ion-icon>
           </ion-card-header>
           <ion-card-content class="digital-edition-list-card-content">
             <div style="background-color: white; text-align: center;">
               <h2>{{edition.title}}</h2>
-              <p *ngFor="let row of shortText(edition.id)">{{row}}</p>
+              <div class="book_download_container">
+                <p class="download_pdf" *ngIf="edition['pdf']" (click)="downloadBook(edition, 'pdf')">PDF</p>
+                <p class="download_epub" *ngIf="edition['epub']" (click)="downloadBook(edition, 'epub')">EPUB</p>
+              </div>
             </div>
           </ion-card-content>
         </ion-card>
@@ -33,7 +36,7 @@
             <img
               src="{{editionImages[edition.id] ? (editionImages[edition.id]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
             <ion-icon class="download" *ngIf="!edition.isDownload" name="book"></ion-icon>
-            <ion-icon (click)="downloadPDF(edition)" class="download" *ngIf="edition.isDownload" name="cloud-download">
+            <ion-icon class="download" *ngIf="edition.isDownload" name="cloud-download">
             </ion-icon>
           </ion-card-header>
           <ion-card-content class="digital-edition-list-card-content">
@@ -55,7 +58,7 @@
               <img
                 src="{{editionImages[edition.id] ? (editionImages[edition.id]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
               <ion-icon class="download" *ngIf="!edition.isDownload" name="book"></ion-icon>
-              <ion-icon (click)="downloadPDF(edition)" class="download" *ngIf="edition.isDownload"
+              <ion-icon class="download" *ngIf="edition.isDownload"
                 name="cloud-download"></ion-icon>
             </ion-thumbnail>
             <h2>{{edition.title}}</h2>
@@ -78,7 +81,7 @@
             <img
               src="{{editionImages[edition.id] ? (editionImages[editionid]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
             <ion-icon class="download" *ngIf="!edition.isDownload" name="book"></ion-icon>
-            <ion-icon (click)="downloadPDF(edition)" class="download" *ngIf="edition.isDownload" name="cloud-download">
+            <ion-icon class="download" *ngIf="edition.isDownload" name="cloud-download">
             </ion-icon>
           </ion-card-header>
           <ion-card-content class="digital-edition-list-card-content">
@@ -104,7 +107,7 @@
               <img
                 src="{{editionImages[edition.id] ? (editionImages[edition.id]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
               <ion-icon class="download" *ngIf="!edition.isDownload" name="book"></ion-icon>
-              <ion-icon (click)="downloadPDF(edition)" class="download" *ngIf="edition.isDownload"
+              <ion-icon class="download" *ngIf="edition.isDownload"
                 name="cloud-download"></ion-icon>
             </ion-thumbnail>
             <h2>{{edition.title}}</h2>
@@ -119,7 +122,7 @@
               <img
                 src="{{editionImages[edition.id] ? (editionImages[edition.id]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
               <ion-icon class="download" *ngIf="!edition.isDownload" name="book"></ion-icon>
-              <ion-icon (click)="downloadPDF(edition)" class="download" *ngIf="edition.isDownload"
+              <ion-icon class="download" *ngIf="edition.isDownload"
                 name="cloud-download"></ion-icon>
             </ion-thumbnail>
             <h2>{{edition.title}}</h2>
@@ -136,7 +139,7 @@
               <img
                 src="{{editionImages[edition.id] ? (editionImages[edition.id]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
               <ion-icon class="download" *ngIf="!edition.isDownload" name="book"></ion-icon>
-              <ion-icon (click)="downloadPDF(edition)" class="download" *ngIf="edition.isDownload"
+              <ion-icon class="download" *ngIf="edition.isDownload"
                 name="cloud-download"></ion-icon>
             </ion-thumbnail>
             <h2>{{edition.title}}</h2>

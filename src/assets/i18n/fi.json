@@ -320,5 +320,9 @@
   "variations": "Variantit",
   "introduction": "Johdanto",
   "songexample": "Sång",
-  "illustrations": "Kuvat"
+  "illustrations": "Kuvat",
+  "EditionsList": {
+    "DownloadPDF": "PDF",
+    "DownloadEPUB": "EPUB"
+  }
 }

@@ -230,5 +230,9 @@
       "Title": "Musik",
       "SubTitle": "",
       "PageTitle": "Musikvolymerna"
+  },
+  "EditionsList": {
+    "DownloadPDF": "PDF",
+    "DownloadEPUB": "EPUB"
   }
 }

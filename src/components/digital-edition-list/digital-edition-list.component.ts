@@ -197,12 +197,23 @@ export class DigitalEditionList implements OnInit {
       }
 
       if ( this.collectionDownloads['pdf'] !== undefined &&  this.collectionDownloads['pdf'][String(de[i].id)] !== undefined ) {
-        de[i].url = this.collectionDownloads['pdf'][String(de[i].id)].title;
+        if ( de[i] !== undefined ) {
+          de[i]['pdf'] = {
+            'url': this.collectionDownloads['pdf'][String(de[i].id)].title,
+            'isDownload': (String(de[i].url).length > 0) ? true : false
+          };
+        }
         de[i].isDownload = (String(de[i].url).length > 0) ? true : false;
+        de[i].pdfFile = this.collectionDownloads['pdf'][String(de[i].id)].title;
       }
 
       if ( this.collectionDownloads['epub'] !== undefined && de[i].id in this.collectionDownloads['epub'] ) {
-        de[i].url = this.collectionDownloads['epub'][String(de[i].id)].title;
+        if ( de[i] !== undefined ) {
+          de[i]['epub'] = {
+            'url': this.collectionDownloads['epub'][String(de[i].id)].title,
+            'isDownload': (String(de[i].url).length > 0) ? true : false
+          };
+        }
         de[i].isDownload = (String(de[i].url).length > 0) ? true : false;
       }
 
@@ -214,19 +225,20 @@ export class DigitalEditionList implements OnInit {
     }
   }
 
-  downloadPDF(collection) {
+  downloadBook(collection, type) {
     if (collection.isDownload) {
-      if (collection.id in this.collectionDownloads['pdf']) {
+      if (collection.id in this.collectionDownloads['pdf'] && type === 'pdf') {
         const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.id + '/pdf/' +
           this.collectionDownloads['pdf'][collection.id].title + '/';
         const ref = window.open(dURL);
-      } else if (collection.id in this.collectionDownloads['epub']) {
+        this.doAnalytics('Download', 'PDF', this.collectionDownloads['pdf'][collection.id]);
+      } else if (collection.id in this.collectionDownloads['epub'] && type === 'epub') {
         const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.id + '/epub/' +
           this.collectionDownloads['epub'][collection.id].title + '/';
         const ref = window.open(dURL);
+        this.doAnalytics('Download', 'EPUB', this.collectionDownloads['epub'][collection.id]);
       }
     }
-    this.doAnalytics('Download', 'PDF', this.collectionDownloads['pdf'][collection.id]);
   }
 
   doAnalytics(action, type, name) {
@@ -256,14 +268,12 @@ export class DigitalEditionList implements OnInit {
   }
 
   openCollection(collection: DigitalEdition, animate = true) {
-    if ( collection.isDownload === undefined && !collection.isDownload) {
+    if ( collection.isDownload === undefined || !collection.isDownload) {
       if (this.hasCover === false && this.hasIntro === false  && this.hasTitle === false) {
         this.getTocRoot(collection);
       } else {
         this.events.publish('digital-edition-list:open', collection);
       }
-    } else {
-      this.downloadPDF(collection);
     }
   }
 }

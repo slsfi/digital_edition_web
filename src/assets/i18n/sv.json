@@ -323,5 +323,9 @@
   "variations": "Varianter",
   "introduction": "Inledning",
   "songexample": "Sång",
-  "illustrations": "Illustrationer"
+  "illustrations": "Illustrationer",
+  "EditionsList": {
+    "DownloadPDF": "PDF",
+    "DownloadEPUB": "EPUB"
+  }
 }

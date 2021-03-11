@@ -242,5 +242,9 @@
   "variations": "Variations",
   "introduction": "Introduction",
   "songexample": "Song",
-  "illustrations": "Illustrationer"
+  "illustrations": "Illustrationer",
+  "EditionsList": {
+    "DownloadPDF": "PDF",
+    "DownloadEPUB": "EPUB"
+  }
 }
