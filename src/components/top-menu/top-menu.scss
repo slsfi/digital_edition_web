@@ -41,6 +41,29 @@ top-menu {
     width:100%;
   }
 
+  /* Hover color for buttons in the top menu. */
+  /*
+  ion-buttons button.bar-button-default:hover:not(.disable-hover) {
+    color: inherit;
+  }
+  */
+
+  ion-buttons button.bar-button-default {
+    padding-left: 20px;
+    padding-right: 20px;
+    filter: drop-shadow(0 1px 3px rgba(35, 35, 35, .3));
+    transition: $opacity-hover-transition;
+  }
+  
+  ion-buttons button.bar-button-default:hover:not(.disable-hover) {
+    color: inherit;
+    opacity: $opacity-hover;
+  }
+  
+  ion-buttons button.bar-button-default:active {
+    opacity: 1;
+  }
+
   ion-toolbar ion-buttons {
     margin-left: -60px !important;
     transition: 0.3s margin-left ease-in;
@@ -48,6 +71,10 @@ top-menu {
 
   &.splitPanePossible ion-toolbar ion-buttons {
     margin-left: 0 !important;
+  }
+
+  ion-toolbar ion-buttons.bar-button:first-child {
+    padding-right: 20px !important;
   }
 
   .toolbar-content ion-title.title {
@@ -101,22 +128,6 @@ top-menu {
 .split-pane {
   margin-top: 10px;
 }
-
-.top-menu-button {
-  padding-left: 20px;
-  padding-right: 20px;
-  filter: drop-shadow(0 1px 3px rgba(35, 35, 35, .3));
-  transition: $opacity-hover-transition;
-}
-
-.top-menu-button:hover {
-  opacity: $opacity-hover;
-}
-
-.top-menu-button:active {
-  opacity: 1;
-}
-
 
 .bookmark-icon {
   color: white;
