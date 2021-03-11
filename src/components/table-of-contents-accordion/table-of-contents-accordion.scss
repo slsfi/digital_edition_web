@@ -16,10 +16,6 @@ table-of-contents-accordion {
         opacity: $opacity-hover-toc-accordion;
     }
 
-    ion-item.item:active ion-label {
-        opacity: 1;
-    }
-
     ion-item.item.selected-toc-item {
         font-weight: bold;
     }
@@ -32,7 +28,7 @@ table-of-contents-accordion {
     .collection-name-top ion-label {
         white-space: pre-wrap !important;
         cursor: auto;
-        opacity: 1;
+        opacity: 1 !important;
     }
 
     .collection-filters {
