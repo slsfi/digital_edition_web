@@ -96,6 +96,18 @@ page-introduction {
     background-color: transparent;
   }
 
+  .intro-toc-button {
+    transition: $opacity-hover-transition;
+  }
+  
+  .intro-toc-button:hover {
+    opacity: $opacity-hover;
+  }
+  
+  .intro-toc-button:active {
+    opacity: 1;
+  }
+
   #TOC.menuClosedTOC {
     width: auto;
     height: auto;
