@@ -221,6 +221,7 @@ export class IntroductionPage {
 
                     // Find the element in the correct parent element.
                     const matchingElements = document.getElementsByName(positionId);
+                    console.log('Nr of matching elements: ' + matchingElements.length);
                     let targetElement = null;
                     const refType = 'PAGE-INTRODUCTION';
                     for (let i = 0; i < matchingElements.length; i++) {
@@ -235,13 +236,16 @@ export class IntroductionPage {
                           // Found position is in footnote --> look for next occurence since the first footnote element
                           // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
                           // the position we need to find).
+                          console.log('Position in footnote');
                         } else {
+                          console.log('Position found, index: ' + i);
                           break;
                         }
                       }
                     }
                     if (targetElement !== null && targetElement.classList.length !== 0 &&
                     targetElement.classList.contains('anchor')) {
+                      console.log('Scroll to position');
                       this.scrollToHTMLElement(targetElement);
                     }
                   } else {
