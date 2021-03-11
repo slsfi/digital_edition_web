@@ -105,6 +105,15 @@ top-menu {
 .top-menu-button {
   padding-left: 20px;
   padding-right: 20px;
+  transition: $opacity-hover-transition;
+}
+
+.top-menu-button:hover {
+  opacity: $opacity-hover;
+}
+
+.top-menu-button:active {
+opacity: 1;
 }
 
 
