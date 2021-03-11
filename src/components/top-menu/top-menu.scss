@@ -39,19 +39,19 @@ top-menu {
   ion-buttons {
     display: flex !important;
     width: 100%;
+  }
 
-    button.bar-button-default {
-      padding-left: 20px;
-      padding-right: 20px !important;
-      filter: drop-shadow(0 1px 3px rgba(35, 35, 35, .3));
-      transition: $opacity-hover-transition;
-    }
-    button.bar-button-default:hover:not(.disable-hover) {
-      opacity: $opacity-hover;
-    }
-    button.bar-button-default:active {
-      opacity: 1;
-    }
+  button.bar-button-default {
+    padding-left: 20px;
+    padding-right: 20px !important;
+    filter: drop-shadow(0 1px 3px rgba(35, 35, 35, .3));
+    transition: $opacity-hover-transition;
+  }
+  button.bar-button-default:hover:not(.disable-hover) {
+    opacity: $opacity-hover;
+  }
+  button.bar-button-default:active {
+    opacity: 1;
   }
 
   ion-toolbar ion-buttons {
