@@ -39,9 +39,9 @@
         </ion-card-content>
     </ion-card>
     <nav id="TOC" *ngIf="hasSeparateIntroToc" [ngClass]="tocMenuOpen ? 'menuOpenTOC' : 'menuClosedTOC'">
-        <div id="toc_menu" class="intro-toc-button" (click)="toggleTocMenu()" [ngClass]="tocMenuOpen ? 'menuOpenIcon' : 'menuClosedIcon'">
-            <ion-icon name="menu" *ngIf="!tocMenuOpen"></ion-icon>
-            <ion-icon name="close" *ngIf="tocMenuOpen"></ion-icon>
+        <div id="toc_menu" (click)="toggleTocMenu()" [ngClass]="tocMenuOpen ? 'menuOpenIcon' : 'menuClosedIcon'">
+            <ion-icon name="menu" class="intro-toc-button" *ngIf="!tocMenuOpen"></ion-icon>
+            <ion-icon name="close" class="intro-toc-button" *ngIf="tocMenuOpen"></ion-icon>
         </div>
         <div id="toc_text" [innerHTML]="textMenu" [ngClass]="tocMenuOpen ? 'menuOpen' : 'menuClosed'">
         </div>
