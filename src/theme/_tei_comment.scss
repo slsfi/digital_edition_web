@@ -76,16 +76,16 @@ div.tei {
     cursor: pointer;
 }
 
-/* Used for? */
-span.seg img {
-    width: 0.5em;
-}
-
-/* Used for? */
-comments span:not([class]) {
-    font-size: 0.85rem;
+/* Style for reference after the comment note. Used in vonwright.sls.fi */
+comments div.tei p.note + p:not([class]) > span:not([class]) {
+    font-size: 0.85em;
     line-height: 1.55;
     text-indent: 0;
     display: block;
     margin-top: 0.5em;
+}
+
+/* Used for? */
+span.seg img {
+    width: 0.5em;
 }
