@@ -1,38 +1,40 @@
 table-of-contents-accordion {
-  .accordion-menu .list .list-md {
-    background-color: #f2f2f2;
-  }
-  ion-label {
-    cursor: pointer;
-    transition: $opacity-hover-transition;
-  }
-  ion-label:hover {
-    opacity: $opacity-hover;
-  }
-  ion-label:active {
-    opacity: 1;
-  }
+    .accordion-menu .list .list-md {
+        background-color: #f2f2f2;
+    }
+    ion-label {
+        cursor: pointer;
+        transition: $opacity-hover-transition;
+    }
 
-  /* The toc items should not have a background color in them selves, thus the background color for the entire navigation panel shines through. */
-  ion-item.item {
-    background-color: unset;
-  }
+    /* The toc items should not have a background color in them selves, thus the background color for the entire navigation panel shines through. */
+    ion-item.item {
+        background-color: unset;
+    }
 
-  ion-item.item.selected-toc-item {
-    /*background-color: #eee;*/
-    font-weight: bold;
-  }
+    ion-item.item:hover ion-label {
+        opacity: $opacity-hover-toc-accordion;
+    }
 
-  ion-item.item.collection-name-top {
-    background-color: color($colors, secondary);
-    min-height: 50px;
-    font-weight: bold;
-  }
-  .collection-name-top ion-label {
-    white-space: pre-wrap !important;
-    cursor: auto;
-    opacity: 1;
-  }
+    ion-item.item:active ion-label {
+        opacity: 1;
+    }
+
+    ion-item.item.selected-toc-item {
+        font-weight: bold;
+    }
+
+    ion-item.item.collection-name-top {
+        background-color: color($colors, secondary);
+        min-height: 50px;
+        font-weight: bold;
+    }
+    .collection-name-top ion-label {
+        white-space: pre-wrap !important;
+        cursor: auto;
+        opacity: 1;
+    }
+
     .collection-filters {
         ion-label {
             display: flex;
