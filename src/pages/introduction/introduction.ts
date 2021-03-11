@@ -161,7 +161,7 @@ export class IntroductionPage {
             } else if (anchorElem.classList.contains('ref_readingtext') ||
              anchorElem.classList.contains('ref_comment') ||
              anchorElem.classList.contains('ref_introduction')) {
-              // Link to reading text, comment or introduction
+              // Link to reading text, comment or introduction.
               // Get the href parts for the targeted text.
               const hrefTargetItems: Array<string> = decodeURI(String(anchorElem.href).split('/').pop()).split(' ');
               let publicationId = '';
@@ -217,11 +217,8 @@ export class IntroductionPage {
                     // Same introduction.
                     positionId = positionId.replace('#', '');
 
-                    console.log(publicationId + ' ' + positionId);
-
                     // Find the element in the correct parent element.
                     const matchingElements = document.getElementsByName(positionId);
-                    console.log('Nr of matching elements: ' + matchingElements.length);
                     let targetElement = null;
                     const refType = 'PAGE-INTRODUCTION';
                     for (let i = 0; i < matchingElements.length; i++) {
@@ -236,16 +233,13 @@ export class IntroductionPage {
                           // Found position is in footnote --> look for next occurence since the first footnote element
                           // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
                           // the position we need to find).
-                          console.log('Position in footnote');
                         } else {
-                          console.log('Position found, index: ' + i);
                           break;
                         }
                       }
                     }
                     if (targetElement !== null && targetElement.classList.length !== 0 &&
                     targetElement.classList.contains('anchor')) {
-                      console.log('Scroll to position');
                       this.scrollToHTMLElement(targetElement);
                     }
                   } else {
@@ -256,6 +250,7 @@ export class IntroductionPage {
                 });
               }
             } else {
+              // Link in the introduction's TOC
               let targetId = anchorElem.getAttribute('href');
               if ( targetId === null ) {
                 targetId = anchorElem.parentElement.getAttribute('href');
@@ -263,7 +258,7 @@ export class IntroductionPage {
               const dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
               const target = anchorElem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
               if ( target !== null ) {
-                this.scrollToElementTOC(target, event);
+                this.scrollElementIntoView(target, 'top');
               }
             }
           }
