@@ -823,7 +823,7 @@ export class ReadPage /*implements OnDestroy*/ {
   scrollToTOC(element: HTMLElement) {
     try {
       if (element !== null) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        this.scrollElementIntoView(element);
       }
     } catch (e) {
       console.log(e);
