@@ -50,7 +50,7 @@ top-menu {
       transition: $opacity-hover-transition;
     }
     button.bar-button-default:hover:not(.disable-hover) {
-      opacity: $opacity-hover;
+      opacity: $opacity-hover-top-menu;
     }
     button.bar-button-default:active {
       opacity: 1;
