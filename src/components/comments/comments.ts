@@ -209,7 +209,7 @@ export class CommentsComponent {
                       }
                     }
                     hrefString += '/not/infinite/nosong/searchtitle/established&comments';
-                    const ref = window.open(hrefString, '_blank');
+                    window.open(hrefString, '_blank');
                   }
                 });
 
@@ -224,10 +224,10 @@ export class CommentsComponent {
                   let hrefString = '#/publication-introduction/' + publicationId;
                   if (hrefTargetItems.length > 1) {
                     positionId = hrefTargetItems[1].replace('#', ';');
-                    hrefString += positionId;
+                    hrefString += '/' + positionId;
                   }
 
-                  const ref = window.open(hrefString, '_blank');
+                  window.open(hrefString, '_blank');
                 });
               }
             }
