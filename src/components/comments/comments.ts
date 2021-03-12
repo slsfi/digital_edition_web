@@ -193,7 +193,6 @@ export class CommentsComponent {
                     }
                   } else {
                     // We are not on the same page, open in new window.
-                    // @TODO Needs to be supplemented with handling of position but no chapter.
                     let hrefString = '#/publication/' + publicationId + '/text/' + textId + '/';
                     if (chapterId) {
                       hrefString += chapterId;
@@ -222,7 +221,7 @@ export class CommentsComponent {
                     publicationId = data[0]['coll_id'];
                   }
                   let hrefString = '#/publication-introduction/' + publicationId;
-                  if (hrefTargetItems.length > 1) {
+                  if (hrefTargetItems.length > 1 && hrefTargetItems[1].startsWith('#')) {
                     positionId = hrefTargetItems[1].replace('#', ';');
                     hrefString += '/' + positionId;
                   }

@@ -136,14 +136,24 @@ export class IntroductionPage {
       this.events.publish('setSelectedStatic:true', selectedStatic);
     });
   }
+
   // Try to scroll to an element in the text, checks if "pos" given
   // Timeout, to give text some time to load on the page
   scrollToPos() {
     setTimeout(function() {
       if ( this.pos !== null ) {
-        const positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
+        let positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
+        let parentElem = positionElement.parentElement;
         console.log(positionElement);
-        if ( positionElement !== undefined ) {
+        if (parentElem !== undefined && parentElem.classList.length !== 0 &&
+         parentElem.classList.contains('ttFixed')) {
+            // Anchor is in footnote --> look for next occurence since the first footnote element
+            // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
+            // the position we need to find).
+            positionElement = document.getElementsByName(this.pos)[1] as HTMLElement;
+        }
+        if (positionElement !== undefined && positionElement.classList.length !== 0 &&
+         positionElement.classList.contains('anchor')) {
           this.scrollToHTMLElement(positionElement);
         }
       }
@@ -180,7 +190,7 @@ export class IntroductionPage {
 
             if (anchorElem.classList.contains('ref_external')) {
               // Link to external web page, open in new window/tab.
-              const ref = window.open(anchorElem.href, '_blank');
+              window.open(anchorElem.href, '_blank');
 
             } else if (anchorElem.classList.contains('ref_readingtext') ||
              anchorElem.classList.contains('ref_comment') ||
@@ -208,7 +218,6 @@ export class IntroductionPage {
                     chapterId = hrefTargetItems[2];
                   }
 
-                  // @TODO Needs to be supplemented with handling of position but no chapter.
                   let hrefString = '#/publication/' + publicationId + '/text/' + textId + '/';
                   if (chapterId) {
                     hrefString += chapterId;
@@ -218,9 +227,13 @@ export class IntroductionPage {
                     }
                   } else {
                     hrefString += 'nochapter';
+                    if (hrefTargetItems.length > 2 && hrefTargetItems[2].startsWith('#')) {
+                      positionId = hrefTargetItems[2].replace('#', ';');
+                      hrefString += positionId;
+                    }
                   }
                   hrefString += '/not/infinite/nosong/searchtitle/established&comments';
-                  const ref = window.open(hrefString, '_blank');
+                  window.open(hrefString, '_blank');
                 });
 
               } else if (anchorElem.classList.contains('ref_introduction')) {
@@ -268,8 +281,14 @@ export class IntroductionPage {
                     }
                   } else {
                     // Different introduction, open in new window.
-                    // Needs to be supplemented with handling of position
-                    const ref = window.open('#/publication-introduction/' + publicationId, '_blank');
+                    
+                    let hrefString = '#/publication-introduction/' + publicationId;
+                    if (hrefTargetItems.length > 1 && hrefTargetItems[1].startsWith('#')) {
+                      positionId = hrefTargetItems[1].replace('#', ';');
+                      hrefString += '/' + positionId;
+                    }
+
+                    window.open(hrefString, '_blank');
                   }
                 });
               }
