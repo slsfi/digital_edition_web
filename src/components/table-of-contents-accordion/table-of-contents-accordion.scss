@@ -13,10 +13,10 @@ table-of-contents-accordion {
 
     ion-item.item.item-block div.item-inner {
         padding-right: 4px;
-        border-right: 4px solid transparent;
+        border-right: 4px solid transparent !important;
     }
     ion-item.item.item-block:hover div.item-inner {
-        border-right-color: color($colors, primary);
+        border-right-color: color($colors, primary) !important;
     }
 
     ion-item.item.selected-toc-item {
@@ -60,7 +60,7 @@ table-of-contents-accordion {
             }
         }
         ion-item.item.item-block:hover div.item-inner {
-            border-right-color: transparent;
+            border-right-color: transparent !important;
         }
     }
 
