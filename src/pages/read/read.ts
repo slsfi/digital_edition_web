@@ -276,7 +276,7 @@ export class ReadPage /*implements OnDestroy*/ {
       this.establishedText.link = this.params.get('collectionID') + '_' + this.params.get('publicationID');
 
       if (this.params.get('chapterID') !== undefined && !this.params.get('chapterID').startsWith('nochapter') &&
-        this.params.get('chapterID') !== ':chapterID' && this.params.get('chapterID') !== 'chapterID') {
+       this.params.get('chapterID') !== ':chapterID' && this.params.get('chapterID') !== 'chapterID') {
         this.establishedText.link += '_' + this.params.get('chapterID');
       }
 
