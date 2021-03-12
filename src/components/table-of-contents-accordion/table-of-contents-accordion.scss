@@ -27,6 +27,10 @@ table-of-contents-accordion {
         background-color: color($colors, secondary);
         min-height: 50px;
         font-weight: bold;
+
+        &.item-block:hover div.item-inner {
+            border-right-color: transparent !important;
+        }
     }
     .collection-name-top ion-label {
         white-space: pre-wrap !important;
@@ -59,7 +63,7 @@ table-of-contents-accordion {
                 }
             }
         }
-        ion-item.item.item-block:hover div.item-inner {
+        &.item.item-block:hover div.item-inner {
             border-right-color: transparent !important;
         }
     }
