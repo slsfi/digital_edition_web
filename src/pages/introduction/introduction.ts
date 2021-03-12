@@ -39,6 +39,7 @@ export class IntroductionPage {
   protected text: any;
   protected textMenu: any;
   protected collection: any;
+  protected pos: any;
   public tocMenuOpen: boolean;
   public hasSeparateIntroToc: boolean;
   toolTipPosition: object;
@@ -99,6 +100,14 @@ export class IntroductionPage {
       this.getTocRoot(this.id);
     }
 
+    // Check if we have a pos parmeter in the URL, if we have one we can use it for scrolling the text on the page to that position
+    const currentURL: string = String(window.location.href);
+    if ( currentURL.includes(';pos') ) {
+      this.pos = currentURL.split(';')[1];
+    } else {
+      this.pos = null;
+    }
+
     this.setUpTextListeners();
   }
 
@@ -116,6 +125,8 @@ export class IntroductionPage {
             const matches = String(this.text).match(pattern);
             const the_string = matches[0];
             this.textMenu = the_string;
+            // Try to scroll to an element in the text, checks if "pos" given
+            this.scrollToPos();
           },
         error =>  {this.errorMessage = <any>error; this.textLoading = false; }
 
@@ -124,6 +135,19 @@ export class IntroductionPage {
       selectedStatic['isIntroduction'] = true;
       this.events.publish('setSelectedStatic:true', selectedStatic);
     });
+  }
+  // Try to scroll to an element in the text, checks if "pos" given
+  // Timeout, to give text some time to load on the page
+  scrollToPos() {
+    setTimeout(function() {
+      if ( this.pos !== null ) {
+        const positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
+        console.log(positionElement);
+        if ( positionElement !== undefined ) {
+          this.scrollToHTMLElement(positionElement);
+        }
+      }
+    }.bind(this), 1000);
   }
 
   ionViewWillLeave() {
