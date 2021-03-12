@@ -663,7 +663,7 @@ export class ReadPage /*implements OnDestroy*/ {
     }
 
     let chapter_id = 'nochapter';
-    if (this.params.get('chapterID') !== undefined && this.params.get('chapterID') !== 'nochapter' &&
+    if (this.params.get('chapterID') !== undefined && !this.params.get('chapterID').startsWith('nochapter') &&
     this.params.get('chapterID') !== ':chapterID' && this.params.get('chapterID') !== 'chapterID') {
       chapter_id = this.params.get('chapterID');
     }
