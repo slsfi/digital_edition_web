@@ -108,14 +108,9 @@ export class ReadTextComponent {
     const checkExist = setInterval(function() {
       if (this.nochapterPos !== undefined && this.nochapterPos !== null) {
         console.log('Read-text this.nochapterPos = ' + this.nochapterPos);
-        const linkData = this.nochapterPos.split(';');
-        if ( linkData[1] ) {
-          const target = document.getElementsByName('' + linkData[1] + '')[0] as HTMLAnchorElement;
-          if ( target ) {
-            this.scrollToHTMLElement(target, false);
-            clearInterval(checkExist);
-          }
-        } else {
+        const target = document.getElementsByName('' + this.nochapterPos + '')[0] as HTMLAnchorElement;
+        if ( target ) {
+          this.scrollToHTMLElement(target, false);
           clearInterval(checkExist);
         }
       } else if ( this.link !== undefined ) {
