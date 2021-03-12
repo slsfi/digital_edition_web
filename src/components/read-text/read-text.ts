@@ -50,6 +50,7 @@ export class ReadTextComponent {
 
   ngOnInit() {
     if ( this.external !== undefined && this.external !== null ) {
+      console.log('Read-text this.external = ' + this.external);
       const extParts = String(this.external).split(' ');
       this.textService.getCollectionAndPublicationByLegacyId(extParts[0] + '_' + extParts[1]).subscribe(data => {
         if ( data[0] !== undefined ) {
@@ -64,39 +65,38 @@ export class ReadTextComponent {
 
   ngAfterViewInit() {
     this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
-    try {
-      if (this.config.getSettings('settings.showReadTextIllustrations')) {
-        const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
+      try {
+        if (this.config.getSettings('settings.showReadTextIllustrations')) {
+          const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
 
-        if (event.target.classList.contains('doodle')) {
-          const image = {src: '/assets/images/verk/' + String(event.target.dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
-          this.events.publish('give:illustration', image);
-        }
-        if ( showIllustration.includes(this.link.split('_')[1])) {
-          if (event.target.classList.contains('est_figure_graphic')) {
-             // Check if we have the "illustrations" tab open, if not, open
-            if ( document.querySelector('illustrations') === null ) {
-              this.openNewView(event, null, 'illustrations');
-            }
-            const image = {src: event.target.src, class: 'illustration'};
+          if (event.target.classList.contains('doodle')) {
+            const image = {src: '/assets/images/verk/' + String(event.target.dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
             this.events.publish('give:illustration', image);
           }
-        } else {
-          if (event.target.previousElementSibling !== null &&
-            event.target.previousElementSibling.classList.contains('est_figure_graphic')) {
-            // Check if we have the "illustrations" tab open, if not, open
-            if ( document.querySelector('illustrations') === null ) {
-              this.openNewView(event, null, 'illustrations');
+          if ( showIllustration.includes(this.link.split('_')[1])) {
+            if (event.target.classList.contains('est_figure_graphic')) {
+              // Check if we have the "illustrations" tab open, if not, open
+              if ( document.querySelector('illustrations') === null ) {
+                this.openNewView(event, null, 'illustrations');
+              }
+              const image = {src: event.target.src, class: 'illustration'};
+              this.events.publish('give:illustration', image);
             }
-            const image = {src: event.target.previousElementSibling.src, class: 'illustration'};
-            this.events.publish('give:illustration', image);
+          } else {
+            if (event.target.previousElementSibling !== null &&
+              event.target.previousElementSibling.classList.contains('est_figure_graphic')) {
+              // Check if we have the "illustrations" tab open, if not, open
+              if ( document.querySelector('illustrations') === null ) {
+                this.openNewView(event, null, 'illustrations');
+              }
+              const image = {src: event.target.previousElementSibling.src, class: 'illustration'};
+              this.events.publish('give:illustration', image);
+            }
           }
         }
+      } catch (e) {
+        console.error(e);
       }
-    } catch (e) {
-      console.error(e);
-    }
-
 
       if (event.target.parentNode.classList.contains('ref_illustration')) {
         const hashNumber = event.target.parentNode.hash;
