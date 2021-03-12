@@ -1,12 +1,12 @@
 <ion-toolbar>
   <ion-grid>
     <ion-row>
-      <ion-col *ngIf="(showLogo || !userSettingsService.isTablet()) && !(splitPaneMobile && userSettingsService.isMobile())" col-8>
+      <ion-col *ngIf="(showLogo || !userSettingsService.isTablet()) && !(splitPaneMobile && userSettingsService.isMobile())">
         <ion-grid>
           <ion-row>
             <ion-col *ngIf="userSettingsService.isDesktop() || userSettingsService.isTablet()">
               <ion-buttons start>
-                <button ion-button icon-only (click)="toggleSplitPane()" class="enable" isActive="false" small id="menuToggle">
+                <button ion-button icon-only (click)="toggleSplitPane()" class="enable top-menu-button" isActive="false" small id="menuToggle">
                   <ion-icon name="menu"></ion-icon>
                 </button>
                 <button ion-button class="top-menu-button" (click)="front()">
@@ -40,7 +40,7 @@
             </ion-col>
             <ion-col *ngIf="userSettingsService.isMobile() && !userSettingsService.isDesktop() && !userSettingsService.isTablet()"
               class="mobile_row">
-              <button ion-button (click)="toggleSplitPane()" class="enable" isActive="false" id="menuToggle">
+              <button ion-button (click)="toggleSplitPane()" class="enable top-menu-button" isActive="false" id="menuToggle">
                 <ion-icon name="menu"></ion-icon>
               </button>
               <button ion-button (click)="searchApp()" class="searchButton" id="searchIcon">
@@ -64,7 +64,7 @@
           <ion-row>
             <ion-col *ngIf="userSettingsService.isDesktop() || userSettingsService.isTablet()">
               <ion-buttons start>
-                <button ion-button (click)="toggleSplitPane()" class="enable" isActive="false" id="menuToggle">
+                <button ion-button (click)="toggleSplitPane()" class="enable top-menu-button" isActive="false" id="menuToggle">
                   <ion-icon name="menu"></ion-icon>
                 </button>
                 <button ion-button class="top-menu-button" (click)="front()">
@@ -100,7 +100,7 @@
             </ion-col>
             <ion-col *ngIf="userSettingsService.isMobile() && !userSettingsService.isDesktop() && !userSettingsService.isTablet()">
               <ion-buttons end>
-                <button ion-button (click)="toggleSplitPane()" class="enable" isActive="false" id="menuToggle">
+                <button ion-button (click)="toggleSplitPane()" class="enable top-menu-button" isActive="false" id="menuToggle">
                   <ion-icon name="menu"></ion-icon>
                 </button>
                 <button ion-button (click)="searchApp()" id="searchIcon" end>

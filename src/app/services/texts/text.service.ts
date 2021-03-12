@@ -27,8 +27,6 @@ export class TextService {
   getEstablishedText(id: string): Observable<any> {
     this.appMachineName = this.config.getSettings('app.machineName');
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
-    const id2 = id.replace('_est', '');
-    const parts = id2.split(';');
     const c_id = `${id}`.split('_')[0];
     const pub_id = `${id}`.split('_')[1];
     let ch_id = null;
@@ -36,7 +34,7 @@ export class TextService {
       ch_id = String(`${id}`.split('_')[2]).split(';')[0];
     }
 
-    if ( ch_id === '' ) {
+    if ( ch_id === '' || ch_id === 'nochapter' ) {
       ch_id = null;
     }
 

@@ -237,14 +237,14 @@ export class ReadTextComponent {
     );
   }
 
-  private scrollToHTMLElement(element: HTMLElement, addTag: boolean, timeOut = 5000) {
+  private scrollToHTMLElement(element: HTMLElement, addTag: boolean, position = 'top', timeOut = 5000) {
     try {
-      element.scrollIntoView({'behavior': 'smooth', 'block': 'start'});
       const tmp = element.previousElementSibling as HTMLElement;
       let addedArrow = false;
 
       if ( tmp !== null && tmp !== undefined && tmp.classList.contains('anchor_lemma') ) {
         tmp.style.display = 'inline';
+        this.scrollElementIntoView(tmp, position);
         setTimeout(function() {
           tmp.style.display = 'none';
         }, 2000);
@@ -254,6 +254,7 @@ export class ReadTextComponent {
         tmpImage.src = 'assets/images/ms_arrow_right.svg';
         tmpImage.classList.add('inl_ms_arrow');
         element.parentElement.insertBefore(tmpImage, element);
+        this.scrollElementIntoView(tmpImage, position);
         setTimeout(function() {
           element.parentElement.removeChild(tmpImage);
         }, timeOut);
@@ -262,6 +263,7 @@ export class ReadTextComponent {
 
       if ( addTag && !addedArrow ) {
         element.innerHTML = '<img class="inl_ms_arrow" src="assets/images/ms_arrow_right.svg"/>';
+        this.scrollElementIntoView(element, position);
         setTimeout(function() {
           element.innerHTML = '';
         }, timeOut);
@@ -269,6 +271,38 @@ export class ReadTextComponent {
     } catch ( e ) {
       console.error(e);
     }
+  }
+
+  /* This function can be used to scroll a container so that the element which it contains
+   * is placed either at the top edge of the container or in the center of the container.
+   * This function can be called multiple times simultaneously on elements in different
+   * containers, unlike the native scrollIntoView function which cannot be called multiple
+   * times simultaneously in Chrome due to a bug.
+   * Valid values for yPosition are 'top' and 'center'.
+   */
+  private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0) {
+    if (element === undefined || element === null || (yPosition !== 'center' && yPosition !== 'top')) {
+      return;
+    }
+    // Find the scrollable container of the element which is to be scrolled into view
+    let container = element.parentElement;
+    while (!container.classList.contains('scroll-content') &&
+     container.parentElement.tagName !== 'ION-SCROLL') {
+      container = container.parentElement;
+      if (container === null || container === undefined) {
+        return;
+      }
+    }
+
+    const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
+    let baseOffset = 10;
+    if (yPosition === 'center') {
+      baseOffset = Math.floor(container.offsetHeight / 2);
+      if (baseOffset > 45) {
+        baseOffset = baseOffset - 45;
+      }
+    }
+    container.scrollTo({top: y - baseOffset - offset, behavior: 'smooth'});
   }
 
   doAnalytics() {

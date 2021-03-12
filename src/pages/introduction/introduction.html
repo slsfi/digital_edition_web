@@ -5,12 +5,12 @@
             <ion-row class="secondary-toolbar-icons-wrapper" nowrap>
               <ion-col>
                   <div id="share-icon" (click)="showSharePopover($event)">
-                    <ion-icon class="share-icon" name="share"></ion-icon>
+                    <ion-icon class="share-icon sec-menu-button" name="share"></ion-icon>
                   </div>
               </ion-col>
               <ion-col>
                   <div #settingsIconElement (click)="showPopover($event)" id="settings-icon">
-                  <ion-icon  class="settings-icon" name="settings"></ion-icon>
+                  <ion-icon  class="settings-icon sec-menu-button" name="settings"></ion-icon>
                   </div>
               </ion-col>
             </ion-row>
@@ -40,8 +40,8 @@
     </ion-card>
     <nav id="TOC" *ngIf="hasSeparateIntroToc" [ngClass]="tocMenuOpen ? 'menuOpenTOC' : 'menuClosedTOC'">
         <div id="toc_menu" (click)="toggleTocMenu()" [ngClass]="tocMenuOpen ? 'menuOpenIcon' : 'menuClosedIcon'">
-            <ion-icon name="menu" *ngIf="!tocMenuOpen"></ion-icon>
-            <ion-icon name="close" *ngIf="tocMenuOpen"></ion-icon>
+            <ion-icon name="menu" class="intro-toc-button" *ngIf="!tocMenuOpen"></ion-icon>
+            <ion-icon name="close" class="intro-toc-button" *ngIf="tocMenuOpen"></ion-icon>
         </div>
         <div id="toc_text" [innerHTML]="textMenu" [ngClass]="tocMenuOpen ? 'menuOpen' : 'menuClosed'">
         </div>

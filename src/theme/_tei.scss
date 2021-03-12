@@ -29,7 +29,7 @@ manuscripts div.tei {
 
 div.tei {
     font-family: $font-app-tei;
-    font-size: $text-fontsize-xsmall;
+    font-size: $text-fontsize-small;
     line-height: 1.6em;
     white-space: normal;
 }
@@ -1191,7 +1191,6 @@ div.tei {
     /* Tables */
     table {
         table-layout: fixed;
-        width: 100%;
     }
     td,
     th {

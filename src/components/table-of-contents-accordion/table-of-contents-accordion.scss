@@ -1,29 +1,43 @@
 table-of-contents-accordion {
-  .accordion-menu .list .list-md {
-    background-color: #f2f2f2;
-  }
-  ion-label{
-    cursor: pointer;
-  }
+    .accordion-menu .list .list-md {
+        background-color: #f2f2f2;
+    }
+    ion-label {
+        cursor: pointer;
+    }
 
-  /* The toc items should not have a background color in them selves, thus the background color for the entire navigation panel shines through. */
-  ion-item.item {
-    background-color: unset;
-  }
+    /* The toc items should not have a background color, thus the background color for the entire navigation panel shines through. */
+    ion-item.item {
+        background-color: unset;
+    }
 
-  ion-item.item.selected-toc-item {
-    /*background-color: #eee;*/
-    font-weight: bold;
-  }
+    ion-item.item.item-block div.item-inner {
+        padding-right: 4px;
+        border-right: 4px solid transparent !important;
+    }
+    ion-item.item.item-block:hover div.item-inner {
+        border-right-color: color($colors, primary) !important;
+    }
 
-  ion-item.item.collection-name-top {
-    background-color: color($colors, secondary);
-    min-height: 50px;
-    font-weight: bold;
-  }
-  .collection-name-top ion-label {
-    white-space: pre-wrap !important;
-  }
+    ion-item.item.selected-toc-item {
+        font-weight: bold;
+    }
+
+    ion-item.item.collection-name-top {
+        background-color: color($colors, secondary);
+        min-height: 50px;
+        font-weight: bold;
+
+        &.item-block:hover div.item-inner {
+            border-right-color: transparent !important;
+        }
+    }
+    .collection-name-top ion-label {
+        white-space: pre-wrap !important;
+        cursor: auto;
+        opacity: 1 !important;
+    }
+
     .collection-filters {
         ion-label {
             display: flex;
@@ -48,6 +62,9 @@ table-of-contents-accordion {
                     }
                 }
             }
+        }
+        &.item.item-block:hover div.item-inner {
+            border-right-color: transparent !important;
         }
     }
 

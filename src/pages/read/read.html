@@ -8,20 +8,20 @@
             <ion-row class="secondary-toolbar-icons-wrapper" nowrap>
               <ion-col>
                   <div id="share-icon" (click)="showSharePopover($event)">
-                    <ion-icon class="share-icon" name="share"></ion-icon>
+                    <ion-icon class="share-icon sec-menu-button" name="share"></ion-icon>
                   </div>
               </ion-col>
               <!--
               <ion-col>
                   <div name="download" id="download-icon" (click)="download()">
-                  <ion-icon class="settings-icon" *ngIf="!cacheItem" name="cloud-download"></ion-icon>
-                  <ion-icon class="settings-icon" *ngIf="cacheItem" name="cloud-done"></ion-icon>
+                  <ion-icon class="settings-icon sec-menu-button" *ngIf="!cacheItem" name="cloud-download"></ion-icon>
+                  <ion-icon class="settings-icon sec-menu-button" *ngIf="cacheItem" name="cloud-done"></ion-icon>
                   </div>
               </ion-col>
               -->
               <ion-col>
                   <div #settingsIconElement (click)="showPopover($event)" id="settings-icon">
-                  <ion-icon class="settings-icon" name="settings"></ion-icon>
+                  <ion-icon class="settings-icon sec-menu-button" name="settings"></ion-icon>
                   </div>
               </ion-col>
             </ion-row>
@@ -116,7 +116,7 @@
   </div>
 
   <!-- Add view -->
-  <ion-fab id="readFabMenu" class="read-fab-menu" *ngIf="!isTablet && displayToggle" bottom right margin #fab>
+  <ion-fab id="readFabMenu" class="read-fab-menu" *ngIf="!userSettingsService.isMobile() && displayToggle" bottom right margin #fab>
     <button ion-fab>
       <ion-icon name="add"></ion-icon>
     </button>

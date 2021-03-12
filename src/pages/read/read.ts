@@ -426,6 +426,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
           if ( this.params.get('chapterID') ) {
             tocItems.selectedChapterId = this.params.get('chapterID');
+            console.log('toc chapterId: ' + tocItems.selectedChapterId);
           }
 
           const tocLoadedParams = { tocItems: tocItems };
@@ -809,7 +810,9 @@ export class ReadPage /*implements OnDestroy*/ {
   ngAfterViewInit() {
     setTimeout(function () {
       try {
-        const itemId = 'toc_' + this.legacyId;
+        // this.legacyId doesn't work for texts with chapters and positions since legacyId only contains collectionId and publicationId
+        // const itemId = 'toc_' + this.legacyId;
+        const itemId = 'toc_' + this.establishedText.link;
         this.scrollToTOC(document.getElementById(itemId));
       } catch (e) {
         console.log(e);
@@ -820,7 +823,7 @@ export class ReadPage /*implements OnDestroy*/ {
   scrollToTOC(element: HTMLElement) {
     try {
       if (element !== null) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        this.scrollElementIntoView(element);
       }
     } catch (e) {
       console.log(e);
@@ -886,7 +889,7 @@ export class ReadPage /*implements OnDestroy*/ {
               }
               if (lemmaStart !== null && lemmaStart !== undefined) {
                 // Scroll to start of lemma in reading text and temporarily prepend arrow.
-                const lemmaSettimeoutId = this.scrollToCommentLemma(lemmaStart);
+                this.scrollToCommentLemma(lemmaStart);
                 // Scroll to comment in the comments-column.
                 const commentSettimeoutId = this.scrollToComment(numId);
               }
@@ -896,19 +899,15 @@ export class ReadPage /*implements OnDestroy*/ {
             }
           }
         }
-      } else if (eventTarget['classList'].contains('anchor')) {
-        if (eventTarget.hasAttribute('href')) {
-          this.scrollToElement(eventTarget.getAttribute('href'));
-        }
       }
       if (eventTarget['classList'].contains('variantScrollTarget')) {
         if (eventTarget !== undefined) {
-          eventTarget.classList.toggle('highlight');
+          eventTarget.classList.add('highlight');
           this.scrollToVariant(eventTarget);
         }
         setTimeout(function () {
           if (eventTarget !== undefined) {
-            eventTarget.classList.toggle('highlight');
+            eventTarget.classList.remove('highlight');
           }
         }, 5000);
       }
@@ -917,7 +916,7 @@ export class ReadPage /*implements OnDestroy*/ {
     /* MOUSEWHEEL EVENTS */
     this.renderer.listen(nElement, 'mousewheel', (event) => {
       this.hideToolTip();
-    }).bind(this)
+    }).bind(this);
 
     let toolTipsSettings;
     try {
@@ -984,6 +983,7 @@ export class ReadPage /*implements OnDestroy*/ {
       }
     }).bind(this);
 
+    /* MOUSE OUT EVENTS */
     this.renderer.listen(nElement, 'mouseout', (event) => {
       this.hideToolTip();
     }).bind(this);
@@ -1317,10 +1317,6 @@ export class ReadPage /*implements OnDestroy*/ {
     if (origin.target.nextSibling.className !== undefined && String(origin.target.nextSibling.className).includes('tooltip')) {
       this.setToolTipPosition(targetElem, origin.target.nextSibling.textContent);
       this.setToolTipText(origin.target.nextSibling.textContent);
-      /*
-      clearTimeout(window['reload_timer']);
-      this.hideToolTip();
-      */
     }
   }
 
@@ -1329,11 +1325,6 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   hideToolTip() {
-    /*
-    window['reload_timer'] = setTimeout(() => {
-      this.showToolTip = false;
-    }, 4000);
-    */
     this.setToolTipText('');
     this.toolTipPosition = {
       top: -1000 + 'px',
