@@ -125,8 +125,7 @@ export class IntroductionPage {
             const matches = String(this.text).match(pattern);
             const the_string = matches[0];
             this.textMenu = the_string;
-            // Try to scroll to an element in the text, checks if "pos" given
-            this.scrollToPos();
+            
           },
         error =>  {this.errorMessage = <any>error; this.textLoading = false; }
 
@@ -136,10 +135,15 @@ export class IntroductionPage {
       this.events.publish('setSelectedStatic:true', selectedStatic);
     });
   }
+
+  ionViewDidEnter() {
+    // Try to scroll to an element in the text, checks if "pos" given
+    this.scrollToPos();
+  }
   // Try to scroll to an element in the text, checks if "pos" given
   // Timeout, to give text some time to load on the page
   scrollToPos() {
-    setTimeout(function() {
+    // setTimeout(function() {
       if ( this.pos !== null ) {
         const positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
         console.log(positionElement);
@@ -147,7 +151,7 @@ export class IntroductionPage {
           this.scrollToHTMLElement(positionElement);
         }
       }
-    }.bind(this), 1000);
+    // }.bind(this), 1000);
   }
 
   ionViewWillLeave() {
