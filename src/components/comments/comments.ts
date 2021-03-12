@@ -204,7 +204,7 @@ export class CommentsComponent {
                     } else {
                       hrefString += 'nochapter';
                       if (hrefTargetItems.length > 2 && hrefTargetItems[2].startsWith('#')) {
-                        positionId = hrefTargetItems[3].replace('#', ';');
+                        positionId = hrefTargetItems[2].replace('#', ';');
                         hrefString += positionId;
                       }
                     }
