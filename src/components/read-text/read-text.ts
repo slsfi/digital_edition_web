@@ -50,7 +50,6 @@ export class ReadTextComponent {
 
   ngOnInit() {
     if ( this.external !== undefined && this.external !== null ) {
-      console.log('Read-text this.external = ' + this.external);
       const extParts = String(this.external).split(' ');
       this.textService.getCollectionAndPublicationByLegacyId(extParts[0] + '_' + extParts[1]).subscribe(data => {
         if ( data[0] !== undefined ) {
@@ -107,6 +106,7 @@ export class ReadTextComponent {
 
     const checkExist = setInterval(function() {
       if ( this.link !== undefined ) {
+        console.log('Read-text this.link = ' + this.link);
         const linkData = this.link.split(';');
         if ( linkData[1] ) {
           const target = document.getElementsByName('' + linkData[1] + '')[0] as HTMLAnchorElement;
