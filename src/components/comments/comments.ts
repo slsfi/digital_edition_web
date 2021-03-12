@@ -197,12 +197,16 @@ export class CommentsComponent {
                     let hrefString = '#/publication/' + publicationId + '/text/' + textId + '/';
                     if (chapterId) {
                       hrefString += chapterId;
+                      if (hrefTargetItems.length > 3 && hrefTargetItems[3].startsWith('#')) {
+                        positionId = hrefTargetItems[3].replace('#', ';');
+                        hrefString += positionId;
+                      }
                     } else {
                       hrefString += 'nochapter';
-                    }
-                    if (hrefTargetItems.length > 3 && hrefTargetItems[3].startsWith('#')) {
-                      positionId = hrefTargetItems[3].replace('#', ';');
-                      hrefString += positionId;
+                      if (hrefTargetItems.length > 2 && hrefTargetItems[2].startsWith('#')) {
+                        positionId = hrefTargetItems[3].replace('#', ';');
+                        hrefString += positionId;
+                      }
                     }
                     hrefString += '/not/infinite/nosong/searchtitle/established&comments';
                     const ref = window.open(hrefString, '_blank');
