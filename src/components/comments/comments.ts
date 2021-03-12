@@ -216,17 +216,18 @@ export class CommentsComponent {
               } else if (anchorElem.classList.contains('ref_introduction')) {
                 // Link to introduction.
                 publicationId = hrefTargetItems[0];
-                if (hrefTargetItems.length > 1) {
-                  positionId = hrefTargetItems[1];
-                }
 
                 this.textService.getCollectionAndPublicationByLegacyId(publicationId).subscribe(data => {
                   if (data[0] !== undefined) {
                     publicationId = data[0]['coll_id'];
                   }
+                  let hrefString = '#/publication-introduction/' + publicationId;
+                  if (hrefTargetItems.length > 1) {
+                    positionId = hrefTargetItems[1].replace('#', ';');
+                    hrefString += positionId;
+                  }
 
-                  // Needs to be supplemented with handling of position
-                  const ref = window.open('#/publication-introduction/' + publicationId, '_blank');
+                  const ref = window.open(hrefString, '_blank');
                 });
               }
             }
