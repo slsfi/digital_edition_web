@@ -143,7 +143,7 @@ export class IntroductionPage {
     setTimeout(function() {
       if ( this.pos !== null ) {
         let positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
-        let parentElem = positionElement.parentElement;
+        const parentElem = positionElement.parentElement;
         console.log(positionElement);
         if (parentElem !== undefined && parentElem.classList.length !== 0 &&
          parentElem.classList.contains('ttFixed')) {
@@ -281,7 +281,7 @@ export class IntroductionPage {
                     }
                   } else {
                     // Different introduction, open in new window.
-                    
+
                     let hrefString = '#/publication-introduction/' + publicationId;
                     if (hrefTargetItems.length > 1 && hrefTargetItems[1].startsWith('#')) {
                       positionId = hrefTargetItems[1].replace('#', ';');
