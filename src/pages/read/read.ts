@@ -89,6 +89,7 @@ export class ReadPage /*implements OnDestroy*/ {
   toolTipMaxWidth: string;
   toolTipScaleValue: number;
   toolTipText: string;
+  nochapterPos: string;
 
   maxSingleWindowWidth: Number;
 
@@ -278,6 +279,12 @@ export class ReadPage /*implements OnDestroy*/ {
       if (this.params.get('chapterID') !== undefined && !this.params.get('chapterID').startsWith('nochapter') &&
        this.params.get('chapterID') !== ':chapterID' && this.params.get('chapterID') !== 'chapterID') {
         this.establishedText.link += '_' + this.params.get('chapterID');
+      }
+
+      if (this.params.get('chapterID') !== undefined && this.params.get('chapterID').startsWith('nochapter;')) {
+        this.nochapterPos = this.params.get('chapterID').replace('nochapter;', '');
+      } else {
+        this.nochapterPos = null;
       }
 
       this.viewCtrl.setBackButtonText('');

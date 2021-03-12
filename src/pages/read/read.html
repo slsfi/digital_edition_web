@@ -79,7 +79,7 @@
             <!-- Don't scroll in facsimile view -->
             <ion-scroll [scrollY]="!view.facsimiles.show" style="height:100vh;" class="card" #scrollBar>
               <div *ngIf="view.established.show">
-                <read-text [link]="establishedText.link" [matches]="matches" [external]="external"></read-text>
+                <read-text [link]="establishedText.link" [matches]="matches" [external]="external" [nochapterPos]="nochapterPos"></read-text>
               </div>
               <div *ngIf="view.comments.show">
                 <comments [link]="establishedText.link" [matches]="matches" [external]="external" (openNewIntroView)="openNewView($event)">
