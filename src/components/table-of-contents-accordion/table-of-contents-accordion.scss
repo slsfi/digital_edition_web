@@ -11,11 +11,13 @@ table-of-contents-accordion {
         background-color: unset;
     }
 
-    /*
-    ion-item.item:hover ion-label {
-        opacity: $opacity-hover-toc-accordion;
+    ion-item.item.item-block div.item-inner {
+        padding-right: 4px;
+        border-right: 4px solid transparent;
     }
-    */
+    ion-item.item.item-block:hover div.item-inner {
+        border-right-color: color($colors, primary);
+    }
 
     ion-item.item.selected-toc-item {
         font-weight: bold;
@@ -56,6 +58,9 @@ table-of-contents-accordion {
                     }
                 }
             }
+        }
+        ion-item.item.item-block:hover div.item-inner {
+            border-right-color: transparent;
         }
     }
 
@@ -124,14 +129,6 @@ table-of-contents-accordion {
         color: #515151;
         font-weight: normal !important;
         font-size: 0.875rem;
-    }
-
-    ion-item.item div.item-inner {
-        padding-right: 4px;
-        border-right: 4px solid transparent;
-    }
-    ion-item.item:hover div.item-inner {
-        border-right-color: color($colors, primary);
     }
 
 }
