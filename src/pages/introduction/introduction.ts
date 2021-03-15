@@ -103,8 +103,10 @@ export class IntroductionPage {
     // Check if we have a pos parmeter in the URL, if we have one we can use it for scrolling the text on the page to that position.
     // The pos parameter must come after the publication id followed by /#, e.g. /publication-introduction/203/#pos1
     const currentURL: string = String(window.location.href);
+    console.log(currentURL);
     if (currentURL.match(/publication-introduction\/\d+\/#\w+/) !== null) {
       const tmpPos = currentURL.split('#').pop();
+      console.log('tmpPos: ' + tmpPos);
       if (tmpPos !== undefined) {
         this.pos = tmpPos;
       } else {
@@ -312,6 +314,7 @@ export class IntroductionPage {
                     let hrefString = '#/publication-introduction/' + publicationId;
                     if (hrefTargetItems.length > 1 && hrefTargetItems[1].startsWith('#')) {
                       // positionId = hrefTargetItems[1].replace('#', ';');
+                      positionId = hrefTargetItems[1];
                       hrefString += '/' + positionId;
                     }
 
