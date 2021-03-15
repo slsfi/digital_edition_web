@@ -271,7 +271,7 @@ export class ReadTextComponent {
         this.scrollElementIntoView(tmp, position);
         setTimeout(function() {
           tmp.style.display = 'none';
-        }, 2000);
+        }, timeOut);
         addedArrow = true;
       } else {
         const tmpImage: HTMLImageElement = new Image();
