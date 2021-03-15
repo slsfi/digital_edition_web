@@ -24,6 +24,7 @@ export class ReadTextComponent {
   @Input() link: string;
   @Input() matches?: Array<string>;
   @Input() external?: string;
+  @Input() nochapterPos?: string;
   public text: any;
   protected errorMessage: string;
   defaultView: string;
@@ -64,39 +65,38 @@ export class ReadTextComponent {
 
   ngAfterViewInit() {
     this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
-    try {
-      if (this.config.getSettings('settings.showReadTextIllustrations')) {
-        const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
+      try {
+        if (this.config.getSettings('settings.showReadTextIllustrations')) {
+          const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
 
-        if (event.target.classList.contains('doodle')) {
-          const image = {src: '/assets/images/verk/' + String(event.target.dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
-          this.events.publish('give:illustration', image);
-        }
-        if ( showIllustration.includes(this.link.split('_')[1])) {
-          if (event.target.classList.contains('est_figure_graphic')) {
-             // Check if we have the "illustrations" tab open, if not, open
-            if ( document.querySelector('illustrations') === null ) {
-              this.openNewView(event, null, 'illustrations');
-            }
-            const image = {src: event.target.src, class: 'illustration'};
+          if (event.target.classList.contains('doodle')) {
+            const image = {src: '/assets/images/verk/' + String(event.target.dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
             this.events.publish('give:illustration', image);
           }
-        } else {
-          if (event.target.previousElementSibling !== null &&
-            event.target.previousElementSibling.classList.contains('est_figure_graphic')) {
-            // Check if we have the "illustrations" tab open, if not, open
-            if ( document.querySelector('illustrations') === null ) {
-              this.openNewView(event, null, 'illustrations');
+          if ( showIllustration.includes(this.link.split('_')[1])) {
+            if (event.target.classList.contains('est_figure_graphic')) {
+              // Check if we have the "illustrations" tab open, if not, open
+              if ( document.querySelector('illustrations') === null ) {
+                this.openNewView(event, null, 'illustrations');
+              }
+              const image = {src: event.target.src, class: 'illustration'};
+              this.events.publish('give:illustration', image);
             }
-            const image = {src: event.target.previousElementSibling.src, class: 'illustration'};
-            this.events.publish('give:illustration', image);
+          } else {
+            if (event.target.previousElementSibling !== null &&
+              event.target.previousElementSibling.classList.contains('est_figure_graphic')) {
+              // Check if we have the "illustrations" tab open, if not, open
+              if ( document.querySelector('illustrations') === null ) {
+                this.openNewView(event, null, 'illustrations');
+              }
+              const image = {src: event.target.previousElementSibling.src, class: 'illustration'};
+              this.events.publish('give:illustration', image);
+            }
           }
         }
+      } catch (e) {
+        console.error(e);
       }
-    } catch (e) {
-      console.error(e);
-    }
-
 
       if (event.target.parentNode.classList.contains('ref_illustration')) {
         const hashNumber = event.target.parentNode.hash;
@@ -105,22 +105,46 @@ export class ReadTextComponent {
       }
     });
 
+    // Scroll to link position if defined.
+    let interationsLeft = 10;
     const checkExist = setInterval(function() {
-      if ( this.link !== undefined ) {
-        const linkData = this.link.split(';');
-        if ( linkData[1] ) {
-          const target = document.getElementsByName('' + linkData[1] + '')[0] as HTMLAnchorElement;
-          if ( target ) {
+      if (interationsLeft < 1) {
+        clearInterval(checkExist);
+      } else {
+        interationsLeft -= 1;
+        let posId = null;
+        if (this.nochapterPos !== undefined && this.nochapterPos !== null) {
+          posId = this.nochapterPos;
+        } else if ( this.link !== undefined ) {
+          const linkData = this.link.split(';');
+          if (linkData[1]) {
+            posId = linkData[1];
+          } else {
+            clearInterval(checkExist);
+          }
+        } else {
+          clearInterval(checkExist);
+        }
+
+        if (posId) {
+          console.log('Attempting to scrolling to ' + posId);
+          let target = document.getElementsByName('' + posId + '')[0] as HTMLAnchorElement;
+          if (target && ((target.parentElement && target.parentElement.classList.length !== 0 &&
+            target.parentElement.classList.contains('ttFixed')) ||
+             (target.parentElement.parentElement && target.parentElement.parentElement.classList.length !== 0 &&
+               target.parentElement.parentElement.classList.contains('ttFixed')))) {
+            // Position in footnote --> look for second target
+            target = document.getElementsByName('' + posId + '')[1] as HTMLAnchorElement;
+          }
+          if (target) {
             this.scrollToHTMLElement(target, false);
             clearInterval(checkExist);
           }
         } else {
           clearInterval(checkExist);
         }
-      } else {
-        clearInterval(checkExist);
       }
-    }.bind(this), 100);
+    }.bind(this), 1000);
 
   }
 
@@ -247,7 +271,7 @@ export class ReadTextComponent {
         this.scrollElementIntoView(tmp, position);
         setTimeout(function() {
           tmp.style.display = 'none';
-        }, 2000);
+        }, timeOut);
         addedArrow = true;
       } else {
         const tmpImage: HTMLImageElement = new Image();

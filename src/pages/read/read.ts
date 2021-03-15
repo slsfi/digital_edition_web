@@ -89,6 +89,7 @@ export class ReadPage /*implements OnDestroy*/ {
   toolTipMaxWidth: string;
   toolTipScaleValue: number;
   toolTipText: string;
+  nochapterPos: string;
 
   maxSingleWindowWidth: Number;
 
@@ -275,9 +276,15 @@ export class ReadPage /*implements OnDestroy*/ {
       this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID');
       this.establishedText.link = this.params.get('collectionID') + '_' + this.params.get('publicationID');
 
-      if (this.params.get('chapterID') !== undefined && this.params.get('chapterID') !== 'nochapter' &&
-        this.params.get('chapterID') !== ':chapterID' && this.params.get('chapterID') !== 'chapterID') {
+      if (this.params.get('chapterID') !== undefined && !this.params.get('chapterID').startsWith('nochapter') &&
+       this.params.get('chapterID') !== ':chapterID' && this.params.get('chapterID') !== 'chapterID') {
         this.establishedText.link += '_' + this.params.get('chapterID');
+      }
+
+      if (this.params.get('chapterID') !== undefined && this.params.get('chapterID').startsWith('nochapter;')) {
+        this.nochapterPos = this.params.get('chapterID').replace('nochapter;', '');
+      } else {
+        this.nochapterPos = null;
       }
 
       this.viewCtrl.setBackButtonText('');
@@ -663,7 +670,7 @@ export class ReadPage /*implements OnDestroy*/ {
     }
 
     let chapter_id = 'nochapter';
-    if (this.params.get('chapterID') !== undefined && this.params.get('chapterID') !== 'nochapter' &&
+    if (this.params.get('chapterID') !== undefined && !this.params.get('chapterID').startsWith('nochapter') &&
     this.params.get('chapterID') !== ':chapterID' && this.params.get('chapterID') !== 'chapterID') {
       chapter_id = this.params.get('chapterID');
     }
@@ -1126,7 +1133,8 @@ export class ReadPage /*implements OnDestroy*/ {
       tooltip => {
         let text = '';
         if ( tooltip.date_born !== null || tooltip.date_deceased !== null ) {
-          const date_born =  String(tooltip.date_born).split('-')[0].replace(/^0+/, '');
+          const date_born = String(tooltip.date_born).split('-')[0].replace(/^0+/, '');
+          console.log('dateborn: ' + date_born);
           const date_deceased = String(tooltip.date_deceased).split('-')[0].replace(/^0+/, '');
           let bcTranslation = 'BC';
           this.translate.get('BC').subscribe(
@@ -1135,7 +1143,15 @@ export class ReadPage /*implements OnDestroy*/ {
             }, error => { }
           );
           const bcIndicator = (String(tooltip.date_deceased).includes('BC')) ? ' ' + bcTranslation : '';
-          text = '<b>' + tooltip.name + '</b> (' + date_born + '–' + date_deceased + '' + bcIndicator + ')';
+          text = '<b>' + tooltip.name + '</b> (';
+          if (date_born !== null && date_deceased !== null && date_born !== 'null' && date_born !== 'null') {
+            text += date_born + '–' + date_deceased + '' + bcIndicator;
+          } else if (date_born !== null && date_born !== 'null') {
+            text += '* ' + date_born + bcIndicator;
+          } else if (date_deceased !== null && date_deceased !== 'null') {
+            text += '&#8224; ' + date_deceased + bcIndicator;
+          }
+          text += ')';
         } else {
           text = '<b>' + tooltip.name + '</b>';
         }
@@ -2159,15 +2175,22 @@ export class ReadPage /*implements OnDestroy*/ {
   /* This function scrolls the read-view horisontally to the last read column.
    * It's called after adding new views. */
   scrollLastViewIntoView() {
-    setTimeout(function () {
-      const viewElements = document.getElementsByClassName('read-column');
-      if (viewElements !== undefined) {
-        const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
-        const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
-        if (scrollingContainer !== null) {
-          const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
-           scrollingContainer.getBoundingClientRect().left;
-          scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
+    let interationsLeft = 10;
+    const checkExist = setInterval(function() {
+      if (interationsLeft < 1) {
+        clearInterval(checkExist);
+      } else {
+        interationsLeft -= 1;
+        const viewElements = document.getElementsByClassName('read-column');
+        if (viewElements[0] !== undefined) {
+          const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
+          const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
+          if (scrollingContainer !== null) {
+            const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
+            scrollingContainer.getBoundingClientRect().left;
+            scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
+            clearInterval(checkExist);
+          }
         }
       }
     }.bind(this), 500);

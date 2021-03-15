@@ -100,10 +100,11 @@ export class IntroductionPage {
       this.getTocRoot(this.id);
     }
 
-    // Check if we have a pos parmeter in the URL, if we have one we can use it for scrolling the text on the page to that position
+    // Check if we have a pos parmeter in the URL, if we have one we can use it for scrolling the text on the page to that position.
+    // The pos parameter must come after the publication id followed by /#, e.g. /publication-introduction/203/#pos1
     const currentURL: string = String(window.location.href);
-    if ( currentURL.includes(';pos') ) {
-      this.pos = currentURL.split(';')[1];
+    if (currentURL.match(/publication-introduction\/\d+\/#\w+/) !== null) {
+      this.pos = currentURL.split('#').pop();
     } else {
       this.pos = null;
     }
@@ -136,15 +137,36 @@ export class IntroductionPage {
       this.events.publish('setSelectedStatic:true', selectedStatic);
     });
   }
+
   // Try to scroll to an element in the text, checks if "pos" given
   // Timeout, to give text some time to load on the page
   scrollToPos() {
-    setTimeout(function() {
-      if ( this.pos !== null ) {
-        const positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
-        console.log(positionElement);
-        if ( positionElement !== undefined ) {
-          this.scrollToHTMLElement(positionElement);
+    let interationsLeft = 10;
+    const checkExist = setInterval(function() {
+      if (interationsLeft < 1) {
+        clearInterval(checkExist);
+      } else {
+        interationsLeft -= 1;
+        if (this.pos !== null && this.pos !== undefined) {
+          console.log('Attempting to scroll to ' + this.pos);
+          let positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
+          const parentElem = positionElement.parentElement;
+          if ((parentElem !== undefined && parentElem.classList.length !== 0 &&
+          parentElem.classList.contains('ttFixed')) ||
+            (parentElem.parentElement !== undefined && parentElem.parentElement.classList.length !== 0 &&
+              parentElem.parentElement.classList.contains('ttFixed'))) {
+              // Anchor is in footnote --> look for next occurence since the first footnote element
+              // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
+              // the position we need to find).
+              positionElement = document.getElementsByName(this.pos)[1] as HTMLElement;
+          }
+          if (positionElement !== undefined && positionElement.classList.length !== 0 &&
+          positionElement.classList.contains('anchor')) {
+            this.scrollToHTMLElement(positionElement);
+            clearInterval(checkExist);
+          }
+        } else {
+          clearInterval(checkExist);
         }
       }
     }.bind(this), 1000);
@@ -180,14 +202,14 @@ export class IntroductionPage {
 
             if (anchorElem.classList.contains('ref_external')) {
               // Link to external web page, open in new window/tab.
-              const ref = window.open(anchorElem.href, '_blank');
+              window.open(anchorElem.href, '_blank');
 
             } else if (anchorElem.classList.contains('ref_readingtext') ||
              anchorElem.classList.contains('ref_comment') ||
              anchorElem.classList.contains('ref_introduction')) {
               // Link to reading text, comment or introduction.
               // Get the href parts for the targeted text.
-              const hrefTargetItems: Array<string> = decodeURI(String(anchorElem.href).split('/').pop()).split(' ');
+              const hrefTargetItems: Array<string> = decodeURIComponent(String(anchorElem.href).split('/').pop()).split(' ');
               let publicationId = '';
               let textId = '';
               let chapterId = '';
@@ -208,7 +230,6 @@ export class IntroductionPage {
                     chapterId = hrefTargetItems[2];
                   }
 
-                  // @TODO Needs to be supplemented with handling of position but no chapter.
                   let hrefString = '#/publication/' + publicationId + '/text/' + textId + '/';
                   if (chapterId) {
                     hrefString += chapterId;
@@ -218,9 +239,13 @@ export class IntroductionPage {
                     }
                   } else {
                     hrefString += 'nochapter';
+                    if (hrefTargetItems.length > 2 && hrefTargetItems[2].startsWith('#')) {
+                      positionId = hrefTargetItems[2].replace('#', ';');
+                      hrefString += positionId;
+                    }
                   }
                   hrefString += '/not/infinite/nosong/searchtitle/established&comments';
-                  const ref = window.open(hrefString, '_blank');
+                  window.open(hrefString, '_blank');
                 });
 
               } else if (anchorElem.classList.contains('ref_introduction')) {
@@ -236,8 +261,9 @@ export class IntroductionPage {
                   }
 
                   // Check if we are already on the same page.
-                  const baseURI: string = decodeURI(String(anchorElem.baseURI).split('#').pop());
-                  if (baseURI.endsWith('/publication-introduction/' + publicationId) && positionId) {
+                  const baseURI: string = '/' + decodeURIComponent(String(anchorElem.baseURI).split('#/').pop());
+                  if ((baseURI.endsWith('/publication-introduction/' + publicationId) ||
+                   baseURI.startsWith('/publication-introduction/' + publicationId + '/')) && positionId !== undefined) {
                     // Same introduction.
                     positionId = positionId.replace('#', '');
 
@@ -252,8 +278,10 @@ export class IntroductionPage {
                       }
                       if (parentElem !== null && parentElem.tagName === refType) {
                         targetElement = matchingElements[i] as HTMLElement;
-                        if (targetElement.parentElement.classList.length !== 0 &&
-                        targetElement.parentElement.classList.contains('ttFixed')) {
+                        if ((targetElement.parentElement.classList.length !== 0 &&
+                        targetElement.parentElement.classList.contains('ttFixed')) ||
+                        (targetElement.parentElement.parentElement.classList.length !== 0 &&
+                          targetElement.parentElement.parentElement.classList.contains('ttFixed'))) {
                           // Found position is in footnote --> look for next occurence since the first footnote element
                           // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
                           // the position we need to find).
@@ -268,8 +296,14 @@ export class IntroductionPage {
                     }
                   } else {
                     // Different introduction, open in new window.
-                    // Needs to be supplemented with handling of position
-                    const ref = window.open('#/publication-introduction/' + publicationId, '_blank');
+
+                    let hrefString = '#/publication-introduction/' + publicationId;
+                    if (hrefTargetItems.length > 1 && hrefTargetItems[1].startsWith('#')) {
+                      positionId = hrefTargetItems[1];
+                      hrefString += '/' + positionId;
+                    }
+
+                    window.open(hrefString, '_blank');
                   }
                 });
               }
@@ -287,54 +321,6 @@ export class IntroductionPage {
             }
           }
         }
-
-        /* THIS IS THE OLD CODE FOR HANDLING CLICKS ON LINKS
-        event.preventDefault();
-        const elem: HTMLElement = event.target as HTMLElement;
-        if ( event.target.classList.contains('ref_readingtext') || event.target.classList.contains('ref_comment')) {
-          const params = String(decodeURI(event.target.href)).split('/').pop();
-          this.openExternal(params);
-        } else if ( event.target.classList.contains('ref_introduction') ) {
-          let targetId = elem.getAttribute('href');
-          if ( targetId === null ) {
-            targetId = elem.parentElement.getAttribute('href');
-          }
-          if ( String(targetId).indexOf('#') !== -1 ) {
-            targetId = String(targetId).split('#')[1];
-            const dataIdSelector = '[name="' + String(targetId).replace('#', '') + '"]';
-            const target = elem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
-            if ( target !== null ) {
-              this.scrollToElementTOC(target, event);
-            } else {
-              this.textService.getCollectionAndPublicationByLegacyId(targetId[0]).subscribe(data => {
-                if ( data[0] !== undefined ) {
-                  const ref = window.open('#/publication-introduction/' + data[0]['coll_id'], '_blank');
-                }
-              });
-            }
-          } else {
-            window.open('#/publication-introduction/' + String(targetId), '_blank');
-          }
-        } else if ( event.target.classList.contains('ref_external') ) {
-          let targetId = elem.getAttribute('href');
-          if ( targetId === null ) {
-            targetId = elem.parentElement.getAttribute('href');
-          }
-          if ( targetId !== null ) {
-            window.open(targetId, '_blank');
-          }
-        } else {
-          let targetId = elem.getAttribute('href');
-          if ( targetId === null ) {
-            targetId = elem.parentElement.getAttribute('href');
-          }
-          const dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
-          const target = elem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
-          if ( target !== null ) {
-            this.scrollToElementTOC(target, event);
-          }
-        }
-        */
       } catch ( e ) {}
     });
 
@@ -378,22 +364,6 @@ export class IntroductionPage {
     }).bind(this);
   }
 
-  openExternal(external) {
-    const extParts = String(external).split(' ');
-    this.textService.getCollectionAndPublicationByLegacyId(extParts[0] + '_' + extParts[1]).subscribe(data => {
-      if ( data[0] !== undefined ) {
-        let link = '/#/publication/' + data[0]['coll_id'] + '/text/' + data[0]['pub_id'];
-        if ( extParts[2] !== undefined ) {
-          link += '/' + String(extParts[2]).replace('#', ';');
-        }
-        if ( extParts[3] !== undefined && String(extParts[3]).includes('#') !== false ) {
-          link += String(extParts[3]).replace('#', ';');
-        }
-        const ref = window.open(link + '/nochapter/not/infinite/nosong/searchtitle/established&comments', '_blank');
-      }
-    });
-  }
-
   showPersonTooltip(id: string, targetElem: HTMLElement, origin: any) {
     if (this.tooltips.persons[id]) {
       this.setToolTipPosition(targetElem, this.tooltips.persons[id]);
@@ -403,9 +373,37 @@ export class IntroductionPage {
 
     this.tooltipService.getPersonTooltip(id).subscribe(
       tooltip => {
-        this.setToolTipPosition(targetElem, tooltip.description);
-        this.setToolTipText(tooltip.description);
-        this.tooltips.persons[id] = tooltip.description;
+        let text = '';
+        if ( tooltip.date_born !== null || tooltip.date_deceased !== null ) {
+          const date_born = String(tooltip.date_born).split('-')[0].replace(/^0+/, '');
+          const date_deceased = String(tooltip.date_deceased).split('-')[0].replace(/^0+/, '');
+          let bcTranslation = 'BC';
+          this.translate.get('BC').subscribe(
+            translation => {
+              bcTranslation = translation;
+            }, error => { }
+          );
+          const bcIndicator = (String(tooltip.date_deceased).includes('BC')) ? ' ' + bcTranslation : '';
+          text = '<b>' + tooltip.name + '</b> (';
+          if (date_born !== null && date_deceased !== null && date_born !== 'null' && date_born !== 'null') {
+            text += date_born + '–' + date_deceased + '' + bcIndicator;
+          } else if (date_born !== null && date_born !== 'null') {
+            text += '* ' + date_born + bcIndicator;
+          } else if (date_deceased !== null && date_deceased !== 'null') {
+            text += '&#8224; ' + date_deceased + bcIndicator;
+          }
+          text += ')';
+        } else {
+          text = '<b>' + tooltip.name + '</b>';
+        }
+
+        if ( tooltip.description !== null ) {
+          text += ', ' + tooltip.description
+        }
+
+        this.setToolTipPosition(targetElem, text);
+        this.setToolTipText(text);
+        this.tooltips.persons[id] = text;
       },
       error => {
         let noInfoFound = 'Could not get person information';
