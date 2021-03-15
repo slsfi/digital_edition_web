@@ -177,8 +177,10 @@ export class CommentsComponent {
                       }
                       if (parentElem !== null && parentElem.tagName === refType) {
                         targetElement = matchingElements[i] as HTMLElement;
-                        if (targetElement.parentElement.classList.length !== 0 &&
-                         targetElement.parentElement.classList.contains('ttFixed')) {
+                        if ((targetElement.parentElement.classList.length !== 0 &&
+                         targetElement.parentElement.classList.contains('ttFixed')) ||
+                         (targetElement.parentElement.parentElement.classList.length !== 0 &&
+                          targetElement.parentElement.parentElement.classList.contains('ttFixed'))) {
                           // Found position is in footnote --> look for next occurence since the first footnote element
                           // is not displayed (footnote elements are copied to a list at the end of the reading text and that's
                           // the position we need to find).
@@ -252,7 +254,8 @@ export class CommentsComponent {
             const numId = targetElem.classList[targetElem.classList.length - 1].replace( /^\D+/g, '');
             const targetId = 'start' + numId;
             let lemmaStart = document.querySelector('[data-id="' + targetId + '"]') as HTMLElement;
-            if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
+            if ((lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) ||
+             (lemmaStart.parentElement.parentElement !== null && lemmaStart.parentElement.parentElement.classList.contains('ttFixed'))) {
               // The lemma is in a footnote, so we should get the second element with targetId
               lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
             }

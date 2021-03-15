@@ -140,24 +140,35 @@ export class IntroductionPage {
   // Try to scroll to an element in the text, checks if "pos" given
   // Timeout, to give text some time to load on the page
   scrollToPos() {
-    setTimeout(function() {
-      if ( this.pos !== null ) {
-        let positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
-        const parentElem = positionElement.parentElement;
-        console.log(positionElement);
-        if (parentElem !== undefined && parentElem.classList.length !== 0 &&
-         parentElem.classList.contains('ttFixed')) {
-            // Anchor is in footnote --> look for next occurence since the first footnote element
-            // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
-            // the position we need to find).
-            positionElement = document.getElementsByName(this.pos)[1] as HTMLElement;
-        }
-        if (positionElement !== undefined && positionElement.classList.length !== 0 &&
-         positionElement.classList.contains('anchor')) {
-          this.scrollToHTMLElement(positionElement);
+    let interationsLeft = 10;
+    const checkExist = setInterval(function() {
+      if (interationsLeft < 1) {
+        clearInterval(checkExist);
+      } else {
+        interationsLeft -= 1;
+        if (this.pos !== null) {
+          console.log('Attempting to scroll to ' + this.pos);
+          let positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
+          const parentElem = positionElement.parentElement;
+          if ((parentElem !== undefined && parentElem.classList.length !== 0 &&
+          parentElem.classList.contains('ttFixed')) ||
+            (parentElem.parentElement !== undefined && parentElem.parentElement.classList.length !== 0 &&
+              parentElem.parentElement.classList.contains('ttFixed'))) {
+              // Anchor is in footnote --> look for next occurence since the first footnote element
+              // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
+              // the position we need to find).
+              positionElement = document.getElementsByName(this.pos)[1] as HTMLElement;
+          }
+          if (positionElement !== undefined && positionElement.classList.length !== 0 &&
+          positionElement.classList.contains('anchor')) {
+            this.scrollToHTMLElement(positionElement);
+            clearInterval(checkExist);
+          }
+        } else {
+          clearInterval(checkExist);
         }
       }
-    }.bind(this), 1000);
+    }.bind(this), 700);
   }
 
   ionViewWillLeave() {
@@ -265,8 +276,10 @@ export class IntroductionPage {
                       }
                       if (parentElem !== null && parentElem.tagName === refType) {
                         targetElement = matchingElements[i] as HTMLElement;
-                        if (targetElement.parentElement.classList.length !== 0 &&
-                        targetElement.parentElement.classList.contains('ttFixed')) {
+                        if ((targetElement.parentElement.classList.length !== 0 &&
+                        targetElement.parentElement.classList.contains('ttFixed')) ||
+                        (targetElement.parentElement.parentElement.classList.length !== 0 &&
+                          targetElement.parentElement.parentElement.classList.contains('ttFixed'))) {
                           // Found position is in footnote --> look for next occurence since the first footnote element
                           // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
                           // the position we need to find).

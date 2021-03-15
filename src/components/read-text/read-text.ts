@@ -105,6 +105,7 @@ export class ReadTextComponent {
       }
     });
 
+    // Scroll to link position if defined.
     let interationsLeft = 10;
     const checkExist = setInterval(function() {
       if (interationsLeft < 1) {
@@ -126,9 +127,16 @@ export class ReadTextComponent {
         }
 
         if (posId) {
-          const target = document.getElementsByName('' + posId + '')[0] as HTMLAnchorElement;
+          console.log('Attempting to scrolling to ' + posId);
+          let target = document.getElementsByName('' + posId + '')[0] as HTMLAnchorElement;
+          if (target && ((target.parentElement && target.parentElement.classList.length !== 0 &&
+            target.parentElement.classList.contains('ttFixed')) ||
+             (target.parentElement.parentElement && target.parentElement.parentElement.classList.length !== 0 &&
+               target.parentElement.parentElement.classList.contains('ttFixed')))) {
+            // Position in footnote --> look for second target
+            target = document.getElementsByName('' + posId + '')[1] as HTMLAnchorElement;
+          }
           if (target) {
-            console.log('Scrolling to pos ' + posId);
             this.scrollToHTMLElement(target, false);
             clearInterval(checkExist);
           }
@@ -136,7 +144,7 @@ export class ReadTextComponent {
           clearInterval(checkExist);
         }
       }
-    }.bind(this), 500);
+    }.bind(this), 700);
 
   }
 
