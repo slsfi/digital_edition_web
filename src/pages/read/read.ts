@@ -1134,6 +1134,7 @@ export class ReadPage /*implements OnDestroy*/ {
         let text = '';
         if ( tooltip.date_born !== null || tooltip.date_deceased !== null ) {
           const date_born = String(tooltip.date_born).split('-')[0].replace(/^0+/, '');
+          console.log('dateborn: ' + date_born);
           const date_deceased = String(tooltip.date_deceased).split('-')[0].replace(/^0+/, '');
           let bcTranslation = 'BC';
           this.translate.get('BC').subscribe(
@@ -1143,11 +1144,11 @@ export class ReadPage /*implements OnDestroy*/ {
           );
           const bcIndicator = (String(tooltip.date_deceased).includes('BC')) ? ' ' + bcTranslation : '';
           text = '<b>' + tooltip.name + '</b> (';
-          if (date_born !== null && date_deceased !== null) {
+          if (date_born !== null && date_deceased !== null && date_born !== undefined && date_deceased !== undefined) {
             text += date_born + '–' + date_deceased + '' + bcIndicator;
-          } else if (date_born !== null) {
+          } else if (date_born !== null && date_born !== undefined) {
             text += '* ' + date_born + bcIndicator;
-          } else if (date_deceased !== null) {
+          } else if (date_deceased !== null && date_deceased !== undefined) {
             text += '&#8224; ' + date_deceased + bcIndicator;
           }
           text += ')';
