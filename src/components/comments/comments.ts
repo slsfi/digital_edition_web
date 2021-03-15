@@ -157,7 +157,7 @@ export class CommentsComponent {
                   }
 
                   // Check if we are already on the same page.
-                  const baseURI: string = decodeURIComponent(String(anchorElem.baseURI).split('#').pop());
+                  const baseURI: string = '/' + decodeURIComponent(String(anchorElem.baseURI).split('#/').pop());
                   if ( (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';')) &&
                    hrefTargetItems[hrefTargetItems.length - 1].startsWith('#') ) {
                     // We are on the same page and the last item in the target href is a textposition.
@@ -224,7 +224,6 @@ export class CommentsComponent {
                   }
                   let hrefString = '#/publication-introduction/' + publicationId;
                   if (hrefTargetItems.length > 1 && hrefTargetItems[1].startsWith('#')) {
-                    // positionId = hrefTargetItems[1].replace('#', ';');
                     positionId = hrefTargetItems[1];
                     hrefString += '/' + positionId;
                   }
