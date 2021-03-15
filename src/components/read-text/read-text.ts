@@ -105,30 +105,38 @@ export class ReadTextComponent {
       }
     });
 
+    let interationsLeft = 10;
     const checkExist = setInterval(function() {
-      if (this.nochapterPos !== undefined && this.nochapterPos !== null) {
-        console.log('Read-text this.nochapterPos = ' + this.nochapterPos);
-        const target = document.getElementsByName('' + this.nochapterPos + '')[0] as HTMLAnchorElement;
-        if ( target ) {
-          this.scrollToHTMLElement(target, false);
+      if (interationsLeft < 1) {
+        clearInterval(checkExist);
+      } else {
+        interationsLeft -= 1;
+        let posId = null;
+        if (this.nochapterPos !== undefined && this.nochapterPos !== null) {
+          posId = this.nochapterPos;
+        } else if ( this.link !== undefined ) {
+          const linkData = this.link.split(';');
+          if (linkData[1]) {
+            posId = linkData[1];
+          } else {
+            clearInterval(checkExist);
+          }
+        } else {
           clearInterval(checkExist);
         }
-      } else if ( this.link !== undefined ) {
-        console.log('Read-text this.link = ' + this.link);
-        const linkData = this.link.split(';');
-        if ( linkData[1] ) {
-          const target = document.getElementsByName('' + linkData[1] + '')[0] as HTMLAnchorElement;
-          if ( target ) {
+
+        if (posId) {
+          const target = document.getElementsByName('' + posId + '')[0] as HTMLAnchorElement;
+          if (target) {
+            console.log('Scrolling to pos ' + posId);
             this.scrollToHTMLElement(target, false);
             clearInterval(checkExist);
           }
         } else {
           clearInterval(checkExist);
         }
-      } else {
-        clearInterval(checkExist);
       }
-    }.bind(this), 100);
+    }.bind(this), 500);
 
   }
 
