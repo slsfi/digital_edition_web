@@ -2171,6 +2171,7 @@ export class ReadPage /*implements OnDestroy*/ {
       if (interationsLeft < 1) {
         clearInterval(checkExist);
       } else {
+        interationsLeft -= 1;
         const viewElements = document.getElementsByClassName('read-column');
         if (viewElements[0] !== undefined) {
           const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
