@@ -274,7 +274,8 @@ export class IntroductionPage {
 
                   // Check if we are already on the same page.
                   const baseURI: string = '/' + decodeURIComponent(String(anchorElem.baseURI).split('#/').pop());
-                  if ((baseURI.endsWith('/publication-introduction/' + publicationId) || baseURI.startsWith('/publication-introduction/' + publicationId + '/')) && positionId) {
+                  if ((baseURI.endsWith('/publication-introduction/' + publicationId) ||
+                   baseURI.startsWith('/publication-introduction/' + publicationId + '/')) && positionId) {
                     // Same introduction and positionId non-empty.
                     positionId = positionId.replace('#', '');
 
