@@ -2166,15 +2166,21 @@ export class ReadPage /*implements OnDestroy*/ {
   /* This function scrolls the read-view horisontally to the last read column.
    * It's called after adding new views. */
   scrollLastViewIntoView() {
-    setTimeout(function () {
-      const viewElements = document.getElementsByClassName('read-column');
-      if (viewElements !== undefined) {
-        const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
-        const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
-        if (scrollingContainer !== null) {
-          const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
-           scrollingContainer.getBoundingClientRect().left;
-          scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
+    let interationsLeft = 10;
+    const checkExist = setInterval(function() {
+      if (interationsLeft < 1) {
+        clearInterval(checkExist);
+      } else {
+        const viewElements = document.getElementsByClassName('read-column');
+        if (viewElements[0] !== undefined) {
+          const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
+          const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
+          if (scrollingContainer !== null) {
+            const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
+            scrollingContainer.getBoundingClientRect().left;
+            scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
+            clearInterval(checkExist);
+          }
         }
       }
     }.bind(this), 500);
