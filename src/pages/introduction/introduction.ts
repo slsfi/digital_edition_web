@@ -385,11 +385,11 @@ export class IntroductionPage {
           );
           const bcIndicator = (String(tooltip.date_deceased).includes('BC')) ? ' ' + bcTranslation : '';
           text = '<b>' + tooltip.name + '</b> (';
-          if (date_born !== null && date_deceased !== null) {
+          if (date_born && date_deceased) {
             text += date_born + '–' + date_deceased + '' + bcIndicator;
-          } else if (date_born !== null) {
+          } else if (date_born) {
             text += '* ' + date_born + bcIndicator;
-          } else if (date_deceased !== null) {
+          } else if (date_deceased) {
             text += '&#8224; ' + date_deceased + bcIndicator;
           }
           text += ')';
