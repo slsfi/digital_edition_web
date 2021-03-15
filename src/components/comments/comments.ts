@@ -129,7 +129,7 @@ export class CommentsComponent {
 
             if (anchorElem.classList.contains('ref_external')) {
               // Link to external web page, open in new window/tab.
-              const ref = window.open(anchorElem.href, '_blank');
+              window.open(anchorElem.href, '_blank');
 
             } else {
               // Get the href parts for the targeted text.
