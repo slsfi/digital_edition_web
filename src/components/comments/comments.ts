@@ -133,7 +133,7 @@ export class CommentsComponent {
 
             } else {
               // Get the href parts for the targeted text.
-              const hrefTargetItems: Array<string> = decodeURI(String(anchorElem.href).split('/').pop()).split(' ');
+              const hrefTargetItems: Array<string> = decodeURIComponent(String(anchorElem.href).split('/').pop()).split(' ');
               let publicationId = '';
               let textId = '';
               let chapterId = '';
@@ -157,7 +157,7 @@ export class CommentsComponent {
                   }
 
                   // Check if we are already on the same page.
-                  const baseURI: string = decodeURI(String(anchorElem.baseURI).split('#').pop());
+                  const baseURI: string = decodeURIComponent(String(anchorElem.baseURI).split('#').pop());
                   if ( (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';')) &&
                    hrefTargetItems[hrefTargetItems.length - 1].startsWith('#') ) {
                     // We are on the same page and the last item in the target href is a textposition.

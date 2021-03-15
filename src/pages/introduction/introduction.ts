@@ -197,7 +197,7 @@ export class IntroductionPage {
              anchorElem.classList.contains('ref_introduction')) {
               // Link to reading text, comment or introduction.
               // Get the href parts for the targeted text.
-              const hrefTargetItems: Array<string> = decodeURI(String(anchorElem.href).split('/').pop()).split(' ');
+              const hrefTargetItems: Array<string> = decodeURIComponent(String(anchorElem.href).split('/').pop()).split(' ');
               let publicationId = '';
               let textId = '';
               let chapterId = '';
@@ -249,7 +249,7 @@ export class IntroductionPage {
                   }
 
                   // Check if we are already on the same page.
-                  const baseURI: string = decodeURI(String(anchorElem.baseURI).split('#').pop());
+                  const baseURI: string = decodeURIComponent(String(anchorElem.baseURI).split('#').pop());
                   if (baseURI.endsWith('/publication-introduction/' + publicationId) && positionId) {
                     // Same introduction.
                     positionId = positionId.replace('#', '');
