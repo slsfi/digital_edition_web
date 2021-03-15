@@ -103,25 +103,11 @@ export class IntroductionPage {
     // Check if we have a pos parmeter in the URL, if we have one we can use it for scrolling the text on the page to that position.
     // The pos parameter must come after the publication id followed by /#, e.g. /publication-introduction/203/#pos1
     const currentURL: string = String(window.location.href);
-    console.log(currentURL);
     if (currentURL.match(/publication-introduction\/\d+\/#\w+/) !== null) {
-      const tmpPos = currentURL.split('#').pop();
-      console.log('tmpPos: ' + tmpPos);
-      if (tmpPos !== undefined) {
-        this.pos = tmpPos;
-      } else {
-        this.pos = null;
-      }
+      this.pos = currentURL.split('#').pop();
     } else {
       this.pos = null;
     }
-    /*
-    if ( currentURL.includes(';pos') ) {
-      this.pos = currentURL.split(';')[1];
-    } else {
-      this.pos = null;
-    }
-    */
 
     this.setUpTextListeners();
   }
@@ -161,7 +147,7 @@ export class IntroductionPage {
         clearInterval(checkExist);
       } else {
         interationsLeft -= 1;
-        if (this.pos !== null) {
+        if (this.pos !== null && this.pos !== undefined) {
           console.log('Attempting to scroll to ' + this.pos);
           let positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
           const parentElem = positionElement.parentElement;
@@ -277,8 +263,8 @@ export class IntroductionPage {
                   // Check if we are already on the same page.
                   const baseURI: string = '/' + decodeURIComponent(String(anchorElem.baseURI).split('#/').pop());
                   if ((baseURI.endsWith('/publication-introduction/' + publicationId) ||
-                   baseURI.startsWith('/publication-introduction/' + publicationId + '/')) && positionId) {
-                    // Same introduction and positionId non-empty.
+                   baseURI.startsWith('/publication-introduction/' + publicationId + '/')) && positionId !== undefined) {
+                    // Same introduction.
                     positionId = positionId.replace('#', '');
 
                     // Find the element in the correct parent element.
@@ -313,7 +299,6 @@ export class IntroductionPage {
 
                     let hrefString = '#/publication-introduction/' + publicationId;
                     if (hrefTargetItems.length > 1 && hrefTargetItems[1].startsWith('#')) {
-                      // positionId = hrefTargetItems[1].replace('#', ';');
                       positionId = hrefTargetItems[1];
                       hrefString += '/' + positionId;
                     }
