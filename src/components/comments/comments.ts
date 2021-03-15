@@ -225,6 +225,7 @@ export class CommentsComponent {
                   let hrefString = '#/publication-introduction/' + publicationId;
                   if (hrefTargetItems.length > 1 && hrefTargetItems[1].startsWith('#')) {
                     // positionId = hrefTargetItems[1].replace('#', ';');
+                    positionId = hrefTargetItems[1];
                     hrefString += '/' + positionId;
                   }
 
