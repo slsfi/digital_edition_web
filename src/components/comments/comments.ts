@@ -224,7 +224,7 @@ export class CommentsComponent {
                   }
                   let hrefString = '#/publication-introduction/' + publicationId;
                   if (hrefTargetItems.length > 1 && hrefTargetItems[1].startsWith('#')) {
-                    positionId = hrefTargetItems[1].replace('#', ';');
+                    // positionId = hrefTargetItems[1].replace('#', ';');
                     hrefString += '/' + positionId;
                   }
 
@@ -267,113 +267,7 @@ export class CommentsComponent {
             }
           }
         }
-
-        /* OLD CODE
-        if (event.target.classList.contains('xreference')) {
-          // get the parts for the targeted text
-          const hrefTargetItems: Array<string> = decodeURI(String(event.target.href).split('/').pop()).split(' ');
-          // check if we are already on the same page
-          const baseURI: string = String(event.target.baseURI).split('#').pop();
-          if ( (baseURI === '/publication/' + hrefTargetItems[0] + '/text/' + hrefTargetItems[1]) ||
-                ( hrefTargetItems[1] === event.target.hash ) ) {
-            if ( event.target.classList.contains('ref_readingtext') ) {
-              this.events.publish('scrollToContent', event.target.hash);
-            }
-          }
-          event.preventDefault();
-        }
-        */
-
       } catch (e) {}
-
-      // This is tagging in href to another page e.g. introduction
-      /* OLD CODE
-      try {
-        const elem: HTMLAnchorElement = event.target as HTMLAnchorElement;
-        let targetId = '';
-        let colPub = '';
-        if ( String(elem.getAttribute('href')).includes('#') === false ) {
-          targetId = String(elem.getAttribute('href'));
-          colPub = String(elem.getAttribute('href'));
-        } else {
-          targetId = String(elem.getAttribute('href')).split('#')[1];
-          colPub = String(elem.getAttribute('href')).split('#')[0];
-        }
-        let target = document.getElementsByName(targetId)[0] as HTMLAnchorElement;
-        if ( targetId !== null && targetId !== undefined && (elem.classList.contains('xref') !== false ||
-         elem.classList.contains('xreference') !== false) ) {
-          // Check if intro or same publication id
-          // Check class ref_introduction, readingtext
-          // Also check if already open and if same publication?
-          if ( elem.classList !== undefined ) {
-            const list = elem.classList;
-            if ( list.contains('introduction') || list.contains('ref_introduction') ) {
-              this.openNewIntro(event, {id: colPub});
-            } else if ( list.contains('readingtext') || list.contains('ref_readingtext') ) {
-              this.openNewView(event, colPub, 'established');
-            } else if ( list.contains('comment') || list.contains('ref_comment') ) {
-              if ( target !== null && target !== undefined ) {
-                // this.scrollToHTMLElement(target, true);
-              } else {
-                this.openNewView(event, colPub, 'comments');
-              }
-            }
-          }
-          // Some other text, open in new window
-          setTimeout(function() {
-            target = document.getElementsByName(targetId)[0] as HTMLAnchorElement;
-            // Add arrow at correct place, not first occurrence of anchor
-            if ( !elem.classList.contains('comment') && !elem.classList.contains('ref_comment') &&
-                (target === undefined || target.classList.contains('teiComment')) ) {
-                  target = document.getElementsByName(targetId)[document.getElementsByName(targetId).length - 1] as HTMLAnchorElement;
-            }
-            if ( target !== null && target !== undefined ) {
-              this.scrollToHTMLElement(target, false);
-            }
-          }.bind(this), 500);
-
-        } else if ( target !== null && target !== undefined && elem.classList.contains('ext') === false  ) {
-          this.scrollToHTMLElement(target, true);
-        } else if ( elem.classList !== undefined && elem.classList.contains('ext') ) {
-          const anchor = <HTMLAnchorElement>elem;
-          const ref = window.open(anchor.href, '_blank', 'location=no');
-
-        } else if (this.readPopoverService.show.comments) {
-          // This is linking to a comment lemma ("asterisk") in the reading text,
-          // i.e. the user has clicked a comment in the comments-column.
-
-          let commElem: HTMLElement = event.target as HTMLElement;
-          // Find the comment element that has been clicked in the comment-column.
-          if (!commElem.classList.contains('commentScrollTarget')) {
-            commElem = commElem.parentElement;
-            while (!commElem.classList.contains('commentScrollTarget')) {
-              commElem = commElem.parentElement;
-              if (commElem === null || commElem === undefined) {
-                break;
-              }
-            }
-          }
-          if (commElem !== null && commElem !== undefined) {
-            // Find the lemma in the reading text. Replace all non-digits at the start of the comment's id with nothing.
-            const numId = commElem.classList[commElem.classList.length - 1].replace( /^\D+/g, '');
-            targetId = 'start' + numId;
-            let lemmaStart = document.querySelector('[data-id="' + targetId + '"]') as HTMLElement;
-            if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
-              // The lemma is in a footnote, so we should get the second element with targetId
-              lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
-            }
-            if (lemmaStart !== null && lemmaStart !== undefined) {
-              // Scroll to start of lemma in reading text and temporarily prepend arrow.
-              this.scrollToCommentLemma(lemmaStart);
-              // Scroll to comment in the comments-column.
-              this.scrollToComment(numId, commElem);
-            }
-          }
-        }
-
-      } catch ( e ) {}
-      */
-
     });
   }
 

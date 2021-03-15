@@ -100,13 +100,26 @@ export class IntroductionPage {
       this.getTocRoot(this.id);
     }
 
-    // Check if we have a pos parmeter in the URL, if we have one we can use it for scrolling the text on the page to that position
+    // Check if we have a pos parmeter in the URL, if we have one we can use it for scrolling the text on the page to that position.
+    // The pos parameter must come after the publication id followed by /#, e.g. /publication-introduction/203/#pos1
     const currentURL: string = String(window.location.href);
+    if (currentURL.match(/publication-introduction\/\d+\/#\w+/) !== null) {
+      const tmpPos = currentURL.split('#').pop();
+      if (tmpPos !== undefined) {
+        this.pos = tmpPos;
+      } else {
+        this.pos = null;
+      }
+    } else {
+      this.pos = null;
+    }
+    /*
     if ( currentURL.includes(';pos') ) {
       this.pos = currentURL.split(';')[1];
     } else {
       this.pos = null;
     }
+    */
 
     this.setUpTextListeners();
   }
@@ -168,7 +181,7 @@ export class IntroductionPage {
           clearInterval(checkExist);
         }
       }
-    }.bind(this), 700);
+    }.bind(this), 1000);
   }
 
   ionViewWillLeave() {
@@ -260,9 +273,9 @@ export class IntroductionPage {
                   }
 
                   // Check if we are already on the same page.
-                  const baseURI: string = decodeURIComponent(String(anchorElem.baseURI).split('#').pop());
-                  if (baseURI.endsWith('/publication-introduction/' + publicationId) && positionId) {
-                    // Same introduction.
+                  const baseURI: string = '/' + decodeURIComponent(String(anchorElem.baseURI).split('#/').pop());
+                  if ((baseURI.endsWith('/publication-introduction/' + publicationId) || baseURI.startsWith('/publication-introduction/' + publicationId + '/')) && positionId) {
+                    // Same introduction and positionId non-empty.
                     positionId = positionId.replace('#', '');
 
                     // Find the element in the correct parent element.
@@ -297,7 +310,7 @@ export class IntroductionPage {
 
                     let hrefString = '#/publication-introduction/' + publicationId;
                     if (hrefTargetItems.length > 1 && hrefTargetItems[1].startsWith('#')) {
-                      positionId = hrefTargetItems[1].replace('#', ';');
+                      // positionId = hrefTargetItems[1].replace('#', ';');
                       hrefString += '/' + positionId;
                     }
 
@@ -319,54 +332,6 @@ export class IntroductionPage {
             }
           }
         }
-
-        /* THIS IS THE OLD CODE FOR HANDLING CLICKS ON LINKS
-        event.preventDefault();
-        const elem: HTMLElement = event.target as HTMLElement;
-        if ( event.target.classList.contains('ref_readingtext') || event.target.classList.contains('ref_comment')) {
-          const params = String(decodeURI(event.target.href)).split('/').pop();
-          this.openExternal(params);
-        } else if ( event.target.classList.contains('ref_introduction') ) {
-          let targetId = elem.getAttribute('href');
-          if ( targetId === null ) {
-            targetId = elem.parentElement.getAttribute('href');
-          }
-          if ( String(targetId).indexOf('#') !== -1 ) {
-            targetId = String(targetId).split('#')[1];
-            const dataIdSelector = '[name="' + String(targetId).replace('#', '') + '"]';
-            const target = elem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
-            if ( target !== null ) {
-              this.scrollToElementTOC(target, event);
-            } else {
-              this.textService.getCollectionAndPublicationByLegacyId(targetId[0]).subscribe(data => {
-                if ( data[0] !== undefined ) {
-                  const ref = window.open('#/publication-introduction/' + data[0]['coll_id'], '_blank');
-                }
-              });
-            }
-          } else {
-            window.open('#/publication-introduction/' + String(targetId), '_blank');
-          }
-        } else if ( event.target.classList.contains('ref_external') ) {
-          let targetId = elem.getAttribute('href');
-          if ( targetId === null ) {
-            targetId = elem.parentElement.getAttribute('href');
-          }
-          if ( targetId !== null ) {
-            window.open(targetId, '_blank');
-          }
-        } else {
-          let targetId = elem.getAttribute('href');
-          if ( targetId === null ) {
-            targetId = elem.parentElement.getAttribute('href');
-          }
-          const dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
-          const target = elem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
-          if ( target !== null ) {
-            this.scrollToElementTOC(target, event);
-          }
-        }
-        */
       } catch ( e ) {}
     });
 
@@ -408,22 +373,6 @@ export class IntroductionPage {
     this.renderer.listen(nElement, 'mouseout', (event) => {
       this.hideToolTip();
     }).bind(this);
-  }
-
-  openExternal(external) {
-    const extParts = String(external).split(' ');
-    this.textService.getCollectionAndPublicationByLegacyId(extParts[0] + '_' + extParts[1]).subscribe(data => {
-      if ( data[0] !== undefined ) {
-        let link = '/#/publication/' + data[0]['coll_id'] + '/text/' + data[0]['pub_id'];
-        if ( extParts[2] !== undefined ) {
-          link += '/' + String(extParts[2]).replace('#', ';');
-        }
-        if ( extParts[3] !== undefined && String(extParts[3]).includes('#') !== false ) {
-          link += String(extParts[3]).replace('#', ';');
-        }
-        const ref = window.open(link + '/nochapter/not/infinite/nosong/searchtitle/established&comments', '_blank');
-      }
-    });
   }
 
   showPersonTooltip(id: string, targetElem: HTMLElement, origin: any) {

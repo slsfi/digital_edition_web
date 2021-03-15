@@ -144,7 +144,7 @@ export class ReadTextComponent {
           clearInterval(checkExist);
         }
       }
-    }.bind(this), 700);
+    }.bind(this), 1000);
 
   }
 
