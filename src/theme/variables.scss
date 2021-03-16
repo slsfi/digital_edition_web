@@ -25,7 +25,8 @@
 // The "primary" color is the only required color in the map.
 
 :root {
-    --bg-color: #ecebe4;
+    --background-color: #ecebe4;
+    --toolbar-text-color: yellow;
 }
 
 $colors: (
@@ -55,8 +56,9 @@ $toolbar-md-button-font-size:   1rem;
 $toolbar-md-title-font-size:    1.25rem;
 $font-family-base:              'Muli', $system-font-stack;
 $text-color:                  #000;
-$background-color:            var(--bg-color);
+$background-color:              var(--background-color);
 $toolbar-background:            color($colors, primary);
+$toolbar-text-color:            var(--toolbar-text-color);
 $toolbar-active-color:        #fff;
 $toolbar-inactive-color:      #fff;
 $tabs-background:               color($colors, primary);
