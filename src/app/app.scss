@@ -562,6 +562,7 @@ ion-list.accordion-menu ion-item.header ion-icon.header-icon.rotate {
   transform: rotate(90deg);
 }
 
+/* The toc-items themselves should not have a bg-color, instead the whole toc-menu has a bg-color. */
 ion-list.accordion-menu ion-item.item,
 ion-item.mainMenuItem {
   background-color: unset;
