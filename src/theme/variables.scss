@@ -26,7 +26,8 @@
 
 :root {
     --background-color: #ecebe4;
-    --toolbar-text-color: yellow;
+    --toolbar-active-color: yellow;
+    --toolbar-inactive-color: red;
 }
 
 $colors: (
@@ -55,12 +56,11 @@ $button-md-font-size:           1rem;
 $toolbar-md-button-font-size:   1rem;
 $toolbar-md-title-font-size:    1.25rem;
 $font-family-base:              'Muli', $system-font-stack;
-$text-color:                  #000;
+$text-color:                  blue;
 $background-color:              var(--background-color);
 $toolbar-background:            color($colors, primary);
-$toolbar-text-color:            var(--toolbar-text-color);
-$toolbar-active-color:        #fff;
-$toolbar-inactive-color:      #fff;
+$toolbar-active-color:          var(--toolbar-active-color);
+$toolbar-inactive-color:        var(--toolbar-inactive-color);
 $tabs-background:               color($colors, primary);
 $tabs-tab-color-active:       #fff;
 $tabs-tab-color-inactive:     #fff;
