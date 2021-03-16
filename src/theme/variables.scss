@@ -26,8 +26,8 @@
 
 :root {
     --background-color: #ecebe4;
-    --toolbar-active-color: yellow;
-    --toolbar-inactive-color: red;
+    --toolbar-active-color: #fff70f;
+    --toolbar-inactive-color: #d61515;
 }
 
 $colors: (
@@ -56,7 +56,7 @@ $button-md-font-size:           1rem;
 $toolbar-md-button-font-size:   1rem;
 $toolbar-md-title-font-size:    1.25rem;
 $font-family-base:              'Muli', $system-font-stack;
-$text-color:                  blue;
+$text-color:                  #0f3bff;
 $background-color:              var(--background-color);
 $toolbar-background:            color($colors, primary);
 $toolbar-active-color:          var(--toolbar-active-color);
