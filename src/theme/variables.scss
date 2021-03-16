@@ -24,12 +24,6 @@
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
 
-:root {
-    --background-color: #ecebe4;
-    --toolbar-active-color: #fff70f;
-    --toolbar-inactive-color: #d61515;
-}
-
 $colors: (
 	primary:	#538494,
 	secondary:	#e6e1d8,
@@ -56,11 +50,11 @@ $button-md-font-size:           1rem;
 $toolbar-md-button-font-size:   1rem;
 $toolbar-md-title-font-size:    1.25rem;
 $font-family-base:              'Muli', $system-font-stack;
-$text-color:                  #0f3bff;
-$background-color:              var(--background-color);
+$text-color:                  #000;
+$background-color:            #ecebe4;
 $toolbar-background:            color($colors, primary);
-$toolbar-active-color:          var(--toolbar-active-color);
-$toolbar-inactive-color:        var(--toolbar-inactive-color);
+$toolbar-active-color:        red;
+$toolbar-inactive-color:      yellow;
 $tabs-background:               color($colors, primary);
 $tabs-tab-color-active:       #fff;
 $tabs-tab-color-inactive:     #fff;
