@@ -562,6 +562,11 @@ ion-list.accordion-menu ion-item.header ion-icon.header-icon.rotate {
   transform: rotate(90deg);
 }
 
+ion-list.accordion-menu ion-item.item,
+ion-item.mainMenuItem {
+  background-color: unset;
+}
+
 ion-list.accordion-menu div.options {
   will-change: height;
   transition: height 0.3s ease;
