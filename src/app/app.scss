@@ -568,6 +568,10 @@ ion-item.mainMenuItem {
   background-color: unset;
 }
 
+ion-list.accordion-menu > ion-item.item-block:last-child .item-inner {
+  border-bottom: $item-md-divider-border-bottom;
+}
+
 ion-list.accordion-menu div.options {
   will-change: height;
   transition: height 0.3s ease;
