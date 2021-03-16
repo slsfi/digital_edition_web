@@ -24,8 +24,12 @@
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
 
+:root {
+    --primary-color-test: #538494;
+}
+
 $colors: (
-	primary:	#538494,
+	primary:	var(--primary-color-test),
 	secondary:	#e6e1d8,
     dark:		#222,
     light:		#f4f4f4
