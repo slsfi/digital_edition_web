@@ -339,7 +339,7 @@ export class IntroductionPage {
     /* MOUSE OVER EVENTS */
     this.renderer.listen(nElement, 'mouseover', (event) => {
       const eventTarget = this.getEventTarget(event);
-      // const elem = event.target;
+
       if (eventTarget['classList'].contains('tooltiptrigger')) {
         if (eventTarget.hasAttribute('data-id')) {
           if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person')
