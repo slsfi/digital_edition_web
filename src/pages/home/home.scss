@@ -59,7 +59,8 @@ home-page {
 		font-weight: normal;
 		line-height: 1.5;
 		color: #000;
-		background-color: rgba($background-color, 0.8);
+		background-color: $background-color;
+		opacity: 0.8;
 		padding: 0 1rem;
 	}
 
