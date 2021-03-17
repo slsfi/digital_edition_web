@@ -18,9 +18,11 @@ table-of-contents-accordion {
         padding-right: 4px;
         border-right: 4px solid transparent !important;
     }
+    /*
     ion-item.item.item-block:hover div.item-inner {
         border-right-color: color($colors, primary) !important;
     }
+    */
 
     ion-item.item.selected-toc-item {
         font-weight: bold;
