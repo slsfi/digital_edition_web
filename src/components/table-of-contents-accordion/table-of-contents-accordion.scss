@@ -1,7 +1,4 @@
 table-of-contents-accordion {
-    .accordion-menu .list .list-md {
-        background-color: #f2f2f2;
-    }
     ion-label {
         cursor: pointer;
     }
@@ -9,15 +6,32 @@ table-of-contents-accordion {
     /* The toc items should not have a background color, thus the background color for the entire navigation panel shines through. */
     ion-item.item {
         background-color: unset;
+        padding-left: 12px;
+	    border-left: 4px solid transparent;
+        transition: border-left-color 0.1s;
     }
 
+    ion-item.item.back-to-list-button {
+        padding-left: 12px;
+        border-left: 4px solid transparent;
+    }
+
+    ion-item.item:hover,
+    ion-item.item.back-to-list-button:hover {
+        border-left-color: color($colors, primary);
+    }
+
+    /*
     ion-item.item.item-block div.item-inner {
         padding-right: 4px;
         border-right: 4px solid transparent !important;
     }
+    */
+    /*
     ion-item.item.item-block:hover div.item-inner {
         border-right-color: color($colors, primary) !important;
     }
+    */
 
     ion-item.item.selected-toc-item {
         font-weight: bold;
@@ -25,12 +39,16 @@ table-of-contents-accordion {
 
     ion-item.item.collection-name-top {
         background-color: color($colors, secondary);
+        padding-left: 16px;
+        border-left: 0;
         min-height: 50px;
         font-weight: bold;
 
+        /*
         &.item-block:hover div.item-inner {
             border-right-color: transparent !important;
         }
+        */
     }
     .collection-name-top ion-label {
         white-space: pre-wrap !important;
@@ -63,9 +81,12 @@ table-of-contents-accordion {
                 }
             }
         }
-        &.item.item-block:hover div.item-inner {
-            border-right-color: transparent !important;
+        
+        &.item.item-block:hover {
+            padding-left: 16px !important;
+            border-left: 0 !important;
         }
+        
     }
 
     ion-item.item-ios [item-left], ion-item.item-ios [item-right],
@@ -93,13 +114,41 @@ table-of-contents-accordion {
         margin: 0 !important;
     }
 
+    /*
     .options.recursive-suboptions {
         margin-left: 20px;
     }
+    */
 
-    .accordion-menu .list .list-md {
-        background-color: #ecece4; /* should changed into variable */
+    div.recursive-suboptions > ion-item.item,
+    div.recursive-suboptions > ion-list.accordion-menu > ion-item.item {
+        padding-left: 32px;
     }
+
+    div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-item.item,
+    div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-list.accordion-menu > ion-item.item {
+        padding-left: 52px;
+    }
+
+    div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-item.item,
+    div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-list.accordion-menu > ion-item.item {
+        padding-left: 72px;
+    }
+
+    div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-item.item,
+    div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-list.accordion-menu > ion-item.item {
+        padding-left: 92px;
+    }
+
+    div.recursive-suboptions > ion-list.accordion-menu > ion-item.item:hover {
+        border-left-color: color($colors, primary);
+    }
+
+    /*
+    .accordion-menu .list .list-md {
+        background-color: #ecece4;
+    }
+    */
 
     ion-list.accordion-menu ion-item.header ion-icon.header-icon.rotate {
         -webkit-transform: rotate(90deg);

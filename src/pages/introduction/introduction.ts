@@ -82,10 +82,7 @@ export class IntroductionPage {
   ) {
     this.id = this.params.get('collectionID');
     this.collection = this.params.get('collection');
-    this.tocMenuOpen = true;
-    if (this.platform.is('mobile')) {
-      this.tocMenuOpen = false;
-    }
+    this.tocMenuOpen = false;
     this.toolTipMaxWidth = null;
     this.toolTipScaleValue = null;
     this.toolTipPosition = {
@@ -128,6 +125,9 @@ export class IntroductionPage {
             const matches = String(this.text).match(pattern);
             const the_string = matches[0];
             this.textMenu = the_string;
+            if (!this.platform.is('mobile')) {
+              this.toggleTocMenu();
+            }
             // Try to scroll to an element in the text, checks if "pos" given
             this.scrollToPos();
           },
@@ -341,7 +341,7 @@ export class IntroductionPage {
     /* MOUSE OVER EVENTS */
     this.renderer.listen(nElement, 'mouseover', (event) => {
       const eventTarget = this.getEventTarget(event);
-      // const elem = event.target;
+
       if (eventTarget['classList'].contains('tooltiptrigger')) {
         if (eventTarget.hasAttribute('data-id')) {
           if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person')

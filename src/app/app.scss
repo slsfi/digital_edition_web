@@ -527,6 +527,29 @@ input{
   }
 }
 
+ion-menu {
+  &#contentMenu ion-list.accordion-menu > ion-item.item,
+  &#contentMenu ion-list.accordion-menu > div > ion-item.item {
+    padding-left: 12px;
+    border-left: 4px solid transparent;
+  }
+  &#contentMenu ion-list.accordion-menu ion-item.item:hover {
+    border-left-color: color($colors, primary);
+  }
+  &#contentMenu .simple-accordion-options ion-list.accordion-menu > ion-item.item {
+    padding-left: 32px;
+  }
+  &#contentMenu .simple-accordion-options .recursive-suboptions ion-item.item {
+    padding-left: 52px;
+  }
+  &#contentMenu .simple-accordion-options .recursive-suboptions .recursive-suboptions ion-item.item {
+    padding-left: 72px;
+  }
+  &#contentMenu .simple-accordion-options .recursive-suboptions .recursive-suboptions .recursive-suboptions ion-item.item {
+    padding-left: 92px;
+  }
+}
+
 ion-list.accordion-menu ion-item.header ion-icon.header-icon {
   will-change: transform;
   transition: transform 0.3s ease;
@@ -540,6 +563,16 @@ ion-list.accordion-menu ion-item.header ion-icon.header-icon.rotate {
   transform: rotate(90deg);
 }
 
+/* The toc-items themselves should not have a bg-color, instead the whole toc-menu has a bg-color. */
+ion-list.accordion-menu ion-item.item,
+ion-item.mainMenuItem {
+  background-color: unset;
+}
+
+ion-list.accordion-menu > ion-item.item-block:last-child .item-inner {
+  border-bottom: $item-md-divider-border-bottom;
+}
+
 ion-list.accordion-menu div.options {
   will-change: height;
   transition: height 0.3s ease;
@@ -547,9 +580,11 @@ ion-list.accordion-menu div.options {
   height: 0;
 }
 
+/*
 .simple-accordion-options {
   margin-left: 20px;
 }
+*/
 
 /* Definieras redan i table-of-contents-accordion.scss
 ion-item.selected-toc-item {

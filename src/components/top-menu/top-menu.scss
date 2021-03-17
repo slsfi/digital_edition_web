@@ -13,25 +13,25 @@ top-menu {
 
   }
 
-  span{
+  span {
     font-family: $font-family-top-menu;
     font-size: 1rem;
   }
 
-  .mobile_row{
+  .mobile_row {
     display: flex;
     justify-content: flex-start;
-    .enable{
+    .enable {
       order: 0;
       /*flex-grow: 1;*/
       padding-left: 0;
       margin-left: 0;
     }
-    .homeButton{
+    .homeButton {
       order: 1;
       /*flex-grow: 2;*/
     }
-    .searchButton{
+    .searchButton {
       order: 2;
       /*flex-grow: 1;*/
     }
@@ -92,7 +92,7 @@ top-menu {
   padding: 0;
 }
 
-.toolbar{
+.toolbar {
   max-height: 70px !important;
   min-height: 70px !important;
 }
@@ -101,12 +101,12 @@ top-menu {
   background-color: transparent;
 }
 
-.mobile_row > button{
+.mobile_row > button {
   background-color: transparent !important; // imp needed to override hover bg-color
   box-shadow: none !important;  // imp needed to override shadow on click
 }
 
-.secondary.toolbar{
+.secondary.toolbar {
   max-height: 50px !important;
   min-height: 50px !important;
 }
@@ -125,10 +125,6 @@ top-menu {
 
 .split-pane {
   margin-top: 10px;
-}
-
-.bookmark-icon {
-  color: white;
 }
 
 ion-icon {
