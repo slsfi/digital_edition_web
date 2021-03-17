@@ -254,6 +254,11 @@ export class MediaCollectionsPage {
   }
   ionViewWillEnter() {
     this.events.publish('ionViewWillEnter', this.constructor.name);
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'title'});
+    this.events.publish('SelectedItemInMenu', {
+      menuID: 'mediaCollections',
+      component: 'title-page'
+    });
   }
 
   asThumb(url) {

@@ -32,6 +32,7 @@ export class DigitalEditionList implements OnInit {
   hasIntro = true;
   hasTitle = true;
   hideBooks = false;
+  hasMediaCollections = false;
   collectionSortOrder: any;
 
   @Input() layoutType: string;
@@ -72,6 +73,11 @@ export class DigitalEditionList implements OnInit {
       this.collectionSortOrder = this.config.getSettings('app.CollectionSortOrder');
     } catch (e) {
       this.collectionSortOrder = undefined;
+    }
+    try {
+      this.hasMediaCollections = this.config.getSettings('show.TOC.MediaCollections');
+    } catch (e) {
+      this.hasMediaCollections = false;
     }
   }
 
@@ -118,6 +124,10 @@ export class DigitalEditionList implements OnInit {
       .subscribe(
         digitalEditions => {
           this.digitalEditions = digitalEditions;
+          if ( this.hasMediaCollections ) {
+            const mediaColl = new DigitalEdition({id: 'mediaCollections', title: 'media'});
+            this.digitalEditions.unshift(mediaColl);
+          }
           let de = digitalEditions;
           this.events.publish('DigitalEditionList:recieveData', { digitalEditions });
           this.setPDF(de);
@@ -270,12 +280,18 @@ export class DigitalEditionList implements OnInit {
   }
 
   openCollection(collection: DigitalEdition, animate = true) {
-    if ( collection.isDownload === undefined || !collection.isDownload) {
+    if ( (collection.isDownload === undefined || collection.isDownload === false) && collection.id !== 'mediaCollections' ) {
       if (this.hasCover === false && this.hasIntro === false  && this.hasTitle === false) {
         this.getTocRoot(collection);
       } else {
         this.events.publish('digital-edition-list:open', collection);
       }
+    } else {
+      this.openMediaCollections(collection);
     }
+  }
+
+  openMediaCollections(collection) {
+    this.events.publish('openMediaCollections', {});
   }
 }

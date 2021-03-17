@@ -14,7 +14,7 @@
           </ion-card-header>
           <ion-card-content class="digital-edition-list-card-content">
             <div style="background-color: white; text-align: center;">
-              <h2>{{edition.title}}</h2>
+              <h2>{{edition.title | translate}}</h2>
               <div class="book_download_container">
                 <div class="download_link"><p class="download_pdf" *ngIf="edition['pdf']" (click)="downloadBook(edition, 'pdf')">PDF</p></div>
                 <div class="download_link"><p class="download_epub" *ngIf="edition['epub']" (click)="downloadBook(edition, 'epub')">EPUB</p></div>
