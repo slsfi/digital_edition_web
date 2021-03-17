@@ -555,6 +555,7 @@ ion-menu {
   &#contentMenu ion-list.accordion-menu > div > ion-item.item {
     padding-left: 12px;
     border-left: 4px solid transparent;
+    transition: border-left-color 0.1s;
   }
   &#contentMenu ion-item.mainMenuItem:hover,
   &#contentMenu ion-list.accordion-menu ion-item.item:hover {
