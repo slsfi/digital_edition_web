@@ -77,4 +77,13 @@ digital-edition-list-children {
       padding-top: 1.8em;
       line-height: 1em;
     }
+
+    .download_link{
+      border-bottom: 1px solid;
+      border-bottom-color: color($colors, primary) !important;
+    }
+
+    .download_link p{
+      margin-bottom: 0.1em !important;
+    }
 }
