@@ -75,12 +75,14 @@ export class DigitalEditionListChildrenComponent {
     if (collection.isDownload) {
       if (collection.collectionId in this.collectionDownloads['pdf'] && type === 'pdf') {
         const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.collectionId + '/pdf/' +
-          this.collectionDownloads['pdf'][collection.collectionId].title + '/';
+          this.collectionDownloads['pdf'][collection.collectionId].title + '/' +
+          this.collectionDownloads['pdf'][collection.collectionId].title;
         const ref = window.open(dURL);
         this.doAnalytics('Download', 'PDF', this.collectionDownloads['pdf'][collection.id]);
       } else if (collection.collectionId in this.collectionDownloads['epub'] && type === 'epub') {
         const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.collectionId + '/epub/' +
-          this.collectionDownloads['epub'][collection.collectionId].title + '/';
+          this.collectionDownloads['epub'][collection.collectionId].title + '/' +
+          this.collectionDownloads['epub'][collection.collectionId].title;
         const ref = window.open(dURL);
         this.doAnalytics('Download', 'EPUB', this.collectionDownloads['epub'][collection.collectionId]);
       }

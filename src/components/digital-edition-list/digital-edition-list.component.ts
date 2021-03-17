@@ -229,12 +229,14 @@ export class DigitalEditionList implements OnInit {
     if (collection.isDownload) {
       if (collection.id in this.collectionDownloads['pdf'] && type === 'pdf') {
         const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.id + '/pdf/' +
-          this.collectionDownloads['pdf'][collection.id].title + '/';
+          this.collectionDownloads['pdf'][collection.id].title + '/' +
+          this.collectionDownloads['pdf'][collection.id].title;
         const ref = window.open(dURL);
         this.doAnalytics('Download', 'PDF', this.collectionDownloads['pdf'][collection.id]);
       } else if (collection.id in this.collectionDownloads['epub'] && type === 'epub') {
         const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.id + '/epub/' +
-          this.collectionDownloads['epub'][collection.id].title + '/';
+          this.collectionDownloads['epub'][collection.id].title + '/' +
+          this.collectionDownloads['epub'][collection.id].title;
         const ref = window.open(dURL);
         this.doAnalytics('Download', 'EPUB', this.collectionDownloads['epub'][collection.id]);
       }
