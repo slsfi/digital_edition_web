@@ -11,7 +11,13 @@ table-of-contents-accordion {
         transition: border-left-color 0.1s;
     }
 
-    ion-item.item:hover {
+    ion-item.item.back-to-list-button {
+        padding-left: 12px;
+        border-left: 4px solid transparent;
+    }
+
+    ion-item.item:hover,
+    ion-item.item.back-to-list-button:hover {
         border-left-color: color($colors, primary);
     }
 
@@ -29,11 +35,6 @@ table-of-contents-accordion {
 
     ion-item.item.selected-toc-item {
         font-weight: bold;
-    }
-
-    ion-item.item.back-to-list-button {
-        padding-left: 16px;
-        border-left: 0;
     }
 
     ion-item.item.collection-name-top {
@@ -80,11 +81,12 @@ table-of-contents-accordion {
                 }
             }
         }
-        /*
-        &.item.item-block:hover div.item-inner {
-            border-right-color: transparent !important;
+        
+        &.item.item-block:hover {
+            padding-left: 16px !important;
+            border-left: 0 !important;
         }
-        */
+        
     }
 
     ion-item.item-ios [item-left], ion-item.item-ios [item-right],
@@ -131,6 +133,11 @@ table-of-contents-accordion {
     div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-item.item,
     div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-list.accordion-menu > ion-item.item {
         padding-left: 72px;
+    }
+
+    div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-item.item,
+    div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-list.accordion-menu > ion-item.item {
+        padding-left: 92px;
     }
 
     div.recursive-suboptions > ion-list.accordion-menu > ion-item.item:hover {
