@@ -503,31 +503,6 @@ input{
   }
 }
 
-.edition_boxes{
-	.grid{
-		text-align: center;
-	}
-	.card{
-		width: 70%;
-	}
-	.col{
-		display: flex !important;
-    	justify-content: center !important;
-	}
-	.card-content{
-		padding-top: 5px;
-	}
-	.row{
-		justify-content: center;
-  }
-  ion-fab{
-    position: absolute;
-    margin-left: 0;
-    width: 100%;
-    left: 0;
-  }
-}
-
 .item-md p {
   font-size: 1rem;
   color: color($colors, dark);

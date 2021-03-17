@@ -6,16 +6,16 @@ digital-editions-list {
         color: rgba($color: #000000, $alpha: 0.3)
     }
     .card-content-md{
-        padding: 0;
+      padding: 0px !important;
     }
     .card{
         cursor: pointer;
     }
     .col-mobile{
-        padding: 0;
+
     }
     .grid-mobile{
-        padding: 0;
+
     }
     .card-md {
         ion-card-content {
@@ -30,9 +30,6 @@ digital-editions-list {
                 line-height: 1em;
             }
         }
-    }
-    .digital-edition-list-card-content{
-      padding-top: 35px;
     }
     .book_download_container {
       display: flex;
