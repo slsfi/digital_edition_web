@@ -6,6 +6,7 @@ import { FacsimileZoomModalPage } from '../facsimile-zoom/facsimile-zoom';
 import { ConfigService } from '@ngx-config/core';
 import { TranslateService } from '@ngx-translate/core/src/translate.service';
 import { LanguageService } from '../../app/services/languages/language.service';
+import { ReferenceDataModalPage } from '../reference-data-modal/reference-data-modal';
 /**
  * Generated class for the FacsimileCollectionPage page.
  *
@@ -364,6 +365,15 @@ export class MediaCollectionPage {
     });
     this.mediaCollection = filteredGalleries;
     this.doAnalytics('Filter', 'subject', name);
+  }
+
+  private showReference() {
+    // Get URL of Page and then the URI
+    const modal = this.modalController.create(ReferenceDataModalPage, {id: document.URL, type: 'reference'});
+    modal.present();
+    modal.onDidDismiss(data => {
+      // console.log('dismissed', data);
+    });
   }
 
 }
