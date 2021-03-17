@@ -127,6 +127,11 @@ table-of-contents-accordion {
         padding-left: 52px;
     }
 
+    div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-item.item,
+    div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-list.accordion-menu > div.recursive-suboptions > ion-list.accordion-menu > ion-item.item {
+        padding-left: 72px;
+    }
+
     div.recursive-suboptions > ion-list.accordion-menu > ion-item.item:hover {
         border-left-color: color($colors, primary);
     }
