@@ -1,5 +1,5 @@
 <ion-item *ngIf="showBackButton" class="collection-name-top" no-lines>
-    <ion-label>{{collectionName | translate}}</ion-label>
+    <ion-label>{{ ('TOC-translation.' + collectionName | translate) !== 'TOC-translation.' + collectionName  ?  ('TOC-translation.' + collectionName | translate) : collectionName }}</ion-label>
 </ion-item>
 <ion-item *ngIf="showBackButton" (click)="exit()" class="back-to-list-button collections" no-lines>
     <ion-icon name="ios-arrow-back" item-left small></ion-icon>
@@ -34,7 +34,7 @@
                 <ng-template [ngIf]="!menuItem.childrenCount && !(playmanTraditionPageInMusicAccordion && menuItem.markdownID && menuItem.markdownID == playmanTraditionPageID)">
                     <ion-item *ngIf="menuItem.type!='hidden'"  [style.marginLeft]="menuItem.is_child ? 20 + 'px' : '0px'" id="toc_{{menuItem.itemId}}" class="option type-{{menuItem.type}}" [ngClass]="menuSettings?.showSelectedOption && menuItem.selected ? menuSettings.selectedOptionClass : null" (tap)="select(menuItem)"
                         tappable>
-                        <p>{{ menuItem.text }}</p>
+                        <p>{{ ('TOC-translation.' + menuItem.text | translate) !== 'TOC-translation.' + menuItem.text  ?  ('TOC-translation.' + menuItem.text | translate) : menuItem.text }}</p>
                         <span *ngIf="menuItem.description" class="description">{{ menuItem.description }}</span>
                     </ion-item>
                 </ng-template>
@@ -42,7 +42,7 @@
                     <ion-list no-margin *ngIf="menuItem.type!='hidden'" class="accordion-menu" [style.marginLeft]="menuItem.is_child ? 20 + 'px' : '0px'">
                         <ion-item class="header type-{{menuItem.type}}" [ngClass]="menuSettings?.showSelectedOption && menuItem.selected ? menuSettings.selectedOptionClass : null" (tap)="toggleItemOptions(menuItem)" tappable>
                             <ion-icon [class.rotate]="(menuItem.expanded || menuItem.collapsed === false)" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
-                            <p>{{ menuItem.text }}</p>
+                            <p>{{ ('TOC-translation.' + menuItem.text | translate) !== 'TOC-translation.' + menuItem.text  ?  ('TOC-translation.' + menuItem.text | translate) : menuItem.text }}</p>
                         </ion-item>
                         <div [style.height]="(menuItem.expanded || menuItem.collapsed === false) ? '100%' : '0px'" class="options recursive-suboptions">
                             <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: menuItem.subOptions }">

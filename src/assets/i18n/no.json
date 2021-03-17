@@ -234,5 +234,8 @@
   "EditionsList": {
     "DownloadPDF": "PDF",
     "DownloadEPUB": "EPUB"
+  },
+  "TOC-translation": {
+    "media": "Fotografier"
   }
 }
