@@ -14,10 +14,12 @@ table-of-contents-accordion {
         border-left-color: color($colors, primary);
     }
 
+    /*
     ion-item.item.item-block div.item-inner {
         padding-right: 4px;
         border-right: 4px solid transparent !important;
     }
+    */
     /*
     ion-item.item.item-block:hover div.item-inner {
         border-right-color: color($colors, primary) !important;
@@ -28,14 +30,23 @@ table-of-contents-accordion {
         font-weight: bold;
     }
 
+    ion-item.item.back-to-list-button {
+        padding-left: 16px;
+        border-left: 0;
+    }
+
     ion-item.item.collection-name-top {
         background-color: color($colors, secondary);
+        padding-left: 16px;
+        border-left: 0;
         min-height: 50px;
         font-weight: bold;
 
+        /*
         &.item-block:hover div.item-inner {
             border-right-color: transparent !important;
         }
+        */
     }
     .collection-name-top ion-label {
         white-space: pre-wrap !important;
@@ -68,9 +79,11 @@ table-of-contents-accordion {
                 }
             }
         }
+        /*
         &.item.item-block:hover div.item-inner {
             border-right-color: transparent !important;
         }
+        */
     }
 
     ion-item.item-ios [item-left], ion-item.item-ios [item-right],
