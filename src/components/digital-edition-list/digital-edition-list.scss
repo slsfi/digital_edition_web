@@ -46,4 +46,13 @@ digital-editions-list {
     .list .book_download_container {
       justify-content: start;
     }
+
+    .download_link{
+      border-bottom: 1px solid;
+      border-bottom-color: color($colors, primary) !important;
+    }
+
+    .download_link p{
+      margin-bottom: 0.1em !important;
+    }
 }

@@ -2,6 +2,7 @@ node_modules
 www
 src/assets/project/*
 src/assets/midi-files/*
+src/assets/images/cover_pages/*
 .vscode
 .sourcemaps
 .scannerwork

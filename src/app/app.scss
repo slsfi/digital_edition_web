@@ -361,6 +361,10 @@ ion-menu {
   ion-icon {
     color: $forward-arrow-color;
   }
+  ion-item.item-block:hover div.item-inner {
+    border-right: 4px solid;
+    border-right-color: color($colors, primary) !important;
+  }
 }
 
 ion-toolbar.secondary {
@@ -377,7 +381,7 @@ ion-toolbar.secondary div {
 	line-height: unset !important;
 } */
 
-page-introduction .secondary-toolbar-icons-wrapper, 
+page-introduction .secondary-toolbar-icons-wrapper,
 page-read .secondary-toolbar-icons-wrapper {
   ion-icon {
     font-size: 1.75rem;
