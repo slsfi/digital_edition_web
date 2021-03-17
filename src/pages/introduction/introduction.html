@@ -4,6 +4,11 @@
         <ion-grid>
             <ion-row class="secondary-toolbar-icons-wrapper" nowrap>
               <ion-col>
+                  <div class="urn-icon" (click)="showReference()">
+                    <ion-label>[URN]</ion-label>
+                  </div>
+              </ion-col>
+              <ion-col>
                   <div id="share-icon" (click)="showSharePopover($event)">
                     <ion-icon class="share-icon sec-menu-button" name="share"></ion-icon>
                   </div>

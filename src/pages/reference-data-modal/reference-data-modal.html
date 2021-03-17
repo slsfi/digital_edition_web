@@ -23,15 +23,15 @@
       </ion-card-header>
       <ion-card-content>
         <ion-item>
-          <div class="urn" ><a target="_blank" href="{{ 'http://urn.fi/' + referenceData['urn']}}">{{referenceData['urn']}}</a></div>
+          <div class="urn" ><a target="_blank" href="{{ 'https://urn.fi/' + referenceData['urn']}}">{{'https://urn.fi/' + referenceData['urn']}}</a></div>
         </ion-item>
-        <ion-item *ngIf="referenceData['intro_reference_text']">
+        <ion-item *ngIf="referenceData['reference_text']">
             <label>{{'Reference.established' | translate}}:</label>
             <div class="urn" [innerHTML]="referenceData['reference_text'] + ' ' + referenceData['urn']">...</div>
         </ion-item>
-        <ion-item *ngIf="referenceData['reference_text']">
+        <ion-item *ngIf="referenceData['intro_reference_text']">
             <label>{{'Reference.intro' | translate}}:</label>
-            <div class="urn" [innerHTML]="referenceData['intro_reference_text']">...</div>
+            <div class="urn" [innerHTML]="referenceData['intro_reference_text']">...z</div>
         </ion-item>
       </ion-card-content>
     </ion-card>
