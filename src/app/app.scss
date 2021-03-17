@@ -550,11 +550,13 @@ input{
 }
 
 ion-menu {
+  &#contentMenu ion-item.mainMenuItem,
   &#contentMenu ion-list.accordion-menu > ion-item.item,
   &#contentMenu ion-list.accordion-menu > div > ion-item.item {
     padding-left: 12px;
     border-left: 4px solid transparent;
   }
+  &#contentMenu ion-item.mainMenuItem:hover,
   &#contentMenu ion-list.accordion-menu ion-item.item:hover {
     border-left-color: color($colors, primary);
   }
