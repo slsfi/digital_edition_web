@@ -17,7 +17,9 @@
   "TopMenu": {
       "Home": "Home",
       "Read": "Content",
-      "Info": "About"
+      "Info": "About",
+      "SimpleSearch": "Search",
+      "AdvancedSearch": "Advanced Search"
   },
   "Tabs": {
       "Home": "Home",
