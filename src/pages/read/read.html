@@ -9,14 +9,14 @@
               <ion-col>
                 <button ion-button clear (click)="showReference()" class="sec-menu-button">
                   <ion-icon class="urn-icon" name="share-alt"></ion-icon>
-                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.urn' | translate }}</span>
                 </button>
+                <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.urn' | translate }}</span>
               </ion-col>
               <ion-col>
                 <button ion-button clear (click)="showSharePopover($event)" class="sec-menu-button">
                   <ion-icon class="share-icon" name="share"></ion-icon>
-                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.share' | translate }}</span>
                 </button>
+                <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.share' | translate }}</span>
               </ion-col>
               <!--
               <ion-col>
@@ -29,8 +29,8 @@
               <ion-col>
                 <button ion-button clear #settingsIconElement (click)="showPopover($event)" class="sec-menu-button" id="settings-icon">
                   <ion-icon class="settings-icon" name="settings"></ion-icon>
-                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Popover.Options' | translate }}</span>
                 </button>
+                <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Popover.Options' | translate }}</span>
               </ion-col>
             </ion-row>
         </ion-grid>
