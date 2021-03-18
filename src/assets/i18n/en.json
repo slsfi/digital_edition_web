@@ -233,7 +233,8 @@
       "mail": "Mail",
       "thisPage": "Refer to this page",
       "established": "Refer to this text",
-      "intro": "Refer to this introduction"
+      "intro": "Refer to this introduction",
+      "missing": "This page does not have a URN"
   },
   "established": "Readtext",
   "comments": "Commentary",

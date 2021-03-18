@@ -288,7 +288,8 @@
       "mail": "Sähköposti",
       "thisPage": "Lähdevittaus",
       "established": "Lähdevittaus tähän lukutekstiin",
-      "intro": "Lähdevittaus tähän johdantoon"
+      "intro": "Lähdevittaus tähän johdantoon",
+      "missing": "Sivulta puuttuu URN"
   },
   "Song": {
       "Playman": "Spelman",
