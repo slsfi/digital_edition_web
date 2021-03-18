@@ -712,7 +712,7 @@ ion-backdrop {
   transition: $opacity-hover-transition;
   position: relative;
 }
-.sec-menu-button:hover {
+.sec-menu-button:hover:not(.disable-hover) {
   background-color: transparent !important;
   opacity: $opacity-hover;
 }
@@ -733,7 +733,7 @@ ion-backdrop {
   transition: opacity 0.3s;
   transform: translate(0, -50%);
 }
-.sec-menu-button:hover + .side-title {
+.sec-menu-button:hover:not(.disable-hover) + .side-title {
   opacity: 1;
 }
 
