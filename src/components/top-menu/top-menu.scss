@@ -83,6 +83,12 @@ top-menu {
     height: 100%;
   }
 
+  .side-title {
+    font-size: 10px;
+    margin-left: 8px;
+    font-weight: normal;
+  }
+
 }
 
 .toolbar-ios ion-title {
@@ -113,12 +119,6 @@ top-menu {
 .secondary.toolbar {
   max-height: 50px !important;
   min-height: 50px !important;
-}
-
-.side-title {
-  font-size: 10px;
-  margin-left: 8px;
-  font-weight: normal;
 }
 
 .split-pane-visible {
