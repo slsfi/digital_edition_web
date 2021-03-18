@@ -235,7 +235,8 @@ export class DigitalEditionList implements OnInit {
     }
   }
 
-  downloadBook(collection, type) {
+  downloadBook(event: Event, collection, type) {
+    event.stopPropagation();
     if (collection.isDownload) {
       if (collection.id in this.collectionDownloads['pdf'] && type === 'pdf') {
         const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.id + '/pdf/' +
