@@ -8,12 +8,14 @@
             <ion-row class="secondary-toolbar-icons-wrapper" nowrap>
               <ion-col>
                   <div class="urn-icon" (click)="showReference()">
-                    <ion-label>[URN]</ion-label>
+                    <ion-icon class="urn-icon sec-menu-button" name="share-alt"></ion-icon>
+                    <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.urn' | translate }}</span>
                   </div>
               </ion-col>
               <ion-col>
                   <div id="share-icon" (click)="showSharePopover($event)">
                     <ion-icon class="share-icon sec-menu-button" name="share"></ion-icon>
+                    <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.share' | translate }}</span>
                   </div>
               </ion-col>
               <!--
@@ -27,6 +29,7 @@
               <ion-col>
                   <div #settingsIconElement (click)="showPopover($event)" id="settings-icon">
                   <ion-icon class="settings-icon sec-menu-button" name="settings"></ion-icon>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Popover.Options' | translate }}</span>
                   </div>
               </ion-col>
             </ion-row>

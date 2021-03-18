@@ -30,6 +30,7 @@
       "DigitalEditions": "Digitala utgåvor",
       "OpenInTab": "Öppna i ny flik",
       "Popover": {
+          "Options": "Alternativ",
           "All": "Välj alla",
           "Appearance": "Textstorlek",
           "Show": "Visningsalternativ",
@@ -286,7 +287,7 @@
   "BC": "f.Kr.",
   "Reference": {
       "title": "Hänvisa",
-      "urn": "Länka",
+      "urn": "URN",
       "share": "Dela",
       "mail": "E-post",
       "thisPage": "Hänvisa till denna sida",
