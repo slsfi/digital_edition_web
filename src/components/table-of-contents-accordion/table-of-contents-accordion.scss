@@ -81,12 +81,12 @@ table-of-contents-accordion {
                 }
             }
         }
-        
+
         &.item.item-block:hover {
             padding-left: 16px !important;
             border-left: 0 !important;
         }
-        
+
     }
 
     ion-item.item-ios [item-left], ion-item.item-ios [item-right],
@@ -182,6 +182,10 @@ table-of-contents-accordion {
         color: #515151;
         font-weight: normal !important;
         font-size: 0.875rem;
+    }
+
+    div.aboutMarkdown ion-item{
+      padding-left: 32px;
     }
 
 }

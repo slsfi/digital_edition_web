@@ -387,7 +387,17 @@ page-read {
   }
   */
 
+  .urn-icon ion-label:hover{
+    border-bottom: 1px solid;
+    font-weight: bold;
+    border-bottom-color: color($colors, primary) !important;
 
+  }
+
+  .urn-icon ion-label{
+    margin-bottom: 0.1em !important;
+    cursor: pointer;
+  }
 
 }
 

@@ -880,6 +880,10 @@ export class DigitalEditionsApp {
     this.events.subscribe('ionViewDidLeave', (className) => {
     });
 
+    this.events.subscribe('openMediaCollections', (className) => {
+      this.openMediaCollections();
+    });
+
     this.events.subscribe('topMenu:content', () => {
       this.events.publish('SelectedItemInMenu', {
         menuID: 'topMenu',

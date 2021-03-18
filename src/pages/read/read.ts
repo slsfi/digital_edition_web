@@ -1707,6 +1707,15 @@ export class ReadPage /*implements OnDestroy*/ {
     });
   }
 
+  private showReference() {
+    // Get URL of Page and then the URI
+    const modal = this.modalCtrl.create(ReferenceDataModalPage, {id: document.URL, type: 'reference'});
+    modal.present();
+    modal.onDidDismiss(data => {
+      // console.log('dismissed', data);
+    });
+  }
+
   presentDownloadActionSheet() {
     const actionSheet = this.actionSheetCtrl.create({
       title: 'Ladda ner digital version',

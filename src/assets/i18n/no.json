@@ -96,6 +96,7 @@
       "ViewModeMobile": "Mobil",
       "Information": "Informasjon"
   },
+  "media": "Fotografier",
   "TOC": {
       "Home": "Til forsiden",
       "About": "Arkivverket kildeutgivelser",
@@ -205,7 +206,8 @@
       "mail": "E-post",
       "thisPage": "Hänvisa till denna sida",
       "established": "Hänvisa till denna lästext",
-      "intro": "Hänvisa till denna inledning"
+      "intro": "Hänvisa till denna inledning",
+      "missing": "Sidan saknar URN"
   },
   "Song": {
       "Playman": "Spelman",
@@ -229,5 +231,12 @@
       "Title": "Musik",
       "SubTitle": "",
       "PageTitle": "Musikvolymerna"
+  },
+  "EditionsList": {
+    "DownloadPDF": "PDF",
+    "DownloadEPUB": "EPUB"
+  },
+  "TOC-translation": {
+    "media": "Fotografier"
   }
 }

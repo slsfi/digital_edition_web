@@ -13,6 +13,7 @@
       "ReadTocItemText": "Täällä voit nähdä kaikki digitaaliset julkaisut.",
       "DownloadCacheText": "Tällä painikkeella voit tallentaa tiedot paikallisesti, niin se on nopeampaa seuraavan kerran."
   },
+  "media": "Kuvat",
   "TopMenu": {
       "Home": "Etusivu",
       "Read": "Lue",
@@ -287,7 +288,8 @@
       "mail": "Sähköposti",
       "thisPage": "Lähdevittaus",
       "established": "Lähdevittaus tähän lukutekstiin",
-      "intro": "Lähdevittaus tähän johdantoon"
+      "intro": "Lähdevittaus tähän johdantoon",
+      "missing": "Sivulta puuttuu URN"
   },
   "Song": {
       "Playman": "Spelman",
@@ -319,5 +321,12 @@
   "variations": "Variantit",
   "introduction": "Johdanto",
   "songexample": "Sång",
-  "illustrations": "Kuvat"
+  "illustrations": "Kuvat",
+  "EditionsList": {
+    "DownloadPDF": "PDF",
+    "DownloadEPUB": "EPUB"
+  },
+  "TOC-translation": {
+    "media": "Kuvat"
+  }
 }

@@ -99,11 +99,11 @@ page-introduction {
   .intro-toc-button {
     transition: $opacity-hover-transition;
   }
-  
+
   .intro-toc-button:hover {
     opacity: $opacity-hover;
   }
-  
+
   .intro-toc-button:active {
     opacity: 1;
   }
@@ -222,7 +222,7 @@ page-introduction {
     width: initial;
   }
 
-  
+
   @media screen and (max-width: 450px) {
     /* Gör innehållsförteckningen lite smalare på mycket små skärmar */
     #TOC {
@@ -249,7 +249,7 @@ page-introduction {
     cursor: pointer;
   }
   */
-  
+
   /*
   .menuClosedTOC {
     width: 10% !important;
@@ -311,7 +311,7 @@ page-introduction {
     white-space: normal;
     max-width: 400px;
     text-align: left;
-  
+
     p {
       line-height: 22px;
     }
@@ -322,7 +322,7 @@ page-introduction {
     .secondary .toolbar-content {
       display: flex;
       justify-content: flex-end;
-  
+
       .bar-buttons:last-child {
         margin-left: 0;
       }
@@ -333,4 +333,15 @@ page-introduction {
     font-style: italic;
   }
 
+  .urn-icon ion-label:hover{
+    border-bottom: 1px solid;
+    font-weight: bold;
+    border-bottom-color: color($colors, primary) !important;
+
+  }
+
+  .urn-icon ion-label{
+    margin-bottom: 0.1em !important;
+    cursor: pointer;
+  }
 }

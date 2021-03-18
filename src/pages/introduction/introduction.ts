@@ -1,6 +1,6 @@
 import { TranslateService } from '@ngx-translate/core';
 import { Component, Renderer, ElementRef, SecurityContext } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, Platform, PopoverController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, Platform, PopoverController, ModalController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { TextService } from '../../app/services/texts/text.service';
@@ -14,6 +14,7 @@ import { GeneralTocItem } from '../../app/models/table-of-contents.model';
 import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
 import { Storage } from '@ionic/storage';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
+import { ReferenceDataModalPage } from '../../pages/reference-data-modal/reference-data-modal';
 
 /**
  * Generated class for the IntroductionPage page.
@@ -76,7 +77,8 @@ export class IntroductionPage {
     public semanticDataService: SemanticDataService,
     public readPopoverService: ReadPopoverService,
     private config: ConfigService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private modalController: ModalController
   ) {
     this.id = this.params.get('collectionID');
     this.collection = this.params.get('collection');
@@ -971,6 +973,15 @@ export class IntroductionPage {
     const popover = this.popoverCtrl.create(SharePopoverPage, {}, { cssClass: 'share-popover' });
     popover.present({
       ev: myEvent
+    });
+  }
+
+  private showReference() {
+    // Get URL of Page and then the URI
+    const modal = this.modalController.create(ReferenceDataModalPage, {id: document.URL, type: 'reference'});
+    modal.present();
+    modal.onDidDismiss(data => {
+      // console.log('dismissed', data);
     });
   }
 

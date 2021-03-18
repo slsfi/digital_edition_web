@@ -110,7 +110,7 @@ export class OccurrencesPage {
     this.isbn = this.occurrenceResult.isbn;
     this.authors = this.occurrenceResult.author_data;
 
-    if ( this.authors[0] === undefined || this.authors[0]['id'] === undefined ) {
+    if ( this.authors === undefined || this.authors[0] === undefined || this.authors[0]['id'] === undefined ) {
       this.authors = [];
     }
 

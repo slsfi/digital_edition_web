@@ -96,7 +96,6 @@ img[src*="#fsfd_bild_md_right"] {
 
 blockquote{
     font-style: italic;
-    font-weight: 600;
 }
 
 /* These overrides are unnecessary here, primary and secondary colors are used instead by default.
@@ -362,6 +361,10 @@ ion-menu {
   ion-icon {
     color: $forward-arrow-color;
   }
+  ion-item.item-block:hover div.item-inner {
+    border-right: 4px solid;
+    border-right-color: color($colors, primary) !important;
+  }
 }
 
 ion-toolbar.secondary {
@@ -378,7 +381,7 @@ ion-toolbar.secondary div {
 	line-height: unset !important;
 } */
 
-page-introduction .secondary-toolbar-icons-wrapper, 
+page-introduction .secondary-toolbar-icons-wrapper,
 page-read .secondary-toolbar-icons-wrapper {
   ion-icon {
     font-size: 1.75rem;
@@ -497,31 +500,6 @@ input{
 
     border-width: 0 0 1px;
     border-style: solid;
-  }
-}
-
-.edition_boxes{
-	.grid{
-		text-align: center;
-	}
-	.card{
-		width: 70%;
-	}
-	.col{
-		display: flex !important;
-    	justify-content: center !important;
-	}
-	.card-content{
-		padding-top: 5px;
-	}
-	.row{
-		justify-content: center;
-  }
-  ion-fab{
-    position: absolute;
-    margin-left: 0;
-    width: 100%;
-    left: 0;
   }
 }
 

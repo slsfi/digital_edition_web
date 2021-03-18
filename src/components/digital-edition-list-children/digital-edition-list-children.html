@@ -11,13 +11,11 @@
                 <ion-card-content style="padding-top: 35px;">
                     <div class="title-area" style="background-color: white; text-align: center;">
                         <h2>{{edition.title}}</h2>
-                        <!--<p>ShortText</p>-->
-                    </div>
-                    <ion-fab class="select-edition" bottom center style="padding-bottom: 15px; background-color: white;">
-                        <div (click)="downloadPDF($event, edition)">
-                            {{"Read.DownloadPDF" | translate }}
+                        <div class="book_download_container" *ngIf="edition.isDownload">
+                          <div class="download_link"><p class="download_pdf" *ngIf="edition['pdf']" (click)="downloadBook($event, edition, 'pdf')">PDF</p></div>
+                          <div class="download_link"><p class="download_epub" *ngIf="edition['epub']" (click)="downloadBook($event, edition, 'epub')">EPUB</p></div>
                         </div>
-                    </ion-fab>
+                    </div>
                 </ion-card-content>
             </ion-card>
         </ion-col>
@@ -34,7 +32,10 @@
               <ion-card-content style="padding-top: 35px;">
                   <div style="background-color: white; text-align: center;">
                     <h2>{{edition.title}}</h2>
-                    <!--<p>ShortText</p>-->
+                    <div class="book_download_container" *ngIf="edition.isDownload">
+                        <div class="download_link"><p class="download_pdf" *ngIf="edition['pdf']" (click)="downloadBook($event, edition, 'pdf')">PDF</p></div>
+                        <div class="download_link"><p class="download_epub" *ngIf="edition['epub']" (click)="downloadBook($event, edition, 'epub')">EPUB</p></div>
+                    </div>
                   </div>
               </ion-card-content>
             </ion-card>
@@ -50,7 +51,10 @@
                   <img src="{{edition.thumbnail}}">
                 </ion-thumbnail>
                 <h2>{{edition.title}}</h2>
-                <!--<p>ShortText</p>-->
+                <div class="book_download_container" *ngIf="edition.isDownload">
+                  <div class="download_link"><p class="download_pdf" *ngIf="edition['pdf']" (click)="downloadBook($event, edition, 'pdf')">PDF</p></div>
+                  <div class="download_link"><p class="download_epub" *ngIf="edition['epub']" (click)="downloadBook($event, edition, 'epub')">EPUB</p></div>
+                </div>
                 </ion-item>
             </ion-list>
         </ion-col>
@@ -70,7 +74,10 @@
                   <ion-card-content style="padding-top: 35px;">
                       <div style="background-color: white; text-align: center;">
                         <h2>{{edition.title}}</h2>
-                        <!--<p>ShortText</p>-->
+                        <div class="book_download_container" *ngIf="edition.isDownload">
+                          <div class="download_link"><p class="download_pdf" *ngIf="edition['pdf']" (click)="downloadBook($event, edition, 'pdf')">PDF</p></div>
+                          <div class="download_link"><p class="download_epub" *ngIf="edition['epub']" (click)="downloadBook($event, edition, 'epub')">EPUB</p></div>
+                        </div>
                       </div>
                   </ion-card-content>
                 </ion-card>

@@ -13,6 +13,7 @@
       "ReadTocItemText": "Here you can see all digital publications and volumes.",
       "DownloadCacheText": "With this button you can save the data locally, and it will be faster next time."
   },
+  "media": "Photos",
   "TopMenu": {
       "Home": "Home",
       "Read": "Content",
@@ -232,7 +233,8 @@
       "mail": "Mail",
       "thisPage": "Refer to this page",
       "established": "Refer to this text",
-      "intro": "Refer to this introduction"
+      "intro": "Refer to this introduction",
+      "missing": "This page does not have a URN"
   },
   "established": "Readtext",
   "comments": "Commentary",
@@ -241,5 +243,12 @@
   "variations": "Variations",
   "introduction": "Introduction",
   "songexample": "Song",
-  "illustrations": "Illustrationer"
+  "illustrations": "Illustrationer",
+  "EditionsList": {
+    "DownloadPDF": "PDF",
+    "DownloadEPUB": "EPUB"
+  },
+  "TOC-translation": {
+    "media": "Photografies"
+  }
 }

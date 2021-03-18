@@ -38,6 +38,14 @@
                           <p *ngIf="i>0">{{"TOC.Read" + i | translate }}</p>
                       </ion-item>
                       <div [style.height]="simpleAccordionsExpanded.collectionsAccordion[i] ? '100%' : '0px'" class="simple-accordion-options options">
+                          <ng-container *ngIf="mediaCollectionOptions['accordionToc'] !== undefined && galleryInReadMenu">
+                              <ion-list class="accordion-menu">
+                                  <ion-item [ngClass]="mediaCollectionOptions.highlight ? 'selected-toc-item' : ''" class="header" (tap)="openCollection(mediaCollectionOptions)" tappable>
+                                      <ion-icon [class.rotate]="mediaCollectionOptions.expanded" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
+                                      <p>{{"TOC.MediaCollections" | translate }}</p>
+                                  </ion-item>
+                              </ion-list>
+                          </ng-container>
                           <ng-container *ngFor="let collection of collectionsListWithTOC">
                               <ion-list *ngIf="collection.toc_exists && ( splitReadCollections.length <= 1 || splitReadCollections[i].includes(collection.id) )" class="accordion-menu">
                                   <!-- toggleSingleCollectionAccordion öppnar accordion  -->
@@ -52,14 +60,6 @@
                                   <div *ngIf="collection.accordionToc.toc && collection.accordionToc.toc.length" [style.height]="collection.expanded ? '100%' : '0px'" class="simple-accordion-options options">
                                       <table-of-contents-accordion *ngIf="!searchTocItem" [showBackButton]="false" [options]="collection.accordionToc" [collectionId]="collection.id" [collectionName]="collection.title" [settings]="sideMenuSettings"></table-of-contents-accordion>
                                   </div>
-                              </ion-list>
-                          </ng-container>
-                          <ng-container *ngIf="mediaCollectionOptions['accordionToc'] !== undefined && galleryInReadMenu">
-                              <ion-list class="accordion-menu">
-                                  <ion-item [ngClass]="mediaCollectionOptions.highlight ? 'selected-toc-item' : ''" class="header" (tap)="openCollection(mediaCollectionOptions)" tappable>
-                                      <ion-icon [class.rotate]="mediaCollectionOptions.expanded" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
-                                      <p>{{"TOC.MediaCollections" | translate }}</p>
-                                  </ion-item>
                               </ion-list>
                           </ng-container>
                         </div>

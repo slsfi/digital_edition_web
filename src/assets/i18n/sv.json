@@ -134,6 +134,7 @@
       "MediaCollections": "Faksimilsamlingar",
       "GotoMediaCollection": "Gå till bildbanken"
   },
+  "media": "Fotografier",
   "TOC": {
       "Home": "Till startsidan",
       "About": "Om",
@@ -290,7 +291,8 @@
       "mail": "E-post",
       "thisPage": "Hänvisa till denna sida",
       "established": "Hänvisa till denna lästext",
-      "intro": "Hänvisa till denna inledning"
+      "intro": "Hänvisa till denna inledning",
+      "missing": "Sidan saknar URN"
   },
   "Song": {
       "Playman": "Spelman",
@@ -322,5 +324,12 @@
   "variations": "Varianter",
   "introduction": "Inledning",
   "songexample": "Sång",
-  "illustrations": "Illustrationer"
+  "illustrations": "Illustrationer",
+  "EditionsList": {
+    "DownloadPDF": "PDF",
+    "DownloadEPUB": "EPUB"
+  },
+  "TOC-translation": {
+    "media": "Fotografier"
+  }
 }
