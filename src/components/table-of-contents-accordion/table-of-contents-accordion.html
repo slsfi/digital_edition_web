@@ -5,7 +5,7 @@
     <ion-icon name="ios-arrow-back" item-left small></ion-icon>
     <ion-label>{{ "BackButton.default" | translate }}</ion-label>
 </ion-item>
-<div *ngIf="open">
+<div *ngIf="open" class="{{collectionId}}">
     <ng-container *ngIf="sortableLetters.includes(collectionId)">
         <ion-item class="collection-filters">
             <button id="thematic" ion-button [ngClass]="{active: thematicOrderActive}" (click)="activeMenuTree = collapsableItems; setActiveSortingType($event)">
