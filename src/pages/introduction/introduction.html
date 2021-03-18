@@ -2,21 +2,24 @@
   <ion-toolbar color="secondary" class="secondary">
     <ion-buttons>
         <ion-grid>
-            <ion-row class="secondary-toolbar-icons-wrapper" nowrap>
+            <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
               <ion-col>
-                  <div class="urn-icon" (click)="showReference()">
-                    <ion-label>[URN]</ion-label>
-                  </div>
+                <button ion-button clear (click)="showReference()" class="sec-menu-button">
+                  <ion-icon class="urn-icon" name="share-alt"></ion-icon>
+                </button>
+                <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.title' | translate }}</span>
               </ion-col>
               <ion-col>
-                  <div id="share-icon" (click)="showSharePopover($event)">
-                    <ion-icon class="share-icon sec-menu-button" name="share"></ion-icon>
-                  </div>
+                <button ion-button clear (click)="showSharePopover($event)" class="sec-menu-button">
+                  <ion-icon class="share-icon" name="share"></ion-icon>
+                </button>
+                <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.share' | translate }}</span>
               </ion-col>
               <ion-col>
-                  <div #settingsIconElement (click)="showPopover($event)" id="settings-icon">
-                  <ion-icon  class="settings-icon sec-menu-button" name="settings"></ion-icon>
-                  </div>
+                <button ion-button clear #settingsIconElement (click)="showPopover($event)" class="sec-menu-button" id="settings-icon">
+                  <ion-icon class="settings-icon" name="settings"></ion-icon>
+                </button>
+                <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Popover.Show' | translate }}</span>
               </ion-col>
             </ion-row>
         </ion-grid>
