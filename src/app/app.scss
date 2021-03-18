@@ -710,6 +710,7 @@ ion-backdrop {
   color: #000;
   padding: 0;
   transition: $opacity-hover-transition;
+  position: relative;
 }
 .sec-menu-button:hover {
   background-color: transparent !important;
@@ -721,12 +722,17 @@ ion-backdrop {
 .sec-menu-button .side-title {
   font-size: 10px;
   display: inline-block;
-  overflow: hidden;
-  max-width: 0;
-  transition: max-width 0.3s;
+  background-color: #fff;
+  border: 1px solid #000;
+  padding: 2px;
+  position: absolute;
+  top:20px;
+  right: -50px;
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 .sec-menu-button:hover .side-title {
-  max-width: max-content;
+  opacity: 1;
 }
 
 
