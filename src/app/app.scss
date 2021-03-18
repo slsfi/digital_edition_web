@@ -711,17 +711,15 @@ ion-backdrop {
   padding: 0;
   transition: $opacity-hover-transition;
   position: relative;
-  overflow: visible !important;
 }
 .sec-menu-button:hover {
   background-color: transparent !important;
   opacity: $opacity-hover;
-  overflow: visible !important;
 }
 .sec-menu-button:active {
   opacity: 1;
 }
-.sec-menu-button .side-title {
+.sec-menu-button + .side-title {
   font-size: 10px;
   display: inline-block;
   background-color: #fff;
@@ -734,9 +732,8 @@ ion-backdrop {
   transition: opacity 0.3s;
   transform: translate(-50%,-50%);
 }
-.sec-menu-button:hover .side-title {
+.sec-menu-button:hover + .side-title {
   opacity: 1;
-  overflow: visible !important;
 }
 
 
