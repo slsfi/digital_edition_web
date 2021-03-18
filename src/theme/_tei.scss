@@ -128,28 +128,28 @@ div.tei.show_changes span.corr_hide img {
 }
 div.tei.xsmallFontSize.show_normalisations span.reg_hide img,
 div.tei.xsmallFontSize.show_changes span.corr_hide img {
-    width:  ceil(0.625 * $text-fontsize-xsmall);
-    height: ceil(0.625 * $text-fontsize-xsmall);
+    width:  ceil(0.585 * $text-fontsize-xsmall);
+    height: ceil(0.585 * $text-fontsize-xsmall);
 }
 div.tei.smallFontSize.show_normalisations span.reg_hide img,
 div.tei.smallFontSize.show_changes span.corr_hide img {
-    width:  ceil(0.625 * $text-fontsize-small);
-    height: ceil(0.625 * $text-fontsize-small);
+    width:  ceil(0.585 * $text-fontsize-small);
+    height: ceil(0.585 * $text-fontsize-small);
 }
 div.tei.mediumFontSize.show_normalisations span.reg_hide img,
 div.tei.mediumFontSize.show_changes span.corr_hide img {
-    width:  ceil(0.625 * $text-fontsize-medium);
-    height: ceil(0.625 * $text-fontsize-medium);
+    width:  ceil(0.585 * $text-fontsize-medium);
+    height: ceil(0.585 * $text-fontsize-medium);
 }
 div.tei.largeFontSize.show_normalisations span.reg_hide img,
 div.tei.largeFontSize.show_changes span.corr_hide img {
-    width:  ceil(0.625 * $text-fontsize-large);
-    height: ceil(0.625 * $text-fontsize-large);
+    width:  ceil(0.585 * $text-fontsize-large);
+    height: ceil(0.585 * $text-fontsize-large);
 }
 div.tei.xlargeFontSize.show_normalisations span.reg_hide img,
 div.tei.xlargeFontSize.show_changes span.corr_hide img {
-    width:  ceil(0.625 * $text-fontsize-xlarge);
-    height: ceil(0.625 * $text-fontsize-xlarge);
+    width:  ceil(0.585 * $text-fontsize-xlarge);
+    height: ceil(0.585 * $text-fontsize-xlarge);
 }
 
 /* Storlek på röda triangeln som indikerar början på ett lemma. */

@@ -28,6 +28,7 @@
       "DigitalEditions": "Digital Editions",
       "OpenInTab": "Open in new tab",
       "Popover": {
+          "Options": "Options",
           "All": "Choose all",
           "Appearance": "Text size",
           "Show": "Options",
@@ -229,7 +230,7 @@
   "BC": "f.Kr.",
   "Reference": {
       "title": "Refer",
-      "urn": "Link",
+      "urn": "URN",
       "share": "Share",
       "mail": "Mail",
       "thisPage": "Refer to this page",

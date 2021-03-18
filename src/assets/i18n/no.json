@@ -27,6 +27,7 @@
       "DigitalEditions": "Digitala utgåvor",
       "OpenInTab": "Öppna i ny flik",
       "Popover": {
+          "Options": "Alternativ",
           "All": "Välj alla",
           "Appearance": "Utseende",
           "Show": "Visningsalternativ",
@@ -202,7 +203,7 @@
   "Text": "PDF",
   "Reference": {
       "title": "Hänvisa",
-      "urn": "Länka",
+      "urn": "URN",
       "share": "Dela",
       "mail": "E-post",
       "thisPage": "Hänvisa till denna sida",
