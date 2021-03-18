@@ -720,10 +720,11 @@ ion-backdrop {
   opacity: 1;
 }
 .sec-menu-button + .side-title {
-  font-size: 10px;
+  font-size: 12px;
   display: inline-block;
   background-color: #fff;
   border: 1px solid #000;
+  border-radius: $corner-roundness;
   padding: 2px;
   position: absolute;
   top:50%;
