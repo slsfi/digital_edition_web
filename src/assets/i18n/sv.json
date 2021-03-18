@@ -197,7 +197,8 @@
       "place-register": "Platsregister ",
       "tag-register": "Ämnesord",
       "verk": "Verkregister",
-      "sort-by": "Sortera enligt"
+      "sort-by": "Sortera enligt",
+      "infotext":""
   },
   "Occurrences": {
       "Title": "Förekomster",

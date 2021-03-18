@@ -44,6 +44,11 @@
   <ion-grid>
       <ion-row>
           <ion-col col-10>
+              <ion-row *ngIf="('SearchApp.infotext' | translate) !== 'SearchApp.infotext' && ('SearchApp.infotext' | translate).length>0">
+                  <ion-col col-12>
+                    <p class="info_text">{{'SearchApp.infotext' | translate}}</p>
+                  </ion-col>
+              </ion-row>
               <ion-row>
                   <ion-col col-10>
                     <ion-searchbar placeholder="{{'SearchApp.search-holder' | translate}}" class="searchbar" [(ngModel)]="searchText" (ionChange)=onChanged($event)></ion-searchbar>

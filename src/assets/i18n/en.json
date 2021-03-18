@@ -152,7 +152,8 @@
       "place-register": "Places ",
       "tag-register": "Subjects/Tags",
       "verk": "Works",
-      "sort-by": "Sort by"
+      "sort-by": "Sort by",
+      "infotext":""
   },
   "Filter":{
     "personTypes": "Personkategori",
