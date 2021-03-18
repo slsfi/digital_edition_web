@@ -133,8 +133,8 @@ div.tei.xsmallFontSize.show_changes span.corr_hide img {
 }
 div.tei.smallFontSize.show_normalisations span.reg_hide img,
 div.tei.smallFontSize.show_changes span.corr_hide img {
-    width:  calc(0.625 * #{$text-fontsize-small});
-    height: calc(0.625 * #{$text-fontsize-small});
+    width:  ceil(0.625 * $text-fontsize-small);
+    height: ceil(0.625 * $text-fontsize-small);
 }
 div.tei.mediumFontSize.show_normalisations span.reg_hide img,
 div.tei.mediumFontSize.show_changes span.corr_hide img {
