@@ -725,13 +725,13 @@ ion-backdrop {
   background-color: #fff;
   border: 1px solid #000;
   border-radius: $corner-roundness;
-  padding: 2px;
+  padding: 5px;
   position: absolute;
   top:50%;
-  right: 0;
+  right: 85%;
   opacity: 0;
   transition: opacity 0.3s;
-  transform: translate(-50%,-50%);
+  transform: translate(0, -50%);
 }
 .sec-menu-button:hover + .side-title {
   opacity: 1;
