@@ -728,10 +728,11 @@ ion-backdrop {
   border: 1px solid #000;
   padding: 2px;
   position: absolute;
-  top:20px;
-  right: -50px;
+  top:50%;
+  right: 0;
   opacity: 0;
   transition: opacity 0.3s;
+  transform: translate(-50%,-50%);
 }
 .sec-menu-button:hover .side-title {
   opacity: 1;
