@@ -720,6 +720,13 @@ ion-backdrop {
 }
 .sec-menu-button .side-title {
   font-size: 10px;
+  display: inline-block;
+  overflow: hidden;
+  max-width: 0;
+  transition: max-width 0.3s;
+}
+.sec-menu-button:hover .side-title {
+  max-width: max-content;
 }
 
 
