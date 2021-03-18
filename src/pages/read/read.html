@@ -5,15 +5,19 @@
 
     <ion-buttons>
         <ion-grid>
-            <ion-row class="secondary-toolbar-icons-wrapper" nowrap>
-              <button ion-button (click)="showReference()">
-                <ion-icon class="urn-icon sec-menu-button" name="share-alt"></ion-icon>
-                <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.urn' | translate }}</span>
-              </button>
-              <button ion-button (click)="showSharePopover($event)">
-                <ion-icon class="share-icon sec-menu-button" name="share"></ion-icon>
-                <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.share' | translate }}</span>
-              </button>
+            <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
+              <ion-col>
+                <button clear ion-button (click)="showReference()">
+                  <ion-icon class="urn-icon sec-menu-button" name="share-alt"></ion-icon>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.urn' | translate }}</span>
+                </button>
+              </ion-col>
+              <ion-col>
+                <button clear ion-button (click)="showSharePopover($event)">
+                  <ion-icon class="share-icon sec-menu-button" name="share"></ion-icon>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.share' | translate }}</span>
+                </button>
+              </ion-col>
               <!--
               <ion-col>
                   <div name="download" id="download-icon" (click)="download()">
@@ -22,10 +26,12 @@
                   </div>
               </ion-col>
               -->
-              <button ion-button #settingsIconElement (click)="showPopover($event)" id="settings-icon">
-                <ion-icon class="settings-icon sec-menu-button" name="settings"></ion-icon>
-                <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Popover.Options' | translate }}</span>
-              </button>
+              <ion-col>
+                <button clear ion-button #settingsIconElement (click)="showPopover($event)" id="settings-icon">
+                  <ion-icon class="settings-icon sec-menu-button" name="settings"></ion-icon>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Popover.Options' | translate }}</span>
+                </button>
+              </ion-col>
             </ion-row>
         </ion-grid>
     </ion-buttons>
