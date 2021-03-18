@@ -708,6 +708,7 @@ ion-backdrop {
 /* Buttons in the secondary toolbar. */
 .sec-menu-button {
   color: #000;
+  padding: 0;
   transition: $opacity-hover-transition;
 }
 .sec-menu-button:hover {
