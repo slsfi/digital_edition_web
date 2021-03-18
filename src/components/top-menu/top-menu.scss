@@ -5,6 +5,10 @@ top-menu {
   width: 100%;
   height: 30px;
 
+  ion-toolbar > .toolbar-content > ion-grid > ion-row {
+    flex-wrap: nowrap;
+  }
+
   .button-inner {
     font-weight: bold;
   }
