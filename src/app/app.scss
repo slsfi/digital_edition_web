@@ -712,7 +712,7 @@ ion-backdrop {
   transition: $opacity-hover-transition;
 }
 .sec-menu-button:hover {
-  background-color: transparent;
+  background-color: transparent !important;
   opacity: $opacity-hover;
 }
 .sec-menu-button:active {
