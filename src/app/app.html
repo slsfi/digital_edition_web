@@ -38,20 +38,13 @@
                           <p *ngIf="i>0">{{"TOC.Read" + i | translate }}</p>
                       </ion-item>
                       <div [style.height]="simpleAccordionsExpanded.collectionsAccordion[i] ? '100%' : '0px'" class="simple-accordion-options options">
-                          <ng-container *ngIf="mediaCollectionOptions['accordionToc'] !== undefined && galleryInReadMenu">
-                              <ion-list class="accordion-menu">
-                                  <ion-item [ngClass]="mediaCollectionOptions.highlight ? 'selected-toc-item' : ''" class="header" (tap)="openCollection(mediaCollectionOptions)" tappable>
-                                      <ion-icon [class.rotate]="mediaCollectionOptions.expanded" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
-                                      <p>{{"TOC.MediaCollections" | translate }}</p>
-                                  </ion-item>
-                              </ion-list>
-                          </ng-container>
+
                           <ng-container *ngFor="let collection of collectionsListWithTOC">
                               <ion-list *ngIf="collection.toc_exists && ( splitReadCollections.length <= 1 || splitReadCollections[i].includes(collection.id) )" class="accordion-menu">
                                   <!-- toggleSingleCollectionAccordion öppnar accordion  -->
                                   <ion-item [ngClass]="collection.highlight ? 'selected-toc-item' : ''" class="header" (tap)="openCollectionFromToc ? openCollection(collection) : toggleSingleCollectionAccordion(collection)" tappable>
                                       <ion-icon *ngIf="!collection.isDownload && !collection.has_children_pdfs" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
-                                      <p>{{ collection.title }}</p>
+                                      <p>{{ collection.title | translate}}</p>
                                       <ion-icon item-right size="small" class="menu-download" *ngIf="collection.isDownload" name="cloud-download"></ion-icon>
                                   </ion-item>
                                   <div *ngIf="collection.loading && !collection.has_children_pdfs" text-center>

@@ -228,7 +228,7 @@ export class SingleEditionPage {
   }
 
   getTocRoot(id: string) {
-    if ( id !== 'mediaCollections' ) {
+    /*if ( id !== 'mediaCollections' ) {
       this.tableOfContentsService.getTableOfContents(id)
       .subscribe(
         tocItems => {
@@ -242,14 +242,14 @@ export class SingleEditionPage {
         },
         error => { this.errorMessage = <any>error });
     } else {
-      this.tocItems = this.collection['accordionToc']['toc'];
-      const tocLoadedParams = { tocItems: this.tocItems };
-      tocLoadedParams['collectionID'] = 'mediaCollections';
-      tocLoadedParams['searchTocItem'] = true;
-      this.events.publish('tableOfContents:loaded', tocLoadedParams);
-      this.storage.set('toc_' + id, this.tocItems);
-      console.log('media');
-    }
+^*/      this.tocItems = this.collection['accordionToc']['toc'];
+      // const tocLoadedParams = { tocItems: this.tocItems };
+      // tocLoadedParams['collectionID'] = 'mediaCollections';
+      // tocLoadedParams['searchTocItem'] = true;
+     // this.events.publish('tableOfContents:loaded', tocLoadedParams);
+     // this.storage.set('toc_' + id, this.tocItems);
+     // console.log('media');
+   // }
   }
 
   getTableOfContents(id: string) {

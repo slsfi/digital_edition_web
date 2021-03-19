@@ -142,16 +142,17 @@ export class TitlePage {
 
   getTocRoot(id: string) {
     if ( id === 'mediaCollections' || id === undefined ) {
-      return [{}];
-    }
-    this.tableOfContentsService.getTableOfContents(id)
-    .subscribe(
-        tocItems => {
-          tocItems.titleSelected = this.titleSelected;
-          this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId, 'caller':  'title'});
-          this.storage.set('toc_' + id, tocItems);
+      this.events.publish('tableOfContents:loaded', {tocItems: this.collection, searchTocItem: false});
+    } else {
+      this.tableOfContentsService.getTableOfContents(id)
+      .subscribe(
+          tocItems => {
+            tocItems.titleSelected = this.titleSelected;
+            this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId, 'caller':  'title'});
         },
-      error =>  {this.errorMessage = <any>error});
+        error =>  {this.errorMessage = <any>error});
+    }
+
   }
 
   ionViewDidLoad() {

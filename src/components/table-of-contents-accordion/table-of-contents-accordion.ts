@@ -323,6 +323,7 @@ export class TableOfContentsAccordionComponent {
     public translate: TranslateService
   ) {
     this.collectionId = JSON.stringify(this.collectionId);
+    this.collectionName = JSON.stringify(this.collectionName);
 
     this.registerEventListeners();
     this.setConfigs();

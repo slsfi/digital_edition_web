@@ -281,7 +281,7 @@ export class DigitalEditionList implements OnInit {
   }
 
   openCollection(collection: DigitalEdition, animate = true) {
-    if ( (collection.isDownload === undefined || collection.isDownload === false) && collection.id !== 'mediaCollections' ) {
+    if ( (collection.isDownload === undefined || collection.isDownload === false) ) {
       if (this.hasCover === false && this.hasIntro === false  && this.hasTitle === false) {
         this.getTocRoot(collection);
       } else {
