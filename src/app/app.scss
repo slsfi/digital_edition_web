@@ -710,31 +710,12 @@ ion-backdrop {
   color: #000;
   padding: 0;
   transition: $opacity-hover-transition;
-  position: relative;
 }
 .sec-menu-button:hover:not(.disable-hover) {
   background-color: transparent !important;
   opacity: $opacity-hover;
 }
 .sec-menu-button:active {
-  opacity: 1;
-}
-.sec-menu-button + .sec-menu-button-tooltip {
-  font-size: 12px;
-  display: inline-block;
-  background-color: #f1f1f1;
-  border: 1px solid #222;
-  border-radius: $corner-roundness;
-  box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
-  padding: 5px;
-  position: absolute;
-  top:50%;
-  right: 90%;
-  opacity: 0;
-  transition: opacity 0.3s;
-  transform: translate(0, -50%);
-}
-.sec-menu-button:hover:not(.disable-hover) + .sec-menu-button-tooltip {
   opacity: 1;
 }
 .sec-menu-button .side-title {
