@@ -67,6 +67,11 @@ simple-search {
         white-space: normal;
     }
 
+    .resultItem .title {
+        display: inline-block;
+        max-width: 85%;
+    }
+
     .textType {
         display: inline;
         font-size: 0.9rem !important;
