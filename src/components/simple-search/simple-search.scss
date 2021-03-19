@@ -49,10 +49,14 @@ simple-search {
         text-overflow: ellipsis;
     }
     .resultItem .coll_pub .collection {
+        color: #78756f;
         max-width: 50%;
         overflow: hidden;
         text-overflow: ellipsis;
         float: left;
+    }
+    .resultItem .coll_pub .collection + span:not([class]) {
+        color: #78756f;
     }
 
     .title, .occupation{
