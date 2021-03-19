@@ -1,6 +1,6 @@
 <ion-list>
-  <ion-list-header color="secondary">
-    {{'Reference.share' | translate }}
+  <ion-list-header class="popover-header" color="secondary">
+    <div class="header-title">{{'Reference.share' | translate }}</div>
     <div class="close" (click)="dismiss()"><ion-icon name="close"></ion-icon></div>
   </ion-list-header>
   <ion-item *ngIf="showSocial.email" (click)="shareEmail()">
