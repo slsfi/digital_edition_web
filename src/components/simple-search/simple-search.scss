@@ -247,6 +247,7 @@ simple-search {
         display: flex;
         width: 100%;
         justify-content: space-between;
+        padding: 6px 0;
     }
 
     .toggleFacets{
@@ -257,6 +258,8 @@ simple-search {
     .hitCount{
         float: right;
         white-space: nowrap;
+        font-size: 1rem;
+        padding-top: 8px;
     }
 
     .appliedFacets{
