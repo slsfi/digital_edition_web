@@ -8,10 +8,9 @@
   <ion-navbar color="secondary">
     <ion-title>{{mediaTitle}} - {{mediaCollection.length}} {{"photos" | translate}}</ion-title>
     <ion-buttons end>
-      <button ion-button (click)="showReference()" class="urn-button">
-        <ion-title >
-          <ion-label>[URN]</ion-label>
-        </ion-title>
+      <button ion-button clear (click)="showReference()" class="sec-menu-button">
+        <ion-icon class="urn-icon" name="share-alt"></ion-icon>
+        <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.refer' | translate }}</span>
       </button>
     </ion-buttons>
   </ion-navbar>

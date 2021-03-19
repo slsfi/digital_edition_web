@@ -97,16 +97,4 @@ page-media-collection {
       font-style: italic;
       font-weight: 700;
     }
-
-    .urn-button:hover{
-      border-bottom: 1px solid;
-      font-weight: bold;
-      border-bottom-color: color($colors, primary) !important;
-
-    }
-
-    .urn-button{
-      margin-bottom: 0.1em !important;
-      cursor: pointer;
-    }
 }
