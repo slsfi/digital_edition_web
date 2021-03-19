@@ -44,7 +44,9 @@ simple-search {
 
     .coll_pub{
         padding-top: 1rem;
-        font-size: 80%;
+        font-size: 0.8125rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .resultItem .coll_pub .collection {
         max-width: 50%;
@@ -171,14 +173,12 @@ simple-search {
         }
     }
 
-    .result-container{
-        /*display: flex;
-        flex-direction: column;
-        flex-wrap: nowrap;*/
-    }
-
     .results{
         order: 0;
+        
+        .searchItem ion-label.label {
+            margin-right: 0;
+        }
     }
 
     .results.dimmed{
