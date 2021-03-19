@@ -737,6 +737,9 @@ ion-backdrop {
 .sec-menu-button:hover:not(.disable-hover) + .sec-menu-button-tooltip {
   opacity: 1;
 }
+.sec-menu-button > .side-title {
+  font-size: 10px;
+}
 
 
 // Load TEI-stylesheets. Moved here from project-variables.scss
