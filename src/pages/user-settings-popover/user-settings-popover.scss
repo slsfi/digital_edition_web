@@ -1,6 +1,6 @@
 user-settings-popover-page {
 	ion-list-header {
-		font-weight: bold;
+		font-weight: bold !important;
 		margin-bottom: 0 !important;
 		min-height: 1rem !important;
 	}
@@ -18,7 +18,7 @@ user-settings-popover-page {
 		margin-top: 2px;
 	}
 	.lang-header {
-		margin-top: 0.8rem;
+		margin-top: 14px;
 	}
 	.close {
 		font-size: 1rem;
@@ -35,7 +35,7 @@ user-settings-popover-page {
 		opacity: 1;
 	}
 
-	ion-list.view-mode ion-icon{
+	ion-list.view-mode ion-icon {
 		font-size: 2rem !important;
 		min-height: 2rem !important;
 	}
