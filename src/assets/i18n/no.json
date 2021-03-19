@@ -201,7 +201,8 @@
   "song": "Melodi",
   "Text": "PDF",
   "Reference": {
-      "title": "Hänvisa",
+      "title": "Källhänvisning",
+      "refer": "Hänvisa",
       "urn": "URN",
       "share": "Dela",
       "mail": "E-post",

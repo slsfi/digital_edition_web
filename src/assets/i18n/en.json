@@ -228,7 +228,8 @@
   "works": "Works",
   "BC": "f.Kr.",
   "Reference": {
-      "title": "Refer",
+      "title": "Reference",
+      "refer": "Refer",
       "urn": "URN",
       "share": "Share",
       "mail": "Mail",
