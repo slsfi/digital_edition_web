@@ -1,9 +1,17 @@
 page-search-app {
     .close-button {
         float: right;
-        display: flex;
         padding-right: 1rem;
-        font-size: 3rem !important;
+        font-size: 1.8rem !important;
+        color: #000;
+        transition: $opacity-hover-transition;
+    }
+    .close-button:hover {
+        opacity: $opacity-hover;
+    }
+      
+    .close-button:active {
+      opacity: 1;
     }
 
     .search-title {
@@ -11,28 +19,24 @@ page-search-app {
         color: white;
     }
 
-    .segment-header{
+    .segment-header {
         font-size: 1rem !important;
         padding-left: 1rem;
         padding-right: 1rem;
         min-width: max-content;
     }
 
-    .segment-button{
-        border: 0px !important;
-        border-radius: 0px !important;
+    .segment-button {
+        border: 0 !important;
+        border-radius: 0 !important;
     }
 
-    .segment-button{
-        border: 0px !important;
-        border-radius: 0px !important;
+	.segment-activated {
+		background-color: color($colors, primary) !important;
+		color: #fff !important;
 	}
 
-	.segment-activated{
-		background-color: color($colors, primary) !important;
-		color: $white-color !important;
-	}
-	.header{
+	.header {
 		border-bottom: 1px solid color($colors, primary);
 	}
 }
