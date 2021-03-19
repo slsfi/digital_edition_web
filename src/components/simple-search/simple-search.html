@@ -84,8 +84,8 @@
                   <span class="dates" *ngIf="item.date_born || item.date_deceased">)</span>
                   <span class="highLightText" innerHTML="{{item.highLightText}}"></span>
                   <div *ngIf="item.collection_name || item.publication_name" class="coll_pub">
-                    <span class="collection" innerHTML="{{item.collection_name}} - "></span>
-                    <span class="publication" innerHTML="{{item.publication_name}}"></span>
+                    <span class="collection" innerHTML="{{item.collection_name}}"></span>
+                    <span class="publication" innerHTML=" – {{item.publication_name}}"></span>
                     <span *ngIf="item.facsimilePage && showPageNumbers" class="facsimilePage">( {{("SearchApp.pagenumber"|translate)}} {{item.facsimilePage}} )</span>
                   </div>
                   <div *ngIf="item.song_performer_firstname" class="coll_pub">
