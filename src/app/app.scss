@@ -737,7 +737,7 @@ ion-backdrop {
 .sec-menu-button:hover:not(.disable-hover) + .sec-menu-button-tooltip {
   opacity: 1;
 }
-.sec-menu-button > .side-title {
+.sec-menu-button .side-title {
   font-size: 10px;
 }
 
