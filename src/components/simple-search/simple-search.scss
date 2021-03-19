@@ -69,37 +69,41 @@ simple-search {
         text-transform: lowercase;
         margin-left: 8px;
     }
-    .textType.title{
-        color: $workTitle-color;
-        background-color: rgb(115, 115, 115);
+    .textType.title,
+    .textType.person,
+    .textType.location {
+        background-color: #737373;
         padding: 2px 4px;
         border-radius: $corner-roundness;
     }
-    .textType.person{
+    .textType.title {
+        color: $workTitle-color;
+    }
+    .textType.person {
         color: $persName-color;
     }
-    .textType.location{
+    .textType.location {
         color: $placeName-color;
     }
-    .textType.tag{
+    .textType.tag {
         color: $tag-color;
     }
-    .textType.est{
+    .textType.est {
         color: $est-color;
     }
-    .textType.com{
+    .textType.com {
         color: $com-color;
     }
-    .textType.ms{
+    .textType.ms {
         color: $ms-color;
     }
-    .textType.inl{
+    .textType.inl {
         color: $inl-color;
     }
-    .textType.tit{
+    .textType.tit {
         color: $tit-color;
     }
-    .textType.var{
+    .textType.var {
         color: $var-color;
     }
 
