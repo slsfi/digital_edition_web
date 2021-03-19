@@ -35,18 +35,14 @@ simple-search {
         font-size: 75%;
     }
 
-    .textType{
-        position: absolute;
-        right: 4px;
-        top: 4px;
-        text-transform: lowercase;
-    }
-
     .coll_pub{
         padding-top: 1rem;
         font-size: 0.8125rem;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    .resultItem .data {
+        width: 100%;
     }
     .resultItem .coll_pub .collection {
         color: #78756f;
@@ -67,14 +63,10 @@ simple-search {
         white-space: normal;
     }
 
-    .resultItem .title {
-        display: inline-block;
-        max-width: 85%;
-    }
-
     .textType {
-        display: inline;
-        font-size: 0.9rem !important;
+        float: right;
+        font-size: 0.875rem !important;
+        text-transform: lowercase;
     }
     .textType.title{
         color: $workTitle-color;
