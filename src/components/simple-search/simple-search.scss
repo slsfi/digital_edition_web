@@ -46,6 +46,12 @@ simple-search {
         padding-top: 1rem;
         font-size: 80%;
     }
+    .resultItem .coll_pub .collection {
+        max-width: 50%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        float: left;
+    }
 
     .title, .occupation{
         text-decoration: underline;
@@ -119,7 +125,7 @@ simple-search {
 
     .search-suggestions {
         margin-bottom: 12px;
-        
+
         .item {
             .item-inner {
                 border: unset;
@@ -144,6 +150,10 @@ simple-search {
             ion-list {
                 margin: 0;
             }
+        }
+
+        ion-list.list ion-item.searchItem:last-child {
+            margin-bottom: 16px;
         }
     }
 
