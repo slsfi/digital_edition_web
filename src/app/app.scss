@@ -719,7 +719,7 @@ ion-backdrop {
 .sec-menu-button:active {
   opacity: 1;
 }
-.sec-menu-button + .side-title {
+.sec-menu-button + .sec-menu-button-tooltip {
   font-size: 12px;
   display: inline-block;
   background-color: #f1f1f1;
@@ -734,7 +734,7 @@ ion-backdrop {
   transition: opacity 0.3s;
   transform: translate(0, -50%);
 }
-.sec-menu-button:hover:not(.disable-hover) + .side-title {
+.sec-menu-button:hover:not(.disable-hover) + .sec-menu-button-tooltip {
   opacity: 1;
 }
 
