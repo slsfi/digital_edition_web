@@ -39,4 +39,8 @@ page-search-app {
 	.header {
 		border-bottom: 1px solid color($colors, primary);
 	}
+
+    ion-content > .scroll-content {
+        overflow: auto;
+    }
 }
