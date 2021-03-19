@@ -3,9 +3,21 @@ page-share-popover {
     margin: 0 !important;
   }
 
+  ion-list-header {
+    font-weight: bold !important;
+		margin-bottom: 0 !important;
+		min-height: 1rem !important;
+	}
+
   ion-label {
     overflow: visible;
   }
+
+  .popover-header ion-label {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 2px;
+	}
 
   ion-item {
     cursor: pointer;
@@ -21,9 +33,9 @@ page-share-popover {
     }
   }
 
-  ion-item-divider ion-label.label-md {
-    margin: 14px 8px 14px 0;
-  }
+  .header-title {
+		margin-top: 0.8rem;
+	}
 
   .close {
     font-size: 1rem;
