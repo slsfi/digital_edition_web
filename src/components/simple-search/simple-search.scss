@@ -1,7 +1,7 @@
 simple-search {
     em{
         font-weight: bold;
-        color: $purple-color;
+        color: $search-match-color;
     }
 
     h2{
@@ -23,10 +23,6 @@ simple-search {
         cursor: pointer;
     }
 
-    .textType{
-        text-transform: lowercase;
-    }
-
     .matches{
         display: inline;
     }
@@ -41,8 +37,9 @@ simple-search {
 
     .textType{
         position: absolute;
-        right: 0.3em;
-        top: 0;
+        right: 4px;
+        top: 4px;
+        text-transform: lowercase;
     }
 
     .coll_pub{
@@ -76,27 +73,21 @@ simple-search {
     }
     .textType.est{
         color: $est-color;
-        background-color: transparent;
     }
     .textType.com{
         color: $com-color;
-        background-color: transparent;
     }
     .textType.ms{
         color: $ms-color;
-        background-color: transparent;
     }
     .textType.inl{
         color: $inl-color;
-        background-color: transparent;
     }
     .textType.tit{
         color: $tit-color;
-        background-color: transparent;
     }
     .textType.var{
         color: $var-color;
-        background-color: transparent;
     }
 
     .subFacets > .item{
@@ -147,8 +138,11 @@ simple-search {
 
         .scroll-content {
             background-color: white;
-            border-bottom-left-radius: 5px;
-            border-bottom-right-radius: 5px;
+            margin-bottom: 12px;
+
+            ion-list {
+                margin: 0;
+            }
         }
     }
 
