@@ -85,7 +85,7 @@
                   <span class="highLightText" innerHTML="{{item.highLightText}}"></span>
                   <div *ngIf="item.collection_name || item.publication_name" class="coll_pub">
                     <span class="collection" innerHTML="{{item.collection_name}}"></span>
-                    <span *ngIf="item.publication_name" innerHTML="&nbsp;–&nbsp;""></span>
+                    <span *ngIf="item.collection_name && item.publication_name" innerHTML="&nbsp;–&nbsp;""></span>
                     <span class="publication" innerHTML="{{item.publication_name}}"></span>
                     <span *ngIf="item.facsimilePage && showPageNumbers" class="facsimilePage">( {{("SearchApp.pagenumber"|translate)}} {{item.facsimilePage}} )</span>
                   </div>
