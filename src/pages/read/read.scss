@@ -27,7 +27,7 @@ page-read {
 
   .read-fab-menu {
     bottom: 50px;
-    position: fixed; /* default is absolute */
+    position: fixed;
   }
 
   .secondary > .toolbar-content {
@@ -41,42 +41,8 @@ page-read {
     ion-buttons {
       order: 0;
     }
-
-    .bar-buttons:last-child {
-      // margin-left: -118px;
-    }
   }
 
-  /*
-  @media screen and (max-width: 800px) {
-    .secondary .toolbar-content {
-      display: flex;
-      justify-content: flex-end;
-
-      .bar-buttons:last-child {
-        margin-left: 0;
-      }
-    }
-  }
-  */
-
-  /* Moved to app.scss
-  .toolTip {
-    z-index: 1000;
-    position: fixed;
-    background: #f1f1f1;
-    border: 1px solid #222;
-    border-radius: 3px;
-    box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
-    padding: 0.5rem;
-    white-space: normal;
-    max-width: 400px;
-    text-align: left;
-
-    p {
-      line-height: 22px;
-    }
-  }*/
 
   .segment-header {
     font-size: 1rem !important;
@@ -112,12 +78,6 @@ page-read {
     text-align: left;
   }
 
-  /* Settings icons should not have different sizes from the other icons in the secondary toolbar
-  ion-icon.settings-icon.icon {
-    font-size: 1.8em;
-  }
-  */
-
   .settings-icon,
   .facebook-icon,
   .twitter-icon,
@@ -144,7 +104,6 @@ page-read {
   }
 
   .read-columns {
-    /*margin-bottom: 0.5rem;*/
     -webkit-overflow-scrolling: touch;
     /*overflow-x: auto;
     overflow-y: hidden;  overflow is now set on the parent element div.scroll-content */
@@ -174,17 +133,9 @@ page-read {
       width: 97%;
 
       ion-card {
-        /*
-        background-color: #fff;
-        */
         background-color: $read-columns-background-color;
         margin-bottom: 0;
 
-        /*
-        .card-content {
-          padding-right: 0;
-        }
-        */
         .card-content {
           padding: 0;
         }
@@ -194,33 +145,7 @@ page-read {
         }
       }
     }
-
-    /* Font family inherited instead
-    p {
-      font-family: $font-read-column-p;
-    }
-    */
-
   }
-
-  /* Moved to tei.scss
-  .tooltip {
-    display: none;
-  }*/
-
-  /*
-  .tooltiptrigger {
-    cursor: pointer;
-  }
-
-  .pb_orig {
-    display: none;
-  }
-
-  .pb_zts {
-    display: none;
-  }
-  */
 
   .swipeCenter {
     position: absolute;
@@ -240,15 +165,6 @@ page-read {
     padding-left: 1em;
     padding-right: 1em;
   }
-
-  /* Flyttad till tei.scss
-  @media screen and (max-width: 480px) {
-    div.tei {
-      padding-left: 5px !important;
-      padding-right: 5px !important;
-    }
-  }
-  */
 
   .tei {
     transition-property: padding-left;
@@ -347,16 +263,6 @@ page-read {
     margin-bottom: 74px;
   }
 
-  /* Move to app.scss since not the only page with icons in sec toolbar
-  .secondary-toolbar-icons-wrapper {
-    ion-icon {
-      font-size: 1.75rem !important;
-      padding: 0.5rem;
-      cursor: pointer;
-    }
-  }
-  */
-
   .scroll-zoom-wrapper {
     padding: 6px;
   }
@@ -380,26 +286,6 @@ page-read {
       display: none;
     }
   }
-
-  /* Rule already defined above
-  .read-column.single-column {
-    max-width: initial !important;
-  }
-  */
-
-  /*
-  .urn-icon ion-label:hover{
-    border-bottom: 1px solid;
-    font-weight: bold;
-    border-bottom-color: color($colors, primary) !important;
-
-  }
-
-  .urn-icon ion-label{
-    margin-bottom: 0.1em !important;
-    cursor: pointer;
-  }
-  */
 
 }
 
@@ -446,16 +332,4 @@ page-read div.mobile-mode-established {
   page-read .scroll-content {
     padding: 0 !important;
   }
-
-  /* Varför? Ser ju inte bra ut.
-  .modal-wrapper {
-    height: 70%;
-    margin: 25px auto;
-
-    .scroll-content {
-      padding: 16px;
-    }
-  }
-  */
-
 }

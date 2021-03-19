@@ -63,50 +63,45 @@ page-media-collection {
       }
   }
 
-    @media only screen and (max-width: 800px) {
-      .filters{
-          display: flex;
-          flex-direction: column;
-          width: 100%;
+  @media only screen and (max-width: 800px) {
+    .filters{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
 
-      }
-      .filters ion-item{
-        margin-bottom: 1rem;
-      }
     }
     .filters ion-item{
-        margin-right: 2rem;
-        padding: 0px;
+      margin-bottom: 1rem;
     }
+  }
+  .filters ion-item{
+      margin-right: 2rem;
+      padding: 0px;
+  }
 
-    ion-item button{
-      background-color: rgba(0,0,0,0.1) !important;
-    }
-    ion-item ion-label{
-      color: black !important;
-      font-size: 1rem !important;
-      margin-left: 0.5rem !important;
-    }
-    img{
-        cursor: pointer;
-    }
-    .info{
-      padding-left: 1.5rem;
-    }
-    .img-desc.title {
-      font-style: italic;
-      font-weight: 700;
-    }
-
-    .urn-button:hover{
-      border-bottom: 1px solid;
-      font-weight: bold;
-      border-bottom-color: color($colors, primary) !important;
-
-    }
-
-    .urn-button{
-      margin-bottom: 0.1em !important;
+  ion-item button{
+    background-color: rgba(0,0,0,0.1) !important;
+  }
+  ion-item ion-label{
+    color: black !important;
+    font-size: 1rem !important;
+    margin-left: 0.5rem !important;
+  }
+  img{
       cursor: pointer;
-    }
+  }
+  .info{
+    padding-left: 1.5rem;
+  }
+  .img-desc.title {
+    font-style: italic;
+    font-weight: 700;
+  }
+
+  .sec-menu-button {
+    color: #000 !important;
+  }
+  .sec-menu-button .side-title {
+    padding: 0 10px 0 8px;
+  }
 }

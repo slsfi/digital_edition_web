@@ -27,11 +27,11 @@
           <div class="urn" *ngIf="!referenceData['urn']">{{(('Reference.missing' | translate)==('Reference.missing'))?'-':'Reference.missing' | translate}}</div>
         </ion-item>
         <ion-item *ngIf="referenceData['reference_text']">
-            <label>{{'Reference.established' | translate}}:</label>
+            <label class="ref-category-label">{{'Reference.established' | translate}}:</label>
             <div class="urn" [innerHTML]="referenceData['reference_text'] + ' ' + referenceData['urn']">...</div>
         </ion-item>
         <ion-item *ngIf="referenceData['intro_reference_text']">
-            <label>{{'Reference.intro' | translate}}:</label>
+            <label class="ref-category-label">{{'Reference.intro' | translate}}:</label>
             <div class="urn" [innerHTML]="referenceData['intro_reference_text']">...z</div>
         </ion-item>
       </ion-card-content>

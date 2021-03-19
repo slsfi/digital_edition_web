@@ -287,7 +287,8 @@
   "Text": "PDF",
   "BC": "f.Kr.",
   "Reference": {
-      "title": "Hänvisa",
+      "title": "Källhänvisning",
+      "refer": "Hänvisa",
       "urn": "URN",
       "share": "Dela",
       "mail": "E-post",

@@ -284,7 +284,8 @@
   "Text": "PDF",
   "BC": "eKr.",
   "Reference": {
-      "title": "Lähdeviittaus",
+      "title": "Viittausohje",
+      "refer": "Viittaa",
       "urn": "URN",
       "share": "Jaa",
       "mail": "Sähköposti",

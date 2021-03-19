@@ -361,10 +361,6 @@ ion-menu {
   ion-icon {
     color: $forward-arrow-color;
   }
-  ion-item.item-block:hover div.item-inner {
-    border-right: 4px solid;
-    border-right-color: color($colors, primary) !important;
-  }
 }
 
 ion-toolbar.secondary {
@@ -376,13 +372,7 @@ ion-toolbar.secondary {
   }
 }
 
-/* Remove default line-height from divs in secondary toolbar to vertically center button icons --> This rule is not needed any more.
-ion-toolbar.secondary div {
-	line-height: unset !important;
-} */
-
-page-introduction .secondary-toolbar-icons-wrapper,
-page-read .secondary-toolbar-icons-wrapper {
+ion-row.secondary-toolbar-icons-wrapper {
   ion-icon {
     font-size: 1.75rem;
     padding: 0.5rem;
@@ -461,10 +451,6 @@ input{
   ion-thumbnail {
     padding: 0 !important;
     margin: 0 !important;
-    /*padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;*/
   }
 
   h2 {
@@ -586,18 +572,6 @@ ion-list.accordion-menu div.options {
   height: 0;
 }
 
-/*
-.simple-accordion-options {
-  margin-left: 20px;
-}
-*/
-
-/* Definieras redan i table-of-contents-accordion.scss
-ion-item.selected-toc-item {
-  background-color: #eee;
-}
-*/
-
 .mainMenuItem{
   font-weight: 400;
 }
@@ -672,23 +646,9 @@ div.tab-container {
   font-size: 1rem;
 }
 
-/*
-ion-spinner {
-  position: relative;
-  display: block;
-  width: 32px;
-  height: 32px;
-  margin: 1rem auto;
-}
-*/
 /* Center crescent ion-spinner */
 ion-spinner.loading.spinner-crescent {
 	position: relative;
-  /*
-  top: 2rem;
-  left: 50%;
-  transform: translate(-50%, 0%);
-  */
   display: block;
   width: 32px;
   height: 32px;
@@ -711,7 +671,7 @@ ion-backdrop {
   padding: 0;
   transition: $opacity-hover-transition;
 }
-.sec-menu-button:hover {
+.sec-menu-button:hover:not(.disable-hover) {
   background-color: transparent !important;
   opacity: $opacity-hover;
 }
@@ -721,6 +681,7 @@ ion-backdrop {
 .sec-menu-button .side-title {
   font-size: 10px;
 }
+
 
 
 // Load TEI-stylesheets. Moved here from project-variables.scss

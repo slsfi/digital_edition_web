@@ -1,7 +1,7 @@
 simple-search {
     em{
         font-weight: bold;
-        color: $purple-color;
+        color: $search-match-color;
     }
 
     h2{
@@ -23,10 +23,6 @@ simple-search {
         cursor: pointer;
     }
 
-    .textType{
-        text-transform: lowercase;
-    }
-
     .matches{
         display: inline;
     }
@@ -41,13 +37,26 @@ simple-search {
 
     .textType{
         position: absolute;
-        right: 0.3em;
-        top: 0;
+        right: 4px;
+        top: 4px;
+        text-transform: lowercase;
     }
 
     .coll_pub{
         padding-top: 1rem;
-        font-size: 80%;
+        font-size: 0.8125rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .resultItem .coll_pub .collection {
+        color: #78756f;
+        max-width: 50%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        float: left;
+    }
+    .resultItem .coll_pub .collection + span:not([class]) {
+        color: #78756f;
     }
 
     .title, .occupation{
@@ -58,61 +67,44 @@ simple-search {
         white-space: normal;
     }
 
-    .textType.title{
-        color: rgba($workTitle-color, 0.7);
+    .resultItem .title {
+        display: inline-block;
+        max-width: 85%;
+    }
+
+    .textType {
         display: inline;
         font-size: 0.9rem !important;
+    }
+    .textType.title{
+        color: $workTitle-color;
     }
     .textType.person{
-        color: rgba($persName-color, 0.7);
-        display: inline;
-        font-size: 0.9rem !important;
+        color: $persName-color;
     }
     .textType.location{
-        color: rgba($placeName-color, 0.7);
-        display: inline;
-        font-size: 0.9rem !important;
+        color: $placeName-color;
     }
     .textType.tag{
-        color: rgba($tag-color, 0.7);
-        display: inline;
-        font-size: 0.9rem !important;
+        color: $tag-color;
     }
     .textType.est{
-        color: rgba($est-color, 0.7);
-        background-color: transparent;
-        display: inline;
-        font-size: 0.9rem !important;
+        color: $est-color;
     }
     .textType.com{
-        color: rgba($com-color, 0.7);
-        background-color: transparent;
-        display: inline;
-        font-size: 0.9rem !important;
+        color: $com-color;
     }
     .textType.ms{
-        color: rgba($ms-color, 0.7);
-        background-color: transparent;
-        display: inline;
-        font-size: 0.9rem !important;
+        color: $ms-color;
     }
     .textType.inl{
-        color: rgba($inl-color, 0.7);
-        background-color: transparent;
-        display: inline;
-        font-size: 0.9rem !important;
+        color: $inl-color;
     }
     .textType.tit{
-        color: rgba($tit-color, 0.7);
-        background-color: transparent;
-        display: inline;
-        font-size: 0.9rem !important;
+        color: $tit-color;
     }
     .textType.var{
-        color: rgba($var-color, 0.7);
-        background-color: transparent;
-        display: inline;
-        font-size: 0.9rem !important;
+        color: $var-color;
     }
 
     .subFacets > .item{
@@ -143,6 +135,8 @@ simple-search {
     }
 
     .search-suggestions {
+        margin-bottom: 12px;
+
         .item {
             .item-inner {
                 border: unset;
@@ -163,8 +157,14 @@ simple-search {
 
         .scroll-content {
             background-color: white;
-            border-bottom-left-radius: 5px;
-            border-bottom-right-radius: 5px;
+
+            ion-list {
+                margin: 0;
+            }
+        }
+
+        ion-list.list ion-item.searchItem:last-child {
+            margin-bottom: 16px;
         }
     }
 
@@ -182,14 +182,12 @@ simple-search {
         }
     }
 
-    .result-container{
-        /*display: flex;
-        flex-direction: column;
-        flex-wrap: nowrap;*/
-    }
-
     .results{
         order: 0;
+        
+        .searchItem ion-label.label {
+            margin-right: 0;
+        }
     }
 
     .results.dimmed{
@@ -247,6 +245,7 @@ simple-search {
         display: flex;
         width: 100%;
         justify-content: space-between;
+        padding: 6px 0;
     }
 
     .toggleFacets{
@@ -257,6 +256,8 @@ simple-search {
     .hitCount{
         float: right;
         white-space: nowrap;
+        font-size: 1rem;
+        padding-top: 8px;
     }
 
     .appliedFacets{

@@ -21,18 +21,6 @@ table-of-contents-accordion {
         border-left-color: color($colors, primary);
     }
 
-    /*
-    ion-item.item.item-block div.item-inner {
-        padding-right: 4px;
-        border-right: 4px solid transparent !important;
-    }
-    */
-    /*
-    ion-item.item.item-block:hover div.item-inner {
-        border-right-color: color($colors, primary) !important;
-    }
-    */
-
     ion-item.item.selected-toc-item {
         font-weight: bold;
     }
@@ -43,12 +31,6 @@ table-of-contents-accordion {
         border-left: 0;
         min-height: 50px;
         font-weight: bold;
-
-        /*
-        &.item-block:hover div.item-inner {
-            border-right-color: transparent !important;
-        }
-        */
     }
     .collection-name-top ion-label {
         white-space: pre-wrap !important;
@@ -114,12 +96,6 @@ table-of-contents-accordion {
         margin: 0 !important;
     }
 
-    /*
-    .options.recursive-suboptions {
-        margin-left: 20px;
-    }
-    */
-
     div.recursive-suboptions > ion-item.item,
     div.recursive-suboptions > ion-list.accordion-menu > ion-item.item {
         padding-left: 32px;
@@ -143,12 +119,6 @@ table-of-contents-accordion {
     div.recursive-suboptions > ion-list.accordion-menu > ion-item.item:hover {
         border-left-color: color($colors, primary);
     }
-
-    /*
-    .accordion-menu .list .list-md {
-        background-color: #ecece4;
-    }
-    */
 
     ion-list.accordion-menu ion-item.header ion-icon.header-icon.rotate {
         -webkit-transform: rotate(90deg);

@@ -40,12 +40,6 @@ page-introduction {
     ion-buttons {
       order: 0;
     }
-
-    /*
-    .bar-buttons:last-child {
-      margin-left: -118px;
-    }
-    */
   }
 
   /* knappens position i desktop-vy -- ANVÄNDS DENNA ALLS? */
@@ -57,7 +51,6 @@ page-introduction {
   }
 
   /* sidenav för mobil */
-  /* menyn */
   #TOC {
     margin: 10px;
     height: calc(100% - 102px);
@@ -111,12 +104,6 @@ page-introduction {
   #TOC.menuClosedTOC {
     width: auto;
     height: auto;
-    /*
-    width: 100%;
-    max-width: 710px;
-    height: auto;
-    background-color: #fff;
-    */
   }
 
   /* navigeringsbalken för inledningar */
@@ -152,12 +139,6 @@ page-introduction {
   #TOC br {
     display: none;
   }
-
-  /*
-  #TOC a:hover {
-    color: #538494;
-  }
-  */
 
   #TOC p {
     line-height: .1em;
@@ -212,12 +193,6 @@ page-introduction {
     display: none !important;
   }
 
-  /* Font family is inherited instead
-  p {
-    font-family: $font-read-column-p;
-  }
-  */
-
   .est_figure_graphic {
     width: initial;
   }
@@ -239,32 +214,6 @@ page-introduction {
       padding: 6px !important;
     }
   }
-
-  /*
-  .tooltip {
-    display: none;
-  }
-
-  .tooltiptrigger {
-    cursor: pointer;
-  }
-  */
-
-  /*
-  .menuClosedTOC {
-    width: 10% !important;
-  }
-  */
-
-  /* Move to app.scss since not the only page with icons in sec toolbar
-  .secondary-toolbar-icons-wrapper {
-    ion-icon {
-      font-size: 1.75rem !important;
-      padding: 0.5rem;
-      cursor: pointer;
-    }
-  }
-  */
 
   div[data-id="cont_introduction"] h2.tei.section {
     text-align: left !important;
@@ -294,30 +243,6 @@ page-introduction {
     display: none;
   }
 
-  /* Unnecessary rule since .tooltip already has display:none in _tei.scss
-  .tooltip.ttFoot {
-    display: none;
-  }
-  */
-
-  /* Moved to app.scss
-  .toolTip {
-    z-index: 1000;
-    position: absolute;
-    background: #f1f1f1;
-    border: 1px solid #222;
-    box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
-    padding: 0.5rem;
-    white-space: normal;
-    max-width: 400px;
-    text-align: left;
-
-    p {
-      line-height: 22px;
-    }
-  }
-  */
-
   @media screen and (max-width: 800px) {
     .secondary .toolbar-content {
       display: flex;
@@ -333,15 +258,4 @@ page-introduction {
     font-style: italic;
   }
 
-  .urn-icon ion-label:hover{
-    border-bottom: 1px solid;
-    font-weight: bold;
-    border-bottom-color: color($colors, primary) !important;
-
-  }
-
-  .urn-icon ion-label{
-    margin-bottom: 0.1em !important;
-    cursor: pointer;
-  }
 }
