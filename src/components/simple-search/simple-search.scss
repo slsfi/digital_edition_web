@@ -118,6 +118,8 @@ simple-search {
     }
 
     .search-suggestions {
+        margin-bottom: 12px;
+        
         .item {
             .item-inner {
                 border: unset;
@@ -138,7 +140,6 @@ simple-search {
 
         .scroll-content {
             background-color: white;
-            margin-bottom: 12px;
 
             ion-list {
                 margin: 0;
