@@ -65,14 +65,14 @@ simple-search {
 
     .textType {
         float: right;
-        font-size: 0.875rem !important;
-        text-transform: lowercase;
+        font-size: 0.625rem !important;
+        text-transform: uppercase;
         margin-left: 8px;
     }
     .textType.title,
     .textType.person,
     .textType.location {
-        background-color: #737373;
+        background-color: #4a4a4a;
         padding: 2px 4px;
         border-radius: $corner-roundness;
     }
