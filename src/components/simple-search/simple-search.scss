@@ -58,61 +58,45 @@ simple-search {
         white-space: normal;
     }
 
-    .textType.title{
-        color: rgba($workTitle-color, 0.7);
+    .textType {
         display: inline;
         font-size: 0.9rem !important;
+    }
+    .textType.title{
+        color: $workTitle-color;
     }
     .textType.person{
-        color: rgba($persName-color, 0.7);
-        display: inline;
-        font-size: 0.9rem !important;
+        color: $persName-color;
     }
     .textType.location{
-        color: rgba($placeName-color, 0.7);
-        display: inline;
-        font-size: 0.9rem !important;
+        color: $placeName-color;
     }
     .textType.tag{
-        color: rgba($tag-color, 0.7);
-        display: inline;
-        font-size: 0.9rem !important;
+        color: $tag-color;
     }
     .textType.est{
-        color: rgba($est-color, 0.7);
+        color: $est-color;
         background-color: transparent;
-        display: inline;
-        font-size: 0.9rem !important;
     }
     .textType.com{
-        color: rgba($com-color, 0.7);
+        color: $com-color;
         background-color: transparent;
-        display: inline;
-        font-size: 0.9rem !important;
     }
     .textType.ms{
-        color: rgba($ms-color, 0.7);
+        color: $ms-color;
         background-color: transparent;
-        display: inline;
-        font-size: 0.9rem !important;
     }
     .textType.inl{
-        color: rgba($inl-color, 0.7);
+        color: $inl-color;
         background-color: transparent;
-        display: inline;
-        font-size: 0.9rem !important;
     }
     .textType.tit{
-        color: rgba($tit-color, 0.7);
+        color: $tit-color;
         background-color: transparent;
-        display: inline;
-        font-size: 0.9rem !important;
     }
     .textType.var{
-        color: rgba($var-color, 0.7);
+        color: $var-color;
         background-color: transparent;
-        display: inline;
-        font-size: 0.9rem !important;
     }
 
     .subFacets > .item{
