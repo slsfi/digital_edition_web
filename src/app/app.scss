@@ -76,6 +76,7 @@
     color: #78756f;
 }
 
+/* Search match, also defined in read-text.scss. */
 match {
 	background-color: transparent !important;
 }
@@ -97,17 +98,6 @@ img[src*="#fsfd_bild_md_right"] {
 blockquote{
     font-style: italic;
 }
-
-/* These overrides are unnecessary here, primary and secondary colors are used instead by default.
-.toolbar-background{
-    background-color: #a6aebd;
-}
-.content {
-    background-color: #ecebe4 !important;
-}
-.item {
-    background-color: #ECEBE4 !important;
-}*/
 
 /* This applies to descriptions in TOC, but unclear why declared here and not in table-of-contents-accordion.scss */
 .description {

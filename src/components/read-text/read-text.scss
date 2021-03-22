@@ -23,45 +23,10 @@ read-text {
             margin-left: 10px;
         }
     }
+    /* Highlight for search match. */
     match {
-        background-color: rgba( yellow, 0.4 ) !important;
+        background-color: #a5d7a5 !important;
     }
-
-    /* Tooltips are not children of read-text in the DOM, so these have no effect.
-    .toolTip {
-        z-index: 1000;
-        position: absolute;
-        background: #88b7d5;
-        border: 1px solid #c2e1f5;
-        box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
-        padding-left: 4px;
-        padding-right: 4px;
-        white-space: normal;
-    }
-    .toolTip:after, .toolTip:before {
-        right: 100%;
-        top: 50%;
-        border: solid transparent;
-        content: " ";
-        height: 0;
-        width: 0;
-        position: absolute;
-        pointer-events: none;
-    }
-
-    .toolTip:after {
-        border-color: rgba(136, 183, 213, 0);
-        border-right-color: #88b7d5;
-        border-width: 4px;
-        margin-top: -4px;
-    }
-    .toolTip:before {
-        border-color: rgba(194, 225, 245, 0);
-        border-right-color: #c2e1f5;
-        border-width: 5px;
-        margin-top: -5px;
-    }
-    */
 
     .tei.XMLcomment{
         display: none;
