@@ -175,7 +175,7 @@ export class TitlePage {
           );
         });
       } else {
-        if (isNaN(Number(this.id))) {
+        if (!isNaN(Number(this.id))) {
           this.langService.getLanguage().subscribe(lang => {
             const fileID = lang + '-08';
             this.hasMDTitle = true;

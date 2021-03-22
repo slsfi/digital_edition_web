@@ -109,6 +109,12 @@ export class IntroductionPage {
     }
 
     this.setUpTextListeners();
+
+    this.events.subscribe('language:change', () => {
+      this.langService.getLanguage().subscribe((lang) => {
+        this.ionViewDidLoad();
+      });
+    });
   }
 
   ionViewDidLoad() {

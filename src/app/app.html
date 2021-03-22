@@ -44,7 +44,7 @@
                                   <!-- toggleSingleCollectionAccordion öppnar accordion  -->
                                   <ion-item [ngClass]="collection.highlight ? 'selected-toc-item' : ''" class="header" (tap)="openCollectionFromToc ? openCollection(collection) : toggleSingleCollectionAccordion(collection)" tappable>
                                       <ion-icon *ngIf="!collection.isDownload && !collection.has_children_pdfs" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
-                                      <p>{{ collection.title | translate}}</p>
+                                      <p>{{ ('TOC-translation.' + collection.title | translate) !== 'TOC-translation.' + collection.title  ?  ('TOC-translation.' + collection.title | translate) : collection.title }}</p>
                                       <ion-icon item-right size="small" class="menu-download" *ngIf="collection.isDownload" name="cloud-download"></ion-icon>
                                   </ion-item>
                                   <div *ngIf="collection.loading && !collection.has_children_pdfs" text-center>
