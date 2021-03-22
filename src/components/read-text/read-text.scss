@@ -25,7 +25,7 @@ read-text {
     }
     /* Highlight for search match. */
     match {
-        background-color: #a5d7a5 !important;
+        background-color: $search-match-color !important;
     }
 
     .tei.XMLcomment{
