@@ -72,7 +72,6 @@ export class TitlePage {
 
     this.lang = this.config.getSettings('i18n.locale');
     this.events.subscribe('language:change', () => {
-      console.log('language')
       this.langService.getLanguage().subscribe((lang) => {
         this.lang = lang;
         this.ionViewDidLoad();
@@ -136,7 +135,6 @@ export class TitlePage {
   }
 
   getMdContent(fileID: string) {
-    console.log('fileID'  + fileID);
     this.mdContentService.getMdContent(fileID)
         .subscribe(
             text => { this.mdContent = text.content; },
