@@ -30,7 +30,7 @@ export class TitlePage {
   errorMessage: any;
   mdContent: string;
   lang = 'sv';
-  hasMDTitle = false;
+  hasMDTitle = '';
   hasDigitalEditionListChildren = false;
   childrenPdfs = [];
   protected id: string;
@@ -67,10 +67,12 @@ export class TitlePage {
     try {
       this.hasMDTitle = this.config.getSettings('ProjectStaticMarkdownTitleFolder');
     } catch (e) {
-      this.hasMDTitle = false;
+      this.hasMDTitle = '';
     }
+
     this.lang = this.config.getSettings('i18n.locale');
     this.events.subscribe('language:change', () => {
+      console.log('language')
       this.langService.getLanguage().subscribe((lang) => {
         this.lang = lang;
         this.ionViewDidLoad();
@@ -91,7 +93,7 @@ export class TitlePage {
 
       // idNaN === false, id is a number
       if ( idNaN === false ) {
-        if (this.hasMDTitle) {
+        if (this.hasMDTitle !== '') {
           this.getMdContent(`${lang}-${this.hasMDTitle}-${this.id}`);
         }
       } else {
@@ -159,10 +161,8 @@ export class TitlePage {
 
   ionViewDidLoad() {
     this.getTocRoot(this.params.get('collectionID'));
-    this.events.publish('pageLoaded:title');
     const isIdText = isNaN(Number(this.id));
-    console.log(this.id + ' this.hasMDTitle ' + this.hasMDTitle);
-    if (this.hasMDTitle === false) {
+    if (this.hasMDTitle === '') {
       if (isIdText === false) {
         this.langService.getLanguage().subscribe(lang => {
           this.textService.getTitlePage(this.id, lang).subscribe(
@@ -182,8 +182,7 @@ export class TitlePage {
     } else {
       if (isIdText === false) {
         this.langService.getLanguage().subscribe(lang => {
-          const fileID = lang + '-08';
-          this.hasMDTitle = true;
+          const fileID = `${lang}-${this.hasMDTitle}-${this.id}`;
           this.mdService.getMdContent(fileID).subscribe(
             res => {
               // in order to get id attributes for tooltips
@@ -198,11 +197,16 @@ export class TitlePage {
         this.langService.getLanguage().subscribe(lang => {
           this.mdContentService.getMdContent(`${lang}-gallery-intro`)
           .subscribe(
-              text => { this.mdContent = text.content; },
-              error =>  {this.errorMessage = <any>error}
+              text => {
+                 this.mdContent = text.content;
+              },
+              error =>  {
+                this.errorMessage = <any>error
+              }
           );
         });
       }
     }
+    this.events.publish('pageLoaded:title');
   }
 }
