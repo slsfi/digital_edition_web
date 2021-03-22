@@ -1,7 +1,7 @@
 simple-search {
     em{
-        font-weight: bold;
-        color: $search-match-color;
+        font-style: normal;
+        background-color: $search-match-color;
     }
 
     h2{
@@ -35,18 +35,14 @@ simple-search {
         font-size: 75%;
     }
 
-    .textType{
-        position: absolute;
-        right: 4px;
-        top: 4px;
-        text-transform: lowercase;
-    }
-
     .coll_pub{
         padding-top: 1rem;
         font-size: 0.8125rem;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    .resultItem .data {
+        width: 100%;
     }
     .resultItem .coll_pub .collection {
         color: #78756f;
@@ -67,43 +63,48 @@ simple-search {
         white-space: normal;
     }
 
-    .resultItem .title {
-        display: inline-block;
-        max-width: 85%;
-    }
-
     .textType {
-        display: inline;
-        font-size: 0.9rem !important;
+        float: right;
+        font-size: 0.625rem !important;
+        text-transform: uppercase;
+        margin-left: 8px;
+        background-color: #fafafa;
+        padding: 2px 4px;
+        border-radius: $corner-roundness;
     }
-    .textType.title{
+    .textType.title,
+    .textType.person,
+    .textType.location {
+        background-color: #1c1c1c;
+    }
+    .textType.title {
         color: $workTitle-color;
     }
-    .textType.person{
+    .textType.person {
         color: $persName-color;
     }
-    .textType.location{
+    .textType.location {
         color: $placeName-color;
     }
-    .textType.tag{
+    .textType.tag {
         color: $tag-color;
     }
-    .textType.est{
+    .textType.est {
         color: $est-color;
     }
-    .textType.com{
+    .textType.com {
         color: $com-color;
     }
-    .textType.ms{
+    .textType.ms {
         color: $ms-color;
     }
-    .textType.inl{
+    .textType.inl {
         color: $inl-color;
     }
-    .textType.tit{
+    .textType.tit {
         color: $tit-color;
     }
-    .textType.var{
+    .textType.var {
         color: $var-color;
     }
 
@@ -184,9 +185,13 @@ simple-search {
 
     .results{
         order: 0;
-        
+
+        ion-item.item {
+            padding-left: 8px;
+        }
         .searchItem ion-label.label {
             margin-right: 0;
+            max-width: 100%;
         }
     }
 

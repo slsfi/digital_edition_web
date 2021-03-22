@@ -11,6 +11,11 @@ page-share-popover {
 
   ion-label {
     overflow: visible;
+    transition: font-weight 0.3s;
+  }
+
+  ion-item:hover:not(.disable-hover) ion-label {
+    font-weight: bold;
   }
 
   .popover-header ion-label {

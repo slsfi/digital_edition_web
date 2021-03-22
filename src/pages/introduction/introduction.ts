@@ -942,10 +942,11 @@ export class IntroductionPage {
     const toggles = {
       'comments': false,
       'personInfo': true,
-      'placeInfo': true,
+      'placeInfo': false,
       'workInfo': true,
       'changes': false,
-      'abbreviations': true,
+      'normalisations': false,
+      'abbreviations': false,
       'pageNumbering': true,
       'pageBreakOriginal': false,
       'pageBreakEdition': true
