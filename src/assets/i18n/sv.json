@@ -333,6 +333,10 @@
     "DownloadEPUB": "EPUB"
   },
   "TOC-translation": {
-    "media": "Fotografier"
+    "media": "Fotografier",
+    "Fältanteckningar": "Fältanteckningar",
+    "Korrespondens": "Korrespondens",
+    "Opublicerade manuskript": "Opublicerade manuskript",
+    "Palestinadagböcker": "Palestinadagböcker"
   }
 }
