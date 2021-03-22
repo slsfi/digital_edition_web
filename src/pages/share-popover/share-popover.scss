@@ -13,7 +13,7 @@ page-share-popover {
     overflow: visible;
   }
 
-  ion-label:hover:not(.disable-hover) {
+  ion-item:hover:not(.disable-hover) ion-label {
     font-weight: bold;
   }
 
