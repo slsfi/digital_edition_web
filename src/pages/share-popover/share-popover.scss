@@ -13,6 +13,10 @@ page-share-popover {
     overflow: visible;
   }
 
+  ion-label:hover:not(.disable-hover) {
+    font-weight: bold;
+  }
+
   .popover-header ion-label {
 		display: flex;
 		justify-content: space-between;
