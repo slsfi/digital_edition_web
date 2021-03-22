@@ -185,7 +185,10 @@ simple-search {
 
     .results{
         order: 0;
-        
+
+        ion-item.item {
+            padding-left: 8px;
+        }
         .searchItem ion-label.label {
             margin-right: 0;
             max-width: 100%;
