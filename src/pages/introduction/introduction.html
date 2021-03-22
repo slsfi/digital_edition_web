@@ -35,11 +35,8 @@
               <ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
                 <div class="tei"
                   [class.show_personInfo]="readPopoverService.show.personInfo"
-                  [class.show_placeInfo]="readPopoverService.show.placeInfo"
                   [class.show_workInfo]="readPopoverService.show.workInfo"
-                  [class.show_abbreviations]="readPopoverService.show.abbreviations"
                   [class.show_pageNumbering]="readPopoverService.show.pageNumbering"
-                  [class.show_pageBreakOriginal]="readPopoverService.show.pageBreakOriginal"
                   [class.show_pageBreakEdition]="readPopoverService.show.pageBreakEdition"
                 [innerHTML]="text" [ngClass]="(hasSeparateIntroToc ? 'hideIntro' : '') + ' ' +
                 ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')"></div>
