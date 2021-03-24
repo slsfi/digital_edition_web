@@ -934,7 +934,7 @@ export class IntroductionPage {
 
   showPopover(myEvent) {
     let toggles = this.config.getSettings('settings.introToggles');
-    if (toggles == undefined || toggles == null) {
+    if (toggles === undefined || toggles === null) {
       toggles = {
         'comments': false,
         'personInfo': false,
