@@ -64,7 +64,7 @@ export class ReadPopoverPage {
     }
 
     this.displayReadToggles = false;
-    for (let prop in this.readToggles) {
+    for (const prop in this.readToggles) {
       if (Object.prototype.hasOwnProperty.call(this.readToggles, prop)) {
         if (this.readToggles[prop] === true) {
           this.displayReadToggles = true;
