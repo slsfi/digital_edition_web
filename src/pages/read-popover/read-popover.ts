@@ -63,6 +63,7 @@ export class ReadPopoverPage {
       this.readToggles = toggles;
     }
 
+    /*
     this.displayReadToggles = false;
     for (let prop in this.readToggles) {
       if (this.readToggles.hasOwnProperty(prop)) {
@@ -72,6 +73,7 @@ export class ReadPopoverPage {
         }
       }
     }
+    */
 
     this.show = readPopoverService.show;
     this.fontsize = readPopoverService.fontsize;
