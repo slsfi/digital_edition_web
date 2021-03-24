@@ -31,7 +31,7 @@ export class ReadPopoverPage {
     'pageBreakEdition': boolean
   };
 
-  displayReadToggles: Boolean = false;
+  public displayReadToggles: Boolean = false;
 
   show = {
     'comments': false,
