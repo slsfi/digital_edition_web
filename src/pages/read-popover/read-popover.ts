@@ -31,7 +31,7 @@ export class ReadPopoverPage {
     'pageBreakEdition': boolean
   };
 
-  public displayReadToggles: Boolean = false;
+  displayReadToggles: Boolean = false;
 
   show = {
     'comments': false,
@@ -65,7 +65,7 @@ export class ReadPopoverPage {
 
     this.displayReadToggles = false;
     for (let prop in this.readToggles) {
-      if (Object.prototype.hasOwnProperty.call(this.readToggles, prop)) {
+      if (this.readToggles.hasOwnProperty(prop)) {
         if (this.readToggles[prop] === true) {
           this.displayReadToggles = true;
           break;
