@@ -933,7 +933,12 @@ export class IntroductionPage {
   }
 
   showPopover(myEvent) {
-    let toggles = this.config.getSettings('settings.introToggles');
+    let toggles = undefined;
+    try {
+      toggles = this.config.getSettings('settings.introToggles');
+    } catch (e) {
+      console.error(e);
+    }
     if (toggles === undefined || toggles === null) {
       toggles = {
         'comments': false,
