@@ -986,14 +986,7 @@ export class TableOfContentsAccordionComponent {
   }
 
   exit() {
-    // this.collectionId = null;
-    this.collectionName = undefined;
-
     this.events.publish('exitActiveCollection');
-
-    // this.activeMenuTree = [];
-    // this.collapsableItems = [];
-
     const nav = this.app.getActiveNavs();
     nav[0].goToRoot({animate: false});
     this.alphabethicOrderActive = false;
