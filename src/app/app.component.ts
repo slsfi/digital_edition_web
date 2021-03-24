@@ -758,20 +758,24 @@ export class DigitalEditionsApp {
       this.openCollection(collection);
     });
     this.events.subscribe('CollectionWithChildrenPdfs:highlight', (collectionID) => {
-      for (const collection of this.collectionsListWithTOC) {
-        if (String(collection.id) === String(collectionID)) {
-          collection['highlight'] = true;
-          const selectedMenu = 'collectionsWithChildrenPdfs';
-          this.currentAccordionMenu = selectedMenu;
-          this.events.publish('SelectedItemInMenu', {
-            menuID: selectedMenu,
-            component: 'app-component'
-          });
-          for ( let i = 0; i < this.splitReadCollections.length; i++ ) {
-            this.simpleAccordionsExpanded.collectionsAccordion[i] = true;
+      if ( this.collectionsListWithTOC ) {
+        for (const collection of this.collectionsListWithTOC) {
+          if (String(collection.id) === String(collectionID)) {
+            collection['highlight'] = true;
+            const selectedMenu = 'collectionsWithChildrenPdfs';
+            this.currentAccordionMenu = selectedMenu;
+            this.events.publish('SelectedItemInMenu', {
+              menuID: selectedMenu,
+              component: 'app-component'
+            });
+            if ( this.splitReadCollections !== undefined ) {
+              for ( let i = 0; i < this.splitReadCollections.length; i++ ) {
+                this.simpleAccordionsExpanded.collectionsAccordion[i] = true;
+              }
+            }
+          } else {
+            collection['highlight'] = false;
           }
-        } else {
-          collection['highlight'] = false;
         }
       }
     });
