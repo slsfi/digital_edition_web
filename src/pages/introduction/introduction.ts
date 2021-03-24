@@ -936,8 +936,8 @@ export class IntroductionPage {
     let toggles = undefined;
     try {
       toggles = this.config.getSettings('settings.introToggles');
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error(error);
     }
     if (toggles === undefined || toggles === null) {
       toggles = {
