@@ -19,29 +19,31 @@ import { ReadPopoverService, Fontsize } from '../../app/services/settings/read-p
 })
 export class ReadPopoverPage {
   readToggles: {
-      'comments': boolean,
-      'personInfo': boolean,
-      'placeInfo': boolean,
-      'workInfo': boolean,
-      'changes': boolean,
-      'normalisations': boolean,
-      'abbreviations': boolean,
-      'pageNumbering': boolean,
-      'pageBreakOriginal': boolean,
-      'pageBreakEdition': boolean
+    'comments': boolean,
+    'personInfo': boolean,
+    'placeInfo': boolean,
+    'workInfo': boolean,
+    'changes': boolean,
+    'normalisations': boolean,
+    'abbreviations': boolean,
+    'pageNumbering': boolean,
+    'pageBreakOriginal': boolean,
+    'pageBreakEdition': boolean
   };
 
+  displayReadToggles: boolean;
+
   show = {
-      'comments': false,
-      'personInfo': false,
-      'placeInfo': false,
-      'workInfo': false,
-      'changes': false,
-      'normalisations': false,
-      'abbreviations': false,
-      'pageNumbering': false,
-      'pageBreakOriginal': false,
-      'pageBreakEdition': false
+    'comments': false,
+    'personInfo': false,
+    'placeInfo': false,
+    'workInfo': false,
+    'changes': false,
+    'normalisations': false,
+    'abbreviations': false,
+    'pageNumbering': false,
+    'pageBreakOriginal': false,
+    'pageBreakEdition': false
   };
 
   fontsize = null;
@@ -59,6 +61,16 @@ export class ReadPopoverPage {
 
     if ( toggles !== undefined ) {
       this.readToggles = toggles;
+    }
+
+    this.displayReadToggles = false;
+    for (let prop in this.readToggles) {
+      if (Object.prototype.hasOwnProperty.call(this.readToggles, prop)) {
+        if (this.readToggles[prop] === true) {
+          this.displayReadToggles = true;
+          break;
+        }
+      }
     }
 
     this.show = readPopoverService.show;
