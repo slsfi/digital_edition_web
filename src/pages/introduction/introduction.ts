@@ -947,7 +947,7 @@ export class IntroductionPage {
         'changes': false,
         'normalisations': false,
         'abbreviations': false,
-        'pageNumbering': false,
+        'pageNumbering': true,
         'pageBreakOriginal': false,
         'pageBreakEdition': false
       };
