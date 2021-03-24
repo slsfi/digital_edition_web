@@ -933,18 +933,21 @@ export class IntroductionPage {
   }
 
   showPopover(myEvent) {
-    const toggles = {
-      'comments': false,
-      'personInfo': true,
-      'placeInfo': false,
-      'workInfo': true,
-      'changes': false,
-      'normalisations': false,
-      'abbreviations': false,
-      'pageNumbering': true,
-      'pageBreakOriginal': false,
-      'pageBreakEdition': true
-    };
+    let toggles = this.config.getSettings('settings.introToggles');
+    if (toggles == undefined || toggles == null) {
+      toggles = {
+        'comments': false,
+        'personInfo': false,
+        'placeInfo': false,
+        'workInfo': false,
+        'changes': false,
+        'normalisations': false,
+        'abbreviations': false,
+        'pageNumbering': true,
+        'pageBreakOriginal': false,
+        'pageBreakEdition': false
+      };
+    }
     const popover = this.popoverCtrl.create(ReadPopoverPage, {toggles}, { cssClass: 'popover_settings' });
     popover.present({
       ev: myEvent
