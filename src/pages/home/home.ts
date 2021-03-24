@@ -44,6 +44,13 @@ export class HomePage {
 
     this.events.subscribe('language:change', () => {
       this.languageService.getLanguage().subscribe((lang) => {
+        this.appName = this.config.getSettings('app.name.' + lang);
+        const subTitle = this.config.getSettings('app.subTitle1.' + lang);
+        if ( subTitle !== '' ) {
+          this.appSubtitle = '- ' + this.config.getSettings('app.subTitle1.' + lang) + ' -';
+        } else {
+          this.appSubtitle = '';
+        }
         this.getMdContent(lang + '-01');
         this.getFooterMdContent(lang + '-06');
       });
