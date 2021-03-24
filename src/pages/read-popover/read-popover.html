@@ -17,7 +17,7 @@
         {{'Read.Popover.Show' | translate}}
       </ion-list-header>
 
-      <ion-item>
+      <ion-item *ngIf="displayReadToggles">
         <ion-label>{{'Read.Popover.All' | translate}}</ion-label>
         <ion-toggle (ionChange)="toggleAll($event)"></ion-toggle>
       </ion-item>
