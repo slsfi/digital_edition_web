@@ -1697,10 +1697,11 @@ div.tei {
 
 .tei.infoOverlay {
     z-index: 1000;
-    display: block;
+    display: inline-block;
     position: fixed;
     background: #f1f1f1;
     margin: 0;
+    padding: 0;
     max-height: 50%;
     box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
     white-space: normal;
