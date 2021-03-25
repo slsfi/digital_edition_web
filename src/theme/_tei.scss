@@ -1709,8 +1709,12 @@ div.tei {
     line-height: 1.4em;
 
     .infoOverlayHeader {
-        display: block;
-        padding: 16px 16px 0 16px;
+        display: inline-block;
+        padding: 8px;
+        position: sticky;
+	    top: 0;
+        background: #f1f1f1;
+	    width: 100%;
 
         .infoOverlayButton {
             cursor: pointer;
@@ -1722,8 +1726,7 @@ div.tei {
         display: block;
         clear: both;
         overflow: auto;
-        padding: 6px 16px 16px 16px;
-        max-height: 40vh;
+        padding: 0 8px 8px 8px;
     }
 }
 
