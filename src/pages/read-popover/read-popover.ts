@@ -78,16 +78,36 @@ export class ReadPopoverPage {
 
   toggleAll( e ) {
     if ( e.value === true ) {
-      this.show.comments = true;
-      this.show.personInfo = true;
-      this.show.placeInfo = true;
-      this.show.workInfo = true;
-      this.show.changes = true;
-      this.show.normalisations = true;
-      this.show.abbreviations = true;
-      this.show.pageNumbering = true;
-      this.show.pageBreakOriginal = true;
-      this.show.pageBreakEdition = true;
+      if (this.readToggles.comments) {
+        this.show.comments = true;
+      }
+      if (this.readToggles.personInfo) {
+        this.show.personInfo = true;
+      }
+      if (this.readToggles.placeInfo) {
+        this.show.placeInfo = true;
+      }
+      if (this.readToggles.workInfo) {
+        this.show.workInfo = true;
+      }
+      if (this.readToggles.changes) {
+        this.show.changes = true;
+      }
+      if (this.readToggles.normalisations) {
+        this.show.normalisations = true;
+      }
+      if (this.readToggles.abbreviations) {
+        this.show.abbreviations = true;
+      }
+      if (this.readToggles.pageNumbering) {
+        this.show.pageNumbering = true;
+      }
+      if (this.readToggles.pageBreakOriginal) {
+        this.show.pageBreakOriginal = true;
+      }
+      if (this.readToggles.pageBreakEdition) {
+        this.show.pageBreakEdition = true;
+      }
     } else {
       this.show.comments = false;
       this.show.personInfo = false;
