@@ -1699,12 +1699,13 @@ div.tei {
     z-index: 1000;
     display: inline-block;
     position: fixed;
-    background: #f1f1f1;
+    background: #666;
     margin: 0;
     padding: 0;
     max-height: 50%;
     box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
     white-space: normal;
+    color: #f1f1f1;
     font-size: 1em;
     text-align: left;
     line-height: 1.4em;
@@ -1714,12 +1715,11 @@ div.tei {
         padding: 8px;
         position: sticky;
 	    top: 0;
-        background: #f1f1f1;
+        background: #666;
 	    width: 100%;
 
         .infoOverlayButton {
             cursor: pointer;
-            color: #222;
             float: right;
         }
     }
