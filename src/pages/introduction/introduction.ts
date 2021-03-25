@@ -15,6 +15,7 @@ import { TableOfContentsService } from '../../app/services/toc/table-of-contents
 import { Storage } from '@ionic/storage';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
 import { ReferenceDataModalPage } from '../../pages/reference-data-modal/reference-data-modal';
+import { OccurrencesPage } from '../occurrences/occurrences';
 
 /**
  * Generated class for the IntroductionPage page.
@@ -320,6 +321,20 @@ export class IntroductionPage {
               if ( target !== null ) {
                 this.scrollElementIntoView(target, 'top');
               }
+            }
+          }
+        }
+
+        if (!targetIsLink) {
+          /* The clicked target is not a link, check if it's a tooltip trigger for person-, place- or workinfo. */
+          targetElem = this.getEventTarget(event);
+          if (targetElem['classList'].contains('tooltiptrigger') && targetElem.hasAttribute('data-id')) {
+            if (targetElem['classList'].contains('person') && this.readPopoverService.show.personInfo) {
+              this.showPersonModal(targetElem.getAttribute('data-id'));
+            } else if (targetElem['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
+              this.showPlaceModal(targetElem.getAttribute('data-id'));
+            } else if (targetElem['classList'].contains('title') && this.readPopoverService.show.workInfo) {
+              this.showWorkModal(targetElem.getAttribute('data-id'));
             }
           }
         }
@@ -891,18 +906,23 @@ export class IntroductionPage {
   }
 
   private getEventTarget(event) {
-    let eventTarget: any = document.createElement('div');
-    eventTarget['classList'] = [];
+    let eventTarget: HTMLElement = document.createElement('div');
 
-    if ( event.target.getAttribute('data-id') ) {
+    if (event.target.getAttribute('data-id')) {
       return event.target;
     }
 
-    if (event.target !== undefined && event['target']['classList'].contains('tooltiptrigger')) {
+    if (event.target !== undefined && event.target['classList'] !== undefined
+    && event.target['classList'].contains('tooltiptrigger')) {
       eventTarget = event.target;
-    } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
-        eventTarget = event['target']['parentNode'];
-    } else if (event.target !== undefined && eventTarget['classList'].contains('anchor')) {
+    } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'] !== undefined
+    && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
+      eventTarget = event['target']['parentNode'];
+    } else if (event['target']['parentNode']['parentNode'] !== undefined && event['target']['parentNode']['classList'] !== undefined &&
+     event['target']['parentNode']['parentNode']['classList'].contains('tooltiptrigger')) {
+      eventTarget = event['target']['parentNode']['parentNode'];
+    } else if (event.target !== undefined && event['target']['classList'] !== undefined &&
+    event['target']['classList'].contains('anchor')) {
       eventTarget = event.target;
     }
     return eventTarget;
@@ -930,6 +950,40 @@ export class IntroductionPage {
       this.events.publish('tableOfContents:loaded', tocLoadedParams);
       this.storage.set('toc_' + id, this.tocItems);
     }
+  }
+
+  setToolTipText(text: string) {
+    this.toolTipText = text;
+  }
+
+  hideToolTip() {
+    this.setToolTipText('');
+    this.toolTipPosition = {
+      top: -1000 + 'px',
+      left: -1000 + 'px'
+    };
+  }
+
+  private scrollToElementTOC(element: HTMLElement, event: Event) {
+    try {
+      element.scrollIntoView({behavior: 'smooth', block: 'start'});
+    } catch ( e ) {
+    }
+  }
+
+  showPersonModal(id: string) {
+    const modal = this.modalController.create(OccurrencesPage, { id: id, type: 'subject' });
+    modal.present();
+  }
+
+  showPlaceModal(id: string) {
+    const modal = this.modalController.create(OccurrencesPage, { id: id, type: 'location' });
+    modal.present();
+  }
+
+  showWorkModal(id: string) {
+    const modal = this.modalController.create(OccurrencesPage, { id: id, type: 'work' });
+    modal.present();
   }
 
   showPopover(myEvent) {
@@ -962,25 +1016,6 @@ export class IntroductionPage {
     popover.present({
       ev: myEvent
     });
-  }
-
-  setToolTipText(text: string) {
-    this.toolTipText = text;
-  }
-
-  hideToolTip() {
-    this.setToolTipText('');
-    this.toolTipPosition = {
-      top: -1000 + 'px',
-      left: -1000 + 'px'
-    };
-  }
-
-  private scrollToElementTOC(element: HTMLElement, event: Event) {
-    try {
-      element.scrollIntoView({behavior: 'smooth', block: 'start'});
-    } catch ( e ) {
-    }
   }
 
   showSharePopover(myEvent) {
