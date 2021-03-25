@@ -1709,10 +1709,11 @@ div.tei {
     font-size: 1em;
     text-align: left;
     line-height: 1.4em;
+    overflow: auto;
 
     .infoOverlayHeader {
         display: inline-block;
-        padding: 8px;
+        padding: 12px;
         position: sticky;
 	    top: 0;
         background: #666;
@@ -1724,10 +1725,9 @@ div.tei {
         }
     }
     .infoOverlayContent {
-        display: block;
+        display: inline-block;
         clear: both;
-        overflow: auto;
-        padding: 0 8px 8px 8px;
+        padding: 0 12px 12px 12px;
     }
 }
 
