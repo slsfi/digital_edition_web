@@ -876,6 +876,9 @@ export class IntroductionPage {
   }
 
   private setInfoOverlayPositionAndWidth() {
+    // Left and right margins
+    const margins = 30;
+    
     // Get viewport width and height.
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
@@ -893,11 +896,11 @@ export class IntroductionPage {
     // Set info overlay position
     this.infoOverlayPosition = {
       bottom: vh - containerElemRect.bottom + 'px',
-      left: (containerElemRect.left - sidePaneOffsetWidth) + 'px'
+      left: (containerElemRect.left + margins - sidePaneOffsetWidth) + 'px'
     };
 
     // Set info overlay width
-    this.infoOverlayWidth = containerElemRect.width + 'px';
+    this.infoOverlayWidth = containerElemRect.width - 2*margins + 'px';
   }
 
   private scrollToElement(element: HTMLElement) {
