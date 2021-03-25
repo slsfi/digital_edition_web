@@ -70,7 +70,6 @@ export class ReadPopoverPage {
         }
       }
     }
-    console.log('togglesCounter = ' + this.togglesCounter);
 
     this.show = readPopoverService.show;
     this.fontsize = readPopoverService.fontsize;
