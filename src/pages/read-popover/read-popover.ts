@@ -63,13 +63,14 @@ export class ReadPopoverPage {
     }
 
     this.togglesCounter = 0;
-    for (let prop in this.readToggles) {
+    for (const prop in this.readToggles) {
       if (this.readToggles.hasOwnProperty(prop)) {
         if (this.readToggles[prop] === true) {
           this.togglesCounter++;
         }
       }
     }
+    console.log(this.togglesCounter);
 
     this.show = readPopoverService.show;
     this.fontsize = readPopoverService.fontsize;
