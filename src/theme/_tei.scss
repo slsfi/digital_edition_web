@@ -1695,6 +1695,34 @@ div.tei {
     }
 }
 
+.tei.infoOverlay {
+    z-index: 1000;
+    position: fixed;
+    background: #f1f1f1;
+    margin: 0 30px;
+    max-height: 40vh;
+    border: 1px solid #222;
+    box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
+    padding: 1rem;
+    white-space: normal;
+    font-size: 1em;
+    text-align: left;
+    line-height: 1.4em;
+
+    .infoOverlayHeader {
+        padding: 0 0 6px 0;
+
+        .infoOverlayButton {
+            float: right;
+        }
+    }
+    .infoOverlayContent {
+        clear: both;
+        overflow: auto;
+        padding: 0 0 6px 0;
+    }
+}
+
 
 /*** Advanced mode styles */
 div.tei .tooltip { display: none; }
