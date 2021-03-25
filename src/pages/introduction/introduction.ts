@@ -933,13 +933,13 @@ export class IntroductionPage {
   }
 
   showPopover(myEvent) {
-    let toggles = undefined;
+    /*let toggles = undefined;
     try {
       toggles = this.config.getSettings('settings.introToggles');
     } catch (e) {
     }
-    if (toggles === undefined || toggles === null) {
-      toggles = {
+    if (toggles === undefined || toggles === null) {*/
+      const toggles = {
         'comments': false,
         'personInfo': false,
         'placeInfo': false,
@@ -951,7 +951,7 @@ export class IntroductionPage {
         'pageBreakOriginal': false,
         'pageBreakEdition': false
       };
-    }
+   /* }*/
     const popover = this.popoverCtrl.create(ReadPopoverPage, {toggles}, { cssClass: 'popover_settings' });
     popover.present({
       ev: myEvent
