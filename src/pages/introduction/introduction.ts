@@ -951,6 +951,12 @@ export class IntroductionPage {
         'pageBreakOriginal': false,
         'pageBreakEdition': false
       };
+    } else {
+      toggles.comments = false;
+      toggles.changes = false;
+      toggles.normalisations = false;
+      toggles.abbreviations = false;
+      toggles.pageBreakOriginal = false;
     }
     const popover = this.popoverCtrl.create(ReadPopoverPage, {toggles}, { cssClass: 'popover_settings' });
     popover.present({
