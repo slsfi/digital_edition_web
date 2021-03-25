@@ -6,19 +6,19 @@
               <ion-col>
                 <button ion-button clear (click)="showReference()" class="sec-menu-button">
                   <ion-icon class="urn-icon" name="share-alt"></ion-icon>
-                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.refer' | translate }}</span>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.refer' | translate }}</span>
                 </button>
               </ion-col>
               <ion-col>
                 <button ion-button clear (click)="showSharePopover($event)" class="sec-menu-button">
                   <ion-icon class="share-icon" name="share"></ion-icon>
-                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.share' | translate }}</span>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.share' | translate }}</span>
                 </button>
               </ion-col>
               <ion-col>
                 <button ion-button clear #settingsIconElement (click)="showPopover($event)" class="sec-menu-button" id="settings-icon">
                   <ion-icon class="settings-icon" name="settings"></ion-icon>
-                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Popover.Options' | translate }}</span>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Popover.Options' | translate }}</span>
                 </button>
               </ion-col>
             </ion-row>
@@ -35,6 +35,7 @@
               <ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
                 <div class="tei"
                   [class.show_personInfo]="readPopoverService.show.personInfo"
+                  [class.show_placeInfo]="readPopoverService.show.placeInfo"
                   [class.show_workInfo]="readPopoverService.show.workInfo"
                   [class.show_pageNumbering]="readPopoverService.show.pageNumbering"
                   [class.show_pageBreakEdition]="readPopoverService.show.pageBreakEdition"
