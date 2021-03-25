@@ -45,6 +45,7 @@ export class ReadPopoverPage {
   };
 
   fontsize = null;
+  togglesCounter: number;
 
   constructor(
     public viewCtrl: ViewController,
@@ -60,6 +61,16 @@ export class ReadPopoverPage {
     if ( toggles !== undefined ) {
       this.readToggles = toggles;
     }
+
+    this.togglesCounter = 0;
+    for (let prop in this.readToggles) {
+      if (this.readToggles.hasOwnProperty(prop)) {
+        if (this.readToggles[prop] === true) {
+          this.togglesCounter++;
+        }
+      }
+    }
+    console.log('togglesCounter = ' + this.togglesCounter);
 
     this.show = readPopoverService.show;
     this.fontsize = readPopoverService.fontsize;
