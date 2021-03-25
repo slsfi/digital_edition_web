@@ -189,152 +189,146 @@ export class IntroductionPage {
     this.renderer.listen(nElement, 'click', (event) => {
       try {
         event.stopPropagation();
+        let targetElem: HTMLElement = this.getEventTarget(event);
 
-        // Links in the introduction
-        let targetIsLink = false;
-        let targetElem: HTMLElement = event.target as HTMLElement;
+        // Tooltip trigger for person-, place- or workinfo.
+        if (targetElem['classList'].contains('tooltiptrigger') && targetElem.hasAttribute('data-id')) {
+          if (targetElem['classList'].contains('person') && this.readPopoverService.show.personInfo) {
+            this.showPersonModal(targetElem.getAttribute('data-id'));
+          } else if (targetElem['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
+            this.showPlaceModal(targetElem.getAttribute('data-id'));
+          } else if (targetElem['classList'].contains('title') && this.readPopoverService.show.workInfo) {
+            this.showWorkModal(targetElem.getAttribute('data-id'));
+          }
+        }
+
+        targetElem = event.target as HTMLElement;
         if (targetElem.classList.length === 0 || !targetElem.classList.contains('xreference')) {
           targetElem = targetElem.parentElement;
         }
 
-        if (targetElem.classList.length !== 0) {
-          if (targetElem.classList.contains('xreference')) {
-            targetIsLink = true;
-            event.preventDefault();
-            const anchorElem: HTMLAnchorElement = targetElem as HTMLAnchorElement;
+        // Links in the introduction.
+        if (targetElem.classList.length !== 0 && targetElem.classList.contains('xreference')) {
+          event.preventDefault();
+          const anchorElem: HTMLAnchorElement = targetElem as HTMLAnchorElement;
 
-            if (anchorElem.classList.contains('ref_external')) {
-              // Link to external web page, open in new window/tab.
-              window.open(anchorElem.href, '_blank');
+          if (anchorElem.classList.contains('ref_external')) {
+            // Link to external web page, open in new window/tab.
+            window.open(anchorElem.href, '_blank');
 
-            } else if (anchorElem.classList.contains('ref_readingtext') ||
-             anchorElem.classList.contains('ref_comment') ||
-             anchorElem.classList.contains('ref_introduction')) {
-              // Link to reading text, comment or introduction.
-              // Get the href parts for the targeted text.
-              const hrefTargetItems: Array<string> = decodeURIComponent(String(anchorElem.href).split('/').pop()).split(' ');
-              let publicationId = '';
-              let textId = '';
-              let chapterId = '';
-              let positionId = '';
+          } else if (anchorElem.classList.contains('ref_readingtext') ||
+            anchorElem.classList.contains('ref_comment') ||
+            anchorElem.classList.contains('ref_introduction')) {
+            // Link to reading text, comment or introduction.
+            // Get the href parts for the targeted text.
+            const hrefTargetItems: Array<string> = decodeURIComponent(String(anchorElem.href).split('/').pop()).split(' ');
+            let publicationId = '';
+            let textId = '';
+            let chapterId = '';
+            let positionId = '';
 
-              if (anchorElem.classList.contains('ref_readingtext') || anchorElem.classList.contains('ref_comment')) {
-                // Link to reading text or comment.
+            if (anchorElem.classList.contains('ref_readingtext') || anchorElem.classList.contains('ref_comment')) {
+              // Link to reading text or comment.
 
-                publicationId = hrefTargetItems[0];
-                textId = hrefTargetItems[1];
-                this.textService.getCollectionAndPublicationByLegacyId(publicationId + '_' + textId).subscribe(data => {
-                  if (data[0] !== undefined) {
-                    publicationId = data[0]['coll_id'];
-                    textId = data[0]['pub_id'];
-                  }
-
-                  if (hrefTargetItems.length > 2 && !hrefTargetItems[2].startsWith('#')) {
-                    chapterId = hrefTargetItems[2];
-                  }
-
-                  let hrefString = '#/publication/' + publicationId + '/text/' + textId + '/';
-                  if (chapterId) {
-                    hrefString += chapterId;
-                    if (hrefTargetItems.length > 3 && hrefTargetItems[3].startsWith('#')) {
-                      positionId = hrefTargetItems[3].replace('#', ';');
-                      hrefString += positionId;
-                    }
-                  } else {
-                    hrefString += 'nochapter';
-                    if (hrefTargetItems.length > 2 && hrefTargetItems[2].startsWith('#')) {
-                      positionId = hrefTargetItems[2].replace('#', ';');
-                      hrefString += positionId;
-                    }
-                  }
-                  hrefString += '/not/infinite/nosong/searchtitle/established&comments';
-                  window.open(hrefString, '_blank');
-                });
-
-              } else if (anchorElem.classList.contains('ref_introduction')) {
-                // Link to introduction.
-                publicationId = hrefTargetItems[0];
-                if (hrefTargetItems.length > 1 && hrefTargetItems[hrefTargetItems.length - 1].startsWith('#')) {
-                  positionId = hrefTargetItems[hrefTargetItems.length - 1];
+              publicationId = hrefTargetItems[0];
+              textId = hrefTargetItems[1];
+              this.textService.getCollectionAndPublicationByLegacyId(publicationId + '_' + textId).subscribe(data => {
+                if (data[0] !== undefined) {
+                  publicationId = data[0]['coll_id'];
+                  textId = data[0]['pub_id'];
                 }
 
-                this.textService.getCollectionAndPublicationByLegacyId(publicationId).subscribe(data => {
-                  if (data[0] !== undefined) {
-                    publicationId = data[0]['coll_id'];
+                if (hrefTargetItems.length > 2 && !hrefTargetItems[2].startsWith('#')) {
+                  chapterId = hrefTargetItems[2];
+                }
+
+                let hrefString = '#/publication/' + publicationId + '/text/' + textId + '/';
+                if (chapterId) {
+                  hrefString += chapterId;
+                  if (hrefTargetItems.length > 3 && hrefTargetItems[3].startsWith('#')) {
+                    positionId = hrefTargetItems[3].replace('#', ';');
+                    hrefString += positionId;
+                  }
+                } else {
+                  hrefString += 'nochapter';
+                  if (hrefTargetItems.length > 2 && hrefTargetItems[2].startsWith('#')) {
+                    positionId = hrefTargetItems[2].replace('#', ';');
+                    hrefString += positionId;
+                  }
+                }
+                hrefString += '/not/infinite/nosong/searchtitle/established&comments';
+                window.open(hrefString, '_blank');
+              });
+
+            } else if (anchorElem.classList.contains('ref_introduction')) {
+              // Link to introduction.
+              publicationId = hrefTargetItems[0];
+              if (hrefTargetItems.length > 1 && hrefTargetItems[hrefTargetItems.length - 1].startsWith('#')) {
+                positionId = hrefTargetItems[hrefTargetItems.length - 1];
+              }
+
+              this.textService.getCollectionAndPublicationByLegacyId(publicationId).subscribe(data => {
+                if (data[0] !== undefined) {
+                  publicationId = data[0]['coll_id'];
+                }
+
+                // Check if we are already on the same page.
+                const baseURI: string = '/' + decodeURIComponent(String(anchorElem.baseURI).split('#/').pop());
+                if ((baseURI.endsWith('/publication-introduction/' + publicationId) ||
+                  baseURI.startsWith('/publication-introduction/' + publicationId + '/')) && positionId !== undefined) {
+                  // Same introduction.
+                  positionId = positionId.replace('#', '');
+
+                  // Find the element in the correct parent element.
+                  const matchingElements = document.getElementsByName(positionId);
+                  let targetElement = null;
+                  const refType = 'PAGE-INTRODUCTION';
+                  for (let i = 0; i < matchingElements.length; i++) {
+                    let parentElem = matchingElements[i].parentElement;
+                    while (parentElem !== null && parentElem.tagName !== refType) {
+                      parentElem = parentElem.parentElement;
+                    }
+                    if (parentElem !== null && parentElem.tagName === refType) {
+                      targetElement = matchingElements[i] as HTMLElement;
+                      if ((targetElement.parentElement.classList.length !== 0 &&
+                      targetElement.parentElement.classList.contains('ttFixed')) ||
+                      (targetElement.parentElement.parentElement.classList.length !== 0 &&
+                        targetElement.parentElement.parentElement.classList.contains('ttFixed'))) {
+                        // Found position is in footnote --> look for next occurence since the first footnote element
+                        // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
+                        // the position we need to find).
+                      } else {
+                        break;
+                      }
+                    }
+                  }
+                  if (targetElement !== null && targetElement.classList.length !== 0 &&
+                  targetElement.classList.contains('anchor')) {
+                    this.scrollToHTMLElement(targetElement);
+                  }
+                } else {
+                  // Different introduction, open in new window.
+
+                  let hrefString = '#/publication-introduction/' + publicationId;
+                  if (hrefTargetItems.length > 1 && hrefTargetItems[1].startsWith('#')) {
+                    positionId = hrefTargetItems[1];
+                    hrefString += '/' + positionId;
                   }
 
-                  // Check if we are already on the same page.
-                  const baseURI: string = '/' + decodeURIComponent(String(anchorElem.baseURI).split('#/').pop());
-                  if ((baseURI.endsWith('/publication-introduction/' + publicationId) ||
-                   baseURI.startsWith('/publication-introduction/' + publicationId + '/')) && positionId !== undefined) {
-                    // Same introduction.
-                    positionId = positionId.replace('#', '');
-
-                    // Find the element in the correct parent element.
-                    const matchingElements = document.getElementsByName(positionId);
-                    let targetElement = null;
-                    const refType = 'PAGE-INTRODUCTION';
-                    for (let i = 0; i < matchingElements.length; i++) {
-                      let parentElem = matchingElements[i].parentElement;
-                      while (parentElem !== null && parentElem.tagName !== refType) {
-                        parentElem = parentElem.parentElement;
-                      }
-                      if (parentElem !== null && parentElem.tagName === refType) {
-                        targetElement = matchingElements[i] as HTMLElement;
-                        if ((targetElement.parentElement.classList.length !== 0 &&
-                        targetElement.parentElement.classList.contains('ttFixed')) ||
-                        (targetElement.parentElement.parentElement.classList.length !== 0 &&
-                          targetElement.parentElement.parentElement.classList.contains('ttFixed'))) {
-                          // Found position is in footnote --> look for next occurence since the first footnote element
-                          // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
-                          // the position we need to find).
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    if (targetElement !== null && targetElement.classList.length !== 0 &&
-                    targetElement.classList.contains('anchor')) {
-                      this.scrollToHTMLElement(targetElement);
-                    }
-                  } else {
-                    // Different introduction, open in new window.
-
-                    let hrefString = '#/publication-introduction/' + publicationId;
-                    if (hrefTargetItems.length > 1 && hrefTargetItems[1].startsWith('#')) {
-                      positionId = hrefTargetItems[1];
-                      hrefString += '/' + positionId;
-                    }
-
-                    window.open(hrefString, '_blank');
-                  }
-                });
-              }
-            } else {
-              // Link in the introduction's TOC
-              let targetId = anchorElem.getAttribute('href');
-              if ( targetId === null ) {
-                targetId = anchorElem.parentElement.getAttribute('href');
-              }
-              const dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
-              const target = anchorElem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
-              if ( target !== null ) {
-                this.scrollElementIntoView(target, 'top');
-              }
+                  window.open(hrefString, '_blank');
+                }
+              });
             }
-          }
-        }
-
-        if (!targetIsLink) {
-          /* The clicked target is not a link, check if it's a tooltip trigger for person-, place- or workinfo. */
-          targetElem = this.getEventTarget(event);
-          if (targetElem['classList'].contains('tooltiptrigger') && targetElem.hasAttribute('data-id')) {
-            if (targetElem['classList'].contains('person') && this.readPopoverService.show.personInfo) {
-              this.showPersonModal(targetElem.getAttribute('data-id'));
-            } else if (targetElem['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
-              this.showPlaceModal(targetElem.getAttribute('data-id'));
-            } else if (targetElem['classList'].contains('title') && this.readPopoverService.show.workInfo) {
-              this.showWorkModal(targetElem.getAttribute('data-id'));
+          } else {
+            // Link in the introduction's TOC
+            let targetId = anchorElem.getAttribute('href');
+            if ( targetId === null ) {
+              targetId = anchorElem.parentElement.getAttribute('href');
+            }
+            const dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
+            const target = anchorElem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
+            if ( target !== null ) {
+              this.scrollElementIntoView(target, 'top');
             }
           }
         }
