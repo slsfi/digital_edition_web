@@ -96,7 +96,7 @@ export class IntroductionPage {
     this.infoOverlayText = '';
     this.infoOverlayWidth = null;
     this.infoOverlayPosition = {
-      bottom: 0 + 'px',
+      bottom: -1000 + 'px',
       left: -2000 + 'px'
     };
 
@@ -1028,7 +1028,7 @@ export class IntroductionPage {
   hideInfoOverlay() {
     this.setInfoOverlayText('');
     this.infoOverlayPosition = {
-      bottom: 0 + 'px',
+      bottom: -1000 + 'px',
       left: -2000 + 'px'
     };
   }
