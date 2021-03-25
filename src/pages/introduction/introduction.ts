@@ -187,6 +187,7 @@ export class IntroductionPage {
 
     /* CLICK EVENTS */
     this.renderer.listen(nElement, 'click', (event) => {
+      this.hideToolTip();
       try {
         event.stopPropagation();
         let targetElem: HTMLElement = this.getEventTarget(event);
