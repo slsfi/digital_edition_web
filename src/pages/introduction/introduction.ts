@@ -877,7 +877,7 @@ export class IntroductionPage {
 
   private setInfoOverlayPositionAndWidth() {
     // Left and right margins
-    const margins = 30;
+    const margins = 20;
     
     // Get viewport width and height.
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
