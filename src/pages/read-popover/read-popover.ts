@@ -19,29 +19,29 @@ import { ReadPopoverService, Fontsize } from '../../app/services/settings/read-p
 })
 export class ReadPopoverPage {
   readToggles: {
-    'comments': boolean,
-    'personInfo': boolean,
-    'placeInfo': boolean,
-    'workInfo': boolean,
-    'changes': boolean,
-    'normalisations': boolean,
-    'abbreviations': boolean,
-    'pageNumbering': boolean,
-    'pageBreakOriginal': boolean,
-    'pageBreakEdition': boolean
+      'comments': boolean,
+      'personInfo': boolean,
+      'placeInfo': boolean,
+      'workInfo': boolean,
+      'changes': boolean,
+      'normalisations': boolean,
+      'abbreviations': boolean,
+      'pageNumbering': boolean,
+      'pageBreakOriginal': boolean,
+      'pageBreakEdition': boolean
   };
 
   show = {
-    'comments': false,
-    'personInfo': false,
-    'placeInfo': false,
-    'workInfo': false,
-    'changes': false,
-    'normalisations': false,
-    'abbreviations': false,
-    'pageNumbering': false,
-    'pageBreakOriginal': false,
-    'pageBreakEdition': false
+      'comments': false,
+      'personInfo': false,
+      'placeInfo': false,
+      'workInfo': false,
+      'changes': false,
+      'normalisations': false,
+      'abbreviations': false,
+      'pageNumbering': false,
+      'pageBreakOriginal': false,
+      'pageBreakEdition': false
   };
 
   fontsize = null;
@@ -60,18 +60,6 @@ export class ReadPopoverPage {
     if ( toggles !== undefined ) {
       this.readToggles = toggles;
     }
-
-    /*
-    this.displayReadToggles = false;
-    for (let prop in this.readToggles) {
-      if (this.readToggles.hasOwnProperty(prop)) {
-        if (this.readToggles[prop] === true) {
-          this.displayReadToggles = true;
-          break;
-        }
-      }
-    }
-    */
 
     this.show = readPopoverService.show;
     this.fontsize = readPopoverService.fontsize;
@@ -182,7 +170,7 @@ export class ReadPopoverPage {
     }
   }
 
-/*
+  /*
   decreaseFontSize() {
     try {
       this.fontsize = Fontsize.small;
@@ -194,7 +182,6 @@ export class ReadPopoverPage {
       this.doAnalytics('decreaseFontSize - ' + this.fontsize);
     }
   }
-
   increaseFontMeduimSize() {
     try {
       this.fontsize = Fontsize.medium;
@@ -206,7 +193,6 @@ export class ReadPopoverPage {
       this.doAnalytics('increaseFontMeduimSize - ' + this.fontsize);
     }
   }
-
   increaseFontSize() {
     try {
       this.fontsize = Fontsize.large;
@@ -218,7 +204,7 @@ export class ReadPopoverPage {
       this.doAnalytics('increaseFontSize - ' + this.fontsize);
     }
   }
-*/
+  */
 
   doAnalytics(type) {
     try {

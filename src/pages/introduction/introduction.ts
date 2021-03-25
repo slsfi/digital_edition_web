@@ -933,25 +933,18 @@ export class IntroductionPage {
   }
 
   showPopover(myEvent) {
-    /*let toggles = undefined;
-    try {
-      toggles = this.config.getSettings('settings.introToggles');
-    } catch (e) {
-    }
-    if (toggles === undefined || toggles === null) {*/
-      const toggles = {
-        'comments': false,
-        'personInfo': false,
-        'placeInfo': false,
-        'workInfo': false,
-        'changes': false,
-        'normalisations': false,
-        'abbreviations': false,
-        'pageNumbering': true,
-        'pageBreakOriginal': false,
-        'pageBreakEdition': false
-      };
-   /* }*/
+    const toggles = {
+      'comments': false,
+      'personInfo': true,
+      'placeInfo': false,
+      'workInfo': true,
+      'changes': false,
+      'normalisations': false,
+      'abbreviations': false,
+      'pageNumbering': true,
+      'pageBreakOriginal': false,
+      'pageBreakEdition': true
+    };
     const popover = this.popoverCtrl.create(ReadPopoverPage, {toggles}, { cssClass: 'popover_settings' });
     popover.present({
       ev: myEvent
@@ -993,11 +986,11 @@ export class IntroductionPage {
     });
   }
 
- private toggleTocMenu() {
-   if ( this.tocMenuOpen ) {
-    this.tocMenuOpen = false;
-   } else {
-    this.tocMenuOpen = true;
-   }
- }
+  private toggleTocMenu() {
+    if ( this.tocMenuOpen ) {
+      this.tocMenuOpen = false;
+    } else {
+      this.tocMenuOpen = true;
+    }
+  }
 }

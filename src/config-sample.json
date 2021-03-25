@@ -87,18 +87,6 @@
             "pageBreakOriginal": true,
             "pageBreakEdition": true
         },
-        "introToggles": {
-            "comments": false,
-            "personInfo": false,
-            "placeInfo": false,
-            "workInfo": false,
-            "changes": false,
-            "normalisations": false,
-            "abbreviations": false,
-            "pageNumbering": true,
-            "pageBreakOriginal": false,
-            "pageBreakEdition": false
-        },
         "displayTypesToggles": {
             "showAll": true,
             "established": true,
