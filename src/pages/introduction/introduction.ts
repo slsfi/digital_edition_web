@@ -878,7 +878,10 @@ export class IntroductionPage {
 
   private setInfoOverlayPositionAndWidth() {
     // Left and right margins
-    const margins = 20;
+    let margins = 20;
+
+    // Max width
+    const maxWidth = 600;
     
     // Get viewport width and height.
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -894,6 +897,13 @@ export class IntroductionPage {
     // Get bounding rectangle of the ion-scroll element which is the container for the introduction text.
     const containerElemRect = document.querySelector('ion-scroll > div.scroll-content').getBoundingClientRect();
 
+    let overlayWidth = containerElemRect.width;
+
+    if (overlayWidth > maxWidth) {
+      margins = Math.floor((overlayWidth - maxWidth) / 2);
+      overlayWidth = maxWidth;
+    }
+    
     // Set info overlay position
     this.infoOverlayPosition = {
       bottom: vh - containerElemRect.bottom + 'px',
@@ -901,7 +911,7 @@ export class IntroductionPage {
     };
 
     // Set info overlay width
-    this.infoOverlayWidth = containerElemRect.width - 2*margins + 'px';
+    this.infoOverlayWidth = overlayWidth - 2 * margins + 'px';
   }
 
   private scrollToElement(element: HTMLElement) {
