@@ -1701,10 +1701,8 @@ div.tei {
     position: fixed;
     background: #f1f1f1;
     margin: 0;
-    max-height: 40vh;
-    border: 1px solid #222;
+    max-height: 50%;
     box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
-    padding: 1rem;
     white-space: normal;
     font-size: 1em;
     text-align: left;
@@ -1712,6 +1710,7 @@ div.tei {
 
     .infoOverlayHeader {
         display: block;
+        padding: 16px 16px 0 16px;
 
         .infoOverlayButton {
             cursor: pointer;
@@ -1723,7 +1722,8 @@ div.tei {
         display: block;
         clear: both;
         overflow: auto;
-        padding: 6px 0;
+        padding: 6px 16px 16px 16px;
+        max-height: 40vh;
     }
 }
 
