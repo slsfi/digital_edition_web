@@ -210,6 +210,7 @@ export class IntroductionPage {
           } else if (targetElem['classList'].contains('title') && this.readPopoverService.show.workInfo) {
             this.showWorkModal(targetElem.getAttribute('data-id'));
           } else if (targetElem['classList'].contains('ttFoot')) {
+            this.hideToolTip();
             this.showFootnoteInfoOverlay(targetElem.getAttribute('data-id'), targetElem);
           }
         }
