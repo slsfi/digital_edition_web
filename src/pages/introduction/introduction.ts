@@ -901,7 +901,7 @@ export class IntroductionPage {
 
     if (overlayWidth > maxWidth) {
       margins = Math.floor((overlayWidth - maxWidth) / 2);
-      overlayWidth = maxWidth;
+      overlayWidth = maxWidth + 2 * margins;
     }
     
     // Set info overlay position
