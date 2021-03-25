@@ -200,42 +200,6 @@ export class ReadPopoverPage {
     }
   }
 
-  /*
-  decreaseFontSize() {
-    try {
-      this.fontsize = Fontsize.small;
-      this.readPopoverService.fontsize = this.fontsize;
-      this.doAnalytics('decreaseFontSize - ' + this.fontsize);
-    } catch ( e ) {
-      this.fontsize = 0;
-      this.readPopoverService.fontsize = this.fontsize;
-      this.doAnalytics('decreaseFontSize - ' + this.fontsize);
-    }
-  }
-  increaseFontMeduimSize() {
-    try {
-      this.fontsize = Fontsize.medium;
-      this.readPopoverService.fontsize = this.fontsize;
-      this.doAnalytics('increaseFontMeduimSize - ' + this.fontsize);
-    } catch ( e ) {
-      this.fontsize = 1;
-      this.readPopoverService.fontsize = this.fontsize;
-      this.doAnalytics('increaseFontMeduimSize - ' + this.fontsize);
-    }
-  }
-  increaseFontSize() {
-    try {
-      this.fontsize = Fontsize.large;
-      this.readPopoverService.fontsize = this.fontsize;
-      this.doAnalytics('increaseFontSize - ' + this.fontsize);
-    } catch ( e ) {
-      this.fontsize = 2;
-      this.readPopoverService.fontsize = this.fontsize;
-      this.doAnalytics('increaseFontSize - ' + this.fontsize);
-    }
-  }
-  */
-
   doAnalytics(type) {
     try {
       (<any>window).ga('send', 'event', {
