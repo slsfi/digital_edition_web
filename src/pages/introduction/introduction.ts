@@ -56,6 +56,9 @@ export class IntroductionPage {
     'abbreviations': {},
     'footnotes': {}
   };
+  infoOverlayPosition: object;
+  infoOverlayWidth: string;
+  infoOverlayText: string;
   textLoading: Boolean = true;
   tocItems: GeneralTocItem[];
 
@@ -89,6 +92,12 @@ export class IntroductionPage {
     this.toolTipPosition = {
       top: -1000 + 'px',
       left: -1000 + 'px'
+    };
+    this.infoOverlayText = '';
+    this.infoOverlayWidth = null;
+    this.infoOverlayPosition = {
+      bottom: 0 + 'px',
+      left: -2000 + 'px'
     };
 
     try {
@@ -192,7 +201,7 @@ export class IntroductionPage {
         event.stopPropagation();
         let targetElem: HTMLElement = this.getEventTarget(event);
 
-        // Tooltip trigger for person-, place- or workinfo.
+        // Modal trigger for person-, place- or workinfo and info overlay trigger for footnote.
         if (targetElem['classList'].contains('tooltiptrigger') && targetElem.hasAttribute('data-id')) {
           if (targetElem['classList'].contains('person') && this.readPopoverService.show.personInfo) {
             this.showPersonModal(targetElem.getAttribute('data-id'));
@@ -200,6 +209,8 @@ export class IntroductionPage {
             this.showPlaceModal(targetElem.getAttribute('data-id'));
           } else if (targetElem['classList'].contains('title') && this.readPopoverService.show.workInfo) {
             this.showWorkModal(targetElem.getAttribute('data-id'));
+          } else if (targetElem['classList'].contains('ttFoot')) {
+            this.showFootnoteInfoOverlay(targetElem.getAttribute('data-id'), targetElem);
           }
         }
 
@@ -517,6 +528,32 @@ export class IntroductionPage {
 
     this.setToolTipPosition(targetElem, footNoteHTML);
     this.setToolTipText(footNoteHTML);
+    this.tooltips.footnotes[id] = footNoteHTML;
+  }
+
+  showFootnoteInfoOverlay(id: string, targetElem: HTMLElement) {
+    if (this.tooltips.footnotes[id]) {
+      this.setInfoOverlayPositionAndWidth();
+      this.setInfoOverlayText(this.tooltips.footnotes[id]);
+      return;
+    }
+    const target = document.getElementsByClassName('ttFixed');
+    let foundElem: any = '';
+    for (let i = 0; i < target.length; i++) {
+      const elt = target[i] as HTMLElement;
+      if ( elt.getAttribute('data-id') === id ) {
+        foundElem = elt.innerHTML;
+        break;
+      }
+    }
+    // Prepend the footnoteindicator to the the footnote text.
+    const footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + targetElem.textContent +
+     '</span>' + '<span class="ttFtnText">' + foundElem  + '</span>';
+    const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
+      this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
+
+    this.setInfoOverlayPositionAndWidth();
+    this.setInfoOverlayText(footNoteHTML);
     this.tooltips.footnotes[id] = footNoteHTML;
   }
 
@@ -838,6 +875,31 @@ export class IntroductionPage {
     return dimensions;
   }
 
+  private setInfoOverlayPositionAndWidth() {
+    // Get viewport width and height.
+    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+    // Set horisontal offset due to possible side pane on the left.
+    const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
+    let sidePaneOffsetWidth = 0;
+    if (sidePaneIsOpen) {
+      sidePaneOffsetWidth = 269;
+    }
+
+    // Get bounding rectangle of the ion-scroll element which is the container for the introduction text.
+    const containerElemRect = document.querySelector('ion-scroll > div.scroll-content').getBoundingClientRect();
+
+    // Set info overlay position
+    this.infoOverlayPosition = {
+      bottom: vh - containerElemRect.bottom + 'px',
+      left: (containerElemRect.left - sidePaneOffsetWidth) + 'px'
+    };
+
+    // Set info overlay width
+    this.infoOverlayWidth = containerElemRect.width + 'px';
+  }
+
   private scrollToElement(element: HTMLElement) {
     this.hideToolTip();
     element.scrollIntoView();
@@ -951,11 +1013,23 @@ export class IntroductionPage {
     this.toolTipText = text;
   }
 
+  setInfoOverlayText(text: string) {
+    this.infoOverlayText = text;
+  }
+
   hideToolTip() {
     this.setToolTipText('');
     this.toolTipPosition = {
       top: -1000 + 'px',
       left: -1000 + 'px'
+    };
+  }
+
+  hideInfoOverlay() {
+    this.setInfoOverlayText('');
+    this.infoOverlayPosition = {
+      bottom: 0 + 'px',
+      left: -2000 + 'px'
     };
   }
 
