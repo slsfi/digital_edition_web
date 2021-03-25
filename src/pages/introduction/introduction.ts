@@ -995,9 +995,9 @@ export class IntroductionPage {
     if (toggles === undefined || toggles === null) {
       toggles = {
         'comments': false,
-        'personInfo': false,
+        'personInfo': true,
         'placeInfo': false,
-        'workInfo': false,
+        'workInfo': true,
         'changes': false,
         'normalisations': false,
         'abbreviations': false,
