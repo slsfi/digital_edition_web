@@ -1729,6 +1729,11 @@ div.tei {
         .infoOverlayButton {
             cursor: pointer;
             float: right;
+            opacity: 1;
+            transition: $opacity-hover-transition;
+        }
+        .infoOverlayButton:hover:not(.disable-hover) {
+            opacity: $opacity-hover;
         }
     }
     .infoOverlayContent {
@@ -1881,6 +1886,10 @@ span.footnoteindicator {
 /* Ge färg åt fotnotsmarkörerna i inledningarna. */
 page-introduction span.footnoteindicator {
     color: color($colors, primary);
+}
+page-introduction span.footnoteindicator:hover:not(.disable-hover) {
+    color: color($colors, primary);
+    text-decoration: underline;
 }
 
 /*toc: textfärgen
