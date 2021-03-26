@@ -58,6 +58,7 @@ export class IntroductionPage {
   };
   infoOverlayPosition: object;
   infoOverlayWidth: string;
+  infoOverlayDisplay: string;
   infoOverlayText: string;
   textLoading: Boolean = true;
   tocItems: GeneralTocItem[];
@@ -95,9 +96,10 @@ export class IntroductionPage {
     };
     this.infoOverlayText = '';
     this.infoOverlayWidth = null;
+    this.infoOverlayDisplay = 'none';
     this.infoOverlayPosition = {
-      bottom: -1000 + 'px',
-      left: -2000 + 'px'
+      bottom: 0 + 'px',
+      left: 0 + 'px'
     };
 
     try {
@@ -555,6 +557,7 @@ export class IntroductionPage {
 
     this.setInfoOverlayPositionAndWidth();
     this.setInfoOverlayText(footNoteHTML);
+    this.setInfoOverlayVisible();
     this.tooltips.footnotes[id] = footNoteHTML;
   }
 
@@ -897,11 +900,11 @@ export class IntroductionPage {
     // Get bounding rectangle of the ion-scroll element which is the container for the introduction text.
     const containerElemRect = document.querySelector('ion-scroll > div.scroll-content').getBoundingClientRect();
 
-    let overlayWidth = containerElemRect.width;
+    let tmpWidth = containerElemRect.width;
 
-    if (overlayWidth > maxWidth) {
-      margins = Math.floor((overlayWidth - maxWidth) / 2);
-      overlayWidth = maxWidth + 2 * margins;
+    if (tmpWidth > maxWidth) {
+      margins = Math.floor((tmpWidth - maxWidth) / 2);
+      tmpWidth = maxWidth + 2 * margins;
     }
     
     // Set info overlay position
@@ -911,7 +914,7 @@ export class IntroductionPage {
     };
 
     // Set info overlay width
-    this.infoOverlayWidth = overlayWidth - 2 * margins + 'px';
+    this.infoOverlayWidth = tmpWidth - 2 * margins + 'px';
   }
 
   private scrollToElement(element: HTMLElement) {
@@ -1031,6 +1034,10 @@ export class IntroductionPage {
     this.infoOverlayText = text;
   }
 
+  setInfoOverlayVisible() {
+    this.infoOverlayDisplay = 'block';
+  }
+
   hideToolTip() {
     this.setToolTipText('');
     this.toolTipPosition = {
@@ -1041,9 +1048,10 @@ export class IntroductionPage {
 
   hideInfoOverlay() {
     this.setInfoOverlayText('');
+    this.infoOverlayDisplay = 'none';
     this.infoOverlayPosition = {
-      bottom: -1000 + 'px',
-      left: -2000 + 'px'
+      bottom: 0 + 'px',
+      left: 0 + 'px'
     };
   }
 
