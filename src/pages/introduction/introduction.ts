@@ -555,9 +555,9 @@ export class IntroductionPage {
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
+    this.setInfoOverlayVisible();
     this.setInfoOverlayPositionAndWidth();
     this.setInfoOverlayText(footNoteHTML);
-    this.setInfoOverlayVisible();
     this.tooltips.footnotes[id] = footNoteHTML;
   }
 
