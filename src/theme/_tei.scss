@@ -530,14 +530,15 @@ div.tei {
 
         li.footnoteItem {
             display: table-row;
-            padding: 0 0 0.5em 0;
 
             span.footnoteMark {
                 display: table-cell;
-                margin-right: 0.7em;
+                padding: 0 0.7em 0.5em 0;
+                text-align: right;
             }
             span.footnoteText {
                 display: table-cell;
+                padding: 0 0 0.5em 0;
             }
         }
     }
