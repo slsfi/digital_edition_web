@@ -514,10 +514,32 @@ div.tei {
         color: #55524c;
         font-size: 0.95em;
     }
-    */
+    
     p.footnote {
         text-indent: 0 !important;
         padding-bottom: 0.5em !important;
+    }
+    */
+
+    /* FOOTNOTES */
+    ol.footnotesList {
+        display: table;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+
+        li.footnoteItem {
+            display: table-row;
+            padding: 0 0 0.5em 0;
+
+            span.footnoteMark {
+                display: table-cell;
+                margin-right: 0.7em;
+            }
+            span.footnoteText {
+                display: table-cell;
+            }
+        }
     }
 
     /* COMMON SPANS */
@@ -1742,7 +1764,7 @@ div.tei {
         padding: 0 16px 16px 16px;
 
         .ttFtnIndicator {
-            margin-right: 12px;
+            margin-right: 0.7em;
         }
         .ttFtnText {
             width: 100%;
