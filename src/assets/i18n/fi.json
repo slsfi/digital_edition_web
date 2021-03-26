@@ -282,6 +282,10 @@
   "song": "Melodi",
   "Text": "PDF",
   "BC": "eKr.",
+  "note": "Viite",
+  "editorialChange": "Toimittajan tekemä muutos",
+  "editorialNormalisation": "Normalisointi",
+  "abbreviation": "Lyhenne",
   "Reference": {
       "title": "Viittausohje",
       "refer": "Viittaa",

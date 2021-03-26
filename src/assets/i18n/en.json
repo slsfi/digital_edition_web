@@ -227,6 +227,10 @@
   "collections": "Collections",
   "works": "Works",
   "BC": "f.Kr.",
+  "note": "Not",
+  "editorialChange": "Emendation",
+  "editorialNormalisation": "Normalization",
+  "abbreviation": "Abbreviation",
   "Reference": {
       "title": "Reference",
       "refer": "Refer",
