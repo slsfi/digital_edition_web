@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
-import { MathJaxDirective } from './math-jax/math-jax';
 @NgModule({
-  declarations: [MathJaxDirective],
+  declarations: [],
   imports: [],
-  exports: [MathJaxDirective]
+  exports: []
 })
 export class DirectivesModule { }
