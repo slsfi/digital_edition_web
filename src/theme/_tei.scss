@@ -1703,8 +1703,8 @@ div.tei {
     margin: 0;
     padding: 0;
     max-height: 50%;
-    box-shadow: rgba(0, 0, 0, 0.3) 0 5px 5px;
-    clip-path: inset(-5px -5px 0px -5px);
+    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.4);
+    clip-path: inset(-12px -12px 0px -12px);
     white-space: normal;
     color: #dadada;
     font-size: 1em;
@@ -1721,7 +1721,7 @@ div.tei {
 	    width: 100%;
 
         .infoOverlayLabel {
-            font-size: 12px;
+            font-size: 0.7em;
             text-transform: uppercase;
         }
 
@@ -1731,9 +1731,16 @@ div.tei {
         }
     }
     .infoOverlayContent {
-        display: inline-block;
+        display: flex;
         clear: both;
         padding: 0 16px 16px 16px;
+
+        .ttFtnIndicator {
+            margin-right: 12px;
+        }
+        .ttFtnText {
+            width: 100%;
+        }
     }
 }
 
