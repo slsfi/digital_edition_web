@@ -58,7 +58,6 @@ export class IntroductionPage {
   };
   infoOverlayPosition: object;
   infoOverlayWidth: string;
-  infoOverlayDisplay: string;
   infoOverlayText: string;
   textLoading: Boolean = true;
   tocItems: GeneralTocItem[];
@@ -96,10 +95,9 @@ export class IntroductionPage {
     };
     this.infoOverlayText = '';
     this.infoOverlayWidth = null;
-    this.infoOverlayDisplay = 'none';
     this.infoOverlayPosition = {
-      bottom: 0 + 'px',
-      left: 0 + 'px'
+      bottom: -1000 + 'px',
+      left: -2000 + 'px'
     };
 
     try {
@@ -555,7 +553,6 @@ export class IntroductionPage {
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
-    this.setInfoOverlayVisible();
     this.setInfoOverlayPositionAndWidth();
     this.setInfoOverlayText(footNoteHTML);
     this.tooltips.footnotes[id] = footNoteHTML;
@@ -1034,10 +1031,6 @@ export class IntroductionPage {
     this.infoOverlayText = text;
   }
 
-  setInfoOverlayVisible() {
-    this.infoOverlayDisplay = 'block';
-  }
-
   hideToolTip() {
     this.setToolTipText('');
     this.toolTipPosition = {
@@ -1048,10 +1041,9 @@ export class IntroductionPage {
 
   hideInfoOverlay() {
     this.setInfoOverlayText('');
-    this.infoOverlayDisplay = 'none';
     this.infoOverlayPosition = {
-      bottom: 0 + 'px',
-      left: 0 + 'px'
+      bottom: -1000 + 'px',
+      left: -2000 + 'px'
     };
   }
 
