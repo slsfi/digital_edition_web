@@ -1253,6 +1253,11 @@ export class ReadPage /*implements OnDestroy*/ {
       const elt = target[i] as HTMLElement;
       if ( elt.getAttribute('data-id') === id ) {
         foundElem = elt.innerHTML;
+        // MathJx problem with resolving the actual formula, not the translated formula.
+        if( elt.lastChild.nodeName === 'SCRIPT' ) {
+          foundElem = '$' + elt.lastChild.innerHTML + '$';
+        }
+        
         break;
       }
     }

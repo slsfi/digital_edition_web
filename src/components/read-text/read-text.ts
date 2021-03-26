@@ -127,7 +127,6 @@ export class ReadTextComponent {
         }
 
         if (posId) {
-          console.log('Attempting to scrolling to ' + posId);
           let target = document.getElementsByName('' + posId + '')[0] as HTMLAnchorElement;
           if (target && ((target.parentElement && target.parentElement.classList.length !== 0 &&
             target.parentElement.classList.contains('ttFixed')) ||

@@ -1,3 +1,4 @@
+import { MathJaxModule } from './../../components/math-jax/math-jax.module';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { ReadPage } from './read';
@@ -41,7 +42,8 @@ export function createTranslateLoader(http: HttpClient) {
       ManuscriptsModule,
       VariationsModule,
       IntroductionModule,
-      DragScrollModule
+      DragScrollModule,
+      MathJaxModule
     ],
     entryComponents: [
       ReadPage,
