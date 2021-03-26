@@ -885,7 +885,7 @@ export class IntroductionPage {
 
     // Max width
     const maxWidth = 600;
-    
+
     // Get viewport width and height.
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
@@ -906,7 +906,7 @@ export class IntroductionPage {
       margins = Math.floor((tmpWidth - maxWidth) / 2);
       tmpWidth = maxWidth + 2 * margins;
     }
-    
+
     // Set info overlay position
     this.infoOverlayPosition = {
       bottom: vh - containerElemRect.bottom + 'px',
