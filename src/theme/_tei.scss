@@ -1719,6 +1719,11 @@ div.tei {
         background: #222;
 	    width: 100%;
 
+        .infoOverlayLabel {
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
         .infoOverlayButton {
             cursor: pointer;
             float: right;
