@@ -1743,6 +1743,13 @@ div.tei {
 
         .ttFtnIndicator {
             margin-right: 12px;
+
+            a {
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
         }
         .ttFtnText {
             width: 100%;
