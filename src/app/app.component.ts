@@ -894,7 +894,7 @@ export class DigitalEditionsApp {
           }
         }
       }
-      if ( data.tocItems.children !== undefined ){
+      if ( data.tocItems.children !== undefined ) {
         this.options = data.tocItems.children;
       } else {
         this.options = data.tocItems;
