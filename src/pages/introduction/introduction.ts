@@ -522,8 +522,8 @@ export class IntroductionPage {
       }
     }
     // Prepend the footnoteindicator to the the footnote text.
-    const footnoteWithIndicator: string = '<span class="ttFtnIndicator"><a href="#' + id + '">' + targetElem.textContent +
-     '</a></span>' + '<span class="ttFtnText">' + foundElem  + '</span>';
+    const footnoteWithIndicator: string = '<span class="ttFtnIndicator"><a class="xreference" href="#' + id + '">' +
+     targetElem.textContent + '</a></span>' + '<span class="ttFtnText">' + foundElem  + '</span>';
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
@@ -548,8 +548,8 @@ export class IntroductionPage {
       }
     }
     // Prepend the footnoteindicator to the the footnote text.
-    const footnoteWithIndicator: string = '<span class="ttFtnIndicator"><a href="#' + id + '">' + targetElem.textContent +
-     '</a></span>' + '<span class="ttFtnText">' + foundElem  + '</span>';
+    const footnoteWithIndicator: string = '<span class="ttFtnIndicator"><a class="xreference" href="#' + id + '">' +
+     targetElem.textContent + '</a></span>' + '<span class="ttFtnText">' + foundElem  + '</span>';
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
