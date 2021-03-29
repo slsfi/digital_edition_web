@@ -11,6 +11,9 @@ export class MathJaxDirective {
   }
   ngOnChanges() {
     this.el.nativeElement.innerHTML = this.MathJaxInput;
-    MathJax.Hub.Queue(['Typeset', MathJax.Hub, this.el.nativeElement]);
+    try {
+      MathJax.Hub.Queue(['Typeset', MathJax.Hub, this.el.nativeElement]);
+    } catch ( e ) {
+    }
   }
 }
