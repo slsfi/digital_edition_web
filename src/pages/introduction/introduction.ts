@@ -1045,7 +1045,7 @@ export class IntroductionPage {
 
   hideInfoOverlay() {
     this.setInfoOverlayText('');
-    this.infoOverlayPosType = 'fixed';
+    this.infoOverlayPosType = 'fixed'; // Position needs to be fixed so we can hide it outside viewport
     this.infoOverlayPosition = {
       bottom: -1000 + 'px',
       left: -2000 + 'px'
