@@ -56,6 +56,7 @@ export class IntroductionPage {
     'abbreviations': {},
     'footnotes': {}
   };
+  infoOverlayPosType: string;
   infoOverlayPosition: object;
   infoOverlayWidth: string;
   infoOverlayText: string;
@@ -95,6 +96,7 @@ export class IntroductionPage {
     };
     this.infoOverlayText = '';
     this.infoOverlayWidth = null;
+    this.infoOverlayPosType = 'fixed';
     this.infoOverlayPosition = {
       bottom: -1000 + 'px',
       left: -2000 + 'px'
@@ -910,6 +912,8 @@ export class IntroductionPage {
       left: (containerElemRect.left + margins - sidePaneOffsetWidth) + 'px'
     };
 
+    this.infoOverlayPosType = 'absolute';
+
     // Set info overlay width
     this.infoOverlayWidth = tmpWidth - 2 * margins + 'px';
   }
@@ -1041,6 +1045,7 @@ export class IntroductionPage {
 
   hideInfoOverlay() {
     this.setInfoOverlayText('');
+    this.infoOverlayPosType = 'fixed';
     this.infoOverlayPosition = {
       bottom: -1000 + 'px',
       left: -2000 + 'px'

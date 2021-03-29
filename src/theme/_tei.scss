@@ -1731,7 +1731,7 @@ div.tei {
 .tei.infoOverlay {
     z-index: 999;
     display: inline-block;
-    position: fixed;
+    /*position: fixed;*/
     background: $infoOverlay-bg-color;
     margin: 0;
     padding: 0;
