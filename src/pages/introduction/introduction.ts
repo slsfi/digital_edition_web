@@ -1070,12 +1070,25 @@ export class IntroductionPage {
   }
 
   showPopover(myEvent) {
-    let toggles = undefined;
+    let toggles = {
+      'comments': false,
+      'personInfo': false,
+      'placeInfo': false,
+      'workInfo': false,
+      'changes': false,
+      'normalisations': false,
+      'abbreviations': false,
+      'pageNumbering': true,
+      'pageBreakOriginal': false,
+      'pageBreakEdition': false
+    };
     try {
       toggles = this.config.getSettings('settings.introToggles');
       console.log(toggles);
     } catch (e) {
       console.error(e);
+      console.log(toggles);
+      toggles = undefined;
     }
     if (toggles === undefined || toggles === null) {
       toggles = {
