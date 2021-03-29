@@ -532,7 +532,7 @@ div.tei {
         li.noteItem {
             display: table-row;
 
-            .noteReference {
+            a.noteReference {
                 display: table-cell;
                 padding: 0 0.7em 0 0;
                 text-align: right;
@@ -542,7 +542,7 @@ div.tei {
                     text-decoration: underline;
                 }
             }
-            .noteText {
+            span.noteText {
                 display: table-cell;
                 padding: 0;
             }
@@ -1718,10 +1718,10 @@ div.tei {
     transform-origin: left top; /* This is necessary for the scaling to work properly if the tooltip wouldn't fit in view otherwise. */
 
     /* Style for reference numbers in footnote tooltips */
-    .noteReference {
+    a.noteReference {
         display: none;
     }
-    .noteText {
+    p.noteText {
         display: inline-block;
         text-indent: 0;
         line-height: 1.4em;
@@ -1776,7 +1776,7 @@ div.tei {
         clear: both;
         padding: 0 24px 24px 16px;
 
-        .noteReference {
+        a.noteReference {
             display: inline-block;
             margin-right: 0.7em;
             text-decoration: none;
@@ -1785,7 +1785,7 @@ div.tei {
                 text-decoration: underline;
             }
         }
-        .noteText {
+        p.noteText {
             display: inline-block;
             text-indent: 0;
             width: 100%;
