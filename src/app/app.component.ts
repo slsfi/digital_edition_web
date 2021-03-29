@@ -65,7 +65,6 @@ export class DigitalEditionsApp {
     songTypesMenuOpen: false
   }
   tocLoaded = false;
-  googleAnalyticsID: string;
   collectionDownloads: Array<String>;
 
   currentCollectionId = '';
@@ -228,10 +227,8 @@ export class DigitalEditionsApp {
 
     this.mediaCollectionOptions = {};
 
-    this.googleAnalyticsID = '';
     this.aboutPages = [];
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
-    this.googleAnalyticsID = this.config.getSettings('GoogleAnalyticsId');
     this.collectionDownloads = this.config.getSettings('collectionDownloads');
     this.projectMachineName = this.config.getSettings('app.machineName');
     try {
