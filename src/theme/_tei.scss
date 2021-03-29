@@ -1717,7 +1717,6 @@ div.tei {
     max-width: 25em;
     font-size: 1em;
     text-align: left;
-    line-height: 1.4em;
     transform-origin: left top; /* This is necessary for the scaling to work properly if the tooltip wouldn't fit in view otherwise. */
 
     /* Style for reference numbers in footnote tooltips */
@@ -1727,7 +1726,7 @@ div.tei {
     .noteText {
         display: inline-block;
         text-indent: 0;
-        margin-bottom: 0;
+        line-height: 1.4em;
     }
 }
 
@@ -1761,6 +1760,7 @@ div.tei {
             font-size: 0.7em;
             text-transform: uppercase;
             color: #dadada;
+            display: inline;
         }
 
         .infoOverlayButton {
@@ -1789,8 +1789,10 @@ div.tei {
         }
         .noteText {
             display: inline-block;
+            text-indent: 0;
             width: 100%;
             color: #dadada;
+            line-height: 1.4em;
         }
     }
 }
