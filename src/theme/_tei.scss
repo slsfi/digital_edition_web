@@ -514,12 +514,13 @@ div.tei {
         color: #55524c;
         font-size: 0.95em;
     }
-    
+    */
+
+    /* Old style for footnotes when they were <p> instead of <ol> */
     p.footnote {
         text-indent: 0 !important;
         padding-bottom: 0.5em !important;
     }
-    */
 
     /* FOOTNOTES */
     ol.footnotesList {
@@ -533,12 +534,19 @@ div.tei {
 
             span.footnoteMark {
                 display: table-cell;
-                padding: 0 0.7em 0.5em 0;
+                padding: 0 0.7em 0 0;
                 text-align: right;
+
+                a {
+                    text-decoration: none;
+                }
+                a:hover:not(.disable-hover) {
+                    text-decoration: underline;
+                }
             }
             span.footnoteText {
                 display: table-cell;
-                padding: 0 0 0.5em 0;
+                padding: 0;
             }
         }
     }
@@ -1721,7 +1729,7 @@ div.tei {
 .tei.infoOverlay {
     z-index: 999;
     display: inline-block;
-    position: fixed;
+    position: absolute;
     background: #222;
     margin: 0;
     padding: 0;
@@ -1766,6 +1774,13 @@ div.tei {
 
         .ttFtnIndicator {
             margin-right: 0.7em;
+
+            a {
+                text-decoration: none;
+            }
+            a:hover:not(.disable-hover) {
+                text-decoration: underline;
+            }
         }
         .ttFtnText {
             width: 100%;
