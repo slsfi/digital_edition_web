@@ -35,24 +35,6 @@ export class FacsimileService {
     }).catch(this.handleError);
   }
 
-  getFacsimileFile(collection_id: string, number: string, zoom_level: string): Observable<any> {
-    return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
-        this.config.getSettings('app.machineName') + this.facsimileImageUrl + collection_id + '/' + number + '/' + zoom_level)
-        .map(res => {
-          return res.json();
-        })
-        .catch(this.handleError);
-  }
-
-  /*getFacsimilesJson (): Observable<any[]> {
-    const file_name = 'facsimiles'; // facsimiles.json
-    return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
-                         this.config.getSettings('app.machineName') +
-                        `/files/facsimiles/${file_name}`)
-                    .map(this.extractData)
-                    .catch(this.handleError);
-  }*/
-
   getFacsimilePage (legacy_id): Observable<any[]> {
     return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
                          this.config.getSettings('app.machineName') +

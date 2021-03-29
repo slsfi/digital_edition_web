@@ -378,7 +378,7 @@ export class FacsimilesComponent {
   openZoom() {
     let modal = null;
     let params: object;
-    this.facsSize = 4;
+    this.facsSize = this.facsimileDefaultZoomLevel;
 
     if (this.facsimilePagesInfinite) {
       // TODO: images array contains 0 index that is invalid since page numbers are 1 based.
