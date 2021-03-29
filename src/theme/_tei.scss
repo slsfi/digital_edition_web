@@ -1721,8 +1721,13 @@ div.tei {
     transform-origin: left top; /* This is necessary for the scaling to work properly if the tooltip wouldn't fit in view otherwise. */
 
     /* Style for reference numbers in footnote tooltips */
-    span.ttFtnIndicator {
+    .noteReference {
         display: none;
+    }
+    .noteText {
+        display: inline-block;
+        text-indent: 0;
+        margin-bottom: 0;
     }
 }
 
@@ -1752,7 +1757,7 @@ div.tei {
         background: #222;
 	    width: 100%;
 
-        .infoOverlayLabel {
+        .infoOverlayTitle {
             font-size: 0.7em;
             text-transform: uppercase;
         }
@@ -1772,17 +1777,17 @@ div.tei {
         clear: both;
         padding: 0 16px 16px 16px;
 
-        .ttFtnIndicator {
+        .noteReference {
+            display: inline-block;
             margin-right: 0.7em;
+            text-decoration: none;
 
-            a {
-                text-decoration: none;
-            }
-            a:hover:not(.disable-hover) {
+            &:hover:not(.disable-hover) {
                 text-decoration: underline;
             }
         }
-        .ttFtnText {
+        .noteText {
+            display: inline-block;
             width: 100%;
         }
     }

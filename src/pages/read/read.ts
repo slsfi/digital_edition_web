@@ -1257,8 +1257,9 @@ export class ReadPage /*implements OnDestroy*/ {
       }
     }
     // Prepend the footnoteindicator to the the footnote text.
-    const footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + targetElem.textContent +
-     '</span>' + '<span class="ttFtnText">' + foundElem  + '</span>';
+    const footnoteWithIndicator: string = '<a class="xreference noteReference" href="#' + id + '">' +
+     targetElem.textContent +
+     '</span>' + '<p class="noteText">' + foundElem  + '</p>';
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
@@ -1282,8 +1283,8 @@ export class ReadPage /*implements OnDestroy*/ {
      triggerElem.nextElementSibling.firstElementChild.getAttribute('id') === id) {
       const ttText = triggerElem.nextElementSibling.firstElementChild.innerHTML;
       // Prepend the footnoteindicator to the the footnote text.
-      const footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + triggerElem.textContent +
-       '</span>' + '<span class="ttFtnText">' + ttText  + '</span>';
+      const footnoteWithIndicator: string = '<a class="xreference noteReference" href="#' + id + '">' +
+     triggerElem.textContent + '</span>' + '<p class="noteText">' + ttText  + '</p>';
       const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
        this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
       return footNoteHTML;
