@@ -1072,7 +1072,7 @@ export class IntroductionPage {
   showPopover(myEvent) {
     let toggles = undefined;
     try {
-      toggles = this.config.getSettings('settings.introToggles');
+      toggles = this.config.getSettings('settings.readToggles');
     } catch (e) {
       console.error(e);
     }
