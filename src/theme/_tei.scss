@@ -1714,10 +1714,11 @@ div.tei {
     white-space: normal;
     max-width: 25em;
     font-size: 1em;
+    line-height: 1.4em;
     text-align: left;
     transform-origin: left top; /* This is necessary for the scaling to work properly if the tooltip wouldn't fit in view otherwise. */
 
-    /* Style for reference numbers in footnote tooltips */
+    /* Styles for (foot)notes in tooltips */
     a.noteReference {
         display: none;
     }
