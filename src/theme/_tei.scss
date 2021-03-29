@@ -523,28 +523,26 @@ div.tei {
     }
 
     /* FOOTNOTES */
-    ol.footnotesList {
+    ol.notesList {
         display: table;
         list-style-type: none;
         padding: 0;
         margin: 0;
 
-        li.footnoteItem {
+        li.noteItem {
             display: table-row;
 
-            span.footnoteMark {
+            .noteReference {
                 display: table-cell;
                 padding: 0 0.7em 0 0;
                 text-align: right;
+                text-decoration: none;
 
-                a {
-                    text-decoration: none;
-                }
-                a:hover:not(.disable-hover) {
+                &:hover:not(.disable-hover) {
                     text-decoration: underline;
                 }
             }
-            span.footnoteText {
+            .noteText {
                 display: table-cell;
                 padding: 0;
             }
