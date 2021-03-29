@@ -1081,7 +1081,7 @@ export class IntroductionPage {
     } catch (e) {
       console.error(e);
     }
-    console.log(toggles);
+    console.log('Settings toggles: ' + toggles);
     if (toggles === undefined || toggles === null) {
       toggles = {
         'comments': false,
