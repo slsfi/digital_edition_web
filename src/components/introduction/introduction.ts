@@ -4,6 +4,7 @@ import { ReadPopoverService } from '../../app/services/settings/read-popover.ser
 import { TextService } from '../../app/services/texts/text.service';
 import { Events, ViewController } from 'ionic-angular';
 import { LanguageService } from '../../app/services/languages/language.service';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 
 /**
  * Class for the IntroductionComponent component.
@@ -36,6 +37,7 @@ export class IntroductionComponent {
     private renderer: Renderer,
     private elementRef: ElementRef,
     private viewctrl: ViewController,
+    private analyticsService: AnalyticsService
   ) {
   }
 
@@ -78,14 +80,6 @@ export class IntroductionComponent {
   }
 
   doAnalytics() {
-    try {
-      (<any>window).ga('send', 'event', {
-        eventCategory: 'Introduction',
-        eventLabel: 'Introduction',
-        eventAction: String(this.itemId),
-        eventValue: 10
-      });
-    } catch ( e ) {
-    }
+    this.analyticsService.doAnalyticsEvent('Introduction', 'Introduction', String(this.itemId));
   }
 }

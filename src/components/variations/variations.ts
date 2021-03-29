@@ -4,6 +4,7 @@ import { ReadPopoverService } from '../../app/services/settings/read-popover.ser
 import { TextService } from '../../app/services/texts/text.service';
 import { ToastController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 
 
 /**
@@ -40,7 +41,8 @@ export class VariationsComponent {
     protected storage: Storage,
     private renderer: Renderer,
     private elementRef: ElementRef,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private analyticsService: AnalyticsService
   ) {
     this.text = '';
     this.variations = [];
@@ -52,15 +54,7 @@ export class VariationsComponent {
   }
 
   doAnalytics() {
-    try {
-      (<any>window).ga('send', 'event', {
-        eventCategory: 'Variations',
-        eventLabel: 'Variations',
-        eventAction: this.varID,
-        eventValue: 10
-      });
-    } catch ( e ) {
-    }
+    this.analyticsService.doAnalyticsEvent('Variations', 'Variations', String(this.varID));
   }
 
   openNewVar( event: Event, id: any ) {

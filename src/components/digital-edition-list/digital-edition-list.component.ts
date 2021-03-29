@@ -9,6 +9,7 @@ import { UserSettingsService } from '../../app/services/settings/user-settings.s
 import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
 import { GeneralTocItem } from '../../app/models/table-of-contents.model';
 import { text } from '@angular/core/src/render3/instructions';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 
 @Component({
   selector: 'digital-editions-list',
@@ -47,6 +48,7 @@ export class DigitalEditionList implements OnInit {
     protected tableOfContentsService: TableOfContentsService,
     private events: Events,
     private userSettingsService: UserSettingsService,
+    private analyticsService: AnalyticsService
   ) {
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint')
     this.projectMachineName = this.config.getSettings('app.machineName');
@@ -254,16 +256,8 @@ export class DigitalEditionList implements OnInit {
     }
   }
 
-  doAnalytics(action, type, name) {
-    try {
-      (<any>window).ga('send', 'event', {
-        eventCategory: action,
-        eventLabel: 'digital-edition-list',
-        eventAction: type + ' - ' + name,
-        eventValue: 10
-      });
-    } catch (e) {
-    }
+  doAnalytics(category, type, name) {
+    this.analyticsService.doAnalyticsEvent(category, 'digital-edition-list', String(type + ' - ' + name));
   }
 
   openFirstPage(collection: DigitalEdition) {

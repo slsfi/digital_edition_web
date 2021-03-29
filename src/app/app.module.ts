@@ -59,6 +59,7 @@ import { TutorialService } from './services/tutorial/tutorial.service';
 import * as Sentry from '@sentry/browser';
 import { GalleryService } from './services/gallery/gallery.service';
 import { MathJaxModule } from '../components/math-jax/math-jax.module';
+import { AnalyticsService } from './services/analytics/analytics.service';
 
 
 Sentry.init({
@@ -153,7 +154,8 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
     SongService,
     TutorialService,
     GalleryService,
-    { provide: ErrorHandler, useClass: ErrorHandler }
+    { provide: ErrorHandler, useClass: ErrorHandler },
+    AnalyticsService
   ],
   bootstrap: [IonicApp],
   entryComponents: [

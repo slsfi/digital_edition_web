@@ -5,6 +5,7 @@ import { OccurrenceResult, Occurrence } from '../../app/models/occurrence.model'
 import { SingleOccurrence } from '../../app/models/single-occurrence.model';
 import { OccurrenceService } from '../../app/services/occurrence/occurence.service';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { SearchAppPage } from '../search-app/search-app';
 import { ConfigService } from '@ngx-config/core';
 
@@ -77,7 +78,8 @@ export class OccurrencesResultPage {
     public modalCtrl: ModalController,
     private config: ConfigService,
     private events: Events,
-    private cf: ChangeDetectorRef
+    private cf: ChangeDetectorRef,
+    private analyticsService: AnalyticsService
   ) {
     this.segments = 'info';
     if (this.navParams.get('searchResult') !== undefined) {
@@ -443,15 +445,7 @@ export class OccurrencesResultPage {
           let title = tag.name;
           title = title.charAt(0).toUpperCase() + title.slice(1);
           this.title = title;
-          try {
-            (<any>window).ga('send', 'event', {
-              eventCategory: 'Occurrence',
-              eventLabel: 'tag',
-              eventAction: String(title),
-              eventValue: 10
-            });
-          } catch ( e ) {
-          }
+          this.analyticsService.doAnalyticsEvent('Occurrence', 'tag', String(title));
         }
         // string.charAt(0).toUpperCase() + string.slice(1);
         this.loadingInfoData = false;
@@ -477,15 +471,7 @@ export class OccurrencesResultPage {
           let title = work.title;
           title = title.charAt(0).toUpperCase() + title.slice(1);
           this.title = title;
-          try {
-            (<any>window).ga('send', 'event', {
-              eventCategory: 'Occurrence',
-              eventLabel: 'work',
-              eventAction: String(title),
-              eventValue: 10
-            });
-          } catch ( e ) {
-          }
+          this.analyticsService.doAnalyticsEvent('Occurrence', 'work', String(title));
         }
         // string.charAt(0).toUpperCase() + string.slice(1);
         this.loadingInfoData = false;
@@ -502,15 +488,7 @@ export class OccurrencesResultPage {
   setSubject(subject) {
     if (subject.name) {
       this.title = subject.name;
-      try {
-        (<any>window).ga('send', 'event', {
-          eventCategory: 'Occurrence',
-          eventLabel: 'subject',
-          eventAction: String(this.title),
-          eventValue: 10
-        });
-      } catch ( e ) {
-      }
+      this.analyticsService.doAnalyticsEvent('Occurrence', 'subject', String(this.title));
     }
 
     this.infoData.type = subject.object_type;
@@ -524,15 +502,7 @@ export class OccurrencesResultPage {
   setLocation(location) {
     if (location.name) {
       this.title = location.name;
-      try {
-        (<any>window).ga('send', 'event', {
-          eventCategory: 'Occurrence',
-          eventLabel: 'location',
-          eventAction: String(this.title),
-          eventValue: 10
-        });
-      } catch ( e ) {
-      }
+      this.analyticsService.doAnalyticsEvent('Occurrence', 'location', String(this.title));
     }
 
     this.infoData.city = location.city;
@@ -544,15 +514,7 @@ export class OccurrencesResultPage {
   setWork(work) {
     if (work.name) {
       this.title = work.name;
-      try {
-        (<any>window).ga('send', 'event', {
-          eventCategory: 'Occurrence',
-          eventLabel: 'location',
-          eventAction: String(this.title),
-          eventValue: 10
-        });
-      } catch ( e ) {
-      }
+      this.analyticsService.doAnalyticsEvent('Occurrence', 'work', String(this.title));
     }
 
     this.infoData.city = work.city;
@@ -695,25 +657,12 @@ export class OccurrencesResultPage {
   }
 
   ionViewDidEnter() {
-    (<any>window).ga('set', 'page', 'Occurrence-result');
-    (<any>window).ga('send', 'pageview');
+    this.analyticsService.doPageView('Occurrence-result');
   }
 
   downloadArticle(url) {
     const ref = window.open(url, '_blank', 'location=no');
-    this.doAnalytics(url);
-  }
-
-  doAnalytics(url) {
-    try {
-      (<any>window).ga('send', 'event', {
-        eventCategory: 'Download',
-        eventLabel: 'PDF',
-        eventAction: url,
-        eventValue: 10
-      });
-    } catch ( e ) {
-    }
+    this.analyticsService.doAnalyticsEvent('Download', 'PDF', url);
   }
 
   /**

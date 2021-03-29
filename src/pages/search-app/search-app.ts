@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, Events, Searchbar, App } from 'ionic-angular';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { SimpleSearchComponent } from '../../components/simple-search/simple-search';
 
 /**
@@ -24,7 +25,8 @@ export class SearchAppPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public viewCtrl: ViewController,
-    public events: Events
+    public events: Events,
+    private analyticsService: AnalyticsService
   ) {
     this.show = 'simple';
     this.results = ['foo', 'bar', 'foobar', 'Hello World'];
@@ -41,8 +43,7 @@ export class SearchAppPage {
   }
 
   ionViewDidEnter() {
-    (<any>window).ga('set', 'page', 'Search');
-    (<any>window).ga('send', 'pageview');
+    this.analyticsService.doPageView('Search');
     setTimeout(() => {
         this.childcmp.setFocus();
     });

@@ -5,6 +5,7 @@ import { UserSettingsService } from '../../app/services/settings/user-settings.s
 import { ConfigService } from '@ngx-config/core';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { TranslateService } from '@ngx-translate/core/src/translate.service';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 
 @IonicPage({
   name: 'media-collections',
@@ -44,7 +45,8 @@ export class MediaCollectionsPage {
     private config: ConfigService,
     public languageService: LanguageService,
     public translate: TranslateService,
-    public cdRef: ChangeDetectorRef
+    public cdRef: ChangeDetectorRef,
+    private analyticsService: AnalyticsService
   ) {
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.projectMachineName = this.config.getSettings('app.machineName');
@@ -89,20 +91,11 @@ export class MediaCollectionsPage {
   }
 
   doAnalytics(type, name) {
-    try {
-      (<any>window).ga('send', 'event', {
-        eventCategory: 'Filter',
-        eventLabel: type,
-        eventAction: name,
-        eventValue: 10
-      });
-    } catch (e) {
-    }
+    this.analyticsService.doAnalyticsEvent('Filter', type, String(name));
   }
 
   ionViewDidEnter() {
-    (<any>window).ga('set', 'page', 'Collections');
-    (<any>window).ga('send', 'pageview');
+    this.analyticsService.doPageView('Collections', 'Media-Collections');
   }
 
   getCollectionLocations() {

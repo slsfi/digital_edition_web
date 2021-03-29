@@ -8,6 +8,7 @@ import { UserSettingsService } from '../../app/services/settings/user-settings.s
 import { Facet } from '../../app/models/facet.model';
 import { Storage } from '@ionic/storage';
 import { IfObservable } from 'rxjs/observable/IfObservable';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 /**
  * Generated class for the SimpleSearchComponent component.
  *
@@ -78,7 +79,8 @@ export class SimpleSearchComponent {
     public viewctrl: ViewController,
     public semanticDataService: SemanticDataService,
     private storage: Storage,
-    private cf: ChangeDetectorRef) {
+    private cf: ChangeDetectorRef,
+    private analyticsService: AnalyticsService) {
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.projectMachineName = this.config.getSettings('app.machineName');
     this.showPageNumbers = this.config.getSettings('simpleSearch.showPageNumbers');
@@ -361,16 +363,7 @@ export class SimpleSearchComponent {
   }
 
   startSearch(searchString) {
-    try {
-      (<any>window).ga('send', 'event', {
-        eventCategory: 'Search',
-        eventLabel: 'SimpleSearch',
-        eventAction: String(searchString),
-        eventValue: 10
-      });
-    } catch ( e ) {
-
-    }
+    this.analyticsService.doAnalyticsEvent('Search', 'SimpleSearch', String(searchString));
     this.isLoading = true;
     this.searchString = searchString;
     this.userDefinedSearchFields.forEach(function (val) {

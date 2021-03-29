@@ -5,6 +5,7 @@ import { TextService } from '../../app/services/texts/text.service';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { CommentService } from '../../app/services/comments/comment.service';
 import { Events } from 'ionic-angular';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 /**
  * Class for the CommentsComponent component.
  *
@@ -37,7 +38,8 @@ export class CommentsComponent {
     protected sanitizer: DomSanitizer,
     private renderer: Renderer,
     private elementRef: ElementRef,
-    private events: Events
+    private events: Events,
+    private analyticsService: AnalyticsService
   ) {
     this.setUpTextListeners();
   }
@@ -78,15 +80,7 @@ export class CommentsComponent {
   }
 
   doAnalytics() {
-    try {
-      (<any>window).ga('send', 'event', {
-        eventCategory: 'Comments',
-        eventLabel: 'Comments',
-        eventAction: this.link,
-        eventValue: 10
-      });
-    } catch ( e ) {
-    }
+    this.analyticsService.doAnalyticsEvent('Comments', 'Comments', String(this.link));
   }
 
   openNewView( event, id: any, type: string ) {

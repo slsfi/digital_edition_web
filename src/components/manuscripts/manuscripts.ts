@@ -4,6 +4,7 @@ import { ReadPopoverService } from '../../app/services/settings/read-popover.ser
 import { TextService } from '../../app/services/texts/text.service';
 import { ToastController, Events, ViewController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 
 /**
  * Generated class for the ManuscriptsComponent component.
@@ -40,7 +41,8 @@ export class ManuscriptsComponent {
     private elementRef: ElementRef,
     private toastCtrl: ToastController,
     private events: Events,
-    public viewctrl: ViewController
+    public viewctrl: ViewController,
+    private analyticsService: AnalyticsService
   ) {
     this.text = '';
     this.manuscripts = [];
@@ -68,17 +70,8 @@ export class ManuscriptsComponent {
   }
 
   doAnalytics() {
-    try {
-      (<any>window).ga('send', 'event', {
-        eventCategory: 'Manuscripts',
-        eventLabel: 'Manuscripts',
-        eventAction: this.msID,
-        eventValue: 10
-      });
-    } catch ( e ) {
-    }
+    this.analyticsService.doAnalyticsEvent('Manuscripts', 'Manuscripts', String(this.msID));
   }
-
 
   openNewMan(event: Event, id: any) {
     event.preventDefault();

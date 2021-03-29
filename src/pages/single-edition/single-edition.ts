@@ -18,6 +18,7 @@ import { UserSettingsService } from '../../app/services/settings/user-settings.s
 import { MdContentService } from '../../app/services/md/md-content.service';
 import leaflet from 'leaflet';
 import { PdfService } from '../../app/services/pdf/pdf.service';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 
 /**
  * Desktop version shows collection cover page.
@@ -77,7 +78,8 @@ export class SingleEditionPage {
     protected platform: Platform,
     protected userSettingsService: UserSettingsService,
     protected mdcontentService: MdContentService,
-    protected pdfService: PdfService
+    protected pdfService: PdfService,
+    private analyticsService: AnalyticsService
   ) {
     this.collection = this.params.get('collection') || { id: this.params.get('id') };
     this.parentItem = this.params.get('tocItem');
@@ -137,8 +139,7 @@ export class SingleEditionPage {
   }
 
   ionViewDidEnter() {
-    (<any>window).ga('set', 'page', 'Single-edition');
-    (<any>window).ga('send', 'pageview');
+    this.analyticsService.doPageView('Single-edition');
     if (this.hasDigitalEditionListChildren && this.platform.is('mobile')) {
       this.events.publish('splitPaneToggle:disable');
     }

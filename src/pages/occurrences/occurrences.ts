@@ -10,6 +10,7 @@ import { SingleOccurrence } from '../../app/models/single-occurrence.model';
 import { TranslateService } from '@ngx-translate/core';
 import leaflet from 'leaflet';
 import { BootstrapOptions } from '@angular/core/src/application_ref';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 
 /**
  * Generated class for the OccurrencesPage page.
@@ -80,7 +81,8 @@ export class OccurrencesPage {
               public translate: TranslateService,
               public occurrenceService: OccurrenceService,
               public viewCtrl: ViewController,
-              private events: Events
+              private events: Events,
+              private analyticsService: AnalyticsService
   ) {
     this.occurrenceResult = this.navParams.get('occurrenceResult');
     if ( this.occurrenceResult !== undefined ) {
@@ -152,20 +154,7 @@ export class OccurrencesPage {
     this.getMediaData();
     this.getArticleData();
     this.getGalleryOccurrences();
-
-    try {
-      try {
-        (<any>window).ga('send', 'event', {
-          eventCategory: 'Occurrence',
-          eventLabel: this.objectType,
-          eventAction: String(this.title),
-          eventValue: 10
-        });
-      } catch ( e ) {
-      }
-    } catch ( e ) {
-
-    }
+    this.analyticsService.doAnalyticsEvent('Occurrence', this.objectType, String(this.title));
   }
 
   ionViewWillLeave() {
@@ -245,8 +234,7 @@ export class OccurrencesPage {
   }
 
   ionViewDidEnter() {
-    (<any>window).ga('set', 'page', 'Occurrences');
-    (<any>window).ga('send', 'pageview');
+    this.analyticsService.doPageView('Occurrences');
     this.loadmap();
   }
 

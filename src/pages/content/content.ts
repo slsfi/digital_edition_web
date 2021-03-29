@@ -10,6 +10,7 @@ import { MdContent } from '../../app/models/md-content.model';
 import { MdContentService } from '../../app/services/md/md-content.service';
 import { TopMenuComponent } from '../components/top-menu/top-menu';
 import { SongService } from '../../app/services/song/song.service';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 
 /**
  * A page used for displaying markdown content.
@@ -43,7 +44,8 @@ export class ContentPage /*implements OnDestroy*/ {
     private langService: LanguageService,
     public events: Events,
     private viewctrl: ViewController,
-    public songService: SongService
+    public songService: SongService,
+    private analyticsService: AnalyticsService
   ) {
     const data = this.config.getSettings('staticPages.about');
     let fileID = this.params.get('id');
@@ -124,13 +126,12 @@ export class ContentPage /*implements OnDestroy*/ {
   }
 
   ionViewDidEnter() {
-    (<any>window).ga('set', 'page', 'Content');
-    (<any>window).ga('send', 'pageview');
+    this.analyticsService.doPageView('Content');
   }
 
   doAnalytics( title ) {
-    (<any>window).ga('set', 'page', 'Content - ' + title);
-    (<any>window).ga('send', 'pageview');
+    this.analyticsService.doPageView('Content - ' + title);
+    this.analyticsService.doAnalyticsEvent('Content', 'Content - ' + title, title);
   }
 
   getMdContent(fileID: string) {

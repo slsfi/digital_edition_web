@@ -4,6 +4,7 @@ import { TextService } from '../../app/services/texts/text.service';
 import { ModalController } from 'ionic-angular';
 import { ConfigService } from '@ngx-config/core';
 import { FacsimileZoomModalPage } from '../../pages/facsimile-zoom/facsimile-zoom';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 /**
  * Generated class for the IllustrationsComponent component.
  *
@@ -29,7 +30,8 @@ export class IllustrationsComponent {
     private textService: TextService,
     private modalCtrl: ModalController,
     private config: ConfigService,
-    private events: Events
+    private events: Events,
+    private analyticsService: AnalyticsService
   ) { }
   ngOnInit() {
     this.getIllustrationImages();
@@ -128,14 +130,6 @@ export class IllustrationsComponent {
   }
 
   doAnalytics() {
-    try {
-      (<any>window).ga('send', 'event', {
-        eventCategory: 'Illustration',
-        eventLabel: 'Illustration',
-        eventAction: String(this.itemId),
-        eventValue: 10
-      });
-    } catch ( e ) {
-    }
+    this.analyticsService.doAnalyticsEvent('Illustration', 'Illustration', String(this.itemId));
   }
 }

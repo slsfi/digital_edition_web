@@ -5,6 +5,7 @@ import { Song } from '../../app/models/song.model';
 import { OccurrenceResult } from '../../app/models/occurrence.model';
 import { OccurrencesPage } from '../occurrences/occurrences';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 
 declare var MIDIjs;
 
@@ -47,7 +48,8 @@ export class SongPage {
     private platform: Platform,
     public modalCtrl: ModalController,
     private userSettingsService: UserSettingsService,
-    public cdRef: ChangeDetectorRef
+    public cdRef: ChangeDetectorRef,
+    private analyticsService: AnalyticsService
   ) {
     if (this.navParams.get('occurrenceResult')) {
       this.occurrenceResult = this.navParams.get('occurrenceResult');
@@ -59,8 +61,7 @@ export class SongPage {
   }
 
   ionViewDidEnter() {
-    (<any>window).ga('set', 'page', 'Song');
-    (<any>window).ga('send', 'pageview');
+    this.analyticsService.doPageView('Song');
   }
 
   setSongFilter() {
@@ -126,15 +127,7 @@ export class SongPage {
         this.songOriginalId = String(song['song_original_id']).toLowerCase();
         this.setSongFilter();
         this.cdRef.detectChanges();
-        try {
-          (<any>window).ga('send', 'event', {
-            eventCategory: 'Song - ' + this.song.type,
-            eventLabel: 'Song',
-            eventAction: String(this.songOriginalId),
-            eventValue: 10
-          });
-        } catch ( e ) {
-        }
+        this.analyticsService.doAnalyticsEvent('Song - ' + this.song.type, 'Song', String(this.songOriginalId));
       },
       err => console.error(err),
       () => console.log('fetch song')
@@ -173,16 +166,8 @@ export class SongPage {
     const ref = window.open(dURL, '_self', 'location=no');
   }
 
-  doAnalytics( action, type ) {
-    try {
-      (<any>window).ga('send', 'event', {
-        eventCategory: action,
-        eventLabel: 'Song',
-        eventAction: type + ' - ' +  this.songOriginalId,
-        eventValue: 10
-      });
-    } catch ( e ) {
-    }
+  doAnalytics( category, type ) {
+    this.analyticsService.doAnalyticsEvent(category, 'Song', String(type + ' - ' +  this.songOriginalId));
   }
 
 }

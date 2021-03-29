@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Events, IonicPage, ModalController, NavController, NavParams, ViewController } from 'ionic-angular';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { ReferenceDataModalPage } from '../../pages/reference-data-modal/reference-data-modal';
 
 /**
@@ -26,7 +27,8 @@ export class SharePopoverPage {
     public navParams: NavParams,
     public events: Events,
     public viewCtrl: ViewController,
-    private modalController: ModalController) {
+    private modalController: ModalController,
+    private analyticsService: AnalyticsService) {
   }
 
   ionViewDidLoad() {
@@ -58,15 +60,7 @@ export class SharePopoverPage {
   }
 
   doAnalytics(type) {
-    try {
-      (<any>window).ga('send', 'event', {
-        eventCategory: 'Share-Popover',
-        eventLabel: 'Share-Popover',
-        eventAction: type,
-        eventValue: 10
-      });
-    } catch ( e ) {
-    }
+    this.analyticsService.doAnalyticsEvent('Share-Popover', 'Share-Popover', String(type));
   }
 
   private showReference() {

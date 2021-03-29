@@ -7,6 +7,7 @@ import { ConfigService } from '@ngx-config/core';
 import { TranslateService } from '@ngx-translate/core/src/translate.service';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { ReferenceDataModalPage } from '../reference-data-modal/reference-data-modal';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 /**
  * Generated class for the FacsimileCollectionPage page.
  *
@@ -57,7 +58,8 @@ export class MediaCollectionPage {
     private modalController: ModalController,
     private config: ConfigService,
     public translate: TranslateService,
-    public languageService: LanguageService
+    public languageService: LanguageService,
+    private analyticsService: AnalyticsService
 
   ) {
     this.mediaCollectionId = this.navParams.get('mediaCollectionId');
@@ -91,21 +93,12 @@ export class MediaCollectionPage {
     });
   }
 
-  doAnalytics(action, type, name) {
-    try {
-      (<any>window).ga('send', 'event', {
-        eventCategory: action,
-        eventLabel: type,
-        eventAction: name,
-        eventValue: 10
-      });
-    } catch (e) {
-    }
+  doAnalytics(category, label, action) {
+    this.analyticsService.doAnalyticsEvent(category, label, action);
   }
 
   ionViewDidEnter() {
-    (<any>window).ga('set', 'page', 'Collection');
-    (<any>window).ga('send', 'pageview');
+    this.analyticsService.doPageView('Collection');
   }
 
   getMediaCollections(id?, type?) {
