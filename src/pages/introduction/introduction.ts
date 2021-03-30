@@ -242,7 +242,6 @@ export class IntroductionPage {
           } else if (targetElem['classList'].contains('title') && this.readPopoverService.show.workInfo) {
             this.showWorkModal(targetElem.getAttribute('data-id'));
           } else if (targetElem['classList'].contains('ttFoot')) {
-            this.hideToolTip();
             this.showFootnoteInfoOverlay(targetElem.getAttribute('data-id'), targetElem);
           }
         }
@@ -921,8 +920,7 @@ export class IntroductionPage {
     // Max width
     const maxWidth = 600;
 
-    // Get viewport width and height.
-    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    // Get viewport height.
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
     // Set horisontal offset due to possible side pane on the left.
