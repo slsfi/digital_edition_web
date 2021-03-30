@@ -1756,6 +1756,7 @@ export class ReadPage /*implements OnDestroy*/ {
       console.log('Container bottom: ' + containerElemRect.bottom);
       console.log('View height: ' + vh);
       console.log('Counter: ' + counter);
+      console.log('Container classlist: ' + containerElem.classList);
 
       let tmpWidth = containerElemRect.width;
 
