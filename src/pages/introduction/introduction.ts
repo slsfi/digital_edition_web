@@ -353,27 +353,33 @@ export class IntroductionPage {
                   }
                 } else {
                   // Different introduction, open in new window.
-
                   let hrefString = '#/publication-introduction/' + publicationId;
                   if (hrefTargetItems.length > 1 && hrefTargetItems[1].startsWith('#')) {
                     positionId = hrefTargetItems[1];
                     hrefString += '/' + positionId;
                   }
-
                   window.open(hrefString, '_blank');
                 }
               });
             }
           } else {
-            // Link in the introduction's TOC
-            let targetId = anchorElem.getAttribute('href');
-            if ( targetId === null ) {
+            // Link in the introduction's TOC or link to (foot)note reference
+            let targetId = "";
+            if (anchorElem.hasAttribute('href')) {
+              targetId = anchorElem.getAttribute('href');
+            } else if (anchorElem.parentElement.hasAttribute('href')) {
               targetId = anchorElem.parentElement.getAttribute('href');
             }
             const dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
             const target = anchorElem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
-            if ( target !== null ) {
-              this.scrollElementIntoView(target, 'top');
+            if (target !== null) {
+              if (anchorElem.classList.contains('noteReference') {
+                // Link to (foot)note reference, prepend arrow
+                this.scrollToHTMLElement(target, 'top');
+              } else {
+                // Link in the introduction's TOC, scroll to target but don't prepend arrow
+                this.scrollElementIntoView(target, 'top');
+              }
             }
           }
         }
