@@ -1750,6 +1750,11 @@ export class ReadPage /*implements OnDestroy*/ {
     }
     if (containerElem !== null) {
       const containerElemRect = containerElem.getBoundingClientRect();
+      console.log('Container height: ' + containerElemRect.height);
+      console.log('Container width: ' + containerElemRect.width);
+      console.log('Container top: ' + containerElemRect.top);
+      console.log('Container bottom: ' + containerElemRect.bottom);
+      console.log('View height: ' + vh);
 
       let tmpWidth = containerElemRect.width;
 
