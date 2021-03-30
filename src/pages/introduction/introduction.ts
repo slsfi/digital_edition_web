@@ -44,7 +44,7 @@ export class IntroductionPage {
   protected pos: any;
   public tocMenuOpen: boolean;
   public hasSeparateIntroToc: boolean;
-  readPopoverTogglesIntro: any;
+  readPopoverTogglesIntro: Record<string,any> = {};
   toolTipPosition: object;
   toolTipMaxWidth: string;
   toolTipScaleValue: number;
