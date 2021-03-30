@@ -322,108 +322,6 @@ export class TableOfContentsAccordionComponent {
     public userSettingsService: UserSettingsService,
     public translate: TranslateService
   ) {
-    this.collectionId = JSON.stringify(this.collectionId);
-    this.collectionName = JSON.stringify(this.collectionName);
-
-    this.registerEventListeners();
-    this.setConfigs();
-    // Handle the redirect event
-    this.events.subscribe(SideMenuRedirectEvent, (data: SideMenuRedirectEventData) => {
-      this.updateSelectedOption(data);
-    });
-
-    try {
-      this.sortableLetters = this.config.getSettings('settings.sortableLetters');
-    } catch (e) {
-      this.sortableLetters = [];
-    }
-
-    this.events.subscribe('SelectedItemInMenu', (menu) => {
-      if ( this.collectionId === undefined || this.collectionId === null ) {
-        this.collectionId = menu.menuID;
-      }
-      if (this.collectionId !== menu.menuID && this.currentOption) {
-        this.currentOption.selected = false;
-        this.currentOption = null;
-        this.cdRef.detectChanges();
-      } else {
-        console.log('this.collectionId', this.collectionId);
-      }
-    });
-
-    this.events.subscribe('selectOneItem', (itemId) => {
-      this.unSelectAllItems(this.collapsableItems);
-      this.selectOneItem(itemId);
-      this.cdRef.detectChanges();
-    });
-
-    this.titleSelected = false;
-    this.introductionSelected = false;
-    this.coverSelected = false;
-
-    try {
-      this.hasTitle = this.config.getSettings('HasTitle');
-    } catch (e) {
-      this.hasTitle = false;
-    }
-
-    try {
-      this.hasIntro = this.config.getSettings('HasIntro');
-    } catch (e) {
-      this.hasIntro = false;
-    }
-
-    try {
-      this.hasCover = this.config.getSettings('HasCover');
-    } catch (e) {
-      this.hasCover = false;
-    }
-
-    if ( this.hasCover ) {
-      this.coverSelected = true;
-    } else if ( this.hasTitle ) {
-      this.titleSelected = true;
-    } else if ( this.hasIntro ) {
-      this.introductionSelected = true;
-    }
-
-    this.events.subscribe('tableOfContents:findMarkdownTocItem', (data) => {
-      if (data && data.markdownID) {
-        if (this.collectionId !== 'songTypesMarkdown' && this.collectionId !== 'aboutMarkdown') {
-          return;
-        }
-
-        if (this.collectionId === 'songTypesMarkdown') {
-          this.findTocByMarkdownID(this.collapsableItems, data.markdownID);
-          this.events.publish('typesAccordion:change', {
-            expand: true
-          });
-        }
-
-        let language = this.config.getSettings('i18n.locale');
-        this.languageService.getLanguage().subscribe((lang: string) => {
-          language = lang;
-        });
-
-        // checking for ${language}-03 prevents opening about accordion on refresh if another menu is active
-        if (this.collectionId === 'aboutMarkdown' && data.markdownID.indexOf(`${language}-03`) !== -1) {
-          this.findTocByMarkdownID(this.collapsableItems, data.markdownID);
-          this.events.publish('aboutAccordion:change', {
-            expand: true
-          });
-        }
-        const currentPage = String(window.location.href);
-        if ( currentPage.includes('publication-introduction') ) {
-          this.introductionSelected = true;
-        } else if ( currentPage.includes('publication-title') ) {
-          this.titleSelected = true;
-        } else if ( currentPage.includes('publication-cover') ) {
-          this.coverSelected = true;
-        }
-      }
-    });
-
-    this.unSelectSelectedTocItemEventListener();
   }
 
   constructAlphabeticalTOC(data) {
@@ -597,7 +495,109 @@ export class TableOfContentsAccordionComponent {
     });
 
     this.playmanTraditionPageID = `${language}-${this.playmanTraditionPageID}`;
+
+    this.collectionId = this.collectionId;
+    this.collectionName = this.collectionName;
+
+    this.registerEventListeners();
+    this.setConfigs();
+    // Handle the redirect event
+    this.events.subscribe(SideMenuRedirectEvent, (data: SideMenuRedirectEventData) => {
+      this.updateSelectedOption(data);
+    });
+
+    try {
+      this.sortableLetters = this.config.getSettings('settings.sortableLetters');
+    } catch (e) {
+      this.sortableLetters = [];
+    }
+
+    this.events.subscribe('SelectedItemInMenu', (menu) => {
+      if ( this.collectionId === undefined || this.collectionId === null ) {
+        this.collectionId = menu.menuID;
+      }
+      if (this.collectionId !== menu.menuID && this.currentOption) {
+        this.currentOption.selected = false;
+        this.currentOption = null;
+        this.cdRef.detectChanges();
+      } else {
+        console.log('this.collectionId', this.collectionId);
+      }
+    });
+
+    this.events.subscribe('selectOneItem', (itemId) => {
+      this.unSelectAllItems(this.collapsableItems);
+      this.selectOneItem(itemId);
+      this.cdRef.detectChanges();
+    });
+
+    this.titleSelected = false;
+    this.introductionSelected = false;
+    this.coverSelected = false;
+
+    try {
+      this.hasTitle = this.config.getSettings('HasTitle');
+    } catch (e) {
+      this.hasTitle = false;
+    }
+
+    try {
+      this.hasIntro = this.config.getSettings('HasIntro');
+    } catch (e) {
+      this.hasIntro = false;
+    }
+
+    try {
+      this.hasCover = this.config.getSettings('HasCover');
+    } catch (e) {
+      this.hasCover = false;
+    }
+
+    if ( this.hasCover ) {
+      this.coverSelected = true;
+    } else if ( this.hasTitle ) {
+      this.titleSelected = true;
+    } else if ( this.hasIntro ) {
+      this.introductionSelected = true;
+    }
+
+    this.events.subscribe('tableOfContents:findMarkdownTocItem', (data) => {
+      if (data && data.markdownID) {
+        if (this.collectionId !== 'songTypesMarkdown' && this.collectionId !== 'aboutMarkdown') {
+          return;
+        }
+
+        if (this.collectionId === 'songTypesMarkdown') {
+          this.findTocByMarkdownID(this.collapsableItems, data.markdownID);
+          this.events.publish('typesAccordion:change', {
+            expand: true
+          });
+        }
+
+        language = this.config.getSettings('i18n.locale');
+        this.languageService.getLanguage().subscribe((lang: string) => {
+          language = lang;
+        });
+
+        // checking for ${language}-03 prevents opening about accordion on refresh if another menu is active
+        if (this.collectionId === 'aboutMarkdown' && data.markdownID.indexOf(`${language}-03`) !== -1) {
+          this.findTocByMarkdownID(this.collapsableItems, data.markdownID);
+          this.events.publish('aboutAccordion:change', {
+            expand: true
+          });
+        }
+        const currentPage = String(window.location.href);
+        if ( currentPage.includes('publication-introduction') ) {
+          this.introductionSelected = true;
+        } else if ( currentPage.includes('publication-title') ) {
+          this.titleSelected = true;
+        } else if ( currentPage.includes('publication-cover') ) {
+          this.coverSelected = true;
+        }
+      }
+    });
     this.cdRef.detectChanges();
+    this.unSelectSelectedTocItemEventListener();
   }
 
   setConfigs() {

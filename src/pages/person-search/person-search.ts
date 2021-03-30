@@ -218,7 +218,7 @@ export class PersonSearchPage {
             const combining = /[\u0300-\u036F]/g;
             element['sortBy'] = element['sortBy'].normalize('NFKD').replace(combining, '').replace(',', '');
           }
-          if ( this.subType !== '' && this.subType !== null && element['object_type'] !== this.subType ) {
+          if ( this.subType !== '' && this.subType !== null && element['type'] !== this.subType ) {
           } else {
             let found = false;
             this.persons.forEach(pers => {

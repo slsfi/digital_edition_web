@@ -63,7 +63,6 @@
             <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: activeMenuTree }"></ng-container>
         </ng-container>
     </ion-list>
-
     <ng-container *ngIf="collectionId == 'songtypes'">
         <ng-template #recursiveList let-list>
             <ng-template ngFor let-option [ngForOf]="list" let-i="index">
@@ -87,18 +86,11 @@
                 </ng-template>
             </ng-template>
         </ng-template>
-
         <ion-item *ngIf="showBackButton" (click)="exit()" class="back-to-list-button collections" no-lines>
             <ion-icon name="ios-arrow-back" item-left small></ion-icon>
         </ion-item>
-
-
-
-
-
         <ng-container *ngIf="!searchingForTocItem">
             <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: collapsableItems }"></ng-container>
         </ng-container>
     </ng-container>
-
 </div>

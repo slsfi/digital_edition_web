@@ -94,6 +94,14 @@ export class DigitalEditionsApp {
 
   currentAccordionMenu = null;
 
+  songTypesMarkdownName = 'songTypesMarkdown';
+  songTypesMarkdownId = 'songTypesMarkdown';
+  songtypesId = 'songtypes';
+  songtypesName = 'songtypes';
+
+  aboutMarkdownId = 'aboutMarkdown';
+  aboutMarkdownName = 'About';
+
   sideMenuMobile = false;
   splitPaneMobile = false;
 
