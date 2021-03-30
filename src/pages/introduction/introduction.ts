@@ -364,7 +364,7 @@ export class IntroductionPage {
             }
           } else {
             // Link in the introduction's TOC or link to (foot)note reference
-            let targetId = "";
+            let targetId = '';
             if (anchorElem.hasAttribute('href')) {
               targetId = anchorElem.getAttribute('href');
             } else if (anchorElem.parentElement.hasAttribute('href')) {
