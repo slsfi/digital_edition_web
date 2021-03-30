@@ -44,6 +44,7 @@ export class IntroductionPage {
   protected pos: any;
   public tocMenuOpen: boolean;
   public hasSeparateIntroToc: boolean;
+  readPopoverTogglesIntro: any;
   toolTipPosition: object;
   toolTipMaxWidth: string;
   toolTipScaleValue: number;
@@ -91,15 +92,15 @@ export class IntroductionPage {
     this.toolTipMaxWidth = null;
     this.toolTipScaleValue = null;
     this.toolTipPosition = {
-      top: -1000 + 'px',
-      left: -1000 + 'px'
+      top: 0 + 'px',
+      left: -1500 + 'px'
     };
     this.infoOverlayText = '';
     this.infoOverlayWidth = null;
     this.infoOverlayPosType = 'fixed';
     this.infoOverlayPosition = {
-      bottom: -1000 + 'px',
-      left: -2000 + 'px'
+      bottom: 0 + 'px',
+      left: -1500 + 'px'
     };
 
     try {
@@ -109,6 +110,34 @@ export class IntroductionPage {
     }
     if ( this.id !== undefined ) {
       this.getTocRoot(this.id);
+    }
+
+    this.readPopoverTogglesIntro = undefined;
+    try {
+      this.readPopoverTogglesIntro = this.config.getSettings('settings.introToggles');
+    } catch (e) {
+      console.error(e);
+    }
+    console.log('Read popover toggles: ' + this.readPopoverTogglesIntro);
+    if (this.readPopoverTogglesIntro === undefined || this.readPopoverTogglesIntro === null) {
+      this.readPopoverTogglesIntro = {
+        'comments': false,
+        'personInfo': false,
+        'placeInfo': false,
+        'workInfo': false,
+        'changes': false,
+        'normalisations': false,
+        'abbreviations': false,
+        'pageNumbering': true,
+        'pageBreakOriginal': false,
+        'pageBreakEdition': false
+      };
+    } else {
+      this.readPopoverTogglesIntro.comments = false;
+      this.readPopoverTogglesIntro.changes = false;
+      this.readPopoverTogglesIntro.normalisations = false;
+      this.readPopoverTogglesIntro.abbreviations = false;
+      this.readPopoverTogglesIntro.pageBreakOriginal = false;
     }
 
     // Check if we have a pos parmeter in the URL, if we have one we can use it for scrolling the text on the page to that position.
@@ -1038,8 +1067,8 @@ export class IntroductionPage {
   hideToolTip() {
     this.setToolTipText('');
     this.toolTipPosition = {
-      top: -1000 + 'px',
-      left: -1000 + 'px'
+      top: 0 + 'px',
+      left: -1500 + 'px'
     };
   }
 
@@ -1047,8 +1076,8 @@ export class IntroductionPage {
     this.setInfoOverlayText('');
     this.infoOverlayPosType = 'fixed'; // Position needs to be fixed so we can hide it outside viewport
     this.infoOverlayPosition = {
-      bottom: -1000 + 'px',
-      left: -2000 + 'px'
+      bottom: 0 + 'px',
+      left: -1500 + 'px'
     };
   }
 
@@ -1075,33 +1104,7 @@ export class IntroductionPage {
   }
 
   showPopover(myEvent) {
-    let toggles = undefined;
-    try {
-      toggles = this.config.getSettings('settings.introToggles');
-    } catch (e) {
-      console.error(e);
-    }
-    console.log('Settings toggles: ' + toggles);
-    if (toggles === undefined || toggles === null) {
-      toggles = {
-        'comments': false,
-        'personInfo': false,
-        'placeInfo': false,
-        'workInfo': false,
-        'changes': false,
-        'normalisations': false,
-        'abbreviations': false,
-        'pageNumbering': true,
-        'pageBreakOriginal': false,
-        'pageBreakEdition': false
-      };
-    } else {
-      toggles.comments = false;
-      toggles.changes = false;
-      toggles.normalisations = false;
-      toggles.abbreviations = false;
-      toggles.pageBreakOriginal = false;
-    }
+    const toggles = this.readPopoverTogglesIntro;
     const popover = this.popoverCtrl.create(ReadPopoverPage, {toggles}, { cssClass: 'popover_settings' });
     popover.present({
       ev: myEvent
