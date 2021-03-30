@@ -139,7 +139,7 @@ export class IntroductionPage {
       this.readPopoverTogglesIntro.abbreviations = false;
       this.readPopoverTogglesIntro.pageBreakOriginal = false;
     }
-    console.log(this.readPopoverTogglesIntro);
+    console.table(this.readPopoverTogglesIntro);
 
     // Check if we have a pos parmeter in the URL, if we have one we can use it for scrolling the text on the page to that position.
     // The pos parameter must come after the publication id followed by /#, e.g. /publication-introduction/203/#pos1
