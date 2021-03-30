@@ -1744,7 +1744,7 @@ export class ReadPage /*implements OnDestroy*/ {
     while (containerElem !== null && containerElem.tagName !== 'ION-SCROLL') {
       containerElem = containerElem.parentElement;
     }
-    
+
     if (containerElem !== null) {
       const containerElemRect = containerElem.getBoundingClientRect();
       let tmpWidth = containerElemRect.width;
