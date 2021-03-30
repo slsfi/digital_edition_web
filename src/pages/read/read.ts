@@ -1741,7 +1741,9 @@ export class ReadPage /*implements OnDestroy*/ {
 
     // Get bounding rectangle of the ion-scroll element which is the container for the column that the trigger element resides in.
     let containerElem = triggerElement.parentElement;
+    let counter = 0;
     while (!containerElem.hasAttribute('class') && !containerElem.classList.contains('scroll-content') && containerElem.tagName !== 'DIV') {
+      counter++;
       containerElem = containerElem.parentElement;
       if (containerElem === null) {
         // Unable to find the correct containing element.
@@ -1755,6 +1757,7 @@ export class ReadPage /*implements OnDestroy*/ {
       console.log('Container top: ' + containerElemRect.top);
       console.log('Container bottom: ' + containerElemRect.bottom);
       console.log('View height: ' + vh);
+      console.log('Counter: ' + counter);
 
       let tmpWidth = containerElemRect.width;
 
