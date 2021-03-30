@@ -840,7 +840,7 @@ export class ReadPage /*implements OnDestroy*/ {
   private getEventTarget(event) {
     let eventTarget: HTMLElement = document.createElement('div');
 
-    if (event.target.getAttribute('data-id')) {
+    if (event.target.hasAttribute('data-id')) {
       return event.target;
     }
 
@@ -869,6 +869,7 @@ export class ReadPage /*implements OnDestroy*/ {
   private setUpTextListeners() {
     // We must do it like this since we want to trigger an event on a dynamically loaded innerhtml.
     const nElement: HTMLElement = this.elementRef.nativeElement;
+
     /* CLICK EVENTS */
     this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
       const eventTarget = this.getEventTarget(event);
@@ -1330,9 +1331,11 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   showVariantTooltip(targetElem: HTMLElement, origin: any) {
-    if (origin.target.nextSibling.className !== undefined && String(origin.target.nextSibling.className).includes('tooltip')) {
-      this.setToolTipPosition(targetElem, origin.target.nextSibling.textContent);
-      this.setToolTipText(origin.target.nextSibling.textContent);
+    if (targetElem.nextElementSibling !== null &&
+     targetElem.nextElementSibling.hasAttribute('class') &&
+     targetElem.nextElementSibling.className.includes('tooltip')) {
+      this.setToolTipPosition(targetElem, targetElem.nextElementSibling.textContent);
+      this.setToolTipText(targetElem.nextElementSibling.textContent);
     }
   }
 
