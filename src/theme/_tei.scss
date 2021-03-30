@@ -122,38 +122,38 @@ div.tei.xlargeFontSize.show_pageBreakEdition {
 /* Storlek på squared times symbolen som indikerar en normalisering där något tagits bort ur texten eller i varianter text som saknas. */
 div.tei.show_normalisations span.reg_hide img,
 div.tei.show_changes span.corr_hide img,
-span.seg img {
+div.tei span.seg img {
     display: inline-block;
     width:   0.625em; /* Default om textstorleken inte fungerar. */
     height:  0.625em;
 }
 div.tei.xsmallFontSize.show_normalisations span.reg_hide img,
 div.tei.xsmallFontSize.show_changes span.corr_hide img,
-span.seg img {
+div.tei.xsmallFontSize span.seg img {
     width:  ceil(0.585 * $text-fontsize-xsmall);
     height: ceil(0.585 * $text-fontsize-xsmall);
 }
 div.tei.smallFontSize.show_normalisations span.reg_hide img,
 div.tei.smallFontSize.show_changes span.corr_hide img,
-span.seg img {
+div.tei.smallFontSize span.seg img {
     width:  ceil(0.585 * $text-fontsize-small);
     height: ceil(0.585 * $text-fontsize-small);
 }
 div.tei.mediumFontSize.show_normalisations span.reg_hide img,
 div.tei.mediumFontSize.show_changes span.corr_hide img,
-span.seg img {
+div.tei.mediumFontSize span.seg img {
     width:  ceil(0.585 * $text-fontsize-medium);
     height: ceil(0.585 * $text-fontsize-medium);
 }
 div.tei.largeFontSize.show_normalisations span.reg_hide img,
 div.tei.largeFontSize.show_changes span.corr_hide img,
-span.seg img {
+div.tei.largeFontSize span.seg img {
     width:  ceil(0.585 * $text-fontsize-large);
     height: ceil(0.585 * $text-fontsize-large);
 }
 div.tei.xlargeFontSize.show_normalisations span.reg_hide img,
 div.tei.xlargeFontSize.show_changes span.corr_hide img,
-span.seg img {
+div.tei.xlargeFontSize span.seg img {
     width:  ceil(0.585 * $text-fontsize-xlarge);
     height: ceil(0.585 * $text-fontsize-xlarge);
 }
