@@ -1734,7 +1734,7 @@ export class ReadPage /*implements OnDestroy*/ {
     console.log('ClientHeight: ' + document.documentElement.clientHeight);
     console.log('Window innerheight: ' + window.innerHeight);
 
-    const tmpElem = document.querySelector('page-read > ion-conten > .scroll-content')as HTMLElement;
+    const tmpElem = document.querySelector('page-read > ion-content > .scroll-content')as HTMLElement;
     if (tmpElem.clientHeight < tmpElem.offsetHeight) {
       vh = vh + tmpElem.offsetHeight - tmpElem.clientHeight;
     }
