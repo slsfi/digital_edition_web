@@ -1741,22 +1741,12 @@ export class ReadPage /*implements OnDestroy*/ {
 
     // Get bounding rectangle of the ion-scroll element which is the container for the column that the trigger element resides in.
     let containerElem = triggerElement.parentElement;
-    let counter = 0;
     while (containerElem !== null && containerElem.tagName !== 'ION-SCROLL') {
-      counter++;
       containerElem = containerElem.parentElement;
     }
+    
     if (containerElem !== null) {
       const containerElemRect = containerElem.getBoundingClientRect();
-      console.log('Container height: ' + containerElemRect.height);
-      console.log('Container width: ' + containerElemRect.width);
-      console.log('Container top: ' + containerElemRect.top);
-      console.log('Container bottom: ' + containerElemRect.bottom);
-      console.log('View height: ' + vh);
-      console.log('Counter: ' + counter);
-      console.log('Container classlist: ' + containerElem.classList);
-      console.log('Trigger classlist: ' + triggerElement.classList);
-
       let tmpWidth = containerElemRect.width;
 
       if (tmpWidth > maxWidth) {
