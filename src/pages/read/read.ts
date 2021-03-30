@@ -1730,9 +1730,16 @@ export class ReadPage /*implements OnDestroy*/ {
     const maxWidth = 600;
 
     // Get viewport width and height.
-    const vh = Math.min(document.documentElement.clientHeight, window.innerHeight || 0);
+    let vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     console.log('ClientHeight: ' + document.documentElement.clientHeight);
     console.log('Window innerheight: ' + window.innerHeight);
+
+    const tmpElem = document.querySelector('page-read > ion-conten > .scroll-content')as HTMLElement;
+    if (tmpElem.clientHeight < tmpElem.offsetHeight) {
+      vh = vh + tmpElem.offsetHeight - tmpElem.clientHeight;
+    }
+    console.log('Tmp clientH: ' + tmpElem.clientHeight);
+    console.log('Tmp offsetH: ' + tmpElem.offsetHeight);
 
     // Set horisontal offset due to possible side pane on the left.
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
