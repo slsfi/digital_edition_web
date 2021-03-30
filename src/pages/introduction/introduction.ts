@@ -112,14 +112,15 @@ export class IntroductionPage {
       this.getTocRoot(this.id);
     }
 
-    this.readPopoverTogglesIntro = undefined;
     try {
       this.readPopoverTogglesIntro = this.config.getSettings('settings.introToggles');
     } catch (e) {
+      this.readPopoverTogglesIntro = undefined;
       console.error(e);
     }
-    console.log('Read popover toggles: ' + this.readPopoverTogglesIntro);
-    if (this.readPopoverTogglesIntro === undefined || this.readPopoverTogglesIntro === null) {
+    if (this.readPopoverTogglesIntro === undefined ||
+     this.readPopoverTogglesIntro === null ||
+     Object.keys(this.readPopoverTogglesIntro).length === 0) {
       this.readPopoverTogglesIntro = {
         'comments': false,
         'personInfo': false,
