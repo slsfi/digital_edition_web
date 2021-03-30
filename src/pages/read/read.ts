@@ -1729,14 +1729,14 @@ export class ReadPage /*implements OnDestroy*/ {
     // Max width
     const maxWidth = 600;
 
-    // Get viewport width and height.
+    // Get containing element height.
     let vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     console.log('ClientHeight: ' + document.documentElement.clientHeight);
     console.log('Window innerheight: ' + window.innerHeight);
 
-    const tmpElem = document.querySelector('page-read > ion-content > .scroll-content')as HTMLElement;
+    const tmpElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
     if (tmpElem.clientHeight < tmpElem.offsetHeight) {
-      vh = vh + tmpElem.offsetHeight - tmpElem.clientHeight;
+      vh = vh - tmpElem.offsetHeight + tmpElem.clientHeight;
     }
     console.log('Tmp clientH: ' + tmpElem.clientHeight);
     console.log('Tmp offsetH: ' + tmpElem.offsetHeight);
