@@ -41,11 +41,11 @@
             <ion-scroll scrollY="true" style="height:80vh;" class="card">
               <ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
               <div class="tei"
-                [class.show_personInfo]="readPopoverService.show.personInfo"
-                [class.show_placeInfo]="readPopoverService.show.placeInfo"
-                [class.show_workInfo]="readPopoverService.show.workInfo"
-                [class.show_pageNumbering]="readPopoverService.show.pageNumbering"
-                [class.show_pageBreakEdition]="readPopoverService.show.pageBreakEdition"
+                [class.show_personInfo]="readPopoverService.show.personInfo && readPopoverTogglesIntro.personInfo"
+                [class.show_placeInfo]="readPopoverService.show.placeInfo && readPopoverTogglesIntro.placeInfo"
+                [class.show_workInfo]="readPopoverService.show.workInfo && readPopoverTogglesIntro.workInfo"
+                [class.show_pageNumbering]="readPopoverService.show.pageNumbering && readPopoverTogglesIntro.pageNumbering"
+                [class.show_pageBreakEdition]="readPopoverService.show.pageBreakEdition && readPopoverTogglesIntro.pageBreakEdition"
               [innerHTML]="text" [ngClass]="(hasSeparateIntroToc ? 'hideIntro' : '') + ' ' +
               ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')"></div>
             </ion-scroll>
