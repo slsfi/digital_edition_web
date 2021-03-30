@@ -373,7 +373,7 @@ export class IntroductionPage {
             const dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
             const target = anchorElem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
             if (target !== null) {
-              if (anchorElem.classList.contains('noteReference') {
+              if (anchorElem.classList.contains('noteReference')) {
                 // Link to (foot)note reference, prepend arrow
                 this.scrollToHTMLElement(target, 'top');
               } else {
