@@ -87,6 +87,13 @@
             "pageBreakOriginal": true,
             "pageBreakEdition": true
         },
+        "introToggles": {
+            "personInfo": false,
+            "placeInfo": false,
+            "workInfo": false,
+            "pageNumbering": true,
+            "pageBreakEdition": false
+        },
         "displayTypesToggles": {
             "showAll": true,
             "established": true,

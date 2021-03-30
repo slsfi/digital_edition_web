@@ -286,6 +286,10 @@
   "song": "Melodi",
   "Text": "PDF",
   "BC": "f.Kr.",
+  "note": "Not",
+  "editorialChange": "Utgivarändring",
+  "editorialNormalisation": "Normalisering",
+  "abbreviation": "Förkortning",
   "Reference": {
       "title": "Källhänvisning",
       "refer": "Hänvisa",

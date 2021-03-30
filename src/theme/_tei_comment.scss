@@ -84,8 +84,3 @@ comments div.tei p.note + p:not([class]) > span:not([class]) {
     display: block;
     margin-top: 0.5em;
 }
-
-/* Used for? */
-span.seg img {
-    width: 0.5em;
-}

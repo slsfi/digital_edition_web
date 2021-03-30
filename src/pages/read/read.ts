@@ -90,6 +90,10 @@ export class ReadPage /*implements OnDestroy*/ {
   toolTipMaxWidth: string;
   toolTipScaleValue: number;
   toolTipText: string;
+  infoOverlayPosType: string;
+  infoOverlayPosition: object;
+  infoOverlayWidth: string;
+  infoOverlayText: string;
   nochapterPos: string;
 
   maxSingleWindowWidth: Number;
@@ -205,8 +209,15 @@ export class ReadPage /*implements OnDestroy*/ {
     this.toolTipMaxWidth = null;
     this.toolTipScaleValue = null;
     this.toolTipPosition = {
-      top: -1000 + 'px',
-      left: -1000 + 'px'
+      top: 0 + 'px',
+      left: -1500 + 'px'
+    };
+    this.infoOverlayText = '';
+    this.infoOverlayWidth = null;
+    this.infoOverlayPosType = 'fixed';
+    this.infoOverlayPosition = {
+      bottom: 0 + 'px',
+      left: -1500 + 'px'
     };
 
     try {
@@ -841,7 +852,7 @@ export class ReadPage /*implements OnDestroy*/ {
   private getEventTarget(event) {
     let eventTarget: HTMLElement = document.createElement('div');
 
-    if (event.target.getAttribute('data-id')) {
+    if (event.target.hasAttribute('data-id')) {
       return event.target;
     }
 
@@ -870,8 +881,10 @@ export class ReadPage /*implements OnDestroy*/ {
   private setUpTextListeners() {
     // We must do it like this since we want to trigger an event on a dynamically loaded innerhtml.
     const nElement: HTMLElement = this.elementRef.nativeElement;
+
     /* CLICK EVENTS */
     this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
+      this.hideToolTip();
       const eventTarget = this.getEventTarget(event);
       if (eventTarget['classList'].contains('tooltiptrigger')) {
         if (eventTarget.hasAttribute('data-id')) {
@@ -905,6 +918,8 @@ export class ReadPage /*implements OnDestroy*/ {
               // If a comments view isn't shown or viewmode is mobile, show comment in modal
               this.showCommentModal(eventTarget.getAttribute('data-id'));
             }
+          } else if (eventTarget['classList'].contains('ttFoot')) {
+            this.showFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
           }
         }
       }
@@ -1263,8 +1278,8 @@ export class ReadPage /*implements OnDestroy*/ {
       }
     }
     // Prepend the footnoteindicator to the the footnote text.
-    const footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + targetElem.textContent +
-     '</span>' + '<span class="ttFtnText">' + foundElem  + '</span>';
+    const footnoteWithIndicator: string = '<a class="xreference noteReference" href="#' + id + '">' +
+     targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
@@ -1288,8 +1303,8 @@ export class ReadPage /*implements OnDestroy*/ {
      triggerElem.nextElementSibling.firstElementChild.getAttribute('id') === id) {
       const ttText = triggerElem.nextElementSibling.firstElementChild.innerHTML;
       // Prepend the footnoteindicator to the the footnote text.
-      const footnoteWithIndicator: string = '<span class="ttFtnIndicator">' + triggerElem.textContent +
-       '</span>' + '<span class="ttFtnText">' + ttText  + '</span>';
+      const footnoteWithIndicator: string = '<a class="xreference noteReference" href="#' + id + '">' +
+     triggerElem.textContent + '</a>' + '<p class="noteText">' + ttText  + '</p>';
       const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
        this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
       return footNoteHTML;
@@ -1336,21 +1351,62 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   showVariantTooltip(targetElem: HTMLElement, origin: any) {
-    if (origin.target.nextSibling.className !== undefined && String(origin.target.nextSibling.className).includes('tooltip')) {
-      this.setToolTipPosition(targetElem, origin.target.nextSibling.textContent);
-      this.setToolTipText(origin.target.nextSibling.textContent);
+    if (targetElem.nextElementSibling !== null &&
+     targetElem.nextElementSibling.hasAttribute('class') &&
+     targetElem.nextElementSibling.className.includes('tooltip')) {
+      this.setToolTipPosition(targetElem, targetElem.nextElementSibling.textContent);
+      this.setToolTipText(targetElem.nextElementSibling.textContent);
     }
+  }
+
+  showFootnoteInfoOverlay(id: string, targetElem: HTMLElement) {
+    if (this.tooltips.footnotes[id]) {
+      this.setInfoOverlayPositionAndWidth(targetElem);
+      this.setInfoOverlayText(this.tooltips.footnotes[id]);
+      return;
+    }
+    const target = document.getElementsByClassName('ttFixed');
+    let foundElem: any = '';
+    for (let i = 0; i < target.length; i++) {
+      const elt = target[i] as HTMLElement;
+      if ( elt.getAttribute('data-id') === id ) {
+        foundElem = elt.innerHTML;
+        break;
+      }
+    }
+    // Prepend the footnoteindicator to the the footnote text.
+    const footnoteWithIndicator: string = '<a class="xreference noteReference" href="#' + id + '">' +
+     targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
+    const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
+      this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
+
+    this.setInfoOverlayPositionAndWidth(targetElem);
+    this.setInfoOverlayText(footNoteHTML);
+    this.tooltips.footnotes[id] = footNoteHTML;
   }
 
   setToolTipText(text: string) {
     this.toolTipText = text;
   }
 
+  setInfoOverlayText(text: string) {
+    this.infoOverlayText = text;
+  }
+
   hideToolTip() {
     this.setToolTipText('');
     this.toolTipPosition = {
-      top: -1000 + 'px',
-      left: -1000 + 'px'
+      top: 0 + 'px',
+      left: -1500 + 'px'
+    };
+  }
+
+  hideInfoOverlay() {
+    this.setInfoOverlayText('');
+    this.infoOverlayPosType = 'fixed'; // Position needs to be fixed so we can hide it outside viewport
+    this.infoOverlayPosition = {
+      bottom: 0 + 'px',
+      left: -1500 + 'px'
     };
   }
 
@@ -1670,6 +1726,61 @@ export class ReadPage /*implements OnDestroy*/ {
       compMaxWidth: compToolTipMaxWidth
     }
     return dimensions;
+  }
+
+  private setInfoOverlayPositionAndWidth(triggerElement: HTMLElement) {
+    // Left and right margins
+    let margins = 20;
+
+    // Max width
+    const maxWidth = 600;
+
+    // Get viewport width and height.
+    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+    // Set horisontal offset due to possible side pane on the left.
+    const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
+    let sidePaneOffsetWidth = 0;
+    if (sidePaneIsOpen) {
+      sidePaneOffsetWidth = 269;
+    }
+
+    // Get bounding rectangle of the ion-scroll element which is the container for the column that the trigger element resides in.
+    let containerElem = triggerElement.parentElement;
+    let counter = 0;
+    while (containerElem !== null && containerElem.tagName !== 'DIV' &&
+     !containerElem.hasAttribute('class') &&
+     !containerElem.classList.contains('scroll-content')) {
+      counter++;
+      containerElem = containerElem.parentElement;
+    }
+    if (containerElem !== null) {
+      const containerElemRect = containerElem.getBoundingClientRect();
+      console.log('Container height: ' + containerElemRect.height);
+      console.log('Container width: ' + containerElemRect.width);
+      console.log('Container top: ' + containerElemRect.top);
+      console.log('Container bottom: ' + containerElemRect.bottom);
+      console.log('View height: ' + vh);
+      console.log('Counter: ' + counter);
+
+      let tmpWidth = containerElemRect.width;
+
+      if (tmpWidth > maxWidth) {
+        margins = Math.floor((tmpWidth - maxWidth) / 2);
+        tmpWidth = maxWidth + 2 * margins;
+      }
+
+      // Set info overlay position
+      this.infoOverlayPosition = {
+        bottom: vh - containerElemRect.bottom + 'px',
+        left: (containerElemRect.left + margins - sidePaneOffsetWidth) + 'px'
+      };
+
+      this.infoOverlayPosType = 'absolute';
+
+      // Set info overlay width
+      this.infoOverlayWidth = tmpWidth - 2 * margins + 'px';
+    }
   }
 
   showCommentModal(id: string) {

@@ -527,18 +527,18 @@ ion-menu {
 
   &#contentMenu .simple-accordion-options.recursive-suboptions > ion-item.item,
   &#contentMenu .simple-accordion-options.recursive-suboptions ion-list.accordion-menu > ion-item.item {
-    // padding-left: 52px;
+     padding-left: 52px;
   }
   &#contentMenu .simple-accordion-options.recursive-suboptions.recursive-suboptions > ion-item.item,
   &#contentMenu .simple-accordion-options.recursive-suboptions.recursive-suboptions ion-list.accordion-menu > ion-item.item {
-    // padding-left: 72px;
+     padding-left: 72px;
   }
   &#contentMenu .simple-accordion-options.recursive-suboptions.recursive-suboptions.recursive-suboptions > ion-item.item,
   &#contentMenu .simple-accordion-options.recursive-suboptions.recursive-suboptions.recursive-suboptions ion-list.accordion-menu > ion-item.item {
-    // padding-left: 92px;
+     padding-left: 92px;
   }
   &#contentMenu ion-list.accordion-menu.simple-accordion-options.sub-option > ion-item.item {
-    // padding-left: 32px;
+     padding-left: 32px;
   }
 }
 
@@ -632,6 +632,7 @@ ion-nav{
 }
 .popover_settings .popover-content {
   width: min-content !important;
+  min-width: 300px;
 }
 /* on very small screens, place popovers further right */
 @media screen and (max-width: 360px) {

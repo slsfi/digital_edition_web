@@ -46,6 +46,7 @@ export class ReadPopoverPage {
   };
 
   fontsize = null;
+  togglesCounter: number;
 
   constructor(
     public viewCtrl: ViewController,
@@ -61,6 +62,15 @@ export class ReadPopoverPage {
 
     if ( toggles !== undefined ) {
       this.readToggles = toggles;
+    }
+
+    this.togglesCounter = 0;
+    for (const prop in this.readToggles) {
+      if (this.readToggles.hasOwnProperty(prop)) {
+        if (this.readToggles[prop] === true) {
+          this.togglesCounter++;
+        }
+      }
     }
 
     this.show = readPopoverService.show;
@@ -80,16 +90,36 @@ export class ReadPopoverPage {
 
   toggleAll( e ) {
     if ( e.value === true ) {
-      this.show.comments = true;
-      this.show.personInfo = true;
-      this.show.placeInfo = true;
-      this.show.workInfo = true;
-      this.show.changes = true;
-      this.show.normalisations = true;
-      this.show.abbreviations = true;
-      this.show.pageNumbering = true;
-      this.show.pageBreakOriginal = true;
-      this.show.pageBreakEdition = true;
+      if (this.readToggles.comments) {
+        this.show.comments = true;
+      }
+      if (this.readToggles.personInfo) {
+        this.show.personInfo = true;
+      }
+      if (this.readToggles.placeInfo) {
+        this.show.placeInfo = true;
+      }
+      if (this.readToggles.workInfo) {
+        this.show.workInfo = true;
+      }
+      if (this.readToggles.changes) {
+        this.show.changes = true;
+      }
+      if (this.readToggles.normalisations) {
+        this.show.normalisations = true;
+      }
+      if (this.readToggles.abbreviations) {
+        this.show.abbreviations = true;
+      }
+      if (this.readToggles.pageNumbering) {
+        this.show.pageNumbering = true;
+      }
+      if (this.readToggles.pageBreakOriginal) {
+        this.show.pageBreakOriginal = true;
+      }
+      if (this.readToggles.pageBreakEdition) {
+        this.show.pageBreakEdition = true;
+      }
     } else {
       this.show.comments = false;
       this.show.personInfo = false;
@@ -171,44 +201,6 @@ export class ReadPopoverPage {
       this.doAnalytics('setFontSize - ' + Fontsize[size]);
     }
   }
-
-/*
-  decreaseFontSize() {
-    try {
-      this.fontsize = Fontsize.small;
-      this.readPopoverService.fontsize = this.fontsize;
-      this.doAnalytics('decreaseFontSize - ' + this.fontsize);
-    } catch ( e ) {
-      this.fontsize = 0;
-      this.readPopoverService.fontsize = this.fontsize;
-      this.doAnalytics('decreaseFontSize - ' + this.fontsize);
-    }
-  }
-
-  increaseFontMeduimSize() {
-    try {
-      this.fontsize = Fontsize.medium;
-      this.readPopoverService.fontsize = this.fontsize;
-      this.doAnalytics('increaseFontMeduimSize - ' + this.fontsize);
-    } catch ( e ) {
-      this.fontsize = 1;
-      this.readPopoverService.fontsize = this.fontsize;
-      this.doAnalytics('increaseFontMeduimSize - ' + this.fontsize);
-    }
-  }
-
-  increaseFontSize() {
-    try {
-      this.fontsize = Fontsize.large;
-      this.readPopoverService.fontsize = this.fontsize;
-      this.doAnalytics('increaseFontSize - ' + this.fontsize);
-    } catch ( e ) {
-      this.fontsize = 2;
-      this.readPopoverService.fontsize = this.fontsize;
-      this.doAnalytics('increaseFontSize - ' + this.fontsize);
-    }
-  }
-*/
 
   doAnalytics(type) {
     this.analyticsService.doAnalyticsEvent('Read-Settings', 'Read-Settings - ' + type, String(type));
