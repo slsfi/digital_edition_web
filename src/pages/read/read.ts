@@ -965,7 +965,9 @@ export class ReadPage /*implements OnDestroy*/ {
         // Find the containing scrollable element
         let containerElem = anchorElem.parentElement;
         let counter = 0;
-        while (containerElem !== null && !containerElem.classList.contains('scroll-content') && containerElem.parentElement.tagName !== 'ION-SCROLL') {
+        while (containerElem !== null &&
+         !containerElem.classList.contains('scroll-content') &&
+         containerElem.parentElement.tagName !== 'ION-SCROLL') {
           counter++;
           containerElem = containerElem.parentElement;
           console.log('Counter: ' + counter);
