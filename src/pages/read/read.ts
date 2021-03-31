@@ -919,6 +919,9 @@ export class ReadPage /*implements OnDestroy*/ {
             // If a comments view isn't shown or viewmode is mobile, show comment in modal
             this.showCommentModal(eventTarget.getAttribute('data-id'));
           }
+        } else if (eventTarget['classList'].contains('ttFoot') &&
+         eventTarget['classList'].contains('teiVariant')) {
+          this.showVariantFootnoteInfoOverlay(eventTarget.getAttribute('id'), eventTarget);
         } else if (eventTarget['classList'].contains('ttFoot')) {
           this.showFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
         }
@@ -963,6 +966,7 @@ export class ReadPage /*implements OnDestroy*/ {
         if (containerElem !== null) {
           let dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
           if (anchorElem.classList.contains('teiVariant')) {
+            // Link to (foot)note reference in variant
             dataIdSelector = '[id="' + String(targetId).replace('#', '') + '"]';
           }
           const target = containerElem.querySelector(dataIdSelector) as HTMLElement;
@@ -1419,6 +1423,12 @@ export class ReadPage /*implements OnDestroy*/ {
     this.setInfoOverlayPositionAndWidth(targetElem);
     this.setInfoOverlayText(footNoteHTML);
     this.tooltips.footnotes[id] = footNoteHTML;
+  }
+
+  showVariantFootnoteInfoOverlay(id: string, targetElem: HTMLElement) {
+    const footNoteHTML: string = this.getVariantFootnoteText(id, targetElem);
+    this.setInfoOverlayPositionAndWidth(targetElem);
+    this.setInfoOverlayText(footNoteHTML);
   }
 
   setToolTipText(text: string) {
