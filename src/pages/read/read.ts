@@ -953,7 +953,6 @@ export class ReadPage /*implements OnDestroy*/ {
         } else if (anchorElem.parentElement.hasAttribute('href')) {
           targetId = anchorElem.parentElement.getAttribute('href');
         }
-        const dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
 
         // Find the containing scrollable element
         let containerElem = anchorElem.parentElement;
@@ -962,6 +961,10 @@ export class ReadPage /*implements OnDestroy*/ {
         }
 
         if (containerElem !== null) {
+          let dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
+          if (anchorElem.classList.contains('teiVariant')) {
+            dataIdSelector = '[id="' + String(targetId).replace('#', '') + '"]';
+          }
           const target = containerElem.querySelector(dataIdSelector) as HTMLElement;
           if (target !== null) {
             this.scrollToHTMLElement(target, 'top');
