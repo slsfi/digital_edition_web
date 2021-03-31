@@ -1271,6 +1271,8 @@ export class ReadPage /*implements OnDestroy*/ {
         break;
       }
     }
+    foundElem = foundElem.replace(' xmlns:tei="http://www.tei-c.org/ns/1.0"', '');
+
     // Prepend the footnoteindicator to the the footnote text.
     const footnoteWithIndicator: string = '<a class="xreference noteReference" href="#' + id + '">' +
      targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
@@ -1368,6 +1370,8 @@ export class ReadPage /*implements OnDestroy*/ {
         break;
       }
     }
+    foundElem = foundElem.replace(' xmlns:tei="http://www.tei-c.org/ns/1.0"', '');
+
     // Prepend the footnoteindicator to the the footnote text.
     const footnoteWithIndicator: string = '<a class="xreference noteReference" href="#' + id + '">' +
      targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
