@@ -962,6 +962,17 @@ export class ReadPage /*implements OnDestroy*/ {
           targetId = anchorElem.parentElement.getAttribute('href');
         }
 
+        if (anchorElem.className.includes('targetColumnId_')) {
+          let targetColumnId = '';
+          for (let i = 0; i < anchorElem.classList.length; i++) {
+            if (anchorElem.classList[i].startsWith('targetColumnId_')) {
+              targetColumnId = anchorElem.classList[i];
+              targetColumnId = targetColumnId.replace('targetColumnId_', '');
+              console.log('targetColumnId ' + targetColumnId);
+            }
+          }
+        }
+
         // Find the containing scrollable element
         let containerElem = anchorElem.parentElement;
         let counter = 0;
