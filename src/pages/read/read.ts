@@ -1365,7 +1365,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
       // Get column id
       let containerElem = triggerElem.parentElement;
-      while (containerElem !== null && !containerElem.classList.contains('read-column') && containerElem.hasAttribute('id')) {
+      while (containerElem !== null && !containerElem.classList.contains('read-column') && !containerElem.hasAttribute('id')) {
         containerElem = containerElem.parentElement;
       }
       if (containerElem !== null) {
