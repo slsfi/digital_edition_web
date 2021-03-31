@@ -1277,6 +1277,8 @@ export class ReadPage /*implements OnDestroy*/ {
         break;
       }
     }
+    foundElem = foundElem.replace(' xmlns:tei="http://www.tei-c.org/ns/1.0"', '');
+
     // Prepend the footnoteindicator to the the footnote text.
     const footnoteWithIndicator: string = '<a class="xreference noteReference" href="#' + id + '">' +
      targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
@@ -1374,6 +1376,8 @@ export class ReadPage /*implements OnDestroy*/ {
         break;
       }
     }
+    foundElem = foundElem.replace(' xmlns:tei="http://www.tei-c.org/ns/1.0"', '');
+
     // Prepend the footnoteindicator to the the footnote text.
     const footnoteWithIndicator: string = '<a class="xreference noteReference" href="#' + id + '">' +
      targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
@@ -1735,8 +1739,14 @@ export class ReadPage /*implements OnDestroy*/ {
     // Max width
     const maxWidth = 600;
 
-    // Get viewport width and height.
-    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    // Get containing element height.
+    let vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+    const contentElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
+    const contentElemRect = contentElem.getBoundingClientRect();
+    if (contentElem.clientHeight < contentElem.offsetHeight) {
+      vh = vh - contentElem.offsetHeight + contentElem.clientHeight;
+    }
 
     // Set horisontal offset due to possible side pane on the left.
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
@@ -1747,22 +1757,12 @@ export class ReadPage /*implements OnDestroy*/ {
 
     // Get bounding rectangle of the ion-scroll element which is the container for the column that the trigger element resides in.
     let containerElem = triggerElement.parentElement;
-    let counter = 0;
-    while (containerElem !== null && containerElem.tagName !== 'DIV' &&
-     !containerElem.hasAttribute('class') &&
-     !containerElem.classList.contains('scroll-content')) {
-      counter++;
+    while (containerElem !== null && containerElem.tagName !== 'ION-SCROLL') {
       containerElem = containerElem.parentElement;
     }
+
     if (containerElem !== null) {
       const containerElemRect = containerElem.getBoundingClientRect();
-      console.log('Container height: ' + containerElemRect.height);
-      console.log('Container width: ' + containerElemRect.width);
-      console.log('Container top: ' + containerElemRect.top);
-      console.log('Container bottom: ' + containerElemRect.bottom);
-      console.log('View height: ' + vh);
-      console.log('Counter: ' + counter);
-
       let tmpWidth = containerElemRect.width;
 
       if (tmpWidth > maxWidth) {
@@ -1772,7 +1772,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
       // Set info overlay position
       this.infoOverlayPosition = {
-        bottom: vh - containerElemRect.bottom + 'px',
+        bottom: contentElemRect.bottom - containerElemRect.bottom + 'px',
         left: (containerElemRect.left + margins - sidePaneOffsetWidth) + 'px'
       };
 
