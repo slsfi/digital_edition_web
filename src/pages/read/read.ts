@@ -919,12 +919,15 @@ export class ReadPage /*implements OnDestroy*/ {
             // If a comments view isn't shown or viewmode is mobile, show comment in modal
             this.showCommentModal(eventTarget.getAttribute('data-id'));
           }
-        } else if (eventTarget['classList'].contains('ttFoot') &&
+        } else if (eventTarget['classList'].contains('ttFoot')) {
+          this.showFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
+        }
+      } else if (eventTarget['classList'].contains('tooltiptrigger') &&
+       eventTarget.hasAttribute('id')) {
+        if (eventTarget['classList'].contains('ttFoot') &&
          eventTarget['classList'].contains('teiVariant')) {
            console.log('Footnote id: ' + eventTarget.getAttribute('id'));
           this.showVariantFootnoteInfoOverlay(eventTarget.getAttribute('id'), eventTarget);
-        } else if (eventTarget['classList'].contains('ttFoot')) {
-          this.showFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
         }
       }
       if (eventTarget['classList'].contains('variantScrollTarget')) {
