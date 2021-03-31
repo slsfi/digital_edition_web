@@ -884,42 +884,43 @@ export class ReadPage /*implements OnDestroy*/ {
     /* CLICK EVENTS */
     this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
       this.hideToolTip();
-      const eventTarget = this.getEventTarget(event);
-      if (eventTarget['classList'].contains('tooltiptrigger')) {
-        if (eventTarget.hasAttribute('data-id')) {
-          if (eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
-            this.showPersonModal(eventTarget.getAttribute('data-id'));
-          } else if (eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
-            this.showPlaceModal(eventTarget.getAttribute('data-id'));
-          } else if (eventTarget['classList'].contains('title') && this.readPopoverService.show.workInfo) {
-            this.showWorkModal(eventTarget.getAttribute('data-id'));
-          } else if (eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
-            /* The user has clicked a comment lemma ("asterisk") in the reading-text.
-               Check if comments view is shown. */
-            const viewTypesShown = this.getViewTypesShown();
-            const commentsViewIsShown = viewTypesShown.includes('comments');
-            if (commentsViewIsShown && !this.userSettingsService.isMobile()) {
-              // Scroll to comment in comments view and scroll lemma in reading-text view
-              const numId = eventTarget.getAttribute('data-id').replace( /^\D+/g, '');
-              const targetId = 'start' + numId;
-              let lemmaStart = document.querySelector('[data-id="' + targetId + '"]') as HTMLElement;
-              if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
-                // The lemma is in a footnote, so we should get the second element with targetId
-                lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
-              }
-              if (lemmaStart !== null && lemmaStart !== undefined) {
-                // Scroll to start of lemma in reading text and temporarily prepend arrow.
-                this.scrollToCommentLemma(lemmaStart);
-                // Scroll to comment in the comments-column.
-                const commentSettimeoutId = this.scrollToComment(numId);
-              }
-            } else {
-              // If a comments view isn't shown or viewmode is mobile, show comment in modal
-              this.showCommentModal(eventTarget.getAttribute('data-id'));
+      let eventTarget = this.getEventTarget(event);
+
+      // Modal trigger for person-, place- or workinfo and info overlay trigger for footnote.
+      if (eventTarget['classList'].contains('tooltiptrigger') &&
+       eventTarget.hasAttribute('data-id')) {
+        if (eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
+          this.showPersonModal(eventTarget.getAttribute('data-id'));
+        } else if (eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
+          this.showPlaceModal(eventTarget.getAttribute('data-id'));
+        } else if (eventTarget['classList'].contains('title') && this.readPopoverService.show.workInfo) {
+          this.showWorkModal(eventTarget.getAttribute('data-id'));
+        } else if (eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
+          /* The user has clicked a comment lemma ("asterisk") in the reading-text.
+              Check if comments view is shown. */
+          const viewTypesShown = this.getViewTypesShown();
+          const commentsViewIsShown = viewTypesShown.includes('comments');
+          if (commentsViewIsShown && !this.userSettingsService.isMobile()) {
+            // Scroll to comment in comments view and scroll lemma in reading-text view
+            const numId = eventTarget.getAttribute('data-id').replace( /^\D+/g, '');
+            const targetId = 'start' + numId;
+            let lemmaStart = document.querySelector('[data-id="' + targetId + '"]') as HTMLElement;
+            if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
+              // The lemma is in a footnote, so we should get the second element with targetId
+              lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
             }
-          } else if (eventTarget['classList'].contains('ttFoot')) {
-            this.showFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
+            if (lemmaStart !== null && lemmaStart !== undefined) {
+              // Scroll to start of lemma in reading text and temporarily prepend arrow.
+              this.scrollToCommentLemma(lemmaStart);
+              // Scroll to comment in the comments-column.
+              const commentSettimeoutId = this.scrollToComment(numId);
+            }
+          } else {
+            // If a comments view isn't shown or viewmode is mobile, show comment in modal
+            this.showCommentModal(eventTarget.getAttribute('data-id'));
           }
+        } else if (eventTarget['classList'].contains('ttFoot')) {
+          this.showFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
         }
       }
       if (eventTarget['classList'].contains('variantScrollTarget')) {
@@ -932,6 +933,31 @@ export class ReadPage /*implements OnDestroy*/ {
             eventTarget.classList.remove('highlight');
           }
         }, 5000);
+      }
+
+      eventTarget = event.target as HTMLElement;
+      if (eventTarget.classList.length === 0 || !eventTarget.classList.contains('xreference')) {
+        eventTarget = eventTarget.parentElement;
+      }
+
+      if (eventTarget.classList.length !== 0 && eventTarget.classList.contains('xreference')) {
+        event.preventDefault();
+        const anchorElem: HTMLAnchorElement = eventTarget as HTMLAnchorElement;
+
+        let targetId = '';
+        if (anchorElem.hasAttribute('href')) {
+          targetId = anchorElem.getAttribute('href');
+        } else if (anchorElem.parentElement.hasAttribute('href')) {
+          targetId = anchorElem.parentElement.getAttribute('href');
+        }
+        const dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
+        const target = anchorElem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
+        if (target !== null) {
+          if (anchorElem.classList.contains('noteReference')) {
+            // Link to (foot)note reference, prepend arrow
+            this.scrollToHTMLElement(target, 'top');
+          }
+        }
       }
     }).bind(this);
 
@@ -2249,6 +2275,22 @@ export class ReadPage /*implements OnDestroy*/ {
         nav[0].setRoot('read', params);
       }
     }).catch(err => console.error(err));
+  }
+
+  // Scrolls element into view and prepends arrow for the duration of timeOut.
+  private scrollToHTMLElement(element: HTMLElement, position = 'top', timeOut = 5000) {
+    try {
+      const tmpImage: HTMLImageElement = new Image();
+      tmpImage.src = 'assets/images/ms_arrow_right.svg';
+      tmpImage.classList.add('inl_ms_arrow');
+      element.parentElement.insertBefore(tmpImage, element);
+      this.scrollElementIntoView(tmpImage, position);
+      setTimeout(function() {
+        element.parentElement.removeChild(tmpImage);
+      }, timeOut);
+    } catch ( e ) {
+      console.error(e);
+    }
   }
 
   /* This function can be used to scroll a container so that the element which it contains
