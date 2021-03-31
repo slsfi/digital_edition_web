@@ -1741,15 +1741,6 @@ export class ReadPage /*implements OnDestroy*/ {
       horizontalScrollbarOffsetHeight = contentElem.offsetHeight - contentElem.clientHeight;
     }
 
-    // Set horisontal offset due to possible side pane on the left.
-    /*
-    const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
-    let sidePaneOffsetWidth = 0;
-    if (sidePaneIsOpen) {
-      sidePaneOffsetWidth = 269;
-    }
-    */
-
     // Get bounding rectangle of the div.scroll-content element which is the container for the column that the trigger element resides in.
     let containerElem = triggerElement.parentElement;
     while (containerElem !== null && !containerElem.classList.contains('scroll-content') && containerElem.parentElement.tagName !== 'ION-SCROLL') {
@@ -1770,12 +1761,8 @@ export class ReadPage /*implements OnDestroy*/ {
       // Set info overlay position
       this.infoOverlayPosition = {
         bottom: (vh - horizontalScrollbarOffsetHeight - containerElemRect.bottom) + 'px',
-        /*
-        left: (containerElemRect.left + margins - sidePaneOffsetWidth) + 'px'
-        */
         left: (containerElemRect.left + margins - contentElem.getBoundingClientRect().left) + 'px'
       };
-
       this.infoOverlayPosType = 'absolute';
 
       // Set info overlay width
@@ -1794,8 +1781,6 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   showPersonModal(id: string) {
-    // const modal = this.modalCtrl.create(SemanticDataModalPage, { id: id, type: 'person' });
-    // modal.present();
     const modal = this.modalCtrl.create(OccurrencesPage, { id: id, type: 'subject' });
     modal.present();
   }
