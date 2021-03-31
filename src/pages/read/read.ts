@@ -973,6 +973,7 @@ export class ReadPage /*implements OnDestroy*/ {
           console.log('Counter: ' + counter);
         }
         console.log(containerElem);
+        console.log(containerElem.parentElement.tagName);
         if (containerElem !== null) {
           let dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
           if (anchorElem.classList.contains('teiVariant')) {
