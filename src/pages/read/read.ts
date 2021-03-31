@@ -940,7 +940,10 @@ export class ReadPage /*implements OnDestroy*/ {
         eventTarget = eventTarget.parentElement;
       }
 
-      if (eventTarget.classList.length !== 0 && eventTarget.classList.contains('xreference')) {
+      if (eventTarget.classList.length !== 0 &&
+       eventTarget.classList.contains('xreference') &&
+       eventTarget.classList.contains('noteReference')) {
+        // Link to (foot)note reference
         event.preventDefault();
         const anchorElem: HTMLAnchorElement = eventTarget as HTMLAnchorElement;
 
@@ -951,10 +954,16 @@ export class ReadPage /*implements OnDestroy*/ {
           targetId = anchorElem.parentElement.getAttribute('href');
         }
         const dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
-        const target = anchorElem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
-        if (target !== null) {
-          if (anchorElem.classList.contains('noteReference')) {
-            // Link to (foot)note reference, prepend arrow
+
+        // Find the containing scrollable element
+        let containerElem = anchorElem.parentElement;
+        while (containerElem !== null && !containerElem.classList.contains('scroll-content') && containerElem.parentElement.tagName !== 'ION-SCROLL') {
+          containerElem = containerElem.parentElement;
+        }
+
+        if (containerElem !== null) {
+          const target = containerElem.querySelector(dataIdSelector) as HTMLElement;
+          if (target !== null) {
             this.scrollToHTMLElement(target, 'top');
           }
         }
