@@ -1427,7 +1427,9 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   showVariantFootnoteInfoOverlay(id: string, targetElem: HTMLElement) {
+    console.log('Variant footnote id: ' + id);
     const footNoteHTML: string = this.getVariantFootnoteText(id, targetElem);
+    console.log('Variant footnote html: ' + footNoteHTML.toString());
     this.setInfoOverlayPositionAndWidth(targetElem);
     this.setInfoOverlayText(footNoteHTML);
   }
