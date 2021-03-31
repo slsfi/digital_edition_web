@@ -930,7 +930,9 @@ export class IntroductionPage {
 
     // Get bounding rectangle of the div.scroll-content element which is the container for the column that the trigger element resides in.
     let containerElem = triggerElement.parentElement;
-    while (containerElem !== null && !containerElem.classList.contains('scroll-content') && containerElem.parentElement.tagName !== 'ION-SCROLL') {
+    while (containerElem !== null &&
+     !containerElem.classList.contains('scroll-content') &&
+     containerElem.parentElement.tagName !== 'ION-SCROLL') {
       containerElem = containerElem.parentElement;
     }
 
