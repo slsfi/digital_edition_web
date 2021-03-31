@@ -1348,12 +1348,24 @@ export class ReadPage /*implements OnDestroy*/ {
      triggerElem.nextElementSibling.firstElementChild.classList.contains('ttFixed') &&
      triggerElem.nextElementSibling.firstElementChild.getAttribute('id') === id) {
       const ttText = triggerElem.nextElementSibling.firstElementChild.innerHTML;
-      // Prepend the footnoteindicator to the the footnote text.
-      const footnoteWithIndicator: string = '<a class="xreference noteReference" href="#' + id + '">' +
-     triggerElem.textContent + '</a>' + '<p class="noteText">' + ttText  + '</p>';
-      const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
-       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
-      return footNoteHTML;
+
+      // Get column id
+      let containerElem = triggerElem.parentElement;
+      while (containerElem !== null && !containerElem.classList.contains('read-column') && containerElem.hasAttribute('id')) {
+        containerElem = containerElem.parentElement;
+      }
+      if (containerElem !== null) {
+        const columnId = containerElem.getAttribute('id');
+
+        // Prepend the footnoteindicator to the the footnote text.
+        const footnoteWithIndicator: string = '<a class="xreference noteReference targetColumnId_' + columnId + '" href="#' + id + '">' +
+         triggerElem.textContent + '</a>' + '<p class="noteText">' + ttText  + '</p>';
+        const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
+        this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
+        return footNoteHTML;
+      } else {
+        return '';
+      }
     } else {
       return '';
     }
@@ -1434,9 +1446,7 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   showVariantFootnoteInfoOverlay(id: string, targetElem: HTMLElement) {
-    console.log('Variant footnote id: ' + id);
     const footNoteHTML: string = this.getVariantFootnoteText(id, targetElem);
-    console.log('Variant footnote html: ' + footNoteHTML.toString());
     this.setInfoOverlayPositionAndWidth(targetElem);
     this.setInfoOverlayText(footNoteHTML);
   }
