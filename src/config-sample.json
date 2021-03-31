@@ -364,6 +364,7 @@
     "HasCover": true,
     "HasTitle": true,
     "HasIntro": true,
+    "defaultSelectedItem": "title",
     "SidemenuMobile": true,
     "OpenOccurrencesAndInfoOnNewPage": false,
     "SingleOccurrenceType": null,

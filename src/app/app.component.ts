@@ -80,6 +80,8 @@ export class DigitalEditionsApp {
 
   storageCollections = {};
 
+  defaultSelectedItem: String = 'title';
+
   collectionSortOrder: any;
 
   browserWarning: string;
@@ -300,6 +302,12 @@ export class DigitalEditionsApp {
       this.hasCover = this.config.getSettings('HasCover');
     } catch (e) {
       this.hasCover = true;
+    }
+
+    try {
+      this.defaultSelectedItem = this.config.getSettings('defaultSelectedItem');
+    } catch (e) {
+      this.defaultSelectedItem = 'title';
     }
 
     this.getCollectionsWithoutTOC();

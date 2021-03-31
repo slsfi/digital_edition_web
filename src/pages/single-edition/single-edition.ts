@@ -51,6 +51,7 @@ export class SingleEditionPage {
   items: any;
   collectionDescription: any;
   language = 'sv';
+  defaultSelectedItem: string;
   description: string;
   showPage = false;
   show: string;
@@ -107,6 +108,12 @@ export class SingleEditionPage {
       this.hasCover = this.config.getSettings('HasCover');
     } catch (e) {
       this.hasCover = false;
+    }
+
+    try {
+      this.defaultSelectedItem = this.config.getSettings('defaultSelectedItem');
+    } catch (e) {
+      this.defaultSelectedItem = 'cover';
     }
 
     if (this.collection !== undefined && this.collection.id !== undefined && this.collection.id !== 'mediaCollections') {
@@ -229,28 +236,7 @@ export class SingleEditionPage {
   }
 
   getTocRoot(id: string) {
-    /*if ( id !== 'mediaCollections' ) {
-      this.tableOfContentsService.getTableOfContents(id)
-      .subscribe(
-        tocItems => {
-          this.tocItems = tocItems;
-          console.log('get toc root... --- --- in single edition');
-          const tocLoadedParams = { tocItems: tocItems };
-          tocLoadedParams['collectionID'] = this.collection;
-          tocLoadedParams['searchTocItem'] = true;
-          this.events.publish('tableOfContents:loaded', tocLoadedParams);
-          this.storage.set('toc_' + id, tocItems);
-        },
-        error => { this.errorMessage = <any>error });
-    } else {
-^*/      this.tocItems = this.collection['accordionToc']['toc'];
-      // const tocLoadedParams = { tocItems: this.tocItems };
-      // tocLoadedParams['collectionID'] = 'mediaCollections';
-      // tocLoadedParams['searchTocItem'] = true;
-     // this.events.publish('tableOfContents:loaded', tocLoadedParams);
-     // this.storage.set('toc_' + id, this.tocItems);
-     // console.log('media');
-   // }
+    this.tocItems = this.collection['accordionToc']['toc'];
   }
 
   getTableOfContents(id: string) {
@@ -295,7 +281,13 @@ export class SingleEditionPage {
   maybeLoadIntroductionPage(collectionID: string) {
       const nav = this.app.getActiveNavs();
       const params = { collection: this.collection, fetch: true, collectionID: this.collection.id };
-      if ( this.hasCover ) {
+      if ( this.hasCover && this.defaultSelectedItem === 'cover' ) {
+        nav[0].setRoot('cover-page', params);
+      } else if ( this.hasTitle && this.defaultSelectedItem === 'title'  ) {
+        nav[0].setRoot('title-page', params);
+      } else if ( this.hasIntro && this.defaultSelectedItem === 'introduction'  ) {
+        nav[0].setRoot('introduction', params);
+      } else if ( this.hasCover ) {
         nav[0].setRoot('cover-page', params);
       } else if ( this.hasTitle ) {
         nav[0].setRoot('title-page', params);
