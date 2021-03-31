@@ -1728,7 +1728,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
   private setInfoOverlayPositionAndWidth(triggerElement: HTMLElement) {
     // Left and right margins
-    let margins = 30;
+    let margins = 25;
 
     // Max width
     const maxWidth = 600;
@@ -1736,7 +1736,7 @@ export class ReadPage /*implements OnDestroy*/ {
     // Get viewport height.
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
-    // Get content element and adjust viewport height with horizontal scrollbar height if such is present
+    // Get read page content element and adjust viewport height with horizontal scrollbar height if such is present
     const contentElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
     let horizontalScrollbarOffsetHeight = 0;
     if (contentElem.clientHeight < contentElem.offsetHeight) {
@@ -1750,19 +1750,19 @@ export class ReadPage /*implements OnDestroy*/ {
       sidePaneOffsetWidth = 269;
     }
 
-    // Get bounding rectangle of the ion-scroll element which is the container for the column that the trigger element resides in.
+    // Get bounding rectangle of the div.scroll-content element which is the container for the column that the trigger element resides in.
     let containerElem = triggerElement.parentElement;
-    while (containerElem !== null && containerElem.tagName !== 'ION-SCROLL') {
+    while (containerElem !== null && !containerElem.classList.contains('scroll-content') && containerElem.parentElement.tagName !== 'ION-SCROLL') {
       containerElem = containerElem.parentElement;
     }
 
     if (containerElem !== null) {
       const containerElemRect = containerElem.getBoundingClientRect();
-      let tmpWidth = containerElemRect.width;
+      let calcWidth = containerElem.clientWidth; // Width without scrollbar
 
-      if (tmpWidth > maxWidth) {
-        margins = Math.floor((tmpWidth - maxWidth) / 2);
-        tmpWidth = maxWidth + 2 * margins;
+      if (calcWidth > maxWidth) {
+        margins = Math.floor((calcWidth - maxWidth) / 2);
+        calcWidth = maxWidth + 2 * margins;
       }
 
       // Set info overlay position
@@ -1774,7 +1774,7 @@ export class ReadPage /*implements OnDestroy*/ {
       this.infoOverlayPosType = 'absolute';
 
       // Set info overlay width
-      this.infoOverlayWidth = tmpWidth - 2 * margins + 'px';
+      this.infoOverlayWidth = calcWidth - 2 * margins + 'px';
     }
   }
 
