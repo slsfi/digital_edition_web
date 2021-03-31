@@ -1735,15 +1735,12 @@ export class ReadPage /*implements OnDestroy*/ {
 
     // Get containing element height.
     let vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    console.log('ClientHeight: ' + document.documentElement.clientHeight);
-    console.log('Window innerheight: ' + window.innerHeight);
 
-    const tmpElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
-    if (tmpElem.clientHeight < tmpElem.offsetHeight) {
-      vh = vh - tmpElem.offsetHeight + tmpElem.clientHeight;
+    const contentElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
+    const contentElemRect = contentElem.getBoundingClientRect();
+    if (contentElem.clientHeight < contentElem.offsetHeight) {
+      vh = vh - contentElem.offsetHeight + contentElem.clientHeight;
     }
-    console.log('Tmp clientH: ' + tmpElem.clientHeight);
-    console.log('Tmp offsetH: ' + tmpElem.offsetHeight);
 
     // Set horisontal offset due to possible side pane on the left.
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
@@ -1769,7 +1766,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
       // Set info overlay position
       this.infoOverlayPosition = {
-        bottom: vh - containerElemRect.bottom + 'px',
+        bottom: contentElemRect.bottom - containerElemRect.bottom + 'px',
         left: (containerElemRect.left + margins - sidePaneOffsetWidth) + 'px'
       };
 
