@@ -1727,10 +1727,8 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   private setInfoOverlayPositionAndWidth(triggerElement: HTMLElement) {
-    // Left and right margins
+    // Left and right margins and max width of the overlay
     let margins = 20;
-
-    // Max width
     const maxWidth = 600;
 
     // Get viewport height.
@@ -1744,11 +1742,13 @@ export class ReadPage /*implements OnDestroy*/ {
     }
 
     // Set horisontal offset due to possible side pane on the left.
+    /*
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
     let sidePaneOffsetWidth = 0;
     if (sidePaneIsOpen) {
       sidePaneOffsetWidth = 269;
     }
+    */
 
     // Get bounding rectangle of the div.scroll-content element which is the container for the column that the trigger element resides in.
     let containerElem = triggerElement.parentElement;
@@ -1770,7 +1770,10 @@ export class ReadPage /*implements OnDestroy*/ {
       // Set info overlay position
       this.infoOverlayPosition = {
         bottom: (vh - horizontalScrollbarOffsetHeight - containerElemRect.bottom) + 'px',
+        /*
         left: (containerElemRect.left + margins - sidePaneOffsetWidth) + 'px'
+        */
+        left: (containerElemRect.left + margins - contentElem.getBoundingClientRect().left) + 'px'
       };
 
       this.infoOverlayPosType = 'absolute';
