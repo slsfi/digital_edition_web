@@ -920,21 +920,22 @@ export class ReadPage /*implements OnDestroy*/ {
             this.showCommentModal(eventTarget.getAttribute('data-id'));
           }
         } else if (eventTarget['classList'].contains('ttFoot')) {
+          // Footnote reference clicked in reading text
           this.showFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
         }
       } else if (eventTarget['classList'].contains('tooltiptrigger') &&
        eventTarget.hasAttribute('id')) {
         if (eventTarget['classList'].contains('ttFoot') &&
          eventTarget['classList'].contains('teiVariant')) {
+           // Footnote reference clicked in variant
            console.log('Footnote id: ' + eventTarget.getAttribute('id'));
           this.showVariantFootnoteInfoOverlay(eventTarget.getAttribute('id'), eventTarget);
         }
       }
       if (eventTarget['classList'].contains('variantScrollTarget')) {
-        if (eventTarget !== undefined) {
-          eventTarget.classList.add('highlight');
-          this.scrollToVariant(eventTarget);
-        }
+        // Click on variant lemma --> highlight and scroll all variant columns
+        eventTarget.classList.add('highlight');
+        this.scrollToVariant(eventTarget);
         setTimeout(function () {
           if (eventTarget !== undefined) {
             eventTarget.classList.remove('highlight');
