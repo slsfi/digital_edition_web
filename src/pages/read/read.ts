@@ -1728,18 +1728,19 @@ export class ReadPage /*implements OnDestroy*/ {
 
   private setInfoOverlayPositionAndWidth(triggerElement: HTMLElement) {
     // Left and right margins
-    let margins = 20;
+    let margins = 30;
 
     // Max width
     const maxWidth = 600;
 
-    // Get containing element height.
-    let vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    // Get viewport height.
+    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
+    // Get content element and adjust viewport height with horizontal scrollbar height if such is present
     const contentElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
-    const contentElemRect = contentElem.getBoundingClientRect();
+    let horizontalScrollbarOffsetHeight = 0;
     if (contentElem.clientHeight < contentElem.offsetHeight) {
-      vh = vh - contentElem.offsetHeight + contentElem.clientHeight;
+      horizontalScrollbarOffsetHeight = contentElem.offsetHeight - contentElem.clientHeight;
     }
 
     // Set horisontal offset due to possible side pane on the left.
@@ -1766,7 +1767,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
       // Set info overlay position
       this.infoOverlayPosition = {
-        bottom: contentElemRect.bottom - containerElemRect.bottom + 'px',
+        bottom: (vh - horizontalScrollbarOffsetHeight - containerElemRect.bottom) + 'px',
         left: (containerElemRect.left + margins - sidePaneOffsetWidth) + 'px'
       };
 
