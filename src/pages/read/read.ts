@@ -921,6 +921,7 @@ export class ReadPage /*implements OnDestroy*/ {
           }
         } else if (eventTarget['classList'].contains('ttFoot') &&
          eventTarget['classList'].contains('teiVariant')) {
+           console.log('Footnote id: ' + eventTarget.getAttribute('id'));
           this.showVariantFootnoteInfoOverlay(eventTarget.getAttribute('id'), eventTarget);
         } else if (eventTarget['classList'].contains('ttFoot')) {
           this.showFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
