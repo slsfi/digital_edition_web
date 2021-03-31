@@ -1728,7 +1728,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
   private setInfoOverlayPositionAndWidth(triggerElement: HTMLElement) {
     // Left and right margins
-    let margins = 25;
+    let margins = 20;
 
     // Max width
     const maxWidth = 600;
