@@ -1762,7 +1762,9 @@ export class ReadPage /*implements OnDestroy*/ {
 
       if (calcWidth > maxWidth) {
         margins = Math.floor((calcWidth - maxWidth) / 2);
-        calcWidth = maxWidth + 2 * margins;
+        calcWidth = maxWidth;
+      } else {
+        calcWidth = calcWidth - 2 * margins;
       }
 
       // Set info overlay position
@@ -1774,7 +1776,7 @@ export class ReadPage /*implements OnDestroy*/ {
       this.infoOverlayPosType = 'absolute';
 
       // Set info overlay width
-      this.infoOverlayWidth = calcWidth - 2 * margins + 'px';
+      this.infoOverlayWidth = calcWidth + 'px';
     }
   }
 
