@@ -154,6 +154,7 @@ table-of-contents-accordion {
         font-size: 0.875rem;
     }
 
+    /* SK: Det här verkar behövas för musiken i Folkdiktningens toc, men regeln borde ses över */
     .simple-accordion-options div > ion-item{
       padding-left: 32px;
     }
