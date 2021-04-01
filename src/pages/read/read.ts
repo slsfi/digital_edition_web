@@ -978,8 +978,8 @@ export class ReadPage /*implements OnDestroy*/ {
         let containerElem = anchorElem.parentElement;
         let counter = 0;
         while (containerElem !== null &&
-         !(containerElem.classList.contains('scroll-content') &&
-         containerElem.parentElement.tagName === 'ION-SCROLL')) {
+         !containerElem.classList.contains('scroll-content') &&
+         !containerElem.parentElement.tagName.startsWith('ION-SCROLL')) {
           counter++;
           containerElem = containerElem.parentElement;
           console.log('Counter: ' + counter);
