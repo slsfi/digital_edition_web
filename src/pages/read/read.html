@@ -61,7 +61,7 @@
           <h6 class="infoOverlayTitle">{{'note' | translate }}</h6>
           <ion-icon name="close" class="infoOverlayButton" (click)="hideInfoOverlay()"></ion-icon>
         </div>
-        <div class="infoOverlayContent" [innerHTML]="infoOverlayText"></div>
+        <div class="infoOverlayContent" [MathJax]="infoOverlayText"></div>
       </div>
       <div [ngClass]="views.length > 1 ? 'read-column multiple-columns' : 'read-column single-column'" *ngFor="let view of views; let i = index;" id="read_div_{{i}}" scrollY="true"
         [ngStyle]="{'position': 'relative','max-width':((maxSingleWindowWidth)/((views.length>1)?views.length:1))+'%','min-width':'25%'}"
