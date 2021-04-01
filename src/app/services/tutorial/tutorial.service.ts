@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import introJs from 'intro.js/intro.js';
 import { ShowWhen, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { LanguageService } from '../languages/language.service';
 
 interface Step {
   id: string,  // inthernal id, used for storing what has been seen etc.
@@ -21,46 +22,52 @@ export class TutorialService {
   private currentPage: string;
   private tutorialTexts: any;
   private tutorialSteps: Array<Step>;
+  private language: string;
 
   constructor(
     private config: ConfigService,
     private translate: TranslateService,
+    public languageService: LanguageService,
     private events: Events,
     private storage: Storage
   ) {
-    this.translate.get('TutorialTexts').subscribe(
-      tutorialTexts => {
-        this.tutorialTexts = tutorialTexts;
-        this.tutorialSteps = this.config.getSettings('TutorialSteps');
-        for (const i in this.tutorialSteps) {
-          const str = this.tutorialSteps[i].intro;
-          this.tutorialSteps[i].intro = tutorialTexts[str] || `${str} Untranslated text`;
-        }
-        setTimeout(() => {
-          this.storage.get('all_tutorial_steps').then((steps) => {
-            if (steps !== undefined && steps !== null) {
-              this.tutorialSteps = steps;
-            }
-            this.storage.get('tutorial-done').then((seen) => {
-              try {
-                if (this.config.getSettings('showTutorial')) {
-                  this.intro();
-                }
-              } catch (e) {
-                console.error('Missing showTutorial from config.json');
+    this.language = this.config.getSettings('i18n.locale');
+    this.languageService.getLanguage().subscribe((lang: string) => {
+      this.language = lang;
+      this.translate.get('TutorialTexts').subscribe(
+        tutorialTexts => {
+          this.tutorialTexts = tutorialTexts;
+          this.tutorialSteps = this.config.getSettings('TutorialSteps');
+          for (const i in this.tutorialSteps) {
+            const str = this.tutorialSteps[i].intro;
+            this.tutorialSteps[i].intro = tutorialTexts[str] || `${str} Untranslated text`;
+          }
+          setTimeout(() => {
+            this.storage.get('all_tutorial_steps_' + this.language).then((steps) => {
+              if (steps !== undefined && steps !== null) {
+                this.tutorialSteps = steps;
               }
+              this.storage.get('tutorial-done').then((seen) => {
+                try {
+                  if (this.config.getSettings('showTutorial')) {
+                    this.intro();
+                  }
+                } catch (e) {
+                  console.error('Missing showTutorial from config.json');
+                }
+              });
             });
-          });
-        }, 1000);
+          }, 1000);
 
-      }, error => {}
-    );
-    this.registerListeners();
+        }, error => {}
+      );
+      this.registerListeners();
+    });
   }
 
   private async redoIntro() {
     setTimeout(() => {
-      this.storage.get('all_tutorial_steps').then((steps) => {
+      this.storage.get('all_tutorial_steps_' + this.language ).then((steps) => {
         if (steps !== undefined && steps !== null) {
           this.tutorialSteps = steps;
           this.intro();
@@ -118,7 +125,7 @@ export class TutorialService {
     if (i) {
       this.tutorialSteps[i].alreadySeen = true;
     }
-    this.storage.set('all_tutorial_steps', this.tutorialSteps);
+    this.storage.set('all_tutorial_steps_' + this.language, this.tutorialSteps);
   }
 
   canBeSeen(step, page) {
@@ -169,7 +176,7 @@ export class TutorialService {
     for (const i in this.tutorialSteps) {
       const step = this.tutorialSteps[i];
       this.tutorialSteps[i].alreadySeen = false;
-      this.storage.set('all_tutorial_steps', this.tutorialSteps);
+      this.storage.set('all_tutorial_steps_' + this.language, this.tutorialSteps);
 
     }
     this.storage.set('tutorial-done', false);

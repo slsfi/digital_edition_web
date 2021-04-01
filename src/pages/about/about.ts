@@ -5,6 +5,7 @@ import { ConfigService } from '@ngx-config/core';
 
 import {  } from '../../pages/content/content';
 import { LanguageService } from '../../app/services/languages/language.service';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 
 /**
  * A page with information concerning: Topelius, this application etc.
@@ -34,7 +35,8 @@ export class AboutPage {
     public translate: TranslateService,
     public languageService: LanguageService,
     private viewctrl: ViewController,
-    private events: Events
+    private events: Events,
+    private analyticsService: AnalyticsService
   ) {
     this.aboutPages = this.config.getSettings('staticPages.about');
     this.enableLanguageChanges = this.config.getSettings('i18n.enableLanguageChanges');
@@ -63,8 +65,7 @@ export class AboutPage {
   }
 
   ionViewDidEnter() {
-    (<any>window).ga('set', 'page', 'About');
-    (<any>window).ga('send', 'pageview');
+    this.analyticsService.doPageView('About');
   }
 
   changeLanguage() {

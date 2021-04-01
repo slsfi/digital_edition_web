@@ -30,7 +30,7 @@ export class TitlePage {
   errorMessage: any;
   mdContent: string;
   lang = 'sv';
-  hasMDTitle = false;
+  hasMDTitle = '';
   hasDigitalEditionListChildren = false;
   childrenPdfs = [];
   protected id: string;
@@ -67,8 +67,9 @@ export class TitlePage {
     try {
       this.hasMDTitle = this.config.getSettings('ProjectStaticMarkdownTitleFolder');
     } catch (e) {
-      this.hasMDTitle = false;
+      this.hasMDTitle = '';
     }
+
     this.lang = this.config.getSettings('i18n.locale');
     this.events.subscribe('language:change', () => {
       this.langService.getLanguage().subscribe((lang) => {
@@ -77,25 +78,27 @@ export class TitlePage {
       });
     });
 
-    // Check if not a Number
-    let idNaN = isNaN(Number(this.id));
-    if ( this.id === null || this.id === 'null' ) {
-      idNaN = true;
-    }
-
-    // idNaN === false, id is a number
-    if ( idNaN === false ) {
-      this.checkIfCollectionHasChildrenPdfs();
-    }
-
-    // idNaN === false, id is a number
-    if ( idNaN === false ) {
-      if (this.hasMDTitle) {
-        this.getMdContent(`${this.lang}-${this.hasMDTitle}-${this.id}`);
+    this.langService.getLanguage().subscribe((lang) => {
+      // Check if not a Number
+      let idNaN = isNaN(Number(this.id));
+      if ( this.id === null || this.id === 'null' ) {
+        idNaN = true;
       }
-    } else {
-      this.getMdContent(`${this.lang}-gallery-intro`);
-    }
+
+      // idNaN === false, id is a number
+      if ( idNaN === false ) {
+        this.checkIfCollectionHasChildrenPdfs();
+      }
+
+      // idNaN === false, id is a number
+      if ( idNaN === false ) {
+        if (this.hasMDTitle !== '') {
+          this.getMdContent(`${lang}-${this.hasMDTitle}-${this.id}`);
+        }
+      } else {
+        this.getMdContent(`${lang}-gallery-intro`);
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -132,7 +135,6 @@ export class TitlePage {
   }
 
   getMdContent(fileID: string) {
-    console.log('fileID'  + fileID);
     this.mdContentService.getMdContent(fileID)
         .subscribe(
             text => { this.mdContent = text.content; },
@@ -142,23 +144,24 @@ export class TitlePage {
 
   getTocRoot(id: string) {
     if ( id === 'mediaCollections' || id === undefined ) {
-      return [{}];
-    }
-    this.tableOfContentsService.getTableOfContents(id)
-    .subscribe(
-        tocItems => {
-          tocItems.titleSelected = this.titleSelected;
-          this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId, 'caller':  'title'});
-          this.storage.set('toc_' + id, tocItems);
+      this.events.publish('tableOfContents:loaded', {tocItems: this.collection, searchTocItem: false});
+    } else {
+      this.tableOfContentsService.getTableOfContents(id)
+      .subscribe(
+          tocItems => {
+            tocItems.titleSelected = this.titleSelected;
+            this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId, 'caller':  'title'});
         },
-      error =>  {this.errorMessage = <any>error});
+        error =>  {this.errorMessage = <any>error});
+    }
+
   }
 
   ionViewDidLoad() {
     this.getTocRoot(this.params.get('collectionID'));
-    this.events.publish('pageLoaded:title');
-    if (!isNaN(Number(this.id))) {
-      if (!this.hasMDTitle) {
+    const isIdText = isNaN(Number(this.id));
+    if (this.hasMDTitle === '') {
+      if (isIdText === false) {
         this.langService.getLanguage().subscribe(lang => {
           this.textService.getTitlePage(this.id, lang).subscribe(
             res => {
@@ -173,23 +176,35 @@ export class TitlePage {
             }
           );
         });
+      }
+    } else {
+      if (isIdText === false) {
+        this.langService.getLanguage().subscribe(lang => {
+          const fileID = `${lang}-${this.hasMDTitle}-${this.id}`;
+          this.mdService.getMdContent(fileID).subscribe(
+            res => {
+              // in order to get id attributes for tooltips
+              this.mdContent = res.content;
+            },
+            error => {
+              this.errorMessage = <any>error;
+            }
+          );
+        });
       } else {
-        if (isNaN(Number(this.id))) {
-          this.langService.getLanguage().subscribe(lang => {
-            const fileID = lang + '-08';
-            this.hasMDTitle = true;
-            this.mdService.getMdContent(fileID).subscribe(
-              res => {
-                // in order to get id attributes for tooltips
-                this.mdContent = res.content;
+        this.langService.getLanguage().subscribe(lang => {
+          this.mdContentService.getMdContent(`${lang}-gallery-intro`)
+          .subscribe(
+              text => {
+                 this.mdContent = text.content;
               },
-              error => {
-                this.errorMessage = <any>error;
+              error =>  {
+                this.errorMessage = <any>error
               }
-            );
-          });
-        }
+          );
+        });
       }
     }
+    this.events.publish('pageLoaded:title');
   }
 }

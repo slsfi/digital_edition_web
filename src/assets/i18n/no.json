@@ -16,7 +16,9 @@
       "Home": "Forside",
       "Read": "Les",
       "Info": "Utgave",
-      "Music": "Musik"
+      "Music": "Musik",
+      "SimpleSearch": "Sök",
+      "AdvancedSearch": "Sök"
   },
   "Tabs": {
       "Home": "Hem",
@@ -154,7 +156,8 @@
       "place-register": "Platsregister ",
       "tag-register": "Ämnesord",
       "verk": "Verkregister",
-      "sort-by": "Sortera enligt"
+      "sort-by": "Sortera enligt",
+      "infotext":""
   },
   "Occurrences": {
       "Title": "Förekomster",

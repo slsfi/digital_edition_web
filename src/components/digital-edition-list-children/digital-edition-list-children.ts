@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { ConfigService } from '@ngx-config/core';
 import { App } from 'ionic-angular';
 
@@ -26,7 +27,8 @@ export class DigitalEditionListChildrenComponent {
   constructor(
     private app: App,
     private userSettingsService: UserSettingsService,
-    private config: ConfigService
+    private config: ConfigService,
+    private analyticsService: AnalyticsService
   ) {
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.projectMachineName = this.config.getSettings('app.machineName');
@@ -78,13 +80,13 @@ export class DigitalEditionListChildrenComponent {
           this.collectionDownloads['pdf'][collection.collectionId].title + '/' +
           this.collectionDownloads['pdf'][collection.collectionId].title;
         const ref = window.open(dURL);
-        this.doAnalytics('Download', 'PDF', this.collectionDownloads['pdf'][collection.id]);
+        this.analyticsService.doAnalyticsEvent('Download', 'PDF', this.collectionDownloads['pdf'][collection.id]);
       } else if (collection.collectionId in this.collectionDownloads['epub'] && type === 'epub') {
         const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + collection.collectionId + '/epub/' +
           this.collectionDownloads['epub'][collection.collectionId].title + '/' +
           this.collectionDownloads['epub'][collection.collectionId].title;
         const ref = window.open(dURL);
-        this.doAnalytics('Download', 'EPUB', this.collectionDownloads['epub'][collection.collectionId]);
+        this.analyticsService.doAnalyticsEvent('Download', 'EPUB', this.collectionDownloads['epub'][collection.collectionId]);
       }
     }
   }
@@ -112,23 +114,11 @@ export class DigitalEditionListChildrenComponent {
     if (event && event.stopPropagation) {
       event.stopPropagation();
     }
-    this.doAnalytics('Download', 'PDF', edition.pdfFile);
+    this.analyticsService.doAnalyticsEvent('Download', 'PDF', edition.pdfFile);
     const isChildPdf = true;
     const dURL = this.apiEndPoint + '/' + this.projectMachineName + '/files/' + this.collectionID + '/pdf/' +
     edition.pdfFile + '/' + isChildPdf;
     const ref = window.open(dURL, '_self', 'location=no');
-  }
-
-  doAnalytics( action, type, name ) {
-    try {
-      (<any>window).ga('send', 'event', {
-        eventCategory: action,
-        eventLabel: type,
-        eventAction: name,
-        eventValue: 10
-      });
-    } catch ( e ) {
-    }
   }
 
   showPDF(edition) {

@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { MdContentService } from '../../app/services/md/md-content.service';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 
 /**
  * Generated class for the MusicPage page.
@@ -41,7 +42,8 @@ export class MusicPage {
     private events: Events,
     private mdContentService: MdContentService,
     private userSettingsService: UserSettingsService,
-    private navParams: NavParams
+    private navParams: NavParams,
+    private analyticsService: AnalyticsService
   ) {
     this.appMachineName = this.config.getSettings('app.machineName');
     this.userSettingsService.temporarilyHideSplitPane();
@@ -69,8 +71,7 @@ export class MusicPage {
   }
 
   ionViewDidEnter() {
-    (<any>window).ga('set', 'page', 'music');
-    (<any>window).ga('send', 'pageview');
+    this.analyticsService.doPageView('music');
   }
 
   ionViewWillLeave() {

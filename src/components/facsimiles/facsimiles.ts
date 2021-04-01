@@ -9,6 +9,7 @@ import { ConfigService } from '@ngx-config/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SongService } from '../../app/services/song/song.service';
 import { IfObservable } from 'rxjs/observable/IfObservable';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 
 /**
  * Generated class for the FacsimilesComponent component.
@@ -71,7 +72,8 @@ export class FacsimilesComponent {
     protected events: Events,
     private viewctrl: ViewController,
     private platform: Platform,
-    public songService: SongService
+    public songService: SongService,
+    private analyticsService: AnalyticsService
   ) {
     this.deRegisterEventListeners();
     this.registerEventListeners();
@@ -115,15 +117,7 @@ export class FacsimilesComponent {
   }
 
   doAnalytics() {
-    try {
-      (<any>window).ga('send', 'event', {
-        eventCategory: 'Facsimiles',
-        eventLabel: 'Facsimiles',
-        eventAction: this.selectedFacsimile.title,
-        eventValue: 10
-      });
-    } catch ( e ) {
-    }
+    this.analyticsService.doAnalyticsEvent('Facsimiles', 'Facsimiles', this.selectedFacsimile.title);
   }
 
   ngOnInit() {
@@ -378,7 +372,7 @@ export class FacsimilesComponent {
   openZoom() {
     let modal = null;
     let params: object;
-    this.facsSize = 4;
+    this.facsSize = this.facsimileDefaultZoomLevel;
 
     if (this.facsimilePagesInfinite) {
       // TODO: images array contains 0 index that is invalid since page numbers are 1 based.

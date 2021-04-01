@@ -4,6 +4,7 @@ import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate
 import { ViewController, Events, NavParams } from 'ionic-angular';
 import { ConfigService } from '@ngx-config/core';
 import { ReadPopoverService, Fontsize } from '../../app/services/settings/read-popover.service';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 
 /**
  * This is a popover accessed in ReadPage.
@@ -53,7 +54,8 @@ export class ReadPopoverPage {
     public readPopoverService: ReadPopoverService,
     public translate: TranslateService,
     private events: Events,
-    public params: NavParams
+    public params: NavParams,
+    private analyticsService: AnalyticsService
   ) {
     const toggles = this.params.get('toggles');
     this.readToggles = this.config.getSettings('settings.readToggles');
@@ -201,14 +203,6 @@ export class ReadPopoverPage {
   }
 
   doAnalytics(type) {
-    try {
-      (<any>window).ga('send', 'event', {
-        eventCategory: 'Read-Settings',
-        eventLabel: 'Read-Settings - ' + type,
-        eventAction: type,
-        eventValue: 10
-      });
-    } catch ( e ) {
-    }
+    this.analyticsService.doAnalyticsEvent('Read-Settings', 'Read-Settings - ' + type, String(type));
   }
 }

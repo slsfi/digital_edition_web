@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, Events } from 'ionic-angular';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 
 /**
@@ -42,7 +43,8 @@ export class FacsimileZoomModalPage {
               public navCtrl: NavController,
               public navParams: NavParams,
               private events: Events,
-              private userSettingsService: UserSettingsService) {
+              private userSettingsService: UserSettingsService,
+              private analyticsService: AnalyticsService) {
     this.manualPageNumber = 1;
     this.backsides = [];
   }
@@ -100,20 +102,11 @@ export class FacsimileZoomModalPage {
   }
 
   ionViewDidEnter() {
-    (<any>window).ga('set', 'page', 'Facsimile-zoom');
-    (<any>window).ga('send', 'pageview');
+    this.analyticsService.doPageView('Facsimile-zoom');
   }
 
   doAnalytics(name) {
-    try {
-      (<any>window).ga('send', 'event', {
-        eventCategory: 'Facsimile-zoom',
-        eventLabel: 'image',
-        eventAction: name,
-        eventValue: 10
-      });
-    } catch (e) {
-    }
+    this.analyticsService.doAnalyticsEvent('Facsimile-zoom', 'Facsimile-zoom', String(name));
   }
 
   previous() {

@@ -1,4 +1,3 @@
-<br><br>
 <div *ngIf="layoutType == 'auto' && show">
   <ion-grid *ngIf="userSettingsService.isDesktop() && !userSettingsService.isTablet()">
       <ion-row>
@@ -10,7 +9,7 @@
                 </ion-card-header>
                 <ion-card-content style="padding-top: 35px;">
                     <div class="title-area" style="background-color: white; text-align: center;">
-                        <h2>{{edition.title}}</h2>
+                        <h2>{{ ('TOC-translation.' + edition.title | translate) !== 'TOC-translation.' + edition.title  ?  ('TOC-translation.' + edition.title | translate) : edition.title }}</h2>
                         <div class="book_download_container" *ngIf="edition.isDownload">
                           <div class="download_link"><p class="download_pdf" *ngIf="edition['pdf']" (click)="downloadBook($event, edition, 'pdf')">PDF</p></div>
                           <div class="download_link"><p class="download_epub" *ngIf="edition['epub']" (click)="downloadBook($event, edition, 'epub')">EPUB</p></div>
@@ -31,7 +30,7 @@
               </ion-card-header>
               <ion-card-content style="padding-top: 35px;">
                   <div style="background-color: white; text-align: center;">
-                    <h2>{{edition.title}}</h2>
+                    <h2>{{ ('TOC-translation.' + edition.title | translate) !== 'TOC-translation.' + edition.title  ?  ('TOC-translation.' + edition.title | translate) : edition.title }}</h2>
                     <div class="book_download_container" *ngIf="edition.isDownload">
                         <div class="download_link"><p class="download_pdf" *ngIf="edition['pdf']" (click)="downloadBook($event, edition, 'pdf')">PDF</p></div>
                         <div class="download_link"><p class="download_epub" *ngIf="edition['epub']" (click)="downloadBook($event, edition, 'epub')">EPUB</p></div>
@@ -50,7 +49,7 @@
                 <ion-thumbnail item-left>
                   <img src="{{edition.thumbnail}}">
                 </ion-thumbnail>
-                <h2>{{edition.title}}</h2>
+                <h2>{{ ('TOC-translation.' + edition.title | translate) !== 'TOC-translation.' + edition.title  ?  ('TOC-translation.' + edition.title | translate) : edition.title }}</h2>
                 <div class="book_download_container" *ngIf="edition.isDownload">
                   <div class="download_link"><p class="download_pdf" *ngIf="edition['pdf']" (click)="downloadBook($event, edition, 'pdf')">PDF</p></div>
                   <div class="download_link"><p class="download_epub" *ngIf="edition['epub']" (click)="downloadBook($event, edition, 'epub')">EPUB</p></div>
@@ -73,7 +72,7 @@
                   </ion-card-header>
                   <ion-card-content style="padding-top: 35px;">
                       <div style="background-color: white; text-align: center;">
-                        <h2>{{edition.title}}</h2>
+                        <h2>{{ ('TOC-translation.' + edition.title | translate) !== 'TOC-translation.' + edition.title  ?  ('TOC-translation.' + edition.title | translate) : edition.title }}</h2>
                         <div class="book_download_container" *ngIf="edition.isDownload">
                           <div class="download_link"><p class="download_pdf" *ngIf="edition['pdf']" (click)="downloadBook($event, edition, 'pdf')">PDF</p></div>
                           <div class="download_link"><p class="download_epub" *ngIf="edition['epub']" (click)="downloadBook($event, edition, 'epub')">EPUB</p></div>

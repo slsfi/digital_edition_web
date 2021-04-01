@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { IonicPage, NavController, LoadingController, NavParams, Events } from 'ionic-angular';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { PdfService } from '../../app/services/pdf/pdf.service';
 
 /**
@@ -34,7 +35,8 @@ export class PdfPage {
     private loadingCtrl: LoadingController,
     private params: NavParams,
     public pdfService: PdfService,
-    private events: Events
+    private events: Events,
+    private analyticsService: AnalyticsService
   ) {
     this.collectionId = this.params.get('collectionId');
     this.facsimileId = this.params.get('facsimileId');
@@ -45,12 +47,7 @@ export class PdfPage {
     this.events.subscribe('open:pdf', ( p: any ) => {
       const facsimileId = p['facsimileId'];
       this.title = this.pdfService.getPdfDetails(facsimileId).title;
-      try {
-        (<any>window).ga('set', 'page', 'PDF - ' + this.title);
-        (<any>window).ga('send', 'pageview');
-      } catch ( e ) {
-
-      }
+      this.analyticsService.doPageView('PDF - ' + this.title);
     });
     this.events.publish('pdfview:open', {'isOpen': true});
   }
@@ -69,8 +66,7 @@ export class PdfPage {
   }
 
   ionViewDidEnter() {
-    (<any>window).ga('set', 'page', 'PDF');
-    (<any>window).ga('send', 'pageview');
+    this.analyticsService.doPageView('PDF');
   }
 
   ionViewDidLoad() {
@@ -78,8 +74,7 @@ export class PdfPage {
     this.loading = this.loadingCtrl.create({
       content: 'Laddar ' + this.title
     });
-    (<any>window).ga('set', 'page', 'PDF - ' + this.title);
-    (<any>window).ga('send', 'pageview');
+    this.analyticsService.doPageView('PDF - ' + this.title);
     this.loading.present();
   }
 

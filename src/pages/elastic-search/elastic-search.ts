@@ -15,6 +15,7 @@ import { Storage } from '@ionic/storage'
 import { UserSettingsService } from '../../app/services/settings/user-settings.service'
 import { ElasticSearchService } from '../../app/services/elastic-search/elastic-search.service'
 import { noUndefined } from '@angular/compiler/src/util'
+import { AnalyticsService } from '../../app/services/analytics/analytics.service'
 
 /*
 
@@ -122,7 +123,8 @@ export class ElasticSearchPage {
     private toastCtrl: ToastController,
     private userSettingsService: UserSettingsService,
     private events: Events,
-    private cf: ChangeDetectorRef
+    private cf: ChangeDetectorRef,
+    private analyticsService: AnalyticsService
   ) {
     console.log('constructing elastic search');
 
@@ -208,12 +210,7 @@ export class ElasticSearchPage {
   }
 
   ionViewDidEnter() {
-    try {
-      (<any>window).ga('set', 'page', 'Elastic Search')
-      (<any>window).ga('send', 'pageview')
-    } catch ( e ) {
-
-    }
+    this.analyticsService.doPageView('Elastic Search');
   }
 
   ionViewWillLeave() {
@@ -466,15 +463,7 @@ export class ElasticSearchPage {
   }
 
   analyticsEvent(type, term) {
-    try {
-      (<any>window).ga('send', 'event', {
-        eventCategory: 'Search',
-        eventLabel: 'ElasticSearch - ' + type,
-        eventAction: String(term),
-        eventValue: 10
-      });
-    } catch ( e ) {
-    }
+    this.analyticsService.doAnalyticsEvent('Search', 'ElasticSearch - ' + type, String(term));
   }
 
   /**

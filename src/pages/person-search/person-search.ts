@@ -14,6 +14,7 @@ import { Storage } from '@ionic/storage';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { OccurrencesPage } from '../occurrences/occurrences';
 import { TranslateService } from '@ngx-translate/core';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 
 /**
  * Generated class for the PersonSearchPage page.
@@ -88,7 +89,8 @@ export class PersonSearchPage {
               private toastCtrl: ToastController,
               private userSettingsService: UserSettingsService,
               private events: Events,
-              private cf: ChangeDetectorRef
+              private cf: ChangeDetectorRef,
+              private analyticsService: AnalyticsService
   ) {
     const type = this.navParams.get('type') || null;
     this.filterYear = null;
@@ -154,8 +156,7 @@ export class PersonSearchPage {
   }
 
   ionViewDidEnter() {
-    (<any>window).ga('set', 'page', 'Subjects');
-    (<any>window).ga('send', 'pageview');
+    this.analyticsService.doPageView('Subjects');
   }
 
   ionViewWillLeave() {
@@ -217,7 +218,7 @@ export class PersonSearchPage {
             const combining = /[\u0300-\u036F]/g;
             element['sortBy'] = element['sortBy'].normalize('NFKD').replace(combining, '').replace(',', '');
           }
-          if ( this.subType !== '' && this.subType !== null && element['object_type'] !== this.subType ) {
+          if ( this.subType !== '' && this.subType !== null && element['type'] !== this.subType ) {
           } else {
             let found = false;
             this.persons.forEach(pers => {

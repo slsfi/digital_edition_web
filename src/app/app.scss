@@ -517,18 +517,28 @@ ion-menu {
   }
   &#contentMenu .simple-accordion-options ion-list.accordion-menu > ion-item.item {
     padding-left: 32px;
+    border-left: 4px;
   }
-  &#contentMenu .simple-accordion-options .recursive-suboptions > ion-item.item,
-  &#contentMenu .simple-accordion-options .recursive-suboptions ion-list.accordion-menu > ion-item.item {
-    padding-left: 52px;
+
+  &#contentMenu .simple-accordion-options div.sub-option > ion-item.item,
+  &#contentMenu .simple-accordion-options div.sub-option ion-list.accordion-menu > ion-item.item {
+    padding-left: 32px;
   }
-  &#contentMenu .simple-accordion-options .recursive-suboptions .recursive-suboptions > ion-item.item,
-  &#contentMenu .simple-accordion-options .recursive-suboptions .recursive-suboptions ion-list.accordion-menu > ion-item.item {
-    padding-left: 72px;
+
+  &#contentMenu .simple-accordion-options.recursive-suboptions > ion-item.item,
+  &#contentMenu .simple-accordion-options.recursive-suboptions ion-list.accordion-menu > ion-item.item {
+     padding-left: 52px;
   }
-  &#contentMenu .simple-accordion-options .recursive-suboptions .recursive-suboptions .recursive-suboptions > ion-item.item,
-  &#contentMenu .simple-accordion-options .recursive-suboptions .recursive-suboptions .recursive-suboptions ion-list.accordion-menu > ion-item.item {
-    padding-left: 92px;
+  &#contentMenu .simple-accordion-options.recursive-suboptions.recursive-suboptions > ion-item.item,
+  &#contentMenu .simple-accordion-options.recursive-suboptions.recursive-suboptions ion-list.accordion-menu > ion-item.item {
+     padding-left: 72px;
+  }
+  &#contentMenu .simple-accordion-options.recursive-suboptions.recursive-suboptions.recursive-suboptions > ion-item.item,
+  &#contentMenu .simple-accordion-options.recursive-suboptions.recursive-suboptions.recursive-suboptions ion-list.accordion-menu > ion-item.item {
+     padding-left: 92px;
+  }
+  &#contentMenu ion-list.accordion-menu.simple-accordion-options.sub-option > ion-item.item {
+     padding-left: 32px;
   }
 }
 

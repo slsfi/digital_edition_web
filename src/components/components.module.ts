@@ -25,6 +25,7 @@ import { IllustrationsComponent } from './illustrations/illustrations';
 import { TableOfContentLetterFilterComponent } from './table-of-content-letter-filter/table-of-content-letter-filter';
 import { DateHistogram } from './date-histogram/date-histogram';
 import { LanguageService } from '../app/services/languages/language.service';
+import { MathJaxComponent } from './math-jax/math-jax';
 
 
 export function createTranslateLoader(http: HttpClient) {
@@ -51,6 +52,7 @@ export function createTranslateLoader(http: HttpClient) {
     IllustrationsComponent,
     TableOfContentLetterFilterComponent,
     DateHistogram,
+    MathJaxComponent,
   ],
   imports: [
     IonicModule,
@@ -85,6 +87,7 @@ export function createTranslateLoader(http: HttpClient) {
     IllustrationsComponent,
     TableOfContentLetterFilterComponent,
     DateHistogram,
+    MathJaxComponent,
   ],
   providers: [
     UserSettingsService,

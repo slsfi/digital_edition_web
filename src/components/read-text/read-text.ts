@@ -8,7 +8,7 @@ import { ToastController, Events, ModalController } from 'ionic-angular';
 import { IllustrationPage } from '../../pages/illustration/illustration';
 import { ConfigService } from '@ngx-config/core';
 import { TextCacheService } from '../../app/services/texts/text-cache.service';
-
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 /**
  * Generated class for the ReadTextComponent component.
  *
@@ -42,7 +42,8 @@ export class ReadTextComponent {
     private renderer: Renderer,
     private elementRef: ElementRef,
     private config: ConfigService,
-    protected modalController: ModalController
+    protected modalController: ModalController,
+    private analyticsService: AnalyticsService
   ) {
     this.appMachineName = this.config.getSettings('app.machineName');
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
@@ -127,7 +128,6 @@ export class ReadTextComponent {
         }
 
         if (posId) {
-          console.log('Attempting to scrolling to ' + posId);
           let target = document.getElementsByName('' + posId + '')[0] as HTMLAnchorElement;
           if (target && ((target.parentElement && target.parentElement.classList.length !== 0 &&
             target.parentElement.classList.contains('ttFixed')) ||
@@ -330,14 +330,6 @@ export class ReadTextComponent {
   }
 
   doAnalytics() {
-    try {
-      (<any>window).ga('send', 'event', {
-        eventCategory: 'Established',
-        eventLabel: 'Established',
-        eventAction: this.link,
-        eventValue: 10
-      });
-    } catch ( e ) {
-    }
+    this.analyticsService.doAnalyticsEvent('Established', 'Established', String(this.link));
   }
 }

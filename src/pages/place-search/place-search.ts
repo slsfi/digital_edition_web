@@ -12,6 +12,7 @@ import { Storage } from '@ionic/storage';
 import { FilterPage } from '../filter/filter';
 import { OccurrencesPage } from '../occurrences/occurrences';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 
 /**
  * Generated class for the PlaceSearchPage page.
@@ -78,7 +79,8 @@ export class PlaceSearchPage {
               public modalCtrl: ModalController,
               public viewCtrl: ViewController,
               private userSettingsService: UserSettingsService,
-              private cf: ChangeDetectorRef
+              private cf: ChangeDetectorRef,
+              private analyticsService: AnalyticsService
   ) {
     this.langService.getLanguage().subscribe((lang) => {
       this.appName = this.config.getSettings('app.name.' + lang);
@@ -103,8 +105,7 @@ export class PlaceSearchPage {
   }
 
   ionViewDidEnter() {
-    (<any>window).ga('set', 'page', 'Places');
-    (<any>window).ga('send', 'pageview');
+    this.analyticsService.doPageView('Places');
   }
 
   async getPlaces() {

@@ -17,7 +17,9 @@
   "TopMenu": {
       "Home": "Home",
       "Read": "Content",
-      "Info": "About"
+      "Info": "About",
+      "SimpleSearch": "Search",
+      "AdvancedSearch": "Advanced Search"
   },
   "Tabs": {
       "Home": "Home",
@@ -153,7 +155,8 @@
       "place-register": "Places ",
       "tag-register": "Subjects/Tags",
       "verk": "Works",
-      "sort-by": "Sort by"
+      "sort-by": "Sort by",
+      "infotext":""
   },
   "Filter":{
     "personTypes": "Personkategori",

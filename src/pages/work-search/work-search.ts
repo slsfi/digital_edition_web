@@ -12,6 +12,7 @@ import { Storage } from '@ionic/storage';
 import { FilterPage } from '../filter/filter';
 import { OccurrencesPage } from '../occurrences/occurrences';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 
 /**
  * Generated class for the worksearchPage page.
@@ -75,7 +76,8 @@ export class WorkSearchPage {
               public modalCtrl: ModalController,
               private userSettingsService: UserSettingsService,
               private events: Events,
-              private cf: ChangeDetectorRef
+              private cf: ChangeDetectorRef,
+              private analyticsService: AnalyticsService
   ) {
     this.langService.getLanguage().subscribe((lang) => {
       this.appName = this.config.getSettings('app.name.' + lang);
@@ -85,8 +87,7 @@ export class WorkSearchPage {
   }
 
   ionViewDidEnter() {
-    (<any>window).ga('set', 'page', 'Works');
-    (<any>window).ga('send', 'pageview');
+    this.analyticsService.doPageView('Works');
   }
 
   ionViewDidLeave() {

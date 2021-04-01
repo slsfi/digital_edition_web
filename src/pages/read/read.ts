@@ -38,6 +38,7 @@ import { OccurrenceResult } from '../../app/models/occurrence.model';
 import { SearchAppPage } from '../search-app/search-app';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 
 /**
  * A page used for reading publications.
@@ -199,7 +200,8 @@ export class ReadPage /*implements OnDestroy*/ {
     public semanticDataService: SemanticDataService,
     private userSettingsService: UserSettingsService,
     public publicationCacheService: PublicationCacheService,
-    private socialSharing: SocialSharing
+    private socialSharing: SocialSharing,
+    private analyticsService: AnalyticsService
   ) {
     this.isCached();
     this.searchResult = null;
@@ -363,8 +365,7 @@ export class ReadPage /*implements OnDestroy*/ {
   }
   ionViewDidEnter() {
     this.events.publish('help:continue');
-    (<any>window).ga('set', 'page', 'Read');
-    (<any>window).ga('send', 'pageview');
+    this.analyticsService.doPageView('Read');
   }
 
   getAdditionalParams() {
@@ -1332,6 +1333,11 @@ export class ReadPage /*implements OnDestroy*/ {
       const elt = target[i] as HTMLElement;
       if ( elt.getAttribute('data-id') === id ) {
         foundElem = elt.innerHTML;
+        // MathJx problem with resolving the actual formula, not the translated formula.
+        if ( elt.lastChild.nodeName === 'SCRIPT' ) {
+          const tmpElem = <HTMLElement> elt.lastChild;
+          foundElem = '$' + tmpElem.innerHTML + '$';
+        }
         break;
       }
     }
