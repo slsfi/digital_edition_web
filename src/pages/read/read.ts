@@ -973,19 +973,22 @@ export class ReadPage /*implements OnDestroy*/ {
         }
 
         if (targetId && targetColumnId) {
+
+
+
           // Find the containing scrollable element
           let containerElem = anchorElem.parentElement;
           let counter = 0;
-          while (containerElem !== null &&
-          !(containerElem.classList.contains('scroll-content') &&
-          containerElem.parentElement.tagName === 'ION-SCROLL')) {
+          while (containerElem !== null && containerElem.parentElement !== null &&
+           !(containerElem.classList.contains('scroll-content') &&
+           containerElem.parentElement.tagName === 'ION-SCROLL')) {
             counter++;
             containerElem = containerElem.parentElement;
             console.log('Counter: ' + counter);
           }
           console.log(containerElem);
           console.log(containerElem.parentElement.tagName);
-          
+
           if (containerElem !== null) {
             let dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
             if (anchorElem.classList.contains('teiVariant')) {
