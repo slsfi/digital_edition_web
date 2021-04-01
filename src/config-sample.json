@@ -497,5 +497,23 @@
             }
         }
     },
-    "OpenCollectionFromToc": true
+    "OpenCollectionFromToc": true,
+    "siteMetaData": {
+      "keywords": "Digital Edition",
+      "description": "A Platform for Digital Editions",
+      "website": {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "sls.fi",
+        "alternateName": "Svenska litteratursällskapet i Finland",
+        "url": "https://www.sls.fi",
+        "sameAs": ["", ""]
+      },
+      "organization": {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "url":"https://www.sls.fi",
+        "logo":"https://granska-topelius.sls.fi/assets/images/logo.svg"
+      }
+    }
 }

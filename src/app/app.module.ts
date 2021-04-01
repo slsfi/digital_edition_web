@@ -11,8 +11,6 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 
 import { DigitalEditionsApp } from './app.component';
 
-
-
 import { ReadPopoverPage } from '../pages/read-popover/read-popover';
 import { CommentModalPage } from '../pages/comment-modal/comment-modal';
 import { SemanticDataModalPage } from '../pages/semantic-data-modal/semantic-data-modal';
@@ -60,6 +58,7 @@ import * as Sentry from '@sentry/browser';
 import { GalleryService } from './services/gallery/gallery.service';
 import { MathJaxModule } from '../components/math-jax/math-jax.module';
 import { AnalyticsService } from './services/analytics/analytics.service';
+import { MetadataService } from './services/metadata/metadata.service';
 
 
 Sentry.init({
@@ -155,7 +154,8 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
     TutorialService,
     GalleryService,
     { provide: ErrorHandler, useClass: ErrorHandler },
-    AnalyticsService
+    AnalyticsService,
+    MetadataService
   ],
   bootstrap: [IonicApp],
   entryComponents: [

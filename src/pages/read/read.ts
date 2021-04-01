@@ -39,6 +39,7 @@ import { SearchAppPage } from '../search-app/search-app';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
+import { MetadataService } from '../../app/services/metadata/metadata.service';
 
 /**
  * A page used for reading publications.
@@ -201,7 +202,8 @@ export class ReadPage /*implements OnDestroy*/ {
     private userSettingsService: UserSettingsService,
     public publicationCacheService: PublicationCacheService,
     private socialSharing: SocialSharing,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    private metadataService: MetadataService
   ) {
     this.isCached();
     this.searchResult = null;
@@ -1069,6 +1071,13 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   ionViewWillEnter() {
+
+    // Try to remove META-Tags
+    this.metadataService.clearHead();
+    // Add the new META-Tags
+    this.metadataService.addDescription(this.constructor.name);
+    this.metadataService.addKeywords();
+
     this.events.publish('ionViewWillEnter', this.constructor.name);
     this.events.publish('musicAccordion:reset', true);
 

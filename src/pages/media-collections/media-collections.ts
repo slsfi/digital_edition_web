@@ -6,6 +6,7 @@ import { ConfigService } from '@ngx-config/core';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { TranslateService } from '@ngx-translate/core/src/translate.service';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
+import { MetadataService } from '../../app/services/metadata/metadata.service';
 
 @IonicPage({
   name: 'media-collections',
@@ -46,7 +47,8 @@ export class MediaCollectionsPage {
     public languageService: LanguageService,
     public translate: TranslateService,
     public cdRef: ChangeDetectorRef,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    private metadataService: MetadataService
   ) {
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.projectMachineName = this.config.getSettings('app.machineName');
@@ -246,6 +248,12 @@ export class MediaCollectionsPage {
     this.events.publish('ionViewWillLeave', this.constructor.name);
   }
   ionViewWillEnter() {
+    // Try to remove META-Tags
+    this.metadataService.clearHead();
+    // Add the new META-Tags
+    this.metadataService.addDescription(this.constructor.name);
+    this.metadataService.addKeywords();
+
     this.events.publish('ionViewWillEnter', this.constructor.name);
     this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'title'});
     this.events.publish('SelectedItemInMenu', {
