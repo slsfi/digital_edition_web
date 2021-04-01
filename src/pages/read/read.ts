@@ -958,37 +958,38 @@ export class ReadPage /*implements OnDestroy*/ {
         let targetId = '';
         if (anchorElem.hasAttribute('href')) {
           targetId = anchorElem.getAttribute('href');
-        } else if (anchorElem.parentElement.hasAttribute('href')) {
+        } else if (anchorElem.parentElement && anchorElem.parentElement.hasAttribute('href')) {
           targetId = anchorElem.parentElement.getAttribute('href');
         }
 
-        let targetColumnId = '';
-        if (anchorElem.className.includes('targetColumnId_')) {
-          for (let i = 0; i < anchorElem.classList.length; i++) {
-            if (anchorElem.classList[i].startsWith('targetColumnId_')) {
-              targetColumnId = anchorElem.classList[i].replace('targetColumnId_', '');
-              console.log('targetColumnId: ' + targetColumnId);
+        if (targetId) {
+          let targetColumnId = '';
+          if (anchorElem.className.includes('targetColumnId_')) {
+            for (let i = 0; i < anchorElem.classList.length; i++) {
+              if (anchorElem.classList[i].startsWith('targetColumnId_')) {
+                targetColumnId = anchorElem.classList[i].replace('targetColumnId_', '');
+                console.log('targetColumnId: ' + targetColumnId);
+              }
             }
           }
-        }
 
-        if (targetId && targetColumnId) {
-          let containerElem = document.getElementById(targetColumnId);
-
-          /*
           // Find the containing scrollable element
-          containerElem = anchorElem.parentElement;
-          let counter = 0;
-          while (containerElem !== null && containerElem.parentElement !== null &&
-           !(containerElem.classList.contains('scroll-content') &&
-           containerElem.parentElement.tagName === 'ION-SCROLL')) {
-            counter++;
-            containerElem = containerElem.parentElement;
-            console.log('Counter: ' + counter);
+          let containerElem = null;
+          if (targetColumnId) {
+            containerElem = document.getElementById(targetColumnId);
+          } else {
+            containerElem = anchorElem.parentElement;
+            let counter = 0;
+            while (containerElem !== null && containerElem.parentElement !== null &&
+            !(containerElem.classList.contains('scroll-content') &&
+            containerElem.parentElement.tagName === 'ION-SCROLL')) {
+              counter++;
+              containerElem = containerElem.parentElement;
+              console.log('Counter: ' + counter);
+            }
+            console.log(containerElem);
+            console.log(containerElem.parentElement.tagName);
           }
-          console.log(containerElem);
-          console.log(containerElem.parentElement.tagName);
-          */
 
           if (containerElem !== null) {
             let dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
