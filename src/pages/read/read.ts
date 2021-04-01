@@ -973,11 +973,11 @@ export class ReadPage /*implements OnDestroy*/ {
         }
 
         if (targetId && targetColumnId) {
+          let containerElem = document.getElementById(targetColumnId);
 
-
-
+          /*
           // Find the containing scrollable element
-          let containerElem = anchorElem.parentElement;
+          containerElem = anchorElem.parentElement;
           let counter = 0;
           while (containerElem !== null && containerElem.parentElement !== null &&
            !(containerElem.classList.contains('scroll-content') &&
@@ -988,6 +988,7 @@ export class ReadPage /*implements OnDestroy*/ {
           }
           console.log(containerElem);
           console.log(containerElem.parentElement.tagName);
+          */
 
           if (containerElem !== null) {
             let dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
