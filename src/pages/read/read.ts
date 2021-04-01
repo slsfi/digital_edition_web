@@ -997,6 +997,7 @@ export class ReadPage /*implements OnDestroy*/ {
               // Link to (foot)note reference in variant
               dataIdSelector = '[id="' + String(targetId).replace('#', '') + '"]';
             }
+            console.log('DataIdSelector: ' + dataIdSelector);
             const target = containerElem.querySelector(dataIdSelector) as HTMLElement;
             if (target !== null) {
               this.scrollToHTMLElement(target, 'top');
@@ -1402,8 +1403,9 @@ export class ReadPage /*implements OnDestroy*/ {
         const columnId = containerElem.getAttribute('id');
 
         // Prepend the footnoteindicator to the the footnote text.
-        const footnoteWithIndicator: string = '<a class="xreference noteReference targetColumnId_' + columnId + '" href="#' + id + '">' +
-         triggerElem.textContent + '</a>' + '<p class="noteText">' + ttText  + '</p>';
+        const footnoteWithIndicator: string = '<a class="xreference noteReference teiVariant targetColumnId_' +
+         columnId + '" href="#' + id + '">' + triggerElem.textContent +
+         '</a>' + '<p class="noteText">' + ttText  + '</p>';
         const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
         this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
         return footNoteHTML;
