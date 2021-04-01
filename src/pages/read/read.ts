@@ -929,7 +929,6 @@ export class ReadPage /*implements OnDestroy*/ {
         if (eventTarget['classList'].contains('ttFoot') &&
          eventTarget['classList'].contains('teiVariant')) {
            // Footnote reference clicked in variant
-           console.log('Footnote id: ' + eventTarget.getAttribute('id'));
           this.showVariantFootnoteInfoOverlay(eventTarget.getAttribute('id'), eventTarget);
         }
       }
@@ -963,38 +962,40 @@ export class ReadPage /*implements OnDestroy*/ {
           targetId = anchorElem.parentElement.getAttribute('href');
         }
 
+        let targetColumnId = '';
         if (anchorElem.className.includes('targetColumnId_')) {
-          let targetColumnId = '';
           for (let i = 0; i < anchorElem.classList.length; i++) {
             if (anchorElem.classList[i].startsWith('targetColumnId_')) {
-              targetColumnId = anchorElem.classList[i];
-              targetColumnId = targetColumnId.replace('targetColumnId_', '');
-              console.log('targetColumnId ' + targetColumnId);
+              targetColumnId = anchorElem.classList[i].replace('targetColumnId_', '');
+              console.log('targetColumnId: ' + targetColumnId);
             }
           }
         }
 
-        // Find the containing scrollable element
-        let containerElem = anchorElem.parentElement;
-        let counter = 0;
-        while (containerElem !== null &&
-         !(containerElem.classList.contains('scroll-content') &&
-         containerElem.parentElement.tagName === 'ION-SCROLL')) {
-          counter++;
-          containerElem = containerElem.parentElement;
-          console.log('Counter: ' + counter);
-        }
-        console.log(containerElem);
-        console.log(containerElem.parentElement.tagName);
-        if (containerElem !== null) {
-          let dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
-          if (anchorElem.classList.contains('teiVariant')) {
-            // Link to (foot)note reference in variant
-            dataIdSelector = '[id="' + String(targetId).replace('#', '') + '"]';
+        if (targetId && targetColumnId) {
+          // Find the containing scrollable element
+          let containerElem = anchorElem.parentElement;
+          let counter = 0;
+          while (containerElem !== null &&
+          !(containerElem.classList.contains('scroll-content') &&
+          containerElem.parentElement.tagName === 'ION-SCROLL')) {
+            counter++;
+            containerElem = containerElem.parentElement;
+            console.log('Counter: ' + counter);
           }
-          const target = containerElem.querySelector(dataIdSelector) as HTMLElement;
-          if (target !== null) {
-            this.scrollToHTMLElement(target, 'top');
+          console.log(containerElem);
+          console.log(containerElem.parentElement.tagName);
+          
+          if (containerElem !== null) {
+            let dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
+            if (anchorElem.classList.contains('teiVariant')) {
+              // Link to (foot)note reference in variant
+              dataIdSelector = '[id="' + String(targetId).replace('#', '') + '"]';
+            }
+            const target = containerElem.querySelector(dataIdSelector) as HTMLElement;
+            if (target !== null) {
+              this.scrollToHTMLElement(target, 'top');
+            }
           }
         }
       }
@@ -1036,7 +1037,7 @@ export class ReadPage /*implements OnDestroy*/ {
             tooltipShown = true;
           } else if (toolTipsSettings.footNotes
             && eventTarget['classList'].contains('ttFoot')) {
-            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
             tooltipShown = true;
           }
         } else if ((toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges') && this.readPopoverService.show.changes) ||
@@ -1048,7 +1049,7 @@ export class ReadPage /*implements OnDestroy*/ {
           tooltipShown = true;
         } else if (eventTarget['classList'].contains('ttVariant')) {
           if (eventTarget !== undefined) {
-            this.showVariantTooltip(eventTarget, event);
+            this.showVariantTooltip(eventTarget);
             tooltipShown = true;
           }
         } else if (toolTipsSettings.footNotes && eventTarget.hasAttribute('id') &&
@@ -1321,7 +1322,7 @@ export class ReadPage /*implements OnDestroy*/ {
     );
   }
 
-  showFootnoteTooltip(id: string, targetElem: HTMLElement, origin: any) {
+  showFootnoteTooltip(id: string, targetElem: HTMLElement) {
     if (this.tooltips.footnotes[id]) {
       this.setToolTipPosition(targetElem, this.tooltips.footnotes[id]);
       this.setToolTipText(this.tooltips.footnotes[id]);
@@ -1343,21 +1344,33 @@ export class ReadPage /*implements OnDestroy*/ {
     }
     foundElem = foundElem.replace(' xmlns:tei="http://www.tei-c.org/ns/1.0"', '');
 
-    // Prepend the footnoteindicator to the the footnote text.
-    const footnoteWithIndicator: string = '<a class="xreference noteReference" href="#' + id + '">' +
-     targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
-    const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
-      this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
+    // Get column id of the column where the footnote is.
+    let containerElem = targetElem.parentElement;
+    while (containerElem !== null && !(containerElem.classList.contains('read-column') &&
+     containerElem.hasAttribute('id'))) {
+      containerElem = containerElem.parentElement;
+    }
+    if (containerElem !== null) {
+      const columnId = containerElem.getAttribute('id');
 
-    this.setToolTipPosition(targetElem, footNoteHTML);
-    this.setToolTipText(footNoteHTML);
-    this.tooltips.footnotes[id] = footNoteHTML;
+      // Prepend the footnoteindicator to the footnote text.
+      const footnoteWithIndicator: string = '<a class="xreference noteReference targetColumnId_' + columnId + '" href="#' + id + '">' +
+        targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
+      const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
+        this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
+
+      this.setToolTipPosition(targetElem, footNoteHTML);
+      this.setToolTipText(footNoteHTML);
+      this.tooltips.footnotes[id] = footNoteHTML;
+    }
   }
 
   showVariantFootnoteTooltip(id: string, targetElem: HTMLElement) {
     const footNoteHTML: string = this.getVariantFootnoteText(id, targetElem);
-    this.setToolTipPosition(targetElem, footNoteHTML);
-    this.setToolTipText(footNoteHTML);
+    if (footNoteHTML) {
+      this.setToolTipPosition(targetElem, footNoteHTML);
+      this.setToolTipText(footNoteHTML);
+    }
   }
 
   /* Use this method to get a footnote text of a variant. Returns a string with the footnote html. */
@@ -1367,11 +1380,17 @@ export class ReadPage /*implements OnDestroy*/ {
      triggerElem.nextElementSibling.classList.contains('ttFoot') &&
      triggerElem.nextElementSibling.firstElementChild.classList.contains('ttFixed') &&
      triggerElem.nextElementSibling.firstElementChild.getAttribute('id') === id) {
-      const ttText = triggerElem.nextElementSibling.firstElementChild.innerHTML;
+      let ttText = triggerElem.nextElementSibling.firstElementChild.innerHTML;
+      // MathJx problem with resolving the actual formula, not the translated formula.
+      if ( triggerElem.nextElementSibling.firstElementChild.lastChild.nodeName === 'SCRIPT' ) {
+        const tmpElem = <HTMLElement> triggerElem.nextElementSibling.firstElementChild.lastChild;
+        ttText = '$' + tmpElem.innerHTML + '$';
+      }
 
-      // Get column id
+      // Get column id of the column where the footnote is.
       let containerElem = triggerElem.parentElement;
-      while (containerElem !== null && !containerElem.classList.contains('read-column') && !containerElem.hasAttribute('id')) {
+      while (containerElem !== null && !(containerElem.classList.contains('read-column') &&
+       containerElem.hasAttribute('id'))) {
         containerElem = containerElem.parentElement;
       }
       if (containerElem !== null) {
@@ -1428,7 +1447,7 @@ export class ReadPage /*implements OnDestroy*/ {
     );
   }
 
-  showVariantTooltip(targetElem: HTMLElement, origin: any) {
+  showVariantTooltip(targetElem: HTMLElement) {
     if (targetElem.nextElementSibling !== null &&
      targetElem.nextElementSibling.hasAttribute('class') &&
      targetElem.nextElementSibling.className.includes('tooltip')) {
@@ -1449,20 +1468,35 @@ export class ReadPage /*implements OnDestroy*/ {
       const elt = target[i] as HTMLElement;
       if ( elt.getAttribute('data-id') === id ) {
         foundElem = elt.innerHTML;
+        // MathJx problem with resolving the actual formula, not the translated formula.
+        if ( elt.lastChild.nodeName === 'SCRIPT' ) {
+          const tmpElem = <HTMLElement> elt.lastChild;
+          foundElem = '$' + tmpElem.innerHTML + '$';
+        }
         break;
       }
     }
     foundElem = foundElem.replace(' xmlns:tei="http://www.tei-c.org/ns/1.0"', '');
 
-    // Prepend the footnoteindicator to the the footnote text.
-    const footnoteWithIndicator: string = '<a class="xreference noteReference" href="#' + id + '">' +
-     targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
-    const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
-      this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
+    // Get column id of the column where the footnote is.
+    let containerElem = targetElem.parentElement;
+    while (containerElem !== null && !(containerElem.classList.contains('read-column') &&
+    containerElem.hasAttribute('id'))) {
+      containerElem = containerElem.parentElement;
+    }
+    if (containerElem !== null) {
+      const columnId = containerElem.getAttribute('id');
 
-    this.setInfoOverlayPositionAndWidth(targetElem);
-    this.setInfoOverlayText(footNoteHTML);
-    this.tooltips.footnotes[id] = footNoteHTML;
+      // Prepend the footnoteindicator to the footnote text.
+      const footnoteWithIndicator: string = '<a class="xreference noteReference targetColumnId_' + columnId + '" href="#' + id + '">' +
+        targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
+      const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
+        this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
+
+      this.setInfoOverlayPositionAndWidth(targetElem);
+      this.setInfoOverlayText(footNoteHTML);
+      this.tooltips.footnotes[id] = footNoteHTML;
+    }
   }
 
   showVariantFootnoteInfoOverlay(id: string, targetElem: HTMLElement) {
