@@ -199,7 +199,7 @@ export class IntroductionPage {
       } else {
         interationsLeft -= 1;
         if (this.pos !== null && this.pos !== undefined) {
-          console.log('Attempting to scroll to ' + this.pos);
+          // console.log('Attempting to scroll to ' + this.pos);
           let positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
           const parentElem = positionElement.parentElement;
           if ((parentElem !== undefined && parentElem.classList.length !== 0 &&
@@ -937,13 +937,13 @@ export class IntroductionPage {
 
     // Get bounding rectangle of the div.scroll-content element which is the container for the column that the trigger element resides in.
     let containerElem = triggerElement.parentElement;
-    while (containerElem !== null &&
-     !containerElem.classList.contains('scroll-content') &&
-     containerElem.parentElement.tagName !== 'ION-SCROLL') {
-      containerElem = containerElem.parentElement;
+    while (containerElem !== null && containerElem.parentElement !== null &&
+     !(containerElem.classList.contains('scroll-content') &&
+     containerElem.parentElement.tagName === 'ION-SCROLL')) {
+       containerElem = containerElem.parentElement;
     }
 
-    if (containerElem !== null) {
+    if (containerElem !== null && containerElem.parentElement !== null) {
       const containerElemRect = containerElem.getBoundingClientRect();
       let calcWidth = containerElem.clientWidth; // Width without scrollbar
 
@@ -1009,12 +1009,13 @@ export class IntroductionPage {
     }
     // Find the scrollable container of the element which is to be scrolled into view
     let container = element.parentElement;
-    while (!container.classList.contains('scroll-content') &&
-     container.parentElement.tagName !== 'ION-SCROLL') {
+    while (container !== null && container.parentElement !== null &&
+     !(container.classList.contains('scroll-content') &&
+     container.parentElement.tagName === 'ION-SCROLL')) {
       container = container.parentElement;
-      if (container === null || container === undefined) {
-        return;
-      }
+    }
+    if (container === null || container.parentElement === null) {
+      return;
     }
 
     const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);

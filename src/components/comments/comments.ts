@@ -236,11 +236,8 @@ export class CommentsComponent {
           // Find the comment element that has been clicked in the comment-column.
           if (!targetElem.classList.contains('commentScrollTarget')) {
             targetElem = targetElem.parentElement;
-            while (!targetElem.classList.contains('commentScrollTarget')) {
+            while (targetElem !== null && !targetElem.classList.contains('commentScrollTarget')) {
               targetElem = targetElem.parentElement;
-              if (targetElem === null || targetElem === undefined) {
-                break;
-              }
             }
           }
           if (targetElem !== null && targetElem !== undefined) {
@@ -380,12 +377,13 @@ export class CommentsComponent {
     }
     // Find the scrollable container of the element which is to be scrolled into view
     let container = element.parentElement;
-    while (!container.classList.contains('scroll-content') &&
-     container.parentElement.tagName !== 'ION-SCROLL') {
+    while (container !== null && container.parentElement !== null &&
+     !(container.classList.contains('scroll-content') &&
+     container.parentElement.tagName === 'ION-SCROLL')) {
       container = container.parentElement;
-      if (container === null || container === undefined) {
-        return;
-      }
+    }
+    if (container === null || container.parentElement === null) {
+      return;
     }
 
     const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);

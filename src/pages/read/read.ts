@@ -968,7 +968,6 @@ export class ReadPage /*implements OnDestroy*/ {
             for (let i = 0; i < anchorElem.classList.length; i++) {
               if (anchorElem.classList[i].startsWith('targetColumnId_')) {
                 targetColumnId = anchorElem.classList[i].replace('targetColumnId_', '');
-                console.log('targetColumnId: ' + targetColumnId);
               }
             }
           }
@@ -979,16 +978,14 @@ export class ReadPage /*implements OnDestroy*/ {
             containerElem = document.getElementById(targetColumnId);
           } else {
             containerElem = anchorElem.parentElement;
-            let counter = 0;
             while (containerElem !== null && containerElem.parentElement !== null &&
             !(containerElem.classList.contains('scroll-content') &&
             containerElem.parentElement.tagName === 'ION-SCROLL')) {
-              counter++;
               containerElem = containerElem.parentElement;
-              console.log('Counter: ' + counter);
             }
-            console.log(containerElem);
-            console.log(containerElem.parentElement.tagName);
+            if (containerElem.parentElement === null) {
+              containerElem = null;
+            }
           }
 
           if (containerElem !== null) {
@@ -997,7 +994,6 @@ export class ReadPage /*implements OnDestroy*/ {
               // Link to (foot)note reference in variant
               dataIdSelector = '[id="' + String(targetId).replace('#', '') + '"]';
             }
-            console.log('DataIdSelector: ' + dataIdSelector);
             const target = containerElem.querySelector(dataIdSelector) as HTMLElement;
             if (target !== null) {
               this.scrollToHTMLElement(target, 'top');
@@ -1221,7 +1217,6 @@ export class ReadPage /*implements OnDestroy*/ {
         let text = '';
         if ( tooltip.date_born !== null || tooltip.date_deceased !== null ) {
           const date_born = String(tooltip.date_born).split('-')[0].replace(/^0+/, '');
-          console.log('dateborn: ' + date_born);
           const date_deceased = String(tooltip.date_deceased).split('-')[0].replace(/^0+/, '');
           let bcTranslation = 'BC';
           this.translate.get('BC').subscribe(
@@ -1488,7 +1483,7 @@ export class ReadPage /*implements OnDestroy*/ {
     // Get column id of the column where the footnote is.
     let containerElem = targetElem.parentElement;
     while (containerElem !== null && !(containerElem.classList.contains('read-column') &&
-    containerElem.hasAttribute('id'))) {
+     containerElem.hasAttribute('id'))) {
       containerElem = containerElem.parentElement;
     }
     if (containerElem !== null) {
@@ -1872,11 +1867,13 @@ export class ReadPage /*implements OnDestroy*/ {
 
     // Get bounding rectangle of the div.scroll-content element which is the container for the column that the trigger element resides in.
     let containerElem = triggerElement.parentElement;
-    while (containerElem !== null && !containerElem.classList.contains('scroll-content') && containerElem.parentElement.tagName !== 'ION-SCROLL') {
+    while (containerElem !== null && containerElem.parentElement !== null &&
+     !(containerElem.classList.contains('scroll-content') &&
+     containerElem.parentElement.tagName === 'ION-SCROLL')) {
       containerElem = containerElem.parentElement;
     }
 
-    if (containerElem !== null) {
+    if (containerElem !== null && containerElem.parentElement !== null) {
       const containerElemRect = containerElem.getBoundingClientRect();
       let calcWidth = containerElem.clientWidth; // Width without scrollbar
 
@@ -2356,7 +2353,6 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 
-
   firstPage() {
     const c_id = this.legacyId.split('_')[0];
     const toc = this.storage.get('toc_' + c_id)
@@ -2409,12 +2405,13 @@ export class ReadPage /*implements OnDestroy*/ {
     }
     // Find the scrollable container of the element which is to be scrolled into view
     let container = element.parentElement;
-    while (!container.classList.contains('scroll-content') &&
-     container.parentElement.tagName !== 'ION-SCROLL') {
+    while (container !== null && container.parentElement !== null &&
+     !(container.classList.contains('scroll-content') &&
+     container.parentElement.tagName === 'ION-SCROLL')) {
       container = container.parentElement;
-      if (container === null || container === undefined) {
-        return;
-      }
+    }
+    if (container === null || container.parentElement === null) {
+      return;
     }
 
     const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
