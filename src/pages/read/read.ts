@@ -2472,4 +2472,12 @@ export class ReadPage /*implements OnDestroy*/ {
       }
     }.bind(this), 500);
   }
+
+  printMainContentClasses() {
+    if (this.userSettingsService.isMobile()) {
+      return 'mobile-mode-read-content';
+    } else {
+      return '';
+    }
+  }
 }
