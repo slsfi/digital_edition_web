@@ -178,44 +178,46 @@
 
   <!-- Mobile Read -->
   <ng-container *ngIf="userSettingsService.isMobile()" class="content content-md content-md-secondary">
-    <div
-      *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet()) && hasOccurrenceResults && showOccurrencesModal">
-      <button class="readpage-occurrences-mobile" ion-button
-        (click)="openOccurrenceResult()">{{ "Read.ShowSearchResults" | translate }} &nbsp;<ion-icon name="search">
-        </ion-icon></button>
-    </div>
-    <div [ngClass]="'infoOverlay tei ' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')" [ngStyle]="{'position': infoOverlayPosType, 'bottom': infoOverlayPosition.bottom, 'left': infoOverlayPosition.left, 'width': infoOverlayWidth}">
-      <div class="infoOverlayHeader">
-        <h6 class="infoOverlayTitle">{{'note' | translate }}</h6>
-        <ion-icon name="close" class="infoOverlayButton" (click)="hideInfoOverlay()"></ion-icon>
+    <ion-scroll>
+      <div
+        *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet()) && hasOccurrenceResults && showOccurrencesModal">
+        <button class="readpage-occurrences-mobile" ion-button
+          (click)="openOccurrenceResult()">{{ "Read.ShowSearchResults" | translate }} &nbsp;<ion-icon name="search">
+          </ion-icon></button>
       </div>
-      <div class="infoOverlayContent" [MathJax]="infoOverlayText"></div>
-    </div>
-    <div (swipe)="swipePrevNext($event)" *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet())">
-      <div>
-        <ion-segment [(ngModel)]="show" color="secondary">
-          <ion-segment-button value="established" *ngIf="displayToggles['established']">
-            {{ "Read.Established.Title" | translate }}
-          </ion-segment-button>
-          <ion-segment-button value="facsimiles" *ngIf="displayToggles['facsimiles']">
-            {{ "Read.Facsimiles.Title" | translate }}
-          </ion-segment-button>
-        </ion-segment>
-      </div>
-      <div [ngSwitch]="show">
-        <div *ngSwitchCase="'established'" class="mobile-mode-established">
-          <read-text [link]="establishedText.link" [matches]="matches"></read-text>
+      <div [ngClass]="'infoOverlay tei ' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')" [ngStyle]="{'position': infoOverlayPosType, 'bottom': infoOverlayPosition.bottom, 'left': infoOverlayPosition.left, 'width': infoOverlayWidth}">
+        <div class="infoOverlayHeader">
+          <h6 class="infoOverlayTitle">{{'note' | translate }}</h6>
+          <ion-icon name="close" class="infoOverlayButton" (click)="hideInfoOverlay()"></ion-icon>
         </div>
-        <div *ngSwitchCase="'facsimiles'" class="no-scroll">
-          <facsimiles [itemId]="establishedText.link" [matches]="matches" [facsID]="facs_id" [facsNr]="facs_nr"
-            [songID]="song_id"></facsimiles>
-        </div>
+        <div class="infoOverlayContent" [MathJax]="infoOverlayText"></div>
       </div>
-      <!-- NOTE: Temporarily hidden since this doesn't work as intended.
-      <div class="read-from-beginning-button" *ngIf="!prevnext && displayToggle === true && show != 'facsimile'">
-        <button ion-button round icon-end (click)="firstPage()">{{"Read.ReadFromBeginning" | translate }}</button>
-      </div> -->
-    </div>
+      <div (swipe)="swipePrevNext($event)" *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet())">
+        <div>
+          <ion-segment [(ngModel)]="show" color="secondary">
+            <ion-segment-button value="established" *ngIf="displayToggles['established']">
+              {{ "Read.Established.Title" | translate }}
+            </ion-segment-button>
+            <ion-segment-button value="facsimiles" *ngIf="displayToggles['facsimiles']">
+              {{ "Read.Facsimiles.Title" | translate }}
+            </ion-segment-button>
+          </ion-segment>
+        </div>
+        <div [ngSwitch]="show">
+          <div *ngSwitchCase="'established'" class="mobile-mode-established">
+            <read-text [link]="establishedText.link" [matches]="matches"></read-text>
+          </div>
+          <div *ngSwitchCase="'facsimiles'" class="no-scroll">
+            <facsimiles [itemId]="establishedText.link" [matches]="matches" [facsID]="facs_id" [facsNr]="facs_nr"
+              [songID]="song_id"></facsimiles>
+          </div>
+        </div>
+        <!-- NOTE: Temporarily hidden since this doesn't work as intended.
+        <div class="read-from-beginning-button" *ngIf="!prevnext && displayToggle === true && show != 'facsimile'">
+          <button ion-button round icon-end (click)="firstPage()">{{"Read.ReadFromBeginning" | translate }}</button>
+        </div> -->
+      </div>
+    </ion-scroll>
   </ng-container>
 
 </ion-content>
