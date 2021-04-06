@@ -500,7 +500,7 @@ ion-menu {
     border-left-color: color($colors, primary);
   }
   &#contentMenu .simple-accordion-options ion-list.accordion-menu > ion-item.item,
-  &#contentMenu ion-list.accordion-menu .simple-accordion-options > div > ion-item.item {
+  &#contentMenu ion-list.accordion-menu .simple-accordion-options ion-item.item {
     padding-left: 32px;
   }
   &#contentMenu .simple-accordion-options .recursive-suboptions > ion-item.item,
