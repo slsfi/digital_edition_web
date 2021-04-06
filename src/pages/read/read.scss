@@ -321,7 +321,9 @@ page-read .mobile-mode-read-content > .scroll-content {
   padding-top: 60px !important;
 }
 
-
+page-read .mobile-mode-read-content .scroll-zoom-wrapper {
+  padding: 10px;
+}
 
 /* Adjust padding and background color of text column in mobile mode. */
 page-read div.mobile-mode-established {
