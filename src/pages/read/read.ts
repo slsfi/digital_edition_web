@@ -1502,7 +1502,7 @@ export class ReadPage /*implements OnDestroy*/ {
       }
       if (containerElem !== null) {
         const columnId = containerElem.getAttribute('id');
-  
+
         // Prepend the footnoteindicator to the footnote text.
         footnoteWithIndicator = '<a class="xreference noteReference targetColumnId_' + columnId + '" href="#' + id + '">' +
           targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
@@ -1513,7 +1513,7 @@ export class ReadPage /*implements OnDestroy*/ {
       footnoteWithIndicator = '<a class="xreference noteReference" href="#' + id + '">' +
        targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
     }
-    
+
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
