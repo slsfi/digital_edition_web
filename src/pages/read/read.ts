@@ -1017,57 +1017,59 @@ export class ReadPage /*implements OnDestroy*/ {
 
     /* MOUSE OVER EVENTS */
     this.renderer.listen(nElement, 'mouseover', (event) => {
-      let tooltipShown = false;
-      let eventTarget = this.getEventTarget(event);
-      while (!tooltipShown && eventTarget['classList'].contains('tooltiptrigger')) {
-        if (eventTarget.hasAttribute('data-id')) {
-          if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
-            this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+      if (this.userSettingsService.isDesktop()) {
+        let tooltipShown = false;
+        let eventTarget = this.getEventTarget(event);
+        while (!tooltipShown && eventTarget['classList'].contains('tooltiptrigger')) {
+          if (eventTarget.hasAttribute('data-id')) {
+            if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
+              this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+              tooltipShown = true;
+            } else if (toolTipsSettings.placeInfo
+              && eventTarget['classList'].contains('placeName')
+              && this.readPopoverService.show.placeInfo) {
+              this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+              tooltipShown = true;
+            } else if (toolTipsSettings.workInfo
+              && eventTarget['classList'].contains('title')
+              && this.readPopoverService.show.workInfo) {
+              this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+              tooltipShown = true;
+            } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
+              this.showCommentTooltip(eventTarget.getAttribute('data-id'), eventTarget);
+              tooltipShown = true;
+            } else if (toolTipsSettings.footNotes
+              && eventTarget['classList'].contains('ttFoot')) {
+              this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
+              tooltipShown = true;
+            }
+          } else if ((toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges') && this.readPopoverService.show.changes) ||
+          (toolTipsSettings.normalisations && eventTarget['classList'].contains('ttNormalisations') &&
+          this.readPopoverService.show.normalisations) ||
+          (toolTipsSettings.abbreviations && eventTarget['classList'].contains('ttAbbreviations') &&
+          this.readPopoverService.show.abbreviations)) {
+            this.showTooltipFromInlineHtml(eventTarget);
             tooltipShown = true;
-          } else if (toolTipsSettings.placeInfo
-            && eventTarget['classList'].contains('placeName')
-            && this.readPopoverService.show.placeInfo) {
-            this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-            tooltipShown = true;
-          } else if (toolTipsSettings.workInfo
-            && eventTarget['classList'].contains('title')
-            && this.readPopoverService.show.workInfo) {
-            this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-            tooltipShown = true;
-          } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
-            this.showCommentTooltip(eventTarget.getAttribute('data-id'), eventTarget);
-            tooltipShown = true;
-          } else if (toolTipsSettings.footNotes
-            && eventTarget['classList'].contains('ttFoot')) {
-            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
+          } else if (eventTarget['classList'].contains('ttVariant')) {
+            if (eventTarget !== undefined) {
+              this.showVariantTooltip(eventTarget);
+              tooltipShown = true;
+            }
+          } else if (toolTipsSettings.footNotes && eventTarget.hasAttribute('id') &&
+          eventTarget['classList'].contains('teiVariant') &&
+          eventTarget['classList'].contains('ttFoot')) {
+            this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), eventTarget);
             tooltipShown = true;
           }
-        } else if ((toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges') && this.readPopoverService.show.changes) ||
-         (toolTipsSettings.normalisations && eventTarget['classList'].contains('ttNormalisations') &&
-         this.readPopoverService.show.normalisations) ||
-         (toolTipsSettings.abbreviations && eventTarget['classList'].contains('ttAbbreviations') &&
-         this.readPopoverService.show.abbreviations)) {
-          this.showTooltipFromInlineHtml(eventTarget);
-          tooltipShown = true;
-        } else if (eventTarget['classList'].contains('ttVariant')) {
-          if (eventTarget !== undefined) {
-            this.showVariantTooltip(eventTarget);
-            tooltipShown = true;
-          }
-        } else if (toolTipsSettings.footNotes && eventTarget.hasAttribute('id') &&
-         eventTarget['classList'].contains('teiVariant') &&
-         eventTarget['classList'].contains('ttFoot')) {
-          this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), eventTarget);
-          tooltipShown = true;
-        }
 
-        /* Get the parent node of the event target for the next iteration if a tooltip hasn't been shown already.
-         * This is for finding nested tooltiptriggers, i.e. a person can be a child of a change. */
-        if (!tooltipShown) {
-          eventTarget = eventTarget['parentNode'];
-          if (!eventTarget['classList'].contains('tooltiptrigger') && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
-            /* The parent isn't a tooltiptrigger, but the parent of the parent is, use it for the next iteration. */
+          /* Get the parent node of the event target for the next iteration if a tooltip hasn't been shown already.
+          * This is for finding nested tooltiptriggers, i.e. a person can be a child of a change. */
+          if (!tooltipShown) {
             eventTarget = eventTarget['parentNode'];
+            if (!eventTarget['classList'].contains('tooltiptrigger') && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
+              /* The parent isn't a tooltiptrigger, but the parent of the parent is, use it for the next iteration. */
+              eventTarget = eventTarget['parentNode'];
+            }
           }
         }
       }
@@ -1324,7 +1326,7 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   showFootnoteTooltip(id: string, targetElem: HTMLElement) {
-    if (this.tooltips.footnotes[id]) {
+    if (this.tooltips.footnotes[id] && this.userSettingsService.isDesktop()) {
       this.setToolTipPosition(targetElem, this.tooltips.footnotes[id]);
       this.setToolTipText(this.tooltips.footnotes[id]);
       return;
@@ -1362,7 +1364,9 @@ export class ReadPage /*implements OnDestroy*/ {
 
       this.setToolTipPosition(targetElem, footNoteHTML);
       this.setToolTipText(footNoteHTML);
-      this.tooltips.footnotes[id] = footNoteHTML;
+      if (this.userSettingsService.isDesktop()) {
+        this.tooltips.footnotes[id] = footNoteHTML;
+      }
     }
   }
 
@@ -1459,7 +1463,7 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   showFootnoteInfoOverlay(id: string, targetElem: HTMLElement) {
-    if (this.tooltips.footnotes[id]) {
+    if (this.tooltips.footnotes[id] && this.userSettingsService.isDesktop()) {
       this.setInfoOverlayPositionAndWidth(targetElem);
       this.setInfoOverlayText(this.tooltips.footnotes[id]);
       return;
@@ -1497,7 +1501,9 @@ export class ReadPage /*implements OnDestroy*/ {
 
       this.setInfoOverlayPositionAndWidth(targetElem);
       this.setInfoOverlayText(footNoteHTML);
-      this.tooltips.footnotes[id] = footNoteHTML;
+      if (this.userSettingsService.isDesktop()) {
+        this.tooltips.footnotes[id] = footNoteHTML;
+      }
     }
   }
 
