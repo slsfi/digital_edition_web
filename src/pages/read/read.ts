@@ -1890,12 +1890,14 @@ export class ReadPage /*implements OnDestroy*/ {
 
     // Get bounding rectangle of the div.scroll-content element which is the container for the column that the trigger element resides in.
     let containerElem = triggerElement.parentElement;
+    let mobileModeTextChangerYOffset = 64;
     if (this.userSettingsService.isDesktop()) {
       while (containerElem !== null && containerElem.parentElement !== null &&
        !(containerElem.classList.contains('scroll-content') &&
        containerElem.parentElement.tagName === 'ION-SCROLL')) {
         containerElem = containerElem.parentElement;
       }
+      mobileModeTextChangerYOffset = 0;
     } else {
       // Mobile mode has differenct structure, no ion-scroll element
       while (containerElem !== null && containerElem.parentElement !== null &&
@@ -1917,7 +1919,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
       // Set info overlay position
       this.infoOverlayPosition = {
-        bottom: (vh - horizontalScrollbarOffsetHeight - containerElemRect.bottom) + 'px',
+        bottom: (vh - horizontalScrollbarOffsetHeight - containerElemRect.bottom + mobileModeTextChangerYOffset) + 'px',
         left: (containerElemRect.left + margins - contentElem.getBoundingClientRect().left) + 'px'
       };
       if (this.userSettingsService.isDesktop()) {
@@ -2440,13 +2442,24 @@ export class ReadPage /*implements OnDestroy*/ {
     }
     // Find the scrollable container of the element which is to be scrolled into view
     let container = element.parentElement;
-    while (container !== null && container.parentElement !== null &&
-     !(container.classList.contains('scroll-content') &&
-     container.parentElement.tagName === 'ION-SCROLL')) {
-      container = container.parentElement;
-    }
-    if (container === null || container.parentElement === null) {
-      return;
+    if (this.userSettingsService.isDesktop()) {
+      while (container !== null && container.parentElement !== null &&
+       !(container.classList.contains('scroll-content') &&
+       container.parentElement.tagName === 'ION-SCROLL')) {
+        container = container.parentElement;
+      }
+      if (container === null || container.parentElement === null) {
+        return;
+      }
+    } else {
+      // Differenct html structure in mobile mode
+      while (container !== null && container.parentElement !== null &&
+       !container.classList.contains('scroll-content')) {
+          container = container.parentElement;
+        }
+        if (container === null) {
+          return;
+        }
     }
 
     const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
