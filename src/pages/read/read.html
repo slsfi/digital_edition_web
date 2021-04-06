@@ -207,7 +207,7 @@
           <div *ngSwitchCase="'established'" class="mobile-mode-established">
             <read-text [link]="establishedText.link" [matches]="matches"></read-text>
           </div>
-          <div *ngSwitchCase="'facsimiles'" class="no-scroll">
+          <div *ngSwitchCase="'facsimiles'">
             <facsimiles [itemId]="establishedText.link" [matches]="matches" [facsID]="facs_id" [facsNr]="facs_nr"
               [songID]="song_id"></facsimiles>
           </div>
