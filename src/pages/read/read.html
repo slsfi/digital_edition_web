@@ -178,7 +178,7 @@
 
   <!-- Mobile Read -->
   <ng-container *ngIf="userSettingsService.isMobile()" class="content content-md content-md-secondary">
-    <ion-scroll [scrollY]="!view.facsimiles.show" style="height:100vh;" class="card" #scrollBar>
+    <ion-scroll scrollY="true" style="height:100vh;">
       <div
         *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet()) && hasOccurrenceResults && showOccurrencesModal">
         <button class="readpage-occurrences-mobile" ion-button
