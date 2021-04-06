@@ -1920,7 +1920,11 @@ export class ReadPage /*implements OnDestroy*/ {
         bottom: (vh - horizontalScrollbarOffsetHeight - containerElemRect.bottom) + 'px',
         left: (containerElemRect.left + margins - contentElem.getBoundingClientRect().left) + 'px'
       };
-      this.infoOverlayPosType = 'absolute';
+      if (this.userSettingsService.isDesktop()) {
+        this.infoOverlayPosType = 'absolute';
+      } else {
+        this.infoOverlayPosType = 'fixed';
+      }
 
       // Set info overlay width
       this.infoOverlayWidth = calcWidth + 'px';
