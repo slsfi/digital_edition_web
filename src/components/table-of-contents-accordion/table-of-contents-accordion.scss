@@ -3,7 +3,7 @@ table-of-contents-accordion {
         cursor: pointer;
     }
 
-    /* The toc items should not have a background color, thus the background color for the entire navigation panel shines through. */
+    /* The toc items should not have a background color so that the background color for the entire navigation panel shines through. */
     ion-item.item {
         background-color: unset;
         padding-left: 12px;
@@ -157,6 +157,7 @@ table-of-contents-accordion {
     div.aboutMarkdown ion-item {
       padding-left: 32px;
     }
+
     div.songTypesMarkdown ion-item {
       padding-left: 48px;
     }
