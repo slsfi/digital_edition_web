@@ -39,7 +39,7 @@
 </ion-header>
 
 <!-- Main content with scroll -->
-<ion-content padding color="secondary" [ngClass]="userSettingsService.isMobile()?'mobile-mode-read-content'">
+<ion-content padding color="secondary">
   <div *ngIf="userSettingsService.isDesktop()" class="column-container">
     <ion-fab
       *ngIf="showOccurrencesModal && hasOccurrenceResults && userSettingsService.isDesktop()"
