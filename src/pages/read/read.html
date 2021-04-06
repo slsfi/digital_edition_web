@@ -221,4 +221,4 @@
   </ng-container>
 
 </ion-content>
-<text-changer *ngIf="(userSettingsService.isMobile())" class="text-changer-mobile-view" [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
+<text-changer *ngIf="(userSettingsService.isMobile()) && show == 'established'" class="text-changer-mobile-view" [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
