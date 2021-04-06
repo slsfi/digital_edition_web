@@ -978,13 +978,21 @@ export class ReadPage /*implements OnDestroy*/ {
             containerElem = document.getElementById(targetColumnId);
           } else {
             containerElem = anchorElem.parentElement;
-            while (containerElem !== null && containerElem.parentElement !== null &&
-            !(containerElem.classList.contains('scroll-content') &&
-            containerElem.parentElement.tagName === 'ION-SCROLL')) {
-              containerElem = containerElem.parentElement;
-            }
-            if (containerElem.parentElement === null) {
-              containerElem = null;
+            if (this.userSettingsService.isDesktop()) {
+              while (containerElem !== null && containerElem.parentElement !== null &&
+              !(containerElem.classList.contains('scroll-content') &&
+              containerElem.parentElement.tagName === 'ION-SCROLL')) {
+                containerElem = containerElem.parentElement;
+              }
+              if (containerElem.parentElement === null) {
+                containerElem = null;
+              }
+            } else {
+              // Mobile mode has no ion-scroll parent
+              while (containerElem !== null && containerElem.parentElement !== null &&
+               !containerElem.classList.contains('scroll-content')) {
+                containerElem = containerElem.parentElement;
+              }
             }
           }
 
@@ -1484,26 +1492,35 @@ export class ReadPage /*implements OnDestroy*/ {
     }
     foundElem = foundElem.replace(' xmlns:tei="http://www.tei-c.org/ns/1.0"', '');
 
-    // Get column id of the column where the footnote is.
-    let containerElem = targetElem.parentElement;
-    while (containerElem !== null && !(containerElem.classList.contains('read-column') &&
-     containerElem.hasAttribute('id'))) {
-      containerElem = containerElem.parentElement;
-    }
-    if (containerElem !== null) {
-      const columnId = containerElem.getAttribute('id');
-
-      // Prepend the footnoteindicator to the footnote text.
-      const footnoteWithIndicator: string = '<a class="xreference noteReference targetColumnId_' + columnId + '" href="#' + id + '">' +
-        targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
-      const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
-        this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
-
-      this.setInfoOverlayPositionAndWidth(targetElem);
-      this.setInfoOverlayText(footNoteHTML);
-      if (this.userSettingsService.isDesktop()) {
-        this.tooltips.footnotes[id] = footNoteHTML;
+    let footnoteWithIndicator = '';
+    if (this.userSettingsService.isDesktop()) {
+      // Get column id of the column where the footnote is.
+      let containerElem = targetElem.parentElement;
+      while (containerElem !== null && !(containerElem.classList.contains('read-column') &&
+      containerElem.hasAttribute('id'))) {
+        containerElem = containerElem.parentElement;
       }
+      if (containerElem !== null) {
+        const columnId = containerElem.getAttribute('id');
+  
+        // Prepend the footnoteindicator to the footnote text.
+        footnoteWithIndicator = '<a class="xreference noteReference targetColumnId_' + columnId + '" href="#' + id + '">' +
+          targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
+      }
+    } else {
+      // This is for mobile view.
+      // Prepend the footnoteindicator to the footnote text.
+      footnoteWithIndicator = '<a class="xreference noteReference" href="#' + id + '">' +
+       targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
+    }
+    
+    const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
+      this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
+
+    this.setInfoOverlayPositionAndWidth(targetElem);
+    this.setInfoOverlayText(footNoteHTML);
+    if (this.userSettingsService.isDesktop()) {
+      this.tooltips.footnotes[id] = footNoteHTML;
     }
   }
 
@@ -1873,10 +1890,18 @@ export class ReadPage /*implements OnDestroy*/ {
 
     // Get bounding rectangle of the div.scroll-content element which is the container for the column that the trigger element resides in.
     let containerElem = triggerElement.parentElement;
-    while (containerElem !== null && containerElem.parentElement !== null &&
-     !(containerElem.classList.contains('scroll-content') &&
-     containerElem.parentElement.tagName === 'ION-SCROLL')) {
-      containerElem = containerElem.parentElement;
+    if (this.userSettingsService.isDesktop()) {
+      while (containerElem !== null && containerElem.parentElement !== null &&
+       !(containerElem.classList.contains('scroll-content') &&
+       containerElem.parentElement.tagName === 'ION-SCROLL')) {
+        containerElem = containerElem.parentElement;
+      }
+    } else {
+      // Mobile mode has differenct structure, no ion-scroll element
+      while (containerElem !== null && containerElem.parentElement !== null &&
+       !containerElem.classList.contains('scroll-content')) {
+        containerElem = containerElem.parentElement;
+      }
     }
 
     if (containerElem !== null && containerElem.parentElement !== null) {
