@@ -154,16 +154,11 @@ table-of-contents-accordion {
         font-size: 0.875rem;
     }
 
-    /* SK: Den här regeln verkar behövas för musiken i Folkdiktningens toc, men regeln borde ses över. */
-    .simple-accordion-options div > ion-item{
+    /* There doesn't seem to exist any divs with classes aboutMarkdown and songTypesMarkdown */
+    div.aboutMarkdown ion-item {
       padding-left: 32px;
     }
-
-    div.aboutMarkdown ion-item{
-      padding-left: 32px;
-    }
-
-    div.songTypesMarkdown ion-item{
+    div.songTypesMarkdown ion-item {
       padding-left: 48px;
     }
 
