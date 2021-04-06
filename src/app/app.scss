@@ -489,7 +489,8 @@ input{
 ion-menu {
   &#contentMenu ion-item.mainMenuItem,
   &#contentMenu ion-list.accordion-menu > ion-item.item,
-  &#contentMenu ion-list.accordion-menu > div > ion-item.item {
+  &#contentMenu ion-list.accordion-menu > div > ion-item.item,
+  &#contentMenu .simple-accordion-options > div > ion-item.item {
     padding-left: 12px;
     border-left: 4px solid transparent;
     transition: border-left-color 0.1s;
@@ -498,19 +499,23 @@ ion-menu {
   &#contentMenu ion-list.accordion-menu ion-item.item:hover {
     border-left-color: color($colors, primary);
   }
-  &#contentMenu .simple-accordion-options ion-list.accordion-menu > ion-item.item {
+  &#contentMenu .simple-accordion-options ion-list.accordion-menu > ion-item.item,
+  &#contentMenu ion-list.accordion-menu .simple-accordion-options > div > ion-item.item {
     padding-left: 32px;
   }
   &#contentMenu .simple-accordion-options .recursive-suboptions > ion-item.item,
-  &#contentMenu .simple-accordion-options .recursive-suboptions ion-list.accordion-menu > ion-item.item {
+  &#contentMenu .simple-accordion-options .recursive-suboptions ion-list.accordion-menu > ion-item.item,
+  &#contentMenu ion-list.accordion-menu .simple-accordion-options ion-list.accordion-menu .simple-accordion-options ion-list.list > ion-item.item {
     padding-left: 52px;
   }
   &#contentMenu .simple-accordion-options .recursive-suboptions .recursive-suboptions > ion-item.item,
-  &#contentMenu .simple-accordion-options .recursive-suboptions .recursive-suboptions ion-list.accordion-menu > ion-item.item {
+  &#contentMenu .simple-accordion-options .recursive-suboptions .recursive-suboptions ion-list.accordion-menu > ion-item.item,
+  &#contentMenu ion-list.accordion-menu .simple-accordion-options ion-list.accordion-menu .simple-accordion-options ion-list.accordion-menu .simple-accordion-options ion-list.list > ion-item.item {
     padding-left: 72px;
   }
   &#contentMenu .simple-accordion-options .recursive-suboptions .recursive-suboptions .recursive-suboptions > ion-item.item,
-  &#contentMenu .simple-accordion-options .recursive-suboptions .recursive-suboptions .recursive-suboptions ion-list.accordion-menu > ion-item.item {
+  &#contentMenu .simple-accordion-options .recursive-suboptions .recursive-suboptions .recursive-suboptions ion-list.accordion-menu > ion-item.item,
+  &#contentMenu ion-list.accordion-menu .simple-accordion-options ion-list.accordion-menu .simple-accordion-options ion-list.accordion-menu .simple-accordion-options ion-list.accordion-menu .simple-accordion-options ion-list.list > ion-item.item {
     padding-left: 92px;
   }
 }
