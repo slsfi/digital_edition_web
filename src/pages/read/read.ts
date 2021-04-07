@@ -1453,7 +1453,7 @@ export class ReadPage /*implements OnDestroy*/ {
         containerElem = containerElem.parentElement;
       }
       if (containerElem !== null) {
-        const columnId = containerElem.getAttribute('data-id');
+        const columnId = containerElem.getAttribute('id');
 
         // Prepend the footnoteindicator to the the footnote text.
         const footnoteWithIndicator: string = '<a class="xreference noteReference teiManuscript targetColumnId_' +
