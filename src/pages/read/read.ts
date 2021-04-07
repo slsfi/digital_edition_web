@@ -1531,21 +1531,28 @@ export class ReadPage /*implements OnDestroy*/ {
       this.setInfoOverlayText(this.tooltips.footnotes[id]);
       return;
     }
-    const target = document.getElementsByClassName('ttFixed');
-    let foundElem: any = '';
-    for (let i = 0; i < target.length; i++) {
-      const elt = target[i] as HTMLElement;
-      if ( elt.getAttribute('data-id') === id ) {
-        foundElem = elt.innerHTML;
+
+    let footnoteText: any = '';
+    if (targetElem.nextElementSibling !== null && targetElem.nextElementSibling.firstElementChild !== null
+    && targetElem.nextElementSibling.hasAttribute('class')
+    && targetElem.nextElementSibling.firstElementChild.hasAttribute('class')) {
+      if (targetElem.nextElementSibling.classList.contains('ttFoot')
+      && targetElem.nextElementSibling.firstElementChild.classList.contains('ttFixed')
+      && targetElem.nextElementSibling.firstElementChild.getAttribute('data-id') === id) {
+        footnoteText = targetElem.nextElementSibling.firstElementChild.innerHTML;
         // MathJx problem with resolving the actual formula, not the translated formula.
-        if ( elt.lastChild.nodeName === 'SCRIPT' ) {
-          const tmpElem = <HTMLElement> elt.lastChild;
-          foundElem = '$' + tmpElem.innerHTML + '$';
+        if (targetElem.nextElementSibling.firstElementChild.lastChild.nodeName === 'SCRIPT') {
+          const tmpElem = <HTMLElement> targetElem.nextElementSibling.firstElementChild.lastChild;
+          footnoteText = '$' + tmpElem.innerHTML + '$';
         }
-        break;
+      } else {
+        return;
       }
+    } else {
+      return;
     }
-    foundElem = foundElem.replace(' xmlns:tei="http://www.tei-c.org/ns/1.0"', '');
+
+    footnoteText = footnoteText.replace(' xmlns:tei="http://www.tei-c.org/ns/1.0"', '');
 
     let footnoteWithIndicator = '';
     if (this.userSettingsService.isDesktop()) {
@@ -1560,13 +1567,13 @@ export class ReadPage /*implements OnDestroy*/ {
 
         // Prepend the footnoteindicator to the footnote text.
         footnoteWithIndicator = '<a class="xreference noteReference targetColumnId_' + columnId + '" href="#' + id + '">' +
-          targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
+          targetElem.textContent + '</a>' + '<p class="noteText">' + footnoteText  + '</p>';
       }
     } else {
       // This is for mobile view.
       // Prepend the footnoteindicator to the footnote text.
       footnoteWithIndicator = '<a class="xreference noteReference" href="#' + id + '">' +
-       targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
+       targetElem.textContent + '</a>' + '<p class="noteText">' + footnoteText  + '</p>';
     }
 
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
