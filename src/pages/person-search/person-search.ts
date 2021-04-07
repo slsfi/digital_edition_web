@@ -15,6 +15,7 @@ import { UserSettingsService } from '../../app/services/settings/user-settings.s
 import { OccurrencesPage } from '../occurrences/occurrences';
 import { TranslateService } from '@ngx-translate/core';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
+import { MetadataService } from '../../app/services/metadata/metadata.service';
 
 /**
  * Generated class for the PersonSearchPage page.
@@ -90,7 +91,8 @@ export class PersonSearchPage {
               private userSettingsService: UserSettingsService,
               private events: Events,
               private cf: ChangeDetectorRef,
-              private analyticsService: AnalyticsService
+              private analyticsService: AnalyticsService,
+              private metadataService: MetadataService
   ) {
     const type = this.navParams.get('type') || null;
     this.filterYear = null;
@@ -160,6 +162,11 @@ export class PersonSearchPage {
   }
 
   ionViewWillLeave() {
+    // Try to remove META-Tags
+    this.metadataService.clearHead();
+    // Add the new META-Tags
+    this.metadataService.addDescription(this.constructor.name);
+    this.metadataService.addKeywords();
     this.events.publish('ionViewWillLeave', this.constructor.name);
   }
 

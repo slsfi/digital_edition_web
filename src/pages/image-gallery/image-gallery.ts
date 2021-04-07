@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController, ModalController
 import { IllustrationPage } from '../illustration/illustration';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { ConfigService } from '@ngx-config/core';
+import { MetadataService } from '../../app/services/metadata/metadata.service';
 
 /**
  * Generated class for the ImageGalleryPage page.
@@ -31,7 +32,8 @@ export class ImageGalleryPage {
     public modalController: ModalController,
     private userSettingsService: UserSettingsService,
     private config: ConfigService,
-    private events: Events
+    private events: Events,
+    private metadataService: MetadataService
   ) {
   }
 
@@ -39,6 +41,12 @@ export class ImageGalleryPage {
     this.events.publish('ionViewWillLeave', this.constructor.name);
   }
   ionViewWillEnter() {
+    // Try to remove META-Tags
+    this.metadataService.clearHead();
+    // Add the new META-Tags
+    this.metadataService.addDescription(this.constructor.name);
+    this.metadataService.addKeywords();
+
     this.events.publish('ionViewWillEnter', this.constructor.name);
     if (this.navParams.get('galleryPage') !== undefined) {
       const page = this.config.getSettings('galleryImages.' + this.navParams.get('galleryPage'));

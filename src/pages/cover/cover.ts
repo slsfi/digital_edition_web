@@ -8,6 +8,7 @@ import { UserSettingsService } from '../../app/services/settings/user-settings.s
 import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
 import { ConfigService } from '@ngx-config/core';
 import { MdContentService } from '../../app/services/md/md-content.service';
+import { MetadataService } from '../../app/services/metadata/metadata.service';
 
 /**
  * Generated class for the CoverPage page.
@@ -52,7 +53,8 @@ export class CoverPage {
     private userSettingsService: UserSettingsService,
     protected tableOfContentsService: TableOfContentsService,
     public config: ConfigService,
-    public mdContentService: MdContentService
+    public mdContentService: MdContentService,
+    private metadataService: MetadataService
   ) {
     this.coverSelected = true;
     this.id = this.params.get('collectionID');
@@ -112,6 +114,13 @@ export class CoverPage {
   }
   ionViewWillEnter() {
     this.events.publish('ionViewWillEnter', this.constructor.name);
+
+    // Try to remove META-Tags
+    this.metadataService.clearHead();
+    // Add the new META-Tags
+    this.metadataService.addDescription(this.constructor.name);
+    this.metadataService.addKeywords();
+
     this.events.publish('musicAccordion:reset', true);
     this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'cover'});
 

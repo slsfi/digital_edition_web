@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core/src/translate.service';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { ReferenceDataModalPage } from '../reference-data-modal/reference-data-modal';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
+import { MetadataService } from '../../app/services/metadata/metadata.service';
 /**
  * Generated class for the FacsimileCollectionPage page.
  *
@@ -59,7 +60,8 @@ export class MediaCollectionPage {
     private config: ConfigService,
     public translate: TranslateService,
     public languageService: LanguageService,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    private metadataService: MetadataService
 
   ) {
     this.mediaCollectionId = this.navParams.get('mediaCollectionId');
@@ -98,6 +100,11 @@ export class MediaCollectionPage {
   }
 
   ionViewDidEnter() {
+    // Try to remove META-Tags
+    this.metadataService.clearHead();
+    // Add the new META-Tags
+    this.metadataService.addDescription(this.constructor.name);
+    this.metadataService.addKeywords();
     this.analyticsService.doPageView('Collection');
   }
 
@@ -162,6 +169,7 @@ export class MediaCollectionPage {
     this.events.publish('ionViewWillLeave', this.constructor.name);
   }
   ionViewWillEnter() {
+
     this.events.publish('ionViewWillEnter', this.constructor.name);
   }
 

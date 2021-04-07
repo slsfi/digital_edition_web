@@ -13,6 +13,7 @@ import { FilterPage } from '../filter/filter';
 import { OccurrencesPage } from '../occurrences/occurrences';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
+import { MetadataService } from '../../app/services/metadata/metadata.service';
 
 /**
  * Generated class for the PlaceSearchPage page.
@@ -80,7 +81,8 @@ export class PlaceSearchPage {
               public viewCtrl: ViewController,
               private userSettingsService: UserSettingsService,
               private cf: ChangeDetectorRef,
-              private analyticsService: AnalyticsService
+              private analyticsService: AnalyticsService,
+              private metadataService: MetadataService
   ) {
     this.langService.getLanguage().subscribe((lang) => {
       this.appName = this.config.getSettings('app.name.' + lang);
@@ -183,6 +185,12 @@ export class PlaceSearchPage {
   }
 
   ionViewWillEnter() {
+    // Try to remove META-Tags
+    this.metadataService.clearHead();
+    // Add the new META-Tags
+    this.metadataService.addDescription(this.constructor.name);
+    this.metadataService.addKeywords();
+
     this.events.publish('ionViewWillEnter', this.constructor.name);
     this.events.publish('tableOfContents:unSelectSelectedTocItem', true);
     this.selectMusicAccordionItem();

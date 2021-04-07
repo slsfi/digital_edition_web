@@ -28,6 +28,7 @@ import { GeneralTocItem } from './models/table-of-contents.model';
 import { TutorialService } from './services/tutorial/tutorial.service';
 import { TableOfContentsAccordionComponent } from '../components/table-of-contents-accordion/table-of-contents-accordion';
 import { GalleryService } from './services/gallery/gallery.service';
+import { MetadataService } from './services/metadata/metadata.service';
 
 @Component({
   templateUrl: `app.html`,
@@ -212,7 +213,8 @@ export class DigitalEditionsApp {
     private alertCtrl: AlertController,
     private tutorial: TutorialService,
     private galleryService: GalleryService,
-    private renderer: Renderer
+    private renderer: Renderer,
+    private metadataService: MetadataService
   ) {
 
     // Check for IE11
@@ -723,15 +725,13 @@ export class DigitalEditionsApp {
         this.getAboutPages();
       });
       this.events.publish('pdfview:open', { 'isOpen': false });
-
-      /* const tableOfContentsMenu: HTMLElement = document.querySelector('.split-pane-side');
-      const menuResizer = document.querySelector('.menuResizer');
-      const initialtWidth = Number(tableOfContentsMenu.offsetWidth);
-      menuResizer.addEventListener('drag', (event: MouseEvent) => {
-        this.resizeTOCMenu(event, tableOfContentsMenu, initialtWidth);
-      });
-      this.cdRef.detectChanges(); */
     });
+
+    // Try to remove META-Tags
+    this.metadataService.clearHead();
+    // Add the new META-Tags
+    this.metadataService.addDescription();
+    this.metadataService.addKeywords();
   }
 
   resizeTOCMenu( event: MouseEvent, splitPaneItem, initialtWidth ) {

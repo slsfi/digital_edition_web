@@ -13,6 +13,7 @@ import { FilterPage } from '../filter/filter';
 import { OccurrencesPage } from '../occurrences/occurrences';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
+import { MetadataService } from '../../app/services/metadata/metadata.service';
 
 /**
  * Generated class for the worksearchPage page.
@@ -77,7 +78,8 @@ export class WorkSearchPage {
               private userSettingsService: UserSettingsService,
               private events: Events,
               private cf: ChangeDetectorRef,
-              private analyticsService: AnalyticsService
+              private analyticsService: AnalyticsService,
+              private metadataService: MetadataService
   ) {
     this.langService.getLanguage().subscribe((lang) => {
       this.appName = this.config.getSettings('app.name.' + lang);
@@ -99,6 +101,11 @@ export class WorkSearchPage {
   }
   ionViewWillEnter() {
     this.events.publish('ionViewWillEnter', this.constructor.name);
+    // Try to remove META-Tags
+    this.metadataService.clearHead();
+    // Add the new META-Tags
+    this.metadataService.addDescription(this.constructor.name);
+    this.metadataService.addKeywords();
   }
 
   setData() {
