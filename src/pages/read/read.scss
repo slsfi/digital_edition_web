@@ -317,6 +317,14 @@ ion-fab .fab-list-active .fab-backdrop {
   z-index: -1;
 }
 
+page-read .mobile-mode-read-content > .scroll-content {
+  padding-top: 60px !important;
+}
+
+page-read .mobile-mode-read-content .scroll-zoom-wrapper {
+  padding: 0 10px;
+}
+
 /* Adjust padding and background color of text column in mobile mode. */
 page-read div.mobile-mode-established {
   padding: 12px;

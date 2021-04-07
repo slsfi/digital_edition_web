@@ -82,16 +82,16 @@ text-changer {
 }
 
 .text-changer-mobile-view {
-    .forwardBackward {
-        position: fixed;
-        max-width: 100vw;
-        width: 100vw;
-        z-index: 9999;
-        background-color: rgba(99,99,99, 0.9);
-        bottom: 0;
-        left: 0;
-        padding: 10px 1em;
-        transform: none;
-        height: 64px;
-    }
+  .forwardBackward {
+    position: fixed;
+    max-width: 100vw;
+    width: 100%;
+    z-index: 9999;
+    background-color: rgba(99,99,99, 0.9);
+    bottom: 0;
+    left: 0;
+    padding: 10px 1em;
+    transform: none;
+    height: 64px;
+  }
 }

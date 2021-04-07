@@ -199,7 +199,7 @@ export class IntroductionPage {
       } else {
         interationsLeft -= 1;
         if (this.pos !== null && this.pos !== undefined) {
-          console.log('Attempting to scroll to ' + this.pos);
+          // console.log('Attempting to scroll to ' + this.pos);
           let positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
           const parentElem = positionElement.parentElement;
           if ((parentElem !== undefined && parentElem.classList.length !== 0 &&
@@ -578,7 +578,7 @@ export class IntroductionPage {
 
   showFootnoteInfoOverlay(id: string, targetElem: HTMLElement) {
     if (this.tooltips.footnotes[id]) {
-      this.setInfoOverlayPositionAndWidth();
+      this.setInfoOverlayPositionAndWidth(targetElem);
       this.setInfoOverlayText(this.tooltips.footnotes[id]);
       return;
     }
@@ -597,7 +597,7 @@ export class IntroductionPage {
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
-    this.setInfoOverlayPositionAndWidth();
+    this.setInfoOverlayPositionAndWidth(targetElem);
     this.setInfoOverlayText(footNoteHTML);
     this.tooltips.footnotes[id] = footNoteHTML;
   }
@@ -920,43 +920,50 @@ export class IntroductionPage {
     return dimensions;
   }
 
-  private setInfoOverlayPositionAndWidth() {
-    // Left and right margins
+  private setInfoOverlayPositionAndWidth(triggerElement: HTMLElement) {
+    // Left and right margins and max width of the overlay
     let margins = 20;
-
-    // Max width
     const maxWidth = 600;
 
     // Get viewport height.
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
-    // Set horisontal offset due to possible side pane on the left.
-    const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
-    let sidePaneOffsetWidth = 0;
-    if (sidePaneIsOpen) {
-      sidePaneOffsetWidth = 269;
+    // Get read page content element and adjust viewport height with horizontal scrollbar height if such is present
+    const contentElem = document.querySelector('page-introduction > ion-content > .scroll-content') as HTMLElement;
+    let horizontalScrollbarOffsetHeight = 0;
+    if (contentElem.clientHeight < contentElem.offsetHeight) {
+      horizontalScrollbarOffsetHeight = contentElem.offsetHeight - contentElem.clientHeight;
     }
 
-    // Get bounding rectangle of the ion-scroll element which is the container for the introduction text.
-    const containerElemRect = document.querySelector('ion-scroll > div.scroll-content').getBoundingClientRect();
-
-    let tmpWidth = containerElemRect.width;
-
-    if (tmpWidth > maxWidth) {
-      margins = Math.floor((tmpWidth - maxWidth) / 2);
-      tmpWidth = maxWidth + 2 * margins;
+    // Get bounding rectangle of the div.scroll-content element which is the container for the column that the trigger element resides in.
+    let containerElem = triggerElement.parentElement;
+    while (containerElem !== null && containerElem.parentElement !== null &&
+     !(containerElem.classList.contains('scroll-content') &&
+     containerElem.parentElement.tagName === 'ION-SCROLL')) {
+       containerElem = containerElem.parentElement;
     }
 
-    // Set info overlay position
-    this.infoOverlayPosition = {
-      bottom: vh - containerElemRect.bottom + 'px',
-      left: (containerElemRect.left + margins - sidePaneOffsetWidth) + 'px'
-    };
+    if (containerElem !== null && containerElem.parentElement !== null) {
+      const containerElemRect = containerElem.getBoundingClientRect();
+      let calcWidth = containerElem.clientWidth; // Width without scrollbar
 
-    this.infoOverlayPosType = 'absolute';
+      if (calcWidth > maxWidth) {
+        margins = Math.floor((calcWidth - maxWidth) / 2);
+        calcWidth = maxWidth;
+      } else {
+        calcWidth = calcWidth - 2 * margins;
+      }
 
-    // Set info overlay width
-    this.infoOverlayWidth = tmpWidth - 2 * margins + 'px';
+      // Set info overlay position
+      this.infoOverlayPosition = {
+        bottom: (vh - horizontalScrollbarOffsetHeight - containerElemRect.bottom) + 'px',
+        left: (containerElemRect.left + margins - contentElem.getBoundingClientRect().left) + 'px'
+      };
+      this.infoOverlayPosType = 'absolute';
+
+      // Set info overlay width
+      this.infoOverlayWidth = calcWidth + 'px';
+    }
   }
 
   private scrollToElement(element: HTMLElement) {
@@ -1002,12 +1009,13 @@ export class IntroductionPage {
     }
     // Find the scrollable container of the element which is to be scrolled into view
     let container = element.parentElement;
-    while (!container.classList.contains('scroll-content') &&
-     container.parentElement.tagName !== 'ION-SCROLL') {
+    while (container !== null && container.parentElement !== null &&
+     !(container.classList.contains('scroll-content') &&
+     container.parentElement.tagName === 'ION-SCROLL')) {
       container = container.parentElement;
-      if (container === null || container === undefined) {
-        return;
-      }
+    }
+    if (container === null || container.parentElement === null) {
+      return;
     }
 
     const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);

@@ -885,54 +885,121 @@ export class ReadPage /*implements OnDestroy*/ {
     /* CLICK EVENTS */
     this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
       this.hideToolTip();
-      const eventTarget = this.getEventTarget(event);
-      if (eventTarget['classList'].contains('tooltiptrigger')) {
-        if (eventTarget.hasAttribute('data-id')) {
-          if (eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
-            this.showPersonModal(eventTarget.getAttribute('data-id'));
-          } else if (eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
-            this.showPlaceModal(eventTarget.getAttribute('data-id'));
-          } else if (eventTarget['classList'].contains('title') && this.readPopoverService.show.workInfo) {
-            this.showWorkModal(eventTarget.getAttribute('data-id'));
-          } else if (eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
-            /* The user has clicked a comment lemma ("asterisk") in the reading-text.
-               Check if comments view is shown. */
-            const viewTypesShown = this.getViewTypesShown();
-            const commentsViewIsShown = viewTypesShown.includes('comments');
-            if (commentsViewIsShown && !this.userSettingsService.isMobile()) {
-              // Scroll to comment in comments view and scroll lemma in reading-text view
-              const numId = eventTarget.getAttribute('data-id').replace( /^\D+/g, '');
-              const targetId = 'start' + numId;
-              let lemmaStart = document.querySelector('[data-id="' + targetId + '"]') as HTMLElement;
-              if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
-                // The lemma is in a footnote, so we should get the second element with targetId
-                lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
-              }
-              if (lemmaStart !== null && lemmaStart !== undefined) {
-                // Scroll to start of lemma in reading text and temporarily prepend arrow.
-                this.scrollToCommentLemma(lemmaStart);
-                // Scroll to comment in the comments-column.
-                const commentSettimeoutId = this.scrollToComment(numId);
-              }
-            } else {
-              // If a comments view isn't shown or viewmode is mobile, show comment in modal
-              this.showCommentModal(eventTarget.getAttribute('data-id'));
+      let eventTarget = this.getEventTarget(event);
+
+      // Modal trigger for person-, place- or workinfo and info overlay trigger for footnote.
+      if (eventTarget['classList'].contains('tooltiptrigger') &&
+       eventTarget.hasAttribute('data-id')) {
+        if (eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
+          this.showPersonModal(eventTarget.getAttribute('data-id'));
+        } else if (eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
+          this.showPlaceModal(eventTarget.getAttribute('data-id'));
+        } else if (eventTarget['classList'].contains('title') && this.readPopoverService.show.workInfo) {
+          this.showWorkModal(eventTarget.getAttribute('data-id'));
+        } else if (eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
+          /* The user has clicked a comment lemma ("asterisk") in the reading-text.
+              Check if comments view is shown. */
+          const viewTypesShown = this.getViewTypesShown();
+          const commentsViewIsShown = viewTypesShown.includes('comments');
+          if (commentsViewIsShown && !this.userSettingsService.isMobile()) {
+            // Scroll to comment in comments view and scroll lemma in reading-text view
+            const numId = eventTarget.getAttribute('data-id').replace( /^\D+/g, '');
+            const targetId = 'start' + numId;
+            let lemmaStart = document.querySelector('[data-id="' + targetId + '"]') as HTMLElement;
+            if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
+              // The lemma is in a footnote, so we should get the second element with targetId
+              lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
             }
-          } else if (eventTarget['classList'].contains('ttFoot')) {
-            this.showFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
+            if (lemmaStart !== null && lemmaStart !== undefined) {
+              // Scroll to start of lemma in reading text and temporarily prepend arrow.
+              this.scrollToCommentLemma(lemmaStart);
+              // Scroll to comment in the comments-column.
+              const commentSettimeoutId = this.scrollToComment(numId);
+            }
+          } else {
+            // If a comments view isn't shown or viewmode is mobile, show comment in modal
+            this.showCommentModal(eventTarget.getAttribute('data-id'));
           }
+        } else if (eventTarget['classList'].contains('ttFoot')) {
+          // Footnote reference clicked in reading text
+          this.showFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
+        }
+      } else if (eventTarget['classList'].contains('tooltiptrigger') &&
+       eventTarget.hasAttribute('id')) {
+        if (eventTarget['classList'].contains('ttFoot') &&
+         eventTarget['classList'].contains('teiVariant')) {
+           // Footnote reference clicked in variant
+          this.showVariantFootnoteInfoOverlay(eventTarget.getAttribute('id'), eventTarget);
         }
       }
       if (eventTarget['classList'].contains('variantScrollTarget')) {
-        if (eventTarget !== undefined) {
-          eventTarget.classList.add('highlight');
-          this.scrollToVariant(eventTarget);
-        }
+        // Click on variant lemma --> highlight and scroll all variant columns
+        eventTarget.classList.add('highlight');
+        this.scrollToVariant(eventTarget);
         setTimeout(function () {
           if (eventTarget !== undefined) {
             eventTarget.classList.remove('highlight');
           }
         }, 5000);
+      }
+
+      eventTarget = event.target as HTMLElement;
+      if (eventTarget.classList.length === 0 || !eventTarget.classList.contains('xreference')) {
+        eventTarget = eventTarget.parentElement;
+      }
+
+      if (eventTarget.classList.length !== 0 &&
+       eventTarget.classList.contains('xreference') &&
+       eventTarget.classList.contains('noteReference')) {
+        // Link to (foot)note reference
+        event.preventDefault();
+        const anchorElem: HTMLAnchorElement = eventTarget as HTMLAnchorElement;
+
+        let targetId = '';
+        if (anchorElem.hasAttribute('href')) {
+          targetId = anchorElem.getAttribute('href');
+        } else if (anchorElem.parentElement && anchorElem.parentElement.hasAttribute('href')) {
+          targetId = anchorElem.parentElement.getAttribute('href');
+        }
+
+        if (targetId) {
+          let targetColumnId = '';
+          if (anchorElem.className.includes('targetColumnId_')) {
+            for (let i = 0; i < anchorElem.classList.length; i++) {
+              if (anchorElem.classList[i].startsWith('targetColumnId_')) {
+                targetColumnId = anchorElem.classList[i].replace('targetColumnId_', '');
+              }
+            }
+          }
+
+          // Find the containing scrollable element
+          let containerElem = null;
+          if (targetColumnId) {
+            containerElem = document.getElementById(targetColumnId);
+          } else {
+            containerElem = anchorElem.parentElement;
+            while (containerElem !== null && containerElem.parentElement !== null &&
+            !(containerElem.classList.contains('scroll-content') &&
+            containerElem.parentElement.tagName === 'ION-SCROLL')) {
+              containerElem = containerElem.parentElement;
+            }
+            if (containerElem.parentElement === null) {
+              containerElem = null;
+            }
+          }
+
+          if (containerElem !== null) {
+            let dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
+            if (anchorElem.classList.contains('teiVariant')) {
+              // Link to (foot)note reference in variant
+              dataIdSelector = '[id="' + String(targetId).replace('#', '') + '"]';
+            }
+            const target = containerElem.querySelector(dataIdSelector) as HTMLElement;
+            if (target !== null) {
+              this.scrollToHTMLElement(target, 'top');
+            }
+          }
+        }
       }
     }).bind(this);
 
@@ -950,57 +1017,59 @@ export class ReadPage /*implements OnDestroy*/ {
 
     /* MOUSE OVER EVENTS */
     this.renderer.listen(nElement, 'mouseover', (event) => {
-      let tooltipShown = false;
-      let eventTarget = this.getEventTarget(event);
-      while (!tooltipShown && eventTarget['classList'].contains('tooltiptrigger')) {
-        if (eventTarget.hasAttribute('data-id')) {
-          if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
-            this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+      if (this.userSettingsService.isDesktop()) {
+        let tooltipShown = false;
+        let eventTarget = this.getEventTarget(event);
+        while (!tooltipShown && eventTarget['classList'].contains('tooltiptrigger')) {
+          if (eventTarget.hasAttribute('data-id')) {
+            if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
+              this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+              tooltipShown = true;
+            } else if (toolTipsSettings.placeInfo
+              && eventTarget['classList'].contains('placeName')
+              && this.readPopoverService.show.placeInfo) {
+              this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+              tooltipShown = true;
+            } else if (toolTipsSettings.workInfo
+              && eventTarget['classList'].contains('title')
+              && this.readPopoverService.show.workInfo) {
+              this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+              tooltipShown = true;
+            } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
+              this.showCommentTooltip(eventTarget.getAttribute('data-id'), eventTarget);
+              tooltipShown = true;
+            } else if (toolTipsSettings.footNotes
+              && eventTarget['classList'].contains('ttFoot')) {
+              this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
+              tooltipShown = true;
+            }
+          } else if ((toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges') && this.readPopoverService.show.changes) ||
+          (toolTipsSettings.normalisations && eventTarget['classList'].contains('ttNormalisations') &&
+          this.readPopoverService.show.normalisations) ||
+          (toolTipsSettings.abbreviations && eventTarget['classList'].contains('ttAbbreviations') &&
+          this.readPopoverService.show.abbreviations)) {
+            this.showTooltipFromInlineHtml(eventTarget);
             tooltipShown = true;
-          } else if (toolTipsSettings.placeInfo
-            && eventTarget['classList'].contains('placeName')
-            && this.readPopoverService.show.placeInfo) {
-            this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-            tooltipShown = true;
-          } else if (toolTipsSettings.workInfo
-            && eventTarget['classList'].contains('title')
-            && this.readPopoverService.show.workInfo) {
-            this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-            tooltipShown = true;
-          } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
-            this.showCommentTooltip(eventTarget.getAttribute('data-id'), eventTarget);
-            tooltipShown = true;
-          } else if (toolTipsSettings.footNotes
-            && eventTarget['classList'].contains('ttFoot')) {
-            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+          } else if (eventTarget['classList'].contains('ttVariant')) {
+            if (eventTarget !== undefined) {
+              this.showVariantTooltip(eventTarget);
+              tooltipShown = true;
+            }
+          } else if (toolTipsSettings.footNotes && eventTarget.hasAttribute('id') &&
+          eventTarget['classList'].contains('teiVariant') &&
+          eventTarget['classList'].contains('ttFoot')) {
+            this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), eventTarget);
             tooltipShown = true;
           }
-        } else if ((toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges') && this.readPopoverService.show.changes) ||
-         (toolTipsSettings.normalisations && eventTarget['classList'].contains('ttNormalisations') &&
-         this.readPopoverService.show.normalisations) ||
-         (toolTipsSettings.abbreviations && eventTarget['classList'].contains('ttAbbreviations') &&
-         this.readPopoverService.show.abbreviations)) {
-          this.showTooltipFromInlineHtml(eventTarget);
-          tooltipShown = true;
-        } else if (eventTarget['classList'].contains('ttVariant')) {
-          if (eventTarget !== undefined) {
-            this.showVariantTooltip(eventTarget, event);
-            tooltipShown = true;
-          }
-        } else if (toolTipsSettings.footNotes && eventTarget.hasAttribute('id') &&
-         eventTarget['classList'].contains('teiVariant') &&
-         eventTarget['classList'].contains('ttFoot')) {
-          this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), eventTarget);
-          tooltipShown = true;
-        }
 
-        /* Get the parent node of the event target for the next iteration if a tooltip hasn't been shown already.
-         * This is for finding nested tooltiptriggers, i.e. a person can be a child of a change. */
-        if (!tooltipShown) {
-          eventTarget = eventTarget['parentNode'];
-          if (!eventTarget['classList'].contains('tooltiptrigger') && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
-            /* The parent isn't a tooltiptrigger, but the parent of the parent is, use it for the next iteration. */
+          /* Get the parent node of the event target for the next iteration if a tooltip hasn't been shown already.
+          * This is for finding nested tooltiptriggers, i.e. a person can be a child of a change. */
+          if (!tooltipShown) {
             eventTarget = eventTarget['parentNode'];
+            if (!eventTarget['classList'].contains('tooltiptrigger') && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
+              /* The parent isn't a tooltiptrigger, but the parent of the parent is, use it for the next iteration. */
+              eventTarget = eventTarget['parentNode'];
+            }
           }
         }
       }
@@ -1150,7 +1219,6 @@ export class ReadPage /*implements OnDestroy*/ {
         let text = '';
         if ( tooltip.date_born !== null || tooltip.date_deceased !== null ) {
           const date_born = String(tooltip.date_born).split('-')[0].replace(/^0+/, '');
-          console.log('dateborn: ' + date_born);
           const date_deceased = String(tooltip.date_deceased).split('-')[0].replace(/^0+/, '');
           let bcTranslation = 'BC';
           this.translate.get('BC').subscribe(
@@ -1257,8 +1325,8 @@ export class ReadPage /*implements OnDestroy*/ {
     );
   }
 
-  showFootnoteTooltip(id: string, targetElem: HTMLElement, origin: any) {
-    if (this.tooltips.footnotes[id]) {
+  showFootnoteTooltip(id: string, targetElem: HTMLElement) {
+    if (this.tooltips.footnotes[id] && this.userSettingsService.isDesktop()) {
       this.setToolTipPosition(targetElem, this.tooltips.footnotes[id]);
       this.setToolTipText(this.tooltips.footnotes[id]);
       return;
@@ -1279,21 +1347,35 @@ export class ReadPage /*implements OnDestroy*/ {
     }
     foundElem = foundElem.replace(' xmlns:tei="http://www.tei-c.org/ns/1.0"', '');
 
-    // Prepend the footnoteindicator to the the footnote text.
-    const footnoteWithIndicator: string = '<a class="xreference noteReference" href="#' + id + '">' +
-     targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
-    const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
-      this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
+    // Get column id of the column where the footnote is.
+    let containerElem = targetElem.parentElement;
+    while (containerElem !== null && !(containerElem.classList.contains('read-column') &&
+     containerElem.hasAttribute('id'))) {
+      containerElem = containerElem.parentElement;
+    }
+    if (containerElem !== null) {
+      const columnId = containerElem.getAttribute('id');
 
-    this.setToolTipPosition(targetElem, footNoteHTML);
-    this.setToolTipText(footNoteHTML);
-    this.tooltips.footnotes[id] = footNoteHTML;
+      // Prepend the footnoteindicator to the footnote text.
+      const footnoteWithIndicator: string = '<a class="xreference noteReference targetColumnId_' + columnId + '" href="#' + id + '">' +
+        targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
+      const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
+        this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
+
+      this.setToolTipPosition(targetElem, footNoteHTML);
+      this.setToolTipText(footNoteHTML);
+      if (this.userSettingsService.isDesktop()) {
+        this.tooltips.footnotes[id] = footNoteHTML;
+      }
+    }
   }
 
   showVariantFootnoteTooltip(id: string, targetElem: HTMLElement) {
     const footNoteHTML: string = this.getVariantFootnoteText(id, targetElem);
-    this.setToolTipPosition(targetElem, footNoteHTML);
-    this.setToolTipText(footNoteHTML);
+    if (footNoteHTML) {
+      this.setToolTipPosition(targetElem, footNoteHTML);
+      this.setToolTipText(footNoteHTML);
+    }
   }
 
   /* Use this method to get a footnote text of a variant. Returns a string with the footnote html. */
@@ -1303,13 +1385,32 @@ export class ReadPage /*implements OnDestroy*/ {
      triggerElem.nextElementSibling.classList.contains('ttFoot') &&
      triggerElem.nextElementSibling.firstElementChild.classList.contains('ttFixed') &&
      triggerElem.nextElementSibling.firstElementChild.getAttribute('id') === id) {
-      const ttText = triggerElem.nextElementSibling.firstElementChild.innerHTML;
-      // Prepend the footnoteindicator to the the footnote text.
-      const footnoteWithIndicator: string = '<a class="xreference noteReference" href="#' + id + '">' +
-     triggerElem.textContent + '</a>' + '<p class="noteText">' + ttText  + '</p>';
-      const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
-       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
-      return footNoteHTML;
+      let ttText = triggerElem.nextElementSibling.firstElementChild.innerHTML;
+      // MathJx problem with resolving the actual formula, not the translated formula.
+      if ( triggerElem.nextElementSibling.firstElementChild.lastChild.nodeName === 'SCRIPT' ) {
+        const tmpElem = <HTMLElement> triggerElem.nextElementSibling.firstElementChild.lastChild;
+        ttText = '$' + tmpElem.innerHTML + '$';
+      }
+
+      // Get column id of the column where the footnote is.
+      let containerElem = triggerElem.parentElement;
+      while (containerElem !== null && !(containerElem.classList.contains('read-column') &&
+       containerElem.hasAttribute('id'))) {
+        containerElem = containerElem.parentElement;
+      }
+      if (containerElem !== null) {
+        const columnId = containerElem.getAttribute('id');
+
+        // Prepend the footnoteindicator to the the footnote text.
+        const footnoteWithIndicator: string = '<a class="xreference noteReference teiVariant targetColumnId_' +
+         columnId + '" href="#' + id + '">' + triggerElem.textContent +
+         '</a>' + '<p class="noteText">' + ttText  + '</p>';
+        const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
+        this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
+        return footNoteHTML;
+      } else {
+        return '';
+      }
     } else {
       return '';
     }
@@ -1352,7 +1453,7 @@ export class ReadPage /*implements OnDestroy*/ {
     );
   }
 
-  showVariantTooltip(targetElem: HTMLElement, origin: any) {
+  showVariantTooltip(targetElem: HTMLElement) {
     if (targetElem.nextElementSibling !== null &&
      targetElem.nextElementSibling.hasAttribute('class') &&
      targetElem.nextElementSibling.className.includes('tooltip')) {
@@ -1362,7 +1463,7 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   showFootnoteInfoOverlay(id: string, targetElem: HTMLElement) {
-    if (this.tooltips.footnotes[id]) {
+    if (this.tooltips.footnotes[id] && this.userSettingsService.isDesktop()) {
       this.setInfoOverlayPositionAndWidth(targetElem);
       this.setInfoOverlayText(this.tooltips.footnotes[id]);
       return;
@@ -1373,20 +1474,52 @@ export class ReadPage /*implements OnDestroy*/ {
       const elt = target[i] as HTMLElement;
       if ( elt.getAttribute('data-id') === id ) {
         foundElem = elt.innerHTML;
+        // MathJx problem with resolving the actual formula, not the translated formula.
+        if ( elt.lastChild.nodeName === 'SCRIPT' ) {
+          const tmpElem = <HTMLElement> elt.lastChild;
+          foundElem = '$' + tmpElem.innerHTML + '$';
+        }
         break;
       }
     }
     foundElem = foundElem.replace(' xmlns:tei="http://www.tei-c.org/ns/1.0"', '');
 
-    // Prepend the footnoteindicator to the the footnote text.
-    const footnoteWithIndicator: string = '<a class="xreference noteReference" href="#' + id + '">' +
-     targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
+    let footnoteWithIndicator = '';
+    if (this.userSettingsService.isDesktop()) {
+      // Get column id of the column where the footnote is.
+      let containerElem = targetElem.parentElement;
+      while (containerElem !== null && !(containerElem.classList.contains('read-column') &&
+      containerElem.hasAttribute('id'))) {
+        containerElem = containerElem.parentElement;
+      }
+      if (containerElem !== null) {
+        const columnId = containerElem.getAttribute('id');
+
+        // Prepend the footnoteindicator to the footnote text.
+        footnoteWithIndicator = '<a class="xreference noteReference targetColumnId_' + columnId + '" href="#' + id + '">' +
+          targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
+      }
+    } else {
+      // This is for mobile view.
+      // Prepend the footnoteindicator to the footnote text.
+      footnoteWithIndicator = '<a class="xreference noteReference" href="#' + id + '">' +
+       targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
+    }
+
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
     this.setInfoOverlayPositionAndWidth(targetElem);
     this.setInfoOverlayText(footNoteHTML);
-    this.tooltips.footnotes[id] = footNoteHTML;
+    if (this.userSettingsService.isDesktop()) {
+      this.tooltips.footnotes[id] = footNoteHTML;
+    }
+  }
+
+  showVariantFootnoteInfoOverlay(id: string, targetElem: HTMLElement) {
+    const footNoteHTML: string = this.getVariantFootnoteText(id, targetElem);
+    this.setInfoOverlayPositionAndWidth(targetElem);
+    this.setInfoOverlayText(footNoteHTML);
   }
 
   setToolTipText(text: string) {
@@ -1733,53 +1866,57 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   private setInfoOverlayPositionAndWidth(triggerElement: HTMLElement) {
-    // Left and right margins
+    // Left and right margins and max width of the overlay
     let margins = 20;
-
-    // Max width
     const maxWidth = 600;
 
-    // Get containing element height.
-    let vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    // Get viewport height.
+    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
+    // Get read page content element and adjust viewport height with horizontal scrollbar height if such is present
     const contentElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
-    const contentElemRect = contentElem.getBoundingClientRect();
+    let horizontalScrollbarOffsetHeight = 0;
     if (contentElem.clientHeight < contentElem.offsetHeight) {
-      vh = vh - contentElem.offsetHeight + contentElem.clientHeight;
+      horizontalScrollbarOffsetHeight = contentElem.offsetHeight - contentElem.clientHeight;
     }
 
-    // Set horisontal offset due to possible side pane on the left.
-    const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
-    let sidePaneOffsetWidth = 0;
-    if (sidePaneIsOpen) {
-      sidePaneOffsetWidth = 269;
-    }
-
-    // Get bounding rectangle of the ion-scroll element which is the container for the column that the trigger element resides in.
+    // Get bounding rectangle of the div.scroll-content element which is the container for the column that the trigger element resides in.
     let containerElem = triggerElement.parentElement;
-    while (containerElem !== null && containerElem.tagName !== 'ION-SCROLL') {
+    while (containerElem !== null && containerElem.parentElement !== null &&
+      !(containerElem.classList.contains('scroll-content') &&
+      containerElem.parentElement.tagName === 'ION-SCROLL')) {
       containerElem = containerElem.parentElement;
     }
 
-    if (containerElem !== null) {
+    if (containerElem !== null && containerElem.parentElement !== null) {
       const containerElemRect = containerElem.getBoundingClientRect();
-      let tmpWidth = containerElemRect.width;
+      let calcWidth = containerElem.clientWidth; // Width without scrollbar
 
-      if (tmpWidth > maxWidth) {
-        margins = Math.floor((tmpWidth - maxWidth) / 2);
-        tmpWidth = maxWidth + 2 * margins;
+      if (calcWidth > maxWidth) {
+        margins = Math.floor((calcWidth - maxWidth) / 2);
+        calcWidth = maxWidth;
+      } else {
+        calcWidth = calcWidth - 2 * margins;
+      }
+
+      let mobileModeTextChangerYOffset = 64;
+      if (this.userSettingsService.isDesktop()) {
+        mobileModeTextChangerYOffset = 0;
       }
 
       // Set info overlay position
       this.infoOverlayPosition = {
-        bottom: contentElemRect.bottom - containerElemRect.bottom + 'px',
-        left: (containerElemRect.left + margins - sidePaneOffsetWidth) + 'px'
+        bottom: (vh - horizontalScrollbarOffsetHeight - containerElemRect.bottom + mobileModeTextChangerYOffset) + 'px',
+        left: (containerElemRect.left + margins - contentElem.getBoundingClientRect().left) + 'px'
       };
-
-      this.infoOverlayPosType = 'absolute';
+      if (this.userSettingsService.isDesktop()) {
+        this.infoOverlayPosType = 'absolute';
+      } else {
+        this.infoOverlayPosType = 'fixed';
+      }
 
       // Set info overlay width
-      this.infoOverlayWidth = tmpWidth - 2 * margins + 'px';
+      this.infoOverlayWidth = calcWidth + 'px';
     }
   }
 
@@ -1794,8 +1931,6 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   showPersonModal(id: string) {
-    // const modal = this.modalCtrl.create(SemanticDataModalPage, { id: id, type: 'person' });
-    // modal.present();
     const modal = this.modalCtrl.create(OccurrencesPage, { id: id, type: 'subject' });
     modal.present();
   }
@@ -2242,7 +2377,6 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 
-
   firstPage() {
     const c_id = this.legacyId.split('_')[0];
     const toc = this.storage.get('toc_' + c_id)
@@ -2266,6 +2400,22 @@ export class ReadPage /*implements OnDestroy*/ {
     }).catch(err => console.error(err));
   }
 
+  // Scrolls element into view and prepends arrow for the duration of timeOut.
+  private scrollToHTMLElement(element: HTMLElement, position = 'top', timeOut = 5000) {
+    try {
+      const tmpImage: HTMLImageElement = new Image();
+      tmpImage.src = 'assets/images/ms_arrow_right.svg';
+      tmpImage.classList.add('inl_ms_arrow');
+      element.parentElement.insertBefore(tmpImage, element);
+      this.scrollElementIntoView(tmpImage, position);
+      setTimeout(function() {
+        element.parentElement.removeChild(tmpImage);
+      }, timeOut);
+    } catch ( e ) {
+      console.error(e);
+    }
+  }
+
   /* This function can be used to scroll a container so that the element which it contains
    * is placed either at the top edge of the container or in the center of the container.
    * This function can be called multiple times simultaneously on elements in different
@@ -2279,12 +2429,13 @@ export class ReadPage /*implements OnDestroy*/ {
     }
     // Find the scrollable container of the element which is to be scrolled into view
     let container = element.parentElement;
-    while (!container.classList.contains('scroll-content') &&
-     container.parentElement.tagName !== 'ION-SCROLL') {
+    while (container !== null && container.parentElement !== null &&
+      !(container.classList.contains('scroll-content') &&
+      container.parentElement.tagName === 'ION-SCROLL')) {
       container = container.parentElement;
-      if (container === null || container === undefined) {
-        return;
-      }
+    }
+    if (container === null || container.parentElement === null) {
+      return;
     }
 
     const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
@@ -2320,5 +2471,13 @@ export class ReadPage /*implements OnDestroy*/ {
         }
       }
     }.bind(this), 500);
+  }
+
+  printMainContentClasses() {
+    if (this.userSettingsService.isMobile()) {
+      return 'mobile-mode-read-content';
+    } else {
+      return '';
+    }
   }
 }
