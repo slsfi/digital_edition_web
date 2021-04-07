@@ -920,6 +920,9 @@ export class ReadPage /*implements OnDestroy*/ {
             // If a comments view isn't shown or viewmode is mobile, show comment in modal
             this.showCommentModal(eventTarget.getAttribute('data-id'));
           }
+        } else if (eventTarget['classList'].contains('ttFoot') && eventTarget['classList'].contains('teiManuscript')) {
+          // Footnote reference clicked in manuscript column
+          this.showManuscriptFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
         } else if (eventTarget['classList'].contains('ttFoot')) {
           // Footnote reference clicked in reading text
           this.showFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
@@ -991,7 +994,7 @@ export class ReadPage /*implements OnDestroy*/ {
           if (containerElem !== null) {
             let dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
             if (anchorElem.classList.contains('teiVariant')) {
-              // Link to (foot)note reference in variant
+              // Link to (foot)note reference in variant, uses id-attribute instead of data-id.
               dataIdSelector = '[id="' + String(targetId).replace('#', '') + '"]';
             }
             const target = containerElem.querySelector(dataIdSelector) as HTMLElement;
@@ -1059,6 +1062,11 @@ export class ReadPage /*implements OnDestroy*/ {
           eventTarget['classList'].contains('teiVariant') &&
           eventTarget['classList'].contains('ttFoot')) {
             this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), eventTarget);
+            tooltipShown = true;
+          } else if (toolTipsSettings.footNotes && eventTarget.hasAttribute('data-id') &&
+          eventTarget['classList'].contains('teiManuscript') &&
+          eventTarget['classList'].contains('ttFoot')) {
+            this.showManuscriptFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
             tooltipShown = true;
           }
 
@@ -1378,7 +1386,15 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 
-  /* Use this method to get a footnote text of a variant. Returns a string with the footnote html. */
+  showManuscriptFootnoteTooltip(id: string, targetElem: HTMLElement) {
+    const footNoteHTML: string = this.getManuscriptFootnoteText(id, targetElem);
+    if (footNoteHTML) {
+      this.setToolTipPosition(targetElem, footNoteHTML);
+      this.setToolTipText(footNoteHTML);
+    }
+  }
+
+  /* Use this method to get a footnote text in a variant text. Returns a string with the footnote html. */
   private getVariantFootnoteText(id: string, triggerElem: HTMLElement) {
     if (triggerElem.nextElementSibling !== null && triggerElem.nextElementSibling !== undefined &&
      triggerElem.nextElementSibling.classList.contains('teiVariant') &&
@@ -1403,6 +1419,44 @@ export class ReadPage /*implements OnDestroy*/ {
 
         // Prepend the footnoteindicator to the the footnote text.
         const footnoteWithIndicator: string = '<a class="xreference noteReference teiVariant targetColumnId_' +
+         columnId + '" href="#' + id + '">' + triggerElem.textContent +
+         '</a>' + '<p class="noteText">' + ttText  + '</p>';
+        const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
+        this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
+        return footNoteHTML;
+      } else {
+        return '';
+      }
+    } else {
+      return '';
+    }
+  }
+
+  /* Use this method to get a footnote text in a manuscript text. Returns a string with the footnote html. */
+  private getManuscriptFootnoteText(id: string, triggerElem: HTMLElement) {
+    if (triggerElem.nextElementSibling !== null && triggerElem.nextElementSibling !== undefined &&
+     triggerElem.nextElementSibling.classList.contains('teiManuscript') &&
+     triggerElem.nextElementSibling.classList.contains('ttFoot') &&
+     triggerElem.nextElementSibling.firstElementChild.classList.contains('ttFixed') &&
+     triggerElem.nextElementSibling.firstElementChild.getAttribute('data-id') === id) {
+      let ttText = triggerElem.nextElementSibling.firstElementChild.innerHTML;
+      // MathJx problem with resolving the actual formula, not the translated formula.
+      if ( triggerElem.nextElementSibling.firstElementChild.lastChild.nodeName === 'SCRIPT' ) {
+        const tmpElem = <HTMLElement> triggerElem.nextElementSibling.firstElementChild.lastChild;
+        ttText = '$' + tmpElem.innerHTML + '$';
+      }
+
+      // Get column id of the column where the footnote is.
+      let containerElem = triggerElem.parentElement;
+      while (containerElem !== null && !(containerElem.classList.contains('read-column') &&
+       containerElem.hasAttribute('id'))) {
+        containerElem = containerElem.parentElement;
+      }
+      if (containerElem !== null) {
+        const columnId = containerElem.getAttribute('id');
+
+        // Prepend the footnoteindicator to the the footnote text.
+        const footnoteWithIndicator: string = '<a class="xreference noteReference teiManuscript targetColumnId_' +
          columnId + '" href="#' + id + '">' + triggerElem.textContent +
          '</a>' + '<p class="noteText">' + ttText  + '</p>';
         const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
@@ -1514,6 +1568,12 @@ export class ReadPage /*implements OnDestroy*/ {
     if (this.userSettingsService.isDesktop()) {
       this.tooltips.footnotes[id] = footNoteHTML;
     }
+  }
+
+  showManuscriptFootnoteInfoOverlay(id: string, targetElem: HTMLElement) {
+    const footNoteHTML: string = this.getManuscriptFootnoteText(id, targetElem);
+    this.setInfoOverlayPositionAndWidth(targetElem);
+    this.setInfoOverlayText(footNoteHTML);
   }
 
   showVariantFootnoteInfoOverlay(id: string, targetElem: HTMLElement) {
@@ -1899,14 +1959,9 @@ export class ReadPage /*implements OnDestroy*/ {
         calcWidth = calcWidth - 2 * margins;
       }
 
-      let mobileModeTextChangerYOffset = 64;
-      if (this.userSettingsService.isDesktop()) {
-        mobileModeTextChangerYOffset = 0;
-      }
-
       // Set info overlay position
       this.infoOverlayPosition = {
-        bottom: (vh - horizontalScrollbarOffsetHeight - containerElemRect.bottom + mobileModeTextChangerYOffset) + 'px',
+        bottom: (vh - horizontalScrollbarOffsetHeight - containerElemRect.bottom) + 'px',
         left: (containerElemRect.left + margins - contentElem.getBoundingClientRect().left) + 'px'
       };
       if (this.userSettingsService.isDesktop()) {
