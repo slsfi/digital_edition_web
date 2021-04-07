@@ -953,7 +953,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
       if (eventTarget.classList.length !== 0 &&
        eventTarget.classList.contains('xreference') &&
-       eventTarget.classList.contains('noteReference')) {
+       eventTarget.classList.contains('footnoteReference')) {
         // Link to (foot)note reference
         event.preventDefault();
         const anchorElem: HTMLAnchorElement = eventTarget as HTMLAnchorElement;
@@ -1374,8 +1374,8 @@ export class ReadPage /*implements OnDestroy*/ {
       const columnId = containerElem.getAttribute('id');
 
       // Prepend the footnoteindicator to the footnote text.
-      const footnoteWithIndicator: string = '<a class="xreference noteReference targetColumnId_' + columnId + '" href="#' + id + '">' +
-        targetElem.textContent + '</a>' + '<p class="noteText">' + footnoteText  + '</p>';
+      const footnoteWithIndicator: string = '<a class="xreference footnoteReference targetColumnId_' + columnId + '" href="#' + id + '">' +
+        targetElem.textContent + '</a>' + '<p class="footnoteText">' + footnoteText  + '</p>';
       const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
         this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
@@ -1427,9 +1427,9 @@ export class ReadPage /*implements OnDestroy*/ {
         const columnId = containerElem.getAttribute('id');
 
         // Prepend the footnoteindicator to the the footnote text.
-        const footnoteWithIndicator: string = '<a class="xreference noteReference teiVariant targetColumnId_' +
+        const footnoteWithIndicator: string = '<a class="xreference footnoteReference teiVariant targetColumnId_' +
          columnId + '" href="#' + id + '">' + triggerElem.textContent +
-         '</a>' + '<p class="noteText">' + ttText  + '</p>';
+         '</a>' + '<p class="footnoteText">' + ttText  + '</p>';
         const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
         this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
         return footNoteHTML;
@@ -1465,9 +1465,9 @@ export class ReadPage /*implements OnDestroy*/ {
         const columnId = containerElem.getAttribute('id');
 
         // Prepend the footnoteindicator to the the footnote text.
-        const footnoteWithIndicator: string = '<a class="xreference noteReference teiManuscript targetColumnId_' +
+        const footnoteWithIndicator: string = '<a class="xreference footnoteReference teiManuscript targetColumnId_' +
          columnId + '" href="#' + id + '">' + triggerElem.textContent +
-         '</a>' + '<p class="noteText">' + ttText  + '</p>';
+         '</a>' + '<p class="footnoteText">' + ttText  + '</p>';
         const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
         this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
         return footNoteHTML;
@@ -1566,14 +1566,14 @@ export class ReadPage /*implements OnDestroy*/ {
         const columnId = containerElem.getAttribute('id');
 
         // Prepend the footnoteindicator to the footnote text.
-        footnoteWithIndicator = '<a class="xreference noteReference targetColumnId_' + columnId + '" href="#' + id + '">' +
-          targetElem.textContent + '</a>' + '<p class="noteText">' + footnoteText  + '</p>';
+        footnoteWithIndicator = '<a class="xreference footnoteReference targetColumnId_' + columnId + '" href="#' + id + '">' +
+          targetElem.textContent + '</a>' + '<p class="footnoteText">' + footnoteText  + '</p>';
       }
     } else {
       // This is for mobile view.
       // Prepend the footnoteindicator to the footnote text.
-      footnoteWithIndicator = '<a class="xreference noteReference" href="#' + id + '">' +
-       targetElem.textContent + '</a>' + '<p class="noteText">' + footnoteText  + '</p>';
+      footnoteWithIndicator = '<a class="xreference footnoteReference" href="#' + id + '">' +
+       targetElem.textContent + '</a>' + '<p class="footnoteText">' + footnoteText  + '</p>';
     }
 
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,

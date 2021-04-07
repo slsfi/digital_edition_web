@@ -556,16 +556,16 @@ div.tei {
     }
 
     /* FOOTNOTES */
-    ol.notesList {
+    ol.footnotesList {
         display: table;
         list-style-type: none;
         padding: 0;
         margin: 0;
 
-        li.noteItem {
+        li.footnoteItem {
             display: table-row;
 
-            a.noteReference {
+            a.footnoteReference {
                 display: table-cell;
                 padding: 0 0.7em 0 0;
                 text-align: right;
@@ -575,7 +575,7 @@ div.tei {
                     text-decoration: underline;
                 }
             }
-            span.noteText {
+            span.footnoteText {
                 display: table-cell;
                 padding: 0;
             }
@@ -1738,7 +1738,7 @@ div.tei {
 
 /* Style for tooltip boxes. The tooltips also inherit styles from div.tei */
 .tei.toolTip {
-    z-index: 1000;
+    z-index: 1001;
     position: fixed;
     background: #f1f1f1;
     border: 1px solid #222;
@@ -1753,10 +1753,10 @@ div.tei {
     transform-origin: left top; /* This is necessary for the scaling to work properly if the tooltip wouldn't fit in view otherwise. */
 
     /* Styles for (foot)notes in tooltips */
-    a.noteReference {
+    a.footnoteReference {
         display: none;
     }
-    p.noteText {
+    p.footnoteText {
         display: inline-block;
         text-indent: 0;
         line-height: 1.4em;
@@ -1764,7 +1764,7 @@ div.tei {
 }
 
 .tei.infoOverlay {
-    z-index: 999;
+    z-index: 1000;
     display: inline-block;
     background: $infoOverlay-bg-color;
     margin: 0;
@@ -1810,7 +1810,7 @@ div.tei {
         clear: both;
         padding: 0 24px 24px 16px;
 
-        a.noteReference {
+        a.footnoteReference {
             display: inline-block;
             margin-right: 0.7em;
             text-decoration: none;
@@ -1819,7 +1819,7 @@ div.tei {
                 text-decoration: underline;
             }
         }
-        p.noteText {
+        p.footnoteText {
             display: inline-block;
             text-indent: 0;
             width: 100%;

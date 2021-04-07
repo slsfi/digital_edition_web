@@ -379,7 +379,7 @@ export class IntroductionPage {
             const dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
             const target = anchorElem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
             if (target !== null) {
-              if (anchorElem.classList.contains('noteReference')) {
+              if (anchorElem.classList.contains('footnoteReference')) {
                 // Link to (foot)note reference, prepend arrow
                 this.scrollToHTMLElement(target, 'top');
               } else {
@@ -566,8 +566,8 @@ export class IntroductionPage {
       }
     }
     // Prepend the footnoteindicator to the the footnote text.
-    const footnoteWithIndicator: string = '<a class="xreference noteReference" href="#' + id + '">' +
-     targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
+    const footnoteWithIndicator: string = '<a class="xreference footnoteReference" href="#' + id + '">' +
+     targetElem.textContent + '</a>' + '<p class="footnoteText">' + foundElem  + '</p>';
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
@@ -592,8 +592,8 @@ export class IntroductionPage {
       }
     }
     // Prepend the footnoteindicator to the the footnote text.
-    const footnoteWithIndicator: string = '<a class="xreference noteReference" href="#' + id + '">' +
-     targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
+    const footnoteWithIndicator: string = '<a class="xreference footnoteReference" href="#' + id + '">' +
+     targetElem.textContent + '</a>' + '<p class="footnoteText">' + foundElem  + '</p>';
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
