@@ -192,6 +192,33 @@ div.tei.xlargeFontSize img.inl_ms_arrow {
     height: ceil(0.75 * $text-fontsize-xlarge);
 }
 
+/* Storlek på esh-symbolen i manuskript. */
+div.tei .teiManuscript.immediate_symbol img {
+    display: inline-block;
+    width:   0.9em; /* Default om textstorleken inte fungerar. */
+    height:  auto;
+}
+div.tei.xsmallFontSize .teiManuscript.immediate_symbol img {
+    width:  ceil(0.9 * $text-fontsize-xsmall);
+    height: ceil(0.9 * $text-fontsize-xsmall);
+}
+div.tei.smallFontSize .teiManuscript.immediate_symbol img {
+    width:  ceil(0.9 * $text-fontsize-small);
+    height: ceil(0.9 * $text-fontsize-small);
+}
+div.tei.mediumFontSize .teiManuscript.immediate_symbol img {
+    width:  ceil(0.9 * $text-fontsize-medium);
+    height: ceil(0.9 * $text-fontsize-medium);
+}
+div.tei.largeFontSize .teiManuscript.immediate_symbol img {
+    width:  ceil(0.9 * $text-fontsize-large);
+    height: ceil(0.9 * $text-fontsize-large);
+}
+div.tei.xlargeFontSize .teiManuscript.immediate_symbol img {
+    width:  ceil(0.9 * $text-fontsize-xlarge);
+    height: ceil(0.9 * $text-fontsize-xlarge);
+}
+
 /* Gör så att röda tringeln för början på lemman i lästexten blinkar ljusare. */
 @keyframes filter-animation-brightness {
     0% {
@@ -1017,6 +1044,7 @@ div.tei {
     .immediate_symbol {
         position: relative;
         bottom: -2px;
+        display: inline-block;
     }
 /* MANUSCRIPT END? */
 
