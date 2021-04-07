@@ -47,9 +47,9 @@ export class MetadataService {
       const description = document.createElement('meta');
       description.name = 'description';
       if ( !content ) {
-        description.content = this.appName + '-' + this.siteMetadata['description'];
+        description.content = this.appName + ' - ' + this.siteMetadata['description'];
       } else {
-        description.content = this.appName + '-' + content;
+        description.content = this.appName + ' - ' + content;
       }
       document.getElementsByTagName('head')[0].appendChild(description);
     });

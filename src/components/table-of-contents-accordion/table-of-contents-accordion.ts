@@ -11,6 +11,7 @@ import { LanguageService } from '../../app/services/languages/language.service';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { ThrowStmt } from '@angular/compiler';
 import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { MetadataService } from '../../app/services/metadata/metadata.service';
 
 /*-------------------------------------*/
 
@@ -321,7 +322,8 @@ export class TableOfContentsAccordionComponent {
     public config: ConfigService,
     public languageService: LanguageService,
     public userSettingsService: UserSettingsService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    public metadataService: MetadataService
   ) {
   }
 
@@ -775,6 +777,12 @@ export class TableOfContentsAccordionComponent {
       params['selectedItemInAccordion'] = true;
 
       params['search_title'] = 'searchtitle';
+
+      // Try to remove META-Tags
+      this.metadataService.clearHead();
+      // Add the new META-Tags
+      this.metadataService.addDescription(this.collectionName + ' - ' + item.text);
+      this.metadataService.addKeywords();
 
       if (this.searchTocItemInAccordionByTitle && item.text) {
         params['search_title'] = item.text;
