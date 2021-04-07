@@ -1025,47 +1025,48 @@ export class ReadPage /*implements OnDestroy*/ {
         let eventTarget = this.getEventTarget(event);
         while (!tooltipShown && eventTarget['classList'].contains('tooltiptrigger')) {
           if (eventTarget.hasAttribute('data-id')) {
-            if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
+            if (toolTipsSettings.personInfo
+            && eventTarget['classList'].contains('person')
+            && this.readPopoverService.show.personInfo) {
               this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
               tooltipShown = true;
             } else if (toolTipsSettings.placeInfo
-              && eventTarget['classList'].contains('placeName')
-              && this.readPopoverService.show.placeInfo) {
+            && eventTarget['classList'].contains('placeName')
+            && this.readPopoverService.show.placeInfo) {
               this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
               tooltipShown = true;
             } else if (toolTipsSettings.workInfo
-              && eventTarget['classList'].contains('title')
-              && this.readPopoverService.show.workInfo) {
+            && eventTarget['classList'].contains('title')
+            && this.readPopoverService.show.workInfo) {
               this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
               tooltipShown = true;
-            } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
+            } else if (toolTipsSettings.comments
+            && eventTarget['classList'].contains('comment')
+            && this.readPopoverService.show.comments) {
               this.showCommentTooltip(eventTarget.getAttribute('data-id'), eventTarget);
               tooltipShown = true;
-            } else if (toolTipsSettings.footNotes &&
-              eventTarget['classList'].contains('teiManuscript') &&
-              eventTarget['classList'].contains('ttFoot')) {
+            } else if (toolTipsSettings.footNotes
+            && eventTarget['classList'].contains('teiManuscript')
+            && eventTarget['classList'].contains('ttFoot')) {
               this.showManuscriptFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
               tooltipShown = true;
             } else if (toolTipsSettings.footNotes
-              && eventTarget['classList'].contains('ttFoot')) {
+            && eventTarget['classList'].contains('ttFoot')) {
               this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
               tooltipShown = true;
             }
-          } else if ((toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges') && this.readPopoverService.show.changes) ||
-          (toolTipsSettings.normalisations && eventTarget['classList'].contains('ttNormalisations') &&
-          this.readPopoverService.show.normalisations) ||
-          (toolTipsSettings.abbreviations && eventTarget['classList'].contains('ttAbbreviations') &&
-          this.readPopoverService.show.abbreviations)) {
+          } else if ((toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges') && this.readPopoverService.show.changes)
+          || (toolTipsSettings.normalisations && eventTarget['classList'].contains('ttNormalisations')
+          && this.readPopoverService.show.normalisations)
+          || (toolTipsSettings.abbreviations && eventTarget['classList'].contains('ttAbbreviations')
+          && this.readPopoverService.show.abbreviations)) {
             this.showTooltipFromInlineHtml(eventTarget);
             tooltipShown = true;
           } else if (eventTarget['classList'].contains('ttVariant')) {
-            if (eventTarget !== undefined) {
-              this.showVariantTooltip(eventTarget);
-              tooltipShown = true;
-            }
-          } else if (toolTipsSettings.footNotes && eventTarget.hasAttribute('id') &&
-          eventTarget['classList'].contains('teiVariant') &&
-          eventTarget['classList'].contains('ttFoot')) {
+            this.showVariantTooltip(eventTarget);
+            tooltipShown = true;
+          } else if (toolTipsSettings.footNotes && eventTarget.hasAttribute('id')
+          && eventTarget['classList'].contains('teiVariant') && eventTarget['classList'].contains('ttFoot')) {
             this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), eventTarget);
             tooltipShown = true;
           }
@@ -1074,7 +1075,8 @@ export class ReadPage /*implements OnDestroy*/ {
           * This is for finding nested tooltiptriggers, i.e. a person can be a child of a change. */
           if (!tooltipShown) {
             eventTarget = eventTarget['parentNode'];
-            if (!eventTarget['classList'].contains('tooltiptrigger') && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
+            if (!eventTarget['classList'].contains('tooltiptrigger')
+            && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
               /* The parent isn't a tooltiptrigger, but the parent of the parent is, use it for the next iteration. */
               eventTarget = eventTarget['parentNode'];
             }
@@ -1339,23 +1341,28 @@ export class ReadPage /*implements OnDestroy*/ {
       this.setToolTipText(this.tooltips.footnotes[id]);
       return;
     }
-    // @TODO: This is not a good way to find the matching tooltip text, there can be several elements with
-    // class ttFixed and matching data-id attribute on the page (in different columns)
-    const target = document.getElementsByClassName('ttFixed');
-    let foundElem: any = '';
-    for (let i = 0; i < target.length; i++) {
-      const elt = target[i] as HTMLElement;
-      if ( elt.getAttribute('data-id') === id ) {
-        foundElem = elt.innerHTML;
+
+    let footnoteText: any = '';
+    if (targetElem.nextElementSibling !== null && targetElem.nextElementSibling.firstElementChild !== null
+    && targetElem.nextElementSibling.hasAttribute('class')
+    && targetElem.nextElementSibling.firstElementChild.hasAttribute('class')) {
+      if (targetElem.nextElementSibling.classList.contains('ttFoot')
+      && targetElem.nextElementSibling.firstElementChild.classList.contains('ttFixed')
+      && targetElem.nextElementSibling.firstElementChild.getAttribute('data-id') === id) {
+        footnoteText = targetElem.nextElementSibling.firstElementChild.innerHTML;
         // MathJx problem with resolving the actual formula, not the translated formula.
-        if ( elt.lastChild.nodeName === 'SCRIPT' ) {
-          const tmpElem = <HTMLElement> elt.lastChild;
-          foundElem = '$' + tmpElem.innerHTML + '$';
+        if (targetElem.nextElementSibling.firstElementChild.lastChild.nodeName === 'SCRIPT') {
+          const tmpElem = <HTMLElement> targetElem.nextElementSibling.firstElementChild.lastChild;
+          footnoteText = '$' + tmpElem.innerHTML + '$';
         }
-        break;
+      } else {
+        return;
       }
+    } else {
+      return;
     }
-    foundElem = foundElem.replace(' xmlns:tei="http://www.tei-c.org/ns/1.0"', '');
+
+    footnoteText = footnoteText.replace(' xmlns:tei="http://www.tei-c.org/ns/1.0"', '');
 
     // Get column id of the column where the footnote is.
     let containerElem = targetElem.parentElement;
@@ -1368,7 +1375,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
       // Prepend the footnoteindicator to the footnote text.
       const footnoteWithIndicator: string = '<a class="xreference noteReference targetColumnId_' + columnId + '" href="#' + id + '">' +
-        targetElem.textContent + '</a>' + '<p class="noteText">' + foundElem  + '</p>';
+        targetElem.textContent + '</a>' + '<p class="noteText">' + footnoteText  + '</p>';
       const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
         this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
