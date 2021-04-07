@@ -15,7 +15,7 @@
       <ion-row>
         <ion-col *ngFor="let facsimileCollection of facsimileCollections" col-md-4 col-sm-6 col-lg-3>
           <ion-card (click)="openFacsimileCollection(facsimileCollection)">
-            <img [src]="facsimileCollection.thumbnail">
+            <img alt="facsimile" [src]="facsimileCollection.thumbnail">
             <ion-item>
               <h2>{{facsimileCollection.title}}&nbsp;</h2>
             </ion-item>
@@ -27,7 +27,7 @@
       <ion-list>
         <ion-item *ngFor="let facsimileCollection of facsimileCollections" (click)="openFacsimileCollection(facsimileCollection)">
           <ion-thumbnail item-left>
-            <img [src]="facsimileCollection.thumbnail">
+            <img alt="facsimile" [src]="facsimileCollection.thumbnail">
           </ion-thumbnail>
           <h2>{{facsimileCollection.title}}</h2>
         </ion-item>

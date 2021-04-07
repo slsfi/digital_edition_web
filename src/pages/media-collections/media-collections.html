@@ -31,7 +31,7 @@
             <ion-col *ngFor="let gallery of galleries; index as i" (click)="openMediaCollection(gallery)" col-md-4 col-sm-12 col-lg-3>
                 <ion-card>
                     <div [ngClass]="{'remove-scan-details' : removeScanDetails}">
-                        <img id="{{gallery.id}}" src="{{apiEndPoint}}/{{projectMachineName}}/gallery/get/{{gallery.id}}/gallery_thumb.jpg" />
+                        <img alt="gallery image" id="{{gallery.id}}" src="{{apiEndPoint}}/{{projectMachineName}}/gallery/get/{{gallery.id}}/gallery_thumb.jpg" />
                     </div>
                     <ion-card-content>
                         <p>{{gallery.title}} - {{gallery.media_count}} {{"photos" | translate}}</p>

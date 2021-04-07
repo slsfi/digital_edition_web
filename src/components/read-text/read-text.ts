@@ -276,6 +276,7 @@ export class ReadTextComponent {
       } else {
         const tmpImage: HTMLImageElement = new Image();
         tmpImage.src = 'assets/images/ms_arrow_right.svg';
+        tmpImage.alt = 'ms arrow right image';
         tmpImage.classList.add('inl_ms_arrow');
         element.parentElement.insertBefore(tmpImage, element);
         this.scrollElementIntoView(tmpImage, position);
@@ -286,7 +287,7 @@ export class ReadTextComponent {
       }
 
       if ( addTag && !addedArrow ) {
-        element.innerHTML = '<img class="inl_ms_arrow" src="assets/images/ms_arrow_right.svg"/>';
+        element.innerHTML = '<img class="inl_ms_arrow" alt="arrow right image" src="assets/images/ms_arrow_right.svg"/>';
         this.scrollElementIntoView(element, position);
         setTimeout(function() {
           element.innerHTML = '';

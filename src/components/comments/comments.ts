@@ -343,6 +343,7 @@ export class CommentsComponent {
       } else {
         const tmpImage: HTMLImageElement = new Image();
         tmpImage.src = 'assets/images/ms_arrow_right.svg';
+        tmpImage.alt = 'arrow right image';
         tmpImage.classList.add('inl_ms_arrow');
         element.parentElement.insertBefore(tmpImage, element);
         this.scrollElementIntoView(tmpImage, position);

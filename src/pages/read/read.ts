@@ -2405,6 +2405,7 @@ export class ReadPage /*implements OnDestroy*/ {
     try {
       const tmpImage: HTMLImageElement = new Image();
       tmpImage.src = 'assets/images/ms_arrow_right.svg';
+      tmpImage.alt = 'arrow image';
       tmpImage.classList.add('inl_ms_arrow');
       element.parentElement.insertBefore(tmpImage, element);
       this.scrollElementIntoView(tmpImage, position);

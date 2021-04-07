@@ -34,12 +34,12 @@
                       {{mediaData.description}}
                     </ion-col>
                     <ion-col col-md-6 class="media_description" *ngIf="mediaData.imageUrl">
-                      <img class="occurrences-result__media-image" src="{{mediaData.imageUrl}}">
+                      <img alt="occurrence image" class="occurrences-result__media-image" src="{{mediaData.imageUrl}}">
                     </ion-col>
                   </ion-row>
                   <ng-container *ngIf="userSettingsService.isMobile()">
                     <div *ngIf="mediaData.imageUrl">
-                      <img class="occurrences-result__media-image--mobile" src="{{mediaData.imageUrl}}">
+                      <img alt="occurrence image" class="occurrences-result__media-image--mobile" src="{{mediaData.imageUrl}}">
                     </div>
                     <div *ngIf="mediaData.description">
                       {{mediaData.description}}
@@ -144,7 +144,7 @@
               <div *ngIf="!hasInfoDataToDisplay">
                 <div>
                   <br>
-                  {{"Occurrences.NoInfoFound" | translate}} 
+                  {{"Occurrences.NoInfoFound" | translate}}
                   <ng-container *ngIf="allOccurrences && allOccurrences.length">
                   {{"Occurrences.Found" | translate}} {{allOccurrences.length}} {{"Occurrences.OccurrencesSmall" | translate}}.
                   </ng-container>

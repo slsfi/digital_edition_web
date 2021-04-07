@@ -25,7 +25,7 @@
                 <span *ngIf="longitude" class="longitude">{{"Occurrences.longitude" | translate}} {{longitude}})</span>
               </h3>
               <div class="media_image_wrapper" *ngIf="mediaData.imageUrl">
-                <img src="{{mediaData.imageUrl}}">
+                <img alt="occurrence image" src="{{mediaData.imageUrl}}">
               </div>
               <div class="media_description" *ngIf="mediaData.description">
                 {{mediaData.description}}

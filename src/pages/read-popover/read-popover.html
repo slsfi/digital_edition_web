@@ -23,7 +23,7 @@
   </ion-item>
 
   <ion-item *ngIf="readToggles.comments">
-    <ion-label><img src="assets/images/asterix.svg" class="asterix"/>{{'Read.Popover.Comments' | translate}}</ion-label>
+    <ion-label><img alt="asterix image" src="assets/images/asterix.svg" class="asterix"/>{{'Read.Popover.Comments' | translate}}</ion-label>
     <ion-toggle [(ngModel)]="show.comments" (ionChange)="toggleComments()"></ion-toggle>
   </ion-item>
 

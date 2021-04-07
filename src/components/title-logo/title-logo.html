@@ -1,13 +1,13 @@
 <div *ngIf="userSettingsService.isDesktop() && !userSettingsService.isTablet() && !userSettingsService.isMobile()" style="position: relative;">
     <a (click)="home()" target="_blank" href="{{siteLogoURL}}" float-left>
-        <img class="logo" src="assets/images/logo.svg">
+        <img class="logo" alt="logo image" src="assets/images/logo.svg">
     </a>
 </div>
 <div *ngIf="userSettingsService.isMobile() || userSettingsService.isTablet()" style="position: relative;">
     <a *ngIf="!userSettingsService.isTablet()" (click)="home()" href="{{siteLogoURL}}" float-left>
-        <img class="logo" src="assets/images/logo-mobile.svg">
+        <img class="logo" alt="logo image" src="assets/images/logo-mobile.svg">
     </a>
     <a *ngIf="userSettingsService.isTablet()" (click)="home()" href="{{siteLogoURL}}" float-right>
-        <img class="logo" src="assets/images/logo.svg">
+        <img class="logo" alt="logo image" src="assets/images/logo.svg">
     </a>
 </div>
