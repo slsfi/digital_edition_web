@@ -731,6 +731,12 @@ export class TableOfContentsAccordionComponent {
 
     this.unSelectOptions(this.collapsableItems);
 
+    // Try to remove META-Tags
+    this.metadataService.clearHead();
+    // Add the new META-Tags
+    this.metadataService.addDescription(this.collectionName + ' - ' + item.text);
+    this.metadataService.addKeywords();
+
     if (this.isMarkdown) {
       this.selectMarkdown(item);
     } else if (item.is_gallery) {
@@ -777,12 +783,6 @@ export class TableOfContentsAccordionComponent {
       params['selectedItemInAccordion'] = true;
 
       params['search_title'] = 'searchtitle';
-
-      // Try to remove META-Tags
-      this.metadataService.clearHead();
-      // Add the new META-Tags
-      this.metadataService.addDescription(this.collectionName + ' - ' + item.text);
-      this.metadataService.addKeywords();
 
       if (this.searchTocItemInAccordionByTitle && item.text) {
         params['search_title'] = item.text;

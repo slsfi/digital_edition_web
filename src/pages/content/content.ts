@@ -11,7 +11,6 @@ import { MdContentService } from '../../app/services/md/md-content.service';
 import { TopMenuComponent } from '../components/top-menu/top-menu';
 import { SongService } from '../../app/services/song/song.service';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
-import { MetadataService } from '../../app/services/metadata/metadata.service';
 
 /**
  * A page used for displaying markdown content.
@@ -46,8 +45,7 @@ export class ContentPage /*implements OnDestroy*/ {
     public events: Events,
     private viewctrl: ViewController,
     public songService: SongService,
-    private analyticsService: AnalyticsService,
-    private metadataService: MetadataService
+    private analyticsService: AnalyticsService
   ) {
     const data = this.config.getSettings('staticPages.about');
     let fileID = this.params.get('id');
@@ -121,12 +119,6 @@ export class ContentPage /*implements OnDestroy*/ {
     this.events.publish('ionViewWillLeave', this.constructor.name);
   }
   ionViewWillEnter() {
-    // Try to remove META-Tags
-    this.metadataService.clearHead();
-    // Add the new META-Tags
-    this.metadataService.addDescription(this.constructor.name);
-    this.metadataService.addKeywords();
-
     this.events.publish('ionViewWillEnter', this.constructor.name);
     this.events.publish('pageLoaded:content', {'title': this.mdContent.title});
     this.getMdContent(this.mdContent.id);
