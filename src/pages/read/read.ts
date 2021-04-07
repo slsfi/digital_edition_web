@@ -1041,6 +1041,11 @@ export class ReadPage /*implements OnDestroy*/ {
             } else if (toolTipsSettings.comments && eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
               this.showCommentTooltip(eventTarget.getAttribute('data-id'), eventTarget);
               tooltipShown = true;
+            } else if (toolTipsSettings.footNotes &&
+              eventTarget['classList'].contains('teiManuscript') &&
+              eventTarget['classList'].contains('ttFoot')) {
+              this.showManuscriptFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
+              tooltipShown = true;
             } else if (toolTipsSettings.footNotes
               && eventTarget['classList'].contains('ttFoot')) {
               this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
@@ -1062,11 +1067,6 @@ export class ReadPage /*implements OnDestroy*/ {
           eventTarget['classList'].contains('teiVariant') &&
           eventTarget['classList'].contains('ttFoot')) {
             this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), eventTarget);
-            tooltipShown = true;
-          } else if (toolTipsSettings.footNotes && eventTarget.hasAttribute('data-id') &&
-          eventTarget['classList'].contains('teiManuscript') &&
-          eventTarget['classList'].contains('ttFoot')) {
-            this.showManuscriptFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
             tooltipShown = true;
           }
 
@@ -1339,6 +1339,8 @@ export class ReadPage /*implements OnDestroy*/ {
       this.setToolTipText(this.tooltips.footnotes[id]);
       return;
     }
+    // @TODO: This is not a good way to find the matching tooltip text, there can be several elements with
+    // class ttFixed and matching data-id attribute on the page (in different columns)
     const target = document.getElementsByClassName('ttFixed');
     let foundElem: any = '';
     for (let i = 0; i < target.length; i++) {
