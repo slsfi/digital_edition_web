@@ -1899,14 +1899,9 @@ export class ReadPage /*implements OnDestroy*/ {
         calcWidth = calcWidth - 2 * margins;
       }
 
-      let mobileModeTextChangerYOffset = 64;
-      if (this.userSettingsService.isDesktop()) {
-        mobileModeTextChangerYOffset = 0;
-      }
-
       // Set info overlay position
       this.infoOverlayPosition = {
-        bottom: (vh - horizontalScrollbarOffsetHeight - containerElemRect.bottom + mobileModeTextChangerYOffset) + 'px',
+        bottom: (vh - horizontalScrollbarOffsetHeight - containerElemRect.bottom) + 'px',
         left: (containerElemRect.left + margins - contentElem.getBoundingClientRect().left) + 'px'
       };
       if (this.userSettingsService.isDesktop()) {
