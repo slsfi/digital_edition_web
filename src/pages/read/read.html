@@ -178,19 +178,19 @@
 
   <!-- Mobile Read -->
   <ng-container *ngIf="userSettingsService.isMobile()">
+    <div [ngClass]="'infoOverlay tei ' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')" [ngStyle]="{'position': infoOverlayPosType, 'bottom': infoOverlayPosition.bottom, 'left': infoOverlayPosition.left, 'width': infoOverlayWidth}">
+      <div class="infoOverlayHeader">
+        <h6 class="infoOverlayTitle">{{'note' | translate }}</h6>
+        <ion-icon name="close" class="infoOverlayButton" (click)="hideInfoOverlay()"></ion-icon>
+      </div>
+      <div class="infoOverlayContent" [MathJax]="infoOverlayText"></div>
+    </div>
     <ion-scroll [scrollY]="(show=='established')?'true':'false'" style="height:100% !important;">
       <div
         *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet()) && hasOccurrenceResults && showOccurrencesModal">
         <button class="readpage-occurrences-mobile" ion-button
           (click)="openOccurrenceResult()">{{ "Read.ShowSearchResults" | translate }} &nbsp;<ion-icon name="search">
           </ion-icon></button>
-      </div>
-      <div [ngClass]="'infoOverlay tei ' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')" [ngStyle]="{'position': infoOverlayPosType, 'bottom': infoOverlayPosition.bottom, 'left': infoOverlayPosition.left, 'width': infoOverlayWidth}">
-        <div class="infoOverlayHeader">
-          <h6 class="infoOverlayTitle">{{'note' | translate }}</h6>
-          <ion-icon name="close" class="infoOverlayButton" (click)="hideInfoOverlay()"></ion-icon>
-        </div>
-        <div class="infoOverlayContent" [MathJax]="infoOverlayText"></div>
       </div>
       <div (swipe)="swipePrevNext($event)" *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet())">
         <div>
