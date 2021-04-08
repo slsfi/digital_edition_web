@@ -1823,7 +1823,7 @@ div.tei {
             display: inline-block;
             text-indent: 0;
             width: 100%;
-            color: $infoOverlay-text-color;
+            color: var(--infoOverlay-text-color);
             line-height: 1.4em;
         }
     }
