@@ -558,18 +558,27 @@ export class IntroductionPage {
       this.setToolTipText(this.tooltips.footnotes[id]);
       return;
     }
-    const target = document.getElementsByClassName('ttFixed');
-    let foundElem: any = '';
-    for (let i = 0; i < target.length; i++) {
-      const elt = target[i] as HTMLElement;
-      if ( elt.getAttribute('data-id') === id ) {
-        foundElem = elt.innerHTML;
-        break;
+
+    let footnoteText: any = '';
+    if (targetElem.nextElementSibling !== null && targetElem.nextElementSibling.firstElementChild !== null
+    && targetElem.nextElementSibling.hasAttribute('class')
+    && targetElem.nextElementSibling.firstElementChild.hasAttribute('class')) {
+      if (targetElem.nextElementSibling.classList.contains('ttFoot')
+      && targetElem.nextElementSibling.firstElementChild.classList.contains('ttFixed')
+      && targetElem.nextElementSibling.firstElementChild.getAttribute('data-id') === id) {
+        footnoteText = targetElem.nextElementSibling.firstElementChild.innerHTML;
+      } else {
+        return;
       }
+    } else {
+      return;
     }
+
+    footnoteText = footnoteText.replace(' xmlns:tei="http://www.tei-c.org/ns/1.0"', '');
+
     // Prepend the footnoteindicator to the the footnote text.
     const footnoteWithIndicator: string = '<a class="xreference footnoteReference" href="#' + id + '">' +
-     targetElem.textContent + '</a>' + '<p class="footnoteText">' + foundElem  + '</p>';
+     targetElem.textContent + '</a>' + '<p class="footnoteText">' + footnoteText  + '</p>';
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
@@ -586,18 +595,27 @@ export class IntroductionPage {
       this.setInfoOverlayText(this.tooltips.footnotes[id]);
       return;
     }
-    const target = document.getElementsByClassName('ttFixed');
-    let foundElem: any = '';
-    for (let i = 0; i < target.length; i++) {
-      const elt = target[i] as HTMLElement;
-      if ( elt.getAttribute('data-id') === id ) {
-        foundElem = elt.innerHTML;
-        break;
+
+    let footnoteText: any = '';
+    if (targetElem.nextElementSibling !== null && targetElem.nextElementSibling.firstElementChild !== null
+    && targetElem.nextElementSibling.hasAttribute('class')
+    && targetElem.nextElementSibling.firstElementChild.hasAttribute('class')) {
+      if (targetElem.nextElementSibling.classList.contains('ttFoot')
+      && targetElem.nextElementSibling.firstElementChild.classList.contains('ttFixed')
+      && targetElem.nextElementSibling.firstElementChild.getAttribute('data-id') === id) {
+        footnoteText = targetElem.nextElementSibling.firstElementChild.innerHTML;
+      } else {
+        return;
       }
+    } else {
+      return;
     }
+
+    footnoteText = footnoteText.replace(' xmlns:tei="http://www.tei-c.org/ns/1.0"', '');
+
     // Prepend the footnoteindicator to the the footnote text.
     const footnoteWithIndicator: string = '<a class="xreference footnoteReference" href="#' + id + '">' +
-     targetElem.textContent + '</a>' + '<p class="footnoteText">' + foundElem  + '</p>';
+     targetElem.textContent + '</a>' + '<p class="footnoteText">' + footnoteText  + '</p>';
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
