@@ -560,16 +560,12 @@ export class IntroductionPage {
     }
 
     let footnoteText: any = '';
-    if (targetElem.nextElementSibling !== null && targetElem.nextElementSibling.firstElementChild !== null
-    && targetElem.nextElementSibling.hasAttribute('class')
-    && targetElem.nextElementSibling.firstElementChild.hasAttribute('class')) {
-      if (targetElem.nextElementSibling.classList.contains('ttFoot')
-      && targetElem.nextElementSibling.firstElementChild.classList.contains('ttFixed')
-      && targetElem.nextElementSibling.firstElementChild.getAttribute('data-id') === id) {
-        footnoteText = targetElem.nextElementSibling.firstElementChild.innerHTML;
-      } else {
-        return;
-      }
+    if (targetElem.nextElementSibling !== null
+    && targetElem.nextElementSibling.firstElementChild !== null
+    && targetElem.nextElementSibling.classList.contains('ttFoot')
+    && targetElem.nextElementSibling.firstElementChild.classList.contains('ttFixed')
+    && targetElem.nextElementSibling.firstElementChild.getAttribute('data-id') === id) {
+      footnoteText = targetElem.nextElementSibling.firstElementChild.innerHTML;
     } else {
       return;
     }
@@ -597,16 +593,12 @@ export class IntroductionPage {
     }
 
     let footnoteText: any = '';
-    if (targetElem.nextElementSibling !== null && targetElem.nextElementSibling.firstElementChild !== null
-    && targetElem.nextElementSibling.hasAttribute('class')
-    && targetElem.nextElementSibling.firstElementChild.hasAttribute('class')) {
-      if (targetElem.nextElementSibling.classList.contains('ttFoot')
-      && targetElem.nextElementSibling.firstElementChild.classList.contains('ttFixed')
-      && targetElem.nextElementSibling.firstElementChild.getAttribute('data-id') === id) {
-        footnoteText = targetElem.nextElementSibling.firstElementChild.innerHTML;
-      } else {
-        return;
-      }
+    if (targetElem.nextElementSibling !== null
+    && targetElem.nextElementSibling.firstElementChild !== null
+    && targetElem.nextElementSibling.classList.contains('ttFoot')
+    && targetElem.nextElementSibling.firstElementChild.classList.contains('ttFixed')
+    && targetElem.nextElementSibling.firstElementChild.getAttribute('data-id') === id) {
+      footnoteText = targetElem.nextElementSibling.firstElementChild.innerHTML;
     } else {
       return;
     }

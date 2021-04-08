@@ -1351,20 +1351,16 @@ export class ReadPage /*implements OnDestroy*/ {
     }
 
     let footnoteText: any = '';
-    if (targetElem.nextElementSibling !== null && targetElem.nextElementSibling.firstElementChild !== null
-    && targetElem.nextElementSibling.hasAttribute('class')
-    && targetElem.nextElementSibling.firstElementChild.hasAttribute('class')) {
-      if (targetElem.nextElementSibling.classList.contains('ttFoot')
-      && targetElem.nextElementSibling.firstElementChild.classList.contains('ttFixed')
-      && targetElem.nextElementSibling.firstElementChild.getAttribute('data-id') === id) {
-        footnoteText = targetElem.nextElementSibling.firstElementChild.innerHTML;
-        // MathJx problem with resolving the actual formula, not the translated formula.
-        if (targetElem.nextElementSibling.firstElementChild.lastChild.nodeName === 'SCRIPT') {
-          const tmpElem = <HTMLElement> targetElem.nextElementSibling.firstElementChild.lastChild;
-          footnoteText = '$' + tmpElem.innerHTML + '$';
-        }
-      } else {
-        return;
+    if (targetElem.nextElementSibling !== null
+    && targetElem.nextElementSibling.firstElementChild !== null
+    && targetElem.nextElementSibling.classList.contains('ttFoot')
+    && targetElem.nextElementSibling.firstElementChild.classList.contains('ttFixed')
+    && targetElem.nextElementSibling.firstElementChild.getAttribute('data-id') === id) {
+      footnoteText = targetElem.nextElementSibling.firstElementChild.innerHTML;
+      // MathJx problem with resolving the actual formula, not the translated formula.
+      if (targetElem.nextElementSibling.firstElementChild.lastChild.nodeName === 'SCRIPT') {
+        const tmpElem = <HTMLElement> targetElem.nextElementSibling.firstElementChild.lastChild;
+        footnoteText = '$' + tmpElem.innerHTML + '$';
       }
     } else {
       return;
@@ -1413,14 +1409,15 @@ export class ReadPage /*implements OnDestroy*/ {
 
   /* Use this method to get a footnote text in a variant text. Returns a string with the footnote html. */
   private getVariantFootnoteText(id: string, triggerElem: HTMLElement) {
-    if (triggerElem.nextElementSibling !== null && triggerElem.nextElementSibling !== undefined &&
-     triggerElem.nextElementSibling.classList.contains('teiVariant') &&
-     triggerElem.nextElementSibling.classList.contains('ttFoot') &&
-     triggerElem.nextElementSibling.firstElementChild.classList.contains('ttFixed') &&
-     triggerElem.nextElementSibling.firstElementChild.getAttribute('id') === id) {
+    if (triggerElem.nextElementSibling !== null
+    && triggerElem.nextElementSibling.firstElementChild !== null
+    && triggerElem.nextElementSibling.classList.contains('teiVariant')
+    && triggerElem.nextElementSibling.classList.contains('ttFoot')
+    && triggerElem.nextElementSibling.firstElementChild.classList.contains('ttFixed')
+    && triggerElem.nextElementSibling.firstElementChild.getAttribute('id') === id) {
       let ttText = triggerElem.nextElementSibling.firstElementChild.innerHTML;
       // MathJx problem with resolving the actual formula, not the translated formula.
-      if ( triggerElem.nextElementSibling.firstElementChild.lastChild.nodeName === 'SCRIPT' ) {
+      if (triggerElem.nextElementSibling.firstElementChild.lastChild.nodeName === 'SCRIPT') {
         const tmpElem = <HTMLElement> triggerElem.nextElementSibling.firstElementChild.lastChild;
         ttText = '$' + tmpElem.innerHTML + '$';
       }
@@ -1451,14 +1448,15 @@ export class ReadPage /*implements OnDestroy*/ {
 
   /* Use this method to get a footnote text in a manuscript text. Returns a string with the footnote html. */
   private getManuscriptFootnoteText(id: string, triggerElem: HTMLElement) {
-    if (triggerElem.nextElementSibling !== null && triggerElem.nextElementSibling !== undefined &&
-     triggerElem.nextElementSibling.classList.contains('teiManuscript') &&
-     triggerElem.nextElementSibling.classList.contains('ttFoot') &&
-     triggerElem.nextElementSibling.firstElementChild.classList.contains('ttFixed') &&
-     triggerElem.nextElementSibling.firstElementChild.getAttribute('data-id') === id) {
+    if (triggerElem.nextElementSibling !== null
+    && triggerElem.nextElementSibling.firstElementChild !== null
+    && triggerElem.nextElementSibling.classList.contains('teiManuscript')
+    && triggerElem.nextElementSibling.classList.contains('ttFoot')
+    && triggerElem.nextElementSibling.firstElementChild.classList.contains('ttFixed')
+    && triggerElem.nextElementSibling.firstElementChild.getAttribute('data-id') === id) {
       let ttText = triggerElem.nextElementSibling.firstElementChild.innerHTML;
       // MathJx problem with resolving the actual formula, not the translated formula.
-      if ( triggerElem.nextElementSibling.firstElementChild.lastChild.nodeName === 'SCRIPT' ) {
+      if (triggerElem.nextElementSibling.firstElementChild.lastChild.nodeName === 'SCRIPT') {
         const tmpElem = <HTMLElement> triggerElem.nextElementSibling.firstElementChild.lastChild;
         ttText = '$' + tmpElem.innerHTML + '$';
       }
@@ -1489,11 +1487,10 @@ export class ReadPage /*implements OnDestroy*/ {
 
   /* This method is used for showing tooltips for changes, normalisations and abbreviations. */
   showTooltipFromInlineHtml(targetElem: HTMLElement) {
-    if (targetElem.nextElementSibling !== null && targetElem.nextElementSibling !== undefined) {
-      if (targetElem.nextElementSibling.className !== undefined && targetElem.nextElementSibling.className.includes('tooltip')) {
-        this.setToolTipPosition(targetElem, targetElem.nextElementSibling.textContent);
-        this.setToolTipText(targetElem.nextElementSibling.textContent);
-      }
+    if (targetElem.nextElementSibling !== null
+    && targetElem.nextElementSibling.classList.contains('tooltip')) {
+      this.setToolTipPosition(targetElem, targetElem.nextElementSibling.textContent);
+      this.setToolTipText(targetElem.nextElementSibling.textContent);
     }
   }
 
@@ -1525,9 +1522,8 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   showVariantTooltip(targetElem: HTMLElement) {
-    if (targetElem.nextElementSibling !== null &&
-     targetElem.nextElementSibling.hasAttribute('class') &&
-     targetElem.nextElementSibling.className.includes('tooltip')) {
+    if (targetElem.nextElementSibling !== null
+    && targetElem.nextElementSibling.classList.contains('tooltip')) {
       this.setToolTipPosition(targetElem, targetElem.nextElementSibling.textContent);
       this.setToolTipText(targetElem.nextElementSibling.textContent);
     }
@@ -1541,20 +1537,16 @@ export class ReadPage /*implements OnDestroy*/ {
     }
 
     let footnoteText: any = '';
-    if (targetElem.nextElementSibling !== null && targetElem.nextElementSibling.firstElementChild !== null
-    && targetElem.nextElementSibling.hasAttribute('class')
-    && targetElem.nextElementSibling.firstElementChild.hasAttribute('class')) {
-      if (targetElem.nextElementSibling.classList.contains('ttFoot')
-      && targetElem.nextElementSibling.firstElementChild.classList.contains('ttFixed')
-      && targetElem.nextElementSibling.firstElementChild.getAttribute('data-id') === id) {
-        footnoteText = targetElem.nextElementSibling.firstElementChild.innerHTML;
-        // MathJx problem with resolving the actual formula, not the translated formula.
-        if (targetElem.nextElementSibling.firstElementChild.lastChild.nodeName === 'SCRIPT') {
-          const tmpElem = <HTMLElement> targetElem.nextElementSibling.firstElementChild.lastChild;
-          footnoteText = '$' + tmpElem.innerHTML + '$';
-        }
-      } else {
-        return;
+    if (targetElem.nextElementSibling !== null
+    && targetElem.nextElementSibling.firstElementChild !== null
+    && targetElem.nextElementSibling.classList.contains('ttFoot')
+    && targetElem.nextElementSibling.firstElementChild.classList.contains('ttFixed')
+    && targetElem.nextElementSibling.firstElementChild.getAttribute('data-id') === id) {
+      footnoteText = targetElem.nextElementSibling.firstElementChild.innerHTML;
+      // MathJx problem with resolving the actual formula, not the translated formula.
+      if (targetElem.nextElementSibling.firstElementChild.lastChild.nodeName === 'SCRIPT') {
+        const tmpElem = <HTMLElement> targetElem.nextElementSibling.firstElementChild.lastChild;
+        footnoteText = '$' + tmpElem.innerHTML + '$';
       }
     } else {
       return;
