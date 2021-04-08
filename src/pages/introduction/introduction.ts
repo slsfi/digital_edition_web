@@ -406,21 +406,23 @@ export class IntroductionPage {
 
     /* MOUSE OVER EVENTS */
     this.renderer.listen(nElement, 'mouseover', (event) => {
-      const eventTarget = this.getEventTarget(event);
+      if (this.userSettingsService.isDesktop()) {
+        const eventTarget = this.getEventTarget(event);
 
-      if (eventTarget['classList'].contains('tooltiptrigger')) {
-        if (eventTarget.hasAttribute('data-id')) {
-          if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person')
-          && this.readPopoverService.show.personInfo) {
-            this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-          } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName')
-          && this.readPopoverService.show.placeInfo) {
-            this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-          } else if (toolTipsSettings.workInfo && eventTarget['classList'].contains('title')
-          && this.readPopoverService.show.workInfo) {
-            this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-          } else if (toolTipsSettings.footNotes && eventTarget['classList'].contains('ttFoot')) {
-            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+        if (eventTarget['classList'].contains('tooltiptrigger')) {
+          if (eventTarget.hasAttribute('data-id')) {
+            if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person')
+            && this.readPopoverService.show.personInfo) {
+              this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+            } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName')
+            && this.readPopoverService.show.placeInfo) {
+              this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+            } else if (toolTipsSettings.workInfo && eventTarget['classList'].contains('title')
+            && this.readPopoverService.show.workInfo) {
+              this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+            } else if (toolTipsSettings.footNotes && eventTarget['classList'].contains('ttFoot')) {
+              this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+            }
           }
         }
       }
