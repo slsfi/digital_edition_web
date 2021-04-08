@@ -551,7 +551,7 @@ export class IntroductionPage {
   }
 
   showFootnoteTooltip(id: string, targetElem: HTMLElement, origin: any) {
-    if (this.tooltips.footnotes[id]) {
+    if (this.tooltips.footnotes[id] && this.userSettingsService.isDesktop()) {
       this.setToolTipPosition(targetElem, this.tooltips.footnotes[id]);
       this.setToolTipText(this.tooltips.footnotes[id]);
       return;
@@ -573,11 +573,13 @@ export class IntroductionPage {
 
     this.setToolTipPosition(targetElem, footNoteHTML);
     this.setToolTipText(footNoteHTML);
-    this.tooltips.footnotes[id] = footNoteHTML;
+    if (this.userSettingsService.isDesktop()) {
+      this.tooltips.footnotes[id] = footNoteHTML;
+    }
   }
 
   showFootnoteInfoOverlay(id: string, targetElem: HTMLElement) {
-    if (this.tooltips.footnotes[id]) {
+    if (this.tooltips.footnotes[id] && this.userSettingsService.isDesktop()) {
       this.setInfoOverlayPositionAndWidth(targetElem);
       this.setInfoOverlayText(this.tooltips.footnotes[id]);
       return;
@@ -599,7 +601,9 @@ export class IntroductionPage {
 
     this.setInfoOverlayPositionAndWidth(targetElem);
     this.setInfoOverlayText(footNoteHTML);
-    this.tooltips.footnotes[id] = footNoteHTML;
+    if (this.userSettingsService.isDesktop()) {
+      this.tooltips.footnotes[id] = footNoteHTML;
+    }
   }
 
   setToolTipPosition(targetElem: HTMLElement, ttText: string) {
