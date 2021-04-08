@@ -121,9 +121,10 @@ $back-button-text-color:				color($colors, dark);
 $forward-arrow-color:					  color($colors, dark);
 $divider-bg-color:              color($colors, secondary);
 
-$infoOverlay-bg-color:          #333;
-$infoOverlay-text-color:        #e3e3e3;
-
+:root {
+	--infoOverlay-bg-color: #333;
+	--infoOverlay-text-color: #e3e3e3;
+}
 
 
 // OTHER CUSTOM VARIABLES
