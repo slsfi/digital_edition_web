@@ -377,7 +377,7 @@ export class IntroductionPage {
               targetId = anchorElem.parentElement.getAttribute('href');
             }
             const dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
-            const target = anchorElem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
+            const target = anchorElem.ownerDocument.querySelector('page-introduction').querySelector(dataIdSelector) as HTMLElement;
             if (target !== null) {
               if (anchorElem.classList.contains('footnoteReference')) {
                 // Link to (foot)note reference, prepend arrow
