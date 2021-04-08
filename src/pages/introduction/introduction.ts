@@ -925,10 +925,14 @@ export class IntroductionPage {
     let margins = 20;
     const maxWidth = 600;
 
-    // Get viewport height.
-    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    // If the viewport width is less than this value the overlay will be placed at the bottom of the viewport.
+    const bottomPosBreakpointWidth = 800;
 
-    // Get read page content element and adjust viewport height with horizontal scrollbar height if such is present
+    // Get viewport height and width.
+    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+
+    // Get page content element and adjust viewport height with horizontal scrollbar height if such is present
     const contentElem = document.querySelector('page-introduction > ion-content > .scroll-content') as HTMLElement;
     let horizontalScrollbarOffsetHeight = 0;
     if (contentElem.clientHeight < contentElem.offsetHeight) {
@@ -954,9 +958,14 @@ export class IntroductionPage {
         calcWidth = calcWidth - 2 * margins;
       }
 
+      let bottomPos = vh - horizontalScrollbarOffsetHeight - containerElemRect.bottom;
+      if (vw <= bottomPosBreakpointWidth) {
+        bottomPos = 0;
+      }
+
       // Set info overlay position
       this.infoOverlayPosition = {
-        bottom: (vh - horizontalScrollbarOffsetHeight - containerElemRect.bottom) + 'px',
+        bottom: bottomPos + 'px',
         left: (containerElemRect.left + margins - contentElem.getBoundingClientRect().left) + 'px'
       };
       this.infoOverlayPosType = 'absolute';
