@@ -139,6 +139,10 @@ $opacity-hover-transition: 0.2s;
   --read-columns-background-color:  #fafafa;
   --back-button-bg-color:           #e8e4df; // Ideally something between secondary color & $background-color
   --back-button-text-color:         #222;    // Same as dark color
+
+  @each $key_name, $value in $colors {
+    --#{$key_name}-color: #{$value};
+  }
 }
 
 
