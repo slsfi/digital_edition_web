@@ -94,6 +94,7 @@ export class ReadPage /*implements OnDestroy*/ {
   infoOverlayPosition: object;
   infoOverlayWidth: string;
   infoOverlayText: string;
+  infoOverlayTitle: string;
   nochapterPos: string;
 
   maxSingleWindowWidth: Number;
@@ -213,6 +214,7 @@ export class ReadPage /*implements OnDestroy*/ {
       left: -1500 + 'px'
     };
     this.infoOverlayText = '';
+    this.infoOverlayTitle = '';
     this.infoOverlayWidth = null;
     this.infoOverlayPosType = 'fixed';
     this.infoOverlayPosition = {
@@ -1531,6 +1533,11 @@ export class ReadPage /*implements OnDestroy*/ {
 
   showFootnoteInfoOverlay(id: string, targetElem: HTMLElement) {
     if (this.tooltips.footnotes[id] && this.userSettingsService.isDesktop()) {
+      this.translate.get('note').subscribe(
+        translation => {
+          this.setInfoOverlayTitle(translation);
+        }, error => { }
+      );
       this.setInfoOverlayPositionAndWidth(targetElem);
       this.setInfoOverlayText(this.tooltips.footnotes[id]);
       return;
@@ -1579,6 +1586,11 @@ export class ReadPage /*implements OnDestroy*/ {
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
+    this.translate.get('note').subscribe(
+      translation => {
+        this.setInfoOverlayTitle(translation);
+      }, error => { }
+    );
     this.setInfoOverlayPositionAndWidth(targetElem);
     this.setInfoOverlayText(footNoteHTML);
     if (this.userSettingsService.isDesktop()) {
@@ -1587,12 +1599,22 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   showManuscriptFootnoteInfoOverlay(id: string, targetElem: HTMLElement) {
+    this.translate.get('note').subscribe(
+      translation => {
+        this.setInfoOverlayTitle(translation);
+      }, error => { }
+    );
     const footNoteHTML: string = this.getManuscriptFootnoteText(id, targetElem);
     this.setInfoOverlayPositionAndWidth(targetElem);
     this.setInfoOverlayText(footNoteHTML);
   }
 
   showVariantFootnoteInfoOverlay(id: string, targetElem: HTMLElement) {
+    this.translate.get('note').subscribe(
+      translation => {
+        this.setInfoOverlayTitle(translation);
+      }, error => { }
+    );
     const footNoteHTML: string = this.getVariantFootnoteText(id, targetElem);
     this.setInfoOverlayPositionAndWidth(targetElem);
     this.setInfoOverlayText(footNoteHTML);
@@ -1606,6 +1628,10 @@ export class ReadPage /*implements OnDestroy*/ {
     this.infoOverlayText = text;
   }
 
+  setInfoOverlayTitle(title: string) {
+    this.infoOverlayTitle = title;
+  }
+
   hideToolTip() {
     this.setToolTipText('');
     this.toolTipPosition = {
@@ -1616,6 +1642,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
   hideInfoOverlay() {
     this.setInfoOverlayText('');
+    this.setInfoOverlayTitle('');
     this.infoOverlayPosType = 'fixed'; // Position needs to be fixed so we can hide it outside viewport
     this.infoOverlayPosition = {
       bottom: 0 + 'px',
