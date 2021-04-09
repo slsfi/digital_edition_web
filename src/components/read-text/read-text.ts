@@ -4,7 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { TextService } from '../../app/services/texts/text.service';
 import { Storage } from '@ionic/storage';
-import { ToastController, Events, ModalController } from 'ionic-angular';
+import { ToastController, Events, ModalController, App } from 'ionic-angular';
 import { IllustrationPage } from '../../pages/illustration/illustration';
 import { ConfigService } from '@ngx-config/core';
 import { TextCacheService } from '../../app/services/texts/text-cache.service';
@@ -31,8 +31,10 @@ export class ReadTextComponent {
   apiEndPoint: string;
   appMachineName: string;
   textLoading: Boolean = true;
+  pos: string;
 
   constructor(
+    private app: App,
     public events: Events,
     protected readPopoverService: ReadPopoverService,
     protected textService: TextService,
@@ -48,6 +50,15 @@ export class ReadTextComponent {
     this.appMachineName = this.config.getSettings('app.machineName');
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.defaultView = this.config.getSettings('defaults.ReadModeView');
+
+    // Check if we have a pos parmeter in the URL, if we have one we can use it for scrolling the text on the page to that position.
+    // The pos parameter must come after the publication id followed by /#, e.g. /publication-introduction/203/#pos1
+    const currentURL: string = String(window.location.href);
+    if (currentURL.match(/publication\/\d+\/#\w+/) !== null) {
+      this.pos = currentURL.split('#').pop();
+    } else {
+      this.pos = null;
+    }
   }
 
   ngOnInit() {
@@ -69,13 +80,13 @@ export class ReadTextComponent {
       try {
         if (this.config.getSettings('settings.showReadTextIllustrations')) {
           const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
-
-          if (event.target.classList.contains('doodle')) {
-            const image = {src: '/assets/images/verk/' + String(event.target.dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
+          const eventTarget = event.target as HTMLElement;
+          if (eventTarget.classList.contains('doodle')) {
+            const image = {src: '/assets/images/verk/' + String(eventTarget.dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
             this.events.publish('give:illustration', image);
           }
           if ( showIllustration.includes(this.link.split('_')[1])) {
-            if (event.target.classList.contains('est_figure_graphic')) {
+            if (eventTarget.classList.contains('est_figure_graphic')) {
               // Check if we have the "illustrations" tab open, if not, open
               if ( document.querySelector('illustrations') === null ) {
                 this.openNewView(event, null, 'illustrations');
@@ -84,14 +95,49 @@ export class ReadTextComponent {
               this.events.publish('give:illustration', image);
             }
           } else {
-            if (event.target.previousElementSibling !== null &&
-              event.target.previousElementSibling.classList.contains('est_figure_graphic')) {
+            if (eventTarget.previousElementSibling !== null &&
+              eventTarget.previousElementSibling.classList.contains('est_figure_graphic')) {
               // Check if we have the "illustrations" tab open, if not, open
               if ( document.querySelector('illustrations') === null ) {
                 this.openNewView(event, null, 'illustrations');
               }
               const image = {src: event.target.previousElementSibling.src, class: 'illustration'};
               this.events.publish('give:illustration', image);
+            } else if ( eventTarget.classList.contains('xreference') ) {
+              event.preventDefault();
+              const anchorElem: HTMLAnchorElement = eventTarget as HTMLAnchorElement;
+
+              let targetId = '';
+              if (anchorElem.hasAttribute('href')) {
+                targetId = anchorElem.getAttribute('href');
+              } else if (anchorElem.parentElement && anchorElem.parentElement.hasAttribute('href')) {
+                targetId = anchorElem.parentElement.getAttribute('href');
+              }
+
+              const targetParts = String(targetId).split('#');
+              const hrefTargetItems: Array<string> = String(targetParts[0]).split('_');
+              let collectionId = '';
+              let publicationId = '';
+              const positionId = (targetParts.length > 1) ? targetParts[1] : null;
+
+              // Link to reading text or comment.
+              collectionId =  String(hrefTargetItems[0]).replace('%20', '').trim();
+              publicationId = String(hrefTargetItems[1]).replace('%20', '').trim();
+              if ( collectionId !== '' && publicationId !== '' ) {
+                this.textService.getCollectionAndPublicationByLegacyId(collectionId + '_' + publicationId).subscribe(data => {
+                  if (data[0] !== undefined) {
+                    collectionId = data[0]['coll_id'];
+                    publicationId = data[0]['pub_id'];
+                  }
+                  // Open the postion in a new window
+                  let hrefString = '#/publication/' + collectionId + '/text/' + publicationId + '/';
+                  if ( positionId !== null ) {
+                    hrefString += 'nochapter;' + positionId;
+                  }
+                  hrefString += '/not/infinite/nosong/searchtitle/established&comments';
+                  window.open(hrefString, '_blank');
+                });
+              }
             }
           }
         }
