@@ -890,20 +890,24 @@ export class ReadPage /*implements OnDestroy*/ {
       let eventTarget = this.getEventTarget(event);
 
       // Modal trigger for person-, place- or workinfo and info overlay trigger for footnote.
-      if (eventTarget['classList'].contains('tooltiptrigger') &&
-       eventTarget.hasAttribute('data-id')) {
-        if (eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
+      if (eventTarget['classList'].contains('tooltiptrigger')
+      && eventTarget.hasAttribute('data-id')) {
+        if (eventTarget['classList'].contains('person')
+        && this.readPopoverService.show.personInfo) {
           this.showPersonModal(eventTarget.getAttribute('data-id'));
-        } else if (eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
+        } else if (eventTarget['classList'].contains('placeName')
+        && this.readPopoverService.show.placeInfo) {
           this.showPlaceModal(eventTarget.getAttribute('data-id'));
-        } else if (eventTarget['classList'].contains('title') && this.readPopoverService.show.workInfo) {
+        } else if (eventTarget['classList'].contains('title')
+        && this.readPopoverService.show.workInfo) {
           this.showWorkModal(eventTarget.getAttribute('data-id'));
-        } else if (eventTarget['classList'].contains('comment') && this.readPopoverService.show.comments) {
+        } else if (eventTarget['classList'].contains('comment')
+        && this.readPopoverService.show.comments) {
           /* The user has clicked a comment lemma ("asterisk") in the reading-text.
               Check if comments view is shown. */
           const viewTypesShown = this.getViewTypesShown();
           const commentsViewIsShown = viewTypesShown.includes('comments');
-          if (commentsViewIsShown && !this.userSettingsService.isMobile()) {
+          if (commentsViewIsShown && this.userSettingsService.isDesktop()) {
             // Scroll to comment in comments view and scroll lemma in reading-text view
             const numId = eventTarget.getAttribute('data-id').replace( /^\D+/g, '');
             const targetId = 'start' + numId;
@@ -920,7 +924,8 @@ export class ReadPage /*implements OnDestroy*/ {
             }
           } else {
             // If a comments view isn't shown or viewmode is mobile, show comment in modal
-            this.showCommentModal(eventTarget.getAttribute('data-id'));
+            // this.showCommentModal(eventTarget.getAttribute('data-id'));
+            this.showCommentInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
           }
         } else if (eventTarget['classList'].contains('ttFoot') && eventTarget['classList'].contains('teiManuscript')) {
           // Footnote reference clicked in manuscript column
@@ -1618,6 +1623,70 @@ export class ReadPage /*implements OnDestroy*/ {
     const footNoteHTML: string = this.getVariantFootnoteText(id, targetElem);
     this.setInfoOverlayPositionAndWidth(targetElem);
     this.setInfoOverlayText(footNoteHTML);
+  }
+
+  showCommentInfoOverlay(id: string, targetElem: HTMLElement) {
+    if (this.tooltips.comments[id]) {
+      this.translate.get('Occurrences.Commentary').subscribe(
+        translation => {
+          this.setInfoOverlayTitle(translation);
+        }, error => { }
+      );
+      this.setInfoOverlayPositionAndWidth(targetElem);
+      this.setInfoOverlayText(this.tooltips.comments[id]);
+      return;
+    }
+
+    id = this.establishedText.link + ';' + id;
+    this.tooltipService.getCommentTooltip(id).subscribe(
+      tooltip => {
+        this.translate.get('Occurrences.Commentary').subscribe(
+          translation => {
+            this.setInfoOverlayTitle(translation);
+          }, error => { }
+        );
+        this.setInfoOverlayPositionAndWidth(targetElem);
+        this.setInfoOverlayText(tooltip.description);
+        this.tooltips.comments[id] = tooltip.description
+      },
+      error => {
+        let noInfoFound = 'Could not get comment information';
+        this.translate.get('Occurrences.NoInfoFound').subscribe(
+          translation => {
+            noInfoFound = translation;
+          }, errorT => { }
+        );
+        this.translate.get('Occurrences.Commentary').subscribe(
+          translation => {
+            this.setInfoOverlayTitle(translation);
+          }, error => { }
+        );
+        this.setInfoOverlayPositionAndWidth(targetElem);
+        this.setInfoOverlayText(noInfoFound);
+      }
+    );
+  }
+
+  /* This method is used for showing infoOverlays for changes, normalisations and abbreviations. */
+  showInfoOverlayFromInlineHtml(targetElem: HTMLElement) {
+    if (targetElem.nextElementSibling !== null
+    && targetElem.nextElementSibling.classList.contains('tooltip')) {
+      let title = '';
+      if (targetElem.nextElementSibling.classList.contains('ttChanges')) {
+        title = 'editorialChange';
+      } else if (targetElem.nextElementSibling.classList.contains('ttNormalisations')) {
+        title = 'editorialNormalisation';
+      } else if (targetElem.nextElementSibling.classList.contains('ttAbbreviations')) {
+        title = 'abbreviation';
+      }
+      this.translate.get(title).subscribe(
+        translation => {
+          this.setInfoOverlayTitle(translation);
+        }, error => { }
+      );
+      this.setInfoOverlayPositionAndWidth(targetElem);
+      this.setInfoOverlayText(targetElem.nextElementSibling.textContent);
+    }
   }
 
   setToolTipText(text: string) {
