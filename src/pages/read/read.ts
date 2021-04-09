@@ -1685,20 +1685,30 @@ export class ReadPage /*implements OnDestroy*/ {
     && targetElem.nextElementSibling.classList.contains('tooltip')) {
       let title = '';
       let text = '';
+      let lemma = '';
+
       if (targetElem.nextElementSibling.classList.contains('ttChanges')) {
         title = 'editorialChange';
+        if (targetElem.classList.contains('corr_red')) {
+          lemma = targetElem.textContent;
+        } else {
+          lemma = targetElem.firstElementChild.textContent;
+        }
         if (targetElem.firstElementChild !== null
         && targetElem.firstElementChild.classList.contains('corr')) {
           text = '<p class="infoOverlayText"><span class="ioLemma">'
-          + targetElem.firstElementChild.textContent
-          + '</span><span class="ioDescription">'
+          + lemma + '</span><span class="ioDescription">'
           + targetElem.nextElementSibling.textContent + '</span></p>';
         }
       } else if (targetElem.nextElementSibling.classList.contains('ttNormalisations')) {
         title = 'editorialNormalisation';
+        if (targetElem.classList.contains('reg_hide')) {
+          lemma = '<span class="reg_hide">' + targetElem.innerHTML + '</span>';
+        } else {
+          lemma = targetElem.textContent;
+        }
         text = '<p class="infoOverlayText"><span class="ioLemma">'
-        + targetElem.textContent
-        + '</span><span class="ioDescription">'
+        + lemma + '</span><span class="ioDescription">'
         + targetElem.nextElementSibling.textContent + '</span></p>';
       } else if (targetElem.nextElementSibling.classList.contains('ttAbbreviations')) {
         title = 'abbreviation';
