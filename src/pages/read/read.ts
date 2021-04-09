@@ -1691,15 +1691,13 @@ export class ReadPage /*implements OnDestroy*/ {
         title = 'editorialChange';
         if (targetElem.classList.contains('corr_red')) {
           lemma = targetElem.textContent;
-        } else {
+        } else if (targetElem.firstElementChild !== null
+          && targetElem.firstElementChild.classList.contains('corr')) {
           lemma = targetElem.firstElementChild.textContent;
         }
-        if (targetElem.firstElementChild !== null
-        && targetElem.firstElementChild.classList.contains('corr')) {
-          text = '<p class="infoOverlayText"><span class="ioLemma">'
-          + lemma + '</span><span class="ioDescription">'
-          + targetElem.nextElementSibling.textContent + '</span></p>';
-        }
+        text = '<p class="infoOverlayText"><span class="ioLemma">'
+        + lemma + '</span><span class="ioDescription">'
+        + targetElem.nextElementSibling.textContent + '</span></p>';
       } else if (targetElem.nextElementSibling.classList.contains('ttNormalisations')) {
         title = 'editorialNormalisation';
         if (targetElem.classList.contains('reg_hide')) {
