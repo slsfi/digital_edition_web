@@ -1385,8 +1385,9 @@ export class ReadPage /*implements OnDestroy*/ {
       const columnId = containerElem.getAttribute('id');
 
       // Prepend the footnoteindicator to the footnote text.
-      const footnoteWithIndicator: string = '<a class="xreference footnoteReference targetColumnId_' + columnId + '" href="#' + id + '">' +
-        targetElem.textContent + '</a>' + '<p class="footnoteText">' + footnoteText  + '</p>';
+      const footnoteWithIndicator: string = '<div class="footnoteWrapper"><a class="xreference footnoteReference targetColumnId_'
+      + columnId + '" href="#' + id + '">' + targetElem.textContent
+      + '</a>' + '<p class="footnoteText">' + footnoteText  + '</p></div>';
       const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
         this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
@@ -1439,9 +1440,10 @@ export class ReadPage /*implements OnDestroy*/ {
         const columnId = containerElem.getAttribute('id');
 
         // Prepend the footnoteindicator to the the footnote text.
-        const footnoteWithIndicator: string = '<a class="xreference footnoteReference teiVariant targetColumnId_' +
-         columnId + '" href="#' + id + '">' + triggerElem.textContent +
-         '</a>' + '<p class="footnoteText">' + ttText  + '</p>';
+        const footnoteWithIndicator: string = '<div class="footnoteWrapper">'
+        + '<a class="xreference footnoteReference teiVariant targetColumnId_'
+        + columnId + '" href="#' + id + '">' + triggerElem.textContent
+        + '</a>' + '<p class="footnoteText">' + ttText  + '</p></div>';
         const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
         this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
         return footNoteHTML;
@@ -1478,9 +1480,10 @@ export class ReadPage /*implements OnDestroy*/ {
         const columnId = containerElem.getAttribute('id');
 
         // Prepend the footnoteindicator to the the footnote text.
-        const footnoteWithIndicator: string = '<a class="xreference footnoteReference teiManuscript targetColumnId_' +
-         columnId + '" href="#' + id + '">' + triggerElem.textContent +
-         '</a>' + '<p class="footnoteText">' + ttText  + '</p>';
+        const footnoteWithIndicator: string = '<div class="footnoteWrapper">'
+        + '<a class="xreference footnoteReference teiManuscript targetColumnId_'
+        + columnId + '" href="#' + id + '">' + triggerElem.textContent
+        + '</a>' + '<p class="footnoteText">' + ttText  + '</p></div>';
         const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
         this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
         return footNoteHTML;
@@ -1578,14 +1581,16 @@ export class ReadPage /*implements OnDestroy*/ {
         const columnId = containerElem.getAttribute('id');
 
         // Prepend the footnoteindicator to the footnote text.
-        footnoteWithIndicator = '<a class="xreference footnoteReference targetColumnId_' + columnId + '" href="#' + id + '">' +
-          targetElem.textContent + '</a>' + '<p class="footnoteText">' + footnoteText  + '</p>';
+        footnoteWithIndicator = '<div class="footnoteWrapper"><a class="xreference footnoteReference targetColumnId_'
+        + columnId + '" href="#' + id + '">' + targetElem.textContent + '</a>'
+        + '<p class="footnoteText">' + footnoteText + '</p></div>';
       }
     } else {
       // This is for mobile view.
       // Prepend the footnoteindicator to the footnote text.
-      footnoteWithIndicator = '<a class="xreference footnoteReference" href="#' + id + '">' +
-       targetElem.textContent + '</a>' + '<p class="footnoteText">' + footnoteText  + '</p>';
+      footnoteWithIndicator = '<div class="footnoteWrapper"><a class="xreference footnoteReference" href="#' + id + '">'
+      + targetElem.textContent + '</a>' + '<p class="footnoteText">'
+      + footnoteText + '</p></div>';
     }
 
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,

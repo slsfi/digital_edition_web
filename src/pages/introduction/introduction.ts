@@ -575,8 +575,9 @@ export class IntroductionPage {
     footnoteText = footnoteText.replace(' xmlns:tei="http://www.tei-c.org/ns/1.0"', '');
 
     // Prepend the footnoteindicator to the the footnote text.
-    const footnoteWithIndicator: string = '<a class="xreference footnoteReference" href="#' + id + '">' +
-     targetElem.textContent + '</a>' + '<p class="footnoteText">' + footnoteText  + '</p>';
+    const footnoteWithIndicator: string = '<div class="footnoteWrapper"><a class="xreference footnoteReference" href="#' + id + '">'
+    + targetElem.textContent + '</a>' + '<p class="footnoteText">'
+    + footnoteText + '</p></div>';
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
@@ -613,8 +614,9 @@ export class IntroductionPage {
     footnoteText = footnoteText.replace(' xmlns:tei="http://www.tei-c.org/ns/1.0"', '');
 
     // Prepend the footnoteindicator to the the footnote text.
-    const footnoteWithIndicator: string = '<a class="xreference footnoteReference" href="#' + id + '">' +
-     targetElem.textContent + '</a>' + '<p class="footnoteText">' + footnoteText  + '</p>';
+    const footnoteWithIndicator: string = '<div class="footnoteWrapper"><a class="xreference footnoteReference" href="#' + id + '">'
+    + targetElem.textContent + '</a>' + '<p class="footnoteText">'
+    + footnoteText + '</p></div>';
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 

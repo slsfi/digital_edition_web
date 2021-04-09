@@ -1806,9 +1806,12 @@ div.tei {
         }
     }
     .infoOverlayContent {
-        display: flex;
         clear: both;
         padding: 0 24px 24px 16px;
+
+        .footnoteWrapper {
+            display: flex;
+        }
 
         a.footnoteReference {
             display: inline-block;
