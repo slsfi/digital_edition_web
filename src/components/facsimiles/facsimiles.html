@@ -18,6 +18,12 @@
   </div>
 </div>
 
+<div *ngIf="externalURLs" [ngClass]="(readPopoverService.fontsize==0)?'tei xsmallFontSize':(readPopoverService.fontsize==1)?'tei smallFontSize':(readPopoverService.fontsize==2)?'tei mediumFontSize':(readPopoverService.fontsize==3)?'tei largeFontSize':'tei xlargeFontSize'">
+  <span class="external_url">
+    <p *ngFor="let ext of externalURLs"><a target="_blank" href="{{ext.url}}" [innerHTML]="ext.title"></a></p>
+  </span>
+</div>
+
 <ion-item *ngIf="externalURLs.length===0 && numberOfPages > 1">
   <ion-label position="floating">{{"Read.Facsimiles.Page" | translate}} ({{"Read.Facsimiles.Of" | translate}}
     {{numberOfPages ? numberOfPages : (images ? images.length : 0)}}):</ion-label>
@@ -35,9 +41,6 @@
     (touchend)="onTouchEnd($event)"
     (mousedown)="$event.preventDefault();"
   >
-  <span *ngIf="!facsimilePagesInfinite && externalURLs" class="external_url">
-    <a *ngFor="let ext of externalURLs" target="_blank" href="{{ext.url}}" [innerHTML]="ext.title"></a>
-  </span>
 </div>
 
 <div id="facsimilies-image" *ngIf="facsimilePagesInfinite && facsNumber && externalURLs.length===0">
@@ -50,9 +53,6 @@
     (touchend)="onTouchEnd($event)"
     (mousedown)="$event.preventDefault();"
   >
-  <span *ngIf="externalURLs" class="external_url">
-    <a *ngFor="let ext of externalURLs" target="_blank" href="{{ext.url}}" [innerHTML]="ext.title"></a>
-  </span>
 </div>
 
 <ion-fab *ngIf="numberOfPages > 1" middle left class="leftFacsimileArrow">
@@ -86,5 +86,5 @@
   [class.show_abbreviations]="readPopoverService.show.abbreviations"
   [class.show_workInfo]="readPopoverService.show.workInfo"
   [class.show_pageNumbering]="readPopoverService.show.pageNumbering"
-  [ngClass]="(readPopoverService.fontsize==0)?'smallFont':(readPopoverService.fontsize==1)?'mediumFont':'largeFont'">
+  [ngClass]="(readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize'">
 </div>
