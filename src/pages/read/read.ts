@@ -1684,12 +1684,31 @@ export class ReadPage /*implements OnDestroy*/ {
     if (targetElem.nextElementSibling !== null
     && targetElem.nextElementSibling.classList.contains('tooltip')) {
       let title = '';
+      let text = '';
       if (targetElem.nextElementSibling.classList.contains('ttChanges')) {
         title = 'editorialChange';
+        if (targetElem.firstElementChild !== null
+        && targetElem.firstElementChild.classList.contains('corr')) {
+          text = '<p class="infoOverlayText"><span class="ioLemma">'
+          + targetElem.firstElementChild.textContent
+          + '</span><span class="ioDescription">'
+          + targetElem.nextElementSibling.textContent + '</span></p>';
+        }
       } else if (targetElem.nextElementSibling.classList.contains('ttNormalisations')) {
         title = 'editorialNormalisation';
+        text = '<p class="infoOverlayText"><span class="ioLemma">'
+        + targetElem.textContent
+        + '</span><span class="ioDescription">'
+        + targetElem.nextElementSibling.textContent + '</span></p>';
       } else if (targetElem.nextElementSibling.classList.contains('ttAbbreviations')) {
         title = 'abbreviation';
+        if (targetElem.firstElementChild !== null
+        && targetElem.firstElementChild.classList.contains('abbr')) {
+          text = '<p class="infoOverlayText"><span class="ioLemma">'
+          + targetElem.firstElementChild.textContent
+          + '</span><span class="ioDescription">'
+          + targetElem.nextElementSibling.textContent + '</span></p>';
+        }
       }
       this.translate.get(title).subscribe(
         translation => {
@@ -1697,7 +1716,7 @@ export class ReadPage /*implements OnDestroy*/ {
         }, error => { }
       );
       this.setInfoOverlayPositionAndWidth(targetElem);
-      this.setInfoOverlayText(targetElem.nextElementSibling.textContent);
+      this.setInfoOverlayText(text);
     }
   }
 

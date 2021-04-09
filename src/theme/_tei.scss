@@ -1822,12 +1822,17 @@ div.tei {
                 text-decoration: underline;
             }
         }
-        p.footnoteText {
+        p.footnoteText,
+        p.infoOverlayText {
             display: inline-block;
             text-indent: 0;
             width: 100%;
             color: var(--infoOverlay-text-color);
             line-height: 1.4em;
+        }
+
+        span.ioLemma::after {
+            content: " – ";
         }
     }
 }
