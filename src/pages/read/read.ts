@@ -1630,7 +1630,7 @@ export class ReadPage /*implements OnDestroy*/ {
       this.translate.get('Occurrences.Commentary').subscribe(
         translation => {
           this.setInfoOverlayTitle(translation);
-        }, error => { }
+        }, errorA => { }
       );
       this.setInfoOverlayPositionAndWidth(targetElem);
       this.setInfoOverlayText(this.tooltips.comments[id]);
@@ -1643,23 +1643,23 @@ export class ReadPage /*implements OnDestroy*/ {
         this.translate.get('Occurrences.Commentary').subscribe(
           translation => {
             this.setInfoOverlayTitle(translation);
-          }, error => { }
+          }, errorB => { }
         );
         this.setInfoOverlayPositionAndWidth(targetElem);
         this.setInfoOverlayText(tooltip.description);
         this.tooltips.comments[id] = tooltip.description
       },
-      error => {
+      errorC => {
         let noInfoFound = 'Could not get comment information';
         this.translate.get('Occurrences.NoInfoFound').subscribe(
           translation => {
             noInfoFound = translation;
-          }, errorT => { }
+          }, errorD => { }
         );
         this.translate.get('Occurrences.Commentary').subscribe(
           translation => {
             this.setInfoOverlayTitle(translation);
-          }, error => { }
+          }, errorE => { }
         );
         this.setInfoOverlayPositionAndWidth(targetElem);
         this.setInfoOverlayText(noInfoFound);
