@@ -2,7 +2,7 @@ page-title {
 
   ion-card {
     max-width: 710px;
-    background-color: $read-columns-background-color !important;
+    background-color: var(--read-columns-background-color) !important;
   }
 
   .card-content {

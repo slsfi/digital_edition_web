@@ -18,7 +18,7 @@ table-of-contents-accordion {
 
     ion-item.item:hover,
     ion-item.item.back-to-list-button:hover {
-        border-left-color: color($colors, primary);
+        border-left-color: var(--main-toc-hover-color);
     }
 
     ion-item.item.selected-toc-item {
@@ -117,7 +117,7 @@ table-of-contents-accordion {
     }
 
     div.recursive-suboptions > ion-list.accordion-menu > ion-item.item:hover {
-        border-left-color: color($colors, primary);
+        border-left-color: var(--main-toc-hover-color);
     }
 
     ion-list.accordion-menu ion-item.header ion-icon.header-icon.rotate {

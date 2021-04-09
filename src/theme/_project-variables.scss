@@ -115,16 +115,9 @@ $white-color:     #fff;
 
 $search-match-color:            #a5d7a5;
 
-$read-columns-background-color: #fafafa;
-$back-button-color:						  #e8e4df; // Between secondary & $background-color
-$back-button-text-color:				color($colors, dark);
 $forward-arrow-color:					  color($colors, dark);
 $divider-bg-color:              color($colors, secondary);
 
-:root {
-	--infoOverlay-bg-color: #333;
-	--infoOverlay-text-color: #e3e3e3;
-}
 
 
 // OTHER CUSTOM VARIABLES
@@ -134,6 +127,19 @@ $top-menu-left-split-pane: 10px;
 $corner-roundness: $popover-md-border-radius;
 $opacity-hover: 0.6;
 $opacity-hover-transition: 0.2s;
+
+
+
+// CSS CUSTOM PROPERTIES
+// --------------------------------------------------
+:root {
+	--infoOverlay-bg-color:           #333;
+	--infoOverlay-text-color:         #e3e3e3;
+  --main-toc-hover-color:             color($colors, primary);
+  --read-columns-background-color:  #fafafa;
+  --back-button-bg-color:           #e8e4df; // Ideally something between secondary color & $background-color
+  --back-button-text-color:           color($colors, dark);
+}
 
 
 
