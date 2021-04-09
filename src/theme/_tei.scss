@@ -1834,6 +1834,12 @@ div.tei {
         span.ioLemma {
             font-weight: bold;
             font-style: italic;
+
+            span.reg_hide {
+                display: inline;
+                font-style: normal;
+                font-weight: normal;
+            }
         }
 
         span.ioLemma::after {
