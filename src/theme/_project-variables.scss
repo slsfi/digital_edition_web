@@ -133,16 +133,17 @@ $opacity-hover-transition: 0.2s;
 // CSS CUSTOM PROPERTIES
 // --------------------------------------------------
 :root {
-	--infoOverlay-bg-color:           #333;
-	--infoOverlay-text-color:         #e3e3e3;
-  --main-toc-hover-color:           #538494; // Same as primary color
-  --read-columns-background-color:  #fafafa;
-  --back-button-bg-color:           #e8e4df; // Ideally something between secondary color & $background-color
-  --back-button-text-color:         #222;    // Same as dark color
-
+  // Create css custom properties from the scss map $colours defined in variables.scss
   @each $key_name, $value in $colors {
     --#{$key_name}-color: #{$value};
   }
+
+	--infoOverlay-bg-color:           #333;
+	--infoOverlay-text-color:         #e3e3e3;
+  --main-toc-hover-color:           var(--primary-color);
+  --read-columns-background-color:  #fafafa;
+  --back-button-bg-color:           #e8e4df; // Ideally something between secondary color & $background-color
+  --back-button-text-color:         var(--dark-color);
 }
 
 
