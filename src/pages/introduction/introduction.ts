@@ -61,6 +61,7 @@ export class IntroductionPage {
   infoOverlayPosition: object;
   infoOverlayWidth: string;
   infoOverlayText: string;
+  infoOverlayTitle: string;
   textLoading: Boolean = true;
   tocItems: GeneralTocItem[];
 
@@ -96,6 +97,7 @@ export class IntroductionPage {
       left: -1500 + 'px'
     };
     this.infoOverlayText = '';
+    this.infoOverlayTitle = '';
     this.infoOverlayWidth = null;
     this.infoOverlayPosType = 'fixed';
     this.infoOverlayPosition = {
@@ -587,6 +589,11 @@ export class IntroductionPage {
 
   showFootnoteInfoOverlay(id: string, targetElem: HTMLElement) {
     if (this.tooltips.footnotes[id] && this.userSettingsService.isDesktop()) {
+      this.translate.get('note').subscribe(
+        translation => {
+          this.setInfoOverlayTitle(translation);
+        }, error => { }
+      );
       this.setInfoOverlayPositionAndWidth(targetElem);
       this.setInfoOverlayText(this.tooltips.footnotes[id]);
       return;
@@ -611,6 +618,11 @@ export class IntroductionPage {
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
+    this.translate.get('note').subscribe(
+      translation => {
+        this.setInfoOverlayTitle(translation);
+      }, error => { }
+    );
     this.setInfoOverlayPositionAndWidth(targetElem);
     this.setInfoOverlayText(footNoteHTML);
     if (this.userSettingsService.isDesktop()) {
@@ -1107,6 +1119,10 @@ export class IntroductionPage {
 
   setInfoOverlayText(text: string) {
     this.infoOverlayText = text;
+  }
+
+  setInfoOverlayTitle(title: string) {
+    this.infoOverlayTitle = title;
   }
 
   hideToolTip() {
