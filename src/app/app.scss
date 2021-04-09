@@ -230,7 +230,8 @@ p, blockquote {
     color: var(--back-button-text-color);
     font-size: 1rem;
   }
-  ion-icon {
+  ion-icon,
+  ion-label {
     color: var(--back-button-text-color);
   }
   &.item-md ion-icon[item-left] + .item-inner {
