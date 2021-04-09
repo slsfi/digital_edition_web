@@ -889,7 +889,7 @@ export class ReadPage /*implements OnDestroy*/ {
       this.hideToolTip();
       let eventTarget = this.getEventTarget(event);
 
-      // Modal trigger for person-, place- or workinfo and info overlay trigger for footnote.
+      // Modal trigger for person-, place- or workinfo and info overlay trigger for footnote and comment.
       if (eventTarget['classList'].contains('tooltiptrigger')
       && eventTarget.hasAttribute('data-id')) {
         if (eventTarget['classList'].contains('person')
@@ -934,6 +934,13 @@ export class ReadPage /*implements OnDestroy*/ {
           // Footnote reference clicked in reading text
           this.showFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
         }
+      } else if ((eventTarget['classList'].contains('ttChanges')
+      && this.readPopoverService.show.changes)
+      || (eventTarget['classList'].contains('ttNormalisations')
+      && this.readPopoverService.show.normalisations)
+      || (eventTarget['classList'].contains('ttAbbreviations')
+      && this.readPopoverService.show.abbreviations)) {
+        this.showInfoOverlayFromInlineHtml(eventTarget);
       } else if (eventTarget['classList'].contains('tooltiptrigger') &&
        eventTarget.hasAttribute('id')) {
         if (eventTarget['classList'].contains('ttFoot') &&
