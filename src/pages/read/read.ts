@@ -984,6 +984,9 @@ export class ReadPage /*implements OnDestroy*/ {
       eventTarget = event.target as HTMLElement;
       if (eventTarget.classList.length === 0 || !eventTarget.classList.contains('xreference')) {
         eventTarget = eventTarget.parentElement;
+        if (eventTarget.classList.length === 0 || !eventTarget.classList.contains('xreference')) {
+          eventTarget = eventTarget.parentElement;
+        }
       }
 
       if (eventTarget.classList.length !== 0
