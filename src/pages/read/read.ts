@@ -1691,6 +1691,8 @@ export class ReadPage /*implements OnDestroy*/ {
         title = 'editorialChange';
         if (targetElem.classList.contains('corr_red')) {
           lemma = targetElem.textContent;
+        } else if (targetElem.classList.contains('corr_hide')) {
+          lemma = '<span class="corr_hide">' + targetElem.innerHTML + '</span>';
         } else if (targetElem.firstElementChild !== null
           && targetElem.firstElementChild.classList.contains('corr')) {
           lemma = targetElem.firstElementChild.textContent;
