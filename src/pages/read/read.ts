@@ -888,24 +888,24 @@ export class ReadPage /*implements OnDestroy*/ {
     this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
       this.hideToolTip();
       let eventTarget = this.getEventTarget(event);
-      let correctTargetFound = false;
+      let modalShown = false;
 
       // Modal trigger for person-, place- or workinfo and info overlay trigger for footnote and comment.
       // Loop needed for finding correct tooltip trigger when there are nested triggers.
-      while (!correctTargetFound && eventTarget['classList'].contains('tooltiptrigger')) {
+      while (!modalShown && eventTarget['classList'].contains('tooltiptrigger')) {
         if (eventTarget.hasAttribute('data-id')) {
           if (eventTarget['classList'].contains('person')
           && this.readPopoverService.show.personInfo) {
             this.showPersonModal(eventTarget.getAttribute('data-id'));
-            correctTargetFound = true;
+            modalShown = true;
           } else if (eventTarget['classList'].contains('placeName')
           && this.readPopoverService.show.placeInfo) {
             this.showPlaceModal(eventTarget.getAttribute('data-id'));
-            correctTargetFound = true;
+            modalShown = true;
           } else if (eventTarget['classList'].contains('title')
           && this.readPopoverService.show.workInfo) {
             this.showWorkModal(eventTarget.getAttribute('data-id'));
-            correctTargetFound = true;
+            modalShown = true;
           } else if (eventTarget['classList'].contains('comment')
           && this.readPopoverService.show.comments) {
             /* The user has clicked a comment lemma ("asterisk") in the reading-text.
@@ -931,15 +931,15 @@ export class ReadPage /*implements OnDestroy*/ {
               // If a comments view isn't shown or viewmode is mobile, show comment in infoOverlay.
               this.showCommentInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
             }
-            correctTargetFound = true;
+            modalShown = true;
           } else if (eventTarget['classList'].contains('ttFoot') && eventTarget['classList'].contains('teiManuscript')) {
             // Footnote reference clicked in manuscript column
             this.showManuscriptFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
-            correctTargetFound = true;
+            modalShown = true;
           } else if (eventTarget['classList'].contains('ttFoot')) {
             // Footnote reference clicked in reading text
             this.showFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
-            correctTargetFound = true;
+            modalShown = true;
           }
         } else if ((eventTarget['classList'].contains('ttChanges')
         && this.readPopoverService.show.changes)
@@ -948,18 +948,18 @@ export class ReadPage /*implements OnDestroy*/ {
         || (eventTarget['classList'].contains('ttAbbreviations')
         && this.readPopoverService.show.abbreviations)) {
           this.showInfoOverlayFromInlineHtml(eventTarget);
-          correctTargetFound = true;
+          modalShown = true;
         } else if (eventTarget.hasAttribute('id')
         && eventTarget['classList'].contains('ttFoot')
         && eventTarget['classList'].contains('teiVariant')) {
           // Footnote reference clicked in variant
           this.showVariantFootnoteInfoOverlay(eventTarget.getAttribute('id'), eventTarget);
-          correctTargetFound = true;
+          modalShown = true;
         }
 
         /* Get the parent node of the event target for the next iteration if a modal or infoOverlay hasn't been shown already.
         * This is for finding nested tooltiptriggers, i.e. a person can be a child of a change. */
-        if (!correctTargetFound) {
+        if (!modalShown) {
           eventTarget = eventTarget['parentNode'];
           if (!eventTarget['classList'].contains('tooltiptrigger')
           && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
@@ -969,6 +969,7 @@ export class ReadPage /*implements OnDestroy*/ {
         }
       }
 
+      eventTarget = this.getEventTarget(event);
       if (eventTarget['classList'].contains('variantScrollTarget')) {
         // Click on variant lemma --> highlight and scroll all variant columns.
         eventTarget.classList.add('highlight');
