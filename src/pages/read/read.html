@@ -61,8 +61,13 @@
         [MathJax]="toolTipText"></div>
       <div
       [ngClass]="'infoOverlay tei ' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')"
+      [class.show_comments]="readPopoverService.show.comments"
+      [class.show_personInfo]="readPopoverService.show.personInfo"
+      [class.show_placeInfo]="readPopoverService.show.placeInfo"
+      [class.show_workInfo]="readPopoverService.show.workInfo"
       [class.show_normalisations]="readPopoverService.show.normalisations"
       [class.show_changes]="readPopoverService.show.changes"
+      [class.show_abbreviations]="readPopoverService.show.abbreviations"
       [ngStyle]="{'position': infoOverlayPosType, 'bottom': infoOverlayPosition.bottom, 'left': infoOverlayPosition.left, 'width': infoOverlayWidth}">
         <div class="infoOverlayHeader">
           <h6 class="infoOverlayTitle" [innerHTML]="infoOverlayTitle"></h6>
@@ -187,8 +192,13 @@
   <ng-container *ngIf="userSettingsService.isMobile()">
     <div
       [ngClass]="'infoOverlay tei ' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')"
+      [class.show_comments]="readPopoverService.show.comments"
+      [class.show_personInfo]="readPopoverService.show.personInfo"
+      [class.show_placeInfo]="readPopoverService.show.placeInfo"
+      [class.show_workInfo]="readPopoverService.show.workInfo"
       [class.show_normalisations]="readPopoverService.show.normalisations"
       [class.show_changes]="readPopoverService.show.changes"
+      [class.show_abbreviations]="readPopoverService.show.abbreviations"
       [ngStyle]="{'position': infoOverlayPosType, 'bottom': infoOverlayPosition.bottom, 'left': infoOverlayPosition.left, 'width': infoOverlayWidth}">
       <div class="infoOverlayHeader">
         <h6 class="infoOverlayTitle" [innerHTML]="infoOverlayTitle"></h6>
