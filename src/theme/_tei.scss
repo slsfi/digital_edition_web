@@ -1830,11 +1830,17 @@ div.tei {
             color: var(--infoOverlay-text-color);
             line-height: 1.4em;
             font-weight: 300;
+
+            span.corr,
+            span.reg {
+                color: var(--dark-color);
+            }
         }
 
         span.ioLemma {
             font-weight: 600;
             font-style: italic;
+            cursor: auto !important;
 
             span.reg_hide img,
             span.corr_hide img {
