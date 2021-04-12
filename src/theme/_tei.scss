@@ -1779,7 +1779,6 @@ div.tei {
     line-height: 1.4em;
     overflow: auto;
     border-radius: $corner-roundness $corner-roundness 0 0;
-    font-weight: 300;
 
     .infoOverlayHeader {
         display: inline-block;
@@ -1830,6 +1829,7 @@ div.tei {
             width: 100%;
             color: var(--infoOverlay-text-color);
             line-height: 1.4em;
+            font-weight: 300;
         }
 
         span.ioLemma {
