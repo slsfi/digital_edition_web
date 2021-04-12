@@ -975,9 +975,7 @@ export class ReadPage /*implements OnDestroy*/ {
         eventTarget.classList.add('highlight');
         this.scrollToVariant(eventTarget);
         setTimeout(function () {
-          if (eventTarget !== undefined) {
-            eventTarget.classList.remove('highlight');
-          }
+          eventTarget.classList.remove('highlight');
         }, 5000);
       }
 
