@@ -1809,6 +1809,10 @@ div.tei {
         clear: both;
         padding: 0 24px 24px 16px;
 
+        a {
+            filter: brightness(150%);
+        }
+
         .footnoteWrapper {
             display: flex;
         }
