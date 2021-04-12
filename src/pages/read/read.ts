@@ -890,7 +890,8 @@ export class ReadPage /*implements OnDestroy*/ {
       let eventTarget = this.getEventTarget(event);
       let correctTargetFound = false;
 
-      // Modal trigger for person-, place- or workinfo and info overlay trigger for footnote and comment. Loop needed for finding correct tooltip trigger when there are nested triggers.
+      // Modal trigger for person-, place- or workinfo and info overlay trigger for footnote and comment.
+      // Loop needed for finding correct tooltip trigger when there are nested triggers.
       while (!correctTargetFound && eventTarget['classList'].contains('tooltiptrigger')) {
         if (eventTarget.hasAttribute('data-id')) {
           if (eventTarget['classList'].contains('person')
