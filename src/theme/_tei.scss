@@ -1832,7 +1832,11 @@ div.tei {
             font-weight: 300;
 
             span.corr,
-            span.reg {
+            span.reg,
+            span.person,
+            span.placeName,
+            span.title,
+            span.abbr {
                 color: var(--dark-color);
             }
         }
