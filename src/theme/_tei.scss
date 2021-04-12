@@ -1839,6 +1839,10 @@ div.tei {
             span.abbr {
                 color: var(--dark-color);
             }
+
+            img.comment {
+                filter: brightness(150%);
+            }
         }
 
         span.teiComment.noteLemma {
