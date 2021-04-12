@@ -1840,7 +1840,11 @@ div.tei {
         span.ioLemma {
             font-weight: 600;
             font-style: italic;
-            cursor: auto !important;
+
+            span.reg_hide,
+            span.corr_hide {
+                cursor: auto;
+            }
 
             span.reg_hide img,
             span.corr_hide img {
