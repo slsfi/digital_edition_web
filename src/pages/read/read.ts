@@ -926,13 +926,12 @@ export class ReadPage /*implements OnDestroy*/ {
                 this.scrollToCommentLemma(lemmaStart);
                 // Scroll to comment in the comments-column.
                 const commentSettimeoutId = this.scrollToComment(numId);
-                correctTargetFound = true;
               }
             } else {
               // If a comments view isn't shown or viewmode is mobile, show comment in infoOverlay.
               this.showCommentInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
-              correctTargetFound = true;
             }
+            correctTargetFound = true;
           } else if (eventTarget['classList'].contains('ttFoot') && eventTarget['classList'].contains('teiManuscript')) {
             // Footnote reference clicked in manuscript column
             this.showManuscriptFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
