@@ -893,6 +893,7 @@ export class ReadPage /*implements OnDestroy*/ {
       // Modal trigger for person-, place- or workinfo and info overlay trigger for footnote and comment.
       // Loop needed for finding correct tooltip trigger when there are nested triggers.
       while (!modalShown && eventTarget['classList'].contains('tooltiptrigger')) {
+        console.log('While-iteration');
         if (eventTarget.hasAttribute('data-id')) {
           if (eventTarget['classList'].contains('person')
           && this.readPopoverService.show.personInfo) {
