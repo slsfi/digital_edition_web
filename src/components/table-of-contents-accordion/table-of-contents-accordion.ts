@@ -235,6 +235,10 @@ export class TableOfContentsAccordionComponent {
         // Find toc item and open its parents
         if (value.searchItemId) {
           value.searchItemId = String(value.searchItemId).replace('_nochapter', '').replace(':chapterID', '');
+          if ( String(value.searchItemId).indexOf(';pos') !== -1 ) {
+            // Remove the position anchor from search if defined
+            value.searchItemId = String(value.searchItemId).split(';pos')[0];
+          }
           this.findTocByPubOnly(this.collapsableItems, value.searchItemId);
           this.events.publish('typesAccordion:change', {
             expand: true

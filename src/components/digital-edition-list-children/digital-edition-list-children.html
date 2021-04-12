@@ -4,7 +4,7 @@
         <ion-col style="display: flex;justify-content: center;" *ngFor="let edition of childrenPdfs" menuClose col-md-4 col-sm-6 col-lg-3 (click)="showPDF(edition)">
             <ion-card class="digital-edition" style="padding: 20px; margin: 20px; position: relative; background-color: white;">
                 <ion-card-header>
-                    <img src="{{edition.thumbnail}}">
+                    <img alt="thumbnail" src="{{edition.thumbnail}}">
                     <ion-icon (click)="downloadPDF($event, edition)" class="download" name="cloud-download"></ion-icon>
                 </ion-card-header>
                 <ion-card-content style="padding-top: 35px;">
@@ -26,7 +26,7 @@
         <ion-col style="display: flex;justify-content: center;" *ngFor="let edition of childrenPdfs" menuClose (click)="showPDF(edition)" col-md-6>
           <ion-card class="digital-edition" style="padding: 20px; margin: 20px; position: relative; background-color: white;">
               <ion-card-header>
-                <img src="{{edition.thumbnail}}">
+                <img alt="thumbnail" src="{{edition.thumbnail}}">
               </ion-card-header>
               <ion-card-content style="padding-top: 35px;">
                   <div style="background-color: white; text-align: center;">
@@ -47,7 +47,7 @@
             <ion-list>
                 <ion-item *ngFor="let edition of childrenPdfs" menuClose (click)="showPDF(edition)">
                 <ion-thumbnail item-left>
-                  <img src="{{edition.thumbnail}}">
+                  <img alt="thumbnail" src="{{edition.thumbnail}}">
                 </ion-thumbnail>
                 <h2>{{ ('TOC-translation.' + edition.title | translate) !== 'TOC-translation.' + edition.title  ?  ('TOC-translation.' + edition.title | translate) : edition.title }}</h2>
                 <div class="book_download_container" *ngIf="edition.isDownload">
@@ -68,7 +68,7 @@
             justify-content: center;" *ngFor="let edition of childrenPdfs" menuClose (click)="downloadPDF($event, edition)" col-sm-6 col-sm-3>
               <ion-card class="digital-edition" style="padding: 20px; margin: 20px; position: relative;">
                   <ion-card-header>
-                    <img src="{{edition.thumbnail}}">
+                    <img alt="thumbnail" src="{{edition.thumbnail}}">
                   </ion-card-header>
                   <ion-card-content style="padding-top: 35px;">
                       <div style="background-color: white; text-align: center;">

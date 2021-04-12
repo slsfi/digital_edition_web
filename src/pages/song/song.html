@@ -11,7 +11,7 @@
       <ion-col col-md-6>
 
           <ion-card>
-              <img *ngIf="song" src="assets/jpeg-files/{{songOriginalId}}.jpg"/>
+              <img alt="song image" *ngIf="song" src="assets/jpeg-files/{{songOriginalId}}.jpg"/>
               <ion-card-content>
                 <button *ngIf="!playing" ion-button (click)="playSong()">
                   <ion-icon name="play"></ion-icon>
@@ -47,7 +47,7 @@
 
 
           <ion-list *ngIf="song">
-              <ion-item>{{"Song.Playman" | translate}}: {{song.performer_firstname}} {{song.performer_lastname}} {{(song.performer_born_name)?"("+song.performer_born_name+")":""}}</ion-item> 
+              <ion-item>{{"Song.Playman" | translate}}: {{song.performer_firstname}} {{song.performer_lastname}} {{(song.performer_born_name)?"("+song.performer_born_name+")":""}}</ion-item>
               <ion-item>{{"Song.SongType" | translate}}: {{song.type}}</ion-item>
               <ion-item>{{"Song.SongName" | translate}}: {{song.name}}</ion-item>
               <ion-item>{{"Song.Landscape" | translate}}: {{song.landscape}}</ion-item>

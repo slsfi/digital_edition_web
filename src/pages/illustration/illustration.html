@@ -24,8 +24,8 @@
       <button ion-fab (click)="zoomImg()"><ion-icon name="search"></ion-icon></button>
     </ion-fab>
     <ion-scroll class="illustration-box" scrollX="true" scrollY="true" zoom="true" style="height:100%; width:100%; position: relative;">
-      <img *ngIf="showDescription" [src]="imgPath">
-      <img [style.zoom]="zoom" *ngIf="zoomImage" class="illustration-img" [src]="imgPath">
+      <img alt="illustration" *ngIf="showDescription" [src]="imgPath">
+      <img alt="illustration" [style.zoom]="zoom" *ngIf="zoomImage" class="illustration-img" [src]="imgPath">
       <div *ngIf="showDescription">
         <p><b>{{imgMetadata['full_name']}}, <i>{{imgMetadata['media_title_translation']}}</i></b></p>
         <p>{{imgMetadata['media_art_technique_translation']}}</p>

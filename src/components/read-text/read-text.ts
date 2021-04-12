@@ -4,7 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { TextService } from '../../app/services/texts/text.service';
 import { Storage } from '@ionic/storage';
-import { ToastController, Events, ModalController } from 'ionic-angular';
+import { ToastController, Events, ModalController, App } from 'ionic-angular';
 import { IllustrationPage } from '../../pages/illustration/illustration';
 import { ConfigService } from '@ngx-config/core';
 import { TextCacheService } from '../../app/services/texts/text-cache.service';
@@ -31,8 +31,10 @@ export class ReadTextComponent {
   apiEndPoint: string;
   appMachineName: string;
   textLoading: Boolean = true;
+  pos: string;
 
   constructor(
+    private app: App,
     public events: Events,
     protected readPopoverService: ReadPopoverService,
     protected textService: TextService,
@@ -66,16 +68,17 @@ export class ReadTextComponent {
 
   ngAfterViewInit() {
     this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
+      event.preventDefault();
       try {
         if (this.config.getSettings('settings.showReadTextIllustrations')) {
           const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
-
-          if (event.target.classList.contains('doodle')) {
-            const image = {src: '/assets/images/verk/' + String(event.target.dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
+          const eventTarget = event.target as HTMLElement;
+          if (eventTarget.classList.contains('doodle')) {
+            const image = {src: '/assets/images/verk/' + String(eventTarget.dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
             this.events.publish('give:illustration', image);
           }
           if ( showIllustration.includes(this.link.split('_')[1])) {
-            if (event.target.classList.contains('est_figure_graphic')) {
+            if (eventTarget.classList.contains('est_figure_graphic')) {
               // Check if we have the "illustrations" tab open, if not, open
               if ( document.querySelector('illustrations') === null ) {
                 this.openNewView(event, null, 'illustrations');
@@ -84,8 +87,8 @@ export class ReadTextComponent {
               this.events.publish('give:illustration', image);
             }
           } else {
-            if (event.target.previousElementSibling !== null &&
-              event.target.previousElementSibling.classList.contains('est_figure_graphic')) {
+            if (eventTarget.previousElementSibling !== null &&
+              eventTarget.previousElementSibling.classList.contains('est_figure_graphic')) {
               // Check if we have the "illustrations" tab open, if not, open
               if ( document.querySelector('illustrations') === null ) {
                 this.openNewView(event, null, 'illustrations');
@@ -276,6 +279,7 @@ export class ReadTextComponent {
       } else {
         const tmpImage: HTMLImageElement = new Image();
         tmpImage.src = 'assets/images/ms_arrow_right.svg';
+        tmpImage.alt = 'ms arrow right image';
         tmpImage.classList.add('inl_ms_arrow');
         element.parentElement.insertBefore(tmpImage, element);
         this.scrollElementIntoView(tmpImage, position);
@@ -286,7 +290,7 @@ export class ReadTextComponent {
       }
 
       if ( addTag && !addedArrow ) {
-        element.innerHTML = '<img class="inl_ms_arrow" src="assets/images/ms_arrow_right.svg"/>';
+        element.innerHTML = '<img class="inl_ms_arrow" alt="arrow right image" src="assets/images/ms_arrow_right.svg"/>';
         this.scrollElementIntoView(element, position);
         setTimeout(function() {
           element.innerHTML = '';

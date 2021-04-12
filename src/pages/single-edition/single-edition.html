@@ -14,13 +14,13 @@
 
 <ion-content padding class="card-background-page">
   <ng-container *ngIf="!(splitPaneMobile && userSettingsService.isMobile())">
-  
+
     <div *ngIf="hasDigitalEditionListChildren">
       <digital-edition-list-children [layoutType]="'auto'" [childrenPdfs]="childrenPdfs" [collectionID]="collection.id"></digital-edition-list-children>
     </div>
     <ion-card *ngIf="image && showPage" class="collectionImageCard">
       <div class="collectionImageDiv">
-        <img class="collectionImage" src="{{image}}">
+        <img alt="collection image" class="collectionImage" src="{{image}}">
       </div>
       <div class="collectionDescription" [innerHTML]="collectionDescription.content"></div>
     </ion-card>

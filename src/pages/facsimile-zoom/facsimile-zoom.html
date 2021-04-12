@@ -54,7 +54,7 @@
             <div class="center_content">
                 <div class="div_img">
                     <div *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()">
-                        <img *ngIf="!facsimilePagesInfinite && (!backside || !backsides[activeImage])"
+                        <img alt="facsimile" *ngIf="!facsimilePagesInfinite && (!backside || !backsides[activeImage])"
                           [src]="images[activeImage]"
                           class="facsimile-zoom-image"
                           [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
@@ -64,7 +64,7 @@
                           (mousedown)="$event.preventDefault();"
                           draggable="true"
                         >
-                        <img *ngIf="!facsimilePagesInfinite && backside && backsides[activeImage]"
+                        <img alt="facsimile" *ngIf="!facsimilePagesInfinite && backside && backsides[activeImage]"
                           [src]="backSide(images[activeImage])"
                           class="facsimile-zoom-image"
                           [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
@@ -74,7 +74,7 @@
                           (mousedown)="$event.preventDefault();"
                           draggable="true"
                         >
-                        <img *ngIf="facsimilePagesInfinite && facsNumber"
+                        <img alt="facsimile" *ngIf="facsimilePagesInfinite && facsNumber"
                           [src]="facsUrl + facsNumber + '/' + facsSize"
                           class="facsimile-zoom-image"
                           [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
@@ -88,12 +88,12 @@
                     <div *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet())">
                         <div *ngIf="!facsimilePagesInfinite">
                             <pinch-zoom overflow="visible" backgroundColor="transparent" [limit-zoom]="40" [minPanScale]="0">
-                                <img [src]="images[activeImage]" class="facsimile-zoom-image">
+                                <img alt="facsimile" [src]="images[activeImage]" class="facsimile-zoom-image">
                             </pinch-zoom>
                         </div>
                         <div *ngIf="facsimilePagesInfinite && facsNumber">
                             <pinch-zoom overflow="visible" backgroundColor="transparent" [limit-zoom]="40" [minPanScale]="0">
-                                <img [src]="facsUrl + facsNumber" class="facsimile-zoom-image">
+                                <img alt="facsimile" [src]="facsUrl + facsNumber" class="facsimile-zoom-image">
                             </pinch-zoom>
                         </div>
                     </div>
