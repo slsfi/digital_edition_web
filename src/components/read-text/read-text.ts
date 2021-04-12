@@ -50,15 +50,6 @@ export class ReadTextComponent {
     this.appMachineName = this.config.getSettings('app.machineName');
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.defaultView = this.config.getSettings('defaults.ReadModeView');
-
-    // Check if we have a pos parmeter in the URL, if we have one we can use it for scrolling the text on the page to that position.
-    // The pos parameter must come after the publication id followed by /#, e.g. /publication-introduction/203/#pos1
-    const currentURL: string = String(window.location.href);
-    if (currentURL.match(/publication\/\d+\/#\w+/) !== null) {
-      this.pos = currentURL.split('#').pop();
-    } else {
-      this.pos = null;
-    }
   }
 
   ngOnInit() {
@@ -77,6 +68,7 @@ export class ReadTextComponent {
 
   ngAfterViewInit() {
     this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
+      event.preventDefault();
       try {
         if (this.config.getSettings('settings.showReadTextIllustrations')) {
           const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
@@ -103,41 +95,6 @@ export class ReadTextComponent {
               }
               const image = {src: event.target.previousElementSibling.src, class: 'illustration'};
               this.events.publish('give:illustration', image);
-            } else if ( eventTarget.classList.contains('xreference') ) {
-              event.preventDefault();
-              const anchorElem: HTMLAnchorElement = eventTarget as HTMLAnchorElement;
-
-              let targetId = '';
-              if (anchorElem.hasAttribute('href')) {
-                targetId = anchorElem.getAttribute('href');
-              } else if (anchorElem.parentElement && anchorElem.parentElement.hasAttribute('href')) {
-                targetId = anchorElem.parentElement.getAttribute('href');
-              }
-
-              const targetParts = String(targetId).split('#');
-              const hrefTargetItems: Array<string> = String(targetParts[0]).split('_');
-              let collectionId = '';
-              let publicationId = '';
-              const positionId = (targetParts.length > 1) ? targetParts[1] : null;
-
-              // Link to reading text or comment.
-              collectionId =  String(hrefTargetItems[0]).replace('%20', '').trim();
-              publicationId = String(hrefTargetItems[1]).replace('%20', '').trim();
-              if ( collectionId !== '' && publicationId !== '' ) {
-                this.textService.getCollectionAndPublicationByLegacyId(collectionId + '_' + publicationId).subscribe(data => {
-                  if (data[0] !== undefined) {
-                    collectionId = data[0]['coll_id'];
-                    publicationId = data[0]['pub_id'];
-                  }
-                  // Open the postion in a new window
-                  let hrefString = '#/publication/' + collectionId + '/text/' + publicationId + '/';
-                  if ( positionId !== null ) {
-                    hrefString += 'nochapter;' + positionId;
-                  }
-                  hrefString += '/not/infinite/nosong/searchtitle/established&comments';
-                  window.open(hrefString, '_blank');
-                });
-              }
             }
           }
         }
