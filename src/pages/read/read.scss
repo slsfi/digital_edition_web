@@ -133,7 +133,7 @@ page-read {
       width: 97%;
 
       ion-card {
-        background-color: $read-columns-background-color;
+        background-color: var(--read-columns-background-color);
         margin-bottom: 0;
 
         .card-content {
@@ -328,7 +328,7 @@ page-read .mobile-mode-read-content .scroll-zoom-wrapper {
 /* Adjust padding and background color of text column in mobile mode. */
 page-read div.mobile-mode-established {
   padding: 12px;
-  background-color: $read-columns-background-color;
+  background-color: var(--read-columns-background-color);
 }
 
 @media(max-width: 800px) {

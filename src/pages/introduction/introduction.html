@@ -33,7 +33,7 @@
             <div [ngClass]="'toolTip tei ' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')" [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left, 'max-width': toolTipMaxWidth, 'transform': 'scale(' + toolTipScaleValue + ')'}" [innerHTML]="toolTipText"></div>
             <div [ngClass]="'infoOverlay tei ' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')" [ngStyle]="{'position': infoOverlayPosType, 'bottom': infoOverlayPosition.bottom, 'left': infoOverlayPosition.left, 'width': infoOverlayWidth}">
               <div class="infoOverlayHeader">
-                <h6 class="infoOverlayTitle">{{'note' | translate }}</h6>
+                <h6 class="infoOverlayTitle" [innerHTML]="infoOverlayTitle"></h6>
                 <ion-icon name="close" class="infoOverlayButton" (click)="hideInfoOverlay()"></ion-icon>
               </div>
               <div class="infoOverlayContent" [innerHTML]="infoOverlayText"></div>

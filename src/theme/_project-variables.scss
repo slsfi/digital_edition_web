@@ -19,17 +19,17 @@
 }
 @font-face {
   font-family: "Muli";
-  src: url(../assets/fonts/Muli-Italic.ttf) format("truetype");
-  font-display: fallback;
-  font-style: italic;
-  font-weight: 400;
-}
-@font-face {
-  font-family: "Muli";
   src: url(../assets/fonts/Muli-Bold.ttf) format("truetype");
   font-display: fallback;
   font-style: normal;
   font-weight: 700;
+}
+@font-face {
+  font-family: "Muli";
+  src: url(../assets/fonts/Muli-Italic.ttf) format("truetype");
+  font-display: fallback;
+  font-style: italic;
+  font-weight: 400;
 }
 @font-face {
   font-family: "Muli";
@@ -40,8 +40,29 @@
 }
 @font-face {
   font-family: "Muli";
+  src: url(../assets/fonts/Muli-Light.ttf) format("truetype");
+  font-display: fallback;
+  font-style: normal;
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Muli";
+  src: url(../assets/fonts/Muli-LightItalic.ttf) format("truetype");
+  font-display: fallback;
+  font-style: italic;
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Muli";
   src: url(../assets/fonts/Muli-SemiBold.ttf) format("truetype");
   font-display: fallback;
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Muli";
+  src: url(../assets/fonts/Muli-SemiBoldItalic.ttf) format("truetype");
+  font-display: fallback;
+  font-style: italic;
   font-weight: 600;
 }
 /*
@@ -115,14 +136,8 @@ $white-color:     #fff;
 
 $search-match-color:            #a5d7a5;
 
-$read-columns-background-color: #fafafa;
-$back-button-color:						  #e8e4df; // Between secondary & $background-color
-$back-button-text-color:				color($colors, dark);
 $forward-arrow-color:					  color($colors, dark);
 $divider-bg-color:              color($colors, secondary);
-
-$infoOverlay-bg-color:          #333;
-$infoOverlay-text-color:        #e3e3e3;
 
 
 
@@ -133,6 +148,24 @@ $top-menu-left-split-pane: 10px;
 $corner-roundness: $popover-md-border-radius;
 $opacity-hover: 0.6;
 $opacity-hover-transition: 0.2s;
+
+
+
+// CSS CUSTOM PROPERTIES
+// --------------------------------------------------
+:root {
+  // Create css custom properties from the scss map $colours defined in variables.scss
+  @each $key_name, $value in $colors {
+    --#{$key_name}-color: #{$value};
+  }
+
+	--infoOverlay-bg-color:           #333;
+	--infoOverlay-text-color:         #e3e3e3;
+  --main-toc-hover-color:           var(--primary-color);
+  --read-columns-background-color:  #fafafa;
+  --back-button-bg-color:           #e8e4df; // Ideally something between secondary color & $background-color
+  --back-button-text-color:         var(--dark-color);
+}
 
 
 

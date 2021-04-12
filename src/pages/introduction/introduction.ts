@@ -61,6 +61,7 @@ export class IntroductionPage {
   infoOverlayPosition: object;
   infoOverlayWidth: string;
   infoOverlayText: string;
+  infoOverlayTitle: string;
   textLoading: Boolean = true;
   tocItems: GeneralTocItem[];
 
@@ -96,6 +97,7 @@ export class IntroductionPage {
       left: -1500 + 'px'
     };
     this.infoOverlayText = '';
+    this.infoOverlayTitle = '';
     this.infoOverlayWidth = null;
     this.infoOverlayPosType = 'fixed';
     this.infoOverlayPosition = {
@@ -377,7 +379,7 @@ export class IntroductionPage {
               targetId = anchorElem.parentElement.getAttribute('href');
             }
             const dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
-            const target = anchorElem.ownerDocument.querySelector(dataIdSelector) as HTMLElement;
+            const target = anchorElem.ownerDocument.querySelector('page-introduction').querySelector(dataIdSelector) as HTMLElement;
             if (target !== null) {
               if (anchorElem.classList.contains('footnoteReference')) {
                 // Link to (foot)note reference, prepend arrow
@@ -406,21 +408,23 @@ export class IntroductionPage {
 
     /* MOUSE OVER EVENTS */
     this.renderer.listen(nElement, 'mouseover', (event) => {
-      const eventTarget = this.getEventTarget(event);
+      if (this.userSettingsService.isDesktop()) {
+        const eventTarget = this.getEventTarget(event);
 
-      if (eventTarget['classList'].contains('tooltiptrigger')) {
-        if (eventTarget.hasAttribute('data-id')) {
-          if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person')
-          && this.readPopoverService.show.personInfo) {
-            this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-          } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName')
-          && this.readPopoverService.show.placeInfo) {
-            this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-          } else if (toolTipsSettings.workInfo && eventTarget['classList'].contains('title')
-          && this.readPopoverService.show.workInfo) {
-            this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-          } else if (toolTipsSettings.footNotes && eventTarget['classList'].contains('ttFoot')) {
-            this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+        if (eventTarget['classList'].contains('tooltiptrigger')) {
+          if (eventTarget.hasAttribute('data-id')) {
+            if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person')
+            && this.readPopoverService.show.personInfo) {
+              this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+            } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName')
+            && this.readPopoverService.show.placeInfo) {
+              this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+            } else if (toolTipsSettings.workInfo && eventTarget['classList'].contains('title')
+            && this.readPopoverService.show.workInfo) {
+              this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+            } else if (toolTipsSettings.footNotes && eventTarget['classList'].contains('ttFoot')) {
+              this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+            }
           }
         }
       }
@@ -551,55 +555,81 @@ export class IntroductionPage {
   }
 
   showFootnoteTooltip(id: string, targetElem: HTMLElement, origin: any) {
-    if (this.tooltips.footnotes[id]) {
+    if (this.tooltips.footnotes[id] && this.userSettingsService.isDesktop()) {
       this.setToolTipPosition(targetElem, this.tooltips.footnotes[id]);
       this.setToolTipText(this.tooltips.footnotes[id]);
       return;
     }
-    const target = document.getElementsByClassName('ttFixed');
-    let foundElem: any = '';
-    for (let i = 0; i < target.length; i++) {
-      const elt = target[i] as HTMLElement;
-      if ( elt.getAttribute('data-id') === id ) {
-        foundElem = elt.innerHTML;
-        break;
-      }
+
+    let footnoteText: any = '';
+    if (targetElem.nextElementSibling !== null
+    && targetElem.nextElementSibling.firstElementChild !== null
+    && targetElem.nextElementSibling.classList.contains('ttFoot')
+    && targetElem.nextElementSibling.firstElementChild.classList.contains('ttFixed')
+    && targetElem.nextElementSibling.firstElementChild.getAttribute('data-id') === id) {
+      footnoteText = targetElem.nextElementSibling.firstElementChild.innerHTML;
+    } else {
+      return;
     }
+
+    footnoteText = footnoteText.replace(' xmlns:tei="http://www.tei-c.org/ns/1.0"', '');
+
     // Prepend the footnoteindicator to the the footnote text.
-    const footnoteWithIndicator: string = '<a class="xreference footnoteReference" href="#' + id + '">' +
-     targetElem.textContent + '</a>' + '<p class="footnoteText">' + foundElem  + '</p>';
+    const footnoteWithIndicator: string = '<div class="footnoteWrapper"><a class="xreference footnoteReference" href="#' + id + '">'
+    + targetElem.textContent + '</a>' + '<p class="footnoteText">'
+    + footnoteText + '</p></div>';
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
     this.setToolTipPosition(targetElem, footNoteHTML);
     this.setToolTipText(footNoteHTML);
-    this.tooltips.footnotes[id] = footNoteHTML;
+    if (this.userSettingsService.isDesktop()) {
+      this.tooltips.footnotes[id] = footNoteHTML;
+    }
   }
 
   showFootnoteInfoOverlay(id: string, targetElem: HTMLElement) {
-    if (this.tooltips.footnotes[id]) {
+    if (this.tooltips.footnotes[id] && this.userSettingsService.isDesktop()) {
+      this.translate.get('note').subscribe(
+        translation => {
+          this.setInfoOverlayTitle(translation);
+        }, error => { }
+      );
       this.setInfoOverlayPositionAndWidth(targetElem);
       this.setInfoOverlayText(this.tooltips.footnotes[id]);
       return;
     }
-    const target = document.getElementsByClassName('ttFixed');
-    let foundElem: any = '';
-    for (let i = 0; i < target.length; i++) {
-      const elt = target[i] as HTMLElement;
-      if ( elt.getAttribute('data-id') === id ) {
-        foundElem = elt.innerHTML;
-        break;
-      }
+
+    let footnoteText: any = '';
+    if (targetElem.nextElementSibling !== null
+    && targetElem.nextElementSibling.firstElementChild !== null
+    && targetElem.nextElementSibling.classList.contains('ttFoot')
+    && targetElem.nextElementSibling.firstElementChild.classList.contains('ttFixed')
+    && targetElem.nextElementSibling.firstElementChild.getAttribute('data-id') === id) {
+      footnoteText = targetElem.nextElementSibling.firstElementChild.innerHTML;
+    } else {
+      return;
     }
+
+    footnoteText = footnoteText.replace(' xmlns:tei="http://www.tei-c.org/ns/1.0"', '');
+
     // Prepend the footnoteindicator to the the footnote text.
-    const footnoteWithIndicator: string = '<a class="xreference footnoteReference" href="#' + id + '">' +
-     targetElem.textContent + '</a>' + '<p class="footnoteText">' + foundElem  + '</p>';
+    const footnoteWithIndicator: string = '<div class="footnoteWrapper"><a class="xreference footnoteReference" href="#' + id + '">'
+    + targetElem.textContent + '</a>' + '<p class="footnoteText">'
+    + footnoteText + '</p></div>';
     const footNoteHTML: string = this.sanitizer.sanitize(SecurityContext.HTML,
       this.sanitizer.bypassSecurityTrustHtml(footnoteWithIndicator));
 
+    this.translate.get('note').subscribe(
+      translation => {
+        this.setInfoOverlayTitle(translation);
+      }, error => { }
+    );
     this.setInfoOverlayPositionAndWidth(targetElem);
     this.setInfoOverlayText(footNoteHTML);
-    this.tooltips.footnotes[id] = footNoteHTML;
+    if (this.userSettingsService.isDesktop()) {
+      this.tooltips.footnotes[id] = footNoteHTML;
+    }
   }
 
   setToolTipPosition(targetElem: HTMLElement, ttText: string) {
@@ -925,10 +955,14 @@ export class IntroductionPage {
     let margins = 20;
     const maxWidth = 600;
 
-    // Get viewport height.
-    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    // If the viewport width is less than this value the overlay will be placed at the bottom of the viewport.
+    const bottomPosBreakpointWidth = 800;
 
-    // Get read page content element and adjust viewport height with horizontal scrollbar height if such is present
+    // Get viewport height and width.
+    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+
+    // Get page content element and adjust viewport height with horizontal scrollbar height if such is present
     const contentElem = document.querySelector('page-introduction > ion-content > .scroll-content') as HTMLElement;
     let horizontalScrollbarOffsetHeight = 0;
     if (contentElem.clientHeight < contentElem.offsetHeight) {
@@ -954,9 +988,14 @@ export class IntroductionPage {
         calcWidth = calcWidth - 2 * margins;
       }
 
+      let bottomPos = vh - horizontalScrollbarOffsetHeight - containerElemRect.bottom;
+      if (vw <= bottomPosBreakpointWidth) {
+        bottomPos = 0;
+      }
+
       // Set info overlay position
       this.infoOverlayPosition = {
-        bottom: (vh - horizontalScrollbarOffsetHeight - containerElemRect.bottom) + 'px',
+        bottom: bottomPos + 'px',
         left: (containerElemRect.left + margins - contentElem.getBoundingClientRect().left) + 'px'
       };
       this.infoOverlayPosType = 'absolute';
@@ -1085,6 +1124,10 @@ export class IntroductionPage {
     this.infoOverlayText = text;
   }
 
+  setInfoOverlayTitle(title: string) {
+    this.infoOverlayTitle = title;
+  }
+
   hideToolTip() {
     this.setToolTipText('');
     this.toolTipPosition = {
@@ -1095,6 +1138,7 @@ export class IntroductionPage {
 
   hideInfoOverlay() {
     this.setInfoOverlayText('');
+    this.setInfoOverlayTitle('');
     this.infoOverlayPosType = 'fixed'; // Position needs to be fixed so we can hide it outside viewport
     this.infoOverlayPosition = {
       bottom: 0 + 'px',

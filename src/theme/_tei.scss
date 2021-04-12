@@ -1766,32 +1766,33 @@ div.tei {
 .tei.infoOverlay {
     z-index: 1000;
     display: inline-block;
-    background: $infoOverlay-bg-color;
+    background: var(--infoOverlay-bg-color);
     margin: 0;
     padding: 0;
     max-height: 50%;
     box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.4);
     clip-path: inset(-12px -12px 0px -12px);
     white-space: normal;
-    color: $infoOverlay-text-color;
+    color: var(--infoOverlay-text-color);
     font-size: 1em;
     text-align: left;
     line-height: 1.4em;
     overflow: auto;
     border-radius: $corner-roundness $corner-roundness 0 0;
+    font-weight: 300;
 
     .infoOverlayHeader {
         display: inline-block;
         padding: 12px 16px 8px 16px;
         position: sticky;
 	    top: 0;
-        background: $infoOverlay-bg-color;
+        background: var(--infoOverlay-bg-color);
 	    width: 100%;
 
         .infoOverlayTitle {
             font-size: 0.7em;
             text-transform: uppercase;
-            color: $infoOverlay-text-color;
+            color: var(--infoOverlay-text-color);
             display: inline;
         }
 
@@ -1806,9 +1807,12 @@ div.tei {
         }
     }
     .infoOverlayContent {
-        display: flex;
         clear: both;
         padding: 0 24px 24px 16px;
+
+        .footnoteWrapper {
+            display: flex;
+        }
 
         a.footnoteReference {
             display: inline-block;
@@ -1819,12 +1823,30 @@ div.tei {
                 text-decoration: underline;
             }
         }
-        p.footnoteText {
+        p.footnoteText,
+        p.infoOverlayText {
             display: inline-block;
             text-indent: 0;
             width: 100%;
-            color: $infoOverlay-text-color;
+            color: var(--infoOverlay-text-color);
             line-height: 1.4em;
+        }
+
+        span.ioLemma {
+            font-weight: bold;
+            font-style: italic;
+
+            span.reg_hide {
+                display: inline;
+                font-style: normal;
+                font-weight: normal;
+            }
+        }
+
+        span.ioLemma::after {
+            content: " – ";
+            font-style: normal;
+            font-weight: normal;
         }
     }
 }

@@ -2,13 +2,13 @@ page-introduction {
 
   ion-card {
     max-width: 710px;
-    background-color: $read-columns-background-color !important;
+    background-color: var(--read-columns-background-color) !important;
   }
 
   /* denna default är för mobilvyn, gör rum för menyikonen ovanför innehållet. ändras till padding-top 0 för desktop (över 1000px skärmbredd) längre ner*/
   .card-content {
     height: 100%;
-    padding: 41px 0 0 0;
+    padding: 46px 0 0 0;
   }
 
   .card-content > ion-scroll {
@@ -197,22 +197,8 @@ page-introduction {
     width: initial;
   }
 
-
-  @media screen and (max-width: 450px) {
-    /* Gör innehållsförteckningen lite smalare på mycket små skärmar */
-    #TOC {
-      width: 75%;
-      opacity: 97%;
-      height: calc(100% - 70px);
-    }
-
-    /* Minska padding på mycket små skärmar. Top ska fortfarande vara 50px eftersom det ersätter inline style margin-top:50px (se högre upp) */
-    ion-content > .scroll-content {
-      padding: 50px 0 0 0 !important;
-    }
-    ion-scroll > .scroll-content {
-      padding: 6px !important;
-    }
+  .work_title {
+    font-style: italic;
   }
 
   div[data-id="cont_introduction"] h2.tei.section {
@@ -252,10 +238,23 @@ page-introduction {
         margin-left: 0;
       }
     }
+
+    /* Minska padding på små skärmar. Top ska fortfarande vara 50px eftersom det ersätter inline style margin-top:50px (se högre upp) */
+    ion-content > .scroll-content {
+      padding: 50px 0 0 0 !important;
+    }
+    ion-scroll > .scroll-content {
+      padding: 6px !important;
+    }
   }
 
-  .work_title {
-    font-style: italic;
+  @media screen and (max-width: 450px) {
+    /* Gör innehållsförteckningen lite smalare på mycket små skärmar */
+    #TOC {
+      width: 75%;
+      opacity: 97%;
+      height: calc(100% - 70px);
+    }
   }
 
 }

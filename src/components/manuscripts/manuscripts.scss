@@ -5,7 +5,7 @@ manuscripts {
         flex-wrap: nowrap;
         flex-direction: row;
         width: 90%;
-        background: $read-columns-background-color;
+        background: var(--read-columns-background-color);
         align-items: flex-end;
         position: relative;
         cursor: pointer;
@@ -23,7 +23,7 @@ manuscripts {
         padding-right: 1rem;
         padding-top: 1rem;
         padding-bottom: 0.2rem;
-        background-color: $read-columns-background-color;
+        background-color: var(--read-columns-background-color);
         border-bottom: 1px solid black;
     }
 
@@ -74,7 +74,7 @@ manuscripts {
         padding-top: 1rem;
         padding-bottom: 0.2rem;
         padding-left: 0.5rem;
-        background-color: $read-columns-background-color;
+        background-color: var(--read-columns-background-color);
         border-bottom: 1px solid red;
         color: black;
     }
