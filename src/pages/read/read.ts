@@ -1732,7 +1732,10 @@ export class ReadPage /*implements OnDestroy*/ {
         if (targetElem.classList.contains('corr_red')) {
           lemma = targetElem.textContent;
         } else if (targetElem.firstElementChild !== null
-          && targetElem.firstElementChild.classList.contains('corr')) {
+        && targetElem.firstElementChild.classList.contains('corr_hide')) {
+          lemma = '<span class="corr_hide">' + targetElem.firstElementChild.innerHTML + '</span>';
+        } else if (targetElem.firstElementChild !== null
+        && targetElem.firstElementChild.classList.contains('corr')) {
           lemma = targetElem.firstElementChild.textContent;
         }
         text = '<p class="infoOverlayText"><span class="ioLemma">'

@@ -593,11 +593,6 @@ div.tei {
     }
     */
 
-    /* This rule doesn't seem to be used */
-    span.personDesc, 
-    span.placeDesc {
-        cursor: pointer;
-    }
     .sub {
         vertical-align: sub;
         font-size: 0.75em;
@@ -1779,7 +1774,6 @@ div.tei {
     line-height: 1.4em;
     overflow: auto;
     border-radius: $corner-roundness $corner-roundness 0 0;
-    font-weight: 300;
 
     .infoOverlayHeader {
         display: inline-block;
@@ -1794,6 +1788,7 @@ div.tei {
             text-transform: uppercase;
             color: var(--infoOverlay-text-color);
             display: inline;
+            font-weight: 600;
         }
 
         .infoOverlayButton {
@@ -1809,6 +1804,10 @@ div.tei {
     .infoOverlayContent {
         clear: both;
         padding: 0 24px 24px 16px;
+
+        a {
+            filter: brightness(150%);
+        }
 
         .footnoteWrapper {
             display: flex;
@@ -1830,23 +1829,29 @@ div.tei {
             width: 100%;
             color: var(--infoOverlay-text-color);
             line-height: 1.4em;
+            font-weight: 300;
+
+            span.corr,
+            span.reg {
+                color: var(--dark-color);
+            }
         }
 
         span.ioLemma {
-            font-weight: bold;
+            font-weight: 600;
             font-style: italic;
+            cursor: auto !important;
 
-            span.reg_hide {
-                display: inline;
-                font-style: normal;
-                font-weight: normal;
+            span.reg_hide img,
+            span.corr_hide img {
+                filter: invert(1);
             }
         }
 
         span.ioLemma::after {
             content: " – ";
             font-style: normal;
-            font-weight: normal;
+            font-weight: 300;
         }
     }
 }
@@ -1863,37 +1868,18 @@ div.tei .tooltip { display: none; }
 
 .tei.show_workInfo          span.title { background-color: $workTitle-color; cursor: pointer; }
 
-.tei.show_abbreviations     span.abbr { background-color: $abbreviations-color; cursor: default; }
+.tei.show_abbreviations     span.abbr { background-color: $abbreviations-color; cursor: pointer; }
 
 .tei.show_changes           span.corr, 
-.tei.show_changes           span.corr_red { background-color: $changes-color; cursor: default; }
+.tei.show_changes           span.corr_red { background-color: $changes-color; cursor: pointer; }
 .tei                        span.corr_hide { display: none; }
 
-.tei.show_normalisations    span.reg.ttNormalisations { background-color: $normalisations-color; cursor: default; }
+.tei.show_normalisations    span.reg.ttNormalisations { background-color: $normalisations-color; cursor: pointer; }
 .tei                        span.reg_hide { display: none; }
 .tei.show_normalisations    span.reg_hide,
-.tei.show_changes           span.corr_hide { display: inline; cursor: default; }
+.tei.show_changes           span.corr_hide { display: inline; cursor: pointer; }
 
-/*ändra pekaren till en hand över personer och platser när visningsalternativen är påslagna eftersom dessa går att klicka på för att öppna registren
-.tei.show_personInfo span.person.tooltiptrigger,
-.tei.show_placeInfo span.placeName.tooltiptrigger,
-.tei.show_workInfo span.title.tooltiptrigger {
-	cursor: pointer;
-}*/
 
-/* Dessa existerar inte
-.tei.show_choiceStyle    span.corr_hide {display: inherit;}
-.tei.show_choiceStyle    span.corr {background-color: color($colors, light); cursor: default;}
-.tei.show_choiceStyle    span.corr_red {background-color: $changes-color; cursor: default;}
-
-.tei.show_placeStyle        span.placeName {background-color: color($colors, light);}
-.tei.show_placeStyle        span.placeName[id] {cursor: pointer;}
-
-.tei.show_foreignStyle      .foreign {background-color: color($colors, light); cursor: default;}
-
-.tei.show_titleStyle        span.title {background-color: $workTitle-color;}
-.tei.show_titleStyle        span.title[id] {cursor: pointer;}
-*/
 
 /* PARAGRAPH AND LINE NUMBERING */
 .tei span.lNumber,
