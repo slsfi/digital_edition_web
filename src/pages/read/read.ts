@@ -888,69 +888,89 @@ export class ReadPage /*implements OnDestroy*/ {
     this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
       this.hideToolTip();
       let eventTarget = this.getEventTarget(event);
+      let correctTargetFound = false;
 
-      // Modal trigger for person-, place- or workinfo and info overlay trigger for footnote and comment.
-      if (eventTarget['classList'].contains('tooltiptrigger')
-      && eventTarget.hasAttribute('data-id')) {
-        if (eventTarget['classList'].contains('person')
-        && this.readPopoverService.show.personInfo) {
-          this.showPersonModal(eventTarget.getAttribute('data-id'));
-        } else if (eventTarget['classList'].contains('placeName')
-        && this.readPopoverService.show.placeInfo) {
-          this.showPlaceModal(eventTarget.getAttribute('data-id'));
-        } else if (eventTarget['classList'].contains('title')
-        && this.readPopoverService.show.workInfo) {
-          this.showWorkModal(eventTarget.getAttribute('data-id'));
-        } else if (eventTarget['classList'].contains('comment')
-        && this.readPopoverService.show.comments) {
-          /* The user has clicked a comment lemma ("asterisk") in the reading-text.
-              Check if comments view is shown. */
-          const viewTypesShown = this.getViewTypesShown();
-          const commentsViewIsShown = viewTypesShown.includes('comments');
-          if (commentsViewIsShown && this.userSettingsService.isDesktop()) {
-            // Scroll to comment in comments view and scroll lemma in reading-text view
-            const numId = eventTarget.getAttribute('data-id').replace( /^\D+/g, '');
-            const targetId = 'start' + numId;
-            let lemmaStart = document.querySelector('[data-id="' + targetId + '"]') as HTMLElement;
-            if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
-              // The lemma is in a footnote, so we should get the second element with targetId
-              lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
+      // Modal trigger for person-, place- or workinfo and info overlay trigger for footnote and comment. Loop needed for finding correct tooltip trigger when there are nested triggers.
+      while (!correctTargetFound && eventTarget['classList'].contains('tooltiptrigger')) {
+        if (eventTarget.hasAttribute('data-id')) {
+          if (eventTarget['classList'].contains('person')
+          && this.readPopoverService.show.personInfo) {
+            this.showPersonModal(eventTarget.getAttribute('data-id'));
+            correctTargetFound = true;
+          } else if (eventTarget['classList'].contains('placeName')
+          && this.readPopoverService.show.placeInfo) {
+            this.showPlaceModal(eventTarget.getAttribute('data-id'));
+            correctTargetFound = true;
+          } else if (eventTarget['classList'].contains('title')
+          && this.readPopoverService.show.workInfo) {
+            this.showWorkModal(eventTarget.getAttribute('data-id'));
+            correctTargetFound = true;
+          } else if (eventTarget['classList'].contains('comment')
+          && this.readPopoverService.show.comments) {
+            /* The user has clicked a comment lemma ("asterisk") in the reading-text.
+               Check if comments view is shown. */
+            const viewTypesShown = this.getViewTypesShown();
+            const commentsViewIsShown = viewTypesShown.includes('comments');
+            if (commentsViewIsShown && this.userSettingsService.isDesktop()) {
+              // Scroll to comment in comments view and scroll lemma in reading-text view.
+              const numId = eventTarget.getAttribute('data-id').replace( /^\D+/g, '');
+              const targetId = 'start' + numId;
+              let lemmaStart = document.querySelector('[data-id="' + targetId + '"]') as HTMLElement;
+              if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
+                // The lemma is in a footnote, so we should get the second element with targetId.
+                lemmaStart = document.querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
+              }
+              if (lemmaStart !== null && lemmaStart !== undefined) {
+                // Scroll to start of lemma in reading text and temporarily prepend arrow.
+                this.scrollToCommentLemma(lemmaStart);
+                // Scroll to comment in the comments-column.
+                const commentSettimeoutId = this.scrollToComment(numId);
+                correctTargetFound = true;
+              }
+            } else {
+              // If a comments view isn't shown or viewmode is mobile, show comment in infoOverlay.
+              this.showCommentInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
+              correctTargetFound = true;
             }
-            if (lemmaStart !== null && lemmaStart !== undefined) {
-              // Scroll to start of lemma in reading text and temporarily prepend arrow.
-              this.scrollToCommentLemma(lemmaStart);
-              // Scroll to comment in the comments-column.
-              const commentSettimeoutId = this.scrollToComment(numId);
-            }
-          } else {
-            // If a comments view isn't shown or viewmode is mobile, show comment in modal
-            // this.showCommentModal(eventTarget.getAttribute('data-id'));
-            this.showCommentInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
+          } else if (eventTarget['classList'].contains('ttFoot') && eventTarget['classList'].contains('teiManuscript')) {
+            // Footnote reference clicked in manuscript column
+            this.showManuscriptFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
+            correctTargetFound = true;
+          } else if (eventTarget['classList'].contains('ttFoot')) {
+            // Footnote reference clicked in reading text
+            this.showFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
+            correctTargetFound = true;
           }
-        } else if (eventTarget['classList'].contains('ttFoot') && eventTarget['classList'].contains('teiManuscript')) {
-          // Footnote reference clicked in manuscript column
-          this.showManuscriptFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
-        } else if (eventTarget['classList'].contains('ttFoot')) {
-          // Footnote reference clicked in reading text
-          this.showFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
-        }
-      } else if ((eventTarget['classList'].contains('ttChanges')
-      && this.readPopoverService.show.changes)
-      || (eventTarget['classList'].contains('ttNormalisations')
-      && this.readPopoverService.show.normalisations)
-      || (eventTarget['classList'].contains('ttAbbreviations')
-      && this.readPopoverService.show.abbreviations)) {
-        this.showInfoOverlayFromInlineHtml(eventTarget);
-      } else if (eventTarget['classList'].contains('tooltiptrigger') &&
-       eventTarget.hasAttribute('id')) {
-        if (eventTarget['classList'].contains('ttFoot') &&
-         eventTarget['classList'].contains('teiVariant')) {
-           // Footnote reference clicked in variant
+        } else if ((eventTarget['classList'].contains('ttChanges')
+        && this.readPopoverService.show.changes)
+        || (eventTarget['classList'].contains('ttNormalisations')
+        && this.readPopoverService.show.normalisations)
+        || (eventTarget['classList'].contains('ttAbbreviations')
+        && this.readPopoverService.show.abbreviations)) {
+          this.showInfoOverlayFromInlineHtml(eventTarget);
+          correctTargetFound = true;
+        } else if (eventTarget.hasAttribute('id')
+        && eventTarget['classList'].contains('ttFoot')
+        && eventTarget['classList'].contains('teiVariant')) {
+          // Footnote reference clicked in variant
           this.showVariantFootnoteInfoOverlay(eventTarget.getAttribute('id'), eventTarget);
+          correctTargetFound = true;
+        }
+
+        /* Get the parent node of the event target for the next iteration if a modal or infoOverlay hasn't been shown already.
+        * This is for finding nested tooltiptriggers, i.e. a person can be a child of a change. */
+        if (!correctTargetFound) {
+          eventTarget = eventTarget['parentNode'];
+          if (!eventTarget['classList'].contains('tooltiptrigger')
+          && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
+            /* The parent isn't a tooltiptrigger, but the parent of the parent is, use it for the next iteration. */
+            eventTarget = eventTarget['parentNode'];
+          }
         }
       }
+
       if (eventTarget['classList'].contains('variantScrollTarget')) {
-        // Click on variant lemma --> highlight and scroll all variant columns
+        // Click on variant lemma --> highlight and scroll all variant columns.
         eventTarget.classList.add('highlight');
         this.scrollToVariant(eventTarget);
         setTimeout(function () {
@@ -965,10 +985,10 @@ export class ReadPage /*implements OnDestroy*/ {
         eventTarget = eventTarget.parentElement;
       }
 
-      if (eventTarget.classList.length !== 0 &&
-       eventTarget.classList.contains('xreference') &&
-       eventTarget.classList.contains('footnoteReference')) {
-        // Link to (foot)note reference
+      if (eventTarget.classList.length !== 0
+      && eventTarget.classList.contains('xreference')
+      && eventTarget.classList.contains('footnoteReference')) {
+        // Link to (foot)note reference.
         event.preventDefault();
         const anchorElem: HTMLAnchorElement = eventTarget as HTMLAnchorElement;
 
@@ -989,7 +1009,7 @@ export class ReadPage /*implements OnDestroy*/ {
             }
           }
 
-          // Find the containing scrollable element
+          // Find the containing scrollable element.
           let containerElem = null;
           if (targetColumnId) {
             containerElem = document.getElementById(targetColumnId);
@@ -1085,6 +1105,7 @@ export class ReadPage /*implements OnDestroy*/ {
       if (this.userSettingsService.isDesktop()) {
         let tooltipShown = false;
         let eventTarget = this.getEventTarget(event);
+        // Loop needed for finding correct tooltip trigger when there are nested triggers.
         while (!tooltipShown && eventTarget['classList'].contains('tooltiptrigger')) {
           if (eventTarget.hasAttribute('data-id')) {
             if (toolTipsSettings.personInfo
