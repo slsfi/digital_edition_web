@@ -1836,10 +1836,9 @@ div.tei {
             font-weight: bold;
             font-style: italic;
 
-            span.reg_hide {
-                display: inline;
-                font-style: normal;
-                font-weight: normal;
+            span.reg_hide img,
+            span.corr_hide img {
+                filter: invert(80%);
             }
         }
 
