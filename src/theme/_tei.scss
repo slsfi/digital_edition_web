@@ -1837,6 +1837,13 @@ div.tei {
             }
         }
 
+        span.teiComment.noteLemma {
+            font-weight: 600;
+        }
+        span.teiComment.noteText {
+            font-weight: 300;
+        }
+
         span.ioLemma {
             font-weight: 600;
             font-style: italic;
