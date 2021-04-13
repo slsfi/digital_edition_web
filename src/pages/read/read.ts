@@ -95,6 +95,7 @@ export class ReadPage /*implements OnDestroy*/ {
   infoOverlayWidth: string;
   infoOverlayText: string;
   infoOverlayTitle: string;
+  intervalTimerId: number;
   nochapterPos: string;
 
   maxSingleWindowWidth: Number;
@@ -221,6 +222,7 @@ export class ReadPage /*implements OnDestroy*/ {
       bottom: 0 + 'px',
       left: -1500 + 'px'
     };
+    this.intervalTimerId = 0;
 
     try {
       this.appUsesAccordionToc = this.config.getSettings('AccordionTOC');
@@ -2845,9 +2847,10 @@ export class ReadPage /*implements OnDestroy*/ {
    * It's called after adding new views. */
   scrollLastViewIntoView() {
     let interationsLeft = 10;
-    const checkExist = setInterval(function() {
+    clearInterval(this.intervalTimerId);
+    this.intervalTimerId = setInterval(function() {
       if (interationsLeft < 1) {
-        clearInterval(checkExist);
+        clearInterval(this.intervalTimerId);
       } else {
         interationsLeft -= 1;
         const viewElements = document.getElementsByClassName('read-column');
@@ -2858,7 +2861,7 @@ export class ReadPage /*implements OnDestroy*/ {
             const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
             scrollingContainer.getBoundingClientRect().left;
             scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
-            clearInterval(checkExist);
+            clearInterval(this.intervalTimerId);
           }
         }
       }

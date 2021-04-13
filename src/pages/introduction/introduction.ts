@@ -1030,7 +1030,6 @@ export class IntroductionPage {
       tmpImage.alt = 'arrow right image';
       tmpImage.classList.add('inl_ms_arrow');
       element.parentElement.insertBefore(tmpImage, element);
-      console.log('Added arrow');
       this.scrollElementIntoView(tmpImage, position);
       setTimeout(function() {
         element.parentElement.removeChild(tmpImage);

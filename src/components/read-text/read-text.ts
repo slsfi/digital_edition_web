@@ -31,6 +31,8 @@ export class ReadTextComponent {
   apiEndPoint: string;
   appMachineName: string;
   textLoading: Boolean = true;
+  intervalTimerId: number;
+  
   pos: string;
 
   constructor(
@@ -50,6 +52,7 @@ export class ReadTextComponent {
     this.appMachineName = this.config.getSettings('app.machineName');
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.defaultView = this.config.getSettings('defaults.ReadModeView');
+    this.intervalTimerId = 0;
   }
 
   ngOnInit() {
@@ -111,9 +114,10 @@ export class ReadTextComponent {
 
     // Scroll to link position if defined.
     let interationsLeft = 10;
-    const checkExist = setInterval(function() {
+    clearInterval(this.intervalTimerId);
+    this.intervalTimerId = setInterval(function() {
       if (interationsLeft < 1) {
-        clearInterval(checkExist);
+        clearInterval(this.intervalTimerId);
       } else {
         interationsLeft -= 1;
         let posId = null;
@@ -124,10 +128,10 @@ export class ReadTextComponent {
           if (linkData[1]) {
             posId = linkData[1];
           } else {
-            clearInterval(checkExist);
+            clearInterval(this.intervalTimerId);
           }
         } else {
-          clearInterval(checkExist);
+          clearInterval(this.intervalTimerId);
         }
 
         if (posId) {
@@ -141,10 +145,10 @@ export class ReadTextComponent {
           }
           if (target) {
             this.scrollToHTMLElement(target, false);
-            clearInterval(checkExist);
+            clearInterval(this.intervalTimerId);
           }
         } else {
-          clearInterval(checkExist);
+          clearInterval(this.intervalTimerId);
         }
       }
     }.bind(this), 1000);
