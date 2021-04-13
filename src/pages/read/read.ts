@@ -893,7 +893,6 @@ export class ReadPage /*implements OnDestroy*/ {
       // Modal trigger for person-, place- or workinfo and info overlay trigger for footnote and comment.
       // Loop needed for finding correct tooltip trigger when there are nested triggers.
       while (!modalShown && eventTarget['classList'].contains('tooltiptrigger')) {
-        console.log('While-iteration');
         if (eventTarget.hasAttribute('data-id')) {
           if (eventTarget['classList'].contains('person')
           && this.readPopoverService.show.personInfo) {
@@ -2544,9 +2543,10 @@ export class ReadPage /*implements OnDestroy*/ {
 
       lemmaStartElem.style.display = 'inline';
       this.scrollElementIntoView(lemmaStartElem);
+      const that = this;
       const settimeoutId = setTimeout(function() {
         lemmaStartElem.style.display = null;
-        this.commentService.activeLemmaHighlight = {
+        that.commentService.activeLemmaHighlight = {
           lemmaTimeOutId: null,
           lemmaElement: null
         }
@@ -2583,9 +2583,10 @@ export class ReadPage /*implements OnDestroy*/ {
       this.scrollElementIntoView(elem, 'center', -5);
       const noteLemmaElem = elem.getElementsByClassName('noteLemma')[0] as HTMLElement;
       noteLemmaElem.classList.add('highlight');
+      const that = this;
       const settimeoutId = setTimeout(function() {
         noteLemmaElem.classList.remove('highlight');
-        this.commentService.activeCommentHighlight = {
+        that.commentService.activeCommentHighlight = {
           commentTimeOutId: null,
           commentLemmaElement: null
         }
