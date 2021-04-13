@@ -64,6 +64,7 @@ export class IntroductionPage {
   infoOverlayTitle: string;
   textLoading: Boolean = true;
   tocItems: GeneralTocItem[];
+  intervalTimerId: number;
 
   constructor(
     public navCtrl: NavController,
@@ -104,6 +105,7 @@ export class IntroductionPage {
       bottom: 0 + 'px',
       left: -1500 + 'px'
     };
+    this.intervalTimerId = 0;
 
     try {
       this.hasSeparateIntroToc = this.config.getSettings('separeateIntroductionToc');
@@ -195,14 +197,13 @@ export class IntroductionPage {
   // Timeout, to give text some time to load on the page
   scrollToPos() {
     let interationsLeft = 10;
-    const checkExist = setInterval(function() {
+    this.intervalTimerId = setInterval(function() {
       if (interationsLeft < 1) {
-        clearInterval(checkExist);
+        clearInterval(this.intervalTimerId);
       } else {
         interationsLeft -= 1;
         if (this.pos !== null && this.pos !== undefined) {
           let positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
-          console.log(positionElement);
           if (positionElement !== null && positionElement !== undefined) {
             const parentElem = positionElement.parentElement;
             if ( (parentElem !== null && parentElem.classList.contains('ttFixed'))
@@ -212,14 +213,15 @@ export class IntroductionPage {
                 // the position we need to find).
                 positionElement = document.getElementsByName(this.pos)[1] as HTMLElement;
             }
-            if (positionElement !== null && positionElement.classList.contains('anchor')) {
-              console.log('Attempting to scroll to ' + this.pos);
+            if (positionElement !== null && positionElement !== undefined
+            && positionElement.classList.contains('anchor')) {
+              // console.log('Attempting to scroll to ' + this.pos);
               this.scrollToHTMLElement(positionElement);
-              clearInterval(checkExist);
+              clearInterval(this.intervalTimerId);
             }
           }
         } else {
-          clearInterval(checkExist);
+          clearInterval(this.intervalTimerId);
         }
       }
     }.bind(this), 1000);
