@@ -81,27 +81,27 @@ read-popover-page {
 
 	.show_personInfo {
 		display: inline;
-		background-color: $persName-color;
+		background-color: var(--persName-color);
 	}
 	.show_workInfo {
 		display: inline;
-		background-color: $workTitle-color;
+		background-color: var(--workTitle-color);
 	}
 	.show_placeInfo {
 		display: inline;
-		background-color: $placeName-color;
+		background-color: var(--placeName-color);
 	}
 	.show_abbreviations {
 		display: inline;
-		background-color: $abbreviations-color;
+		background-color: var(--abbreviations-color);
 	}
 	.show_changesInfo {
 		display: inline;
-		background-color: $changes-color;
+		background-color: var(--changes-color);
 	}
 	.show_normalisationsInfo {
 		display: inline;
-		background-color: $normalisations-color;
+		background-color: var(--normalisations-color);
 	}
 }
 

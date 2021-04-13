@@ -41,7 +41,7 @@ date-histogram {
     background-color: color($colors, secondary);
   }
   .year:hover > .yearBar, .yearBarInRange {
-    background-color: $placeName-color;
+    background-color: var(--placeName-color);
   }
   .year:hover .yearDetails {
     display: block;

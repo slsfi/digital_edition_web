@@ -1875,6 +1875,8 @@ div.tei {
         }
     }
 }
+
+
 .infoOverlay.show_personInfo .infoOverlayContent p.footnoteText span.person,
 .infoOverlay.show_personInfo .infoOverlayContent p.infoOverlayText span.person,
 .infoOverlay.show_placeInfo .infoOverlayContent p.footnoteText span.placeName,
@@ -1895,19 +1897,19 @@ div.tei .tooltip { display: none; }
 .tei                        img.comment { display: none; }
 .tei.show_comments          img.comment { display: inline-block; cursor: pointer; top: 0; }
 
-.tei.show_personInfo        span.person { background-color: $persName-color; cursor: pointer; }
+.tei.show_personInfo        span.person { background-color: var(--persName-color); cursor: pointer; }
 
-.tei.show_placeInfo         span.placeName { background-color: $placeName-color; cursor: pointer; }
+.tei.show_placeInfo         span.placeName { background-color: var(--placeName-color); cursor: pointer; }
 
-.tei.show_workInfo          span.title { background-color: $workTitle-color; cursor: pointer; }
+.tei.show_workInfo          span.title { background-color: var(--workTitle-color); cursor: pointer; }
 
-.tei.show_abbreviations     span.abbr { background-color: $abbreviations-color; cursor: pointer; }
+.tei.show_abbreviations     span.abbr { background-color: var(--abbreviations-color); cursor: pointer; }
 
 .tei.show_changes           span.corr, 
-.tei.show_changes           span.corr_red { background-color: $changes-color; cursor: pointer; }
+.tei.show_changes           span.corr_red { background-color: var(--changes-color); cursor: pointer; }
 .tei                        span.corr_hide { display: none; }
 
-.tei.show_normalisations    span.reg.ttNormalisations { background-color: $normalisations-color; cursor: pointer; }
+.tei.show_normalisations    span.reg.ttNormalisations { background-color: var(--normalisations-color); cursor: pointer; }
 .tei                        span.reg_hide { display: none; }
 .tei.show_normalisations    span.reg_hide,
 .tei.show_changes           span.corr_hide { display: inline; cursor: pointer; }
@@ -1970,11 +1972,11 @@ div.tei.show_pageBreakEdition .pb_edition {
     width: 30px;
 }
 div.tei.show_pageBreakOriginal .pb_orig {
-    color: $pageBreakOriginal-color;
+    color: var(--pageBreakOriginal-color);
 }
 div.tei.show_pageBreakEdition .pb_zts,
 div.tei.show_pageBreakEdition .pb_edition {
-    color: $pageBreakEdition-color;
+    color: var(--pageBreakEdition-color);
 }
 
 .tei a.anchor, 

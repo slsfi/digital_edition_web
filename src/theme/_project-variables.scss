@@ -71,16 +71,8 @@
 // --------------------------------------------------
 $font-family-header:            $font-family-base;
 $font-family-top-menu:          $font-family-base;
-/*$font-read-column-p: $font-family-base;*/
 
 // Tei fonts
-/*$font-app-tei: Georgia,Times,"Times New Roman",serif;
-$font-app-tei: "Muli", Times, "Times New Roman", serif;
-$font-comment-modal-tei: "Muli", 'Open Sans', Arial, sans-serif;
-$font-semantic-data-model-tei: "Muli", 'Open Sans', Arial, sans-serif;
-$font-stamp-print-tei: "Times New Roman", serif;
-$font-tei-note-editorial: "Muli", arial, helvetica, sans-serif;
-*/
 $font-app-tei:                  $font-family-base;
 $font-comment-modal-tei:        $font-app-tei;
 $font-semantic-data-model-tei:  $font-app-tei;
@@ -101,15 +93,6 @@ $text-fontsize-xlarge:          21px; // 1.3125rem;
 
 // CUSTOM COLOR VARIABLES
 // --------------------------------------------------
-$persName-color:                #f9e0bf;
-$placeName-color:               #dee8ca;
-$workTitle-color:               #f7efba;
-$changes-color:                 #ccc;
-$normalisations-color:          #e6e6e6;
-$abbreviations-color:           #ffe2fa;
-$pageBreakOriginal-color:       #c34be1;
-$pageBreakEdition-color:        #d58205;
-
 // These apply to tags for the different text types in search results
 $est-color:       #5e5e5e;
 $com-color:       #980202;

@@ -78,13 +78,13 @@ simple-search {
         background-color: #1c1c1c;
     }
     .textType.title {
-        color: $workTitle-color;
+        color: var(--workTitle-color);
     }
     .textType.person {
-        color: $persName-color;
+        color: var(--persName-color);
     }
     .textType.location {
-        color: $placeName-color;
+        color: var(--placeName-color);
     }
     .textType.tag {
         color: $tag-color;
