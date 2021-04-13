@@ -1832,15 +1832,34 @@ div.tei {
             font-weight: 300;
 
             span.corr,
-            span.reg {
+            span.reg,
+            span.person,
+            span.placeName,
+            span.title,
+            span.abbr {
                 color: var(--dark-color);
             }
+
+            img.comment {
+                filter: brightness(150%);
+            }
+        }
+
+        span.teiComment.noteLemma {
+            font-weight: 600;
+        }
+        span.teiComment.noteText {
+            font-weight: 300;
         }
 
         span.ioLemma {
             font-weight: 600;
             font-style: italic;
-            cursor: auto !important;
+
+            span.reg_hide,
+            span.corr_hide {
+                cursor: auto;
+            }
 
             span.reg_hide img,
             span.corr_hide img {
