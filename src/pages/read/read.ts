@@ -1051,7 +1051,11 @@ export class ReadPage /*implements OnDestroy*/ {
         } else if (anchorElem.classList.contains('ref_external')) {
           // Link to external web page, open in new window/tab.
           if (anchorElem.hasAttribute('href')) {
-            window.open(anchorElem.href, '_blank');
+            let webAddress = anchorElem.href;
+            if (webAddress.startsWith('www')) {
+              webAddress = 'http://' + webAddress;
+            }
+            window.open(webAddress, '_blank');
           } else {
             console.log('Missing href attribute in anchor element.');
           }
