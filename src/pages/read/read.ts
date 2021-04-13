@@ -1051,21 +1051,13 @@ export class ReadPage /*implements OnDestroy*/ {
         } else if (anchorElem.classList.contains('ref_external')) {
           // Link to external web page, open in new window/tab.
           if (anchorElem.hasAttribute('href')) {
-            let webAddress = anchorElem.getAttribute('href');
-            console.log('Clicked web address: ' + webAddress);
-            if (webAddress.startsWith('www')) {
-              webAddress = 'http://' + webAddress;
-            }
-            window.open(webAddress, '_blank');
-          } else {
-            console.log('Missing href attribute in anchor element.');
+            window.open(anchorElem.href, '_blank');
           }
 
         } else {
           // Link to a reading-text, comment or introduction.
           // Get the href parts for the targeted text.
-          const hrefValue = anchorElem.href.replace('_', ' ').trim();
-          const hrefTargetItems: Array<string> = decodeURIComponent(String(hrefValue).split('/').pop()).split(' ');
+          const hrefTargetItems: Array<string> = decodeURIComponent(String(anchorElem.href).split('/').pop()).replace('_', ' ').trim().split(' ');
           let publicationId = '';
           let textId = '';
           let chapterId = '';
