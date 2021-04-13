@@ -107,8 +107,8 @@ export class CommentsComponent {
     const nElement: HTMLElement = this.elementRef.nativeElement;
     this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
       try {
-        // event.stopPropagation();
-
+        // This check for xreference is necessary since we don't want the comment to
+        // scroll if the clicked target is a link in a comment.
         let targetIsLink = false;
         let targetElem: HTMLElement = event.target as HTMLElement;
         if (targetElem.classList.length === 0 || !targetElem.classList.contains('xreference')) {
