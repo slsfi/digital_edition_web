@@ -274,10 +274,9 @@ export class CommentsComponent {
 
       lemmaStartElem.style.display = 'inline';
       this.scrollElementIntoView(lemmaStartElem);
-      const that = this;
-      const settimeoutId = setTimeout(function() {
+      const settimeoutId = setTimeout(() => {
         lemmaStartElem.style.display = null;
-        that.commentService.activeLemmaHighlight = {
+        this.commentService.activeLemmaHighlight = {
           lemmaTimeOutId: null,
           lemmaElement: null
         }
@@ -313,10 +312,9 @@ export class CommentsComponent {
       this.scrollElementIntoView(elem, 'center', -5);
       const noteLemmaElem = elem.getElementsByClassName('noteLemma')[0] as HTMLElement;
       noteLemmaElem.classList.add('highlight');
-      const that = this;
-      const settimeoutId = setTimeout(function() {
+      const settimeoutId = setTimeout(() => {
         noteLemmaElem.classList.remove('highlight');
-        that.commentService.activeCommentHighlight = {
+        this.commentService.activeCommentHighlight = {
           commentTimeOutId: null,
           commentLemmaElement: null
         }
