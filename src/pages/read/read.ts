@@ -1057,7 +1057,8 @@ export class ReadPage /*implements OnDestroy*/ {
         } else {
           // Link to a reading-text, comment or introduction.
           // Get the href parts for the targeted text.
-          const hrefTargetItems: Array<string> = decodeURIComponent(String(anchorElem.href).split('/').pop()).replace('_', ' ').trim().split(' ');
+          const hrefLink = anchorElem.href;
+          const hrefTargetItems: Array<string> = decodeURIComponent(String(hrefLink).split('/').pop()).replace('_', ' ').trim().split(' ');
           let publicationId = '';
           let textId = '';
           let chapterId = '';
