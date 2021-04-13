@@ -321,6 +321,7 @@ export class ReadPage /*implements OnDestroy*/ {
     this.setTocCache();
 
     this.setUpTextListeners();
+    console.log('Text link: ' + this.establishedText.link);
 
     this.updateTexts()
     translate.onLangChange.subscribe((event: LangChangeEvent) => {
@@ -1162,7 +1163,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
 
           // THE REST IS NIKLAS OLD CODE FOR HANDLING JUST LINKS IN READING-TEXTS
-          
+
           /* Handle links to other reading-texts */
           /*
           let targetId = '';
@@ -1171,7 +1172,7 @@ export class ReadPage /*implements OnDestroy*/ {
           } else if (anchorElem.parentElement && anchorElem.parentElement.hasAttribute('href')) {
             targetId = anchorElem.parentElement.getAttribute('href');
           }
-  
+
           const targetParts = String(decodeURIComponent(targetId)).split('#');
           const elementInPage: NodeListOf<HTMLElement> = document.getElementsByName(targetParts[1]);
           if ( elementInPage.length > 0 ) {
@@ -1181,7 +1182,7 @@ export class ReadPage /*implements OnDestroy*/ {
             let collectionId = '';
             let publicationId = '';
             const positionId = (targetParts.length > 1) ? targetParts[1] : null;
-  
+
             // Link to reading text or comment. Remove URL encoded blanks and trim the string
             collectionId =  String(hrefTargetItems[0]).replace('%20', '').trim();
             publicationId = String(hrefTargetItems[1]).replace('%20', '').trim();
