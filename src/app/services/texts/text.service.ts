@@ -8,12 +8,7 @@ import { TextCacheService } from './text-cache.service';
 @Injectable()
 export class TextService {
 
-  private readTextUrl = '/text/est/';
   private introductionUrl = '/text/{c_id}/{p_id}/inl/{lang}';
-  private titlePageUrl = '/text/tit/';
-  private variationsUrl = '/text/var/';
-  private manuscriptsUrl = '/text/ms/';
-  private illustrationsImage: string;
 
   textCache: any;
   apiEndPoint: string;
@@ -170,7 +165,7 @@ export class TextService {
     const c_id = `${id}`.split('_')[0];
     const pub_id = `${id}`.split('_')[1];
     const url = this.config.getSettings('app.apiEndpoint') + '/' +
-    this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/var/';
+    this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/var';
     return this.http.get( url )
         .map(res => {
           return res.json();
@@ -187,7 +182,7 @@ export class TextService {
     }
 
     return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
-        this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/ms' + ((chapter) ? '/' + chapter + '/' : '/'))
+        this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/ms' + ((chapter) ? '/' + chapter + '' : ''))
         .map(res => {
           return res.json();
         })
