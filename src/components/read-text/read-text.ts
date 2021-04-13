@@ -32,7 +32,6 @@ export class ReadTextComponent {
   appMachineName: string;
   textLoading: Boolean = true;
   intervalTimerId: number;
-  
   pos: string;
 
   constructor(
