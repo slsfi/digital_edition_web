@@ -197,6 +197,7 @@ export class IntroductionPage {
   // Timeout, to give text some time to load on the page
   scrollToPos() {
     let interationsLeft = 10;
+    clearInterval(this.intervalTimerId);
     this.intervalTimerId = setInterval(function() {
       if (interationsLeft < 1) {
         clearInterval(this.intervalTimerId);
