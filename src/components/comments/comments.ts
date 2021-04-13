@@ -107,7 +107,7 @@ export class CommentsComponent {
     const nElement: HTMLElement = this.elementRef.nativeElement;
     this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
       try {
-        event.stopPropagation();
+        // event.stopPropagation();
 
         let targetIsLink = false;
         let targetElem: HTMLElement = event.target as HTMLElement;
