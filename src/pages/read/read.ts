@@ -1052,6 +1052,7 @@ export class ReadPage /*implements OnDestroy*/ {
           // Link to external web page, open in new window/tab.
           if (anchorElem.hasAttribute('href')) {
             let webAddress = anchorElem.href;
+            console.log('Clicked web address: ' + webAddress);
             if (webAddress.startsWith('www')) {
               webAddress = 'http://' + webAddress;
             }
