@@ -65,15 +65,6 @@
   font-style: italic;
   font-weight: 600;
 }
-/*
-@font-face {
-  font-family: "Lora";
-  font-display: auto;
-  font-style: normal;
-  font-weight: 400;
-  src: url(../assets/fonts/Lora-Regular.ttf) format("truetype");
-}
-*/
 
 
 // CUSTOM FONT FAMILY VARIABLES
@@ -158,6 +149,22 @@ $opacity-hover-transition: 0.2s;
   @each $key_name, $value in $colors {
     --#{$key_name}-color: #{$value};
   }
+
+  --persName-color:                #f9e0bf;
+  --persName-color-rgb:              249, 224, 191;
+  --placeName-color:               #dee8ca;
+  --placeName-color-rgb:             222, 232, 202;
+  --workTitle-color:               #f7efba;
+  --workTitle-color-rgb:            247, 239, 186;
+  --changes-color:                 #ccc;
+  --changes-color-rgb:              204, 204, 204;
+  --normalisations-color:          #e6e6e6;
+  --normalisations-color-rgb:       230, 230, 230;
+  --abbreviations-color:           #ffe2fa;
+  --abbreviations-color-rgb:       255, 226, 250;
+  
+  --pageBreakOriginal-color:       #c34be1;
+  --pageBreakEdition-color:        #d58205;
 
 	--infoOverlay-bg-color:           #333;
 	--infoOverlay-text-color:         #e3e3e3;
