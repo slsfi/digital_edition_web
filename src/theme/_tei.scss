@@ -1831,6 +1831,7 @@ div.tei {
             line-height: 1.4em;
             font-weight: 300;
 
+            /*
             span.corr,
             span.reg,
             span.person,
@@ -1839,7 +1840,7 @@ div.tei {
             span.abbr {
                 color: var(--dark-color);
             }
-
+            */
             img.comment {
                 filter: brightness(150%);
             }
@@ -1873,6 +1874,24 @@ div.tei {
             font-weight: 300;
         }
     }
+}
+.tei.infoOverlay .show_personInfo .infoOverlayContent p.footnoteText span.person,
+.tei.infoOverlay .show_personInfo .infoOverlayContent p.infoOverlayText span.person {
+    background-color: rgba(var(--persName-color-rgb), 0.5);
+}
+.tei.infoOverlay .show_placeInfo .infoOverlayContent p.footnoteText span.placeName,
+.tei.infoOverlay .show_placeInfo .infoOverlayContent p.infoOverlayText span.placeName {
+    background-color: rgba(var(--placeName-color-rgb), 0.5);
+}
+.tei.infoOverlay .show_workInfo .infoOverlayContent p.footnoteText span.title,
+.tei.infoOverlay .show_workInfo .infoOverlayContent p.infoOverlayText span.title {
+    background-color: rgba(var(--workTitle-color-rgb), 0.5);
+}
+.tei.infoOverlay .show_changes .infoOverlayContent p.footnoteText span.corr,
+.tei.infoOverlay .show_changes .infoOverlayContent p.infoOverlayText span.corr,
+.tei.infoOverlay .show_changes .infoOverlayContent p.footnoteText span.corr_red,
+.tei.infoOverlay .show_changes .infoOverlayContent p.infoOverlayText span.corr_red {
+    background-color: rgba(var(--changes-color-rgb), 0.5);
 }
 
 
