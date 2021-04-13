@@ -202,7 +202,8 @@ export class IntroductionPage {
         interationsLeft -= 1;
         if (this.pos !== null && this.pos !== undefined) {
           let positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
-          if (positionElement !== null) {
+          console.log(positionElement);
+          if (positionElement !== null && positionElement !== undefined) {
             const parentElem = positionElement.parentElement;
             if ( (parentElem !== null && parentElem.classList.contains('ttFixed'))
             || (parentElem.parentElement !== null && parentElem.parentElement.classList.contains('ttFixed')) ) {
