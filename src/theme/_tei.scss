@@ -1876,22 +1876,17 @@ div.tei {
     }
 }
 .infoOverlay.show_personInfo .infoOverlayContent p.footnoteText span.person,
-.infoOverlay.show_personInfo .infoOverlayContent p.infoOverlayText span.person {
-    background-color: rgba(var(--persName-color-rgb), 0.5);
-}
+.infoOverlay.show_personInfo .infoOverlayContent p.infoOverlayText span.person,
 .infoOverlay.show_placeInfo .infoOverlayContent p.footnoteText span.placeName,
-.infoOverlay.show_placeInfo .infoOverlayContent p.infoOverlayText span.placeName {
-    background-color: rgba(var(--placeName-color-rgb), 0.5);
-}
+.infoOverlay.show_placeInfo .infoOverlayContent p.infoOverlayText span.placeName,
 .infoOverlay.show_workInfo .infoOverlayContent p.footnoteText span.title,
-.infoOverlay.show_workInfo .infoOverlayContent p.infoOverlayText span.title {
-    background-color: rgba(var(--workTitle-color-rgb), 0.5);
-}
+.infoOverlay.show_workInfo .infoOverlayContent p.infoOverlayText span.title,
 .infoOverlay.show_changes .infoOverlayContent p.footnoteText span.corr,
 .infoOverlay.show_changes .infoOverlayContent p.infoOverlayText span.corr,
 .infoOverlay.show_changes .infoOverlayContent p.footnoteText span.corr_red,
 .infoOverlay.show_changes .infoOverlayContent p.infoOverlayText span.corr_red {
-    background-color: rgba(var(--changes-color-rgb), 0.5);
+    color: var(--dark-color);
+    font-weight: normal;
 }
 
 
