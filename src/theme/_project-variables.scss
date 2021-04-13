@@ -121,7 +121,7 @@ $top-menu-left: 370px;
 $top-menu-left-split-pane: 10px;
 $corner-roundness: $popover-md-border-radius;
 $opacity-hover: 0.6;
-$opacity-hover-transition: 0.2s;
+$opacity-hover-transition: opacity 0.2s;
 
 
 
@@ -138,37 +138,26 @@ $opacity-hover-transition: 0.2s;
   --placeName-color:               #dee8ca;
   --placeName-color-rgb:             222, 232, 202;
   --workTitle-color:               #f7efba;
-  --workTitle-color-rgb:            247, 239, 186;
+  --workTitle-color-rgb:             247, 239, 186;
   --changes-color:                 #ccc;
-  --changes-color-rgb:              204, 204, 204;
+  --changes-color-rgb:               204, 204, 204;
   --normalisations-color:          #e6e6e6;
-  --normalisations-color-rgb:       230, 230, 230;
+  --normalisations-color-rgb:        230, 230, 230;
   --abbreviations-color:           #ffe2fa;
-  --abbreviations-color-rgb:       255, 226, 250;
+  --abbreviations-color-rgb:         255, 226, 250;
   
   --pageBreakOriginal-color:       #c34be1;
   --pageBreakEdition-color:        #d58205;
 
-	--infoOverlay-bg-color:           #333;
-	--infoOverlay-text-color:         #e3e3e3;
-  --main-toc-hover-color:           var(--primary-color);
-  --read-columns-background-color:  #fafafa;
-  --back-button-bg-color:           #e8e4df; // Ideally something between secondary color & $background-color
-  --back-button-text-color:         var(--dark-color);
+	--infoOverlay-bg-color:          #333;
+	--infoOverlay-text-color:        #e3e3e3;
+  --main-toc-hover-color:            var(--primary-color);
+  --read-columns-background-color: #fafafa;
+  --back-button-bg-color:          #e8e4df; // Ideally something between secondary color & $background-color
+  --back-button-text-color:          var(--dark-color);
 }
 
 
-
-/* Borde vara en överflödig regel
-.menu-inner .item-md p {
-  white-space: normal !important;
-}*/
-
-/*
-html {
-  font-size: 16px !important;
-}
-*/
 
 h2 {
   font-size: 1.6rem;

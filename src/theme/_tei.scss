@@ -1831,16 +1831,6 @@ div.tei {
             line-height: 1.4em;
             font-weight: 300;
 
-            /*
-            span.corr,
-            span.reg,
-            span.person,
-            span.placeName,
-            span.title,
-            span.abbr {
-                color: var(--dark-color);
-            }
-            */
             img.comment {
                 filter: brightness(150%);
             }
@@ -1875,8 +1865,6 @@ div.tei {
         }
     }
 }
-
-
 .infoOverlay.show_personInfo .infoOverlayContent p.footnoteText span.person,
 .infoOverlay.show_personInfo .infoOverlayContent p.infoOverlayText span.person,
 .infoOverlay.show_placeInfo .infoOverlayContent p.footnoteText span.placeName,
@@ -1886,7 +1874,11 @@ div.tei {
 .infoOverlay.show_changes .infoOverlayContent p.footnoteText span.corr,
 .infoOverlay.show_changes .infoOverlayContent p.infoOverlayText span.corr,
 .infoOverlay.show_changes .infoOverlayContent p.footnoteText span.corr_red,
-.infoOverlay.show_changes .infoOverlayContent p.infoOverlayText span.corr_red {
+.infoOverlay.show_changes .infoOverlayContent p.infoOverlayText span.corr_red,
+.infoOverlay.show_normalisations .infoOverlayContent p.footnoteText span.reg,
+.infoOverlay.show_normalisations .infoOverlayContent p.infoOverlayText span.reg,
+.infoOverlay.show_abbreviations .infoOverlayContent p.footnoteText span.abbr,
+.infoOverlay.show_abbreviations .infoOverlayContent p.infoOverlayText span.abbr {
     color: var(--dark-color);
     font-weight: normal;
 }
