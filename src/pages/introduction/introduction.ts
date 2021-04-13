@@ -201,21 +201,21 @@ export class IntroductionPage {
       } else {
         interationsLeft -= 1;
         if (this.pos !== null && this.pos !== undefined) {
-          console.log('Attempting to scroll to ' + this.pos);
           let positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
-          const parentElem = positionElement.parentElement;
-          if ( (parentElem !== null && parentElem.classList.length !== 0
-          && parentElem.classList.contains('ttFixed'))
-          || (parentElem.parentElement !== null && parentElem.parentElement.classList.length !== 0
-          && parentElem.parentElement.classList.contains('ttFixed')) ) {
-              // Anchor is in footnote --> look for next occurence since the first footnote element
-              // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
-              // the position we need to find).
-              positionElement = document.getElementsByName(this.pos)[1] as HTMLElement;
-          }
-          if (positionElement !== null && positionElement.classList.contains('anchor')) {
-            this.scrollToHTMLElement(positionElement);
-            clearInterval(checkExist);
+          if (positionElement !== null) {
+            const parentElem = positionElement.parentElement;
+            if ( (parentElem !== null && parentElem.classList.contains('ttFixed'))
+            || (parentElem.parentElement !== null && parentElem.parentElement.classList.contains('ttFixed')) ) {
+                // Anchor is in footnote --> look for next occurence since the first footnote element
+                // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
+                // the position we need to find).
+                positionElement = document.getElementsByName(this.pos)[1] as HTMLElement;
+            }
+            if (positionElement !== null && positionElement.classList.contains('anchor')) {
+              console.log('Attempting to scroll to ' + this.pos);
+              this.scrollToHTMLElement(positionElement);
+              clearInterval(checkExist);
+            }
           }
         } else {
           clearInterval(checkExist);
@@ -1026,6 +1026,7 @@ export class IntroductionPage {
       tmpImage.alt = 'arrow right image';
       tmpImage.classList.add('inl_ms_arrow');
       element.parentElement.insertBefore(tmpImage, element);
+      console.log('Added arrow');
       this.scrollElementIntoView(tmpImage, position);
       setTimeout(function() {
         element.parentElement.removeChild(tmpImage);
