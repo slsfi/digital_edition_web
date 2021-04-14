@@ -111,11 +111,14 @@ export class CommentsComponent {
         // scroll if the clicked target is a link in a comment.
         let targetIsLink = false;
         let targetElem: HTMLElement = event.target as HTMLElement;
-        if (targetElem.classList.length === 0 || !targetElem.classList.contains('xreference')) {
+        if (!targetElem.classList.contains('xreference')) {
           targetElem = targetElem.parentElement;
+          if (!targetElem.classList.contains('xreference')) {
+            targetElem = targetElem.parentElement;
+          }
         }
 
-        if (targetElem.classList.length !== 0 && targetElem.classList.contains('xreference')) {
+        if (targetElem.classList.contains('xreference')) {
           targetIsLink = true;
           event.preventDefault();
         }
@@ -127,7 +130,9 @@ export class CommentsComponent {
           // Find the comment element that has been clicked in the comment-column.
           if (!targetElem.classList.contains('commentScrollTarget')) {
             targetElem = targetElem.parentElement;
-            while (targetElem !== null && !targetElem.classList.contains('commentScrollTarget')) {
+            while (targetElem !== null
+            && !targetElem.classList.contains('commentScrollTarget')
+            && targetElem.tagName !== 'COMMENT') {
               targetElem = targetElem.parentElement;
             }
           }
@@ -136,8 +141,10 @@ export class CommentsComponent {
             const numId = targetElem.classList[targetElem.classList.length - 1].replace( /^\D+/g, '');
             const targetId = 'start' + numId;
             let lemmaStart = document.querySelector('read-text').querySelector('[data-id="' + targetId + '"]') as HTMLElement;
-            if ((lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) ||
-             (lemmaStart.parentElement.parentElement !== null && lemmaStart.parentElement.parentElement.classList.contains('ttFixed'))) {
+            if ( (lemmaStart.parentElement !== null
+            && lemmaStart.parentElement.classList.contains('ttFixed'))
+            || (lemmaStart.parentElement.parentElement !== null
+            && lemmaStart.parentElement.parentElement.classList.contains('ttFixed')) ) {
               // The lemma is in a footnote, so we should get the second element with targetId
               lemmaStart = document.querySelector('read-text').querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
             }
