@@ -323,7 +323,6 @@ export class ReadPage /*implements OnDestroy*/ {
     this.setTocCache();
 
     this.setUpTextListeners();
-    console.log('establishedText.link for this text: ' + this.establishedText.link);
 
     this.updateTexts()
     translate.onLangChange.subscribe((event: LangChangeEvent) => {
