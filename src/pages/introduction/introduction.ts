@@ -335,12 +335,8 @@ export class IntroductionPage {
                   publicationId = data[0]['coll_id'];
                 }
 
-                console.log('PublicationId: ' + publicationId + ' (' + typeof publicationId + ') ' + ', this.id: ' + this.id + ' (' + typeof this.id + ') ');
-                console.log('positionId: ' + positionId);
-
                 // Check if we are already on the same page.
-                if (publicationId === this.id && positionId !== undefined) {
-                  console.log('Link to open introduction.');
+                if (String(publicationId) === String(this.id) && positionId !== undefined) {
                   // Same introduction.
                   positionId = positionId.replace('#', '');
 
