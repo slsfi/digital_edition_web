@@ -89,6 +89,7 @@ export class IntroductionPage {
     private modalController: ModalController
   ) {
     this.id = this.params.get('collectionID');
+    console.log('this.id. ' + this.id);
     this.collection = this.params.get('collection');
     this.tocMenuOpen = false;
     this.toolTipMaxWidth = null;
