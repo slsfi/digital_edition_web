@@ -1219,6 +1219,9 @@ export class ReadPage /*implements OnDestroy*/ {
           } else if (eventTarget['classList'].contains('ttVariant')) {
             this.showVariantTooltip(eventTarget);
             tooltipShown = true;
+          } else if (eventTarget['classList'].contains('ttMs')) {
+            this.showTooltipFromInlineHtml(eventTarget);
+            tooltipShown = true;
           } else if (toolTipsSettings.footNotes && eventTarget.hasAttribute('id')
           && eventTarget['classList'].contains('teiVariant') && eventTarget['classList'].contains('ttFoot')) {
             this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), eventTarget);
@@ -1634,7 +1637,7 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 
-  /* This method is used for showing tooltips for changes, normalisations and abbreviations. */
+  /* This method is used for showing tooltips for changes, normalisations, abbreviations and explanations in manuscripts. */
   showTooltipFromInlineHtml(targetElem: HTMLElement) {
     if (targetElem.nextElementSibling !== null
     && targetElem.nextElementSibling.classList.contains('tooltip')) {
