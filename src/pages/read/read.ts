@@ -1221,15 +1221,21 @@ export class ReadPage /*implements OnDestroy*/ {
             tooltipShown = true;
           } else if (eventTarget['classList'].contains('ttMs')) {
             // Check if the tooltip trigger element is in a manuscripts column
-            // since ttMs should only be triggered there.
-            let parentElem: HTMLElement = eventTarget as HTMLElement;
-            parentElem = parentElem.parentElement;
-            while (parentElem !== null && parentElem.tagName !== 'MANUSCRIPTS') {
-              parentElem = parentElem.parentElement;
-            }
-            if (parentElem !== null) {
+            // since ttMs should generally only be triggered there.
+            if (eventTarget['classList'].contains('unclear')) {
+              // Tooltips for text with class unclear should be shown in other columns too.
               this.showTooltipFromInlineHtml(eventTarget);
               tooltipShown = true;
+            } else {
+              let parentElem: HTMLElement = eventTarget as HTMLElement;
+              parentElem = parentElem.parentElement;
+              while (parentElem !== null && parentElem.tagName !== 'MANUSCRIPTS') {
+                parentElem = parentElem.parentElement;
+              }
+              if (parentElem !== null) {
+                this.showTooltipFromInlineHtml(eventTarget);
+                tooltipShown = true;
+              }
             }
           } else if (toolTipsSettings.footNotes && eventTarget.hasAttribute('id')
           && eventTarget['classList'].contains('teiVariant') && eventTarget['classList'].contains('ttFoot')) {
