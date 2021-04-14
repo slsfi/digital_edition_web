@@ -243,41 +243,48 @@ export class IntroductionPage {
       this.hideToolTip();
       try {
         event.stopPropagation();
-        let targetElem: HTMLElement = this.getEventTarget(event);
+        let eventTarget = this.getEventTarget(event);
 
         // Modal trigger for person-, place- or workinfo and info overlay trigger for footnote.
-        if (targetElem['classList'].contains('tooltiptrigger') && targetElem.hasAttribute('data-id')) {
-          if (targetElem['classList'].contains('person') && this.readPopoverService.show.personInfo) {
-            this.showPersonModal(targetElem.getAttribute('data-id'));
-          } else if (targetElem['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
-            this.showPlaceModal(targetElem.getAttribute('data-id'));
-          } else if (targetElem['classList'].contains('title') && this.readPopoverService.show.workInfo) {
-            this.showWorkModal(targetElem.getAttribute('data-id'));
-          } else if (targetElem['classList'].contains('ttFoot')) {
-            this.showFootnoteInfoOverlay(targetElem.getAttribute('data-id'), targetElem);
+        if (eventTarget['classList'].contains('tooltiptrigger') && eventTarget.hasAttribute('data-id')) {
+          if (eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
+            this.showPersonModal(eventTarget.getAttribute('data-id'));
+          } else if (eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
+            this.showPlaceModal(eventTarget.getAttribute('data-id'));
+          } else if (eventTarget['classList'].contains('title') && this.readPopoverService.show.workInfo) {
+            this.showWorkModal(eventTarget.getAttribute('data-id'));
+          } else if (eventTarget['classList'].contains('ttFoot')) {
+            this.showFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
           }
         }
 
-        targetElem = event.target as HTMLElement;
-        if (targetElem.classList.length === 0 || !targetElem.classList.contains('xreference')) {
-          targetElem = targetElem.parentElement;
+        // Click on link.
+        eventTarget = event.target as HTMLElement;
+        if (!eventTarget.classList.contains('xreference')) {
+          eventTarget = eventTarget.parentElement;
+          if (!eventTarget.classList.contains('xreference')) {
+            eventTarget = eventTarget.parentElement;
+          }
         }
 
         // Links in the introduction.
-        if (targetElem.classList.length !== 0 && targetElem.classList.contains('xreference')) {
+        if (eventTarget.classList.contains('xreference')) {
           event.preventDefault();
-          const anchorElem: HTMLAnchorElement = targetElem as HTMLAnchorElement;
+          const anchorElem: HTMLAnchorElement = eventTarget as HTMLAnchorElement;
 
           if (anchorElem.classList.contains('ref_external')) {
             // Link to external web page, open in new window/tab.
-            window.open(anchorElem.href, '_blank');
+            if (anchorElem.hasAttribute('href')) {
+              window.open(anchorElem.href, '_blank');
+            }
 
-          } else if (anchorElem.classList.contains('ref_readingtext') ||
-            anchorElem.classList.contains('ref_comment') ||
-            anchorElem.classList.contains('ref_introduction')) {
+          } else if (anchorElem.classList.contains('ref_readingtext')
+          || anchorElem.classList.contains('ref_comment')
+          || anchorElem.classList.contains('ref_introduction')) {
             // Link to reading text, comment or introduction.
             // Get the href parts for the targeted text.
-            const hrefTargetItems: Array<string> = decodeURIComponent(String(anchorElem.href).split('/').pop()).split(' ');
+            const link = anchorElem.href;
+            const hrefTargetItems: Array<string> = decodeURIComponent(String(link).split('/').pop()).replace('_', ' ').trim().split(' ');
             let publicationId = '';
             let textId = '';
             let chapterId = '';
@@ -329,9 +336,7 @@ export class IntroductionPage {
                 }
 
                 // Check if we are already on the same page.
-                const baseURI: string = '/' + decodeURIComponent(String(anchorElem.baseURI).split('#/').pop());
-                if ((baseURI.endsWith('/publication-introduction/' + publicationId) ||
-                  baseURI.startsWith('/publication-introduction/' + publicationId + '/')) && positionId !== undefined) {
+                if (publicationId === this.id && positionId !== undefined) {
                   // Same introduction.
                   positionId = positionId.replace('#', '');
 
@@ -346,10 +351,8 @@ export class IntroductionPage {
                     }
                     if (parentElem !== null && parentElem.tagName === refType) {
                       targetElement = matchingElements[i] as HTMLElement;
-                      if ((targetElement.parentElement.classList.length !== 0 &&
-                      targetElement.parentElement.classList.contains('ttFixed')) ||
-                      (targetElement.parentElement.parentElement.classList.length !== 0 &&
-                        targetElement.parentElement.parentElement.classList.contains('ttFixed'))) {
+                      if (targetElement.parentElement.classList.contains('ttFixed')
+                      || targetElement.parentElement.parentElement.classList.contains('ttFixed')) {
                         // Found position is in footnote --> look for next occurence since the first footnote element
                         // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
                         // the position we need to find).
@@ -358,8 +361,7 @@ export class IntroductionPage {
                       }
                     }
                   }
-                  if (targetElement !== null && targetElement.classList.length !== 0 &&
-                  targetElement.classList.contains('anchor')) {
+                  if (targetElement !== null && targetElement.classList.contains('anchor')) {
                     this.scrollToHTMLElement(targetElement);
                   }
                 } else {
