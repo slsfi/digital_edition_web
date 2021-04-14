@@ -977,6 +977,11 @@ export class ReadPage /*implements OnDestroy*/ {
           // Footnote reference clicked in variant
           this.showVariantFootnoteInfoOverlay(eventTarget.getAttribute('id'), eventTarget);
           modalShown = true;
+        } else if (eventTarget['classList'].contains('ttFoot')
+        && !eventTarget.hasAttribute('id')
+        && !eventTarget.hasAttribute('data-id')) {
+          this.showInfoOverlayFromInlineHtml(eventTarget);
+          modalShown = true;
         }
 
         /* Get the parent node of the event target for the next iteration if a modal or infoOverlay hasn't been shown already.
@@ -1889,6 +1894,17 @@ export class ReadPage /*implements OnDestroy*/ {
           + '</span><span class="ioDescription">'
           + targetElem.nextElementSibling.textContent + '</span></p>';
         }
+      } else if (targetElem.classList.contains('ttFoot')
+      && targetElem.nextElementSibling !== null
+      && targetElem.nextElementSibling.classList.contains('ttFoot')) {
+        if (targetElem.nextElementSibling.nextElementSibling !== null
+        && targetElem.nextElementSibling.nextElementSibling.classList.contains('ttFixed')) {
+          title = '';
+          lemma = targetElem.textContent;
+          text = '<p class="infoOverlayText"><span class="ioLemma">'
+          + lemma + '</span><span class="ioDescription">'
+          + targetElem.nextElementSibling.nextElementSibling.textContent + '</span></p>';
+        }
       } else {
         title = '';
         lemma = targetElem.textContent;
@@ -1919,7 +1935,7 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   setInfoOverlayTitle(title: string) {
-    this.infoOverlayTitle = title;
+    this.infoOverlayTitle = String(title);
   }
 
   hideToolTip() {
