@@ -1209,18 +1209,16 @@ export class ReadPage /*implements OnDestroy*/ {
               this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
               tooltipShown = true;
             }
-          } else if ((toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges') && this.readPopoverService.show.changes)
+          } else if ( (toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges') && this.readPopoverService.show.changes)
           || (toolTipsSettings.normalisations && eventTarget['classList'].contains('ttNormalisations')
           && this.readPopoverService.show.normalisations)
           || (toolTipsSettings.abbreviations && eventTarget['classList'].contains('ttAbbreviations')
-          && this.readPopoverService.show.abbreviations)) {
+          && this.readPopoverService.show.abbreviations)
+          || eventTarget['classList'].contains('ttMs')) {
             this.showTooltipFromInlineHtml(eventTarget);
             tooltipShown = true;
           } else if (eventTarget['classList'].contains('ttVariant')) {
             this.showVariantTooltip(eventTarget);
-            tooltipShown = true;
-          } else if (eventTarget['classList'].contains('ttMs')) {
-            this.showTooltipFromInlineHtml(eventTarget);
             tooltipShown = true;
           } else if (toolTipsSettings.footNotes && eventTarget.hasAttribute('id')
           && eventTarget['classList'].contains('teiVariant') && eventTarget['classList'].contains('ttFoot')) {
