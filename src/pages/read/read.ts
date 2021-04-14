@@ -982,7 +982,7 @@ export class ReadPage /*implements OnDestroy*/ {
         }, 5000);
       }
 
-      // Handle click on link
+      // Click on link
       eventTarget = event.target as HTMLElement;
       if (!eventTarget.classList.contains('xreference')) {
         eventTarget = eventTarget.parentElement;
@@ -1103,10 +1103,8 @@ export class ReadPage /*implements OnDestroy*/ {
                   }
                   if (parentElem !== null && parentElem.tagName === refType) {
                     targetElement = matchingElements[i] as HTMLElement;
-                    if ((targetElement.parentElement.classList.length !== 0 &&
-                      targetElement.parentElement.classList.contains('ttFixed')) ||
-                      (targetElement.parentElement.parentElement.classList.length !== 0 &&
-                      targetElement.parentElement.parentElement.classList.contains('ttFixed'))) {
+                    if (targetElement.parentElement.classList.contains('ttFixed')
+                    || targetElement.parentElement.parentElement.classList.contains('ttFixed')) {
                       // Found position is in footnote --> look for next occurence since the first footnote element
                       // is not displayed (footnote elements are copied to a list at the end of the reading text and that's
                       // the position we need to find).
@@ -1115,8 +1113,7 @@ export class ReadPage /*implements OnDestroy*/ {
                     }
                   }
                 }
-                if (targetElement !== null && targetElement.classList.length !== 0
-                && targetElement.classList.contains('anchor')) {
+                if (targetElement !== null && targetElement.classList.contains('anchor')) {
                   this.scrollToHTMLElement(targetElement);
                 }
               } else {
