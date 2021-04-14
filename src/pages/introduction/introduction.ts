@@ -89,7 +89,6 @@ export class IntroductionPage {
     private modalController: ModalController
   ) {
     this.id = this.params.get('collectionID');
-    console.log('this.id. ' + this.id);
     this.collection = this.params.get('collection');
     this.tocMenuOpen = false;
     this.toolTipMaxWidth = null;
@@ -336,10 +335,12 @@ export class IntroductionPage {
                   publicationId = data[0]['coll_id'];
                 }
 
-                console.log('PublicationId: ' + publicationId + ', this.id: ' + this.id);
+                console.log('PublicationId: ' + publicationId + ' (' + typeof publicationId + ') ' + ', this.id: ' + this.id + ' (' + typeof this.id + ') ');
+                console.log('positionId: ' + positionId);
 
                 // Check if we are already on the same page.
                 if (publicationId === this.id && positionId !== undefined) {
+                  console.log('Link to open introduction.');
                   // Same introduction.
                   positionId = positionId.replace('#', '');
 
