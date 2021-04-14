@@ -1907,10 +1907,10 @@ export class ReadPage /*implements OnDestroy*/ {
           if (targetElem.classList.contains('revision')) {
             lemma = '';
           } else {
-            lemma = targetElem.textContent;
+            lemma = '<span class="ioLemma">' + targetElem.textContent + '</span>';
           }
-          text = '<p class="infoOverlayText"><span class="ioLemma">'
-          + lemma + '</span><span class="ioDescription">'
+          text = '<p class="infoOverlayText">'
+          + lemma + '<span class="ioDescription">'
           + targetElem.nextElementSibling.firstElementChild.textContent + '</span></p>';
         }
       } else {
