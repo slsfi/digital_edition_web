@@ -1078,22 +1078,15 @@ export class ReadPage /*implements OnDestroy*/ {
                 textId = data[0]['pub_id'];
               }
 
-              let compURI = '/publication/' + publicationId + '/text/' + textId;
               let comparePageId = publicationId + '_' + textId;
               if (hrefTargetItems.length > 2 && !hrefTargetItems[2].startsWith('#')) {
                 chapterId = hrefTargetItems[2];
-                compURI += '/' + chapterId;
                 comparePageId += '_' + chapterId;
               }
 
-              if (comparePageId === this.establishedText.link) {
-                console.log('Same page link: ' + comparePageId + ' = ' + this.establishedText.link);
-              }
-
               // Check if we are already on the same page.
-              const baseURI: string = '/' + decodeURIComponent(String(anchorElem.baseURI).split('#/').pop());
-              if ( (baseURI.includes(compURI + '/') || baseURI.includes(compURI + ';'))
-              && hrefTargetItems[hrefTargetItems.length - 1].startsWith('#') ) {
+              if (comparePageId === this.establishedText.link
+              && hrefTargetItems[hrefTargetItems.length - 1].startsWith('#')) {
                 // We are on the same page and the last item in the target href is a textposition.
                 positionId = hrefTargetItems[hrefTargetItems.length - 1].replace('#', '');
 
