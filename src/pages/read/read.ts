@@ -982,6 +982,7 @@ export class ReadPage /*implements OnDestroy*/ {
         }, 5000);
       }
 
+      // Handle click on link
       eventTarget = event.target as HTMLElement;
       if (eventTarget.classList.length === 0 || !eventTarget.classList.contains('xreference')) {
         eventTarget = eventTarget.parentElement;
@@ -1078,9 +1079,15 @@ export class ReadPage /*implements OnDestroy*/ {
               }
 
               let compURI = '/publication/' + publicationId + '/text/' + textId;
+              let comparePageId = publicationId + '_' + textId;
               if (hrefTargetItems.length > 2 && !hrefTargetItems[2].startsWith('#')) {
                 chapterId = hrefTargetItems[2];
                 compURI += '/' + chapterId;
+                comparePageId += '_' + chapterId;
+              }
+
+              if (comparePageId === this.establishedText.link) {
+                console.log('Same page link: ' + comparePageId + ' = ' + this.establishedText.link);
               }
 
               // Check if we are already on the same page.
