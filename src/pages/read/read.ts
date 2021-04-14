@@ -1213,13 +1213,24 @@ export class ReadPage /*implements OnDestroy*/ {
           || (toolTipsSettings.normalisations && eventTarget['classList'].contains('ttNormalisations')
           && this.readPopoverService.show.normalisations)
           || (toolTipsSettings.abbreviations && eventTarget['classList'].contains('ttAbbreviations')
-          && this.readPopoverService.show.abbreviations)
-          || eventTarget['classList'].contains('ttMs')) {
+          && this.readPopoverService.show.abbreviations) ) {
             this.showTooltipFromInlineHtml(eventTarget);
             tooltipShown = true;
           } else if (eventTarget['classList'].contains('ttVariant')) {
             this.showVariantTooltip(eventTarget);
             tooltipShown = true;
+          } else if (eventTarget['classList'].contains('ttMs')) {
+            // Check if the tooltip trigger element is in a manuscripts column
+            // since ttMs should only be triggered there.
+            let parentElem: HTMLElement = eventTarget as HTMLElement;
+            parentElem = parentElem.parentElement;
+            while (parentElem !== null && parentElem.tagName !== 'MANUSCRIPTS') {
+              parentElem = parentElem.parentElement;
+            }
+            if (parentElem !== null) {
+              this.showTooltipFromInlineHtml(eventTarget);
+              tooltipShown = true;
+            }
           } else if (toolTipsSettings.footNotes && eventTarget.hasAttribute('id')
           && eventTarget['classList'].contains('teiVariant') && eventTarget['classList'].contains('ttFoot')) {
             this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), eventTarget);

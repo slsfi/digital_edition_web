@@ -1,4 +1,8 @@
-.teiManuscript{
+div.teiManuscript{
+
+    .tooltiptrigger.ttMs {
+        cursor: pointer;
+    } 
     
     /* Kan tas bort härifrån, definieras i tei.scss */
     .immediate_symbol img{
