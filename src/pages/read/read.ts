@@ -952,6 +952,24 @@ export class ReadPage /*implements OnDestroy*/ {
         && this.readPopoverService.show.abbreviations)) {
           this.showInfoOverlayFromInlineHtml(eventTarget);
           modalShown = true;
+        } else if (eventTarget['classList'].contains('ttMs')) {
+          // Check if the tooltip trigger element is in a manuscripts column
+          // since ttMs should generally only be triggered there.
+          if (eventTarget['classList'].contains('unclear')) {
+            // Info for text with class unclear should be shown in other columns too.
+            this.showInfoOverlayFromInlineHtml(eventTarget);
+            modalShown = true;
+          } else {
+            let parentElem: HTMLElement = eventTarget as HTMLElement;
+            parentElem = parentElem.parentElement;
+            while (parentElem !== null && parentElem.tagName !== 'MANUSCRIPTS') {
+              parentElem = parentElem.parentElement;
+            }
+            if (parentElem !== null) {
+              this.showInfoOverlayFromInlineHtml(eventTarget);
+              modalShown = true;
+            }
+          }
         } else if (eventTarget.hasAttribute('id')
         && eventTarget['classList'].contains('ttFoot')
         && eventTarget['classList'].contains('teiVariant')) {
