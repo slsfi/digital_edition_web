@@ -335,6 +335,8 @@ export class IntroductionPage {
                   publicationId = data[0]['coll_id'];
                 }
 
+                console.log('PublicationId: ' + publicationId + ', this.id: ' + this.id);
+
                 // Check if we are already on the same page.
                 if (publicationId === this.id && positionId !== undefined) {
                   // Same introduction.
