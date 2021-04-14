@@ -1264,6 +1264,11 @@ export class ReadPage /*implements OnDestroy*/ {
           && eventTarget['classList'].contains('teiVariant') && eventTarget['classList'].contains('ttFoot')) {
             this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), eventTarget);
             tooltipShown = true;
+          } else if (eventTarget['classList'].contains('ttFoot')
+          && !eventTarget.hasAttribute('id')
+          && !eventTarget.hasAttribute('data-id')) {
+            this.showTooltipFromInlineHtml(eventTarget);
+            tooltipShown = true;
           }
 
           /* Get the parent node of the event target for the next iteration if a tooltip hasn't been shown already.
@@ -1899,7 +1904,11 @@ export class ReadPage /*implements OnDestroy*/ {
         if (targetElem.nextElementSibling.firstElementChild !== null
         && targetElem.nextElementSibling.firstElementChild.classList.contains('ttFixed')) {
           title = '';
-          lemma = targetElem.textContent;
+          if (targetElem.classList.contains('revision')) {
+            lemma = '';
+          } else {
+            lemma = targetElem.textContent;
+          }
           text = '<p class="infoOverlayText"><span class="ioLemma">'
           + lemma + '</span><span class="ioDescription">'
           + targetElem.nextElementSibling.firstElementChild.textContent + '</span></p>';
