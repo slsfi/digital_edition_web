@@ -952,7 +952,8 @@ export class ReadPage /*implements OnDestroy*/ {
         && this.readPopoverService.show.abbreviations)) {
           this.showInfoOverlayFromInlineHtml(eventTarget);
           modalShown = true;
-        } else if (eventTarget['classList'].contains('ttMs')) {
+        } else if (eventTarget['classList'].contains('ttMs')
+        || eventTarget['classList'].contains('tooltipMs')) {
           // Check if the tooltip trigger element is in a manuscripts column
           // since ttMs should generally only be triggered there.
           if (eventTarget['classList'].contains('unclear')) {
