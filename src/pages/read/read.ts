@@ -1896,13 +1896,13 @@ export class ReadPage /*implements OnDestroy*/ {
       } else if (targetElem.classList.contains('ttFoot')
       && targetElem.nextElementSibling !== null
       && targetElem.nextElementSibling.classList.contains('ttFoot')) {
-        if (targetElem.nextElementSibling.nextElementSibling !== null
-        && targetElem.nextElementSibling.nextElementSibling.classList.contains('ttFixed')) {
+        if (targetElem.nextElementSibling.firstElementChild !== null
+        && targetElem.nextElementSibling.firstElementChild.classList.contains('ttFixed')) {
           title = '';
           lemma = targetElem.textContent;
           text = '<p class="infoOverlayText"><span class="ioLemma">'
           + lemma + '</span><span class="ioDescription">'
-          + targetElem.nextElementSibling.nextElementSibling.textContent + '</span></p>';
+          + targetElem.nextElementSibling.firstElementChild.textContent + '</span></p>';
         }
       } else {
         title = '';
