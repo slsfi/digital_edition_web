@@ -1155,54 +1155,6 @@ export class ReadPage /*implements OnDestroy*/ {
               window.open(hrefString, '_blank');
             });
           }
-
-
-
-
-          // THE REST IS NIKLAS OLD CODE FOR HANDLING JUST LINKS IN READING-TEXTS
-
-          /* Handle links to other reading-texts */
-          /*
-          let targetId = '';
-          if (anchorElem.hasAttribute('href')) {
-            targetId = anchorElem.getAttribute('href');
-          } else if (anchorElem.parentElement && anchorElem.parentElement.hasAttribute('href')) {
-            targetId = anchorElem.parentElement.getAttribute('href');
-          }
-
-          const targetParts = String(decodeURIComponent(targetId)).split('#');
-          const elementInPage: NodeListOf<HTMLElement> = document.getElementsByName(targetParts[1]);
-          if ( elementInPage.length > 0 ) {
-            this.scrollToHTMLElement(elementInPage[0], 'top');
-          } else {
-            const hrefTargetItems: Array<string> = String(targetParts[0]).split(' ');
-            let collectionId = '';
-            let publicationId = '';
-            const positionId = (targetParts.length > 1) ? targetParts[1] : null;
-
-            // Link to reading text or comment. Remove URL encoded blanks and trim the string
-            collectionId =  String(hrefTargetItems[0]).replace('%20', '').trim();
-            publicationId = String(hrefTargetItems[1]).replace('%20', '').trim();
-            if ( collectionId !== '' && publicationId !== '' ) {
-              // Check if we are usring legacy_ids for the reading text link
-              this.textService.getCollectionAndPublicationByLegacyId(collectionId + '_' + publicationId).subscribe(data => {
-                if (data[0] !== undefined) {
-                  collectionId = data[0]['coll_id'];
-                  publicationId = data[0]['pub_id'];
-                }
-                // Open the postion in a new window
-                let hrefString = '#/publication/' + collectionId + '/text/' + publicationId + '';
-                if ( positionId !== null ) {
-                  hrefString += '/nochapter;' + positionId;
-                } else {
-                  hrefString += '/nochapter';
-                }
-                hrefString += '/not/infinite/nosong/searchtitle/established&comments';
-                // open the link in a new window/tab
-                window.open(hrefString, '_blank');
-              });
-            }
-          }*/
         }
       }
     }).bind(this);
