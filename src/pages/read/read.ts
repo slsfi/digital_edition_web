@@ -984,15 +984,14 @@ export class ReadPage /*implements OnDestroy*/ {
 
       // Handle click on link
       eventTarget = event.target as HTMLElement;
-      if (eventTarget.classList.length === 0 || !eventTarget.classList.contains('xreference')) {
+      if (!eventTarget.classList.contains('xreference')) {
         eventTarget = eventTarget.parentElement;
-        if (eventTarget.classList.length === 0 || !eventTarget.classList.contains('xreference')) {
+        if (!eventTarget.classList.contains('xreference')) {
           eventTarget = eventTarget.parentElement;
         }
       }
 
-      if (eventTarget.classList.length !== 0
-      && eventTarget.classList.contains('xreference')) {
+      if (eventTarget.classList.contains('xreference')) {
         event.preventDefault();
         const anchorElem: HTMLAnchorElement = eventTarget as HTMLAnchorElement;
 
