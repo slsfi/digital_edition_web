@@ -1896,13 +1896,15 @@ export class ReadPage /*implements OnDestroy*/ {
         + lemma + '</span><span class="ioDescription">'
         + targetElem.nextElementSibling.textContent + '</span></p>';
       }
-      this.translate.get(title).subscribe(
-        translation => {
-          this.setInfoOverlayTitle(translation);
-        }, error => {
-          this.setInfoOverlayTitle('');
-        }
-      );
+      if (title) {
+        this.translate.get(title).subscribe(
+          translation => {
+            this.setInfoOverlayTitle(translation);
+          }, error => { }
+        );
+      } else {
+        this.setInfoOverlayTitle('');
+      }
       this.setInfoOverlayPositionAndWidth(targetElem);
       this.setInfoOverlayText(text);
     }
