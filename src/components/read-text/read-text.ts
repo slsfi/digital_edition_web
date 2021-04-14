@@ -135,10 +135,8 @@ export class ReadTextComponent {
 
         if (posId) {
           let target = document.getElementsByName('' + posId + '')[0] as HTMLAnchorElement;
-          if (target && ((target.parentElement && target.parentElement.classList.length !== 0 &&
-            target.parentElement.classList.contains('ttFixed')) ||
-             (target.parentElement.parentElement && target.parentElement.parentElement.classList.length !== 0 &&
-               target.parentElement.parentElement.classList.contains('ttFixed')))) {
+          if ( target && ((target.parentElement && target.parentElement.classList.contains('ttFixed'))
+          || (target.parentElement.parentElement && target.parentElement.parentElement.classList.contains('ttFixed'))) ) {
             // Position in footnote --> look for second target
             target = document.getElementsByName('' + posId + '')[1] as HTMLAnchorElement;
           }
