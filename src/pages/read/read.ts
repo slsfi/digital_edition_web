@@ -1888,11 +1888,19 @@ export class ReadPage /*implements OnDestroy*/ {
           + '</span><span class="ioDescription">'
           + targetElem.nextElementSibling.textContent + '</span></p>';
         }
+      } else {
+        title = '';
+        lemma = targetElem.textContent;
+        text = '<p class="infoOverlayText"><span class="ioLemma">'
+        + lemma + '</span><span class="ioDescription">'
+        + targetElem.nextElementSibling.textContent + '</span></p>';
       }
       this.translate.get(title).subscribe(
         translation => {
           this.setInfoOverlayTitle(translation);
-        }, error => { }
+        }, error => {
+          this.setInfoOverlayTitle('');
+        }
       );
       this.setInfoOverlayPositionAndWidth(targetElem);
       this.setInfoOverlayText(text);
