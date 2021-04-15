@@ -1916,6 +1916,9 @@ export class ReadPage /*implements OnDestroy*/ {
       } else {
         title = '';
         lemma = targetElem.innerHTML;
+        if (targetElem.classList.contains('deletion')) {
+          lemma = '<span class="deletion">' + lemma + '</span>';
+        }
         text = '<p class="infoOverlayText"><span class="ioLemma">'
         + lemma + '</span><span class="ioDescription">'
         + targetElem.nextElementSibling.innerHTML + '</span></p>';
