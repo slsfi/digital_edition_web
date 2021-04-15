@@ -1903,7 +1903,7 @@ export class ReadPage /*implements OnDestroy*/ {
       && targetElem.nextElementSibling.classList.contains('ttFoot')) {
         if (targetElem.nextElementSibling.firstElementChild !== null
         && targetElem.nextElementSibling.firstElementChild.classList.contains('ttFixed')) {
-          title = 'revision';
+          title = '';
           if (targetElem.classList.contains('revision')) {
             lemma = '';
           } else {
