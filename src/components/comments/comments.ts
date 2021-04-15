@@ -127,6 +127,7 @@ export class CommentsComponent {
           // This is linking to a comment lemma ("asterisk") in the reading text,
           // i.e. the user has clicked a comment in the comments-column.
 
+          targetElem = event.target as HTMLElement;
           // Find the comment element that has been clicked in the comment-column.
           if (!targetElem.classList.contains('commentScrollTarget')) {
             targetElem = targetElem.parentElement;
