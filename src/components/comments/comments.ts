@@ -108,17 +108,14 @@ export class CommentsComponent {
     this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
       try {
         // This check for xreference is necessary since we don't want the comment to
-        // scroll if the clicked target is a link in a comment.
+        // scroll if the clicked target is a link in a comment. Clicks on links are
+        // handled by read.ts.
         let targetIsLink = false;
         let targetElem: HTMLElement = event.target as HTMLElement;
-        if (!targetElem.classList.contains('xreference')) {
-          targetElem = targetElem.parentElement;
-          if (!targetElem.classList.contains('xreference')) {
-            targetElem = targetElem.parentElement;
-          }
-        }
 
-        if (targetElem.classList.contains('xreference')) {
+        if ( targetElem.classList.contains('xreference')
+        || (targetElem.parentElement !== null && targetElem.parentElement.classList.contains('xreference'))
+        || (targetElem.parentElement.parentElement !== null && targetElem.parentElement.parentElement.classList.contains('xreference')) ) {
           targetIsLink = true;
           event.preventDefault();
         }
@@ -127,7 +124,6 @@ export class CommentsComponent {
           // This is linking to a comment lemma ("asterisk") in the reading text,
           // i.e. the user has clicked a comment in the comments-column.
 
-          targetElem = event.target as HTMLElement;
           // Find the comment element that has been clicked in the comment-column.
           if (!targetElem.classList.contains('commentScrollTarget')) {
             targetElem = targetElem.parentElement;
