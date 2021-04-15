@@ -187,10 +187,9 @@ export class CommentsComponent {
     }
   }
 
-  /* Use this function to scroll to the comment with the specified numeric id
-   * (excluding prefixes like 'end') in the first comments view on the page.
-   * Alternatively, the comment element can be passed as an optional parameter.
-   */
+  /** Use this function to scroll to the comment with the specified numeric id
+   *  (excluding prefixes like 'end') in the first comments view on the page.
+   *  Alternatively, the comment element can be passed as an optional parameter. */
   private scrollToComment(numericId: string, commentElement?: HTMLElement) {
     let elem = commentElement;
     if (elem === undefined || elem === null || !elem.classList.contains('en' + numericId)) {
@@ -262,13 +261,12 @@ export class CommentsComponent {
     }
   }
 
-  /* This function can be used to scroll a container so that the element which it contains
-   * is placed either at the top edge of the container or in the center of the container.
-   * This function can be called multiple times simultaneously on elements in different
-   * containers, unlike the native scrollIntoView function which cannot be called multiple
-   * times simultaneously in Chrome due to a bug.
-   * Valid values for yPosition are 'top' and 'center'.
-   */
+  /** This function can be used to scroll a container so that the element which it
+   *  contains is placed either at the top edge of the container or in the center
+   *  of the container. This function can be called multiple times simultaneously
+   *  on elements in different containers, unlike the native scrollIntoView function
+   *  which cannot be called multiple times simultaneously in Chrome due to a bug.
+   *  Valid values for yPosition are 'top' and 'center'. */
   private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0) {
     if (element === undefined || element === null || (yPosition !== 'center' && yPosition !== 'top')) {
       return;

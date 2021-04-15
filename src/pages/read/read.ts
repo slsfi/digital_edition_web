@@ -2841,13 +2841,12 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 
-  /* This function can be used to scroll a container so that the element which it contains
-   * is placed either at the top edge of the container or in the center of the container.
-   * This function can be called multiple times simultaneously on elements in different
-   * containers, unlike the native scrollIntoView function which cannot be called multiple
-   * times simultaneously in Chrome due to a bug.
-   * Valid values for yPosition are 'top' and 'center'.
-   */
+  /** This function can be used to scroll a container so that the element which it
+   *  contains is placed either at the top edge of the container or in the center
+   *  of the container. This function can be called multiple times simultaneously
+   *  on elements in different containers, unlike the native scrollIntoView function
+   *  which cannot be called multiple times simultaneously in Chrome due to a bug.
+   *  Valid values for yPosition are 'top' and 'center'. */
   private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0) {
     if (element === undefined || element === null || (yPosition !== 'center' && yPosition !== 'top')) {
       return;
