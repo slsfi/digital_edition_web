@@ -1865,6 +1865,7 @@ export class ReadPage /*implements OnDestroy*/ {
       let lemma = '';
 
       if (targetElem.nextElementSibling.classList.contains('ttChanges')) {
+        // Change.
         title = 'editorialChange';
         if (targetElem.classList.contains('corr_red')) {
           lemma = targetElem.innerHTML;
@@ -1879,6 +1880,7 @@ export class ReadPage /*implements OnDestroy*/ {
         + lemma + '</span><span class="ioDescription">'
         + targetElem.nextElementSibling.innerHTML + '</span></p>';
       } else if (targetElem.nextElementSibling.classList.contains('ttNormalisations')) {
+        // Normalisation.
         title = 'editorialNormalisation';
         if (targetElem.classList.contains('reg_hide')) {
           lemma = '<span class="reg_hide">' + targetElem.innerHTML + '</span>';
@@ -1889,6 +1891,7 @@ export class ReadPage /*implements OnDestroy*/ {
         + lemma + '</span><span class="ioDescription">'
         + targetElem.nextElementSibling.innerHTML + '</span></p>';
       } else if (targetElem.nextElementSibling.classList.contains('ttAbbreviations')) {
+        // Abbreviation.
         title = 'abbreviation';
         if (targetElem.firstElementChild !== null
         && targetElem.firstElementChild.classList.contains('abbr')) {
@@ -1900,6 +1903,7 @@ export class ReadPage /*implements OnDestroy*/ {
       } else if (targetElem.classList.contains('ttFoot')
       && targetElem.nextElementSibling !== null
       && targetElem.nextElementSibling.classList.contains('ttFoot')) {
+        // Some other note coded as a footnote (but lacking id and data-id attributes).
         if (targetElem.nextElementSibling.firstElementChild !== null
         && targetElem.nextElementSibling.firstElementChild.classList.contains('ttFixed')) {
           title = '';
@@ -1914,6 +1918,7 @@ export class ReadPage /*implements OnDestroy*/ {
           + targetElem.nextElementSibling.firstElementChild.innerHTML + '</span></p>';
         }
       } else {
+        // Some other note, generally editorial remarks pertaining to a manuscript.
         title = '';
         if (targetElem.classList.contains('ttMs')) {
           title = 'criticalNote';
