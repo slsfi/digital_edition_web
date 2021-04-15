@@ -1081,6 +1081,12 @@ div.tei {
         position: relative;
         bottom: -2px;
     }
+    /* Keyword_symbol is a small rectangular gif. */
+    img.keyword_symbol {
+        display: inline-block;
+        width: auto;
+        height: auto;
+    }
 
     /* VARIANTS */
     /*
