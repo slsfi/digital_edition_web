@@ -179,7 +179,9 @@ export class IntroductionPage {
             const the_string = matches[0];
             this.textMenu = the_string;
             if (!this.platform.is('mobile')) {
-              this.toggleTocMenu();
+              if (!this.tocMenuOpen) {
+                this.tocMenuOpen = true;
+              }
             }
             // Try to scroll to an element in the text, checks if "pos" given
             this.scrollToPos();
