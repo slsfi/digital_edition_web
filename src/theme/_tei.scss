@@ -1871,6 +1871,10 @@ div.tei {
             span.corr_hide img {
                 filter: invert(1);
             }
+
+            span.add_margin {
+                color: var(--infoOverlay-text-color);
+            }
         }
 
         span.ioLemma::after {
