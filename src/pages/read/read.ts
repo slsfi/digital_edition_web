@@ -954,11 +954,17 @@ export class ReadPage /*implements OnDestroy*/ {
         } else if (eventTarget['classList'].contains('ttMs')
         || eventTarget['classList'].contains('tooltipMs')) {
           if (eventTarget['classList'].contains('unclear')) {
-            /** Editorial note about unclear text, should be shown in all
-             *  columns. Other editorial notes about the manuscript only get
-             *  tooltips. */
-            this.showInfoOverlayFromInlineHtml(eventTarget);
-            modalShown = true;
+            /** Editorial note about unclear text, should be clickable only in
+             *  the reading text column. */
+            let parentElem: HTMLElement = eventTarget as HTMLElement;
+            parentElem = parentElem.parentElement;
+            while (parentElem !== null && parentElem.tagName !== 'READ-TEXT') {
+              parentElem = parentElem.parentElement;
+            }
+            if (parentElem !== null) {
+              this.showInfoOverlayFromInlineHtml(eventTarget);
+              modalShown = true;
+            }
           }
         } else if (eventTarget.hasAttribute('id')
         && eventTarget['classList'].contains('ttFoot')
