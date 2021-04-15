@@ -1907,18 +1907,18 @@ export class ReadPage /*implements OnDestroy*/ {
           if (targetElem.classList.contains('revision')) {
             lemma = '';
           } else {
-            lemma = '<span class="ioLemma">' + targetElem.textContent + '</span>';
+            lemma = '<span class="ioLemma">' + targetElem.innerHTML + '</span>';
           }
           text = '<p class="infoOverlayText">'
           + lemma + '<span class="ioDescription">'
-          + targetElem.nextElementSibling.firstElementChild.textContent + '</span></p>';
+          + targetElem.nextElementSibling.firstElementChild.innerHTML + '</span></p>';
         }
       } else {
         title = '';
-        lemma = targetElem.textContent;
+        lemma = targetElem.innerHTML;
         text = '<p class="infoOverlayText"><span class="ioLemma">'
         + lemma + '</span><span class="ioDescription">'
-        + targetElem.nextElementSibling.textContent + '</span></p>';
+        + targetElem.nextElementSibling.innerHTML + '</span></p>';
       }
       if (title) {
         this.translate.get(title).subscribe(
