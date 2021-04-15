@@ -1905,6 +1905,7 @@ export class ReadPage /*implements OnDestroy*/ {
         && targetElem.nextElementSibling.firstElementChild.classList.contains('ttFixed')) {
           title = '';
           if (targetElem.classList.contains('revision')) {
+            title = 'revisionNote';
             lemma = '';
           } else {
             lemma = '<span class="ioLemma">' + targetElem.innerHTML + '</span>';
@@ -1915,6 +1916,9 @@ export class ReadPage /*implements OnDestroy*/ {
         }
       } else {
         title = '';
+        if (targetElem.classList.contains('ttMs')) {
+          title = 'criticalNote';
+        }
         lemma = targetElem.innerHTML;
         if (targetElem.classList.contains('deletion')) {
           lemma = '<span class="deletion">' + lemma + '</span>';

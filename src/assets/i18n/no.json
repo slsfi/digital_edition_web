@@ -208,6 +208,8 @@
   "editorialChange": "Utgivarändring",
   "editorialNormalisation": "Normalisering",
   "abbreviation": "Förkortning",
+  "revisionNote": "Repetitionsanteckning",
+  "criticalNote": "Utgivarens anmärkning",
   "Reference": {
       "title": "Källhänvisning",
       "refer": "Hänvisa",

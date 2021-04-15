@@ -234,6 +234,8 @@
   "editorialChange": "Emendation",
   "editorialNormalisation": "Normalization",
   "abbreviation": "Abbreviation",
+  "revisionNote": "Revision note",
+  "criticalNote": "Critical remark",
   "Reference": {
       "title": "Reference",
       "refer": "Refer",

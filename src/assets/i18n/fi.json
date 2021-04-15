@@ -287,6 +287,8 @@
   "editorialChange": "Toimittajan tekemä muutos",
   "editorialNormalisation": "Normalisointi",
   "abbreviation": "Lyhenne",
+  "revisionNote": "Kertausmuistiinpano",
+  "criticalNote": "Toimittajan huomautus",
   "Reference": {
       "title": "Viittausohje",
       "refer": "Viittaa",
