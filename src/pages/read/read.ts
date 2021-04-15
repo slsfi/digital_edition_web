@@ -1684,8 +1684,8 @@ export class ReadPage /*implements OnDestroy*/ {
   showTooltipFromInlineHtml(targetElem: HTMLElement) {
     if (targetElem.nextElementSibling !== null
     && targetElem.nextElementSibling.classList.contains('tooltip')) {
-      this.setToolTipPosition(targetElem, targetElem.nextElementSibling.textContent);
-      this.setToolTipText(targetElem.nextElementSibling.textContent);
+      this.setToolTipPosition(targetElem, targetElem.nextElementSibling.innerHTML);
+      this.setToolTipText(targetElem.nextElementSibling.innerHTML);
     }
   }
 
@@ -1868,35 +1868,35 @@ export class ReadPage /*implements OnDestroy*/ {
       if (targetElem.nextElementSibling.classList.contains('ttChanges')) {
         title = 'editorialChange';
         if (targetElem.classList.contains('corr_red')) {
-          lemma = targetElem.textContent;
+          lemma = targetElem.innerHTML;
         } else if (targetElem.firstElementChild !== null
         && targetElem.firstElementChild.classList.contains('corr_hide')) {
           lemma = '<span class="corr_hide">' + targetElem.firstElementChild.innerHTML + '</span>';
         } else if (targetElem.firstElementChild !== null
         && targetElem.firstElementChild.classList.contains('corr')) {
-          lemma = targetElem.firstElementChild.textContent;
+          lemma = targetElem.firstElementChild.innerHTML;
         }
         text = '<p class="infoOverlayText"><span class="ioLemma">'
         + lemma + '</span><span class="ioDescription">'
-        + targetElem.nextElementSibling.textContent + '</span></p>';
+        + targetElem.nextElementSibling.innerHTML + '</span></p>';
       } else if (targetElem.nextElementSibling.classList.contains('ttNormalisations')) {
         title = 'editorialNormalisation';
         if (targetElem.classList.contains('reg_hide')) {
           lemma = '<span class="reg_hide">' + targetElem.innerHTML + '</span>';
         } else {
-          lemma = targetElem.textContent;
+          lemma = targetElem.innerHTML;
         }
         text = '<p class="infoOverlayText"><span class="ioLemma">'
         + lemma + '</span><span class="ioDescription">'
-        + targetElem.nextElementSibling.textContent + '</span></p>';
+        + targetElem.nextElementSibling.innerHTML + '</span></p>';
       } else if (targetElem.nextElementSibling.classList.contains('ttAbbreviations')) {
         title = 'abbreviation';
         if (targetElem.firstElementChild !== null
         && targetElem.firstElementChild.classList.contains('abbr')) {
           text = '<p class="infoOverlayText"><span class="ioLemma">'
-          + targetElem.firstElementChild.textContent
+          + targetElem.firstElementChild.innerHTML
           + '</span><span class="ioDescription">'
-          + targetElem.nextElementSibling.textContent + '</span></p>';
+          + targetElem.nextElementSibling.innerHTML + '</span></p>';
         }
       } else if (targetElem.classList.contains('ttFoot')
       && targetElem.nextElementSibling !== null
