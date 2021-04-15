@@ -1924,6 +1924,9 @@ export class ReadPage /*implements OnDestroy*/ {
         || (targetElem.parentElement !== null && targetElem.classList.contains('tei_deletion_medium_wrapper')) ) {
           lemma = '<span class="deletion">' + lemma + '</span>';
         }
+        if (targetElem.parentElement !== null && targetElem.classList.contains('add_margin')) {
+          lemma = '<span class="add_margin">' + lemma + '</span>';
+        }
         text = '<p class="infoOverlayText"><span class="ioLemma">'
         + lemma + '</span><span class="ioDescription">'
         + targetElem.nextElementSibling.innerHTML + '</span></p>';
