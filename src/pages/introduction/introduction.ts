@@ -286,7 +286,7 @@ export class IntroductionPage {
             // Link to reading text, comment or introduction.
             // Get the href parts for the targeted text.
             const link = anchorElem.href;
-            const hrefTargetItems: Array<string> = decodeURIComponent(String(link).split('/').pop()).replace('_', ' ').trim().split(' ');
+            const hrefTargetItems: Array<string> = decodeURIComponent(String(link).split('/').pop()).trim().split(' ');
             let publicationId = '';
             let textId = '';
             let chapterId = '';
