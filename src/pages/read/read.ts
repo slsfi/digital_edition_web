@@ -1920,7 +1920,8 @@ export class ReadPage /*implements OnDestroy*/ {
           title = 'criticalNote';
         }
         lemma = targetElem.innerHTML;
-        if (targetElem.classList.contains('deletion')) {
+        if ( targetElem.classList.contains('deletion')
+        || (targetElem.parentElement !== null && targetElem.classList.contains('tei_deletion_medium_wrapper')) ) {
           lemma = '<span class="deletion">' + lemma + '</span>';
         }
         text = '<p class="infoOverlayText"><span class="ioLemma">'
