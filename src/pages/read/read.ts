@@ -953,27 +953,17 @@ export class ReadPage /*implements OnDestroy*/ {
           modalShown = true;
         } else if (eventTarget['classList'].contains('ttMs')
         || eventTarget['classList'].contains('tooltipMs')) {
-          // Check if the tooltip trigger element is in a manuscripts column
-          // since ttMs should generally only be triggered there.
           if (eventTarget['classList'].contains('unclear')) {
-            // Info for text with class unclear should be shown in other columns too.
+            /** Editorial note about unclear text, should be shown in all
+             *  columns. Other editorial notes about the manuscript only get
+             *  tooltips. */
             this.showInfoOverlayFromInlineHtml(eventTarget);
             modalShown = true;
-          } else {
-            let parentElem: HTMLElement = eventTarget as HTMLElement;
-            parentElem = parentElem.parentElement;
-            while (parentElem !== null && parentElem.tagName !== 'MANUSCRIPTS') {
-              parentElem = parentElem.parentElement;
-            }
-            if (parentElem !== null) {
-              this.showInfoOverlayFromInlineHtml(eventTarget);
-              modalShown = true;
-            }
           }
         } else if (eventTarget.hasAttribute('id')
         && eventTarget['classList'].contains('ttFoot')
         && eventTarget['classList'].contains('teiVariant')) {
-          // Footnote reference clicked in variant
+          // Footnote reference clicked in variant.
           this.showVariantFootnoteInfoOverlay(eventTarget.getAttribute('id'), eventTarget);
           modalShown = true;
         } else if (eventTarget['classList'].contains('ttFoot')
@@ -983,13 +973,16 @@ export class ReadPage /*implements OnDestroy*/ {
           modalShown = true;
         }
 
-        /* Get the parent node of the event target for the next iteration if a modal or infoOverlay hasn't been shown already.
-        * This is for finding nested tooltiptriggers, i.e. a person can be a child of a change. */
+        /** Get the parent node of the event target for the next iteration
+         *  if a modal or infoOverlay hasn't been shown already. This is
+         *  for finding nested tooltiptriggers, i.e. a person can be a
+         *  child of a change. */
         if (!modalShown) {
           eventTarget = eventTarget['parentNode'];
           if (!eventTarget['classList'].contains('tooltiptrigger')
           && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
-            /* The parent isn't a tooltiptrigger, but the parent of the parent is, use it for the next iteration. */
+            /** The parent isn't a tooltiptrigger, but the parent of the parent
+             *  is, use it for the next iteration. */
             eventTarget = eventTarget['parentNode'];
           }
         }
@@ -1919,13 +1912,10 @@ export class ReadPage /*implements OnDestroy*/ {
         if (targetElem.classList.contains('ttMs')) {
           title = 'criticalNote';
         }
-        lemma = targetElem.innerHTML;
+        lemma = targetElem.textContent;
         if ( targetElem.classList.contains('deletion')
         || (targetElem.parentElement !== null && targetElem.classList.contains('tei_deletion_medium_wrapper')) ) {
           lemma = '<span class="deletion">' + lemma + '</span>';
-        }
-        if (targetElem.parentElement !== null && targetElem.classList.contains('add_margin')) {
-          lemma = '<span class="add_margin">' + lemma + '</span>';
         }
         text = '<p class="infoOverlayText"><span class="ioLemma">'
         + lemma + '</span><span class="ioDescription">'
