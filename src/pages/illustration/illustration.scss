@@ -1,6 +1,15 @@
 page-illustration {
+    ion-content > .scroll-content {
+        overflow: auto;
+    }
+
+    .col {
+        white-space: normal !important;
+        padding: 0 0 4px 0;
+    }
+
     .illustration-content {
-        background-color: white !important;
+        background-color: #fff !important;
     }
 
     .close-button {
@@ -15,12 +24,9 @@ page-illustration {
     .close-button:active {
 		opacity: 1;
 	}
-    
-    p{
+
+    p {
       line-height: 1rem;
     }
 
-    /*img.illustration-img {
-        max-width: inherit;
-    }*/
 }
