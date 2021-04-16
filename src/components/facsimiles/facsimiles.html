@@ -18,7 +18,7 @@
   </div>
 </div>
 
-<ion-scroll *ngIf="externalURLs" scrollY="true" class="external_urls_wrapper" [ngStyle]="{'height': '100%', 'max-height': 'calc(100% - 60px)'}">
+<ion-scroll *ngIf="isExternal" scrollY="true" class="external_urls_wrapper" [ngStyle]="{'height': '100%', 'max-height': 'calc(100% - 60px)'}">
   <div [ngClass]="(readPopoverService.fontsize==0)?'tei xsmallFontSize':(readPopoverService.fontsize==1)?'tei smallFontSize':(readPopoverService.fontsize==2)?'tei mediumFontSize':(readPopoverService.fontsize==3)?'tei largeFontSize':'tei xlargeFontSize'">
     <ul>
       <li *ngFor="let ext of externalURLs"><a target="_blank" href="{{ext.url}}" [innerHTML]="ext.title"></a></li>
@@ -57,12 +57,12 @@
   >
 </div>
 
-<ion-fab *ngIf="numberOfPages > 1 && !externalURLs" middle left class="leftFacsimileArrow">
+<ion-fab *ngIf="numberOfPages > 1 && !isExternal" middle left class="leftFacsimileArrow">
   <button *ngIf="numberOfPages > 1" ion-fab color="primary" mini (click)="previous()">
     <ion-icon name="arrow-back"></ion-icon>
   </button>
 </ion-fab>
-<ion-fab middle right *ngIf="!externalURLs">
+<ion-fab middle right *ngIf="!isExternal">
   <button *ngIf="numberOfPages > 1" ion-fab color="primary" mini (click)="next()">
     <ion-icon name="arrow-forward"></ion-icon>
   </button>
