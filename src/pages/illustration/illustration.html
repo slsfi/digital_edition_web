@@ -44,13 +44,13 @@
       </ion-card>
     </ion-col>
     <ion-scroll *ngIf="zoomImage" class="illustration-box" scrollX="true" scrollY="true" zoom="true" style="height:100%; width:100%; position: relative;">
-      <img alt="illustration" [style.zoom]="zoom" class="illustration-img" [src]="imgPath">
+      <img alt="illustration" [style.transform]="transformScale" class="illustration-img" [src]="imgPath">
     </ion-scroll>
     <ion-fab *ngIf="zoomImage && userSettingsService.isDesktop()" class="zoom-buttons" right middle>
-      <button ion-fab color="secondary" mini (click)="zoomIn()">
+      <button ion-fab mini color="secondary" (click)="zoomIn()">
         <ion-icon name="add"></ion-icon>
       </button>
-      <button ion-fab color="secondary" mini (click)="zoomOut()">
+      <button ion-fab mini color="secondary" (click)="zoomOut()">
         <ion-icon name="remove"></ion-icon>
       </button>
     </ion-fab>

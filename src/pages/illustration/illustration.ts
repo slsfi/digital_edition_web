@@ -22,10 +22,11 @@ export class IllustrationPage {
 
   imgPath: any;
   illustrationsPath = 'assets/images/illustrations/2/';
-  apiImagePat = ''
+  apiImagePat = '';
   showDescription = true;
   zoomImage = false;
-  zoom = 0.5;
+  zoom = 1.0;
+  transformScale: String = '';
   language: String = 'sv';
   imgMetadata: Object;
 
@@ -126,12 +127,14 @@ export class IllustrationPage {
 
   zoomIn() {
     this.zoom = this.zoom + 0.1;
+    this.transformScale = 'scale(' + this.zoom + ')';
   }
   zoomOut() {
     this.zoom = this.zoom - 0.1;
     if (this.zoom < 0.5) {
       this.zoom = 0.5;
     }
+    this.transformScale = 'scale(' + this.zoom + ')';
   }
 
 }
