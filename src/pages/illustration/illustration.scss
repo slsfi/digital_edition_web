@@ -39,6 +39,7 @@ page-illustration {
 
     ion-fab[right] {
         right: 0;
+        z-index: 10;
     }
 
     ion-fab[right].expand-button {
