@@ -3,6 +3,10 @@ page-illustration {
         overflow: auto;
     }
 
+    ion-content ion-scroll > .scroll-content {
+        overflow: hidden !important;
+    }
+
     .col {
         white-space: normal !important;
         padding: 0 0 4px 0;
