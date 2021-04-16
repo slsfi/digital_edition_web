@@ -122,14 +122,18 @@ facsimiles {
         list-style-type: none;
         margin: 0;
         padding: 0;
+        display: table;
     }
-    .external_urls_wrapper ul li {
+    .external_urls_wrapper ul > li {
         padding: 0 0 0.5em 0;
+        display: table-row;
     }
 
-    .external_urls_wrapper ul li::before {
+    .external_urls_wrapper ul > li::before {
         content: "\203A";
         padding-right: 0.5em;
+        display: table-cell;
+        text-align: right;
     }
 
 }
