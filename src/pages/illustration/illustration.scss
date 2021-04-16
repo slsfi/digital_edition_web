@@ -37,6 +37,10 @@ page-illustration {
         cursor: pointer;
     }
 
+    ion-fab[right] {
+        right: 0;
+    }
+
     ion-fab[right].expand-button {
         right: 12px;
     }
