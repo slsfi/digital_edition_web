@@ -112,11 +112,15 @@ facsimiles {
         touch-action: none !important;
     }
 
-    .external_url {
-        display: grid;
-        line-height: 2;
+    .external_urls_wrapper {
+        padding-bottom: 20vh;
     }
-    .external_url > p {
-      font-size: 1em;
+    .external_urls_wrapper ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+    .external_urls_wrapper ul li {
+        padding: 0 0 0.5em 0;
     }
 }

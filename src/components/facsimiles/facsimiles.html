@@ -18,7 +18,7 @@
   </div>
 </div>
 
-<ion-scroll *ngIf="externalURLs">
+<ion-scroll *ngIf="externalURLs" scrollY="true">
   <div [ngClass]="(readPopoverService.fontsize==0)?'tei xsmallFontSize':(readPopoverService.fontsize==1)?'tei smallFontSize':(readPopoverService.fontsize==2)?'tei mediumFontSize':(readPopoverService.fontsize==3)?'tei largeFontSize':'tei xlargeFontSize'" class="external_url">
     <p *ngFor="let ext of externalURLs"><a target="_blank" href="{{ext.url}}" [innerHTML]="ext.title"></a></p>
   </div>
