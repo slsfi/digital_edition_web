@@ -46,7 +46,7 @@
     <ion-scroll *ngIf="zoomImage" class="illustration-box" scrollX="true" scrollY="true" zoom="true" style="height:100%; width:100%; position: relative;">
       <img alt="illustration" [style.zoom]="zoom" class="illustration-img" [src]="imgPath">
     </ion-scroll>
-    <ion-fab *ngIf="zoomImage && userSettingsService.isDesktop()" class="zoom-buttons" top center>
+    <ion-fab *ngIf="zoomImage && userSettingsService.isDesktop()" class="zoom-buttons" left middle>
       <button ion-fab color="secondary" mini (click)="zoomIn()">
         <ion-icon name="add"></ion-icon>
       </button>
