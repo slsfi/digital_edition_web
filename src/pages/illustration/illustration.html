@@ -15,31 +15,43 @@
 </ion-header>
 
 <ion-content padding class="illustration-content">
-    <ion-fab right *ngIf="zoomImage" class="close-modal-button">
+    <ion-fab left *ngIf="zoomImage" class="close-modal-button">
         <button ion-fab mini (click)="cancel()">
           <ion-icon name="close"></ion-icon>
         </button>
     </ion-fab>
     <ion-fab *ngIf="showDescription" middle right>
-      <button ion-fab (click)="zoomImg()"><ion-icon name="expand"></ion-icon></button>
+      <button ion-fab mini (click)="zoomImg()">
+        <ion-icon name="expand"></ion-icon>
+      </button>
     </ion-fab>
-    <ion-scroll class="illustration-box" scrollX="true" scrollY="true" zoom="true" style="height:100%; width:100%; position: relative;">
-      <img alt="illustration" *ngIf="showDescription" [src]="imgPath">
-      <img alt="illustration" [style.zoom]="zoom" *ngIf="zoomImage" class="illustration-img" [src]="imgPath">
-      <div *ngIf="showDescription">
-        <p><b>{{imgMetadata['full_name']}}, <i>{{imgMetadata['media_title_translation']}}</i></b></p>
-        <p>{{imgMetadata['media_art_technique_translation']}}</p>
-        <p>{{imgMetadata['media_collection_title_translation']}}</p>
-        <p>{{imgMetadata['art_location']}}</p>
-        <div>
-          <a (click)="goToMediaCollection()">
-            <ion-icon name="book"></ion-icon> {{ "MediaCollections.GotoMediaCollection" | translate }}
-          </a>
-        </div>
-      </div>
+    <ion-col *ngIf="showDescription">
+      <ion-card class="illustration-box">
+        <ion-card-content>
+          <img class="illustration-img-thumb" alt="illustration" [src]="imgPath">
+          <div>
+            <p><b>{{imgMetadata['full_name']}}, <i>{{imgMetadata['media_title_translation']}}</i></b></p>
+            <p>{{imgMetadata['media_art_technique_translation']}}</p>
+            <p>{{imgMetadata['media_collection_title_translation']}}</p>
+            <p>{{imgMetadata['art_location']}}</p>
+            <p>
+              <a (click)="goToMediaCollection()">
+                <ion-icon name="photos"></ion-icon> {{ "MediaCollections.GotoMediaCollection" | translate }}
+              </a>
+            </p>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-scroll *ngIf="zoomImage" class="illustration-box" scrollX="true" scrollY="true" zoom="true" style="height:100%; width:100%; position: relative;">
+      <img alt="illustration" [style.zoom]="zoom" class="illustration-img" [src]="imgPath">
     </ion-scroll>
     <ion-fab *ngIf="zoomImage && userSettingsService.isDesktop()" class="zoom-buttons" bottom right>
-      <button ion-fab color="secondary" mini (click)="zoomIn()"><ion-icon name="add"></ion-icon></button>
-      <button ion-fab color="secondary" mini (click)="zoomOut()"><ion-icon name="remove"></ion-icon></button>
+      <button ion-fab color="secondary" mini (click)="zoomIn()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+      <button ion-fab color="secondary" mini (click)="zoomOut()">
+        <ion-icon name="remove"></ion-icon>
+      </button>
     </ion-fab>
 </ion-content>
