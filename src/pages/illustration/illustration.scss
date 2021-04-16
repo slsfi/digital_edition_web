@@ -36,4 +36,8 @@ page-illustration {
     a {
         cursor: pointer;
     }
+
+    ion-fab[right] {
+        right: 0;
+    }
 }
