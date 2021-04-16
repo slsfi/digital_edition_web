@@ -18,11 +18,11 @@
   </div>
 </div>
 
-<div *ngIf="externalURLs" [ngClass]="(readPopoverService.fontsize==0)?'tei xsmallFontSize':(readPopoverService.fontsize==1)?'tei smallFontSize':(readPopoverService.fontsize==2)?'tei mediumFontSize':(readPopoverService.fontsize==3)?'tei largeFontSize':'tei xlargeFontSize'">
-  <span class="external_url">
+<ion-scroll *ngIf="externalURLs">
+  <div [ngClass]="(readPopoverService.fontsize==0)?'tei xsmallFontSize':(readPopoverService.fontsize==1)?'tei smallFontSize':(readPopoverService.fontsize==2)?'tei mediumFontSize':(readPopoverService.fontsize==3)?'tei largeFontSize':'tei xlargeFontSize'" class="external_url">
     <p *ngFor="let ext of externalURLs"><a target="_blank" href="{{ext.url}}" [innerHTML]="ext.title"></a></p>
-  </span>
-</div>
+  </div>
+</ion-scroll>
 
 <ion-item *ngIf="externalURLs.length===0 && numberOfPages > 1">
   <ion-label position="floating">{{"Read.Facsimiles.Page" | translate}} ({{"Read.Facsimiles.Of" | translate}}
@@ -81,7 +81,8 @@
   </button>
 </ion-fab>
 
-<div class="tei" [innerHTML]="text" [class.show_comments]="readPopoverService.show.comments"
+<div class="tei" [innerHTML]="text"
+  [class.show_comments]="readPopoverService.show.comments"
   [class.show_personInfo]="readPopoverService.show.personInfo"
   [class.show_abbreviations]="readPopoverService.show.abbreviations"
   [class.show_workInfo]="readPopoverService.show.workInfo"
