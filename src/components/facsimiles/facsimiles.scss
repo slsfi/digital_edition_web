@@ -121,6 +121,10 @@ facsimiles {
         padding: 0;
     }
     .external_urls_wrapper ul li {
-        padding: 0 0 0.5em 0;
+        padding: 0 0 0.5em 1em;
+    }
+    .external_urls_wrapper ul li::before {
+        content: "–";
+        padding-right: 0.5em;
     }
 }
