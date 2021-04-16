@@ -12,6 +12,10 @@ page-illustration {
         background-color: #fff !important;
     }
 
+    .illustration-box > ion-card-content {
+        padding-top: 0;
+    }
+
     .close-button {
         margin-right: 12.8px;
         transition: $opacity-hover-transition;
