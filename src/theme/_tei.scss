@@ -596,6 +596,9 @@ div.tei {
                 padding: 0;
             }
         }
+        li.footnoteItem::before {
+            content: "\200B";   /* Zero-width space needed for some screen readers since list-style-type is none. */
+        }
     }
 
     /* COMMON SPANS */
