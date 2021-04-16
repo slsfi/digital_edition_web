@@ -26,6 +26,10 @@ export class IllustrationPage {
   showDescription = true;
   zoomImage = false;
   zoom = 1.0;
+  latestDeltaX = 0;
+  latestDeltaY = 0;
+  prevX = 0;
+  prevY = 0;
   language: String = 'sv';
   imgMetadata: Object;
 
@@ -137,5 +141,42 @@ export class IllustrationPage {
 
   resetZoom() {
     this.zoom = 1.0;
+    this.prevX = 0;
+    this.prevY = 0;
+  }
+
+  handleSwipeEvent(event) {
+    const img = event.target;
+    if (img !== null) {
+      // Store latest zoom adjusted delta.
+      // NOTE: img must have touch-action: none !important;
+      // otherwise deltaX and deltaY will give wrong values on mobile.
+      this.latestDeltaX = event.deltaX / this.zoom;
+      this.latestDeltaY = event.deltaY / this.zoom;
+
+      // Get current position from last position and delta.
+      this.prevX = this.prevX + this.latestDeltaX;
+      this.prevY = this.prevY + this.latestDeltaY;
+    }
+  }
+
+  onMouseUp(e) {
+    // Update the previous position on desktop by adding the latest delta.
+    this.prevX += this.latestDeltaX;
+    this.prevY += this.latestDeltaY;
+  }
+
+  onTouchEnd(e) {
+    // Update the previous position on mobile by adding the latest delta.
+    this.prevX += this.latestDeltaX;
+    this.prevY += this.latestDeltaY;
+  }
+
+  onMouseWheel(event) {
+    if (event.deltaY > 0) {
+      this.zoomIn();
+    } else {
+      this.zoomOut();
+    }
   }
 }
