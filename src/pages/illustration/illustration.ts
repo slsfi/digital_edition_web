@@ -155,8 +155,10 @@ export class IllustrationPage {
       this.latestDeltaY = event.deltaY / this.zoom;
 
       // Get current position from last position and delta.
-      this.prevX = this.prevX + this.latestDeltaX;
-      this.prevY = this.prevY + this.latestDeltaY;
+      const x = this.prevX + this.latestDeltaX;
+      const y = this.prevY + this.latestDeltaY;
+
+      img.style.transform = 'scale(' + this.zoom + ') translate3d(' + x + 'px, ' + y + 'px, 0px)';
     }
   }
 
@@ -173,10 +175,15 @@ export class IllustrationPage {
   }
 
   onMouseWheel(event) {
-    if (event.deltaY > 0) {
-      this.zoomIn();
-    } else {
-      this.zoomOut();
+    const img = event.target;
+    if (img !== null) {
+      if (event.deltaY > 0) {
+        this.zoomIn();
+        img.style.transform = 'scale(' + this.zoom + ') translate3d(' + this.prevX + 'px, ' + this.prevY + 'px, 0px)';
+      } else {
+        this.zoomOut();
+        img.style.transform = 'scale(' + this.zoom + ') translate3d(' + this.prevX + 'px, ' + this.prevY + 'px, 0px)';
+      }
     }
   }
 }
