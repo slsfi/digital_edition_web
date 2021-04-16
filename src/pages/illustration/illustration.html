@@ -5,13 +5,13 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-toolbar *ngIf="showDescription">
-      <ion-buttons end>
-          <button (click)="cancel()" ion-button>
-            <ion-icon class="close-button" ios="ios-close" md="md-close"></ion-icon>
-          </button>
-        </ion-buttons>
-  </ion-toolbar>
+  <ion-navbar *ngIf="showDescription">
+    <ion-buttons end>
+      <button class="close-button" (click)="cancel()" ion-button>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
 </ion-header>
 
 <ion-content padding class="illustration-content">
@@ -21,7 +21,7 @@
         </button>
     </ion-fab>
     <ion-fab *ngIf="showDescription" middle right>
-      <button ion-fab (click)="zoomImg()"><ion-icon name="search"></ion-icon></button>
+      <button ion-fab (click)="zoomImg()"><ion-icon name="expand"></ion-icon></button>
     </ion-fab>
     <ion-scroll class="illustration-box" scrollX="true" scrollY="true" zoom="true" style="height:100%; width:100%; position: relative;">
       <img alt="illustration" *ngIf="showDescription" [src]="imgPath">
