@@ -127,6 +127,7 @@ export class IllustrationPage {
   zoomIn() {
     this.zoom = this.zoom + 0.1;
   }
+
   zoomOut() {
     this.zoom = this.zoom - 0.1;
     if (this.zoom < 0.5) {
@@ -134,4 +135,7 @@ export class IllustrationPage {
     }
   }
 
+  resetZoom() {
+    this.zoom = 1.0;
+  }
 }
