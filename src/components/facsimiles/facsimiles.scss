@@ -112,7 +112,10 @@ facsimiles {
         touch-action: none !important;
     }
 
-    .external_urls_wrapper {
+    ion-scroll.external_urls_wrapper {
+        padding: 0;
+    }
+    .external_urls_wrapper div.tei {
         padding-bottom: 20vh;
     }
     .external_urls_wrapper ul {
@@ -123,5 +126,5 @@ facsimiles {
     .external_urls_wrapper ul li {
         padding: 0 0 0.5em 0;
     }
-    
+
 }

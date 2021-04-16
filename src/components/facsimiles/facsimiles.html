@@ -18,8 +18,8 @@
   </div>
 </div>
 
-<ion-scroll *ngIf="externalURLs" scrollY="true" [ngStyle]="{'height': '100%', 'max-height': 'calc(100% - 60px)'}">
-  <div [ngClass]="(readPopoverService.fontsize==0)?'tei xsmallFontSize':(readPopoverService.fontsize==1)?'tei smallFontSize':(readPopoverService.fontsize==2)?'tei mediumFontSize':(readPopoverService.fontsize==3)?'tei largeFontSize':'tei xlargeFontSize'" class="external_urls_wrapper">
+<ion-scroll *ngIf="externalURLs" scrollY="true" class="external_urls_wrapper" [ngStyle]="{'height': '100%', 'max-height': 'calc(100% - 60px)'}">
+  <div [ngClass]="(readPopoverService.fontsize==0)?'tei xsmallFontSize':(readPopoverService.fontsize==1)?'tei smallFontSize':(readPopoverService.fontsize==2)?'tei mediumFontSize':(readPopoverService.fontsize==3)?'tei largeFontSize':'tei xlargeFontSize'">
     <ul>
       <li *ngFor="let ext of externalURLs"><a target="_blank" href="{{ext.url}}" [innerHTML]="ext.title"></a></li>
     </ul>
