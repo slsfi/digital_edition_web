@@ -55,12 +55,12 @@
   >
 </div>
 
-<ion-fab *ngIf="numberOfPages > 1" middle left class="leftFacsimileArrow">
+<ion-fab *ngIf="numberOfPages > 1 && !externalURLs" middle left class="leftFacsimileArrow">
   <button *ngIf="numberOfPages > 1" ion-fab color="primary" mini (click)="previous()">
     <ion-icon name="arrow-back"></ion-icon>
   </button>
 </ion-fab>
-<ion-fab middle right>
+<ion-fab middle right *ngIf="!externalURLs">
   <button *ngIf="numberOfPages > 1" ion-fab color="primary" mini (click)="next()">
     <ion-icon name="arrow-forward"></ion-icon>
   </button>
