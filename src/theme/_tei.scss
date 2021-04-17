@@ -1813,6 +1813,7 @@ read-text div.tei .revision.tooltiptrigger {
 	    top: 0;
         background: var(--infoOverlay-bg-color);
 	    width: 100%;
+        z-index: 10;
 
         .infoOverlayTitle {
             font-size: 0.7em;
