@@ -247,7 +247,6 @@ export class IntroductionPage {
 
     /* CLICK EVENTS */
     this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
-      event.preventDefault();
       this.hideToolTip();
       let eventTarget = this.getEventTarget(event);
 
@@ -275,6 +274,7 @@ export class IntroductionPage {
 
       // Links in the introduction.
       if (eventTarget.classList.contains('xreference')) {
+        event.preventDefault();
         const anchorElem: HTMLAnchorElement = eventTarget as HTMLAnchorElement;
 
         if (anchorElem.classList.contains('ref_external')) {

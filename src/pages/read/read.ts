@@ -1184,11 +1184,6 @@ export class ReadPage /*implements OnDestroy*/ {
       }
     });
 
-    /* MOUSEWHEEL EVENTS */
-    this.renderer2.listen(nElement, 'mousewheel', (event) => {
-      this.hideToolTip();
-    });
-
     let toolTipsSettings;
     try {
       toolTipsSettings = this.config.getSettings('settings.toolTips');

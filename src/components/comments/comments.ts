@@ -115,7 +115,6 @@ export class CommentsComponent {
         // This check for xreference is necessary since we don't want the comment to
         // scroll if the clicked target is a link in a comment. Clicks on links are
         // handled by read.ts.
-        event.preventDefault();
         let targetIsLink = false;
         let targetElem: HTMLElement = event.target as HTMLElement;
 
@@ -128,6 +127,7 @@ export class CommentsComponent {
         if (!targetIsLink && this.readPopoverService.show.comments) {
           // This is linking to a comment lemma ("asterisk") in the reading text,
           // i.e. the user has clicked a comment in the comments-column.
+          event.preventDefault();
 
           // Find the comment element that has been clicked in the comment-column.
           if (!targetElem.classList.contains('commentScrollTarget')) {
