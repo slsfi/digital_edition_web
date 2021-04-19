@@ -1,5 +1,5 @@
 import { TranslateService } from '@ngx-translate/core';
-import { Component, Renderer, Renderer2, ElementRef, SecurityContext } from '@angular/core';
+import { Component, Renderer2, ElementRef, SecurityContext } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, Platform, PopoverController, ModalController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LanguageService } from '../../app/services/languages/language.service';
@@ -65,9 +65,9 @@ export class IntroductionPage {
   textLoading: Boolean = true;
   tocItems: GeneralTocItem[];
   intervalTimerId: number;
-  private unlistenerClickEvents: () => void;
-  private unlistenerMouseoverEvents: () => void;
-  private unlistenerMouseoutEvents: () => void;
+  private unlistenClickEvents: () => void;
+  private unlistenMouseoverEvents: () => void;
+  private unlistenMouseoutEvents: () => void;
 
   constructor(
     public navCtrl: NavController,
@@ -76,7 +76,6 @@ export class IntroductionPage {
     private textService: TextService,
     protected sanitizer: DomSanitizer,
     protected params: NavParams,
-    private renderer: Renderer,
     private renderer2: Renderer2,
     private tooltipService: TooltipService,
     private elementRef: ElementRef,
@@ -203,9 +202,9 @@ export class IntroductionPage {
   }
 
   ionViewWillLeave() {
-    this.unlistenerClickEvents();
-    this.unlistenerMouseoverEvents();
-    this.unlistenerMouseoutEvents();
+    this.unlistenClickEvents();
+    this.unlistenMouseoverEvents();
+    this.unlistenMouseoutEvents();
     this.events.publish('ionViewWillLeave', this.constructor.name);
   }
 
@@ -247,7 +246,7 @@ export class IntroductionPage {
     const nElement: HTMLElement = this.elementRef.nativeElement;
 
     /* CLICK EVENTS */
-    this.unlistenerClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
+    this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
       event.preventDefault();
       this.hideToolTip();
       let eventTarget = this.getEventTarget(event);
@@ -418,7 +417,7 @@ export class IntroductionPage {
     }
 
     /* MOUSE OVER EVENTS */
-    this.unlistenerMouseoverEvents = this.renderer2.listen(nElement, 'mouseover', (event) => {
+    this.unlistenMouseoverEvents = this.renderer2.listen(nElement, 'mouseover', (event) => {
       if (this.userSettingsService.isDesktop()) {
         const eventTarget = this.getEventTarget(event);
 
@@ -442,7 +441,7 @@ export class IntroductionPage {
     }).bind(this);
 
     /* MOUSE OUT EVENTS */
-    this.unlistenerMouseoutEvents = this.renderer2.listen(nElement, 'mouseout', (event) => {
+    this.unlistenMouseoutEvents = this.renderer2.listen(nElement, 'mouseout', (event) => {
       this.hideToolTip();
     }).bind(this);
   }
