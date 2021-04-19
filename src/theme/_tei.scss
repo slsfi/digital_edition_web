@@ -2033,10 +2033,12 @@ span.footnoteindicator {
 page-introduction span.footnoteindicator {
     color: color($colors, primary);
 }
+/*
 page-introduction span.footnoteindicator:hover:not(.disable-hover) {
     color: color($colors, primary);
     text-decoration: underline;
 }
+*/
 
 /*toc: textfärgen
 .item-md p {
