@@ -232,17 +232,11 @@ export class IntroductionPage implements OnInit, OnDestroy {
 
   ionViewWillLeave() {
     this.events.publish('ionViewWillLeave', this.constructor.name);
+    this.listenFunc();
   }
   ionViewWillEnter() {
     this.events.publish('ionViewWillEnter', this.constructor.name);
-  }
-
-  ngOnInit() {
     this.setUpTextListeners();
-  }
-
-  ngOnDestroy() {
-    this.listenFunc();
   }
 
   private setUpTextListeners() {
