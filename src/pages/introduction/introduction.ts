@@ -1,5 +1,5 @@
 import { TranslateService } from '@ngx-translate/core';
-import { Component, Renderer, Renderer2, ElementRef, OnInit, OnDestroy, SecurityContext } from '@angular/core';
+import { Component, Renderer, Renderer2, ElementRef, SecurityContext } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, Platform, PopoverController, ModalController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LanguageService } from '../../app/services/languages/language.service';
@@ -34,7 +34,7 @@ import { OccurrencesPage } from '../occurrences/occurrences';
   selector: 'page-introduction',
   templateUrl: 'introduction.html',
 })
-export class IntroductionPage implements OnInit, OnDestroy {
+export class IntroductionPage {
 
   errorMessage: any;
   protected id: string;
@@ -65,7 +65,9 @@ export class IntroductionPage implements OnInit, OnDestroy {
   textLoading: Boolean = true;
   tocItems: GeneralTocItem[];
   intervalTimerId: number;
-  private listenFunc: () => void;
+  private unlistenerClickEvents: () => void;
+  private unlistenerMouseoverEvents: () => void;
+  private unlistenerMouseoutEvents: () => void;
 
   constructor(
     public navCtrl: NavController,
@@ -164,6 +166,11 @@ export class IntroductionPage implements OnInit, OnDestroy {
     });
   }
 
+  ionViewWillEnter() {
+    this.events.publish('ionViewWillEnter', this.constructor.name);
+    this.setUpTextListeners();
+  }
+
   ionViewDidLoad() {
     this.langService.getLanguage().subscribe(lang => {
       this.textService.getIntroduction(this.id, lang).subscribe(
@@ -195,9 +202,16 @@ export class IntroductionPage implements OnInit, OnDestroy {
     });
   }
 
-  // Try to scroll to an element in the text, checks if "pos" given
-  // Timeout, to give text some time to load on the page
-  scrollToPos() {
+  ionViewWillLeave() {
+    this.unlistenerClickEvents();
+    this.unlistenerMouseoverEvents();
+    this.unlistenerMouseoutEvents();
+    this.events.publish('ionViewWillLeave', this.constructor.name);
+  }
+
+  /** Try to scroll to an element in the text, checks if "pos" given.
+   *  Timeout, to give text some time to load on the page. */
+  private scrollToPos() {
     let interationsLeft = 10;
     clearInterval(this.intervalTimerId);
     this.intervalTimerId = setInterval(function() {
@@ -218,7 +232,6 @@ export class IntroductionPage implements OnInit, OnDestroy {
             }
             if (positionElement !== null && positionElement !== undefined
             && positionElement.classList.contains('anchor')) {
-              // console.log('Attempting to scroll to ' + this.pos);
               this.scrollToHTMLElement(positionElement);
               clearInterval(this.intervalTimerId);
             }
@@ -230,20 +243,11 @@ export class IntroductionPage implements OnInit, OnDestroy {
     }.bind(this), 1000);
   }
 
-  ionViewWillLeave() {
-    this.events.publish('ionViewWillLeave', this.constructor.name);
-    this.listenFunc();
-  }
-  ionViewWillEnter() {
-    this.events.publish('ionViewWillEnter', this.constructor.name);
-    this.setUpTextListeners();
-  }
-
   private setUpTextListeners() {
     const nElement: HTMLElement = this.elementRef.nativeElement;
 
     /* CLICK EVENTS */
-    this.listenFunc = this.renderer2.listen(nElement, 'click', (event) => {
+    this.unlistenerClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
       event.preventDefault();
       this.hideToolTip();
       let eventTarget = this.getEventTarget(event);
@@ -400,10 +404,11 @@ export class IntroductionPage implements OnInit, OnDestroy {
       }
     }).bind(this);
 
-    /* MOUSEWHEEL EVENTS */
+    /* MOUSEWHEEL EVENTS
     this.renderer.listen(nElement, 'mousewheel', (event) => {
       this.hideToolTip();
     }).bind(this);
+    */
 
     let toolTipsSettings;
     try {
@@ -413,7 +418,7 @@ export class IntroductionPage implements OnInit, OnDestroy {
     }
 
     /* MOUSE OVER EVENTS */
-    this.renderer.listen(nElement, 'mouseover', (event) => {
+    this.unlistenerMouseoverEvents = this.renderer2.listen(nElement, 'mouseover', (event) => {
       if (this.userSettingsService.isDesktop()) {
         const eventTarget = this.getEventTarget(event);
 
@@ -437,7 +442,7 @@ export class IntroductionPage implements OnInit, OnDestroy {
     }).bind(this);
 
     /* MOUSE OUT EVENTS */
-    this.renderer.listen(nElement, 'mouseout', (event) => {
+    this.unlistenerMouseoutEvents = this.renderer2.listen(nElement, 'mouseout', (event) => {
       this.hideToolTip();
     }).bind(this);
   }
