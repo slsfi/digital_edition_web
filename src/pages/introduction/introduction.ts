@@ -1,5 +1,5 @@
 import { TranslateService } from '@ngx-translate/core';
-import { Component, Renderer, ElementRef, SecurityContext } from '@angular/core';
+import { Component, Renderer, Renderer2, ElementRef, OnInit, OnDestroy, SecurityContext } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, Platform, PopoverController, ModalController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LanguageService } from '../../app/services/languages/language.service';
@@ -34,7 +34,7 @@ import { OccurrencesPage } from '../occurrences/occurrences';
   selector: 'page-introduction',
   templateUrl: 'introduction.html',
 })
-export class IntroductionPage {
+export class IntroductionPage implements OnInit, OnDestroy {
 
   errorMessage: any;
   protected id: string;
@@ -65,6 +65,7 @@ export class IntroductionPage {
   textLoading: Boolean = true;
   tocItems: GeneralTocItem[];
   intervalTimerId: number;
+  private listenFunc: () => void;
 
   constructor(
     public navCtrl: NavController,
@@ -74,6 +75,7 @@ export class IntroductionPage {
     protected sanitizer: DomSanitizer,
     protected params: NavParams,
     private renderer: Renderer,
+    private renderer2: Renderer2,
     private tooltipService: TooltipService,
     private elementRef: ElementRef,
     protected popoverCtrl: PopoverController,
@@ -153,8 +155,6 @@ export class IntroductionPage {
     } else {
       this.pos = null;
     }
-
-    this.setUpTextListeners();
 
     // Reload the content if language changes
     this.events.subscribe('language:change', () => {
@@ -237,11 +237,19 @@ export class IntroductionPage {
     this.events.publish('ionViewWillEnter', this.constructor.name);
   }
 
+  ngOnInit() {
+    this.setUpTextListeners();
+  }
+
+  ngOnDestroy() {
+    this.listenFunc();
+  }
+
   private setUpTextListeners() {
     const nElement: HTMLElement = this.elementRef.nativeElement;
 
     /* CLICK EVENTS */
-    this.renderer.listen(nElement, 'click', (event) => {
+    this.listenFunc = this.renderer2.listen(nElement, 'click', (event) => {
       event.preventDefault();
       this.hideToolTip();
       let eventTarget = this.getEventTarget(event);
