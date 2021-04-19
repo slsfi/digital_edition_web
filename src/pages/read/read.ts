@@ -1,4 +1,4 @@
-import { Component, Renderer, ElementRef, OnDestroy, ViewChild, Input, EventEmitter, SecurityContext } from '@angular/core';
+import { Component, Renderer2, ElementRef, OnDestroy, ViewChild, Input, EventEmitter, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import {
   App, ViewController, NavController, NavParams, PopoverController, ActionSheetController,
@@ -70,7 +70,6 @@ export class ReadPage /*implements OnDestroy*/ {
   @ViewChild('fab') fabList: FabContainer;
   @ViewChild('settingsIconElement') settingsIconElement: ElementRef;
 
-  listenFunc: Function;
   textType: TextType = TextType.ReadText;
 
   id: string;
@@ -104,6 +103,10 @@ export class ReadPage /*implements OnDestroy*/ {
   nextItem: any;
 
   divWidth = '100px';
+
+  private unlistenClickEvents: () => void;
+  private unlistenMouseoverEvents: () => void;
+  private unlistenMouseoutEvents: () => void;
 
   // Used for infinite facsimile
   facs_id: any;
@@ -184,7 +187,7 @@ export class ReadPage /*implements OnDestroy*/ {
     private textService: TextService,
     private commentService: CommentService,
     public toastCtrl: ToastController,
-    private renderer: Renderer,
+    private renderer2: Renderer2,
     private elementRef: ElementRef,
     private config: ConfigService,
     public popoverCtrl: PopoverController,
@@ -887,7 +890,7 @@ export class ReadPage /*implements OnDestroy*/ {
     const nElement: HTMLElement = this.elementRef.nativeElement;
 
     /* CLICK EVENTS */
-    this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
+    this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
       this.hideToolTip();
       let eventTarget = this.getEventTarget(event);
       let modalShown = false;
@@ -1179,12 +1182,12 @@ export class ReadPage /*implements OnDestroy*/ {
           }
         }
       }
-    }).bind(this);
+    });
 
     /* MOUSEWHEEL EVENTS */
-    this.renderer.listen(nElement, 'mousewheel', (event) => {
+    this.renderer2.listen(nElement, 'mousewheel', (event) => {
       this.hideToolTip();
-    }).bind(this);
+    });
 
     let toolTipsSettings;
     try {
@@ -1194,7 +1197,7 @@ export class ReadPage /*implements OnDestroy*/ {
     }
 
     /* MOUSE OVER EVENTS */
-    this.renderer.listen(nElement, 'mouseover', (event) => {
+    this.unlistenMouseoverEvents = this.renderer2.listen(nElement, 'mouseover', (event) => {
       if (this.userSettingsService.isDesktop()) {
         let tooltipShown = false;
         let eventTarget = this.getEventTarget(event);
@@ -1282,12 +1285,12 @@ export class ReadPage /*implements OnDestroy*/ {
           }
         }
       }
-    }).bind(this);
+    });
 
     /* MOUSE OUT EVENTS */
-    this.renderer.listen(nElement, 'mouseout', (event) => {
+    this.unlistenMouseoutEvents = this.renderer2.listen(nElement, 'mouseout', (event) => {
       this.hideToolTip();
-    }).bind(this);
+    });
   }
   public get isIntroduction() {
     return this.textType === TextType.Introduction;
@@ -1343,6 +1346,9 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   ionViewWillLeave() {
+    this.unlistenClickEvents();
+    this.unlistenMouseoverEvents();
+    this.unlistenMouseoutEvents();
     this.events.publish('ionViewWillLeave', this.constructor.name);
   }
 

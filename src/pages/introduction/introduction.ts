@@ -403,12 +403,6 @@ export class IntroductionPage {
       }
     }).bind(this);
 
-    /* MOUSEWHEEL EVENTS
-    this.renderer.listen(nElement, 'mousewheel', (event) => {
-      this.hideToolTip();
-    }).bind(this);
-    */
-
     let toolTipsSettings;
     try {
       toolTipsSettings = this.config.getSettings('settings.toolTips');

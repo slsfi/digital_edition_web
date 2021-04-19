@@ -1,4 +1,4 @@
-import { Component, Input, Renderer, ElementRef, EventEmitter, Output } from '@angular/core';
+import { Component, Input, Renderer2, ElementRef, EventEmitter, Output } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ReadTextComponent } from '../read-text/read-text';
 import { TextService } from '../../app/services/texts/text.service';
@@ -24,24 +24,23 @@ export class CommentsComponent {
   @Output() openNewIntroView: EventEmitter<any> = new EventEmitter();
   public text: any;
   protected errorMessage: string;
-  listenFunc: Function;
   manuscript: any;
   sender: any;
   receiver: any;
   letter: any;
   textLoading: Boolean = true;
+  private unlistenClickEvents: () => void;
 
   constructor(
     protected readPopoverService: ReadPopoverService,
     protected commentService: CommentService,
     protected textService: TextService,
     protected sanitizer: DomSanitizer,
-    private renderer: Renderer,
+    private renderer2: Renderer2,
     private elementRef: ElementRef,
     private events: Events,
     private analyticsService: AnalyticsService
   ) {
-    this.setUpTextListeners();
   }
 
   ngOnInit() {
@@ -57,6 +56,14 @@ export class CommentsComponent {
       this.setText();
     }
     this.getCorrespondanceMetadata();
+    this.setUpTextListeners();
+  }
+
+  ngAfterViewInit() {
+  }
+
+  ngOnDestroy() {
+    this.unlistenClickEvents();
   }
 
   setText() {
@@ -98,18 +105,17 @@ export class CommentsComponent {
     this.openNewIntroView.emit(id);
   }
 
-  ngAfterViewInit() {
-
-  }
-
   private setUpTextListeners() {
     // We must do it like this since we want to trigger an event on a dynamically loaded innerhtml.
     const nElement: HTMLElement = this.elementRef.nativeElement;
-    this.listenFunc = this.renderer.listen(nElement, 'click', (event) => {
+
+    /* CLICK EVENTS */
+    this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
       try {
         // This check for xreference is necessary since we don't want the comment to
         // scroll if the clicked target is a link in a comment. Clicks on links are
         // handled by read.ts.
+        event.preventDefault();
         let targetIsLink = false;
         let targetElem: HTMLElement = event.target as HTMLElement;
 
@@ -117,7 +123,6 @@ export class CommentsComponent {
         || (targetElem.parentElement !== null && targetElem.parentElement.classList.contains('xreference'))
         || (targetElem.parentElement.parentElement !== null && targetElem.parentElement.parentElement.classList.contains('xreference')) ) {
           targetIsLink = true;
-          event.preventDefault();
         }
 
         if (!targetIsLink && this.readPopoverService.show.comments) {
