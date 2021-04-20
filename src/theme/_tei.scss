@@ -2108,7 +2108,10 @@ page-introduction {
             text-transform: uppercase;
             margin: 1.15em 0 0.85em 0;
         }
-        header .tei.writer {
+        header p.tei.writer {
+            text-transform: uppercase;
+        }
+        header h1.tei.heading1 > .tei.writer {
             font-size: 0.7em;
             font-variant: normal;
             font-weight: normal;
