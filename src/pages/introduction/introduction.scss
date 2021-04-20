@@ -162,13 +162,6 @@ page-introduction {
     line-height: 1;
   }
 
-  #TOC span.writer {
-    font-size: 0.7em;
-    font-variant: normal;
-    font-weight: normal;
-    text-transform: none;
-  }
-
   /* visning för bred skärm: toc flyter till höger om artikeln */
   @media (min-width: 1000px) {
     nav#TOC {
