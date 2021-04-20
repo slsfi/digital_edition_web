@@ -2062,7 +2062,10 @@ page-introduction {
     }
 
     /* Headings in intro text */
-    div.tei div[data-id="cont_introduction"] {        
+    div.tei div[data-id="cont_introduction"] {   
+        header {
+            margin: 1.4em 0;
+        }     
         h1.tei.title,
         h2.tei.heading2,
         h3.tei.heading3,
@@ -2078,7 +2081,7 @@ page-introduction {
             font-size: 1.6em;
             font-weight: 600;
             text-transform: uppercase;
-            margin: 1em 0 1em 0;
+            margin: 0.2em 0;
         }
         h2.tei.heading2 {
             font-size: 1.4em;
