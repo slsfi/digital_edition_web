@@ -2064,7 +2064,7 @@ page-introduction {
     /* Headings in intro text */
     div.tei div[data-id="cont_introduction"] {   
         header {
-            margin: 1.6em 0;
+            margin: 1.4em 0 2.5em 0;
         }     
         h1.tei.title,
         h2.tei.heading2,
@@ -2081,6 +2081,7 @@ page-introduction {
             font-size: 1.6em;
             font-weight: 600;
             text-transform: uppercase;
+            margin: 0;
         }
         h2.tei.heading2 {
             font-size: 1.4em;
@@ -2111,14 +2112,15 @@ page-introduction {
             margin: 1.15em 0 0.85em 0;
         }
         header p.tei.writer {
-            font-size: 0.82em;
+            font-size: 0.88em;
             text-transform: uppercase;
-            margin: 0.32em 0 0 0;
+            margin: 0;
+            padding: 0.75em 0 0 0;
             text-indent: 0;
             line-height: 1.2;
         }
         header h1.tei.title > span.writer {
-            font-size: 0.82em;
+            font-size: 0.515em;
             font-variant: normal;
             font-weight: normal;
         }
