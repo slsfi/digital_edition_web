@@ -2109,10 +2109,13 @@ page-introduction {
             margin: 1.15em 0 0.85em 0;
         }
         header p.tei.writer {
+            font-size: 0.82em;
             text-transform: uppercase;
+            text-indent: 0;
+            line-height: 1.2;
         }
-        header h1.tei.heading1 > .tei.writer {
-            font-size: 0.7em;
+        header h1.tei.heading1 > span.writer {
+            font-size: 0.82em;
             font-variant: normal;
             font-weight: normal;
         }
