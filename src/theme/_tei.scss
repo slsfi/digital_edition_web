@@ -2064,6 +2064,7 @@ page-introduction {
         h1.tei.title {
             font-size: 1.6em;
             font-weight: 600;
+            font-style: normal;
             text-transform: uppercase;
             margin: 1em 0 1em 0;
             text-align: left;
@@ -2072,6 +2073,7 @@ page-introduction {
         h2.tei.heading2 {
             font-size: 1.4em;
             font-weight: 600;
+            font-style: normal;
             font-variant: small-caps;
             margin: 1.5em 0 1em 0;
             text-align: left;
@@ -2088,23 +2090,25 @@ page-introduction {
         h4.heading4 {
             font-size: 1em;
             font-weight: 600;
-            margin: 1em 0 0.75em 0;
+            font-style: italic;
+            margin: 1.2em 0 0.75em 0;
             text-align: left;
             line-height: 1.2;
         }
         h5.heading5 {
             font-size: 1em;
-            font-weight: normal;
-            font-style: italic;
-            margin: 0.8em 0 1em 0;
+            font-weight: 600;
+            font-style: normal;
+            margin: 1.2em 0 0.75em 0;
             text-align: left;
             line-height: 1.2;
         }
         h6.heading6 {
             font-size: 0.875em;
             font-weight: normal;
+            font-style: normal;
             text-transform: uppercase;
-            margin: 0.8em 0 1em 0;
+            margin: 1em 0 0.75em 0;
             text-align: left;
             line-height: 1.2;
         }
