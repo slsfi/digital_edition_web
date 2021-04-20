@@ -2040,23 +2040,29 @@ page-introduction {
             font-weight: 600;
             line-height: 1;
         }
-        h3.heading3 {
+        h3.tei.heading3 {
             font-size: 1em;
             margin: 0.1em 0 0.4em 0;
             font-weight: 600;
             line-height: 1;
         }
-        h4.heading4 {
+        h4.tei.heading4 {
             font-size: 1em;
             margin: 0.1em 0 0.4em 0;
             padding-left: 1em;
             font-weight: 600;
             line-height: 1;
         }
+        span.writer {
+            font-size: 0.7em;
+            font-variant: normal;
+            font-weight: normal;
+            text-transform: none;
+        }
     }
 
     /* Headings in intro text */
-    div.tei div[data-id="cont_introduction"] {
+    div.tei div[data-id="cont_introduction"] {        
         h1.tei.title,
         h2.tei.heading2,
         h3.tei.heading3,
@@ -2101,6 +2107,11 @@ page-introduction {
             font-size: 0.875em;
             text-transform: uppercase;
             margin: 1.15em 0 0.85em 0;
+        }
+        header .tei.writer {
+            font-size: 0.7em;
+            font-variant: normal;
+            font-weight: normal;
         }
     }
 }
