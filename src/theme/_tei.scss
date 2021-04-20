@@ -2064,20 +2064,20 @@ page-introduction {
     /* Headings in intro text */
     div.tei div[data-id="cont_introduction"] {   
         header {
-            margin: 3em 0;
+            margin: 3em 0 6em 0;
+            text-align: center;
+            line-height: 1.2;
+            text-indent: 0;
         }
         header p.tei.subtitle {
-            font-size: 1.2em;
+            font-size: 1.3em;
+            font-weight: 600;
             font-style: italic;
-            margin: 1em 0;
-            text-indent: 0;
-            line-height: 1.2;
+            margin: 0.75em 0;
         }
         header p.tei.writer {
-            font-size: 1.2em;
+            font-size: 1em;
             margin: 1em 0;
-            text-indent: 0;
-            line-height: 1.2;
         }
         header h1.tei.title > span.writer {
             font-size: 0.515em;
@@ -2099,6 +2099,7 @@ page-introduction {
             font-size: 1.6em;
             font-weight: 600;
             text-transform: uppercase;
+            text-align: center;
             margin: 0;
         }
         h2.tei.heading2 {
