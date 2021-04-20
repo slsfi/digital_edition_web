@@ -1700,16 +1700,14 @@ div.tei {
     h1.tei.title {
         font-variant: small-caps;
         text-align: center;
-        font-weight: normal !important;
-        color: #111;
-        font-size: 1.5em !important;
-        margin: 1em 0 !important;
+        font-weight: normal;
+        font-size: 1.5em;
+        margin: 1em 0;
     }
     h1.tei.poemtitle {
         font-variant: small-caps;
         text-align: left;
         font-weight: normal !important;
-        color: #111;
         font-size: 1.5em !important;
         margin: 1em 0 !important;
     }
@@ -1718,7 +1716,6 @@ div.tei {
         font-style: italic;
         text-align: left;
         font-weight: normal !important;
-        color: #111;
         font-size: 1.5em !important;
         margin: 1em 0 !important;
     }
@@ -2069,44 +2066,47 @@ page-introduction {
     }
 
     /* Headings in intro text */
-    div[data-id="cont_introduction"] {
-        h1.tei, h2.tei, h3.tei, h4.tei, h5.tei, h6.tei {
-            text-align: left;
-        }
+    div.tei div[data-id="cont_introduction"] {
         h1.tei.title {
             font-size: 1.6em;
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
             margin-bottom: 1em;
+            text-align: left;
         }
         h2.tei.heading2 {
             font-size: 1.4em;
             font-weight: 600;
             font-variant: small-caps;
             margin: 1.4em 0 1.3em 0;
+            text-align: left;
         }
         h3.heading3 {
             font-size: 1.2em;
             font-weight: 600;
             font-style: italic;
             margin: 1.3em 0 1.2em 0;
+            text-align: left;
         }
         h4.heading4 {
             font-size: 1em;
             font-weight: 600;
             margin: 0.8em 0 1em 0;
+            text-align: left;
         }
         h5.heading5 {
             font-size: 1em;
             font-weight: normal;
             font-style: italic;
             margin: 0.8em 0 1em 0;
+            text-align: left;
         }
         h6.heading6 {
             font-size: 0.875em;
             font-weight: normal;
             text-transform: uppercase;
             margin: 0.8em 0 1em 0;
+            text-align: left;
         }
     }
 }
