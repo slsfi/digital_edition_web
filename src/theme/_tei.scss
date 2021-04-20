@@ -2065,19 +2065,22 @@ page-introduction {
     div.tei div[data-id="cont_introduction"] {   
         header {
             margin: 3em 0 6em 0;
-            text-align: center;
-            line-height: 1.2;
-            text-indent: 0;
         }
         header p[role="doc-subtitle"] {
             font-size: 1.3em;
             font-weight: 600;
             font-style: italic;
             margin: 0.75em 0;
+            text-align: center;
+            line-height: 1.2;
+            text-indent: 0;
         }
         header p.tei.writer {
             font-size: 1em;
             margin: 1em 0;
+            text-align: center;
+            line-height: 1.2;
+            text-indent: 0;
         }
         header h1.tei.title > span.writer {
             font-size: 0.515em;
