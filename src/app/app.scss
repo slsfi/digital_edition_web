@@ -50,10 +50,12 @@
     color: #78756f;
 }
 
+/*
 .tei h2{
     padding-top: 1em;
     font-size: 1em !important;
 }
+*/
 
 .tei.place_name,.onki_province,.collection{
     color: #78756f;
@@ -127,13 +129,6 @@ ion-split-pane {
 ion-label {
   overflow: visible!important;
 }
-
-/* Defined in tei.scss instead
-.tei {
-  font-family: $font-app-tei;
-  // user-select: text !important;
-
-}*/
 
 .selectable { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
 
