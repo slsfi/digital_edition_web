@@ -2064,8 +2064,26 @@ page-introduction {
     /* Headings in intro text */
     div.tei div[data-id="cont_introduction"] {   
         header {
-            margin: 1.4em 0 2.5em 0;
-        }     
+            margin: 3em 0;
+        }
+        header p.tei.subtitle {
+            font-size: 1.2em;
+            font-style: italic;
+            margin: 1em 0;
+            text-indent: 0;
+            line-height: 1.2;
+        }
+        header p.tei.writer {
+            font-size: 1.2em;
+            margin: 1em 0;
+            text-indent: 0;
+            line-height: 1.2;
+        }
+        header h1.tei.title > span.writer {
+            font-size: 0.515em;
+            font-variant: normal;
+            font-weight: normal;
+        }
         h1.tei.title,
         h2.tei.heading2,
         h3.tei.heading3,
@@ -2110,19 +2128,6 @@ page-introduction {
             font-size: 0.875em;
             text-transform: uppercase;
             margin: 1.15em 0 0.85em 0;
-        }
-        header p.tei.writer {
-            font-size: 0.88em;
-            text-transform: uppercase;
-            margin: 0;
-            padding: 0.75em 0 0 0;
-            text-indent: 0;
-            line-height: 1.2;
-        }
-        header h1.tei.title > span.writer {
-            font-size: 0.515em;
-            font-variant: normal;
-            font-weight: normal;
         }
     }
 }
