@@ -2069,7 +2069,7 @@ page-introduction {
             line-height: 1.2;
             text-indent: 0;
         }
-        header p.tei.subtitle {
+        header p.tei[role="doc-subtitle"] {
             font-size: 1.3em;
             font-weight: 600;
             font-style: italic;
