@@ -1846,10 +1846,6 @@ read-text div.tei .revision.tooltiptrigger {
             display: inline-block;
             margin-right: 0.7em;
             text-decoration: none;
-
-            &:hover:not(.disable-hover) {
-                text-decoration: underline;
-            }
         }
         p.footnoteText,
         p.infoOverlayText {
