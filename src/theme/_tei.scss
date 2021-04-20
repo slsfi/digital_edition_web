@@ -2029,6 +2029,88 @@ span.footnoteindicator {
     cursor: pointer;
 }
 
+/* Headings in introductions */
+page-introduction {
+    /* Headings in intro TOC */
+    div#toc_text {
+        h1.tei.title {
+            font-size: 1.2em;
+            margin-bottom: .6em;
+            margin-top: 1.2em;
+            padding-top: .2em;
+            text-transform: uppercase;
+            font-weight: 600;
+            line-height: 1;
+        }
+        h2.tei.heading2 {
+            font-size: 1.2em;
+            margin-bottom: .6em;
+            margin-top: 1.2em;
+            padding-top: .2em;
+            font-variant: small-caps;
+            font-weight: 600;
+            line-height: 1;
+        }
+        h3.heading3 {
+            font-size: 1em;
+            margin-bottom: .4em;
+            margin-top: .1em;
+            font-weight: 600;
+            line-height: 1;
+        }
+        h4.heading4 {
+            font-size: 1em;
+            margin-bottom: .4em;
+            margin-top: .1em;
+            padding-left: 1em;
+            font-weight: 600;
+            line-height: 1;
+        }
+    }
+
+    /* Headings in intro text */
+    div[data-id="cont_introduction"] {
+        h1.tei, h2.tei, h3.tei, h4.tei, h5.tei, h6.tei {
+            text-align: left;
+        }
+        h1.tei.title {
+            font-size: 1.6em;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 1em;
+        }
+        h2.tei.heading2 {
+            font-size: 1.4em;
+            font-weight: 600;
+            font-variant: small-caps;
+            margin: 1.4em 0 1.3em 0;
+        }
+        h3.heading3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            font-style: italic;
+            margin: 1.3em 0 1.2em 0;
+        }
+        h4.heading4 {
+            font-size: 1em;
+            font-weight: 600;
+            margin: 0.8em 0 1em 0;
+        }
+        h5.heading5 {
+            font-size: 1em;
+            font-weight: normal;
+            font-style: italic;
+            margin: 0.8em 0 1em 0;
+        }
+        h6.heading6 {
+            font-size: 0.875em;
+            font-weight: normal;
+            text-transform: uppercase;
+            margin: 0.8em 0 1em 0;
+        }
+    }
+}
+
 /* Ge färg åt fotnotsmarkörerna i inledningarna. */
 page-introduction span.footnoteindicator {
     color: color($colors, primary);
