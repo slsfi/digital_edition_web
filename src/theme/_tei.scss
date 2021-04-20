@@ -2064,7 +2064,7 @@ page-introduction {
     /* Headings in intro text */
     div.tei div[data-id="cont_introduction"] {   
         header {
-            margin: 1.4em 0;
+            margin: 1.6em 0;
         }     
         h1.tei.title,
         h2.tei.heading2,
@@ -2081,7 +2081,6 @@ page-introduction {
             font-size: 1.6em;
             font-weight: 600;
             text-transform: uppercase;
-            margin: 0.2em 0;
         }
         h2.tei.heading2 {
             font-size: 1.4em;
@@ -2114,6 +2113,7 @@ page-introduction {
         header p.tei.writer {
             font-size: 0.82em;
             text-transform: uppercase;
+            margin: 0.32em 0 0 0;
             text-indent: 0;
             line-height: 1.2;
         }
