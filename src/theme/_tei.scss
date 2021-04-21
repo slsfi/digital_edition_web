@@ -1282,6 +1282,10 @@ div.tei {
     th:last-child {
         padding-right: 0;
     }
+    table caption.table-caption {
+        display: table-caption;
+        text-align: left;
+    }
     /* Style for adding a bottom border to table cells */
     .botBorder {
         border-bottom: 1px solid #000;
