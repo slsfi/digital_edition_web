@@ -985,7 +985,7 @@ export class IntroductionPage {
       const containerElemRect = containerElem.getBoundingClientRect();
       let calcWidth = containerElem.clientWidth; // Width without scrollbar
 
-      if (calcWidth > maxWidth) {
+      if (calcWidth > maxWidth + 2 * margins) {
         margins = Math.floor((calcWidth - maxWidth) / 2);
         calcWidth = maxWidth;
       } else {
