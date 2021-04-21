@@ -2059,6 +2059,9 @@ page-introduction {
             font-weight: normal;
             text-transform: none;
         }
+        span.italics {
+            font-style: italic;
+        }
     }
 
     /* Headings in intro text */
@@ -2077,58 +2080,58 @@ page-introduction {
             font-style: italic;
             margin: 0.75em 0;
         }
-        header p.tei.writer {
+        header p.writer {
             font-size: 1em;
             margin: 1.75em 0;
             text-transform: uppercase;
         }
-        header h1.tei.title > span.writer {
+        header h1.title > span.writer {
             font-size: 0.515em;
             font-variant: normal;
             font-weight: normal;
         }
-        h1.tei.title,
-        h2.tei.heading2,
-        h3.tei.heading3,
-        h4.tei.heading4,
-        h5.tei.heading5,
-        h6.tei.heading6 {
+        h1.title,
+        h2.heading2,
+        h3.heading3,
+        h4.heading4,
+        h5.heading5,
+        h6.heading6 {
             font-weight: normal;
             font-style: normal;
             text-align: left;
             line-height: 1.2;
         }
-        h1.tei.title {
+        h1.title {
             font-size: 1.6em;
             font-weight: 600;
             text-transform: uppercase;
             text-align: center;
             margin: 0;
         }
-        h2.tei.heading2 {
+        h2.heading2 {
             font-size: 1.4em;
             font-weight: 600;
             font-variant: small-caps;
             margin: 1.5em 0 1em 0;
         }
-        h3.tei.heading3 {
+        h3.heading3 {
             font-size: 1.2em;
             font-weight: 600;
             font-style: italic;
             margin: 1.4em 0 1em 0;
         }
-        h4.tei.heading4 {
+        h4.heading4 {
             font-size: 1em;
             font-weight: 600;
             font-style: italic;
             margin: 1.2em 0 0.75em 0;
         }
-        h5.tei.heading5 {
+        h5.heading5 {
             font-size: 1em;
             font-weight: 600;
             margin: 1.2em 0 0.75em 0;
         }
-        h6.tei.heading6 {
+        h6.heading6 {
             font-size: 0.875em;
             text-transform: uppercase;
             margin: 1.15em 0 0.85em 0;
