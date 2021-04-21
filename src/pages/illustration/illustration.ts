@@ -1,4 +1,4 @@
-import { Component, Renderer, ElementRef, ViewChild } from '@angular/core';
+import { Component, Renderer2, ElementRef, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, ModalController, Content, Events, App } from 'ionic-angular';
 import { ConfigService } from '@ngx-config/core';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
@@ -37,7 +37,7 @@ export class IllustrationPage {
     public viewCtrl: ViewController,
     public navCtrl: NavController,
     public navParams: NavParams,
-    private renderer: Renderer,
+    private renderer2: Renderer2,
     private elementRef: ElementRef,
     private galleryService: GalleryService,
     protected modalController: ModalController,
@@ -63,7 +63,7 @@ export class IllustrationPage {
 
   ngAfterViewInit() {
     if (!this.showDescription) {
-      this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
+      this.renderer2.listen(this.elementRef.nativeElement, 'click', (event) => {
         if (
           !event.target.classList.contains('illustration-img') &&
           !event.target.classList.contains('zoom-buttons') &&
@@ -72,6 +72,8 @@ export class IllustrationPage {
           this.viewCtrl.dismiss();
         }
       });
+
+      this.setImageInitialZoom();
     }
   }
 
@@ -128,14 +130,29 @@ export class IllustrationPage {
     nav[0].push('media-collection', params, {animate: true, direction: 'forward', animation: 'ios-transition'});
   }
 
+  setImageInitialZoom() {
+    // Get viewport width and height.
+    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+    // TODO: calculate image size and see if it has to be scaled initially
+    let img = new Image();
+    img.src = this.imgPath;
+
+    const imgHeight = img.height;
+    const imgWidth = img.width;
+
+    img = null;
+  }
+
   zoomIn() {
     this.zoom = this.zoom + 0.1;
   }
 
   zoomOut() {
     this.zoom = this.zoom - 0.1;
-    if (this.zoom < 0.5) {
-      this.zoom = 0.5;
+    if (this.zoom < 0.2) {
+      this.zoom = 0.1;
     }
   }
 
