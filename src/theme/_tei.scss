@@ -1283,8 +1283,10 @@ div.tei {
         padding-right: 0;
     }
     table caption.table-caption {
-        display: table-caption;
         text-align: left;
+        margin: 0 0 1em 0;
+        width: 100%;
+        overflow-wrap: normal;
     }
     /* Style for adding a bottom border to table cells */
     .botBorder {
