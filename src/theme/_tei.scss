@@ -1796,7 +1796,7 @@ read-text div.tei .revision.tooltiptrigger {
 }
 
 /* Could possibly be changed to affect all tables in div.tei, not just in intros. */
-page-introduction div.tei table {
+page-introduction div.tei .table-wrapper {
     margin: 1.5em 0;
 }
 page-introduction tr:first-child > td,
