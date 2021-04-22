@@ -383,7 +383,7 @@ export class SimpleSearchComponent {
             if ( String(colID).indexOf('.txt') === -1 ) {
               colID = String(colID).split(',')[0];
               this.getPublicationTOCName(colID, pubId, source);
-              if ( source['publication_name'] === undefined ) {
+              if ( source['publication_name'] === undefined && source['publication_data'] !== undefined ) {
                 source['publication_name'] = source['publication_data'][0]['pubname'];
               }
               if ( source['publication_data'] !== undefined && source['publication_data'][0]['collection_published'] === 0 ) {
