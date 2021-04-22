@@ -1270,6 +1270,9 @@ div.tei {
     }
 
     /* Tables */
+    .table-wrapper {
+        overflow-x: auto;
+    }
     table {
         table-layout: fixed;
     }
