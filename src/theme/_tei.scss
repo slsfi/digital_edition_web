@@ -1978,8 +1978,8 @@ div.tei .tooltip { display: none; }
     width: 30px;
     font-size: 0.7rem;
 	text-indent: 0;
-    font-style: normal;
-    font-weight: normal;
+    font-style: normal !important;
+    font-weight: normal !important;
 }
 .tei.show_pageNumbering span.lNumber,
 .tei.show_pageNumbering p.parIndent span.paragraph_number {
