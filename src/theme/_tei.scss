@@ -2058,40 +2058,37 @@ span.footnoteindicator {
 page-introduction {
     /* Headings in intro TOC */
     div#toc_text {
+        h1.title,
+        h2.heading2,
+        h3.heading3,
+        h4.heading4,
+        h5.heading5 {
+            font-weight: 600;
+            line-height: 1.05;
+        }
         h1.title {
             font-size: 1.2em;
             margin: 1.2em 0 0.6em 0;
             text-transform: uppercase;
-            font-weight: 600;
-            line-height: 1;
         }
         h2.heading2 {
             font-size: 1.2em;
             margin: 1.2em 0 0.6em 0;
             font-variant: small-caps;
-            font-weight: 600;
-            line-height: 1;
         }
         h3.heading3 {
             font-size: 1em;
             margin: 0.1em 0 0.4em 0;
-            font-weight: 600;
-            line-height: 1;
         }
         h4.heading4 {
             font-size: 1em;
-            font-style: italic;
             margin: 0.1em 0 0.4em 0;
             padding-left: 1em;
-            font-weight: 600;
-            line-height: 1;
         }
         h5.heading5 {
             font-size: 0.875em;
-            margin: 0.14em 0 0.57em 0;
-            padding-left: 2.28em;
-            font-weight: 600;
-            line-height: 1;
+            margin: 0.5em 0 0.457em 0;
+            padding-left: 3.429em;
         }
         span.writer {
             font-size: 0.75rem;
