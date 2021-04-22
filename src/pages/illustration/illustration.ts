@@ -25,7 +25,7 @@ export class IllustrationPage {
   apiImagePat = '';
   showDescription = true;
   zoomImage = false;
-  zoom: number;
+  zoom = 1.0;
   latestDeltaX = 0;
   latestDeltaY = 0;
   prevX = 0;
@@ -58,7 +58,6 @@ export class IllustrationPage {
     this.languageService.getLanguage().subscribe((lang: string) => {
       this.language = lang;
       this.getImageMetadata();
-      this.setImageInitialZoom();
     });
   }
 
