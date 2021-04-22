@@ -1815,6 +1815,9 @@ page-introduction div.tei tr:last-child > td {
 page-introduction div.tei figure {
     margin: 1.5em 0;
 }
+page-introduction div.tei .est_figure_graphic {
+    padding-right: 0;
+}
 
 /* Style for infoOverlay boxes. They also inherit styles from div.tei */
 .tei.infoOverlay {
