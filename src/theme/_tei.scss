@@ -1282,7 +1282,7 @@ div.tei {
     th:last-child {
         padding-right: 0;
     }
-    table caption.table-caption {
+        table caption.table-caption {
         text-align: left;
         margin: 0 0 1em 0;
         width: 100%;
@@ -1796,6 +1796,13 @@ read-text div.tei .revision.tooltiptrigger {
 page-introduction div.tei table {
     margin: 1.5em 0;
 }
+page-introduction tr:first-child > td,
+page-introduction tr:first-child > th {
+    padding-top: 0;
+}
+page-introduction tr:last-child > td {
+    padding-bottom: 0;
+}
 
 /* Style for infoOverlay boxes. They also inherit styles from div.tei */
 .tei.infoOverlay {
@@ -1959,6 +1966,8 @@ div.tei .tooltip { display: none; }
     width: 30px;
     font-size: 0.7rem;
 	text-indent: 0;
+    font-style: normal;
+    font-weight: normal;
 }
 .tei.show_pageNumbering span.lNumber,
 .tei.show_pageNumbering p.parIndent span.paragraph_number {
