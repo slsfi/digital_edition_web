@@ -128,33 +128,6 @@ export class IllustrationPage {
     nav[0].push('media-collection', params, {animate: true, direction: 'forward', animation: 'ios-transition'});
   }
 
-  setImageInitialZoom() {
-    // Get viewport width and height.
-    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-
-    let img = new Image();
-    img.src = this.imgPath;
-
-    const imgHeight = img.height;
-    const imgWidth = img.width;
-    let calcZoom = 1.0;
-
-    // Scale the image if it's width or height is more than 90 % of the viewport width
-    // or height.
-    if (imgHeight > 0.9 * vh || imgWidth > 0.9 * vw) {
-      if (imgHeight - 0.9 * vh > imgWidth - 0.9 * vw) {
-        calcZoom = (0.9 * vh) / imgHeight;
-      } else {
-        calcZoom = (0.9 * vw) / imgWidth;
-      }
-      calcZoom = Number(calcZoom.toFixed(2));
-    }
-
-    this.zoom = calcZoom;
-    img = null;
-  }
-
   zoomIn() {
     this.zoom = this.zoom + 0.1;
   }
