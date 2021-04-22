@@ -1982,19 +1982,15 @@ page-introduction .tei.show_pageNumbering {
     padding-left: 20px;
 }
 @media screen and (max-width: 800px) {
-    read-text .tei.show_pageNumbering {
-      padding-left: 28px;
+    /* Add margin on small screens when showing paragraph numbering */
+    read-text .tei.show_pageNumbering,
+    page-introduction .tei.show_pageNumbering {
+        margin-left: 8px;
     }
 }
 /* left padding if showing paragraph numbering in mobile view */
 page-read .mobile-mode-established .tei.show_pageNumbering {
     padding-left: 28px;
-}
-@media screen and (max-width: 450px) {
-    /* Add margin to intro on small screens when showing paragraph numbering*/
-    page-introduction .tei.show_pageNumbering {
-        margin-left: 8px;
-    }
 }
 
 /* PAGE BREAKS IN ORIGINAL AND EDITION */
