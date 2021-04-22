@@ -1799,6 +1799,9 @@ read-text div.tei .revision.tooltiptrigger {
 page-introduction div.tei .table-wrapper {
     margin: 1.5em 0;
 }
+page-introduction div.tei table {
+    margin: 0.25em 0;
+}
 page-introduction tr:first-child > td,
 page-introduction tr:first-child > th {
     padding-top: 0;
