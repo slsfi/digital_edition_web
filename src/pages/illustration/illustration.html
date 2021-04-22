@@ -45,7 +45,7 @@
   </ion-col>
   <ion-scroll *ngIf="zoomImage" class="illustration-box" scrollX="true" scrollY="true" zoom="true" style="height:100%; width:100%; position: relative;">
     <img alt="illustration" class="illustration-img"
-      [ngStyle]="{'transform':'scale(' + zoom + ') translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
+      [ngStyle]="{'transform':'scale(' + zoom + ') translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)', 'max-width':'100%', 'max-height':'100%'}"
       [src]="imgPath"
       (wheel)="onMouseWheel($event)"
       (pan)="handleSwipeEvent($event)"
