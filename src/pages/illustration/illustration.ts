@@ -135,13 +135,25 @@ export class IllustrationPage {
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
-    // TODO: calculate image size and see if it has to be scaled initially
     let img = new Image();
     img.src = this.imgPath;
 
     const imgHeight = img.height;
     const imgWidth = img.width;
+    let calcZoom = 1.0;
 
+    // Scale the image if it's width or height is more than 90 % of the viewport width
+    // or height.
+    if (imgHeight > 0.9 * vh || imgWidth > 0.9 * vw) {
+      if (imgHeight - 0.9 * vh > imgWidth - 0.9 * vw) {
+        calcZoom = (0.9 * vh) / imgHeight;
+      } else {
+        calcZoom = (0.9 * vw) / imgWidth;
+      }
+      calcZoom = Number(calcZoom.toFixed(2));
+    }
+
+    this.zoom = calcZoom;
     img = null;
   }
 
@@ -150,9 +162,10 @@ export class IllustrationPage {
   }
 
   zoomOut() {
-    this.zoom = this.zoom - 0.1;
     if (this.zoom < 0.2) {
       this.zoom = 0.1;
+    } else {
+      this.zoom = this.zoom - 0.1;
     }
   }
 
