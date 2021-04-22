@@ -1288,6 +1288,7 @@ div.tei {
         width: 100%;
         overflow-wrap: normal;
     }
+
     /* Style for adding a bottom border to table cells */
     .botBorder {
         border-bottom: 1px solid #000;
@@ -1789,6 +1790,11 @@ div.tei {
 read-text div.tei .unclear.tooltiptrigger,
 read-text div.tei .revision.tooltiptrigger {
     cursor: pointer;
+}
+
+/* Could possibly be changed to affect all tables in div.tei, not just in intros. */
+page-introduction div.tei table {
+    margin: 1.5em 0;
 }
 
 /* Style for infoOverlay boxes. They also inherit styles from div.tei */
