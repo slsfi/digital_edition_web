@@ -1696,9 +1696,6 @@ div.tei {
         border: 2px solid #000;
         padding: 2px;
     }
-    figure {
-        margin: 1.5em 0;
-    }
     .figure-caption {
         text-align: left;
         margin: 0.5em 0;
@@ -1808,12 +1805,15 @@ page-introduction div.tei .table-wrapper {
 page-introduction div.tei table {
     margin: 0.25em 0;
 }
-page-introduction tr:first-child > td,
-page-introduction tr:first-child > th {
+page-introduction div.tei tr:first-child > td,
+page-introduction div.tei tr:first-child > th {
     padding-top: 0;
 }
-page-introduction tr:last-child > td {
+page-introduction div.tei tr:last-child > td {
     padding-bottom: 0;
+}
+page-introduction div.tei figure {
+    margin: 1.5em 0;
 }
 
 /* Style for infoOverlay boxes. They also inherit styles from div.tei */
