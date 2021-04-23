@@ -1824,12 +1824,6 @@ page-introduction div.tei figure {
     font-size: 0.91em;
     margin: 2em 0;
 }
-page-introduction div.tei .est_figure_graphic {
-    padding-right: 0;
-}
-page-introduction div.tei .parIndent {
-    font-size: 0.91em;
-}
 
 /* Style for infoOverlay boxes. They also inherit styles from div.tei */
 .tei.infoOverlay {
@@ -2066,6 +2060,17 @@ span.footnoteindicator {
     cursor: pointer;
 }
 
+/* Introduction specific */
+page-introduction div.tei span.footnoteindicator {
+    color: color($colors, primary);
+}
+page-introduction div.tei .est_figure_graphic {
+    padding-right: 0;
+}
+page-introduction div.tei .parIndent {
+    font-size: 0.91em;
+}
+
 /* Headings in introductions */
 page-introduction {
     /* Headings in intro TOC */
@@ -2192,16 +2197,8 @@ page-introduction {
     }
 }
 
-/* Ge färg åt fotnotsmarkörerna i inledningarna. */
-page-introduction span.footnoteindicator {
-    color: color($colors, primary);
-}
-/*
-page-introduction span.footnoteindicator:hover:not(.disable-hover) {
-    color: color($colors, primary);
-    text-decoration: underline;
-}
-*/
+
+
 
 /*toc: textfärgen
 .item-md p {
