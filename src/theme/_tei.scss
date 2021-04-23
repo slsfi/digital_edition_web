@@ -1804,6 +1804,7 @@ page-introduction div.tei .table-wrapper {
 }
 page-introduction div.tei table {
     margin: 0.25em 0;
+    font-size: 0.91em;
 }
 page-introduction div.tei tr:first-child > td,
 page-introduction div.tei tr:first-child > th {
@@ -1813,10 +1814,15 @@ page-introduction div.tei tr:last-child > td {
     padding-bottom: 0;
 }
 page-introduction div.tei figure {
-    margin: 1.5em 0;
+    font-size: 0.91em;
+    margin: 2em 0;
 }
 page-introduction div.tei .est_figure_graphic {
     padding-right: 0;
+}
+
+page-introduction div.tei .parIndent {
+    font-size: 0.91em;
 }
 
 /* Style for infoOverlay boxes. They also inherit styles from div.tei */
