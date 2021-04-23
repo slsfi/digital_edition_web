@@ -57,8 +57,16 @@
       snap-disabled="true" snap-offset="0" [ngClass]="views.length > 1 ? 'multiple-columns' : 'single-column'">
       <div
         [ngClass]="'toolTip tei ' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')"
+        [class.show_comments]="readPopoverService.show.comments"
+        [class.show_personInfo]="readPopoverService.show.personInfo"
+        [class.show_placeInfo]="readPopoverService.show.placeInfo"
+        [class.show_workInfo]="readPopoverService.show.workInfo"
+        [class.show_normalisations]="readPopoverService.show.normalisations"
+        [class.show_changes]="readPopoverService.show.changes"
+        [class.show_abbreviations]="readPopoverService.show.abbreviations"
         [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left, 'max-width': toolTipMaxWidth, 'transform': 'scale(' + toolTipScaleValue + ')'}"
-        [MathJax]="toolTipText"></div>
+        [MathJax]="toolTipText">
+      </div>
       <div
         [ngClass]="'infoOverlay tei ' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')"
         [class.show_comments]="readPopoverService.show.comments"
