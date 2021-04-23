@@ -1802,6 +1802,13 @@ read-text div.tei .revision.tooltiptrigger {
 page-introduction div.tei .table-wrapper {
     margin: 1.5em 0;
 }
+page-introduction div.tei h2.heading2 + .table-wrapper,
+page-introduction div.tei h3.heading3 + .table-wrapper,
+page-introduction div.tei h4.heading4 + .table-wrapper,
+page-introduction div.tei h5.heading5 + .table-wrapper,
+page-introduction div.tei h6.heading6 + .table-wrapper {
+    margin-top: 0;
+}
 page-introduction div.tei table {
     margin: 0.3em 0;
     font-size: 0.91em;
