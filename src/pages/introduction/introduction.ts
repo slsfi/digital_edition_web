@@ -271,7 +271,9 @@ export class IntroductionPage {
     /* CLICK EVENTS */
     this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
       console.log('Click event detected');
-      this.hideToolTip();
+      if (!this.userIsTouching) {
+        this.hideToolTip();
+      }
       let eventTarget = this.getEventTarget(event);
 
       // Modal trigger for person-, place- or workinfo and info overlay trigger for footnote.
