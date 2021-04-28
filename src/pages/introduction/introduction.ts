@@ -263,10 +263,9 @@ export class IntroductionPage {
     this.textService.getCollection(this.params.get('collectionID')).subscribe(
       collection => {
         let legacyId = null;
-        console.log(collection);
         console.log(collection[0].legacy_id);
-        if (collection.legacy_id !== null) {
-          legacyId = collection.legacy_id;
+        if (collection[0].legacy_id) {
+          legacyId = collection[0].legacy_id;
         }
         this.collectionLegacyId = legacyId;
         console.log('Collection legacy id: ' + legacyId);
