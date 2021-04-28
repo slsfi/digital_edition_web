@@ -284,7 +284,6 @@ export class IntroductionPage {
     this.ngZone.runOutsideAngular(() => {
       this.unlistenFirstTouchStartEvent = this.renderer2.listen(nElement, 'touchstart', (event) => {
         this.userIsTouching = true;
-        console.log('First touchstart detected');
         // Don't listen for mouseover and mouseout events since they should have no effect on touch devices
         this.unlistenMouseoverEvents();
         this.unlistenMouseoutEvents();
@@ -294,7 +293,6 @@ export class IntroductionPage {
 
     /* CLICK EVENTS */
     this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
-      console.log('Click event detected');
       if (!this.userIsTouching) {
         this.hideToolTip();
       }
