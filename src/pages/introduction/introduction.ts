@@ -218,6 +218,7 @@ export class IntroductionPage {
     this.unlistenClickEvents();
     this.unlistenMouseoverEvents();
     this.unlistenMouseoutEvents();
+    console.log('Event listeners removed');
     this.events.publish('ionViewWillLeave', this.constructor.name);
   }
 
