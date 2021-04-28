@@ -264,6 +264,9 @@ export class IntroductionPage {
       this.unlistenFirstTouchStartEvent = this.renderer2.listen(nElement, 'touchstart', (event) => {
         this.userIsTouching = true;
         console.log('First touchstart detected');
+        // Don't listen for mouseover and mouseout events since they have no effect
+        this.unlistenMouseoverEvents();
+        this.unlistenMouseoutEvents();
         this.unlistenFirstTouchStartEvent();
       });
     });
@@ -436,7 +439,6 @@ export class IntroductionPage {
     /* MOUSE OVER EVENTS */
     this.unlistenMouseoverEvents = this.renderer2.listen(nElement, 'mouseover', (event) => {
       if (!this.userIsTouching) {
-        console.log('mouseover event detected');
         // Mouseover effects only if using a cursor, not if the user is touching the screen
         const eventTarget = this.getEventTarget(event);
 
