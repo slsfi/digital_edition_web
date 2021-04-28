@@ -436,6 +436,7 @@ export class IntroductionPage {
     /* MOUSE OVER EVENTS */
     this.unlistenMouseoverEvents = this.renderer2.listen(nElement, 'mouseover', (event) => {
       if (!this.userIsTouching) {
+        console.log('mouseover event detected');
         // Mouseover effects only if using a cursor, not if the user is touching the screen
         const eventTarget = this.getEventTarget(event);
 
