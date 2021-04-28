@@ -318,6 +318,7 @@ export class ReadPage /*implements OnDestroy*/ {
         this.events.publish('pageLoaded:single-edition', { 'title': title });
       }
     }
+    console.log('legacyId: ' + this.legacyId);
 
     if (this.params.get('matches') !== undefined) {
       this.matches = this.params.get('matches');
