@@ -161,6 +161,8 @@ export class IntroductionPage {
       this.readPopoverTogglesIntro.pageBreakOriginal = false;
     }
 
+    this.getCollectionLegacyId();
+
     // Check if we have a pos parmeter in the URL, if we have one we can use it for scrolling the text on the page to that position.
     // The pos parameter must come after the publication id followed by /#, e.g. /publication-introduction/203/#pos1
     const currentURL: string = String(window.location.href);
@@ -254,6 +256,19 @@ export class IntroductionPage {
         }
       }
     }.bind(this), 1000);
+  }
+
+  getCollectionLegacyId() {
+    this.textService.getCollection(this.params.get('collectionID')).subscribe(
+      collection => {
+        // this.collectionTitle = collection.name;
+        console.log('Collection data:');
+        console.log(collection);
+      },
+      error => {
+        console.log('could not get collection data');
+      }
+    );
   }
 
   private setUpTextListeners() {
@@ -375,7 +390,6 @@ export class IntroductionPage {
               // Check if we are already on the same page.
               if (String(publicationId) === String(this.id) && positionId !== undefined) {
                 // Same introduction.
-                newWindowRef.close();
                 positionId = positionId.replace('#', '');
 
                 // Find the element in the correct parent element.
