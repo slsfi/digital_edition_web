@@ -127,6 +127,7 @@ export class IntroductionPage {
       this.toolTipsSettings = this.config.getSettings('settings.toolTips');
     } catch (e) {
       this.toolTipsSettings = undefined;
+      console.log('Undefined toolTipsSettings');
       console.error(e);
     }
 
@@ -134,6 +135,7 @@ export class IntroductionPage {
       this.readPopoverTogglesIntro = this.config.getSettings('settings.introToggles');
     } catch (e) {
       this.readPopoverTogglesIntro = undefined;
+      console.log('Undefined readPopoverTogglesIntro');
       console.error(e);
     }
     if (this.readPopoverTogglesIntro === undefined ||
