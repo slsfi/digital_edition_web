@@ -301,6 +301,7 @@ export class IntroductionPage {
       // Links in the introduction.
       if (eventTarget.classList.contains('xreference')) {
         event.preventDefault();
+        console.log('xreference click');
         const anchorElem: HTMLAnchorElement = eventTarget as HTMLAnchorElement;
 
         if (anchorElem.classList.contains('ref_external')) {
@@ -409,6 +410,7 @@ export class IntroductionPage {
         } else {
           // Link in the introduction's TOC or link to (foot)note reference
           let targetId = '';
+          console.log('TOC-link or note reference clicked');
           if (anchorElem.hasAttribute('href')) {
             targetId = anchorElem.getAttribute('href');
           } else if (anchorElem.parentElement.hasAttribute('href')) {
@@ -424,6 +426,8 @@ export class IntroductionPage {
               // Link in the introduction's TOC, scroll to target but don't prepend arrow
               this.scrollElementIntoView(target, 'top');
             }
+          } else {
+            console.log('target not found');
           }
         }
       }
