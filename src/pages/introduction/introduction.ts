@@ -264,7 +264,7 @@ export class IntroductionPage {
       this.unlistenFirstTouchStartEvent = this.renderer2.listen(nElement, 'touchstart', (event) => {
         this.userIsTouching = true;
         console.log('First touchstart detected');
-        // Don't listen for mouseover and mouseout events since they have no effect
+        // Don't listen for mouseover and mouseout events since they should have no effect on touch devices
         this.unlistenMouseoverEvents();
         this.unlistenMouseoutEvents();
         this.unlistenFirstTouchStartEvent();
@@ -328,6 +328,7 @@ export class IntroductionPage {
           if (anchorElem.classList.contains('ref_readingtext') || anchorElem.classList.contains('ref_comment')) {
             // Link to reading text or comment.
 
+            const windowReference = window.open();
             publicationId = hrefTargetItems[0];
             textId = hrefTargetItems[1];
             this.textService.getCollectionAndPublicationByLegacyId(publicationId + '_' + textId).subscribe(data => {
@@ -355,7 +356,8 @@ export class IntroductionPage {
                 }
               }
               hrefString += '/not/infinite/nosong/searchtitle/established&comments';
-              window.open(hrefString, '_blank');
+              //window.open(hrefString, '_blank');
+              windowReference.location.href = hrefString;
             });
 
           } else if (anchorElem.classList.contains('ref_introduction')) {
