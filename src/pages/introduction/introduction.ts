@@ -328,7 +328,7 @@ export class IntroductionPage {
           if (anchorElem.classList.contains('ref_readingtext') || anchorElem.classList.contains('ref_comment')) {
             // Link to reading text or comment.
 
-            const windowReference = window.open();
+            const newWindowRef = window.open();
             publicationId = hrefTargetItems[0];
             textId = hrefTargetItems[1];
             this.textService.getCollectionAndPublicationByLegacyId(publicationId + '_' + textId).subscribe(data => {
@@ -356,8 +356,7 @@ export class IntroductionPage {
                 }
               }
               hrefString += '/not/infinite/nosong/searchtitle/established&comments';
-              //window.open(hrefString, '_blank');
-              windowReference.location.href = hrefString;
+              newWindowRef.location.href = hrefString;
             });
 
           } else if (anchorElem.classList.contains('ref_introduction')) {
@@ -367,6 +366,7 @@ export class IntroductionPage {
               positionId = hrefTargetItems[hrefTargetItems.length - 1];
             }
 
+            const newWindowRef = window.open();
             this.textService.getCollectionAndPublicationByLegacyId(publicationId).subscribe(data => {
               if (data[0] !== undefined) {
                 publicationId = data[0]['coll_id'];
@@ -375,6 +375,7 @@ export class IntroductionPage {
               // Check if we are already on the same page.
               if (String(publicationId) === String(this.id) && positionId !== undefined) {
                 // Same introduction.
+                newWindowRef.close();
                 positionId = positionId.replace('#', '');
 
                 // Find the element in the correct parent element.
@@ -408,7 +409,7 @@ export class IntroductionPage {
                   positionId = hrefTargetItems[1];
                   hrefString += '/' + positionId;
                 }
-                window.open(hrefString, '_blank');
+                newWindowRef.location.href = hrefString;
               }
             });
           }
