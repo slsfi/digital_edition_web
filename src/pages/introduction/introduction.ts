@@ -1,5 +1,5 @@
 import { TranslateService } from '@ngx-translate/core';
-import { Component, Renderer2, ElementRef, SecurityContext } from '@angular/core';
+import { Component, Renderer2, ElementRef, SecurityContext, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, Platform, PopoverController, ModalController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LanguageService } from '../../app/services/languages/language.service';
@@ -45,6 +45,7 @@ export class IntroductionPage {
   public tocMenuOpen: boolean;
   public hasSeparateIntroToc: boolean;
   readPopoverTogglesIntro: Record<string, any> = {};
+  toolTipsSettings: Record<string, any> = {};
   toolTipPosition: object;
   toolTipMaxWidth: string;
   toolTipScaleValue: number;
@@ -79,6 +80,7 @@ export class IntroductionPage {
     protected sanitizer: DomSanitizer,
     protected params: NavParams,
     private renderer2: Renderer2,
+    private ngZone: NgZone,
     private tooltipService: TooltipService,
     private elementRef: ElementRef,
     protected popoverCtrl: PopoverController,
@@ -119,6 +121,13 @@ export class IntroductionPage {
     }
     if ( this.id !== undefined ) {
       this.getTocRoot(this.id);
+    }
+
+    try {
+      this.toolTipsSettings = this.config.getSettings('settings.toolTips');
+    } catch (e) {
+      this.toolTipsSettings = undefined;
+      console.error(e);
     }
 
     try {
@@ -247,13 +256,18 @@ export class IntroductionPage {
   private setUpTextListeners() {
     const nElement: HTMLElement = this.elementRef.nativeElement;
 
-    this.unlistenFirstTouchStartEvent = this.renderer2.listen(nElement, 'touchstart', (event) => {
-      this.userIsTouching = true;
-      this.unlistenFirstTouchStartEvent();
-    }).bind(this);
+    /* CHECK ONCE IF THE USER IF TOUCHING THE SCREEN */
+    this.ngZone.runOutsideAngular(() => {
+      this.unlistenFirstTouchStartEvent = this.renderer2.listen(nElement, 'touchstart', (event) => {
+        this.userIsTouching = true;
+        console.log('First touchstart detected');
+        this.unlistenFirstTouchStartEvent();
+      });
+    });
 
     /* CLICK EVENTS */
     this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
+      console.log('Click event detected');
       this.hideToolTip();
       let eventTarget = this.getEventTarget(event);
 
@@ -408,14 +422,7 @@ export class IntroductionPage {
           }
         }
       }
-    }).bind(this);
-
-    let toolTipsSettings;
-    try {
-      toolTipsSettings = this.config.getSettings('settings.toolTips');
-    } catch (e) {
-      console.error(e);
-    }
+    });
 
     /* MOUSE OVER EVENTS */
     this.unlistenMouseoverEvents = this.renderer2.listen(nElement, 'mouseover', (event) => {
@@ -425,29 +432,29 @@ export class IntroductionPage {
 
         if (eventTarget['classList'].contains('tooltiptrigger')) {
           if (eventTarget.hasAttribute('data-id')) {
-            if (toolTipsSettings.personInfo && eventTarget['classList'].contains('person')
+            if (this.toolTipsSettings.personInfo && eventTarget['classList'].contains('person')
             && this.readPopoverService.show.personInfo) {
               this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-            } else if (toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName')
+            } else if (this.toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName')
             && this.readPopoverService.show.placeInfo) {
               this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-            } else if (toolTipsSettings.workInfo && eventTarget['classList'].contains('title')
+            } else if (this.toolTipsSettings.workInfo && eventTarget['classList'].contains('title')
             && this.readPopoverService.show.workInfo) {
               this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-            } else if (toolTipsSettings.footNotes && eventTarget['classList'].contains('ttFoot')) {
+            } else if (this.toolTipsSettings.footNotes && eventTarget['classList'].contains('ttFoot')) {
               this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
             }
           }
         }
       }
-    }).bind(this);
+    });
 
     /* MOUSE OUT EVENTS */
     this.unlistenMouseoutEvents = this.renderer2.listen(nElement, 'mouseout', (event) => {
       if (!this.userIsTouching) {
         this.hideToolTip();
       }
-    }).bind(this);
+    });
   }
 
   showPersonTooltip(id: string, targetElem: HTMLElement, origin: any) {
