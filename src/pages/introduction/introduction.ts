@@ -67,7 +67,7 @@ export class IntroductionPage {
   tocItems: GeneralTocItem[];
   intervalTimerId: number;
   userIsTouching: Boolean = false;
-  collectionLegacyId: number;
+  collectionLegacyId: string;
   private unlistenClickEvents: () => void;
   private unlistenMouseoverEvents: () => void;
   private unlistenMouseoutEvents: () => void;
@@ -162,7 +162,7 @@ export class IntroductionPage {
       this.readPopoverTogglesIntro.pageBreakOriginal = false;
     }
 
-    this.collectionLegacyId = this.getCollectionLegacyId();
+    this.setCollectionLegacyId();
 
     // Check if we have a pos parmeter in the URL, if we have one we can use it for scrolling the text on the page to that position.
     // The pos parameter must come after the publication id followed by /#, e.g. /publication-introduction/203/#pos1
@@ -259,19 +259,21 @@ export class IntroductionPage {
     }.bind(this), 1000);
   }
 
-  getCollectionLegacyId() {
+  setCollectionLegacyId() {
     this.textService.getCollection(this.params.get('collectionID')).subscribe(
       collection => {
-        let legacy_id = null;
-        if (collection.legacy_id) {
-          legacy_id = parseInt(collection.legacy_id);
+        let legacyId = null;
+        console.log(collection);
+        console.log(collection.legacy_id);
+        if (collection.legacy_id !== null) {
+          legacyId = collection.legacy_id;
         }
-        console.log('Collection legacy id: ' + legacy_id);
-        return legacy_id;
+        this.collectionLegacyId = legacyId;
+        console.log('Collection legacy id: ' + legacyId);
       },
       error => {
+        this.collectionLegacyId = null;
         console.log('could not get collection data trying to resolve collection legacy id');
-        return null;
       }
     );
   }
