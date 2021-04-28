@@ -65,9 +65,11 @@ export class IntroductionPage {
   textLoading: Boolean = true;
   tocItems: GeneralTocItem[];
   intervalTimerId: number;
+  userIsTouching: Boolean = false;
   private unlistenClickEvents: () => void;
   private unlistenMouseoverEvents: () => void;
   private unlistenMouseoutEvents: () => void;
+  private unlistenFirstTouchStartEvent: () => void;
 
   constructor(
     public navCtrl: NavController,
@@ -245,6 +247,11 @@ export class IntroductionPage {
   private setUpTextListeners() {
     const nElement: HTMLElement = this.elementRef.nativeElement;
 
+    this.unlistenFirstTouchStartEvent = this.renderer2.listen(nElement, 'touchstart', (event) => {
+      this.userIsTouching = true;
+      this.unlistenFirstTouchStartEvent();
+    }).bind(this);
+
     /* CLICK EVENTS */
     this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
       this.hideToolTip();
@@ -412,7 +419,8 @@ export class IntroductionPage {
 
     /* MOUSE OVER EVENTS */
     this.unlistenMouseoverEvents = this.renderer2.listen(nElement, 'mouseover', (event) => {
-      if (this.userSettingsService.isDesktop()) {
+      if (!this.userIsTouching) {
+        // Mouseover effects only if using a cursor, not if the user is touching the screen
         const eventTarget = this.getEventTarget(event);
 
         if (eventTarget['classList'].contains('tooltiptrigger')) {
@@ -436,7 +444,9 @@ export class IntroductionPage {
 
     /* MOUSE OUT EVENTS */
     this.unlistenMouseoutEvents = this.renderer2.listen(nElement, 'mouseout', (event) => {
-      this.hideToolTip();
+      if (!this.userIsTouching) {
+        this.hideToolTip();
+      }
     }).bind(this);
   }
 
