@@ -264,7 +264,7 @@ export class IntroductionPage {
       collection => {
         let legacyId = null;
         console.log(collection);
-        console.log(collection.legacy_id);
+        console.log(collection[0].legacy_id);
         if (collection.legacy_id !== null) {
           legacyId = collection.legacy_id;
         }
