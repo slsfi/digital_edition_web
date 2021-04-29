@@ -1136,28 +1136,35 @@ export class IntroductionPage {
     const eventTarget: HTMLElement = event.target as HTMLElement;
 
     try {
-      if (eventTarget.getAttribute('data-id')) {
-        return eventTarget;
-      }
+      if (eventTarget !== undefined && eventTarget !== null) {
+        if (eventTarget.getAttribute('data-id')) {
+          return eventTarget;
+        }
 
-      if (eventTarget.classList.contains('tooltiptrigger')) {
-        return eventTarget;
-      } else if (eventTarget.parentElement !== undefined && eventTarget.parentElement !== null) {
-        if (eventTarget.parentElement.classList.contains('tooltiptrigger')) {
-          return eventTarget.parentElement;
-        } else {
-          if (eventTarget.parentElement.parentElement !== undefined && eventTarget.parentElement.parentElement !== null) {
-            if (eventTarget.parentElement.parentElement.classList.contains('tooltiptrigger')) {
-              return eventTarget.parentElement.parentElement;
+        if (eventTarget.classList.contains('tooltiptrigger')) {
+          return eventTarget;
+        } else if (eventTarget.parentElement !== undefined && eventTarget.parentElement !== null) {
+          if (eventTarget.parentElement.classList.contains('tooltiptrigger')) {
+            return eventTarget.parentElement;
+          } else {
+            if (eventTarget.parentElement.parentElement !== undefined && eventTarget.parentElement.parentElement !== null) {
+              if (eventTarget.parentElement.parentElement.classList.contains('tooltiptrigger')) {
+                return eventTarget.parentElement.parentElement;
+              }
             }
           }
         }
+        if (eventTarget.classList.contains('anchor')) {
+          return eventTarget;
+        } else {
+          return document.createElement('div');
+        }
       } else {
-        return eventTarget;
+        return document.createElement('div');
       }
     } catch (e) {
       console.error(e);
-      return eventTarget;
+      return document.createElement('div');
     }
   }
 
