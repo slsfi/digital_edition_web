@@ -1084,15 +1084,17 @@ export class IntroductionPage {
 
   private scrollToHTMLElement(element: HTMLElement, position = 'top', timeOut = 5000) {
     try {
-      const tmpImage: HTMLImageElement = new Image();
-      tmpImage.src = 'assets/images/ms_arrow_right.svg';
-      tmpImage.alt = 'arrow right image';
-      tmpImage.classList.add('inl_ms_arrow');
-      element.parentElement.insertBefore(tmpImage, element);
-      this.scrollElementIntoView(tmpImage, position);
-      setTimeout(function() {
-        element.parentElement.removeChild(tmpImage);
-      }, timeOut);
+      this.ngZone.runOutsideAngular(() => {
+        const tmpImage: HTMLImageElement = new Image();
+        tmpImage.src = 'assets/images/ms_arrow_right.svg';
+        tmpImage.alt = 'arrow right image';
+        tmpImage.classList.add('inl_ms_arrow');
+        element.parentElement.insertBefore(tmpImage, element);
+        this.scrollElementIntoView(tmpImage, position);
+        setTimeout(function() {
+          element.parentElement.removeChild(tmpImage);
+        }, timeOut);
+      });
     } catch ( e ) {
       console.error(e);
     }
