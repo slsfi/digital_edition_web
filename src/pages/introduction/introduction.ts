@@ -1157,13 +1157,18 @@ export class IntroductionPage {
 
         if (eventTarget.classList.contains('tooltiptrigger')) {
           return eventTarget;
-        } else if (eventTarget.parentElement !== undefined && eventTarget.parentElement !== null
-        && eventTarget.parentElement.classList.contains('tooltiptrigger')) {
-          return eventTarget.parentElement;
-        } else if (eventTarget.parentElement.parentElement !== undefined && eventTarget.parentElement.parentElement !== null
-        && eventTarget.parentElement.parentElement.classList.contains('tooltiptrigger')) {
-          return eventTarget.parentElement.parentElement;
-        } else if (eventTarget.classList.contains('anchor')) {
+        } else if (eventTarget.parentElement !== undefined && eventTarget.parentElement !== null) {
+          if (eventTarget.parentElement.classList.contains('tooltiptrigger')) {
+            return eventTarget.parentElement;
+          } else {
+            if (eventTarget.parentElement.parentElement !== undefined && eventTarget.parentElement.parentElement !== null) {
+              if (eventTarget.parentElement.parentElement.classList.contains('tooltiptrigger')) {
+                return eventTarget.parentElement.parentElement;
+              }
+            }
+          }
+        }
+        if (eventTarget.classList.contains('anchor')) {
           return eventTarget;
         } else {
           return document.createElement('div');
