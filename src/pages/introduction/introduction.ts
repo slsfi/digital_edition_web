@@ -228,7 +228,7 @@ export class IntroductionPage {
   }
 
   ngDoCheck() {
-    console.trace();
+    console.log('Angular change detection triggered!');
   }
 
   /** Try to scroll to an element in the text, checks if "pos" given.
