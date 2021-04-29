@@ -298,28 +298,28 @@ export class IntroductionPage {
         }
         let eventTarget = this.getEventTarget(event);
 
-        if (eventTarget.hasAttribute('id') && eventTarget.getAttribute('id') === 'toc_menu') {
+        if (eventTarget.getAttribute('id') === 'toc_menu') {
           this.ngZone.run(() => {
             this.toggleTocMenu();
           });
         }
 
         // Modal trigger for person-, place- or workinfo and info overlay trigger for footnote.
-        if (eventTarget['classList'].contains('tooltiptrigger') && eventTarget.hasAttribute('data-id')) {
+        if (eventTarget.classList.contains('tooltiptrigger') && eventTarget.hasAttribute('data-id')) {
           this.ngZone.run(() => {
-            if (eventTarget['classList'].contains('person') && this.readPopoverService.show.personInfo) {
+            if (eventTarget.classList.contains('person') && this.readPopoverService.show.personInfo) {
               this.showPersonModal(eventTarget.getAttribute('data-id'));
-            } else if (eventTarget['classList'].contains('placeName') && this.readPopoverService.show.placeInfo) {
+            } else if (eventTarget.classList.contains('placeName') && this.readPopoverService.show.placeInfo) {
               this.showPlaceModal(eventTarget.getAttribute('data-id'));
-            } else if (eventTarget['classList'].contains('title') && this.readPopoverService.show.workInfo) {
+            } else if (eventTarget.classList.contains('title') && this.readPopoverService.show.workInfo) {
               this.showWorkModal(eventTarget.getAttribute('data-id'));
-            } else if (eventTarget['classList'].contains('ttFoot')) {
+            } else if (eventTarget.classList.contains('ttFoot')) {
               this.showFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
             }
           });
         }
 
-        // Click on link.
+        // Possibly click on link.
         eventTarget = event.target as HTMLElement;
         if (eventTarget !== null && !eventTarget.classList.contains('xreference')) {
           eventTarget = eventTarget.parentElement;
@@ -467,22 +467,22 @@ export class IntroductionPage {
           // Mouseover effects only if using a cursor, not if the user is touching the screen
           const eventTarget = this.getEventTarget(event);
 
-          if (eventTarget['classList'].contains('tooltiptrigger')) {
+          if (eventTarget.classList.contains('tooltiptrigger')) {
             if (eventTarget.hasAttribute('data-id')) {
               this.ngZone.run(() => {
-                if (this.toolTipsSettings.personInfo && eventTarget['classList'].contains('person')
+                if (this.toolTipsSettings.personInfo && eventTarget.classList.contains('person')
                 && this.readPopoverService.show.personInfo) {
                   this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
                   this.tooltipShown = true;
-                } else if (this.toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName')
+                } else if (this.toolTipsSettings.placeInfo && eventTarget.classList.contains('placeName')
                 && this.readPopoverService.show.placeInfo) {
                   this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
                   this.tooltipShown = true;
-                } else if (this.toolTipsSettings.workInfo && eventTarget['classList'].contains('title')
+                } else if (this.toolTipsSettings.workInfo && eventTarget.classList.contains('title')
                 && this.readPopoverService.show.workInfo) {
                   this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
                   this.tooltipShown = true;
-                } else if (this.toolTipsSettings.footNotes && eventTarget['classList'].contains('ttFoot')) {
+                } else if (this.toolTipsSettings.footNotes && eventTarget.classList.contains('ttFoot')) {
                   this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
                   this.tooltipShown = true;
                 }
@@ -1139,40 +1139,39 @@ export class IntroductionPage {
   }
 
   private getEventTarget(event) {
-    let eventTarget: HTMLElement = document.createElement('div');
-    let eventTargetHTML = event.target as HTMLElement;
+    const eventTarget: HTMLElement = event.target as HTMLElement;
 
     try {
-      if (event.target.getAttribute('data-id')) {
-        return event.target;
-      }
-
-      if (eventTargetHTML.getAttribute('id') === 'toc_menu') {
-        return eventTargetHTML;
-      } else if (eventTargetHTML.parentElement !== null && eventTargetHTML.parentElement.getAttribute('id') === 'toc_menu') {
-        return eventTargetHTML.parentElement;
-      }
-
-      if (event.target !== undefined && event.target !== null && event.target['classList'] !== undefined
-      && event.target['classList'].contains('tooltiptrigger')) {
-        eventTarget = event.target;
-      } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null) {
-        if (event['target']['parentNode']['classList'] !== undefined && event['target']['parentNode']['classList'] !== null
-        && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
-          eventTarget = event['target']['parentNode'];
+      if (eventTarget !== undefined && eventTarget !== null) {
+        if (eventTarget.getAttribute('data-id')) {
+          return eventTarget;
         }
-      } else if (event['target']['parentNode']['parentNode'] !== undefined && event['target']['parentNode']['parentNode'] !== null
-      && event['target']['parentNode']['classList'] !== undefined
-      && event['target']['parentNode']['parentNode']['classList'].contains('tooltiptrigger')) {
-        eventTarget = event['target']['parentNode']['parentNode'];
-      } else if (event.target !== undefined && event.target !== null
-      && event['target']['classList'] !== undefined && event['target']['classList'].contains('anchor')) {
-        eventTarget = event.target;
+
+        if (eventTarget.getAttribute('id') === 'toc_menu') {
+          return eventTarget;
+        } else if (eventTarget.parentElement !== null && eventTarget.parentElement.getAttribute('id') === 'toc_menu') {
+          return eventTarget.parentElement;
+        }
+
+        if (eventTarget.classList.contains('tooltiptrigger')) {
+          return eventTarget;
+        } else if (eventTarget.parentElement !== undefined && eventTarget.parentElement !== null
+        && eventTarget.parentElement.classList.contains('tooltiptrigger')) {
+          return eventTarget.parentElement;
+        } else if (eventTarget.parentElement.parentElement !== undefined && eventTarget.parentElement.parentElement !== null
+        && eventTarget.parentElement.parentElement.classList.contains('tooltiptrigger')) {
+          return eventTarget.parentElement.parentElement;
+        } else if (eventTarget.classList.contains('anchor')) {
+          return eventTarget;
+        } else {
+          return document.createElement('div');
+        }
+      } else {
+        return document.createElement('div');
       }
-      return eventTarget;
     } catch (e) {
       console.error(e);
-      return eventTarget;
+      return document.createElement('div');
     }
   }
 
