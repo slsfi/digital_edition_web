@@ -317,8 +317,10 @@ export class IntroductionPage {
         eventTarget = event.target as HTMLElement;
         if (eventTarget !== null && !eventTarget.classList.contains('xreference')) {
           eventTarget = eventTarget.parentElement;
-          if (eventTarget !== null && !eventTarget.classList.contains('xreference')) {
-            eventTarget = eventTarget.parentElement;
+          if (eventTarget !== null) {
+            if (!eventTarget.classList.contains('xreference')) {
+              eventTarget = eventTarget.parentElement;
+            }
           }
         }
 
