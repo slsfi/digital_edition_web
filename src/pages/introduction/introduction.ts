@@ -1135,31 +1135,35 @@ export class IntroductionPage {
   private getEventTarget(event) {
     let eventTarget: HTMLElement = document.createElement('div');
 
-    if (event.target.getAttribute('data-id')) {
-      return event.target;
-    }
-
-    if (event.target.getAttribute('id') === 'toc_menu') {
-      return event.target;
-    }
-
-    if (event.target !== undefined && event.target !== null && event.target['classList'] !== undefined
-    && event.target['classList'].contains('tooltiptrigger')) {
-      eventTarget = event.target;
-    } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null) {
-      if (event['target']['parentNode']['classList'] !== undefined && event['target']['parentNode']['classList'] !== null
-      && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
-        eventTarget = event['target']['parentNode'];
+    try {
+      if (event.target.getAttribute('data-id')) {
+        return event.target;
       }
-    } else if (event['target']['parentNode']['parentNode'] !== undefined && event['target']['parentNode']['parentNode'] !== null
-    && event['target']['parentNode']['classList'] !== undefined
-    && event['target']['parentNode']['parentNode']['classList'].contains('tooltiptrigger')) {
-      eventTarget = event['target']['parentNode']['parentNode'];
-    } else if (event.target !== undefined && event.target !== null
-    && event['target']['classList'] !== undefined && event['target']['classList'].contains('anchor')) {
-      eventTarget = event.target;
+
+      if (event.target.getAttribute('id') === 'toc_menu') {
+        return event.target;
+      }
+
+      if (event.target !== undefined && event.target !== null && event.target['classList'] !== undefined
+      && event.target['classList'].contains('tooltiptrigger')) {
+        eventTarget = event.target;
+      } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null) {
+        if (event['target']['parentNode']['classList'] !== undefined && event['target']['parentNode']['classList'] !== null
+        && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
+          eventTarget = event['target']['parentNode'];
+        }
+      } else if (event['target']['parentNode']['parentNode'] !== undefined && event['target']['parentNode']['parentNode'] !== null
+      && event['target']['parentNode']['classList'] !== undefined
+      && event['target']['parentNode']['parentNode']['classList'].contains('tooltiptrigger')) {
+        eventTarget = event['target']['parentNode']['parentNode'];
+      } else if (event.target !== undefined && event.target !== null
+      && event['target']['classList'] !== undefined && event['target']['classList'].contains('anchor')) {
+        eventTarget = event.target;
+      }
+      return eventTarget;
+    } catch (e) {
+      console.error(e);
     }
-    return eventTarget;
   }
 
   getTocRoot(id: string) {
@@ -1264,12 +1268,10 @@ export class IntroductionPage {
   }
 
   private toggleTocMenu() {
-    this.ngZone.run(() => {
-      if ( this.tocMenuOpen ) {
-        this.tocMenuOpen = false;
-      } else {
-        this.tocMenuOpen = true;
-      }
-    });
+    if ( this.tocMenuOpen ) {
+      this.tocMenuOpen = false;
+    } else {
+      this.tocMenuOpen = true;
+    }
   }
 }
