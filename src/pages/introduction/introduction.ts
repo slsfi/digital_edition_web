@@ -206,7 +206,9 @@ export class IntroductionPage {
               }
             }
             // Try to scroll to an element in the text, checks if "pos" given
-            this.scrollToPos();
+            this.ngZone.runOutsideAngular(() => {
+              this.scrollToPos();
+            });
           },
         error =>  {this.errorMessage = <any>error; this.textLoading = false; }
 
@@ -221,8 +223,12 @@ export class IntroductionPage {
     this.unlistenClickEvents();
     this.unlistenMouseoverEvents();
     this.unlistenMouseoutEvents();
-    console.log('Event listeners removed');
+    this.unlistenFirstTouchStartEvent();
     this.events.publish('ionViewWillLeave', this.constructor.name);
+  }
+
+  ngDoCheck() {
+    console.trace();
   }
 
   /** Try to scroll to an element in the text, checks if "pos" given.
