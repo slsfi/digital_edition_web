@@ -1,5 +1,5 @@
 import { TranslateService } from '@ngx-translate/core';
-import { Component, Renderer2, ElementRef, SecurityContext, NgZone, AfterViewChecked } from '@angular/core';
+import { Component, Renderer2, ElementRef, SecurityContext, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, Platform, PopoverController, ModalController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LanguageService } from '../../app/services/languages/language.service';
@@ -34,7 +34,7 @@ import { OccurrencesPage } from '../occurrences/occurrences';
   selector: 'page-introduction',
   templateUrl: 'introduction.html',
 })
-export class IntroductionPage implements AfterViewChecked {
+export class IntroductionPage {
 
   errorMessage: any;
   protected id: string;
@@ -181,13 +181,9 @@ export class IntroductionPage implements AfterViewChecked {
     });
   }
 
-  ngAfterViewChecked() {
-    console.log('Change detection triggered!');
-  }
-
   ionViewWillEnter() {
     this.events.publish('ionViewWillEnter', this.constructor.name);
-    // this.setUpTextListeners();
+    this.setUpTextListeners();
   }
 
   ionViewDidLoad() {
