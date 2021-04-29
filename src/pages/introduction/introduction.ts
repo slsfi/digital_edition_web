@@ -206,9 +206,7 @@ export class IntroductionPage {
               }
             }
             // Try to scroll to an element in the text, checks if "pos" given
-            this.ngZone.runOutsideAngular(() => {
-              this.scrollToPos();
-            });
+            this.scrollToPos();
           },
         error =>  {this.errorMessage = <any>error; this.textLoading = false; }
 
@@ -230,35 +228,37 @@ export class IntroductionPage {
   /** Try to scroll to an element in the text, checks if "pos" given.
    *  Timeout, to give text some time to load on the page. */
   private scrollToPos() {
-    let interationsLeft = 10;
-    clearInterval(this.intervalTimerId);
-    this.intervalTimerId = setInterval(function() {
-      if (interationsLeft < 1) {
-        clearInterval(this.intervalTimerId);
-      } else {
-        interationsLeft -= 1;
-        if (this.pos !== null && this.pos !== undefined) {
-          let positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
-          if (positionElement !== null && positionElement !== undefined) {
-            const parentElem = positionElement.parentElement;
-            if ( (parentElem !== null && parentElem.classList.contains('ttFixed'))
-            || (parentElem.parentElement !== null && parentElem.parentElement.classList.contains('ttFixed')) ) {
-                // Anchor is in footnote --> look for next occurence since the first footnote element
-                // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
-                // the position we need to find).
-                positionElement = document.getElementsByName(this.pos)[1] as HTMLElement;
-            }
-            if (positionElement !== null && positionElement !== undefined
-            && positionElement.classList.contains('anchor')) {
-              this.scrollToHTMLElement(positionElement);
-              clearInterval(this.intervalTimerId);
-            }
-          }
-        } else {
+    this.ngZone.runOutsideAngular(() => {
+      let interationsLeft = 10;
+      clearInterval(this.intervalTimerId);
+      this.intervalTimerId = setInterval(function() {
+        if (interationsLeft < 1) {
           clearInterval(this.intervalTimerId);
+        } else {
+          interationsLeft -= 1;
+          if (this.pos !== null && this.pos !== undefined) {
+            let positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
+            if (positionElement !== null && positionElement !== undefined) {
+              const parentElem = positionElement.parentElement;
+              if ( (parentElem !== null && parentElem.classList.contains('ttFixed'))
+              || (parentElem.parentElement !== null && parentElem.parentElement.classList.contains('ttFixed')) ) {
+                  // Anchor is in footnote --> look for next occurence since the first footnote element
+                  // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
+                  // the position we need to find).
+                  positionElement = document.getElementsByName(this.pos)[1] as HTMLElement;
+              }
+              if (positionElement !== null && positionElement !== undefined
+              && positionElement.classList.contains('anchor')) {
+                this.scrollToHTMLElement(positionElement);
+                clearInterval(this.intervalTimerId);
+              }
+            }
+          } else {
+            clearInterval(this.intervalTimerId);
+          }
         }
-      }
-    }.bind(this), 1000);
+      }.bind(this), 1000);
+    });
   }
 
   storeCollectionLegacyId() {
@@ -280,8 +280,9 @@ export class IntroductionPage {
   private setUpTextListeners() {
     const nElement: HTMLElement = this.elementRef.nativeElement;
 
-    /* CHECK ONCE IF THE USER IF TOUCHING THE SCREEN */
     this.ngZone.runOutsideAngular(() => {
+
+      /* CHECK ONCE IF THE USER IF TOUCHING THE SCREEN */
       this.unlistenFirstTouchStartEvent = this.renderer2.listen(nElement, 'touchstart', (event) => {
         this.userIsTouching = true;
         // Don't listen for mouseover and mouseout events since they should have no effect on touch devices
@@ -289,10 +290,8 @@ export class IntroductionPage {
         this.unlistenMouseoutEvents();
         this.unlistenFirstTouchStartEvent();
       });
-    });
 
-    /* CLICK EVENTS */
-    this.ngZone.runOutsideAngular(() => {
+      /* CLICK EVENTS */
       this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
         if (!this.userIsTouching && this.tooltipShown) {
           this.hideToolTip();
@@ -455,10 +454,8 @@ export class IntroductionPage {
           }
         }
       });
-    });
 
-    /* MOUSE OVER EVENTS */
-    this.ngZone.runOutsideAngular(() => {
+      /* MOUSE OVER EVENTS */
       this.unlistenMouseoverEvents = this.renderer2.listen(nElement, 'mouseover', (event) => {
         if (!this.userIsTouching) {
           // Mouseover effects only if using a cursor, not if the user is touching the screen
@@ -488,10 +485,8 @@ export class IntroductionPage {
           }
         }
       });
-    });
 
-    /* MOUSE OUT EVENTS */
-    this.ngZone.runOutsideAngular(() => {
+      /* MOUSE OUT EVENTS */
       this.unlistenMouseoutEvents = this.renderer2.listen(nElement, 'mouseout', (event) => {
         if (!this.userIsTouching && this.tooltipShown) {
           this.ngZone.run(() => {
@@ -499,6 +494,7 @@ export class IntroductionPage {
           });
         }
       });
+
     });
   }
 
