@@ -1147,7 +1147,7 @@ export class IntroductionPage {
     && event.target['classList'].contains('tooltiptrigger')) {
       eventTarget = event.target;
     } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null) {
-      if (event['target']['parentNode']['classList'] !== undefined
+      if (event['target']['parentNode']['classList'] !== undefined && event['target']['parentNode']['classList'] !== null
       && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
         eventTarget = event['target']['parentNode'];
       }
