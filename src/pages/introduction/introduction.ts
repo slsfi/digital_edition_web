@@ -1162,6 +1162,7 @@ export class IntroductionPage {
       }
       return eventTarget;
     } catch (e) {
+      return eventTarget;
       console.error(e);
     }
   }
