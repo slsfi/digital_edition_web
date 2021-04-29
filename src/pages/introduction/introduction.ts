@@ -262,16 +262,14 @@ export class IntroductionPage {
   setCollectionLegacyId() {
     this.textService.getCollection(this.params.get('collectionID')).subscribe(
       collection => {
-        let legacyId = null;
-        console.log(collection[0].legacy_id);
+        this.collectionLegacyId = '';
         if (collection[0].legacy_id) {
-          legacyId = collection[0].legacy_id;
+          this.collectionLegacyId = collection[0].legacy_id;
         }
-        this.collectionLegacyId = legacyId;
-        console.log('Collection legacy id: ' + legacyId);
+        console.log('Collection legacy id: ' + this.collectionLegacyId);
       },
       error => {
-        this.collectionLegacyId = null;
+        this.collectionLegacyId = '';
         console.log('could not get collection data trying to resolve collection legacy id');
       }
     );
@@ -385,51 +383,51 @@ export class IntroductionPage {
               positionId = hrefTargetItems[hrefTargetItems.length - 1];
             }
 
-            const newWindowRef = window.open();
-            this.textService.getCollectionAndPublicationByLegacyId(publicationId).subscribe(data => {
-              if (data[0] !== undefined) {
-                publicationId = data[0]['coll_id'];
+            // Check if we are already on the same page.
+            if ( (String(publicationId) === String(this.id) || String(publicationId) === String(this.collectionLegacyId))
+            && positionId !== undefined ) {
+              // Same introduction.
+              positionId = positionId.replace('#', '');
+
+              // Find the element in the correct parent element.
+              const matchingElements = document.getElementsByName(positionId);
+              let targetElement = null;
+              const refType = 'PAGE-INTRODUCTION';
+              for (let i = 0; i < matchingElements.length; i++) {
+                let parentElem = matchingElements[i].parentElement;
+                while (parentElem !== null && parentElem.tagName !== refType) {
+                  parentElem = parentElem.parentElement;
+                }
+                if (parentElem !== null && parentElem.tagName === refType) {
+                  targetElement = matchingElements[i] as HTMLElement;
+                  if (targetElement.parentElement.classList.contains('ttFixed')
+                  || targetElement.parentElement.parentElement.classList.contains('ttFixed')) {
+                    // Found position is in footnote --> look for next occurence since the first footnote element
+                    // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
+                    // the position we need to find).
+                  } else {
+                    break;
+                  }
+                }
               }
-
-              // Check if we are already on the same page.
-              if (String(publicationId) === String(this.id) && positionId !== undefined) {
-                // Same introduction.
-                positionId = positionId.replace('#', '');
-
-                // Find the element in the correct parent element.
-                const matchingElements = document.getElementsByName(positionId);
-                let targetElement = null;
-                const refType = 'PAGE-INTRODUCTION';
-                for (let i = 0; i < matchingElements.length; i++) {
-                  let parentElem = matchingElements[i].parentElement;
-                  while (parentElem !== null && parentElem.tagName !== refType) {
-                    parentElem = parentElem.parentElement;
-                  }
-                  if (parentElem !== null && parentElem.tagName === refType) {
-                    targetElement = matchingElements[i] as HTMLElement;
-                    if (targetElement.parentElement.classList.contains('ttFixed')
-                    || targetElement.parentElement.parentElement.classList.contains('ttFixed')) {
-                      // Found position is in footnote --> look for next occurence since the first footnote element
-                      // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
-                      // the position we need to find).
-                    } else {
-                      break;
-                    }
-                  }
+              if (targetElement !== null && targetElement.classList.contains('anchor')) {
+                this.scrollToHTMLElement(targetElement);
+              }
+            } else {
+              // Different introduction, open in new window.
+              const newWindowRef = window.open();
+              this.textService.getCollectionAndPublicationByLegacyId(publicationId).subscribe(data => {
+                if (data[0] !== undefined) {
+                  publicationId = data[0]['coll_id'];
                 }
-                if (targetElement !== null && targetElement.classList.contains('anchor')) {
-                  this.scrollToHTMLElement(targetElement);
-                }
-              } else {
-                // Different introduction, open in new window.
                 let hrefString = '#/publication-introduction/' + publicationId;
                 if (hrefTargetItems.length > 1 && hrefTargetItems[1].startsWith('#')) {
                   positionId = hrefTargetItems[1];
                   hrefString += '/' + positionId;
                 }
                 newWindowRef.location.href = hrefString;
-              }
-            });
+              });
+            }
           }
         } else {
           // Link in the introduction's TOC or link to (foot)note reference
