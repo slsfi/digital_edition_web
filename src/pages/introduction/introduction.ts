@@ -329,7 +329,7 @@ export class IntroductionPage {
         }
 
         // Links in the introduction.
-        if (eventTarget.classList.contains('xreference')) {
+        if (eventTarget !== null && eventTarget.classList.contains('xreference')) {
           event.preventDefault();
           const anchorElem: HTMLAnchorElement = eventTarget as HTMLAnchorElement;
 
