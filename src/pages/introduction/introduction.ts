@@ -1264,10 +1264,12 @@ export class IntroductionPage {
   }
 
   private toggleTocMenu() {
-    if ( this.tocMenuOpen ) {
-      this.tocMenuOpen = false;
-    } else {
-      this.tocMenuOpen = true;
-    }
+    this.ngZone.run(() => {
+      if ( this.tocMenuOpen ) {
+        this.tocMenuOpen = false;
+      } else {
+        this.tocMenuOpen = true;
+      }
+    });
   }
 }
