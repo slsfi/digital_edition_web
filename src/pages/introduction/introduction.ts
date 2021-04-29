@@ -483,10 +483,14 @@ export class IntroductionPage {
     });
 
     /* MOUSE OUT EVENTS */
-    this.unlistenMouseoutEvents = this.renderer2.listen(nElement, 'mouseout', (event) => {
-      if (!this.userIsTouching) {
-        this.hideToolTip();
-      }
+    this.ngZone.runOutsideAngular(() => {
+      this.unlistenMouseoutEvents = this.renderer2.listen(nElement, 'mouseout', (event) => {
+        if (!this.userIsTouching) {
+          this.ngZone.run(() => {
+            this.hideToolTip();
+          });
+        }
+      });
     });
   }
 
