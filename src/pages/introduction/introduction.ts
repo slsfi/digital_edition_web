@@ -227,10 +227,6 @@ export class IntroductionPage {
     this.events.publish('ionViewWillLeave', this.constructor.name);
   }
 
-  ngDoCheck() {
-    console.log('Angular change detection triggered!');
-  }
-
   /** Try to scroll to an element in the text, checks if "pos" given.
    *  Timeout, to give text some time to load on the page. */
   private scrollToPos() {
