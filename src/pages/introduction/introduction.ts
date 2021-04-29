@@ -1139,17 +1139,19 @@ export class IntroductionPage {
       return event.target;
     }
 
-    if (event.target !== undefined && event.target['classList'] !== undefined
+    if (event.target !== undefined && event.target !== null && event.target['classList'] !== undefined
     && event.target['classList'].contains('tooltiptrigger')) {
       eventTarget = event.target;
-    } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'] !== undefined
+    } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null
+    && event['target']['parentNode']['classList'] !== undefined
     && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
       eventTarget = event['target']['parentNode'];
-    } else if (event['target']['parentNode']['parentNode'] !== undefined && event['target']['parentNode']['classList'] !== undefined &&
-     event['target']['parentNode']['parentNode']['classList'].contains('tooltiptrigger')) {
+    } else if (event['target']['parentNode']['parentNode'] !== undefined && event['target']['parentNode']['parentNode'] !== null
+    && event['target']['parentNode']['classList'] !== undefined
+    && event['target']['parentNode']['parentNode']['classList'].contains('tooltiptrigger')) {
       eventTarget = event['target']['parentNode']['parentNode'];
-    } else if (event.target !== undefined && event['target']['classList'] !== undefined &&
-    event['target']['classList'].contains('anchor')) {
+    } else if (event.target !== undefined && event.target !== null
+    && event['target']['classList'] !== undefined && event['target']['classList'].contains('anchor')) {
       eventTarget = event.target;
     }
     return eventTarget;
