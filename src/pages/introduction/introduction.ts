@@ -323,7 +323,6 @@ export class IntroductionPage {
       // Links in the introduction.
       if (eventTarget.classList.contains('xreference')) {
         event.preventDefault();
-        console.log('xreference click');
         const anchorElem: HTMLAnchorElement = eventTarget as HTMLAnchorElement;
 
         if (anchorElem.classList.contains('ref_external')) {
@@ -434,7 +433,6 @@ export class IntroductionPage {
         } else {
           // Link in the introduction's TOC or link to (foot)note reference
           let targetId = '';
-          console.log('TOC-link or note reference clicked');
           if (anchorElem.hasAttribute('href')) {
             targetId = anchorElem.getAttribute('href');
           } else if (anchorElem.parentElement.hasAttribute('href')) {
@@ -450,36 +448,38 @@ export class IntroductionPage {
               // Link in the introduction's TOC, scroll to target but don't prepend arrow
               this.scrollElementIntoView(target, 'top');
             }
-          } else {
-            console.log('target not found');
           }
         }
       }
     });
 
     /* MOUSE OVER EVENTS */
-    this.unlistenMouseoverEvents = this.renderer2.listen(nElement, 'mouseover', (event) => {
-      if (!this.userIsTouching) {
-        // Mouseover effects only if using a cursor, not if the user is touching the screen
-        const eventTarget = this.getEventTarget(event);
+    this.ngZone.runOutsideAngular(() => {
+      this.unlistenMouseoverEvents = this.renderer2.listen(nElement, 'mouseover', (event) => {
+        if (!this.userIsTouching) {
+          // Mouseover effects only if using a cursor, not if the user is touching the screen
+          const eventTarget = this.getEventTarget(event);
 
-        if (eventTarget['classList'].contains('tooltiptrigger')) {
-          if (eventTarget.hasAttribute('data-id')) {
-            if (this.toolTipsSettings.personInfo && eventTarget['classList'].contains('person')
-            && this.readPopoverService.show.personInfo) {
-              this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-            } else if (this.toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName')
-            && this.readPopoverService.show.placeInfo) {
-              this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-            } else if (this.toolTipsSettings.workInfo && eventTarget['classList'].contains('title')
-            && this.readPopoverService.show.workInfo) {
-              this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-            } else if (this.toolTipsSettings.footNotes && eventTarget['classList'].contains('ttFoot')) {
-              this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+          if (eventTarget['classList'].contains('tooltiptrigger')) {
+            if (eventTarget.hasAttribute('data-id')) {
+              this.ngZone.run(() => {
+                if (this.toolTipsSettings.personInfo && eventTarget['classList'].contains('person')
+                && this.readPopoverService.show.personInfo) {
+                  this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+                } else if (this.toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName')
+                && this.readPopoverService.show.placeInfo) {
+                  this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+                } else if (this.toolTipsSettings.workInfo && eventTarget['classList'].contains('title')
+                && this.readPopoverService.show.workInfo) {
+                  this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+                } else if (this.toolTipsSettings.footNotes && eventTarget['classList'].contains('ttFoot')) {
+                  this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+                }
+              });
             }
           }
         }
-      }
+      });
     });
 
     /* MOUSE OUT EVENTS */
