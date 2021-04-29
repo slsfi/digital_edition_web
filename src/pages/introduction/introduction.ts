@@ -1140,14 +1140,17 @@ export class IntroductionPage {
 
   private getEventTarget(event) {
     let eventTarget: HTMLElement = document.createElement('div');
+    let eventTargetHTML = event.target as HTMLElement;
 
     try {
       if (event.target.getAttribute('data-id')) {
         return event.target;
       }
 
-      if (event.target.getAttribute('id') === 'toc_menu') {
-        return event.target;
+      if (eventTargetHTML.getAttribute('id') === 'toc_menu') {
+        return eventTargetHTML;
+      } else if (eventTargetHTML.parentElement !== null && eventTargetHTML.parentElement.getAttribute('id') === 'toc_menu') {
+        return eventTargetHTML.parentElement;
       }
 
       if (event.target !== undefined && event.target !== null && event.target['classList'] !== undefined
