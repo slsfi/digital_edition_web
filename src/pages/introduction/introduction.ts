@@ -50,6 +50,7 @@ export class IntroductionPage {
   toolTipMaxWidth: string;
   toolTipScaleValue: number;
   toolTipText: string;
+  tooltipShown: Boolean = false;
   tooltips = {
     'persons': {},
     'comments': {},
@@ -466,14 +467,18 @@ export class IntroductionPage {
                 if (this.toolTipsSettings.personInfo && eventTarget['classList'].contains('person')
                 && this.readPopoverService.show.personInfo) {
                   this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+                  this.tooltipShown = true;
                 } else if (this.toolTipsSettings.placeInfo && eventTarget['classList'].contains('placeName')
                 && this.readPopoverService.show.placeInfo) {
                   this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+                  this.tooltipShown = true;
                 } else if (this.toolTipsSettings.workInfo && eventTarget['classList'].contains('title')
                 && this.readPopoverService.show.workInfo) {
                   this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+                  this.tooltipShown = true;
                 } else if (this.toolTipsSettings.footNotes && eventTarget['classList'].contains('ttFoot')) {
                   this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+                  this.tooltipShown = true;
                 }
               });
             }
@@ -485,7 +490,7 @@ export class IntroductionPage {
     /* MOUSE OUT EVENTS */
     this.ngZone.runOutsideAngular(() => {
       this.unlistenMouseoutEvents = this.renderer2.listen(nElement, 'mouseout', (event) => {
-        if (!this.userIsTouching) {
+        if (!this.userIsTouching && this.tooltipShown) {
           this.ngZone.run(() => {
             this.hideToolTip();
           });
@@ -1191,6 +1196,7 @@ export class IntroductionPage {
       top: 0 + 'px',
       left: -1500 + 'px'
     };
+    this.tooltipShown = false;
   }
 
   hideInfoOverlay() {
