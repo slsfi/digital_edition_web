@@ -1139,6 +1139,10 @@ export class IntroductionPage {
       return event.target;
     }
 
+    if (event.target.getAttribute('id') === 'toc_menu') {
+      return event.target;
+    }
+
     if (event.target !== undefined && event.target !== null && event.target['classList'] !== undefined
     && event.target['classList'].contains('tooltiptrigger')) {
       eventTarget = event.target;
