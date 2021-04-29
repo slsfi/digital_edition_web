@@ -298,11 +298,13 @@ export class IntroductionPage {
         }
         let eventTarget = this.getEventTarget(event);
 
+        /*
         if (eventTarget.getAttribute('id') === 'toc_menu') {
           this.ngZone.run(() => {
             this.toggleTocMenu();
           });
         }
+        */
 
         // Modal trigger for person-, place- or workinfo and info overlay trigger for footnote.
         if (eventTarget.classList.contains('tooltiptrigger') && eventTarget.hasAttribute('data-id')) {
@@ -1276,7 +1278,7 @@ export class IntroductionPage {
     });
   }
 
-  private toggleTocMenu() {
+  toggleTocMenu() {
     if ( this.tocMenuOpen ) {
       this.tocMenuOpen = false;
     } else {
