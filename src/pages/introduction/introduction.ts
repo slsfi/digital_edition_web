@@ -187,7 +187,7 @@ export class IntroductionPage implements AfterViewChecked {
 
   ionViewWillEnter() {
     this.events.publish('ionViewWillEnter', this.constructor.name);
-    this.setUpTextListeners();
+    // this.setUpTextListeners();
   }
 
   ionViewDidLoad() {
