@@ -1142,10 +1142,11 @@ export class IntroductionPage {
     if (event.target !== undefined && event.target !== null && event.target['classList'] !== undefined
     && event.target['classList'].contains('tooltiptrigger')) {
       eventTarget = event.target;
-    } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null
-    && event['target']['parentNode']['classList'] !== undefined
-    && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
-      eventTarget = event['target']['parentNode'];
+    } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null) {
+      if (event['target']['parentNode']['classList'] !== undefined
+      && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
+        eventTarget = event['target']['parentNode'];
+      }
     } else if (event['target']['parentNode']['parentNode'] !== undefined && event['target']['parentNode']['parentNode'] !== null
     && event['target']['parentNode']['classList'] !== undefined
     && event['target']['parentNode']['parentNode']['classList'].contains('tooltiptrigger')) {
