@@ -183,6 +183,7 @@ export class IntroductionPage {
   ionViewWillEnter() {
     this.events.publish('ionViewWillEnter', this.constructor.name);
     this.setUpTextListeners();
+    this.storeCollectionLegacyId();
   }
 
   ionViewDidLoad() {
@@ -205,7 +206,9 @@ export class IntroductionPage {
               }
             }
             // Try to scroll to an element in the text, checks if "pos" given
-            this.scrollToPos();
+            this.ngZone.runOutsideAngular(() => {
+              this.scrollToPos();
+            });
           },
         error =>  {this.errorMessage = <any>error; this.textLoading = false; }
 
@@ -214,8 +217,6 @@ export class IntroductionPage {
       selectedStatic['isIntroduction'] = true;
       this.events.publish('setSelectedStatic:true', selectedStatic);
     });
-
-    this.storeCollectionLegacyId();
   }
 
   ionViewWillLeave() {
@@ -229,37 +230,35 @@ export class IntroductionPage {
   /** Try to scroll to an element in the text, checks if "pos" given.
    *  Timeout, to give text some time to load on the page. */
   private scrollToPos() {
-    this.ngZone.runOutsideAngular(() => {
-      let interationsLeft = 10;
-      clearInterval(this.intervalTimerId);
-      this.intervalTimerId = setInterval(function() {
-        if (interationsLeft < 1) {
-          clearInterval(this.intervalTimerId);
-        } else {
-          interationsLeft -= 1;
-          if (this.pos !== null && this.pos !== undefined) {
-            let positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
-            if (positionElement !== null && positionElement !== undefined) {
-              const parentElem = positionElement.parentElement;
-              if ( (parentElem !== null && parentElem.classList.contains('ttFixed'))
-              || (parentElem.parentElement !== null && parentElem.parentElement.classList.contains('ttFixed')) ) {
-                  // Anchor is in footnote --> look for next occurence since the first footnote element
-                  // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
-                  // the position we need to find).
-                  positionElement = document.getElementsByName(this.pos)[1] as HTMLElement;
-              }
-              if (positionElement !== null && positionElement !== undefined
-              && positionElement.classList.contains('anchor')) {
-                this.scrollToHTMLElement(positionElement);
-                clearInterval(this.intervalTimerId);
-              }
+    let interationsLeft = 10;
+    clearInterval(this.intervalTimerId);
+    this.intervalTimerId = setInterval(function() {
+      if (interationsLeft < 1) {
+        clearInterval(this.intervalTimerId);
+      } else {
+        interationsLeft -= 1;
+        if (this.pos !== null && this.pos !== undefined) {
+          let positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
+          if (positionElement !== null && positionElement !== undefined) {
+            const parentElem = positionElement.parentElement;
+            if ( (parentElem !== null && parentElem.classList.contains('ttFixed'))
+            || (parentElem.parentElement !== null && parentElem.parentElement.classList.contains('ttFixed')) ) {
+                // Anchor is in footnote --> look for next occurence since the first footnote element
+                // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
+                // the position we need to find).
+                positionElement = document.getElementsByName(this.pos)[1] as HTMLElement;
             }
-          } else {
-            clearInterval(this.intervalTimerId);
+            if (positionElement !== null && positionElement !== undefined
+            && positionElement.classList.contains('anchor')) {
+              this.scrollToHTMLElement(positionElement);
+              clearInterval(this.intervalTimerId);
+            }
           }
+        } else {
+          clearInterval(this.intervalTimerId);
         }
-      }.bind(this), 1000);
-    });
+      }
+    }.bind(this), 1000);
   }
 
   storeCollectionLegacyId() {
