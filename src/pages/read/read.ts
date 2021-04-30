@@ -1146,11 +1146,11 @@ export class ReadPage /*implements OnDestroy*/ {
             && !this.params.get('chapterID').startsWith('nochapter')
             && this.params.get('chapterID') !== ':chapterID'
             && this.params.get('chapterID') !== 'chapterID') {
-              legacyPageId += '_' + this.params.get('chapterID');
+              legacyPageId += '_' + this.params.get('chapterID').split(';').shift();
             }
 
             // Check if we are already on the same page.
-            if ( (comparePageId === this.establishedText.link || comparePageId === legacyPageId)
+            if ( (comparePageId === this.establishedText.link.split(';').shift() || comparePageId === legacyPageId)
             && hrefTargetItems[hrefTargetItems.length - 1].startsWith('#')) {
               // We are on the same page and the last item in the target href is a textposition.
               positionId = hrefTargetItems[hrefTargetItems.length - 1].replace('#', '');
