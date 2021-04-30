@@ -722,9 +722,8 @@ export class IntroductionPage {
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
     let sidePaneOffsetWidth = 0;
     if (sidePaneIsOpen) {
-      sidePaneOffsetWidth = 269;
-      const sidePane: HTMLElement = document.querySelector('ion-menu#tableOfContentsMenu');
-      console.log('Sidepane width: ' + sidePane.offsetWidth);
+      const sidePane = <HTMLElement>document.querySelector('ion-menu#tableOfContentsMenu');
+      sidePaneOffsetWidth = sidePane.offsetWidth;
     }
 
     // Set variable for determining if the tooltip should be placed above or below the trigger rather than beside it.
