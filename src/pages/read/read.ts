@@ -512,7 +512,7 @@ export class ReadPage /*implements OnDestroy*/ {
             tocItems.selectedChapterId = chIDFromParams;
             console.log('toc chapterId: ' + tocItems.selectedChapterId);
           } else {
-            tocItems.selectedChapterId = null;
+            tocItems.selectedChapterId = '';
           }
 
           const tocLoadedParams = { tocItems: tocItems };
