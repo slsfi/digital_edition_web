@@ -1015,11 +1015,11 @@ export class IntroductionPage {
     return dimensions;
   }
 
-  private setInfoOverlayPositionAndWidth(triggerElement: HTMLElement) {
-    // Left and right margins and max width of the overlay.
-    // ATTENTION! margins not same as in read.ts due to different page structure in intro
-    let margins = 10;
-    const maxWidth = 600;
+  /** Set position and width of infoOverlay element. This function is not exactly
+   *  the same as in read.ts due to different page structure in introductions.
+   */
+  private setInfoOverlayPositionAndWidth(triggerElement: HTMLElement, defaultMargins = 10, maxWidth = 600) {
+    let margins = defaultMargins;
 
     // If the viewport width is less than this value the overlay will be placed at the bottom of the viewport.
     const bottomPosBreakpointWidth = 800;
