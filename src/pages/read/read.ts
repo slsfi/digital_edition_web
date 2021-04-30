@@ -2003,7 +2003,8 @@ export class ReadPage /*implements OnDestroy*/ {
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
     let sidePaneOffsetWidth = 0;
     if (sidePaneIsOpen) {
-      sidePaneOffsetWidth = 269;
+      const sidePane = <HTMLElement>document.querySelector('ion-menu#tableOfContentsMenu');
+      sidePaneOffsetWidth = sidePane.offsetWidth;
     }
 
     // Set variable for determining if the tooltip should be placed above or below the trigger rather than beside it.
@@ -2295,10 +2296,11 @@ export class ReadPage /*implements OnDestroy*/ {
     return dimensions;
   }
 
-  private setInfoOverlayPositionAndWidth(triggerElement: HTMLElement) {
-    // Left and right margins and max width of the overlay
-    let margins = 20;
-    const maxWidth = 600;
+  /** Set position and width of infoOverlay element. This function is not exactly
+   *  the same as in introduction.ts due to different page structure in read.
+   */
+  private setInfoOverlayPositionAndWidth(triggerElement: HTMLElement, defaultMargins = 20, maxWidth = 600) {
+    let margins = defaultMargins;
 
     // Get viewport height.
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
