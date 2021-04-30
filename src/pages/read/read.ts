@@ -318,7 +318,6 @@ export class ReadPage /*implements OnDestroy*/ {
         this.events.publish('pageLoaded:single-edition', { 'title': title });
       }
     }
-    console.log('Legacy id: ' + this.legacyId);
 
     if (this.params.get('matches') !== undefined) {
       this.matches = this.params.get('matches');
@@ -402,6 +401,19 @@ export class ReadPage /*implements OnDestroy*/ {
 
   ionViewDidLeave() {
     this.storage.set('readpage_searchresults', undefined);
+  }
+
+  ngAfterViewInit() {
+    setTimeout(function () {
+      try {
+        // this.legacyId doesn't work for texts with chapters and positions since legacyId only contains collectionId and publicationId
+        // const itemId = 'toc_' + this.legacyId;
+        const itemId = 'toc_' + this.establishedText.link;
+        this.scrollToTOC(document.getElementById(itemId));
+      } catch (e) {
+        console.log(e);
+      }
+    }.bind(this), 1000);
   }
 
   ngOnDestroy() {
@@ -864,19 +876,6 @@ export class ReadPage /*implements OnDestroy*/ {
     });
 
     await toast.present();
-  }
-
-  ngAfterViewInit() {
-    setTimeout(function () {
-      try {
-        // this.legacyId doesn't work for texts with chapters and positions since legacyId only contains collectionId and publicationId
-        // const itemId = 'toc_' + this.legacyId;
-        const itemId = 'toc_' + this.establishedText.link;
-        this.scrollToTOC(document.getElementById(itemId));
-      } catch (e) {
-        console.log(e);
-      }
-    }.bind(this), 1000);
   }
 
   scrollToTOC(element: HTMLElement) {
