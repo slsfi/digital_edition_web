@@ -503,12 +503,13 @@ export class ReadPage /*implements OnDestroy*/ {
            *  and the search doesn't find matches, the chapterID should be stripped
            *  of position and a new search for toc item be carried out.
            */
-          if (this.params.get('chapterID') !== undefined
-          && this.params.get('chapterID') !== null
-          && !this.params.get('chapterID').startsWith('nochapter')
-          && this.params.get('chapterID') !== ':chapterID'
-          && this.params.get('chapterID') !== 'chapterID') {
-            tocItems.selectedChapterId = this.params.get('chapterID');
+          const chIDFromParams = this.params.get('chapterID');
+          if (chIDFromParams !== undefined
+          && chIDFromParams !== null
+          && !chIDFromParams.startsWith('nochapter')
+          && chIDFromParams !== ':chapterID'
+          && chIDFromParams !== 'chapterID') {
+            tocItems.selectedChapterId = chIDFromParams;
             console.log('toc chapterId: ' + tocItems.selectedChapterId);
           } else {
             tocItems.selectedChapterId = null;
@@ -1152,12 +1153,13 @@ export class ReadPage /*implements OnDestroy*/ {
             }
 
             let legacyPageId = this.collectionAndPublicationLegacyId;
-            if (this.params.get('chapterID') !== undefined
-            && this.params.get('chapterID') !== null
-            && !this.params.get('chapterID').startsWith('nochapter')
-            && this.params.get('chapterID') !== ':chapterID'
-            && this.params.get('chapterID') !== 'chapterID') {
-              legacyPageId += '_' + this.params.get('chapterID').split(';').shift();
+            const chIDFromParams = this.params.get('chapterID');
+            if (chIDFromParams !== undefined
+            && chIDFromParams !== null
+            && !chIDFromParams.startsWith('nochapter')
+            && chIDFromParams !== ':chapterID'
+            && chIDFromParams !== 'chapterID') {
+              legacyPageId += '_' + chIDFromParams.split(';').shift();
             }
 
             // Check if we are already on the same page.
