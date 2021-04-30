@@ -320,6 +320,7 @@ export class ReadPage /*implements OnDestroy*/ {
         this.events.publish('pageLoaded:single-edition', { 'title': title });
       }
     }
+    console.log('Established text link: ' + this.establishedText.link);
 
     if (this.params.get('matches') !== undefined) {
       this.matches = this.params.get('matches');
@@ -1041,16 +1042,18 @@ export class ReadPage /*implements OnDestroy*/ {
         }, 5000);
       }
 
-      // Click on link
+      // Possibly click on link.
       eventTarget = event.target as HTMLElement;
-      if (!eventTarget.classList.contains('xreference')) {
+      if (eventTarget !== null && !eventTarget.classList.contains('xreference')) {
         eventTarget = eventTarget.parentElement;
-        if (!eventTarget.classList.contains('xreference')) {
-          eventTarget = eventTarget.parentElement;
+        if (eventTarget !== null) {
+          if (!eventTarget.classList.contains('xreference')) {
+            eventTarget = eventTarget.parentElement;
+          }
         }
       }
 
-      if (eventTarget.classList.contains('xreference')) {
+      if (eventTarget !== null && eventTarget.classList.contains('xreference')) {
         event.preventDefault();
         const anchorElem: HTMLAnchorElement = eventTarget as HTMLAnchorElement;
 
@@ -1130,53 +1133,67 @@ export class ReadPage /*implements OnDestroy*/ {
 
             publicationId = hrefTargetItems[0];
             textId = hrefTargetItems[1];
-            this.textService.getCollectionAndPublicationByLegacyId(publicationId + '_' + textId).subscribe(data => {
-              if (data[0] !== undefined) {
-                publicationId = data[0]['coll_id'];
-                textId = data[0]['pub_id'];
+
+            let comparePageId = publicationId + '_' + textId;
+            if (hrefTargetItems.length > 2 && !hrefTargetItems[2].startsWith('#')) {
+              chapterId = hrefTargetItems[2];
+              comparePageId += '_' + chapterId;
+            }
+
+            let legacyPageId = this.collectionAndPublicationLegacyId;
+            if (this.params.get('chapterID') !== undefined
+            && this.params.get('chapterID') !== null
+            && !this.params.get('chapterID').startsWith('nochapter')
+            && this.params.get('chapterID') !== ':chapterID'
+            && this.params.get('chapterID') !== 'chapterID') {
+              legacyPageId += '_' + this.params.get('chapterID');
+            }
+
+            // Check if we are already on the same page.
+            if ( (comparePageId === this.establishedText.link || comparePageId === legacyPageId)
+            && hrefTargetItems[hrefTargetItems.length - 1].startsWith('#')) {
+              // We are on the same page and the last item in the target href is a textposition.
+              positionId = hrefTargetItems[hrefTargetItems.length - 1].replace('#', '');
+
+              // Find the element in the correct column (read-text or comments) based on ref type.
+              const matchingElements = document.getElementsByName(positionId);
+              let targetElement = null;
+              let refType = 'READ-TEXT';
+              if (anchorElem.classList.contains('ref_comment')) {
+                refType = 'COMMENTS';
               }
-
-              let comparePageId = publicationId + '_' + textId;
-              if (hrefTargetItems.length > 2 && !hrefTargetItems[2].startsWith('#')) {
-                chapterId = hrefTargetItems[2];
-                comparePageId += '_' + chapterId;
+              for (let i = 0; i < matchingElements.length; i++) {
+                let parentElem = matchingElements[i].parentElement;
+                while (parentElem !== null && parentElem.tagName !== refType) {
+                  parentElem = parentElem.parentElement;
+                }
+                if (parentElem !== null && parentElem.tagName === refType) {
+                  targetElement = matchingElements[i] as HTMLElement;
+                  if (targetElement.parentElement.classList.contains('ttFixed')
+                  || targetElement.parentElement.parentElement.classList.contains('ttFixed')) {
+                    // Found position is in footnote --> look for next occurence since the first footnote element
+                    // is not displayed (footnote elements are copied to a list at the end of the reading text and that's
+                    // the position we need to find).
+                  } else {
+                    break;
+                  }
+                }
               }
+              if (targetElement !== null && targetElement.classList.contains('anchor')) {
+                this.scrollToHTMLElement(targetElement);
+              }
+            } else {
+              // We are not on the same page, open in new window.
+              // (Safari on iOS doesn't allow window.open() inside async calls so
+              // we have to open the new window first and set its location later.)
+              const newWindowRef = window.open();
 
-              // Check if we are already on the same page.
-              if (comparePageId === this.establishedText.link
-              && hrefTargetItems[hrefTargetItems.length - 1].startsWith('#')) {
-                // We are on the same page and the last item in the target href is a textposition.
-                positionId = hrefTargetItems[hrefTargetItems.length - 1].replace('#', '');
+              this.textService.getCollectionAndPublicationByLegacyId(publicationId + '_' + textId).subscribe(data => {
+                if (data[0] !== undefined) {
+                  publicationId = data[0]['coll_id'];
+                  textId = data[0]['pub_id'];
+                }
 
-                // Find the element in the correct column (read-text or comments) based on ref type.
-                const matchingElements = document.getElementsByName(positionId);
-                let targetElement = null;
-                let refType = 'READ-TEXT';
-                if (anchorElem.classList.contains('ref_comment')) {
-                  refType = 'COMMENTS';
-                }
-                for (let i = 0; i < matchingElements.length; i++) {
-                  let parentElem = matchingElements[i].parentElement;
-                  while (parentElem !== null && parentElem.tagName !== refType) {
-                    parentElem = parentElem.parentElement;
-                  }
-                  if (parentElem !== null && parentElem.tagName === refType) {
-                    targetElement = matchingElements[i] as HTMLElement;
-                    if (targetElement.parentElement.classList.contains('ttFixed')
-                    || targetElement.parentElement.parentElement.classList.contains('ttFixed')) {
-                      // Found position is in footnote --> look for next occurence since the first footnote element
-                      // is not displayed (footnote elements are copied to a list at the end of the reading text and that's
-                      // the position we need to find).
-                    } else {
-                      break;
-                    }
-                  }
-                }
-                if (targetElement !== null && targetElement.classList.contains('anchor')) {
-                  this.scrollToHTMLElement(targetElement);
-                }
-              } else {
-                // We are not on the same page, open in new window.
                 let hrefString = '#/publication/' + publicationId + '/text/' + textId + '/';
                 if (chapterId) {
                   hrefString += chapterId;
@@ -1192,10 +1209,9 @@ export class ReadPage /*implements OnDestroy*/ {
                   }
                 }
                 hrefString += '/not/infinite/nosong/searchtitle/established&comments';
-                // Open the link in a new window/tab.
-                window.open(hrefString, '_blank');
-              }
-            });
+                newWindowRef.location.href = hrefString;
+              });
+            }
 
           } else if (anchorElem.classList.contains('ref_introduction')) {
             // Link to introduction.
@@ -2921,7 +2937,6 @@ export class ReadPage /*implements OnDestroy*/ {
         if (publication[0].legacy_id) {
           this.collectionAndPublicationLegacyId = publication[0].legacy_id;
         }
-        console.log('Coll and publ legacy id: ' + this.collectionAndPublicationLegacyId);
       },
       error => {
         this.collectionAndPublicationLegacyId = '';
