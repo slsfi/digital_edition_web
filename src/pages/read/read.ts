@@ -89,6 +89,7 @@ export class ReadPage /*implements OnDestroy*/ {
   toolTipMaxWidth: string;
   toolTipScaleValue: number;
   toolTipText: string;
+  tooltipVisible: Boolean = false;
   infoOverlayPosType: string;
   infoOverlayPosition: object;
   infoOverlayWidth: string;
@@ -106,6 +107,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
   divWidth = '100px';
 
+  private unlistenFirstTouchStartEvent: () => void;
   private unlistenClickEvents: () => void;
   private unlistenMouseoverEvents: () => void;
   private unlistenMouseoutEvents: () => void;
@@ -936,9 +938,20 @@ export class ReadPage /*implements OnDestroy*/ {
     // We must do it like this since we want to trigger an event on a dynamically loaded innerhtml.
     const nElement: HTMLElement = this.elementRef.nativeElement;
 
+    /* CHECK ONCE IF THE USER IF TOUCHING THE SCREEN */
+    this.unlistenFirstTouchStartEvent = this.renderer2.listen(nElement, 'touchstart', (event) => {
+      this.userIsTouching = true;
+      // Don't listen for mouseover and mouseout events since they should have no effect on touch devices
+      this.unlistenMouseoverEvents();
+      this.unlistenMouseoutEvents();
+      this.unlistenFirstTouchStartEvent();
+    });
+
     /* CLICK EVENTS */
     this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
-      this.hideToolTip();
+      if (!this.userIsTouching && this.tooltipVisible) {
+        this.hideToolTip();
+      }
       let eventTarget = this.getEventTarget(event);
       let modalShown = false;
 
@@ -1256,41 +1269,41 @@ export class ReadPage /*implements OnDestroy*/ {
 
     /* MOUSE OVER EVENTS */
     this.unlistenMouseoverEvents = this.renderer2.listen(nElement, 'mouseover', (event) => {
-      if (this.userSettingsService.isDesktop()) {
-        let tooltipShown = false;
+      if (!this.userIsTouching) {
+        // Mouseover effects only if using a cursor, not if the user is touching the screen
         let eventTarget = this.getEventTarget(event);
         // Loop needed for finding correct tooltip trigger when there are nested triggers.
-        while (!tooltipShown && eventTarget['classList'].contains('tooltiptrigger')) {
+        while (!this.tooltipVisible && eventTarget['classList'].contains('tooltiptrigger')) {
           if (eventTarget.hasAttribute('data-id')) {
             if (toolTipsSettings.personInfo
             && eventTarget['classList'].contains('person')
             && this.readPopoverService.show.personInfo) {
               this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-              tooltipShown = true;
+              this.tooltipVisible = true;
             } else if (toolTipsSettings.placeInfo
             && eventTarget['classList'].contains('placeName')
             && this.readPopoverService.show.placeInfo) {
               this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-              tooltipShown = true;
+              this.tooltipVisible = true;
             } else if (toolTipsSettings.workInfo
             && eventTarget['classList'].contains('title')
             && this.readPopoverService.show.workInfo) {
               this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-              tooltipShown = true;
+              this.tooltipVisible = true;
             } else if (toolTipsSettings.comments
             && eventTarget['classList'].contains('comment')
             && this.readPopoverService.show.comments) {
               this.showCommentTooltip(eventTarget.getAttribute('data-id'), eventTarget);
-              tooltipShown = true;
+              this.tooltipVisible = true;
             } else if (toolTipsSettings.footNotes
             && eventTarget['classList'].contains('teiManuscript')
             && eventTarget['classList'].contains('ttFoot')) {
               this.showManuscriptFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
-              tooltipShown = true;
+              this.tooltipVisible = true;
             } else if (toolTipsSettings.footNotes
             && eventTarget['classList'].contains('ttFoot')) {
               this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
-              tooltipShown = true;
+              this.tooltipVisible = true;
             }
           } else if ( (toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges') && this.readPopoverService.show.changes)
           || (toolTipsSettings.normalisations && eventTarget['classList'].contains('ttNormalisations')
@@ -1298,17 +1311,17 @@ export class ReadPage /*implements OnDestroy*/ {
           || (toolTipsSettings.abbreviations && eventTarget['classList'].contains('ttAbbreviations')
           && this.readPopoverService.show.abbreviations) ) {
             this.showTooltipFromInlineHtml(eventTarget);
-            tooltipShown = true;
+            this.tooltipVisible = true;
           } else if (eventTarget['classList'].contains('ttVariant')) {
             this.showVariantTooltip(eventTarget);
-            tooltipShown = true;
+            this.tooltipVisible = true;
           } else if (eventTarget['classList'].contains('ttMs')) {
             // Check if the tooltip trigger element is in a manuscripts column
             // since ttMs should generally only be triggered there.
             if (eventTarget['classList'].contains('unclear')) {
               // Tooltips for text with class unclear should be shown in other columns too.
               this.showTooltipFromInlineHtml(eventTarget);
-              tooltipShown = true;
+              this.tooltipVisible = true;
             } else {
               let parentElem: HTMLElement = eventTarget as HTMLElement;
               parentElem = parentElem.parentElement;
@@ -1317,23 +1330,23 @@ export class ReadPage /*implements OnDestroy*/ {
               }
               if (parentElem !== null) {
                 this.showTooltipFromInlineHtml(eventTarget);
-                tooltipShown = true;
+                this.tooltipVisible = true;
               }
             }
           } else if (toolTipsSettings.footNotes && eventTarget.hasAttribute('id')
           && eventTarget['classList'].contains('teiVariant') && eventTarget['classList'].contains('ttFoot')) {
             this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), eventTarget);
-            tooltipShown = true;
+            this.tooltipVisible = true;
           } else if (eventTarget['classList'].contains('ttFoot')
           && !eventTarget.hasAttribute('id')
           && !eventTarget.hasAttribute('data-id')) {
             this.showTooltipFromInlineHtml(eventTarget);
-            tooltipShown = true;
+            this.tooltipVisible = true;
           }
 
           /* Get the parent node of the event target for the next iteration if a tooltip hasn't been shown already.
           * This is for finding nested tooltiptriggers, i.e. a person can be a child of a change. */
-          if (!tooltipShown) {
+          if (!this.tooltipVisible) {
             eventTarget = eventTarget['parentNode'];
             if (!eventTarget['classList'].contains('tooltiptrigger')
             && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
@@ -1347,7 +1360,9 @@ export class ReadPage /*implements OnDestroy*/ {
 
     /* MOUSE OUT EVENTS */
     this.unlistenMouseoutEvents = this.renderer2.listen(nElement, 'mouseout', (event) => {
-      this.hideToolTip();
+      if (!this.userIsTouching && this.tooltipVisible) {
+        this.hideToolTip();
+      }
     });
   }
   public get isIntroduction() {
@@ -1999,6 +2014,7 @@ export class ReadPage /*implements OnDestroy*/ {
       top: 0 + 'px',
       left: -1500 + 'px'
     };
+    this.tooltipVisible = false;
   }
 
   hideInfoOverlay() {
