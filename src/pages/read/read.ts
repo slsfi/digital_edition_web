@@ -318,14 +318,13 @@ export class ReadPage /*implements OnDestroy*/ {
         this.events.publish('pageLoaded:single-edition', { 'title': title });
       }
     }
+    console.log('Legacy id: ' + this.legacyId);
 
     if (this.params.get('matches') !== undefined) {
       this.matches = this.params.get('matches');
     }
 
     this.setTocCache();
-
-    this.setUpTextListeners();
 
     this.updateTexts()
     translate.onLangChange.subscribe((event: LangChangeEvent) => {
@@ -367,12 +366,45 @@ export class ReadPage /*implements OnDestroy*/ {
 
     this.getAdditionalParams();
   }
-  ngOnDestroy() {
-    this.events.unsubscribe('show:view');
+
+  ionViewWillEnter() {
+    this.events.publish('ionViewWillEnter', this.constructor.name);
+    this.events.publish('musicAccordion:reset', true);
+
+    if (this.userSettingsService.isMobile()) {
+      this.viewCtrl.showBackButton(true);
+    } else {
+      this.viewCtrl.showBackButton(false);
+    }
+
+    if (this.params.get('publicationID') === 'first') {
+      this.showFirstText();
+    } else {
+      this.showText();
+    }
+    this.events.publish('pageLoaded:read', { 'title': this.establishedText.title });
+
+    this.setUpTextListeners();
   }
+
   ionViewDidEnter() {
     this.events.publish('help:continue');
     this.analyticsService.doPageView('Read');
+  }
+
+  ionViewWillLeave() {
+    this.unlistenClickEvents();
+    this.unlistenMouseoverEvents();
+    this.unlistenMouseoutEvents();
+    this.events.publish('ionViewWillLeave', this.constructor.name);
+  }
+
+  ionViewDidLeave() {
+    this.storage.set('readpage_searchresults', undefined);
+  }
+
+  ngOnDestroy() {
+    this.events.unsubscribe('show:view');
   }
 
   getAdditionalParams() {
@@ -1334,35 +1366,6 @@ export class ReadPage /*implements OnDestroy*/ {
         }
       );
     }
-  }
-
-  ionViewDidLeave() {
-    this.storage.set('readpage_searchresults', undefined);
-  }
-
-  ionViewWillLeave() {
-    this.unlistenClickEvents();
-    this.unlistenMouseoverEvents();
-    this.unlistenMouseoutEvents();
-    this.events.publish('ionViewWillLeave', this.constructor.name);
-  }
-
-  ionViewWillEnter() {
-    this.events.publish('ionViewWillEnter', this.constructor.name);
-    this.events.publish('musicAccordion:reset', true);
-
-    if (this.userSettingsService.isMobile()) {
-      this.viewCtrl.showBackButton(true);
-    } else {
-      this.viewCtrl.showBackButton(false);
-    }
-
-    if (this.params.get('publicationID') === 'first') {
-      this.showFirstText();
-    } else {
-      this.showText();
-    }
-    this.events.publish('pageLoaded:read', { 'title': this.establishedText.title });
   }
 
   updateTexts() {
