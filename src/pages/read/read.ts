@@ -385,6 +385,7 @@ export class ReadPage /*implements OnDestroy*/ {
     this.events.publish('pageLoaded:read', { 'title': this.establishedText.title });
 
     this.setUpTextListeners();
+    this.storeCollectionAndPublicationLegacyId();
   }
 
   ionViewDidEnter() {
@@ -2910,5 +2911,22 @@ export class ReadPage /*implements OnDestroy*/ {
     } else {
       return '';
     }
+  }
+
+  storeCollectionAndPublicationLegacyId() {
+    this.textService.getPublication(this.params.get('publicationID')).subscribe(
+      publication => {
+        // this.collectionLegacyId = '';
+        // if (publication[0].legacy_id) {
+          // this.collectionLegacyId = publication[0].legacy_id;
+        // }
+        console.log('Publication:');
+        console.log(publication);
+      },
+      error => {
+        // this.collectionLegacyId = '';
+        console.log('could not get publication data trying to resolve collection and publication legacy id');
+      }
+    );
   }
 }
