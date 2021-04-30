@@ -96,6 +96,8 @@ export class ReadPage /*implements OnDestroy*/ {
   infoOverlayTitle: string;
   intervalTimerId: number;
   nochapterPos: string;
+  userIsTouching: Boolean = false;
+  collectionAndPublicationLegacyId: string;
 
   maxSingleWindowWidth: Number;
 
@@ -2915,15 +2917,14 @@ export class ReadPage /*implements OnDestroy*/ {
   storeCollectionAndPublicationLegacyId() {
     this.textService.getPublication(this.params.get('publicationID')).subscribe(
       publication => {
-        // this.collectionLegacyId = '';
-        // if (publication[0].legacy_id) {
-          // this.collectionLegacyId = publication[0].legacy_id;
-        // }
-        console.log('Publication:');
-        console.log(publication);
+        this.collectionAndPublicationLegacyId = '';
+        if (publication[0].legacy_id) {
+          this.collectionAndPublicationLegacyId = publication[0].legacy_id;
+        }
+        console.log('Coll and publ legacy id: ' + this.collectionAndPublicationLegacyId);
       },
       error => {
-        // this.collectionLegacyId = '';
+        this.collectionAndPublicationLegacyId = '';
         console.log('could not get publication data trying to resolve collection and publication legacy id');
       }
     );
