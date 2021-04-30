@@ -723,7 +723,7 @@ export class IntroductionPage {
     let sidePaneOffsetWidth = 0;
     if (sidePaneIsOpen) {
       sidePaneOffsetWidth = 269;
-      const sidePane: HTMLElement = document.querySelector('ion-split-pane');
+      const sidePane: HTMLElement = document.querySelector('ion-menu#tableOfContentsMenu');
       console.log('Sidepane width: ' + sidePane.offsetWidth);
     }
 
