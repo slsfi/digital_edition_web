@@ -183,7 +183,7 @@ export class IntroductionPage {
   ionViewWillEnter() {
     this.events.publish('ionViewWillEnter', this.constructor.name);
     this.setUpTextListeners();
-    this.storeCollectionLegacyId();
+    this.setCollectionLegacyId();
   }
 
   ionViewDidLoad() {
@@ -261,9 +261,10 @@ export class IntroductionPage {
     });
   }
 
-  storeCollectionLegacyId() {
-    this.textService.getCollection(this.params.get('collectionID')).subscribe(
+  setCollectionLegacyId() {
+    this.textService.getLegacyIdByCollectionId(this.params.get('collectionID')).subscribe(
       collection => {
+        console.log(collection);
         this.collectionLegacyId = '';
         if (collection[0].legacy_id) {
           this.collectionLegacyId = collection[0].legacy_id;
