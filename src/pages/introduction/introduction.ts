@@ -50,7 +50,7 @@ export class IntroductionPage {
   toolTipMaxWidth: string;
   toolTipScaleValue: number;
   toolTipText: string;
-  tooltipShown: Boolean = false;
+  tooltipVisible: Boolean = false;
   tooltips = {
     'persons': {},
     'comments': {},
@@ -293,7 +293,7 @@ export class IntroductionPage {
 
       /* CLICK EVENTS */
       this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
-        if (!this.userIsTouching && this.tooltipShown) {
+        if (!this.userIsTouching && this.tooltipVisible) {
           this.hideToolTip();
         }
         let eventTarget = this.getEventTarget(event);
@@ -469,18 +469,18 @@ export class IntroductionPage {
                 if (this.toolTipsSettings.personInfo && eventTarget.classList.contains('person')
                 && this.readPopoverService.show.personInfo) {
                   this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                  this.tooltipShown = true;
+                  this.tooltipVisible = true;
                 } else if (this.toolTipsSettings.placeInfo && eventTarget.classList.contains('placeName')
                 && this.readPopoverService.show.placeInfo) {
                   this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                  this.tooltipShown = true;
+                  this.tooltipVisible = true;
                 } else if (this.toolTipsSettings.workInfo && eventTarget.classList.contains('title')
                 && this.readPopoverService.show.workInfo) {
                   this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                  this.tooltipShown = true;
+                  this.tooltipVisible = true;
                 } else if (this.toolTipsSettings.footNotes && eventTarget.classList.contains('ttFoot')) {
                   this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                  this.tooltipShown = true;
+                  this.tooltipVisible = true;
                 }
               });
             }
@@ -490,7 +490,7 @@ export class IntroductionPage {
 
       /* MOUSE OUT EVENTS */
       this.unlistenMouseoutEvents = this.renderer2.listen(nElement, 'mouseout', (event) => {
-        if (!this.userIsTouching && this.tooltipShown) {
+        if (!this.userIsTouching && this.tooltipVisible) {
           this.ngZone.run(() => {
             this.hideToolTip();
           });
@@ -1214,7 +1214,7 @@ export class IntroductionPage {
       top: 0 + 'px',
       left: -1500 + 'px'
     };
-    this.tooltipShown = false;
+    this.tooltipVisible = false;
   }
 
   hideInfoOverlay() {
