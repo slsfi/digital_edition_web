@@ -1117,8 +1117,7 @@ export class IntroductionPage {
     // Find the scrollable container of the element which is to be scrolled into view
     let container = element.parentElement;
     while (container !== null && container.parentElement !== null &&
-     !(container.classList.contains('scroll-content') &&
-     container.parentElement.tagName === 'ION-SCROLL')) {
+     !container.classList.contains('scroll-content')) {
       container = container.parentElement;
     }
     if (container === null || container.parentElement === null) {
