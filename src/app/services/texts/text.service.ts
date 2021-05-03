@@ -226,6 +226,24 @@ export class TextService {
         .catch(this.handleError);
   }
 
+  getLegacyIdByPublicationId(id: string): Observable<any> {
+    return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
+        this.config.getSettings('app.machineName') + '/legacy/publication/' + id)
+        .map(res => {
+          return res.json();
+        })
+        .catch(this.handleError);
+  }
+
+  getLegacyIdByCollectionId(id: string): Observable<any> {
+    return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
+        this.config.getSettings('app.machineName') + '/legacy/collection/' + id)
+        .map(res => {
+          return res.json();
+        })
+        .catch(this.handleError);
+  }
+
   private handleError (error: Response | any) {
     let errMsg: string;
     if (error instanceof Response) {
