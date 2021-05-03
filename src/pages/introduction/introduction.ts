@@ -264,12 +264,10 @@ export class IntroductionPage {
   setCollectionLegacyId() {
     this.textService.getLegacyIdByCollectionId(this.params.get('collectionID')).subscribe(
       collection => {
-        console.log(collection);
         this.collectionLegacyId = '';
         if (collection[0].legacy_id) {
           this.collectionLegacyId = collection[0].legacy_id;
         }
-        console.log('Collection legacy id: ' + this.collectionLegacyId);
       },
       error => {
         this.collectionLegacyId = '';

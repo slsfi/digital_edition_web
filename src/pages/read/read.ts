@@ -3030,12 +3030,10 @@ export class ReadPage /*implements OnDestroy*/ {
   setCollectionAndPublicationLegacyId() {
     this.textService.getLegacyIdByPublicationId(this.params.get('publicationID')).subscribe(
       publication => {
-        console.log(publication);
         this.collectionAndPublicationLegacyId = '';
         if (publication[0].legacy_id) {
           this.collectionAndPublicationLegacyId = publication[0].legacy_id;
         }
-        console.log('Collection and publication legacy id: ' + this.collectionAndPublicationLegacyId);
       },
       error => {
         this.collectionAndPublicationLegacyId = '';
