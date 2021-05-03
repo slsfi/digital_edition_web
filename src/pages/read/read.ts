@@ -956,7 +956,7 @@ export class ReadPage /*implements OnDestroy*/ {
   private setUpTextListeners() {
     const nElement: HTMLElement = this.elementRef.nativeElement;
 
-    this.ngZone.runOutsideAngular(() => {
+    // this.ngZone.runOutsideAngular(() => {
 
       /* CHECK ONCE IF THE USER IF TOUCHING THE SCREEN */
       this.unlistenFirstTouchStartEvent = this.renderer2.listen(nElement, 'touchstart', (event) => {
@@ -1389,7 +1389,7 @@ export class ReadPage /*implements OnDestroy*/ {
         }
       });
 
-    });
+    // });
   }
 
   public get isIntroduction() {
