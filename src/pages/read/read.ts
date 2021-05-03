@@ -259,7 +259,7 @@ export class ReadPage /*implements OnDestroy*/ {
     this.displayToggles = this.config.getSettings('settings.displayTypesToggles');
     let foundTrueCount = 0;
     for (const toggle in this.displayToggles) {
-      if (this.displayToggles[toggle] && this.displayToggles[toggle] !== 'introduction') {
+      if (this.displayToggles[toggle] && toggle !== 'introduction') {
         this.availableViewModes.push(toggle);
         foundTrueCount++;
       }
