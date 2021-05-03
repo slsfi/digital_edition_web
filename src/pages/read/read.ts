@@ -1324,7 +1324,8 @@ export class ReadPage /*implements OnDestroy*/ {
                   this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
                   this.tooltipVisible = true;
                 }
-              } else if ( (this.toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges') && this.readPopoverService.show.changes)
+              } else if ( (this.toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges')
+              && this.readPopoverService.show.changes)
               || (this.toolTipsSettings.normalisations && eventTarget['classList'].contains('ttNormalisations')
               && this.readPopoverService.show.normalisations)
               || (this.toolTipsSettings.abbreviations && eventTarget['classList'].contains('ttAbbreviations')
