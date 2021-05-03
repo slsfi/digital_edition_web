@@ -239,46 +239,56 @@ export class ReadTextComponent {
       /* CLICK EVENTS */
       this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
         event.preventDefault();
-        this.ngZone.run(() => {
-          try {
-            if (this.config.getSettings('settings.showReadTextIllustrations')) {
-              const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
-              const eventTarget = event.target as HTMLElement;
-              if (eventTarget.classList.contains('doodle')) {
-                const image = {src: '/assets/images/verk/' + String(eventTarget.dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
+        try {
+          if (this.config.getSettings('settings.showReadTextIllustrations')) {
+            const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
+            const eventTarget = event.target as HTMLElement;
+            if (eventTarget.classList.contains('doodle')) {
+              const image = {src: '/assets/images/verk/' + String(eventTarget.dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
+              this.ngZone.run(() => {
                 this.events.publish('give:illustration', image);
+              });
+            }
+            if ( showIllustration.includes(this.link.split('_')[1])) {
+              if (eventTarget.classList.contains('est_figure_graphic')) {
+                // Check if we have the "illustrations" tab open, if not, open
+                if ( document.querySelector('illustrations') === null ) {
+                  this.ngZone.run(() => {
+                    this.openNewView(event, null, 'illustrations');
+                  });
+                }
+                const image = {src: event.target.src, class: 'illustration'};
+                this.ngZone.run(() => {
+                  this.events.publish('give:illustration', image);
+                });
               }
-              if ( showIllustration.includes(this.link.split('_')[1])) {
-                if (eventTarget.classList.contains('est_figure_graphic')) {
-                  // Check if we have the "illustrations" tab open, if not, open
-                  if ( document.querySelector('illustrations') === null ) {
+            } else {
+              if (eventTarget.previousElementSibling !== null &&
+                eventTarget.previousElementSibling.classList.contains('est_figure_graphic')) {
+                // Check if we have the "illustrations" tab open, if not, open
+                if ( document.querySelector('illustrations') === null ) {
+                  this.ngZone.run(() => {
                     this.openNewView(event, null, 'illustrations');
-                  }
-                  const image = {src: event.target.src, class: 'illustration'};
-                  this.events.publish('give:illustration', image);
+                  });
                 }
-              } else {
-                if (eventTarget.previousElementSibling !== null &&
-                  eventTarget.previousElementSibling.classList.contains('est_figure_graphic')) {
-                  // Check if we have the "illustrations" tab open, if not, open
-                  if ( document.querySelector('illustrations') === null ) {
-                    this.openNewView(event, null, 'illustrations');
-                  }
-                  const image = {src: event.target.previousElementSibling.src, class: 'illustration'};
+                const image = {src: event.target.previousElementSibling.src, class: 'illustration'};
+                this.ngZone.run(() => {
                   this.events.publish('give:illustration', image);
-                }
+                });
               }
             }
-          } catch (e) {
-            console.error(e);
           }
+        } catch (e) {
+          console.error(e);
+        }
 
-          if (event.target.parentNode.classList.contains('ref_illustration')) {
-            const hashNumber = event.target.parentNode.hash;
-            const imageNumber = hashNumber.split('#')[1];
+        if (event.target.parentNode.classList.contains('ref_illustration')) {
+          const hashNumber = event.target.parentNode.hash;
+          const imageNumber = hashNumber.split('#')[1];
+          this.ngZone.run(() => {
             this.openIllustration(imageNumber);
-          }
-        });
+          });
+        }
       });
 
     });
