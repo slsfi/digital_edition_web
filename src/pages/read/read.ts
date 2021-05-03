@@ -1,4 +1,4 @@
-import { Component, Renderer2, ElementRef, OnDestroy, ViewChild, Input, EventEmitter, SecurityContext } from '@angular/core';
+import { Component, Renderer2, ElementRef, OnDestroy, ViewChild, Input, EventEmitter, SecurityContext, NgZone } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import {
   App, ViewController, NavController, NavParams, PopoverController, ActionSheetController,
@@ -192,6 +192,7 @@ export class ReadPage /*implements OnDestroy*/ {
     private commentService: CommentService,
     public toastCtrl: ToastController,
     private renderer2: Renderer2,
+    private ngZone: NgZone,
     private elementRef: ElementRef,
     private config: ConfigService,
     public popoverCtrl: PopoverController,
@@ -401,6 +402,7 @@ export class ReadPage /*implements OnDestroy*/ {
     this.unlistenClickEvents();
     this.unlistenMouseoverEvents();
     this.unlistenMouseoutEvents();
+    this.unlistenFirstTouchStartEvent();
     this.events.publish('ionViewWillLeave', this.constructor.name);
   }
 
@@ -409,16 +411,21 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   ngAfterViewInit() {
-    setTimeout(function () {
-      try {
-        // this.legacyId doesn't work for texts with chapters and positions since legacyId only contains collectionId and publicationId
-        // const itemId = 'toc_' + this.legacyId;
-        const itemId = 'toc_' + this.establishedText.link;
-        this.scrollToTOC(document.getElementById(itemId));
-      } catch (e) {
-        console.log(e);
-      }
-    }.bind(this), 1000);
+    this.ngZone.runOutsideAngular(() => {
+      setTimeout(function () {
+        try {
+          const itemId = 'toc_' + this.establishedText.link;
+          let foundElem = document.getElementById(itemId);
+          if (foundElem === null) {
+            // Scroll to toc item without position
+            foundElem = document.getElementById(itemId.split(';').shift());
+          }
+          this.scrollToTOC(foundElem);
+        } catch (e) {
+          console.log(e);
+        }
+      }.bind(this), 1000);
+    });
   }
 
   ngOnDestroy() {
