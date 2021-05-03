@@ -1,4 +1,4 @@
-import { Component, Input, Renderer, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, Input, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { TextService } from '../../app/services/texts/text.service';
@@ -39,7 +39,6 @@ export class VariationsComponent {
     protected readPopoverService: ReadPopoverService,
     protected textService: TextService,
     protected storage: Storage,
-    private renderer: Renderer,
     private elementRef: ElementRef,
     private toastCtrl: ToastController,
     private analyticsService: AnalyticsService
