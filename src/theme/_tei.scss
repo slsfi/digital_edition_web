@@ -594,6 +594,7 @@ div.tei {
             span.footnoteText {
                 display: table-cell;
                 padding: 0;
+                overflow-wrap: anywhere;
             }
         }
         li.footnoteItem::before {
