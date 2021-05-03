@@ -430,6 +430,7 @@ export class ReadPage /*implements OnDestroy*/ {
             foundElem = document.getElementById(itemId.split(';').shift());
           }
           this.scrollToTOC(foundElem);
+          console.log('Scrolling to toc item ' + foundElem);
         } catch (e) {
           console.log(e);
         }
