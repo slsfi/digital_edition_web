@@ -8,7 +8,7 @@
 
 <ion-item>
   <ion-label>Variant</ion-label>
-  <ion-select (ionSelect)="changeVariation(variation)" interface="popover">
+  <ion-select (ionSelect)="changeVariation(variation)" interface="action-sheet">
     <ion-option *ngFor="let variation of variations; let i = index">{{variation.name}}</ion-option>
   </ion-select>
 </ion-item>
