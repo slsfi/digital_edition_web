@@ -8,8 +8,8 @@
 
 <ion-item>
   <ion-label>Variant</ion-label>
-  <ion-select [(ngModel)]="variations" interface="action-sheet">
-    <ion-option *ngFor="let variation of variations; let i = index" value="variation">{{variation.name}}</ion-option>
+  <ion-select (ionSelect)="changeVariation(variation)" interface="popover">
+    <ion-option *ngFor="let variation of variations; let i = index">{{variation.name}}</ion-option>
   </ion-select>
 </ion-item>
 
