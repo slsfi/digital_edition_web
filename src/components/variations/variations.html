@@ -8,7 +8,7 @@
 
 <ion-item>
   <ion-label>Variant</ion-label>
-  <ion-select [(ngModel)]="variants">
+  <ion-select [(ngModel)]="variations">
     <ion-option *ngFor="let variation of variations; let i = index" value="variation">{{variation.name}}</ion-option>
   </ion-select>
 </ion-item>
