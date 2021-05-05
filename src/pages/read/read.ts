@@ -399,7 +399,7 @@ export class ReadPage /*implements OnDestroy*/ {
     this.events.publish('pageLoaded:read', { 'title': this.establishedText.title });
 
     this.setUpTextListeners();
-    this.storeCollectionAndPublicationLegacyId();
+    this.setCollectionAndPublicationLegacyId();
   }
 
   ionViewDidEnter() {
@@ -979,107 +979,125 @@ export class ReadPage /*implements OnDestroy*/ {
 
         // Modal trigger for person-, place- or workinfo and info overlay trigger for footnote and comment.
         // Loop needed for finding correct tooltip trigger when there are nested triggers.
-        this.ngZone.run(() => {
-          while (!modalShown && eventTarget['classList'].contains('tooltiptrigger')) {
-            if (eventTarget.hasAttribute('data-id')) {
-              if (eventTarget['classList'].contains('person')
-              && this.readPopoverService.show.personInfo) {
+        while (!modalShown && eventTarget['classList'].contains('tooltiptrigger')) {
+          if (eventTarget.hasAttribute('data-id')) {
+            if (eventTarget['classList'].contains('person')
+            && this.readPopoverService.show.personInfo) {
+              this.ngZone.run(() => {
                 this.showPersonModal(eventTarget.getAttribute('data-id'));
-                modalShown = true;
-              } else if (eventTarget['classList'].contains('placeName')
-              && this.readPopoverService.show.placeInfo) {
+              });
+              modalShown = true;
+            } else if (eventTarget['classList'].contains('placeName')
+            && this.readPopoverService.show.placeInfo) {
+              this.ngZone.run(() => {
                 this.showPlaceModal(eventTarget.getAttribute('data-id'));
-                modalShown = true;
-              } else if (eventTarget['classList'].contains('title')
-              && this.readPopoverService.show.workInfo) {
+              });
+              modalShown = true;
+            } else if (eventTarget['classList'].contains('title')
+            && this.readPopoverService.show.workInfo) {
+              this.ngZone.run(() => {
                 this.showWorkModal(eventTarget.getAttribute('data-id'));
-                modalShown = true;
-              } else if (eventTarget['classList'].contains('comment')
-              && this.readPopoverService.show.comments) {
-                /* The user has clicked a comment lemma ("asterisk") in the reading-text.
-                  Check if comments view is shown. */
-                const viewTypesShown = this.getViewTypesShown();
-                const commentsViewIsShown = viewTypesShown.includes('comments');
-                if (commentsViewIsShown && this.userSettingsService.isDesktop()) {
-                  // Scroll to comment in comments view and scroll lemma in reading-text view.
-                  const numId = eventTarget.getAttribute('data-id').replace( /^\D+/g, '');
-                  const targetId = 'start' + numId;
-                  let lemmaStart = document.querySelector('read-text').querySelector('[data-id="' + targetId + '"]') as HTMLElement;
-                  if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
-                    // The lemma is in a footnote, so we should get the second element with targetId.
-                    lemmaStart = document.querySelector('read-text').querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
-                  }
-                  if (lemmaStart !== null && lemmaStart !== undefined) {
-                    // Scroll to start of lemma in reading text and temporarily prepend arrow.
-                    this.scrollToCommentLemma(lemmaStart);
-                    // Scroll to comment in the comments-column.
-                    const commentSettimeoutId = this.scrollToComment(numId);
-                  }
-                } else {
-                  // If a comments view isn't shown or viewmode is mobile, show comment in infoOverlay.
+              });
+              modalShown = true;
+            } else if (eventTarget['classList'].contains('comment')
+            && this.readPopoverService.show.comments) {
+              /* The user has clicked a comment lemma ("asterisk") in the reading-text.
+                Check if comments view is shown. */
+              const viewTypesShown = this.getViewTypesShown();
+              const commentsViewIsShown = viewTypesShown.includes('comments');
+              if (commentsViewIsShown && this.userSettingsService.isDesktop()) {
+                // Scroll to comment in comments view and scroll lemma in reading-text view.
+                const numId = eventTarget.getAttribute('data-id').replace( /^\D+/g, '');
+                const targetId = 'start' + numId;
+                let lemmaStart = document.querySelector('read-text').querySelector('[data-id="' + targetId + '"]') as HTMLElement;
+                if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
+                  // The lemma is in a footnote, so we should get the second element with targetId.
+                  lemmaStart = document.querySelector('read-text').querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
+                }
+                if (lemmaStart !== null && lemmaStart !== undefined) {
+                  // Scroll to start of lemma in reading text and temporarily prepend arrow.
+                  this.scrollToCommentLemma(lemmaStart);
+                  // Scroll to comment in the comments-column.
+                  const commentSettimeoutId = this.scrollToComment(numId);
+                }
+              } else {
+                // If a comments view isn't shown or viewmode is mobile, show comment in infoOverlay.
+                this.ngZone.run(() => {
                   this.showCommentInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
-                }
-                modalShown = true;
-              } else if (eventTarget['classList'].contains('ttFoot') && eventTarget['classList'].contains('teiManuscript')) {
-                // Footnote reference clicked in manuscript column
+                });
+              }
+              modalShown = true;
+            } else if (eventTarget['classList'].contains('ttFoot') && eventTarget['classList'].contains('teiManuscript')) {
+              // Footnote reference clicked in manuscript column
+              this.ngZone.run(() => {
                 this.showManuscriptFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
-                modalShown = true;
-              } else if (eventTarget['classList'].contains('ttFoot')) {
-                // Footnote reference clicked in reading text
+              });
+              modalShown = true;
+            } else if (eventTarget['classList'].contains('ttFoot')) {
+              // Footnote reference clicked in reading text
+              this.ngZone.run(() => {
                 this.showFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
-                modalShown = true;
-              }
-            } else if ((eventTarget['classList'].contains('ttChanges')
-            && this.readPopoverService.show.changes)
-            || (eventTarget['classList'].contains('ttNormalisations')
-            && this.readPopoverService.show.normalisations)
-            || (eventTarget['classList'].contains('ttAbbreviations')
-            && this.readPopoverService.show.abbreviations)) {
-              this.showInfoOverlayFromInlineHtml(eventTarget);
-              modalShown = true;
-            } else if (eventTarget['classList'].contains('ttMs')
-            || eventTarget['classList'].contains('tooltipMs')) {
-              if (eventTarget['classList'].contains('unclear')) {
-                /** Editorial note about unclear text, should be clickable only in
-                 *  the reading text column. */
-                let parentElem: HTMLElement = eventTarget as HTMLElement;
-                parentElem = parentElem.parentElement;
-                while (parentElem !== null && parentElem.tagName !== 'READ-TEXT') {
-                  parentElem = parentElem.parentElement;
-                }
-                if (parentElem !== null) {
-                  this.showInfoOverlayFromInlineHtml(eventTarget);
-                  modalShown = true;
-                }
-              }
-            } else if (eventTarget.hasAttribute('id')
-            && eventTarget['classList'].contains('ttFoot')
-            && eventTarget['classList'].contains('teiVariant')) {
-              // Footnote reference clicked in variant.
-              this.showVariantFootnoteInfoOverlay(eventTarget.getAttribute('id'), eventTarget);
-              modalShown = true;
-            } else if (eventTarget['classList'].contains('ttFoot')
-            && !eventTarget.hasAttribute('id')
-            && !eventTarget.hasAttribute('data-id')) {
-              this.showInfoOverlayFromInlineHtml(eventTarget);
+              });
               modalShown = true;
             }
-
-            /** Get the parent node of the event target for the next iteration
-             *  if a modal or infoOverlay hasn't been shown already. This is
-             *  for finding nested tooltiptriggers, i.e. a person can be a
-             *  child of a change. */
-            if (!modalShown) {
-              eventTarget = eventTarget['parentNode'];
-              if (!eventTarget['classList'].contains('tooltiptrigger')
-              && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
-                /** The parent isn't a tooltiptrigger, but the parent of the parent
-                 *  is, use it for the next iteration. */
-                eventTarget = eventTarget['parentNode'];
+          } else if ((eventTarget['classList'].contains('ttChanges')
+          && this.readPopoverService.show.changes)
+          || (eventTarget['classList'].contains('ttNormalisations')
+          && this.readPopoverService.show.normalisations)
+          || (eventTarget['classList'].contains('ttAbbreviations')
+          && this.readPopoverService.show.abbreviations)) {
+            this.ngZone.run(() => {
+              this.showInfoOverlayFromInlineHtml(eventTarget);
+            });
+            modalShown = true;
+          } else if (eventTarget['classList'].contains('ttMs')
+          || eventTarget['classList'].contains('tooltipMs')) {
+            if (eventTarget['classList'].contains('unclear')) {
+              /** Editorial note about unclear text, should be clickable only in
+               *  the reading text column. */
+              let parentElem: HTMLElement = eventTarget as HTMLElement;
+              parentElem = parentElem.parentElement;
+              while (parentElem !== null && parentElem.tagName !== 'READ-TEXT') {
+                parentElem = parentElem.parentElement;
               }
+              if (parentElem !== null) {
+                this.ngZone.run(() => {
+                  this.showInfoOverlayFromInlineHtml(eventTarget);
+                });
+                modalShown = true;
+              }
+            }
+          } else if (eventTarget.hasAttribute('id')
+          && eventTarget['classList'].contains('ttFoot')
+          && eventTarget['classList'].contains('teiVariant')) {
+            // Footnote reference clicked in variant.
+            this.ngZone.run(() => {
+              this.showVariantFootnoteInfoOverlay(eventTarget.getAttribute('id'), eventTarget);
+            });
+            modalShown = true;
+          } else if (eventTarget['classList'].contains('ttFoot')
+          && !eventTarget.hasAttribute('id')
+          && !eventTarget.hasAttribute('data-id')) {
+            this.ngZone.run(() => {
+              this.showInfoOverlayFromInlineHtml(eventTarget);
+            });
+            modalShown = true;
+          }
+
+          /** Get the parent node of the event target for the next iteration
+           *  if a modal or infoOverlay hasn't been shown already. This is
+           *  for finding nested tooltiptriggers, i.e. a person can be a
+           *  child of a change. */
+          if (!modalShown) {
+            eventTarget = eventTarget['parentNode'];
+            if (!eventTarget['classList'].contains('tooltiptrigger')
+            && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
+              /** The parent isn't a tooltiptrigger, but the parent of the parent
+               *  is, use it for the next iteration. */
+              eventTarget = eventTarget['parentNode'];
             }
           }
-        });
+        }
 
         eventTarget = this.getEventTarget(event);
         if (eventTarget['classList'].contains('variantScrollTarget')) {
@@ -1292,91 +1310,113 @@ export class ReadPage /*implements OnDestroy*/ {
           // Mouseover effects only if using a cursor, not if the user is touching the screen
           let eventTarget = this.getEventTarget(event);
           // Loop needed for finding correct tooltip trigger when there are nested triggers.
-          this.ngZone.run(() => {
-            while (!this.tooltipVisible && eventTarget['classList'].contains('tooltiptrigger')) {
-              if (eventTarget.hasAttribute('data-id')) {
-                if (this.toolTipsSettings.personInfo
-                && eventTarget['classList'].contains('person')
-                && this.readPopoverService.show.personInfo) {
+          while (!this.tooltipVisible && eventTarget['classList'].contains('tooltiptrigger')) {
+            if (eventTarget.hasAttribute('data-id')) {
+              if (this.toolTipsSettings.personInfo
+              && eventTarget['classList'].contains('person')
+              && this.readPopoverService.show.personInfo) {
+                this.ngZone.run(() => {
                   this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                  this.tooltipVisible = true;
-                } else if (this.toolTipsSettings.placeInfo
-                && eventTarget['classList'].contains('placeName')
-                && this.readPopoverService.show.placeInfo) {
+                });
+                this.tooltipVisible = true;
+              } else if (this.toolTipsSettings.placeInfo
+              && eventTarget['classList'].contains('placeName')
+              && this.readPopoverService.show.placeInfo) {
+                this.ngZone.run(() => {
                   this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                  this.tooltipVisible = true;
-                } else if (this.toolTipsSettings.workInfo
-                && eventTarget['classList'].contains('title')
-                && this.readPopoverService.show.workInfo) {
+                });
+                this.tooltipVisible = true;
+              } else if (this.toolTipsSettings.workInfo
+              && eventTarget['classList'].contains('title')
+              && this.readPopoverService.show.workInfo) {
+                this.ngZone.run(() => {
                   this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                  this.tooltipVisible = true;
-                } else if (this.toolTipsSettings.comments
-                && eventTarget['classList'].contains('comment')
-                && this.readPopoverService.show.comments) {
+                });
+                this.tooltipVisible = true;
+              } else if (this.toolTipsSettings.comments
+              && eventTarget['classList'].contains('comment')
+              && this.readPopoverService.show.comments) {
+                this.ngZone.run(() => {
                   this.showCommentTooltip(eventTarget.getAttribute('data-id'), eventTarget);
-                  this.tooltipVisible = true;
-                } else if (this.toolTipsSettings.footNotes
-                && eventTarget['classList'].contains('teiManuscript')
-                && eventTarget['classList'].contains('ttFoot')) {
+                });
+                this.tooltipVisible = true;
+              } else if (this.toolTipsSettings.footNotes
+              && eventTarget['classList'].contains('teiManuscript')
+              && eventTarget['classList'].contains('ttFoot')) {
+                this.ngZone.run(() => {
                   this.showManuscriptFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
-                  this.tooltipVisible = true;
-                } else if (this.toolTipsSettings.footNotes
-                && eventTarget['classList'].contains('ttFoot')) {
+                });
+                this.tooltipVisible = true;
+              } else if (this.toolTipsSettings.footNotes
+              && eventTarget['classList'].contains('ttFoot')) {
+                this.ngZone.run(() => {
                   this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
-                  this.tooltipVisible = true;
-                }
-              } else if ( (this.toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges')
-              && this.readPopoverService.show.changes)
-              || (this.toolTipsSettings.normalisations && eventTarget['classList'].contains('ttNormalisations')
-              && this.readPopoverService.show.normalisations)
-              || (this.toolTipsSettings.abbreviations && eventTarget['classList'].contains('ttAbbreviations')
-              && this.readPopoverService.show.abbreviations) ) {
-                this.showTooltipFromInlineHtml(eventTarget);
-                this.tooltipVisible = true;
-              } else if (eventTarget['classList'].contains('ttVariant')) {
-                this.showVariantTooltip(eventTarget);
-                this.tooltipVisible = true;
-              } else if (eventTarget['classList'].contains('ttMs')) {
-                // Check if the tooltip trigger element is in a manuscripts column
-                // since ttMs should generally only be triggered there.
-                if (eventTarget['classList'].contains('unclear')) {
-                  // Tooltips for text with class unclear should be shown in other columns too.
-                  this.showTooltipFromInlineHtml(eventTarget);
-                  this.tooltipVisible = true;
-                } else {
-                  let parentElem: HTMLElement = eventTarget as HTMLElement;
-                  parentElem = parentElem.parentElement;
-                  while (parentElem !== null && parentElem.tagName !== 'MANUSCRIPTS') {
-                    parentElem = parentElem.parentElement;
-                  }
-                  if (parentElem !== null) {
-                    this.showTooltipFromInlineHtml(eventTarget);
-                    this.tooltipVisible = true;
-                  }
-                }
-              } else if (this.toolTipsSettings.footNotes && eventTarget.hasAttribute('id')
-              && eventTarget['classList'].contains('teiVariant') && eventTarget['classList'].contains('ttFoot')) {
-                this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), eventTarget);
-                this.tooltipVisible = true;
-              } else if (eventTarget['classList'].contains('ttFoot')
-              && !eventTarget.hasAttribute('id')
-              && !eventTarget.hasAttribute('data-id')) {
-                this.showTooltipFromInlineHtml(eventTarget);
+                });
                 this.tooltipVisible = true;
               }
-
-              /* Get the parent node of the event target for the next iteration if a tooltip hasn't been shown already.
-              * This is for finding nested tooltiptriggers, i.e. a person can be a child of a change. */
-              if (!this.tooltipVisible) {
-                eventTarget = eventTarget['parentNode'];
-                if (!eventTarget['classList'].contains('tooltiptrigger')
-                && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
-                  /* The parent isn't a tooltiptrigger, but the parent of the parent is, use it for the next iteration. */
-                  eventTarget = eventTarget['parentNode'];
+            } else if ( (this.toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges')
+            && this.readPopoverService.show.changes)
+            || (this.toolTipsSettings.normalisations && eventTarget['classList'].contains('ttNormalisations')
+            && this.readPopoverService.show.normalisations)
+            || (this.toolTipsSettings.abbreviations && eventTarget['classList'].contains('ttAbbreviations')
+            && this.readPopoverService.show.abbreviations) ) {
+              this.ngZone.run(() => {
+                this.showTooltipFromInlineHtml(eventTarget);
+              });
+              this.tooltipVisible = true;
+            } else if (eventTarget['classList'].contains('ttVariant')) {
+              this.ngZone.run(() => {
+                this.showVariantTooltip(eventTarget);
+              });
+              this.tooltipVisible = true;
+            } else if (eventTarget['classList'].contains('ttMs')) {
+              // Check if the tooltip trigger element is in a manuscripts column
+              // since ttMs should generally only be triggered there.
+              if (eventTarget['classList'].contains('unclear')) {
+                // Tooltips for text with class unclear should be shown in other columns too.
+                this.ngZone.run(() => {
+                  this.showTooltipFromInlineHtml(eventTarget);
+                });
+                this.tooltipVisible = true;
+              } else {
+                let parentElem: HTMLElement = eventTarget as HTMLElement;
+                parentElem = parentElem.parentElement;
+                while (parentElem !== null && parentElem.tagName !== 'MANUSCRIPTS') {
+                  parentElem = parentElem.parentElement;
                 }
+                if (parentElem !== null) {
+                  this.ngZone.run(() => {
+                    this.showTooltipFromInlineHtml(eventTarget);
+                  });
+                  this.tooltipVisible = true;
+                }
+              }
+            } else if (this.toolTipsSettings.footNotes && eventTarget.hasAttribute('id')
+            && eventTarget['classList'].contains('teiVariant') && eventTarget['classList'].contains('ttFoot')) {
+              this.ngZone.run(() => {
+                this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), eventTarget);
+              });
+              this.tooltipVisible = true;
+            } else if (eventTarget['classList'].contains('ttFoot')
+            && !eventTarget.hasAttribute('id')
+            && !eventTarget.hasAttribute('data-id')) {
+              this.ngZone.run(() => {
+                this.showTooltipFromInlineHtml(eventTarget);
+              });
+              this.tooltipVisible = true;
+            }
+
+            /* Get the parent node of the event target for the next iteration if a tooltip hasn't been shown already.
+            * This is for finding nested tooltiptriggers, i.e. a person can be a child of a change. */
+            if (!this.tooltipVisible) {
+              eventTarget = eventTarget['parentNode'];
+              if (!eventTarget['classList'].contains('tooltiptrigger')
+              && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
+                /* The parent isn't a tooltiptrigger, but the parent of the parent is, use it for the next iteration. */
+                eventTarget = eventTarget['parentNode'];
               }
             }
-          });
+          }
         }
       });
 
@@ -2987,8 +3027,8 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 
-  storeCollectionAndPublicationLegacyId() {
-    this.textService.getPublication(this.params.get('publicationID')).subscribe(
+  setCollectionAndPublicationLegacyId() {
+    this.textService.getLegacyIdByPublicationId(this.params.get('publicationID')).subscribe(
       publication => {
         this.collectionAndPublicationLegacyId = '';
         if (publication[0].legacy_id) {
