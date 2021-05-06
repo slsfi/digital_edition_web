@@ -103,6 +103,7 @@ export class VariationsComponent {
     } else {
       this.selectedVariation = this.variations[0];
       console.log('selected = first array cell variation');
+      console.log(this.variations[0]);
     }
     this.changeVariation();
   }
