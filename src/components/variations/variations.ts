@@ -138,9 +138,8 @@ export class VariationsComponent {
     alert.addButton('Cancel');
     alert.addButton({
       text: 'Ok',
-      handler: (data: any) => {
-        console.log('Radio data:', data);
-        this.changeVariation(this.variations[parseInt(data)]);
+      handler: (index: any) => {
+        this.changeVariation(this.variations[parseInt(index)]);
       }
     });
 
