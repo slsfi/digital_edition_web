@@ -1,0 +1,113 @@
+epub {
+  /* sidenav för mobil */
+  #TOC {
+    margin: 10px;
+    height: calc(100% - 102px);
+    width: 85%;
+    max-width: 375px;
+    position: absolute;
+    z-index: 10;
+    overflow-x: hidden;
+    transition: 0.25s;
+    font-size: 1rem;
+    box-shadow: 10px 0 5px -2px #888;
+  }
+
+  #toc_menu {
+    float: left;
+    width: 100%;
+  }
+
+  #toc_menu.menuOpenIcon {
+    margin-bottom: 12px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 99;
+  }
+
+  #toc_menu ion-icon {
+    margin: 6px 12px;
+    cursor: pointer;
+  }
+
+  .menuClosed {
+    display: none;
+  }
+
+  .menuClosedIcon {
+    background-color: transparent;
+  }
+
+  .intro-toc-button {
+    transition: $opacity-hover-transition;
+  }
+
+  .intro-toc-button:hover {
+    opacity: $opacity-hover;
+  }
+
+  .intro-toc-button:active {
+    opacity: 1;
+  }
+
+  #TOC.menuClosedTOC {
+    width: auto;
+    height: auto;
+    box-shadow: none;
+  }
+
+  /* navigeringsbalken för inledningar */
+  #toc_text,
+  .menuOpenIcon {
+    background-color: color($colors, secondary);
+  }
+
+  #toc_text {
+    margin-top: 2.5rem;
+    position: sticky;
+    padding: 0 20px 70px 20px;
+  }
+
+  /* menylänkarna */
+  #TOC a {
+    text-decoration: none;
+    color: color($colors, dark);
+    transition: 0.3s;
+  }
+
+  @media (min-width: 1000px) {
+    nav#TOC {
+      float: left;
+      height: auto;
+      transition: none;
+      z-index: 10;
+      width: 50vw;
+    }
+
+    .menuClosedIcon {
+      background-color: transparent;
+    }
+  }
+
+  @media screen and (max-width: 450px) {
+    /* Gör innehållsförteckningen lite smalare på mycket små skärmar */
+    #TOC {
+      width: 75%;
+      opacity: 97%;
+      height: calc(100% - 70px);
+    }
+  }
+
+  .toc-epub-container {
+    display: block;
+  }
+
+  #area{
+    float: right;
+    display: block;
+    margin-left: 3em;
+    width: 97%;
+    height: auto;
+  }
+}

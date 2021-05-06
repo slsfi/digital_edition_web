@@ -1,0 +1,50 @@
+import { Component } from '@angular/core';
+import { App, NavController, ViewController, NavParams, PopoverController, IonicPage, Events, Platform } from 'ionic-angular';
+
+import { ConfigService } from '@ngx-config/core';
+import { TranslateService } from '@ngx-translate/core';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
+
+/**
+ * Desktop version shows collection cover page.
+ * Mobile version lists collection publications.
+ * Also mobile version of collection cover page and introduction is accessed from this page.
+ */
+
+@IonicPage({
+  name: 'epub',
+  segment: 'epub/',
+  priority: 'high'
+})
+@Component({
+  selector: 'page-epub',
+  templateUrl: 'epub.html'
+})
+export class EpubPage {
+
+  constructor(
+    protected navCtrl: NavController,
+    protected viewCtrl: ViewController,
+    protected params: NavParams,
+    protected popoverCtrl: PopoverController,
+    protected config: ConfigService,
+    protected translate: TranslateService,
+    protected events: Events,
+    protected platform: Platform,
+    private analyticsService: AnalyticsService
+  ) {
+
+  }
+
+  ionViewDidEnter() {
+    this.analyticsService.doPageView('Epub');
+  }
+
+  ionViewWillLeave() {
+    this.events.publish('ionViewWillLeave', this.constructor.name);
+  }
+
+  ionViewWillEnter() {
+  }
+
+}

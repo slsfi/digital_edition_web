@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar color="secondary" class="secondary">
+    <ion-title *ngIf="showPage">
+      <div class="page-title">{{appName}}</div>
+      <div class="page-subtitle">Epub</div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="card-background-page">
+  <ng-container>
+    <epub></epub>
+  </ng-container>
+</ion-content>
+
