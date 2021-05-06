@@ -666,9 +666,11 @@ ion-alert.select-variant-alert .alert-wrapper {
 
 .variant-select-wrapper {
   padding: 1rem 0;
-  margin: 1rem 0;
+  margin: 1rem 0 2rem 0;
   border-bottom: 1px solid var(--dark-color);
   h3 {
+    font-size: 1.3rem;
+    font-variant: small-caps;
     word-wrap: break-word;
     white-space: normal;
   }
