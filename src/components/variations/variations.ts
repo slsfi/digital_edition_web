@@ -120,7 +120,7 @@ export class VariationsComponent {
       );
     }
   }
-
+/*
   selectVariation() {
     let alert = this.alertCtrl.create();
     alert.setTitle('Välj variant');
@@ -144,4 +144,5 @@ export class VariationsComponent {
 
     alert.present();
   }
+  */
 }
