@@ -145,7 +145,7 @@ export class VariationsComponent {
       });
     });
 
-    alert.addButton('Cancel');
+    alert.addButton('Avbryt');
     alert.addButton({
       text: 'Ok',
       handler: (index: any) => {
