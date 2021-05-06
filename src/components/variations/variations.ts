@@ -2,7 +2,7 @@ import { Component, Input, ElementRef, ViewChild, Output, EventEmitter } from '@
 import { DomSanitizer } from '@angular/platform-browser';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { TextService } from '../../app/services/texts/text.service';
-import { ToastController } from 'ionic-angular';
+import { AlertController, ToastController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 
@@ -40,6 +40,7 @@ export class VariationsComponent {
     protected textService: TextService,
     protected storage: Storage,
     private elementRef: ElementRef,
+    private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private analyticsService: AnalyticsService
   ) {
@@ -118,5 +119,29 @@ export class VariationsComponent {
             .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiVariant $1\"')
       );
     }
+  }
+
+  selectVariation() {
+    let alert = this.alertCtrl.create();
+    alert.setTitle('Välj variant');
+
+    this.variations.forEach(variation => {
+      alert.addInput({
+          type: 'radio',
+          label: variation.name,
+          value: variation.name
+      });
+    });
+
+    alert.addButton('Cancel');
+    alert.addButton({
+      text: 'Ok',
+      handler: (data: any) => {
+        console.log('Radio data:', data);
+        this.changeVariation(data);
+      }
+    });
+
+    alert.present();
   }
 }

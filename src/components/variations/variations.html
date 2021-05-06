@@ -6,12 +6,18 @@
   </div>
 </div>
 
+<div class="variant-select-wrapper">
+  <h3 [innerHTML]="selectedVariation.name"></h3>
+  <button ion-button (click)="selectVariation()">Välj variant</button>
+
+  <!--
 <ion-item>
   <ion-select placeholder="Välj variant">
     <ion-option *ngFor="let variation of variations; let i = index" (ionSelect)="changeVariation(variation)" [selected]="variation == selectedVariation">{{variation.name}}</ion-option>
   </ion-select>
 </ion-item>
-<h2 [innerHTML]="selectedVariation.name"></h2>
+-->
+</div>
 
 <div class="tei" [innerHTML]="text"
 [class.show_comments]="readPopoverService.show.comments"
