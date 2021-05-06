@@ -53,8 +53,6 @@ export class VariationsComponent {
   ngOnInit() {
     this.varID = this.itemId + '_var';
     this.setText();
-    console.log('Selected variant:');
-    console.log(this.selectedVariation);
   }
 
   doAnalytics() {
