@@ -8,7 +8,7 @@
 
 <ion-item>
   <ion-select placeholder="Välj variant">
-    <ion-option *ngFor="let variation of variations; let i = index" (ionSelect)="changeVariation(variation)" [selected]="variation = selectedVariation">{{variation.name}}</ion-option>
+    <ion-option *ngFor="let variation of variations; let i = index" (ionSelect)="changeVariation(variation)" [selected]="variation == selectedVariation">{{variation.name}}</ion-option>
   </ion-select>
 </ion-item>
 <h2 [innerHTML]="selectedVariation.name"></h2>
