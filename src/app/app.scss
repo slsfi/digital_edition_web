@@ -664,6 +664,15 @@ ion-alert.select-variant-alert .alert-wrapper {
   max-width:max-content;
 }
 
+.variant-select-wrapper {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--dark-color);
+  h3 {
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
 
 // Load TEI-stylesheets. Moved here from project-variables.scss
 @import '../theme/tei';
