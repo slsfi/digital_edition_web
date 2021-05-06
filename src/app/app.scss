@@ -686,6 +686,7 @@ ion-alert.select-variant-alert .alert-wrapper {
   margin: 0 0 1.5rem 0;
   border-bottom: 1px solid #666;
   background-color: var(--read-columns-background-color);
+  display: inline-block;
 
   h3 {
     font-size: 1.125rem;
@@ -696,8 +697,9 @@ ion-alert.select-variant-alert .alert-wrapper {
   }
 
   button.button {
-    font-size: 0.875rem;
-    height: 2rem !important;
+    font-size: 0.75rem;
+    height: 1.875rem !important;
+    float: left;
   }
 }
 
