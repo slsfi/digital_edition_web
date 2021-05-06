@@ -131,7 +131,7 @@ export class VariationsComponent {
       alert.addInput({
           type: 'radio',
           label: variation.name,
-          value: variation.name
+          value: variation.id
       });
     });
 
