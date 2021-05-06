@@ -6,7 +6,7 @@
   </div>
 </div>
 
-<div class="variant-select-wrapper">
+<div *ngIf="!textLoading" class="variant-select-wrapper">
   <h3 [innerHTML]=""></h3>
   <button ion-button (click)="selectVariation()">Välj variant</button>
 </div>
