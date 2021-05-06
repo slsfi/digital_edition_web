@@ -120,10 +120,12 @@ export class VariationsComponent {
       );
     }
   }
-/*
+
   selectVariation() {
-    let alert = this.alertCtrl.create();
-    alert.setTitle('Välj variant');
+    let alert = this.alertCtrl.create({
+      title: 'Välj variant',
+      cssClass: 'select-variant-alert'
+    });
 
     this.variations.forEach(variation => {
       alert.addInput({
@@ -144,5 +146,5 @@ export class VariationsComponent {
 
     alert.present();
   }
-  */
+
 }
