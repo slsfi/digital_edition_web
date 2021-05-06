@@ -6,10 +6,10 @@
   </div>
 </div>
 
-<ion-label>Variant</ion-label>
-<ion-select placeholder="Välj">
+<ion-select placeholder="Välj variant">
   <ion-option *ngFor="let variation of variations; let i = index" (ionSelect)="changeVariation(variation)">{{variation.name}}</ion-option>
 </ion-select>
+<ion-label [innerHTML]="selectedVariation"></ion-label>
 
 <div class="tei" [innerHTML]="text"
 [class.show_comments]="readPopoverService.show.comments"
