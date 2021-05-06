@@ -11,7 +11,7 @@
     <ion-option *ngFor="let variation of variations; let i = index" (ionSelect)="changeVariation(variation)">{{variation.name}}</ion-option>
   </ion-select>
 </ion-item>
-<ion-label [innerHTML]="selectedVariation"></ion-label>
+<ion-label [innerHTML]="selectedVariation.name"></ion-label>
 
 <div class="tei" [innerHTML]="text"
 [class.show_comments]="readPopoverService.show.comments"
