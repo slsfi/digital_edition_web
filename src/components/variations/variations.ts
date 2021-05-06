@@ -127,11 +127,11 @@ export class VariationsComponent {
       cssClass: 'select-variant-alert'
     });
 
-    this.variations.forEach(variation => {
+    this.variations.forEach((variation, index) => {
       alert.addInput({
           type: 'radio',
           label: variation.name,
-          value: variation.id
+          value: index
       });
     });
 
@@ -140,7 +140,7 @@ export class VariationsComponent {
       text: 'Ok',
       handler: (data: any) => {
         console.log('Radio data:', data);
-        this.changeVariation(data);
+        this.changeVariation(this.variations[parseInt(data)]);
       }
     });
 
