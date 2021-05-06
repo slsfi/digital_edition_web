@@ -661,10 +661,15 @@ ion-backdrop {
 
 /* Style for alert where variants can be selected */
 ion-alert.select-variant-alert .alert-wrapper {
-  max-width:max-content;
+  max-width: 500px;
+  border-radius: $corner-roundness;
 
   .alert-title {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
+  }
+
+  .alert-radio-group {
+    max-height: 100%;
   }
 
   button.alert-radio-button {
