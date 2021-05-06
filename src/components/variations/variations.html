@@ -6,8 +6,8 @@
   </div>
 </div>
 
-<ion-label>Välj variant</ion-label>
-<ion-select interface="action-sheet">
+<ion-label>Variant</ion-label>
+<ion-select placeholder="Välj">
   <ion-option *ngFor="let variation of variations; let i = index" (ionSelect)="changeVariation(variation)">{{variation.name}}</ion-option>
 </ion-select>
 
