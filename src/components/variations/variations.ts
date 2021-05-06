@@ -29,6 +29,7 @@ export class VariationsComponent {
   selection: 0;
   variations: any;
   selectedVariation: any;
+  selectedVariationName: string;
   errorMessage: string;
   normalized = true;
   varID: string;
@@ -45,6 +46,7 @@ export class VariationsComponent {
     private analyticsService: AnalyticsService
   ) {
     this.text = '';
+    this.selectedVariationName = '';
     this.variations = [];
   }
 
@@ -95,15 +97,10 @@ export class VariationsComponent {
     const inputVariation = this.variations.filter(function(item) {
       return (item.id + '' === this.linkID + '' || item.legacy_id + '' === this.linkID + '');
     }.bind(this))[0];
-    console.log('input variation:')
-    console.log(inputVariation);
     if (this.linkID && this.linkID !== undefined && inputVariation !== undefined ) {
       this.selectedVariation = inputVariation;
-      console.log('selected = input variation')
     } else {
       this.selectedVariation = this.variations[0];
-      console.log('selected = first array cell variation');
-      console.log(this.variations[0]);
     }
     this.changeVariation();
   }
@@ -120,6 +117,7 @@ export class VariationsComponent {
     if ( variation ) {
       this.selectedVariation = variation;
     }
+    this.selectedVariationName = this.selectedVariation.name;
     if (this.selectedVariation && this.selectedVariation.content !== undefined) {
       this.text = this.sanitizer.bypassSecurityTrustHtml(
           this.selectedVariation.content.replace(/images\//g, 'assets/images/')
@@ -129,7 +127,7 @@ export class VariationsComponent {
   }
 
   selectVariation() {
-    let alert = this.alertCtrl.create({
+    const alert = this.alertCtrl.create({
       title: 'Välj variant',
       cssClass: 'select-variant-alert'
     });
