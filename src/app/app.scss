@@ -659,6 +659,10 @@ ion-backdrop {
   font-size: 10px;
 }
 
+/* Style for alert where variants can be selected */
+ion-alert.select-variant-alert .alert-wrapper {
+  max-width:max-content;
+}
 
 
 // Load TEI-stylesheets. Moved here from project-variables.scss
