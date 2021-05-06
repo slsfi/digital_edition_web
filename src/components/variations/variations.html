@@ -11,7 +11,7 @@
 <div *ngIf="!textLoading" class="variant-select-wrapper">
   <h3 [innerHTML]="selectedVariationName"></h3>
   <button ion-button (click)="selectVariation()">Byt variant</button>
-  <button ion-button outline>Öppna alla</button>
+  <button ion-button outline (click)="openAllVariations()">Öppna alla</button>
 </div>
 
 <div class="tei" [innerHTML]="text"

@@ -156,4 +156,13 @@ export class VariationsComponent {
     alert.present();
   }
 
+  openAllVariations() {
+    this.variations.forEach((variation) => {
+      if (this.selectedVariation.id !== variation.id) {
+        variation.viewType = 'variations';
+        this.openNewVarView.emit(variation);
+      }
+    });
+  }
+
 }
