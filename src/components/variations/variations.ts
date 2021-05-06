@@ -95,10 +95,14 @@ export class VariationsComponent {
     const inputVariation = this.variations.filter(function(item) {
       return (item.id + '' === this.linkID + '' || item.legacy_id + '' === this.linkID + '');
     }.bind(this))[0];
+    console.log('input variation:')
+    console.log(inputVariation);
     if (this.linkID && this.linkID !== undefined && inputVariation !== undefined ) {
       this.selectedVariation = inputVariation;
+      console.log('selected = input variation')
     } else {
       this.selectedVariation = this.variations[0];
+      console.log('selected = first array cell variation');
     }
     this.changeVariation();
   }
