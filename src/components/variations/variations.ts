@@ -128,10 +128,17 @@ export class VariationsComponent {
     });
 
     this.variations.forEach((variation, index) => {
+      let checkedValue = false;
+
+      if (this.selectedVariation.id === variation.id) {
+        checkedValue = true;
+      }
+
       alert.addInput({
           type: 'radio',
           label: variation.name,
-          value: index
+          value: index,
+          checked: checkedValue
       });
     });
 
