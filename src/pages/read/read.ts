@@ -2393,12 +2393,14 @@ export class ReadPage /*implements OnDestroy*/ {
     const hiddenDiv: HTMLElement = document.createElement('div');
 
     // Loop over each class in the tooltip element and add them to the hidden div.
-    const ttClasses: string[] = Array.from(toolTipElem.classList);
-    ttClasses.forEach(
-      function(currentValue, currentIndex, listObj) {
-        hiddenDiv.classList.add(currentValue);
-      },
-    );
+    if (toolTipElem.className !== '') {
+      const ttClasses: string[] = Array.from(toolTipElem.classList);
+      ttClasses.forEach(
+        function(currentValue, currentIndex, listObj) {
+          hiddenDiv.classList.add(currentValue);
+        },
+      );
+    }
 
     // Don't display the hidden div initially. Set max-width if defined, otherwise the max-width will be determined by css.
     hiddenDiv.style.display = 'none';
