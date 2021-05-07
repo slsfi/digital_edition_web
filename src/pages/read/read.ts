@@ -2099,10 +2099,6 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   setToolTipPosition(targetElem: HTMLElement, ttText: string) {
-    // Get viewport width and height.
-    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-
     // Set vertical offset and toolbar heights.
     const yOffset = 5;
     const primaryToolbarHeight = 70;
@@ -2120,6 +2116,29 @@ export class ReadPage /*implements OnDestroy*/ {
     const resizedToolTipMinWidth = 300;
     const resizedToolTipMaxWidth = 600;
 
+    // Get viewport width and height.
+    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    let vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+    // Get how much the read page has scrolled horizontally to the left.
+    // Get read page content element and adjust viewport height with horizontal
+    // scrollbar height if such is present.
+    // Also get how much the read page has scrolled horizontally to the left
+    // (position is set correctly in Firefox without this, but not in Chrome, Safari.).
+    let scrollLeft = 0;
+    let horizontalScrollbarOffsetHeight = 0;
+    const contentElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
+    if (contentElem !== null) {
+      scrollLeft = contentElem.scrollLeft;
+
+      if (contentElem.clientHeight < contentElem.offsetHeight) {
+        horizontalScrollbarOffsetHeight = contentElem.offsetHeight - contentElem.clientHeight;
+      }
+    }
+
+    // Adjust effective viewport height if horizontal scrollbar present.
+    vh = vh - horizontalScrollbarOffsetHeight;
+
     // Set horisontal offset due to possible side pane on the left.
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
     let sidePaneOffsetWidth = 0;
@@ -2132,8 +2151,8 @@ export class ReadPage /*implements OnDestroy*/ {
     let positionAboveOrBelowTrigger: Boolean = false;
     let positionAbove: Boolean = false;
 
-    // Get rectangle which contains tooltiptrigger element. For trigger elements spanning multiple lines
-    // tooltips are always placed above or below the trigger.
+    // Get rectangle which contains tooltiptrigger element. For trigger elements
+    // spanning multiple lines tooltips are always placed above or below the trigger.
     const elemRects = targetElem.getClientRects();
     let elemRect = null;
     if (elemRects.length === 1) {
@@ -2366,14 +2385,6 @@ export class ReadPage /*implements OnDestroy*/ {
           }
         }
       }
-    }
-
-    // Get how much the read page has scrolled horizontally to the left.
-    // Position is set correctly in Firefox without this, but not in Chrome, Safari.
-    let scrollLeft = 0;
-    const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
-    if (scrollingContainer !== null) {
-      scrollLeft = scrollingContainer.scrollLeft;
     }
 
     // Set tooltip position
