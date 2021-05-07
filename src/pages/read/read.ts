@@ -2368,13 +2368,15 @@ export class ReadPage /*implements OnDestroy*/ {
       }
     }
 
-    // Get how much the read page has scrolled horizontally to the left
+    // Get how much the read page has scrolled horizontally to the left.
+    // Position is set correctly in Firefox without this, but not in Chrome, Safari.
     let scrollLeft = 0;
+    /*
     const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
     if (scrollingContainer !== null) {
       scrollLeft = scrollingContainer.scrollLeft;
     }
-    console.log('Scroll left: ' + scrollLeft);
+    */
 
     // Set tooltip position
     this.toolTipPosition = {
