@@ -2445,18 +2445,16 @@ export class ReadPage /*implements OnDestroy*/ {
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
-    // Get how much the read page has scrolled horizontally to the left
+    // Get read page content element and adjust viewport height with horizontal scrollbar height if such is present. Also get how much the read page has scrolled horizontally to the left.
     let scrollLeft = 0;
-    const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
-    if (scrollingContainer !== null) {
-      scrollLeft = scrollingContainer.scrollLeft;
-    }
-
-    // Get read page content element and adjust viewport height with horizontal scrollbar height if such is present
-    const contentElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
     let horizontalScrollbarOffsetHeight = 0;
-    if (contentElem.clientHeight < contentElem.offsetHeight) {
-      horizontalScrollbarOffsetHeight = contentElem.offsetHeight - contentElem.clientHeight;
+    const contentElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
+    if (contentElem !== null) {
+      scrollLeft = contentElem.scrollLeft;
+
+      if (contentElem.clientHeight < contentElem.offsetHeight) {
+        horizontalScrollbarOffsetHeight = contentElem.offsetHeight - contentElem.clientHeight;
+      }
     }
 
     // Get bounding rectangle of the div.scroll-content element which is the container for the column that the trigger element resides in.
@@ -2472,7 +2470,8 @@ export class ReadPage /*implements OnDestroy*/ {
       let calcWidth = containerElem.clientWidth; // Width without scrollbar
 
       if (this.userSettingsService.isMobile() && vw > 800) {
-        // Adjust width in mobile view
+        // Adjust width in mobile view when viewport size over 800 px
+        // since padding changes through CSS then.
         margins = margins + 16;
       }
 
