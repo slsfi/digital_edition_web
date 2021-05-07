@@ -1104,9 +1104,13 @@ export class ReadPage /*implements OnDestroy*/ {
           // Click on variant lemma --> highlight and scroll all variant columns.
           
           this.ngZone.run(() => {
-            eventTarget.classList.add('highlight');
+            eventTarget['classList'].add('highlight');
             window.setTimeout(function () {
-              eventTarget.classList.remove('highlight');
+              eventTarget['classList'].remove('highlight');
+              console.log('Removing highlight');
+              if (eventTarget === undefined || eventTarget === null) {
+                console.log('eventTarget undefined');
+              }
             }, 5000);
             this.scrollToVariant(eventTarget);
           });
