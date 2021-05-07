@@ -2192,6 +2192,8 @@ export class ReadPage /*implements OnDestroy*/ {
     let x = elemRect.right + triggerPaddingX;
     let y = elemRect.top - primaryToolbarHeight - yOffset;
 
+    console.log('Default position, x, y: ' + x + ', ' + y);
+
     // Check if tooltip would be drawn outside the viewport.
     let oversetX = x + ttWidth - vw;
     let oversetY = elemRect.top + ttHeight - vh;
