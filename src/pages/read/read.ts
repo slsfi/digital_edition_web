@@ -2470,7 +2470,6 @@ export class ReadPage /*implements OnDestroy*/ {
 
       if (this.userSettingsService.isMobile()) {
         // Adjust width in mobile view
-        calcWidth = calcWidth - 32;
         margins = margins + 16;
       }
 
