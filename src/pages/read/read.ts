@@ -2201,6 +2201,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
     // Check if tooltip would be drawn outside the viewport.
     let oversetX = x + ttWidth - vw;
+    console.log('Overset x: ' + oversetX);
     let oversetY = elemRect.top + ttHeight - vh;
     if (!positionAboveOrBelowTrigger) {
       if (oversetX > 0) {
@@ -2422,7 +2423,8 @@ export class ReadPage /*implements OnDestroy*/ {
 
     // Don't display the hidden div initially. Set max-width if defined, otherwise the max-width will be determined by css.
     hiddenDiv.style.display = 'none';
-    hiddenDiv.style.top = '0';
+    hiddenDiv.style.position = 'absolute';
+    hiddenDiv.style.top = '50';
     hiddenDiv.style.left = '0';
     if (maxWidth > 0) {
       hiddenDiv.style.maxWidth = maxWidth + 'px';
@@ -2436,6 +2438,8 @@ export class ReadPage /*implements OnDestroy*/ {
     hiddenDiv.style.display = 'block';
     const ttHeight = hiddenDiv.offsetHeight;
     const ttWidth = hiddenDiv.offsetWidth;
+    console.log(hiddenDiv);
+    console.log(ttWidth);
     let compToolTipMaxWidth = '';
     if (returnCompMaxWidth) {
       // Get default tooltip max-width from css of hidden div if possible.
