@@ -2414,13 +2414,21 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   /** Set position and width of infoOverlay element. This function is not exactly
-   *  the same as in introduction.ts due to different page structure in read.
+   *  the same as in introduction.ts due to different page structure on read page.
    */
   private setInfoOverlayPositionAndWidth(triggerElement: HTMLElement, defaultMargins = 20, maxWidth = 600) {
     let margins = defaultMargins;
 
     // Get viewport height.
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+    // Get how much the read page has scrolled horizontally to the left
+    let scrollLeft = 0;
+    const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
+    if (scrollingContainer !== null) {
+      scrollLeft = scrollingContainer.scrollLeft;
+    }
+    console.log('Scroll left: ' + scrollLeft);
 
     // Get read page content element and adjust viewport height with horizontal scrollbar height if such is present
     const contentElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
@@ -2451,7 +2459,7 @@ export class ReadPage /*implements OnDestroy*/ {
       // Set info overlay position
       this.infoOverlayPosition = {
         bottom: (vh - horizontalScrollbarOffsetHeight - containerElemRect.bottom) + 'px',
-        left: (containerElemRect.left + margins - contentElem.getBoundingClientRect().left) + 'px'
+        left: (containerElemRect.left + scrollLeft + margins - contentElem.getBoundingClientRect().left) + 'px'
       };
       if (this.userSettingsService.isDesktop()) {
         this.infoOverlayPosType = 'absolute';
