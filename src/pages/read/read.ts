@@ -2127,9 +2127,11 @@ export class ReadPage /*implements OnDestroy*/ {
     // (position is set correctly in Firefox without this, but not in Chrome, Safari.).
     let scrollLeft = 0;
     let horizontalScrollbarOffsetHeight = 0;
+    let sidePaneOffsetWidth = 0;
     const contentElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
     if (contentElem !== null) {
       scrollLeft = contentElem.scrollLeft;
+      sidePaneOffsetWidth = contentElem.getBoundingClientRect().left;
 
       if (contentElem.clientHeight < contentElem.offsetHeight) {
         horizontalScrollbarOffsetHeight = contentElem.offsetHeight - contentElem.clientHeight;
@@ -2140,12 +2142,14 @@ export class ReadPage /*implements OnDestroy*/ {
     vh = vh - horizontalScrollbarOffsetHeight;
 
     // Set horisontal offset due to possible side pane on the left.
+    /*
     const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
     let sidePaneOffsetWidth = 0;
     if (sidePaneIsOpen) {
       const sidePane = <HTMLElement>document.querySelector('ion-menu#tableOfContentsMenu');
       sidePaneOffsetWidth = sidePane.offsetWidth;
     }
+    */
 
     // Set variable for determining if the tooltip should be placed above or below the trigger rather than beside it.
     let positionAboveOrBelowTrigger: Boolean = false;
