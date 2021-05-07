@@ -2120,8 +2120,6 @@ export class ReadPage /*implements OnDestroy*/ {
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     let vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
-    console.log('vw, vh: ' + vw + ', ' + vh);
-
     // Get how much the read page has scrolled horizontally to the left.
     // Get read page content element and adjust viewport height with horizontal
     // scrollbar height if such is present.
@@ -2190,11 +2188,12 @@ export class ReadPage /*implements OnDestroy*/ {
       this.toolTipScaleValue = 1;
     }
 
-    // Calculate default position.
+    // Calculate default position, this is relative to the viewport's top-left corner.
     let x = elemRect.right + triggerPaddingX;
     let y = elemRect.top - primaryToolbarHeight - yOffset;
 
     console.log('Default position, x, y: ' + x + ', ' + y);
+    console.log('Default tooltip width: ' + ttWidth);
 
     // Check if tooltip would be drawn outside the viewport.
     let oversetX = x + ttWidth - vw;
@@ -2460,7 +2459,9 @@ export class ReadPage /*implements OnDestroy*/ {
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
-    // Get read page content element and adjust viewport height with horizontal scrollbar height if such is present. Also get how much the read page has scrolled horizontally to the left.
+    // Get read page content element and adjust viewport height with horizontal
+    // scrollbar height if such is present. Also get how much the read page has
+    // scrolled horizontally to the left.
     let scrollLeft = 0;
     let horizontalScrollbarOffsetHeight = 0;
     const contentElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
@@ -2472,7 +2473,8 @@ export class ReadPage /*implements OnDestroy*/ {
       }
     }
 
-    // Get bounding rectangle of the div.scroll-content element which is the container for the column that the trigger element resides in.
+    // Get bounding rectangle of the div.scroll-content element which is the
+    // container for the column that the trigger element resides in.
     let containerElem = triggerElement.parentElement;
     while (containerElem !== null && containerElem.parentElement !== null &&
       !(containerElem.classList.contains('scroll-content') &&
