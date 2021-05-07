@@ -2151,6 +2151,9 @@ export class ReadPage /*implements OnDestroy*/ {
 
     // Find the tooltip element.
     const tooltipElement: HTMLElement = document.querySelector('div.toolTip');
+    if (tooltipElement === null) {
+      return;
+    }
 
     // Get tooltip element's default dimensions and computed max-width (latter set by css).
     const initialTTDimensions = this.getToolTipDimensions(tooltipElement, ttText, 0, true);
