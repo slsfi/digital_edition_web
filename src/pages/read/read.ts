@@ -2362,10 +2362,18 @@ export class ReadPage /*implements OnDestroy*/ {
       }
     }
 
+    // Get how much the read page has scrolled horizontally to the left
+    let scrollLeft = 0;
+    const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
+    if (scrollingContainer !== null) {
+      scrollLeft = scrollingContainer.scrollLeft;
+    }
+    console.log('Scroll left: ' + scrollLeft);
+
     // Set tooltip position
     this.toolTipPosition = {
       top: y + 'px',
-      left: (x - sidePaneOffsetWidth) + 'px'
+      left: (x + scrollLeft - sidePaneOffsetWidth) + 'px'
     };
   }
 
