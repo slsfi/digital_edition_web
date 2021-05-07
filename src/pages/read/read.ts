@@ -86,6 +86,7 @@ export class ReadPage /*implements OnDestroy*/ {
   showOccurrencesModal = false;
   searchResult: string;
   toolTipsSettings: Record<string, any> = {};
+  toolTipPosType: string;
   toolTipPosition: object;
   toolTipMaxWidth: string;
   toolTipScaleValue: number;
@@ -217,6 +218,7 @@ export class ReadPage /*implements OnDestroy*/ {
     this.isCached();
     this.searchResult = null;
 
+    this.toolTipPosType = 'fixed';
     this.toolTipMaxWidth = null;
     this.toolTipScaleValue = null;
     this.toolTipPosition = {
@@ -2078,6 +2080,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
   hideToolTip() {
     this.setToolTipText('');
+    this.toolTipPosType = 'fixed'; // Position needs to be fixed so we can safely hide it outside viewport
     this.toolTipPosition = {
       top: 0 + 'px',
       left: -1500 + 'px'
@@ -2088,7 +2091,7 @@ export class ReadPage /*implements OnDestroy*/ {
   hideInfoOverlay() {
     this.setInfoOverlayText('');
     this.setInfoOverlayTitle('');
-    this.infoOverlayPosType = 'fixed'; // Position needs to be fixed so we can hide it outside viewport
+    this.infoOverlayPosType = 'fixed'; // Position needs to be fixed so we can safely hide it outside viewport
     this.infoOverlayPosition = {
       bottom: 0 + 'px',
       left: -1500 + 'px'
@@ -2375,6 +2378,11 @@ export class ReadPage /*implements OnDestroy*/ {
       top: y + 'px',
       left: (x + scrollLeft - sidePaneOffsetWidth) + 'px'
     };
+    if (this.userSettingsService.isDesktop()) {
+      this.toolTipPosType = 'absolute';
+    } else {
+      this.toolTipPosType = 'fixed';
+    }
   }
 
   private getToolTipDimensions(toolTipElem: HTMLElement, toolTipText: string, maxWidth = 0, returnCompMaxWidth: Boolean = false) {
@@ -2457,6 +2465,11 @@ export class ReadPage /*implements OnDestroy*/ {
     if (containerElem !== null && containerElem.parentElement !== null) {
       const containerElemRect = containerElem.getBoundingClientRect();
       let calcWidth = containerElem.clientWidth; // Width without scrollbar
+
+      if (this.userSettingsService.isMobile()) {
+        // Adjust width in mobile view
+        calcWidth = calcWidth - 32;
+      }
 
       if (calcWidth > maxWidth + 2 * margins) {
         margins = Math.floor((calcWidth - maxWidth) / 2);
