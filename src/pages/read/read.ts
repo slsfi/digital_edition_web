@@ -2099,9 +2099,8 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   setToolTipPosition(targetElem: HTMLElement, ttText: string) {
-    // Set vertical offset and toolbar heights.
+    // Set vertical offset and toolbar height.
     const yOffset = 5;
-    const primaryToolbarHeight = 70;
     const secToolbarHeight = 50;
 
     // Set how close to the edges of the "window" the tooltip can be placed. Currently this only applies if the
@@ -2128,11 +2127,12 @@ export class ReadPage /*implements OnDestroy*/ {
     let scrollLeft = 0;
     let horizontalScrollbarOffsetHeight = 0;
     let sidePaneOffsetWidth = 0;
+    let primaryToolbarHeight = 70;
     const contentElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
     if (contentElem !== null) {
       scrollLeft = contentElem.scrollLeft;
       sidePaneOffsetWidth = contentElem.getBoundingClientRect().left;
-      console.log('Content top: ' + contentElem.getBoundingClientRect().top);
+      primaryToolbarHeight = contentElem.getBoundingClientRect().top;
 
       if (contentElem.clientHeight < contentElem.offsetHeight) {
         horizontalScrollbarOffsetHeight = contentElem.offsetHeight - contentElem.clientHeight;
