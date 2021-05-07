@@ -2439,8 +2439,9 @@ export class ReadPage /*implements OnDestroy*/ {
   private setInfoOverlayPositionAndWidth(triggerElement: HTMLElement, defaultMargins = 20, maxWidth = 600) {
     let margins = defaultMargins;
 
-    // Get viewport height.
+    // Get viewport height and width.
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
     // Get how much the read page has scrolled horizontally to the left
     let scrollLeft = 0;
@@ -2468,7 +2469,7 @@ export class ReadPage /*implements OnDestroy*/ {
       const containerElemRect = containerElem.getBoundingClientRect();
       let calcWidth = containerElem.clientWidth; // Width without scrollbar
 
-      if (this.userSettingsService.isMobile()) {
+      if (this.userSettingsService.isMobile() && vw > 800) {
         // Adjust width in mobile view
         margins = margins + 16;
       }
