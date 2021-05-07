@@ -1107,8 +1107,8 @@ export class ReadPage /*implements OnDestroy*/ {
           this.ngZone.run(() => {
             this.scrollToVariant(eventTarget);
           });
-          window.setTimeout(function(eventTarget) {
-            eventTarget.classList.remove('highlight');
+          window.setTimeout(function(elem) {
+            elem.classList.remove('highlight');
           }.bind(null, eventTarget), 5000);
         }
 
