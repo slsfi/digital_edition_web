@@ -11,15 +11,15 @@ import { AnalyticsService } from '../../app/services/analytics/analytics.service
  * Also mobile version of collection cover page and introduction is accessed from this page.
  */
 
-@IonicPage({
+ @IonicPage({
   name: 'epub',
-  segment: 'epub/',
-  priority: 'high'
+  segment: 'epub'
 })
 @Component({
   selector: 'page-epub',
-  templateUrl: 'epub.html'
+  templateUrl: 'epub.html',
 })
+
 export class EpubPage {
 
   constructor(

@@ -1,8 +1,4 @@
-<div class="navigation-buttons">
-  <a (click)="prev()">prev</a>
-  <a (click)="next()">next</a>
-</div>
-<div class="toc-epub-container" >
+<div class="toc-epub-container">
   <nav id="TOC" [ngClass]="tocMenuOpen ? 'menuOpenTOC' : 'menuClosedTOC'">
     <div id="toc_menu" (click)="toggleTocMenu()" [ngClass]="tocMenuOpen ? 'menuOpenIcon' : 'menuClosedIcon'">
         <ion-icon name="menu" class="intro-toc-button" *ngIf="!tocMenuOpen"></ion-icon>
@@ -12,5 +8,10 @@
     </div>
   </nav>
   <div id="area"></div>
+  <!--div id="currentPageNumber">{{currentPageNumber}}</div>
+  <div id="nextPageNumber">{{nextPageNumber}}</div-->
 </div>
-
+<div class="navigation-buttons" *ngIf="!loading">
+  <a (click)="prev()"><ion-icon name="arrow-back"></ion-icon></a>
+  <a (click)="next()"><ion-icon name="arrow-forward"></ion-icon></a>
+</div>

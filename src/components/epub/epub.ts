@@ -1,5 +1,5 @@
-import { Component, ElementRef } from '@angular/core';
-import  Epub,{ NavItem, Rendition }  from 'epubjs';
+import { Component } from '@angular/core';
+import Epub, { NavItem, Rendition } from 'epubjs';
 import book from 'epubjs/types/book';
 import {} from 'fs';
 
@@ -26,6 +26,8 @@ export class EpubComponent {
   rendition: Rendition;
   displayed: any;
   loading: boolean;
+  currentPageNumber: number;
+  nextPageNumber: number;
 
   public tocMenuOpen: boolean;
 
@@ -36,26 +38,35 @@ export class EpubComponent {
 
   ngAfterViewInit() {
     this.book = Epub('../assets/books/2685.epub');
-    this.rendition = this.book.renderTo('area',  { flow: "paginated", width: "900", height: "600" });
+    // Get viewport width and height. Make it a bit smaller
+    const vw = (Math.max(document.documentElement.clientWidth, window.innerWidth || 0)) * 0.8;
+    const vh = (Math.max(document.documentElement.clientHeight, window.innerHeight || 0)) * 0.8;
+
+    this.rendition = this.book.renderTo('area',  { manager: 'continuous', flow: 'paginated', width: vw, height: vh });
     this.displayed = this.rendition.display();
-    this.createTOC();
+    this.book.ready.then( () => {
+      this.loading = false;
+      this.createTOC();
+      this.setPageNumbers();
+    });
   }
 
   createTOC() {
-    const _this = this
+    const _this = this;
     this.book.loaded.navigation.then(
       function( toc ) {
-			  const tocDiv = <HTMLDivElement>document.getElementById('toc_text');
+        const tocDiv = <HTMLDivElement> document.getElementById('toc_text');
         const tocUl = document.createElement('ul');
-        const docfrag = <DocumentFragment>document.createDocumentFragment();
+        const docfrag = <DocumentFragment> document.createDocumentFragment();
         toc.forEach( (chapter: NavItem) => {
           // Adds TOC elements recursively to div
           docfrag.appendChild(_this.createTocElement(chapter));
           return null;
-        })
+        });
         tocUl.appendChild(docfrag);
         tocDiv.appendChild(tocUl);
-		});
+      }
+    );
   }
 
   // Recursive TOC creation
@@ -95,19 +106,29 @@ export class EpubComponent {
     }
   }
 
+  setPageNumbers() {
+    try {
+      const _this = this;
+      this.rendition.on('relocated', function(location) {
+        _this.currentPageNumber = location.start.index;
+        _this.nextPageNumber = location.end.index;
+      });
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   ngOnDestroy() {
     this.book.destroy();
   }
 
   next() {
-    console.log('next');
     this.rendition.next();
-    // this.book.navigation.toc;
+    this.setPageNumbers();
   }
 
   prev() {
-    console.log('prev');
     this.rendition.prev();
-    // this.book.navigation.toc;
+    this.setPageNumbers();
   }
 }

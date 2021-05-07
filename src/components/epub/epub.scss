@@ -1,4 +1,7 @@
 epub {
+  background-color: rgb(249, 252, 252);
+  display: block;
+  height: 100%;
   /* sidenav för mobil */
   #TOC {
     margin: 10px;
@@ -11,6 +14,7 @@ epub {
     transition: 0.25s;
     font-size: 1rem;
     box-shadow: 10px 0 5px -2px #888;
+    background-color: rgb(249, 252, 252);
   }
 
   #toc_menu {
@@ -60,7 +64,7 @@ epub {
   /* navigeringsbalken för inledningar */
   #toc_text,
   .menuOpenIcon {
-    background-color: color($colors, secondary);
+    background-color: rgb(249, 252, 252);
   }
 
   #toc_text {
