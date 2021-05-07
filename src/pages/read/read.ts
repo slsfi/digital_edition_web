@@ -2123,8 +2123,8 @@ export class ReadPage /*implements OnDestroy*/ {
     // Get how much the read page has scrolled horizontally to the left.
     // Get read page content element and adjust viewport height with horizontal
     // scrollbar height if such is present.
-    // Also get how much the read page has scrolled horizontally to the left
-    // (position is set correctly in Firefox without this, but not in Chrome, Safari.).
+    // Also get how much the read page has scrolled horizontally to the left.
+    // Set horisontal offset due to possible side pane on the left.
     let scrollLeft = 0;
     let horizontalScrollbarOffsetHeight = 0;
     let sidePaneOffsetWidth = 0;
@@ -2132,6 +2132,7 @@ export class ReadPage /*implements OnDestroy*/ {
     if (contentElem !== null) {
       scrollLeft = contentElem.scrollLeft;
       sidePaneOffsetWidth = contentElem.getBoundingClientRect().left;
+      console.log('Content top: ' + contentElem.getBoundingClientRect().top);
 
       if (contentElem.clientHeight < contentElem.offsetHeight) {
         horizontalScrollbarOffsetHeight = contentElem.offsetHeight - contentElem.clientHeight;
@@ -2140,16 +2141,6 @@ export class ReadPage /*implements OnDestroy*/ {
 
     // Adjust effective viewport height if horizontal scrollbar present.
     vh = vh - horizontalScrollbarOffsetHeight;
-
-    // Set horisontal offset due to possible side pane on the left.
-    /*
-    const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
-    let sidePaneOffsetWidth = 0;
-    if (sidePaneIsOpen) {
-      const sidePane = <HTMLElement>document.querySelector('ion-menu#tableOfContentsMenu');
-      sidePaneOffsetWidth = sidePane.offsetWidth;
-    }
-    */
 
     // Set variable for determining if the tooltip should be placed above or below the trigger rather than beside it.
     let positionAboveOrBelowTrigger: Boolean = false;
@@ -2201,8 +2192,9 @@ export class ReadPage /*implements OnDestroy*/ {
 
     // Check if tooltip would be drawn outside the viewport.
     let oversetX = x + ttWidth - vw;
-    console.log('Overset x: ' + oversetX);
     let oversetY = elemRect.top + ttHeight - vh;
+    console.log('Overset x: ' + oversetX);
+    console.log('Overset y: ' + oversetY);
     if (!positionAboveOrBelowTrigger) {
       if (oversetX > 0) {
         if (oversetY > 0) {
@@ -2419,12 +2411,14 @@ export class ReadPage /*implements OnDestroy*/ {
           hiddenDiv.classList.add(currentValue);
         },
       );
+    } else {
+      return undefined;
     }
 
     // Don't display the hidden div initially. Set max-width if defined, otherwise the max-width will be determined by css.
     hiddenDiv.style.display = 'none';
     hiddenDiv.style.position = 'absolute';
-    hiddenDiv.style.top = '50';
+    hiddenDiv.style.top = '0';
     hiddenDiv.style.left = '0';
     if (maxWidth > 0) {
       hiddenDiv.style.maxWidth = maxWidth + 'px';
@@ -2438,8 +2432,6 @@ export class ReadPage /*implements OnDestroy*/ {
     hiddenDiv.style.display = 'block';
     const ttHeight = hiddenDiv.offsetHeight;
     const ttWidth = hiddenDiv.offsetWidth;
-    console.log(hiddenDiv);
-    console.log(ttWidth);
     let compToolTipMaxWidth = '';
     if (returnCompMaxWidth) {
       // Get default tooltip max-width from css of hidden div if possible.
