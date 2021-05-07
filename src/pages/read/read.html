@@ -91,7 +91,7 @@
             {{ view.type | translate }}
           </ion-card-header>
           <ion-card-content>
-            <ion-fab top left [ngClass]="(views.length>1)?'close-button-many':'close-button-one'">
+            <ion-fab *ngIf="views.length>1" top left [ngClass]="(views.length>1)?'close-button-many':'close-button-one'">
               <button ion-fab mini>
                 <ion-icon *ngIf="view.established.show" name="menu"></ion-icon>
                 <ion-icon *ngIf="view.comments.show" name="menu"></ion-icon>
