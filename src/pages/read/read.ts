@@ -2120,6 +2120,8 @@ export class ReadPage /*implements OnDestroy*/ {
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     let vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
+    console.log('vw, vh: ' + vw + ', ' + vh);
+
     // Get how much the read page has scrolled horizontally to the left.
     // Get read page content element and adjust viewport height with horizontal
     // scrollbar height if such is present.
