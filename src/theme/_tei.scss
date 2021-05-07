@@ -1770,7 +1770,6 @@ div.tei {
 /* Style for tooltip boxes. The tooltips also inherit styles from div.tei */
 .tei.toolTip {
     z-index: 1001;
-    position: fixed;
     background: #f1f1f1;
     border: 1px solid #222;
     border-radius: $corner-roundness;
