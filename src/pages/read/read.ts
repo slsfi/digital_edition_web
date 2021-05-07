@@ -137,7 +137,7 @@ export class ReadPage /*implements OnDestroy*/ {
   views = [];
   viewsConfig = {
     slideMaxWidth: 600,
-    slideMinWidth: 430,
+    slideMinWidth: 450,
     slidesPerView: 1.2,
     spaceBetween: 20,
     centeredSlides: false,
