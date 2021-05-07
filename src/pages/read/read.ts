@@ -2448,7 +2448,6 @@ export class ReadPage /*implements OnDestroy*/ {
     if (scrollingContainer !== null) {
       scrollLeft = scrollingContainer.scrollLeft;
     }
-    console.log('Scroll left: ' + scrollLeft);
 
     // Get read page content element and adjust viewport height with horizontal scrollbar height if such is present
     const contentElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
@@ -2472,6 +2471,7 @@ export class ReadPage /*implements OnDestroy*/ {
       if (this.userSettingsService.isMobile()) {
         // Adjust width in mobile view
         calcWidth = calcWidth - 32;
+        margins = margins + 16;
       }
 
       if (calcWidth > maxWidth + 2 * margins) {
