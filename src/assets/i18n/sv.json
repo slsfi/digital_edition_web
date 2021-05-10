@@ -87,7 +87,10 @@
       },
       "Variations": {
           "Title": "Varianter",
-          "AddButtonText": "Varianter"
+          "AddButtonText": "Varianter",
+          "chooseVariationTitle": "Välj variant",
+          "changeVariationSubtitle": "Varianten ersätter den variant som visas i kolumnen där du klickade",
+          "openNewVariationSubtitle": "Varianten öppnas i en ny kolumn"
       },
       "Facsimiles": {
           "Title": "Faksimil",

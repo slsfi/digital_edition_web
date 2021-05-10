@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Component, Input, ElementRef, ViewChild, Output, EventEmitter, NgZone } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
@@ -45,6 +46,7 @@ export class VariationsComponent {
     private ngZone: NgZone,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
+    public translate: TranslateService,
     private analyticsService: AnalyticsService
   ) {
     this.text = '';
@@ -128,9 +130,16 @@ export class VariationsComponent {
   }
 
   selectVariation() {
+    let varTranslations = null;
+    this.translate.get('Read.Variations').subscribe(
+      translation => {
+        varTranslations = translation;
+      }, error => { }
+    );
+
     const alert = this.alertCtrl.create({
-      title: 'Välj variant',
-      subTitle: 'Varianten ersätter den variant som visas i kolumnen där du klickade',
+      title: varTranslations.chooseVariationTitle,
+      subTitle: varTranslations.changeVariationSubtitle,
       cssClass: 'select-variant-alert'
     });
 
@@ -161,9 +170,16 @@ export class VariationsComponent {
   }
 
   selectVariationForNewView() {
+    let varTranslations = null;
+    this.translate.get('Read.Variations').subscribe(
+      translation => {
+        varTranslations = translation;
+      }, error => { }
+    );
+
     const alert = this.alertCtrl.create({
-      title: 'Välj variant',
-      subTitle: 'Varianten öppnas i en ny kolumn',
+      title: varTranslations.chooseVariationTitle,
+      subTitle: varTranslations.openNewVariationSubtitle,
       cssClass: 'select-variant-alert'
     });
 
@@ -200,12 +216,6 @@ export class VariationsComponent {
       }
     });
   }
-
-  /* Used for alternative implementation of variation selector.
-  selectSegmentVariation(index: string) {
-    this.changeVariation(this.variations[parseInt(index)]);
-  }
-  */
 
   /* This function scrolls the read-view horisontally to the last read column.
    * It's called after adding new views. */
