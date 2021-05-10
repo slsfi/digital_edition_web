@@ -144,9 +144,16 @@ export class DigitalEditionList implements OnInit {
       );
   }
 
+  getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
   sortListDefined(list, sort) {
     for (const coll of list) {
-      const order = sort[coll.id];
+      let order = sort[coll.id];
+      if( order === undefined ) {
+        order = Math.round(this.getRandomArbitrary(10000, 1000000));
+      }
       coll['order'] = order;
     }
 
