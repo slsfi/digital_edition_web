@@ -468,24 +468,30 @@ export class IntroductionPage {
 
           if (eventTarget.classList.contains('tooltiptrigger')) {
             if (eventTarget.hasAttribute('data-id')) {
-              this.ngZone.run(() => {
-                if (this.toolTipsSettings.personInfo && eventTarget.classList.contains('person')
-                && this.readPopoverService.show.personInfo) {
+              if (this.toolTipsSettings.personInfo && eventTarget.classList.contains('person')
+              && this.readPopoverService.show.personInfo) {
+                this.ngZone.run(() => {
                   this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
                   this.tooltipVisible = true;
-                } else if (this.toolTipsSettings.placeInfo && eventTarget.classList.contains('placeName')
-                && this.readPopoverService.show.placeInfo) {
+                });
+              } else if (this.toolTipsSettings.placeInfo && eventTarget.classList.contains('placeName')
+              && this.readPopoverService.show.placeInfo) {
+                this.ngZone.run(() => {
                   this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
                   this.tooltipVisible = true;
-                } else if (this.toolTipsSettings.workInfo && eventTarget.classList.contains('title')
-                && this.readPopoverService.show.workInfo) {
+                });
+              } else if (this.toolTipsSettings.workInfo && eventTarget.classList.contains('title')
+              && this.readPopoverService.show.workInfo) {
+                this.ngZone.run(() => {
                   this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
                   this.tooltipVisible = true;
-                } else if (this.toolTipsSettings.footNotes && eventTarget.classList.contains('ttFoot')) {
+                });
+              } else if (this.toolTipsSettings.footNotes && eventTarget.classList.contains('ttFoot')) {
+                this.ngZone.run(() => {
                   this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
                   this.tooltipVisible = true;
-                }
-              });
+                });
+              }
             }
           }
         }
