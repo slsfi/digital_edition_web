@@ -1321,41 +1321,35 @@ export class ReadPage /*implements OnDestroy*/ {
                 this.ngZone.run(() => {
                   this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
                 });
-                this.tooltipVisible = true;
               } else if (this.toolTipsSettings.placeInfo
               && eventTarget['classList'].contains('placeName')
               && this.readPopoverService.show.placeInfo) {
                 this.ngZone.run(() => {
                   this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
                 });
-                this.tooltipVisible = true;
               } else if (this.toolTipsSettings.workInfo
               && eventTarget['classList'].contains('title')
               && this.readPopoverService.show.workInfo) {
                 this.ngZone.run(() => {
                   this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
                 });
-                this.tooltipVisible = true;
               } else if (this.toolTipsSettings.comments
               && eventTarget['classList'].contains('comment')
               && this.readPopoverService.show.comments) {
                 this.ngZone.run(() => {
                   this.showCommentTooltip(eventTarget.getAttribute('data-id'), eventTarget);
                 });
-                this.tooltipVisible = true;
               } else if (this.toolTipsSettings.footNotes
               && eventTarget['classList'].contains('teiManuscript')
               && eventTarget['classList'].contains('ttFoot')) {
                 this.ngZone.run(() => {
                   this.showManuscriptFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
                 });
-                this.tooltipVisible = true;
               } else if (this.toolTipsSettings.footNotes
               && eventTarget['classList'].contains('ttFoot')) {
                 this.ngZone.run(() => {
                   this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
                 });
-                this.tooltipVisible = true;
               }
             } else if ( (this.toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges')
             && this.readPopoverService.show.changes)
@@ -1366,12 +1360,10 @@ export class ReadPage /*implements OnDestroy*/ {
               this.ngZone.run(() => {
                 this.showTooltipFromInlineHtml(eventTarget);
               });
-              this.tooltipVisible = true;
             } else if (eventTarget['classList'].contains('ttVariant')) {
               this.ngZone.run(() => {
                 this.showVariantTooltip(eventTarget);
               });
-              this.tooltipVisible = true;
             } else if (eventTarget['classList'].contains('ttMs')) {
               // Check if the tooltip trigger element is in a manuscripts column
               // since ttMs should generally only be triggered there.
@@ -1380,7 +1372,6 @@ export class ReadPage /*implements OnDestroy*/ {
                 this.ngZone.run(() => {
                   this.showTooltipFromInlineHtml(eventTarget);
                 });
-                this.tooltipVisible = true;
               } else {
                 let parentElem: HTMLElement = eventTarget as HTMLElement;
                 parentElem = parentElem.parentElement;
@@ -1391,7 +1382,6 @@ export class ReadPage /*implements OnDestroy*/ {
                   this.ngZone.run(() => {
                     this.showTooltipFromInlineHtml(eventTarget);
                   });
-                  this.tooltipVisible = true;
                 }
               }
             } else if (this.toolTipsSettings.footNotes && eventTarget.hasAttribute('id')
@@ -1399,14 +1389,12 @@ export class ReadPage /*implements OnDestroy*/ {
               this.ngZone.run(() => {
                 this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), eventTarget);
               });
-              this.tooltipVisible = true;
             } else if (eventTarget['classList'].contains('ttFoot')
             && !eventTarget.hasAttribute('id')
             && !eventTarget.hasAttribute('data-id')) {
               this.ngZone.run(() => {
                 this.showTooltipFromInlineHtml(eventTarget);
               });
-              this.tooltipVisible = true;
             }
 
             /* Get the parent node of the event target for the next iteration if a tooltip hasn't been shown already.
@@ -2392,6 +2380,7 @@ export class ReadPage /*implements OnDestroy*/ {
     } else {
       this.toolTipPosType = 'fixed';
     }
+    this.tooltipVisible = true;
   }
 
   private getToolTipDimensions(toolTipElem: HTMLElement, toolTipText: string, maxWidth = 0, returnCompMaxWidth: Boolean = false) {
