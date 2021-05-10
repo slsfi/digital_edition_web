@@ -165,4 +165,8 @@ export class VariationsComponent {
     });
   }
 
+  selectSegmentVariation(index: string) {
+    this.changeVariation(this.variations[parseInt(index)]);
+  }
+
 }
