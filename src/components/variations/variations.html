@@ -12,7 +12,6 @@
   <ion-segment>
     <ion-segment-button *ngFor="let variation of variations; let i = index" value="i" (ionSelect)="selectSegmentVariation(i)">{{i}}</ion-segment-button>
   </ion-segment>
-  <h3 [innerHTML]="selectedVariationName"></h3>
 </div>
 
 <div *ngIf="!textLoading" class="variant-select-wrapper">
