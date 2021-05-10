@@ -14,6 +14,7 @@ page-read {
     /*overflow: auto;*/
     overflow-x: scroll !important;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     /* These margin and padding declarations fix the issue in Chrome where tooltips are incorrectly positioned vertically. .scroll-content has an inline style margin-top:50px which needs to be replaced with padding (The top padding is 16px by default, hence 66px). */
     margin-top: 0 !important;
     padding-top: 66px !important;
