@@ -39,7 +39,7 @@
 </ion-header>
 
 <!-- Main content with scroll -->
-<ion-content padding color="secondary" [ngClass]="printMainContentClasses()" scroll-x="true">
+<ion-content padding color="secondary" [ngClass]="printMainContentClasses()" scrollX="true">
   <div *ngIf="userSettingsService.isDesktop()" class="column-container">
     <ion-fab
       *ngIf="showOccurrencesModal && hasOccurrenceResults && userSettingsService.isDesktop()"
