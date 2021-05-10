@@ -151,7 +151,7 @@ export class DigitalEditionList implements OnInit {
   sortListDefined(list, sort) {
     for (const coll of list) {
       let order = sort[coll.id];
-      if( order === undefined ) {
+      if ( order === undefined ) {
         order = Math.round(this.getRandomArbitrary(10000, 1000000));
       }
       coll['order'] = order;
