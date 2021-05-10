@@ -138,8 +138,8 @@ export class VariationsComponent {
     );
 
     const alert = this.alertCtrl.create({
-      title: varTranslations.chooseVariationTitle,
-      subTitle: varTranslations.changeVariationSubtitle,
+      title: varTranslations.ChooseVariationTitle,
+      subTitle: varTranslations.ChangeVariationSubtitle,
       cssClass: 'select-variant-alert'
     });
 
@@ -178,8 +178,8 @@ export class VariationsComponent {
     );
 
     const alert = this.alertCtrl.create({
-      title: varTranslations.chooseVariationTitle,
-      subTitle: varTranslations.openNewVariationSubtitle,
+      title: varTranslations.ChooseVariationTitle,
+      subTitle: varTranslations.OpenNewVariationSubtitle,
       cssClass: 'select-variant-alert'
     });
 
