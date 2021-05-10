@@ -137,6 +137,13 @@ export class VariationsComponent {
       }, error => { }
     );
 
+    let buttonTranslations = null;
+    this.translate.get('OkCancel').subscribe(
+      translation => {
+        buttonTranslations = translation;
+      }, error => { }
+    );
+
     const alert = this.alertCtrl.create({
       title: varTranslations.ChooseVariationTitle,
       subTitle: varTranslations.ChangeVariationSubtitle,
@@ -158,9 +165,9 @@ export class VariationsComponent {
       });
     });
 
-    alert.addButton('Avbryt');
+    alert.addButton(buttonTranslations.Cancel);
     alert.addButton({
-      text: 'Ok',
+      text: buttonTranslations.Ok,
       handler: (index: any) => {
         this.changeVariation(this.variations[parseInt(index)]);
       }
@@ -174,6 +181,13 @@ export class VariationsComponent {
     this.translate.get('Read.Variations').subscribe(
       translation => {
         varTranslations = translation;
+      }, error => { }
+    );
+
+    let buttonTranslations = null;
+    this.translate.get('OkCancel').subscribe(
+      translation => {
+        buttonTranslations = translation;
       }, error => { }
     );
 
@@ -191,9 +205,9 @@ export class VariationsComponent {
       });
     });
 
-    alert.addButton('Avbryt');
+    alert.addButton(buttonTranslations.Cancel);
     alert.addButton({
-      text: 'Ok',
+      text: buttonTranslations.Ok,
       handler: (index: any) => {
         this.openVariationInNewView(this.variations[parseInt(index)]);
       }

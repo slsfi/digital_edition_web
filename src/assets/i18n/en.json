@@ -65,8 +65,11 @@
           "OpenFacsimile": "Open fascimile"
       },
       "Variations": {
-          "Title": "Variations",
-          "AddButtonText": "Variation view"
+          "Title": "Variants",
+          "AddButtonText": "Variant view",
+          "ChooseVariationTitle": "Choose variant",
+          "ChangeVariationSubtitle": "The variant will be shown in the column here you clicked",
+          "OpenNewVariationSubtitle": "The variant will be opened in a new column"
       },
       "Facsimiles": {
           "Title": "Facsimiles",
@@ -261,5 +264,9 @@
   },
   "TOC-translation": {
     "media": "Photografies"
+  },
+  "OkCancel": {
+    "Ok": "Ok",
+    "Cancel": "Cancel"
   }
 }

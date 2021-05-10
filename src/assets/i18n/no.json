@@ -65,7 +65,10 @@
       },
       "Variations": {
           "Title": "Variationer",
-          "AddButtonText": "Variationsvy"
+          "AddButtonText": "Variationsvy",
+          "ChooseVariationTitle": "Välj variant",
+          "ChangeVariationSubtitle": "Varianten ersätter den variant som visas i kolumnen där du klickade",
+          "OpenNewVariationSubtitle": "Varianten öppnas i en ny kolumn"
       },
       "Facsimiles": {
           "Title": "Faksimil",
@@ -250,5 +253,9 @@
   },
   "TOC-translation": {
     "media": "Fotografier"
+  },
+  "OkCancel": {
+    "Ok": "Ok",
+    "Cancel": "Avbryt"
   }
 }
