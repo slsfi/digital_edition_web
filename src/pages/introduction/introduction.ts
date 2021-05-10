@@ -472,24 +472,20 @@ export class IntroductionPage {
               && this.readPopoverService.show.personInfo) {
                 this.ngZone.run(() => {
                   this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                  this.tooltipVisible = true;
                 });
               } else if (this.toolTipsSettings.placeInfo && eventTarget.classList.contains('placeName')
               && this.readPopoverService.show.placeInfo) {
                 this.ngZone.run(() => {
                   this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                  this.tooltipVisible = true;
                 });
               } else if (this.toolTipsSettings.workInfo && eventTarget.classList.contains('title')
               && this.readPopoverService.show.workInfo) {
                 this.ngZone.run(() => {
                   this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                  this.tooltipVisible = true;
                 });
               } else if (this.toolTipsSettings.footNotes && eventTarget.classList.contains('ttFoot')) {
                 this.ngZone.run(() => {
                   this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                  this.tooltipVisible = true;
                 });
               }
             }
@@ -985,6 +981,7 @@ export class IntroductionPage {
     } else {
       this.toolTipPosType = 'fixed';
     }
+    this.tooltipVisible = true;
   }
 
   private getToolTipDimensions(toolTipElem: HTMLElement, toolTipText: string, maxWidth = 0, returnCompMaxWidth: Boolean = false) {
