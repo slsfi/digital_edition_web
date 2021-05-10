@@ -12,7 +12,7 @@ page-read {
   /* Observe that there are two elements with class scroll-content, which is why this needs to be this specific. overflow:auto doesn't work on MacOS so that's why overflow-x needs to be scroll. */
   ion-content > .scroll-content {
     /*overflow: auto;*/
-    overflow-x: scroll;
+    overflow-x: scroll !important;
     overflow-y: auto;
     /* These margin and padding declarations fix the issue in Chrome where tooltips are incorrectly positioned vertically. .scroll-content has an inline style margin-top:50px which needs to be replaced with padding (The top padding is 16px by default, hence 66px). */
     margin-top: 0 !important;
