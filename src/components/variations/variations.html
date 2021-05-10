@@ -7,17 +7,18 @@
   </div>
 </div>
 -->
-
+<!--
 <div *ngIf="!textLoading" class="variant-segment-wrapper">
   <ion-segment>
     <ion-segment-button *ngFor="let variation of variations; let i = index" [attr.value]="i" (ionSelect)="selectSegmentVariation(i)" [class.segment-activated]="selectedVariationName === variation.name">{{i+1}}</ion-segment-button>
   </ion-segment>
 </div>
+-->
 
 <div *ngIf="!textLoading" class="variant-select-wrapper">
   <h3 [innerHTML]="selectedVariationName"></h3>
   <button ion-button (click)="selectVariation()">Byt variant</button>
-  <button ion-button outline (click)="openAllVariations()">Öppna alla</button>
+  <button ion-button outline (click)="selectVariationForNewView()">Öppna ny variant</button>
 </div>
 
 <div class="tei" [innerHTML]="text"

@@ -156,6 +156,37 @@ export class VariationsComponent {
     alert.present();
   }
 
+  selectVariationForNewView() {
+    const alert = this.alertCtrl.create({
+      title: 'Välj variant',
+      subTitle: 'Varianten öppnas i en ny kolumn',
+      cssClass: 'select-variant-alert'
+    });
+
+    this.variations.forEach((variation, index) => {
+      alert.addInput({
+          type: 'radio',
+          label: variation.name,
+          value: index
+      });
+    });
+
+    alert.addButton('Avbryt');
+    alert.addButton({
+      text: 'Ok',
+      handler: (index: any) => {
+        this.openVariationInNewView(this.variations[parseInt(index)]);
+      }
+    });
+
+    alert.present();
+  }
+
+  openVariationInNewView(variation?: any) {
+    variation.viewType = 'variations';
+    this.openNewVarView.emit(variation);
+  }
+
   openAllVariations() {
     this.variations.forEach((variation) => {
       if (this.selectedVariation.id !== variation.id) {
@@ -165,8 +196,10 @@ export class VariationsComponent {
     });
   }
 
+  /* Used for alternative implementation of variation selector.
   selectSegmentVariation(index: string) {
     this.changeVariation(this.variations[parseInt(index)]);
   }
+  */
 
 }
