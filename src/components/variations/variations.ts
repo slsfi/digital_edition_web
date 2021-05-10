@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, Input, ElementRef, ViewChild, Output, EventEmitter, NgZone } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { TextService } from '../../app/services/texts/text.service';
@@ -34,6 +34,7 @@ export class VariationsComponent {
   normalized = true;
   varID: string;
   textLoading: Boolean = true;
+  intervalTimerId: number;
 
   constructor(
     protected sanitizer: DomSanitizer,
@@ -41,6 +42,7 @@ export class VariationsComponent {
     protected textService: TextService,
     protected storage: Storage,
     private elementRef: ElementRef,
+    private ngZone: NgZone,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private analyticsService: AnalyticsService
@@ -48,6 +50,7 @@ export class VariationsComponent {
     this.text = '';
     this.selectedVariationName = '';
     this.variations = [];
+    this.intervalTimerId = 0;
   }
 
   ngOnInit() {
@@ -185,6 +188,7 @@ export class VariationsComponent {
   openVariationInNewView(variation?: any) {
     variation.viewType = 'variations';
     this.openNewVarView.emit(variation);
+    this.scrollLastViewIntoView();
   }
 
   openAllVariations() {
@@ -201,5 +205,32 @@ export class VariationsComponent {
     this.changeVariation(this.variations[parseInt(index)]);
   }
   */
+
+  /* This function scrolls the read-view horisontally to the last read column.
+   * It's called after adding new views. */
+  scrollLastViewIntoView() {
+    this.ngZone.runOutsideAngular(() => {
+      let interationsLeft = 10;
+      clearInterval(this.intervalTimerId);
+      this.intervalTimerId = setInterval(function() {
+        if (interationsLeft < 1) {
+          clearInterval(this.intervalTimerId);
+        } else {
+          interationsLeft -= 1;
+          const viewElements = document.getElementsByClassName('read-column');
+          if (viewElements[0] !== undefined) {
+            const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
+            const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
+            if (scrollingContainer !== null) {
+              const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
+              scrollingContainer.getBoundingClientRect().left;
+              scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
+              clearInterval(this.intervalTimerId);
+            }
+          }
+        }
+      }.bind(this), 500);
+    });
+  }
 
 }
