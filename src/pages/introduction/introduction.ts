@@ -468,26 +468,20 @@ export class IntroductionPage {
 
           if (eventTarget.classList.contains('tooltiptrigger')) {
             if (eventTarget.hasAttribute('data-id')) {
-              if (this.toolTipsSettings.personInfo && eventTarget.classList.contains('person')
-              && this.readPopoverService.show.personInfo) {
-                this.ngZone.run(() => {
+              this.ngZone.run(() => {
+                if (this.toolTipsSettings.personInfo && eventTarget.classList.contains('person')
+                && this.readPopoverService.show.personInfo) {
                   this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                });
-              } else if (this.toolTipsSettings.placeInfo && eventTarget.classList.contains('placeName')
-              && this.readPopoverService.show.placeInfo) {
-                this.ngZone.run(() => {
+                } else if (this.toolTipsSettings.placeInfo && eventTarget.classList.contains('placeName')
+                && this.readPopoverService.show.placeInfo) {
                   this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                });
-              } else if (this.toolTipsSettings.workInfo && eventTarget.classList.contains('title')
-              && this.readPopoverService.show.workInfo) {
-                this.ngZone.run(() => {
+                } else if (this.toolTipsSettings.workInfo && eventTarget.classList.contains('title')
+                && this.readPopoverService.show.workInfo) {
                   this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                });
-              } else if (this.toolTipsSettings.footNotes && eventTarget.classList.contains('ttFoot')) {
-                this.ngZone.run(() => {
+                } else if (this.toolTipsSettings.footNotes && eventTarget.classList.contains('ttFoot')) {
                   this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                });
-              }
+                }
+              });
             }
           }
         }
