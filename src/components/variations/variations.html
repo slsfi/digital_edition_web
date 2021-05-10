@@ -10,7 +10,7 @@
 
 <div *ngIf="!textLoading" class="variant-segment-wrapper">
   <ion-segment>
-    <ion-segment-button *ngFor="let variation of variations; let i = index" [attr.value]="i" (ionSelect)="selectSegmentVariation(i)" [class.segment-activated]="selectedVariationName === variation.name'">{{i+1}}</ion-segment-button>
+    <ion-segment-button *ngFor="let variation of variations; let i = index" [attr.value]="i" (ionSelect)="selectSegmentVariation(i)" [class.segment-activated]="selectedVariationName === variation.name">{{i+1}}</ion-segment-button>
   </ion-segment>
 </div>
 
