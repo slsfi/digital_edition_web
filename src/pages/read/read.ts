@@ -971,7 +971,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
       /* CLICK EVENTS */
       this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
-        if (!this.userIsTouching && this.tooltipVisible) {
+        if (!this.userIsTouching) {
           this.ngZone.run(() => {
             this.hideToolTip();
           });
