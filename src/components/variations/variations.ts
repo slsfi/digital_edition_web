@@ -130,6 +130,7 @@ export class VariationsComponent {
   selectVariation() {
     const alert = this.alertCtrl.create({
       title: 'Välj variant',
+      subTitle: 'Varianten ersätter den variant som visas i kolumnen där du klickade',
       cssClass: 'select-variant-alert'
     });
 
