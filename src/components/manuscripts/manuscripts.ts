@@ -252,7 +252,8 @@ export class ManuscriptsComponent {
     event.preventDefault();
     event.stopPropagation();
     const id = this.selectedManuscript;
-    id.viewType = 'facsimiles';
+    id.viewType = 'facsimileManuscript';
+    id.id = id.manuscript_id;
     this.openNewFacsView.emit(id);
   }
 
