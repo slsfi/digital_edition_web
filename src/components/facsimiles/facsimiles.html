@@ -1,3 +1,4 @@
+<!--
 <div class="tab-container" id="tabs-text-container" *ngIf="platform.is('core') && isExternal === false" >
   <div *ngFor="let facsimile of facsimiles; let i = index" (click)="changeFacsimile(facsimile)">
     <div [ngClass]="(selectedFacsimile.title === facsimile.title)?'first-tab':'tab'" *ngIf="facsimile.manuscript_id || facsimiles.length > 1">
@@ -17,6 +18,7 @@
     <span>{{"Read.Facsimiles.ExternalHeading" | translate}}</span>
   </div>
 </div>
+-->
 
 <div class="text-select-wrapper">
   <h3 *ngIf="isExternal === false" [innerHTML]="selectedFacsimileName"></h3>
