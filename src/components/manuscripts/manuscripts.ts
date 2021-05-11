@@ -88,7 +88,7 @@ export class ManuscriptsComponent {
   openFacsimileMan(event: Event, id: any) {
     event.preventDefault();
     event.stopPropagation();
-    id.viewType = 'facsimiles';
+    id.viewType = 'manuscriptFacsimile';
     this.openNewManView.emit(id);
   }
 
@@ -99,7 +99,7 @@ export class ManuscriptsComponent {
         // in order to get id attributes for tooltips
         this.manuscripts = res.manuscripts;
         if (this.manuscripts.length > 0) {
-          console.log('recieved manuscripts ,..,', res);
+          console.log('recieved manuscripts ,..,', res.manuscripts);
           this.setManuscript();
         } else {
           console.log('no manuscripts');
