@@ -1,6 +1,6 @@
-import { Component, Input, EventEmitter, Output, SecurityContext } from '@angular/core';
+import { Component, Input, EventEmitter, Output, SecurityContext, NgZone } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ModalController, NavParams, Events, ViewController, Platform } from 'ionic-angular';
+import { AlertController, ModalController, NavParams, Events, ViewController, Platform } from 'ionic-angular';
 import { FacsimileZoomModalPage } from '../../pages/facsimile-zoom/facsimile-zoom';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { FacsimileService } from '../../app/services/facsimile/facsimile.service';
@@ -48,6 +48,7 @@ export class FacsimilesComponent {
   prevX = 0
   prevY = 0
   isExternal = false;
+  selectedFacsimileName: string;
 
   facsUrl = '';
   externalURLs = [];
@@ -72,6 +73,8 @@ export class FacsimilesComponent {
     protected events: Events,
     private viewctrl: ViewController,
     private platform: Platform,
+    private ngZone: NgZone,
+    private alertCtrl: AlertController,
     public songService: SongService,
     private analyticsService: AnalyticsService
   ) {
@@ -80,6 +83,7 @@ export class FacsimilesComponent {
     this.manualPageNumber = 1;
     this.text = '';
     this.facsimiles = [];
+    this.selectedFacsimileName = '';
 
     const parts = String(this.itemId).split('_')
     this.chapter = null;
@@ -156,6 +160,7 @@ export class FacsimilesComponent {
         this.getFacsimiles();
       }
     } else {
+      this.selectedFacsimileName = this.selectedFacsimile.title;
       this.getFacsimiles(this.selectedFacsimile.itemId);
     }
   }
@@ -189,6 +194,7 @@ export class FacsimilesComponent {
         this.selectedFacsimile = this.facsPage;
         this.selectedFacsimile.f_col_id = this.facsPage['publication_facsimile_collection_id'];
         this.selectedFacsimile.title = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(this.facsPage['title']));
+        this.selectedFacsimileName = this.selectedFacsimile.title;
 
         // add all
         for (const f of facs) {
@@ -263,6 +269,7 @@ export class FacsimilesComponent {
           } else {
             this.selectedFacsimile = this.facsimiles[this.facsimiles.length - 1];
           }
+          this.selectedFacsimileName = this.selectedFacsimile.title;
           this.images = this.selectedFacsimile.images;
           this.activeImage = 0;
         }
@@ -297,6 +304,7 @@ export class FacsimilesComponent {
   changeFacsimile(facs?: any) {
     if (facs) {
       this.selectedFacsimile = facs;
+      this.selectedFacsimileName = this.selectedFacsimile.title;
       this.itemId = this.selectedFacsimile.itemId;
       this.facsNumber = facs.page;
       this.facsPage = facs.page;

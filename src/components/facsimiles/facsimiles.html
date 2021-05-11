@@ -18,6 +18,14 @@
   </div>
 </div>
 
+<div class="text-select-wrapper">
+  <h3 *ngIf="isExternal === false" [innerHTML]="selectedFacsimileName"></h3>
+  <h3 *ngIf="isExternal === true">{{"Read.Facsimiles.ExternalHeading" | translate}}</h3>
+  <div *ngIf="isExternal === false && facsimiles.length>1" class="flex-buttons">
+    <button ion-button (click)="selectFacsimile()">{{"Read.Facsimiles.ChangeFacsimile" | translate}}</button>
+  </div>
+</div>
+
 <ion-scroll *ngIf="isExternal" scrollY="true" class="external_urls_wrapper" [ngStyle]="{'height': '100%', 'max-height': 'calc(100% - 60px)'}">
   <div [ngClass]="(readPopoverService.fontsize==0)?'tei xsmallFontSize':(readPopoverService.fontsize==1)?'tei smallFontSize':(readPopoverService.fontsize==2)?'tei mediumFontSize':(readPopoverService.fontsize==3)?'tei largeFontSize':'tei xlargeFontSize'">
     <ul>
