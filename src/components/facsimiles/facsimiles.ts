@@ -357,15 +357,13 @@ export class FacsimilesComponent {
       console.log(this.selectedFacsimile.page + ' | ' + facsimile.page);
 
       if (this.selectedFacsimile.publication_facsimile_collection_id === facsimile.publication_facsimile_collection_id
-      && this.selectedFacsimile.page === facsimile.page) {
+      && this.selectedFacsimile.page !== undefined && this.selectedFacsimile.page === facsimile.page) {
         checkedValue = true;
       }
 
-      const facsTitle = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(facsimile.title));
-
       alert.addInput({
         type: 'radio',
-        label: facsTitle,
+        label: this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(facsimile.title)),
         value: index,
         checked: checkedValue
       });
