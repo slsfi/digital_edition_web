@@ -147,7 +147,7 @@ export class VariationsComponent {
     const alert = this.alertCtrl.create({
       title: varTranslations.SelectVariationDialogTitle,
       subTitle: varTranslations.SelectVariationDialogSubtitle,
-      cssClass: 'select-variant-alert'
+      cssClass: 'select-text-alert'
     });
 
     this.variations.forEach((variation, index) => {
@@ -194,7 +194,7 @@ export class VariationsComponent {
     const alert = this.alertCtrl.create({
       title: varTranslations.OpenNewVariationDialogTitle,
       subTitle: varTranslations.OpenNewVariationDialogSubtitle,
-      cssClass: 'select-variant-alert'
+      cssClass: 'select-text-alert'
     });
 
     this.variations.forEach((variation, index) => {

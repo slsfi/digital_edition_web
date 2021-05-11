@@ -1,6 +1,6 @@
 <ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
 
-<div *ngIf="!textLoading" class="variant-select-wrapper">
+<div *ngIf="!textLoading" class="text-select-wrapper">
   <h3 [innerHTML]="selectedVariationName"></h3>
   <button ion-button (click)="selectVariation()">{{Read.Variations.ChangeVariation}}</button>
   <button ion-button outline (click)="selectVariationForNewView()">{{Read.Variations.OpenNewVariation}}</button>

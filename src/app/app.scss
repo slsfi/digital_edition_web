@@ -659,8 +659,8 @@ ion-backdrop {
   font-size: 10px;
 }
 
-/* Style for alert where variants can be selected */
-ion-alert.select-variant-alert .alert-wrapper {
+/* Style for alert where a different variant, manuscript or facsimile text can be selected. */
+ion-alert.select-text-alert .alert-wrapper {
   max-width: 500px;
   border-radius: $corner-roundness;
 
@@ -681,7 +681,8 @@ ion-alert.select-variant-alert .alert-wrapper {
   }
 }
 
-.variant-select-wrapper {
+/* Style for the component i read columns where a different variant, manuscript or facsimile text can be selected. */
+.text-select-wrapper {
   padding: 0 0 1rem 0;
   margin: 0 0 1.5rem 0;
   border-bottom: 1px solid #666;
@@ -701,9 +702,6 @@ ion-alert.select-variant-alert .alert-wrapper {
     height: 1.875rem !important;
     float: left;
   }
-}
-.variant-segment-wrapper {
-  padding-bottom: 0.75rem;
 }
 
 
