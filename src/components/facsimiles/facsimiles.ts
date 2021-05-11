@@ -355,6 +355,7 @@ export class FacsimilesComponent {
 
       console.log(this.selectedFacsimile.publication_facsimile_collection_id + ' | ' + facsimile.publication_facsimile_collection_id);
       console.log(this.selectedFacsimile.page + ' | ' + facsimile.page);
+      console.log(this.selectedFacsimile.page_nr + ' | ' + facsimile.page_nr);
 
       if (this.selectedFacsimile.publication_facsimile_collection_id === facsimile.publication_facsimile_collection_id
       && this.selectedFacsimile.page !== undefined && this.selectedFacsimile.page === facsimile.page) {
