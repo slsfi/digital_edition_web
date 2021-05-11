@@ -1,24 +1,9 @@
 <ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
-<!--
-<div class="tab-container">
-  <div *ngFor="let variation of variations; let i = index" (click)="changeVariation(variation)" [ngClass]="(selectedVariation === variation)?'first-tab':'tab'">
-    {{variation.name}}
-    <div [ngClass]="(selectedVariation === variation)?'open-in-tab':'open-in-tab-hidden'" (click)="openNewVar($event, variation)">{{"Read.OpenInTab" | translate}}</div>
-  </div>
-</div>
--->
-<!--
-<div *ngIf="!textLoading" class="variant-segment-wrapper">
-  <ion-segment>
-    <ion-segment-button *ngFor="let variation of variations; let i = index" [attr.value]="i" (ionSelect)="selectSegmentVariation(i)" [class.segment-activated]="selectedVariationName === variation.name">{{i+1}}</ion-segment-button>
-  </ion-segment>
-</div>
--->
 
 <div *ngIf="!textLoading" class="variant-select-wrapper">
   <h3 [innerHTML]="selectedVariationName"></h3>
-  <button ion-button (click)="selectVariation()">Byt variant</button>
-  <button ion-button outline (click)="selectVariationForNewView()">Öppna ny variant</button>
+  <button ion-button (click)="selectVariation()">{{Read.Variations.ChangeVariation}}</button>
+  <button ion-button outline (click)="selectVariationForNewView()">{{Read.Variations.OpenNewVariation}}</button>
 </div>
 
 <div class="tei" [innerHTML]="text"

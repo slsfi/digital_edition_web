@@ -89,6 +89,8 @@
       "Variations": {
           "Title": "Variantit",
           "AddButtonText": "Variantit",
+          "ChangeVariation": "Vaihda varianttia",
+          "OpenNewVariation": "Avaa uusi variantti",
           "SelectVariationDialogTitle": "Valitse variantti",
           "SelectVariationDialogSubtitle": "Variantti korvaa sarakkeen variantin",
           "OpenNewVariationDialogTitle": "Valitse variantti",

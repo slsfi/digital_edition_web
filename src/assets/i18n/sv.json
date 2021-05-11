@@ -88,6 +88,8 @@
       "Variations": {
           "Title": "Varianter",
           "AddButtonText": "Varianter",
+          "ChangeVariation": "Byt variant",
+          "OpenNewVariation": "Öppna ny variant",
           "SelectVariationDialogTitle": "Välj variant",
           "SelectVariationDialogSubtitle": "Varianten ersätter den variant som visas i kolumnen där du klickade",
           "OpenNewVariationDialogTitle": "Välj variant",
