@@ -358,11 +358,13 @@ export class FacsimilesComponent {
         checkedValue = true;
       }
 
+      const facsTitle = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(facsimile.title));
+
       alert.addInput({
-          type: 'radio',
-          label: this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(facsimile.title)),
-          value: index,
-          checked: checkedValue
+        type: 'radio',
+        label: facsTitle,
+        value: index,
+        checked: checkedValue
       });
     });
 
