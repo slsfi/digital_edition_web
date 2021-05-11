@@ -96,10 +96,12 @@ export class VariationsComponent {
   }
 
   setVariation() {
-    const inputFilename = this.linkID + '.xml'
+    const inputFilename = this.linkID + '.xml';
+
     const inputVariation = this.variations.filter(function(item) {
       return (item.id + '' === this.linkID + '' || item.legacy_id + '' === this.linkID + '');
     }.bind(this))[0];
+
     if (this.linkID && this.linkID !== undefined && inputVariation !== undefined ) {
       this.selectedVariation = inputVariation;
     } else {
@@ -117,7 +119,7 @@ export class VariationsComponent {
   }
 
   changeVariation( variation?: any ) {
-    if ( variation ) {
+    if (variation) {
       this.selectedVariation = variation;
     }
     this.selectedVariationName = this.selectedVariation.name;

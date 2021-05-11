@@ -83,7 +83,12 @@
           "SelectManuscript": "Välj manuskript",
           "ShowNormalized": "Visa ändringar inarbetade",
           "ShowChanges": "Visa ändringar",
-          "OpenFacsimile": "Öppna faksimil"
+          "OpenFacsimile": "Öppna faksimil",
+          "ChangeManuscript": "Byt manuskript",
+          "SelectManuscriptDialogTitle": "Välj manuskript",
+          "SelectManuscriptDialogSubtitle": "Manuskriptet ersätter det manuskript som visas i kolumnen där du klickade",
+          "OpenMsFacsimileDialogTitle": "Välj manuskript",
+          "OpenMsFacsimileDialogSubtitle": "Manuskriptets faksimil öppnas i en ny kolumn"
       },
       "Variations": {
           "Title": "Varianter",

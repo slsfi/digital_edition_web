@@ -1,4 +1,5 @@
 <ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
+<!--
 <div class="tab-container">
   <div *ngFor="let manuscript of manuscripts" (click)="changeManuscript(manuscript)"
     [ngClass]="(selectedManuscript === manuscript)?'first-tab':'tab'">
@@ -8,6 +9,15 @@
     <div [ngClass]="(selectedManuscript === manuscript)?'open-in-tab':'open-in-tab-hidden'"
       (click)="openNewMan($event, manuscript)">{{"Read.OpenInTab" | translate}}</div>
 
+  </div>
+</div>
+-->
+
+<div *ngIf="!textLoading" class="text-select-wrapper">
+  <h3 [innerHTML]="selectedManuscriptName"></h3>
+  <div class="flex-buttons">
+    <button ion-button (click)="selectManuscript()">{{"Read.Manuscripts.ChangeManuscript" | translate}}</button>
+    <button ion-button outline (click)="selectManuscriptFacsimileForNewView()">{{"Read.Manuscripts.OpenFacsimile" | translate}}</button>
   </div>
 </div>
 
