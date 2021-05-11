@@ -33,6 +33,7 @@ export class ManuscriptsComponent {
   msID: string;
   chapter: string;
   textLoading: Boolean = true;
+  intervalTimerId: number;
 
   constructor(
     protected sanitizer: DomSanitizer,
@@ -51,6 +52,7 @@ export class ManuscriptsComponent {
     this.text = '';
     this.selectedManuscriptName = '';
     this.manuscripts = [];
+    this.intervalTimerId = 0;
   }
 
   ngOnInit() {
@@ -90,6 +92,7 @@ export class ManuscriptsComponent {
     event.stopPropagation();
     id.viewType = 'manuscriptFacsimile';
     this.openNewManView.emit(id);
+    this.scrollLastViewIntoView();
   }
 
   getManuscript() {
@@ -210,6 +213,33 @@ export class ManuscriptsComponent {
     });
 
     alert.present();
+  }
+
+  /* This function scrolls the read-view horisontally to the last read column.
+   * It's called after adding new views. */
+  scrollLastViewIntoView() {
+    this.ngZone.runOutsideAngular(() => {
+      let interationsLeft = 10;
+      clearInterval(this.intervalTimerId);
+      this.intervalTimerId = setInterval(function() {
+        if (interationsLeft < 1) {
+          clearInterval(this.intervalTimerId);
+        } else {
+          interationsLeft -= 1;
+          const viewElements = document.getElementsByClassName('read-column');
+          if (viewElements[0] !== undefined) {
+            const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
+            const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
+            if (scrollingContainer !== null) {
+              const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
+              scrollingContainer.getBoundingClientRect().left;
+              scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
+              clearInterval(this.intervalTimerId);
+            }
+          }
+        }
+      }.bind(this), 500);
+    });
   }
 
 }
