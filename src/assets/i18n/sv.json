@@ -84,6 +84,7 @@
           "ShowNormalized": "Visa ändringar inarbetade",
           "ShowChanges": "Visa ändringar",
           "OpenFacsimile": "Öppna faksimil",
+          "NoManuscripts": "Inga manuskript",
           "ChangeManuscript": "Byt manuskript",
           "SelectManuscriptDialogTitle": "Välj manuskript",
           "SelectManuscriptDialogSubtitle": "Manuskriptet ersätter det manuskript som visas i kolumnen där du klickade",
