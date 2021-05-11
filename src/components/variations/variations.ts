@@ -89,7 +89,7 @@ export class VariationsComponent {
         // in order to get id attributes for tooltips
         this.variations = res.variations;
         if (this.variations.length > 0) {
-          console.log('recieved variations ,..,', res.variations);
+          console.log('recieved variations ,..,');
           this.setVariation();
         } else {
           console.log('no variations');
