@@ -101,11 +101,14 @@
       "Facsimiles": {
           "Title": "Faksimil",
           "AddButtonText": "Faksimil",
-          "SelectFacsimiles": "Välj faksimil",
           "Page": "Sida",
           "Of": "av",
           "OpenManuscript": "Öppna manuskript",
-          "ExternalHeading" : "Externa faksimil"
+          "ExternalHeading": "Externa faksimil",
+          "ChangeFacsimile": "Byt faksimil",
+          "NoFacsimiles": "Inga faksimil",
+          "SelectFacsDialogTitle": "Välj faksimil",
+          "SelectFacsDialogSubtitle": "Faksimilet ersätter det faksimil som visas i kolumnen där du klickade"
       },
       "SongExample": {
           "Title": "Sång exempel",

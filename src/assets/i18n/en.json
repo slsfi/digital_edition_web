@@ -80,11 +80,14 @@
       "Facsimiles": {
           "Title": "Facsimiles",
           "AddButtonText": "Facsimile view",
-          "SelectFacsimiles": "Choose Facsimile",
           "Page": "Page",
           "Of": "of",
           "OpenManuscript": "Open manuscript",
-          "ExternalHeading" : "External Facsimiles"
+          "ExternalHeading" : "External facsimiles",
+          "ChangeFacsimile": "Select facsimile",
+          "NoFacsimiles": "No facsimiles",
+          "SelectFacsDialogTitle": "Select facsimile",
+          "SelectFacsDialogSubtitle": "The facsimile will be shown in the column where you clicked"
       },
       "TitlePage": {
           "Title": "Titel page"

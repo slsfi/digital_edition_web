@@ -102,11 +102,14 @@
       "Facsimiles": {
           "Title": "Faksimile",
           "AddButtonText": "Faksimilet",
-          "SelectFacsimiles": "Näytä faksimilet",
           "Page": "Sivu",
           "Of": "",
           "OpenManuscript": "Käsikirjoitus",
-          "ExternalHeading" : "Ulkopuoliset faksimilet"
+          "ExternalHeading" : "Ulkopuoliset faksimilet",
+          "ChangeFacsimile": "Vaihda faksimilea",
+          "NoFacsimiles": "Faksimileja ei ole",
+          "SelectFacsDialogTitle": "Valitse faksimile",
+          "SelectFacsDialogSubtitle": "Faksimile korvaa sarakkeen faksimilen"
       },
       "SongExample": {
           "Title": "Sång exempel",
