@@ -59,10 +59,12 @@
       "Manuscripts": {
           "Title": "Manuscript",
           "AddButtonText": "Manuscript view",
-          "SelectManuscript": "Välj manuscript",
           "ShowNormalized": "Visa ändringar inarbetade",
-          "ShowChanges": "Visa ändringar",
-          "OpenFacsimile": "Open fascimile"
+          "OpenFacsimile": "Open fascimile",
+          "NoManuscripts": "No manuscripts",
+          "ChangeManuscript": "Change manuscript",
+          "SelectMsDialogTitle": "Select manuscript",
+          "SelectMsDialogSubtitle": "The manuscript will be shown in the column where you clicked"
       },
       "Variations": {
           "Title": "Variants",
@@ -70,7 +72,7 @@
           "ChangeVariation": "Change variant",
           "OpenNewVariation": "Open new variant",
           "SelectVariationDialogTitle": "Select variant",
-          "SelectVariationDialogSubtitle": "The variant will be shown in the column here you clicked",
+          "SelectVariationDialogSubtitle": "The variant will be shown in the column where you clicked",
           "OpenNewVariationDialogTitle": "Select variant",
           "OpenNewVariationDialogSubtitle": "The variant will open in a new column"
       },

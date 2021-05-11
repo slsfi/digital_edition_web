@@ -80,16 +80,12 @@
       "Manuscripts": {
           "Title": "Manuskript",
           "AddButtonText": "Manuskript",
-          "SelectManuscript": "Välj manuskript",
           "ShowNormalized": "Visa ändringar inarbetade",
-          "ShowChanges": "Visa ändringar",
           "OpenFacsimile": "Öppna faksimil",
           "NoManuscripts": "Inga manuskript",
           "ChangeManuscript": "Byt manuskript",
-          "SelectManuscriptDialogTitle": "Välj manuskript",
-          "SelectManuscriptDialogSubtitle": "Manuskriptet ersätter det manuskript som visas i kolumnen där du klickade",
-          "OpenMsFacsimileDialogTitle": "Välj manuskript",
-          "OpenMsFacsimileDialogSubtitle": "Manuskriptets faksimil öppnas i en ny kolumn"
+          "SelectMsDialogTitle": "Välj manuskript",
+          "SelectMsDialogSubtitle": "Manuskriptet ersätter det manuskript som visas i kolumnen där du klickade"
       },
       "Variations": {
           "Title": "Varianter",

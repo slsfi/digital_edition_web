@@ -81,10 +81,12 @@
       "Manuscripts": {
           "Title": "Käsikirjoitus",
           "AddButtonText": "Käsikirjoitus",
-          "SelectManuscript": "Valitse käsikirjoitus",
           "ShowNormalized": "Näytä muutokset toteutettuina",
-          "ShowChanges": "Näytä muutokset",
-          "OpenFacsimile": "Näytä faksimilet"
+          "OpenFacsimile": "Näytä faksimilet",
+          "NoManuscripts": "Käsikirjoituksia ei ole",
+          "ChangeManuscript": "Vaihda käsikirjoitusta",
+          "SelectMsDialogTitle": "Valitse käsikirjoitus",
+          "SelectMsDialogSubtitle": "Käsikirjoitus korvaa sarakkeen käsikirjoituksen"
       },
       "Variations": {
           "Title": "Variantit",

@@ -22,7 +22,6 @@ export class ManuscriptsComponent {
   @Input() linkID?: string;
   @Input() matches?: Array<string>;
   @Output() openNewManView: EventEmitter<any> = new EventEmitter();
-  @Output() openNewFacsView: EventEmitter<any> = new EventEmitter();
 
   text: any;
   selection: 0;
@@ -34,7 +33,6 @@ export class ManuscriptsComponent {
   msID: string;
   chapter: string;
   textLoading: Boolean = true;
-  intervalTimerId: number;
 
   constructor(
     protected sanitizer: DomSanitizer,
@@ -53,7 +51,6 @@ export class ManuscriptsComponent {
     this.text = '';
     this.selectedManuscriptName = '';
     this.manuscripts = [];
-    this.intervalTimerId = 0;
   }
 
   ngOnInit() {
@@ -180,8 +177,8 @@ export class ManuscriptsComponent {
     );
 
     const alert = this.alertCtrl.create({
-      title: msTranslations.SelectManuscriptDialogTitle,
-      subTitle: msTranslations.SelectManuscriptDialogSubtitle,
+      title: msTranslations.SelectMsDialogTitle,
+      subTitle: msTranslations.SelectMsDialogSubtitle,
       cssClass: 'select-text-alert'
     });
 
@@ -209,88 +206,6 @@ export class ManuscriptsComponent {
     });
 
     alert.present();
-  }
-
-  selectManuscriptFacsimileForNewView() {
-    let msTranslations = null;
-    this.translate.get('Read.Manuscripts').subscribe(
-      translation => {
-        msTranslations = translation;
-      }, error => { }
-    );
-
-    let buttonTranslations = null;
-    this.translate.get('BasicActions').subscribe(
-      translation => {
-        buttonTranslations = translation;
-      }, error => { }
-    );
-
-    const alert = this.alertCtrl.create({
-      title: msTranslations.OpenMsFacsimileDialogTitle,
-      subTitle: msTranslations.OpenMsFacsimileDialogSubtitle,
-      cssClass: 'select-text-alert'
-    });
-
-    this.manuscripts.forEach((manuscript, index) => {
-      alert.addInput({
-          type: 'radio',
-          label: manuscript.name,
-          value: index
-      });
-    });
-
-    alert.addButton(buttonTranslations.Cancel);
-    alert.addButton({
-      text: buttonTranslations.Ok,
-      handler: (index: any) => {
-        this.openMsFacsimileInNewView(this.manuscripts[parseInt(index)]);
-      }
-    });
-
-    alert.present();
-  }
-
-  openMsFacsimileInNewView(facsimile?: any) {
-    facsimile.viewType = 'facsimiles';
-    this.openNewFacsView.emit(facsimile);
-    this.scrollLastViewIntoView();
-  }
-
-  openMsFacsInNewView(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
-    const id = this.selectedManuscript;
-    id.viewType = 'facsimileManuscript';
-    id.id = id.manuscript_id;
-    this.openNewFacsView.emit(id);
-  }
-
-  /* This function scrolls the read-view horisontally to the last read column.
-   * It's called after adding new views. */
-  scrollLastViewIntoView() {
-    this.ngZone.runOutsideAngular(() => {
-      let interationsLeft = 10;
-      clearInterval(this.intervalTimerId);
-      this.intervalTimerId = setInterval(function() {
-        if (interationsLeft < 1) {
-          clearInterval(this.intervalTimerId);
-        } else {
-          interationsLeft -= 1;
-          const viewElements = document.getElementsByClassName('read-column');
-          if (viewElements[0] !== undefined) {
-            const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
-            const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
-            if (scrollingContainer !== null) {
-              const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
-              scrollingContainer.getBoundingClientRect().left;
-              scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
-              clearInterval(this.intervalTimerId);
-            }
-          }
-        }
-      }.bind(this), 500);
-    });
   }
 
 }
