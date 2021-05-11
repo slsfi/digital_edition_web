@@ -19,12 +19,11 @@
     <button ion-button (click)="selectManuscript()">{{"Read.Manuscripts.ChangeManuscript" | translate}}</button>
     <button ion-button outline (click)="selectManuscriptFacsimileForNewView()">{{"Read.Manuscripts.OpenFacsimile" | translate}}</button>
   </div>
+  <ion-item *ngIf="!textLoading">
+    <ion-label>{{"Read.Manuscripts.ShowNormalized" | translate}}</ion-label>
+    <ion-toggle [(ngModel)]="normalized" (ionChange)="changeManuscript()"></ion-toggle>
+  </ion-item>
 </div>
-
-<ion-item *ngIf="!textLoading">
-  <ion-label>{{"Read.Manuscripts.ShowNormalized" | translate}}</ion-label>
-  <ion-toggle [(ngModel)]="normalized" (ionChange)="changeManuscript()"></ion-toggle>
-</ion-item>
 
 <div class="tei" [innerHTML]="text"
   [class.show_personInfo]="readPopoverService.show.personInfo"
