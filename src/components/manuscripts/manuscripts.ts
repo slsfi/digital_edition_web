@@ -112,9 +112,9 @@ export class ManuscriptsComponent {
           );
         }
       },
-      err => { console.error(err); this.textLoading = false; },
-      () => {
-        console.error('fetched manuscripts'); this.textLoading = false;
+      err => {
+        console.error(err);
+        this.textLoading = false;
       }
     );
   }
