@@ -100,11 +100,12 @@ export class ManuscriptsComponent {
       res => {
         this.textLoading = false;
         // in order to get id attributes for tooltips
-        console.log('recieved manuscript ,..,', res.manuscripts);
         this.manuscripts = res.manuscripts;
         if (this.manuscripts.length > 0) {
+          console.log('recieved manuscripts ,..,', res.manuscripts);
           this.setManuscript();
         } else {
+          console.log('no manuscripts');
           this.translate.get('Read.Manuscripts.NoManuscripts').subscribe(
             translation => {
               this.text = translation;
