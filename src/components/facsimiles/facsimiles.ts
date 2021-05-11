@@ -216,6 +216,10 @@ export class FacsimilesComponent {
           `/facsimiles/${this.facsPage['publication_facsimile_collection_id']}/`;
           this.isExternal = false;
         }
+
+        if (this.facsimiles.length > 0) {
+          console.log('recieved facsimiles ,..,', this.facsimiles);
+        }
       },
       error => {
         console.error('Error loading facsimiles...');
@@ -355,7 +359,7 @@ export class FacsimilesComponent {
 
       alert.addInput({
           type: 'radio',
-          label: facsimile.title,
+          label: this.sanitizer.bypassSecurityTrustHtml(facsimile.title),
           value: index,
           checked: checkedValue
       });
