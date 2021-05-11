@@ -273,6 +273,9 @@ export class FacsimilesComponent {
           this.images = this.selectedFacsimile.images;
           this.activeImage = 0;
         }
+        if (this.facsimiles.length > 0) {
+          console.log('recieved facsimiles ,..,', this.facsimiles);
+        }
         this.changeFacsimile();
         this.doAnalytics();
       },
@@ -320,6 +323,53 @@ export class FacsimilesComponent {
     );
     this.images = this.selectedFacsimile.images;
     this.activeImage = this.facsimilePage;
+  }
+
+  selectFacsimile() {
+    let facsTranslations = null;
+    this.translate.get('Read.Facsimiles').subscribe(
+      translation => {
+        facsTranslations = translation;
+      }, error => { }
+    );
+
+    let buttonTranslations = null;
+    this.translate.get('BasicActions').subscribe(
+      translation => {
+        buttonTranslations = translation;
+      }, error => { }
+    );
+
+    const alert = this.alertCtrl.create({
+      title: facsTranslations.SelectFacsDialogTitle,
+      subTitle: facsTranslations.SelectFacsDialogSubtitle,
+      cssClass: 'select-text-alert'
+    });
+
+    this.facsimiles.forEach((facsimile, index) => {
+      let checkedValue = false;
+
+      if (this.selectedFacsimile.id === facsimile.id) {
+        checkedValue = true;
+      }
+
+      alert.addInput({
+          type: 'radio',
+          label: facsimile.title,
+          value: index,
+          checked: checkedValue
+      });
+    });
+
+    alert.addButton(buttonTranslations.Cancel);
+    alert.addButton({
+      text: buttonTranslations.Ok,
+      handler: (index: any) => {
+        this.changeFacsimile(this.facsimiles[parseInt(index)]);
+      }
+    });
+
+    alert.present();
   }
 
   previous() {
