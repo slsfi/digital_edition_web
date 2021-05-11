@@ -353,13 +353,14 @@ export class FacsimilesComponent {
     this.facsimiles.forEach((facsimile, index) => {
       let checkedValue = false;
 
-      if (this.selectedFacsimile.id === facsimile.id) {
+      if (this.selectedFacsimile.publication_facsimile_collection_id === facsimile.publication_facsimile_collection_id
+      && this.selectedFacsimile.page === facsimile.page) {
         checkedValue = true;
       }
 
       alert.addInput({
           type: 'radio',
-          label: this.sanitizer.bypassSecurityTrustHtml(facsimile.title),
+          label: this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(facsimile.title)),
           value: index,
           checked: checkedValue
       });
