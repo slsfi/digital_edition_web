@@ -111,7 +111,7 @@ export class ManuscriptsComponent {
               this.text = translation;
             }, error => {
               console.error(error);
-              this.text = "Inga manuskript";
+              this.text = 'Inga manuskript';
             }
           );
         }

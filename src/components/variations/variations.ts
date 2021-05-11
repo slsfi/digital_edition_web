@@ -98,7 +98,7 @@ export class VariationsComponent {
               this.text = translation;
             }, error => {
               console.error(error);
-              this.text = "Inga varianter";
+              this.text = 'Inga varianter';
             }
           );
         }
