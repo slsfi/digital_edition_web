@@ -91,6 +91,7 @@
       "Variations": {
           "Title": "Variantit",
           "AddButtonText": "Variantit",
+          "NoVariations": "Variantteja ei ole",
           "ChangeVariation": "Vaihda varianttia",
           "OpenNewVariation": "Avaa uusi variantti",
           "SelectVariationDialogTitle": "Valitse variantti",

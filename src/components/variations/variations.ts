@@ -87,11 +87,27 @@ export class VariationsComponent {
       res => {
         this.textLoading = false;
         // in order to get id attributes for tooltips
-        console.log('recieved variations ,..,', res);
         this.variations = res.variations;
-        this.setVariation();
+        if (this.variations.length > 0) {
+          console.log('recieved variations ,..,', res.variations);
+          this.setVariation();
+        } else {
+          console.log('no variations');
+          this.translate.get('Read.Variations.NoVariations').subscribe(
+            translation => {
+              this.text = translation;
+            }, error => {
+              console.error(error);
+              this.text = "Inga varianter";
+            }
+          );
+        }
       },
-      error =>  { this.errorMessage = <any>error; this.textLoading = false; }
+      err =>  {
+        this.errorMessage = <any>err;
+        console.error(err);
+        this.textLoading = false;
+      }
     );
   }
 

@@ -69,6 +69,7 @@
       "Variations": {
           "Title": "Variants",
           "AddButtonText": "Variant view",
+          "NoVariations": "No variants",
           "ChangeVariation": "Change variant",
           "OpenNewVariation": "Open new variant",
           "SelectVariationDialogTitle": "Select variant",

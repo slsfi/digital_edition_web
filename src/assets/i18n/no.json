@@ -68,6 +68,7 @@
       "Variations": {
           "Title": "Variationer",
           "AddButtonText": "Variationsvy",
+          "NoVariations": "Inga varianter",
           "ChangeVariation": "Byt variant",
           "OpenNewVariation": "Öppna ny variant",
           "SelectVariationDialogTitle": "Välj variant",

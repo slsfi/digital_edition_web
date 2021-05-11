@@ -106,11 +106,15 @@ export class ManuscriptsComponent {
           this.translate.get('Read.Manuscripts.NoManuscripts').subscribe(
             translation => {
               this.text = translation;
-            }, error => { }
+            }, error => {
+              console.error(error);
+              this.text = "Inga manuskript";
+            }
           );
         }
       },
       err => {
+        this.errorMessage = <any>err;
         console.error(err);
         this.textLoading = false;
       }
