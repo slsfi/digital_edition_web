@@ -2,8 +2,8 @@
 
 <div *ngIf="!textLoading" class="text-select-wrapper">
   <h3 [innerHTML]="selectedVariationName"></h3>
-  <button ion-button (click)="selectVariation()">{{Read.Variations.ChangeVariation}}</button>
-  <button ion-button outline (click)="selectVariationForNewView()">{{Read.Variations.OpenNewVariation}}</button>
+  <button ion-button (click)="selectVariation()">{{'Read.Variations.ChangeVariation' | translate}}</button>
+  <button ion-button outline (click)="selectVariationForNewView()">{{'Read.Variations.OpenNewVariation' | translate}}</button>
 </div>
 
 <div class="tei" [innerHTML]="text"
