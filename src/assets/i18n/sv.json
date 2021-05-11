@@ -88,9 +88,10 @@
       "Variations": {
           "Title": "Varianter",
           "AddButtonText": "Varianter",
-          "ChooseVariationTitle": "Välj variant",
-          "ChangeVariationSubtitle": "Varianten ersätter den variant som visas i kolumnen där du klickade",
-          "OpenNewVariationSubtitle": "Varianten öppnas i en ny kolumn"
+          "SelectVariationDialogTitle": "Välj variant",
+          "SelectVariationDialogSubtitle": "Varianten ersätter den variant som visas i kolumnen där du klickade",
+          "OpenNewVariationDialogTitle": "Välj variant",
+          "OpenNewVariationDialogSubtitle": "Varianten öppnas i en ny kolumn"
       },
       "Facsimiles": {
           "Title": "Faksimil",
@@ -344,7 +345,7 @@
   "TOC-translation": {
     "media": "Fotografier"
   },
-  "OkCancel": {
+  "BasicActions": {
     "Ok": "Ok",
     "Cancel": "Avbryt"
   }

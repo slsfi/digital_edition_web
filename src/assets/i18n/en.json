@@ -67,9 +67,10 @@
       "Variations": {
           "Title": "Variants",
           "AddButtonText": "Variant view",
-          "ChooseVariationTitle": "Choose variant",
-          "ChangeVariationSubtitle": "The variant will be shown in the column here you clicked",
-          "OpenNewVariationSubtitle": "The variant will be opened in a new column"
+          "SelectVariationDialogTitle": "Select variant",
+          "SelectVariationDialogSubtitle": "The variant will be shown in the column here you clicked",
+          "OpenNewVariationDialogTitle": "Select variant",
+          "OpenNewVariationDialogSubtitle": "The variant will open in a new column"
       },
       "Facsimiles": {
           "Title": "Facsimiles",
@@ -265,7 +266,7 @@
   "TOC-translation": {
     "media": "Photografies"
   },
-  "OkCancel": {
+  "BasicActions": {
     "Ok": "Ok",
     "Cancel": "Cancel"
   }

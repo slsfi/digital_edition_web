@@ -89,9 +89,10 @@
       "Variations": {
           "Title": "Variantit",
           "AddButtonText": "Variantit",
-          "ChooseVariationTitle": "Valitse variantti",
-          "ChangeVariationSubtitle": "Variantti korvaa sarakkeen variantin",
-          "OpenNewVariationSubtitle": "Variantti avautuu uuteen sarakkeeseen"
+          "SelectVariationDialogTitle": "Valitse variantti",
+          "SelectVariationDialogSubtitle": "Variantti korvaa sarakkeen variantin",
+          "OpenNewVariationDialogTitle": "Valitse variantti",
+          "OpenNewVariationDialogSubtitle": "Variantti avautuu uuteen sarakkeeseen"
       },
       "Facsimiles": {
           "Title": "Faksimile",
@@ -341,7 +342,7 @@
   "TOC-translation": {
     "media": "Kuvat"
   },
-  "OkCancel": {
+  "BasicActions": {
     "Ok": "Ok",
     "Cancel": "Peruuta"
   }

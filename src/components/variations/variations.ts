@@ -138,15 +138,15 @@ export class VariationsComponent {
     );
 
     let buttonTranslations = null;
-    this.translate.get('OkCancel').subscribe(
+    this.translate.get('BasicActions').subscribe(
       translation => {
         buttonTranslations = translation;
       }, error => { }
     );
 
     const alert = this.alertCtrl.create({
-      title: varTranslations.ChooseVariationTitle,
-      subTitle: varTranslations.ChangeVariationSubtitle,
+      title: varTranslations.SelectVariationDialogTitle,
+      subTitle: varTranslations.SelectVariationDialogSubtitle,
       cssClass: 'select-variant-alert'
     });
 
@@ -185,15 +185,15 @@ export class VariationsComponent {
     );
 
     let buttonTranslations = null;
-    this.translate.get('OkCancel').subscribe(
+    this.translate.get('BasicActions').subscribe(
       translation => {
         buttonTranslations = translation;
       }, error => { }
     );
 
     const alert = this.alertCtrl.create({
-      title: varTranslations.ChooseVariationTitle,
-      subTitle: varTranslations.OpenNewVariationSubtitle,
+      title: varTranslations.OpenNewVariationDialogTitle,
+      subTitle: varTranslations.OpenNewVariationDialogSubtitle,
       cssClass: 'select-variant-alert'
     });
 
