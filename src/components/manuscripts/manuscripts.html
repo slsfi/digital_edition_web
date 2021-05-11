@@ -13,7 +13,7 @@
 </div>
 -->
 
-<div *ngIf="!textLoading" class="text-select-wrapper">
+<div *ngIf="!textLoading && manuscripts.length>0" class="text-select-wrapper">
   <h3 [innerHTML]="selectedManuscriptName"></h3>
   <div class="flex-buttons">
     <button *ngIf="manuscripts.length>1" ion-button (click)="selectManuscript()">{{"Read.Manuscripts.ChangeManuscript" | translate}}</button>
