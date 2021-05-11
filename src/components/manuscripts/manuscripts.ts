@@ -248,6 +248,14 @@ export class ManuscriptsComponent {
     this.scrollLastViewIntoView();
   }
 
+  openMsFacsInNewView(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const id = this.selectedManuscript;
+    id.viewType = 'facsimiles';
+    this.openNewFacsView.emit(id);
+  }
+
   /* This function scrolls the read-view horisontally to the last read column.
    * It's called after adding new views. */
   scrollLastViewIntoView() {

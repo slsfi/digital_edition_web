@@ -708,6 +708,10 @@ ion-alert.select-text-alert .alert-wrapper {
     font-size: 0.75rem;
     height: 1.875rem !important;
   }
+
+  .flex-buttons + ion-item {
+    margin-top: 0.5rem 0 0 0;
+  }
 }
 
 

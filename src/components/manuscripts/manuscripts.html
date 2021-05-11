@@ -17,7 +17,7 @@
   <h3 [innerHTML]="selectedManuscriptName"></h3>
   <div class="flex-buttons">
     <button ion-button (click)="selectManuscript()">{{"Read.Manuscripts.ChangeManuscript" | translate}}</button>
-    <button ion-button outline (click)="selectManuscriptFacsimileForNewView()">{{"Read.Manuscripts.OpenFacsimile" | translate}}</button>
+    <button ion-button outline (click)="openMsFacsInNewView($event)">{{"Read.Manuscripts.OpenFacsimile" | translate}}</button>
   </div>
   <ion-item *ngIf="!textLoading">
     <ion-label>{{"Read.Manuscripts.ShowNormalized" | translate}}</ion-label>
