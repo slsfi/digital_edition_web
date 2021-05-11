@@ -16,7 +16,7 @@
 <div *ngIf="!textLoading" class="text-select-wrapper">
   <h3 [innerHTML]="selectedManuscriptName"></h3>
   <div class="flex-buttons">
-    <button ion-button (click)="selectManuscript()">{{"Read.Manuscripts.ChangeManuscript" | translate}}</button>
+    <button *ngIf="manuscripts.length>1" ion-button (click)="selectManuscript()">{{"Read.Manuscripts.ChangeManuscript" | translate}}</button>
     <button ion-button outline (click)="openMsFacsInNewView($event)">{{"Read.Manuscripts.OpenFacsimile" | translate}}</button>
   </div>
   <ion-item *ngIf="!textLoading">
