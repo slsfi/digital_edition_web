@@ -694,13 +694,18 @@ ion-alert.select-text-alert .alert-wrapper {
     font-weight: 600;
     word-wrap: break-word;
     white-space: normal;
-    margin-bottom: 0.5rem;
+    margin: 0 0 0.5rem 0 !important;
   }
 
-  button.button {
+  .flex-buttons {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .flex-buttons button.button {
     font-size: 0.75rem;
     height: 1.875rem !important;
-    float: left;
+    flex-wrap: wrap;
   }
 }
 

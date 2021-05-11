@@ -2,17 +2,17 @@
 
 <div *ngIf="!textLoading" class="text-select-wrapper">
   <h3 [innerHTML]="selectedVariationName"></h3>
-  <button ion-button (click)="selectVariation()">{{'Read.Variations.ChangeVariation' | translate}}</button>
-  <button ion-button outline (click)="selectVariationForNewView()">{{'Read.Variations.OpenNewVariation' | translate}}</button>
+  <div class="flex-buttons">
+    <button ion-button (click)="selectVariation()">{{'Read.Variations.ChangeVariation' | translate}}</button>
+    <button ion-button outline (click)="selectVariationForNewView()">{{'Read.Variations.OpenNewVariation' | translate}}</button>
+  </div>
 </div>
 
 <div class="tei" [innerHTML]="text"
-[class.show_comments]="readPopoverService.show.comments"
 [class.show_personInfo]="readPopoverService.show.personInfo"
 [class.show_abbreviations]="readPopoverService.show.abbreviations"
 [class.show_workInfo]="readPopoverService.show.workInfo"
 [class.show_pageNumbering]="readPopoverService.show.pageNumbering"
 [class.show_pageBreakOriginal]="readPopoverService.show.pageBreakOriginal"
-[class.show_pageBreakEdition]="readPopoverService.show.pageBreakEdition"
 [ngClass]="(readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize'"
 ></div>
