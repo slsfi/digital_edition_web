@@ -353,8 +353,8 @@ export class FacsimilesComponent {
     this.facsimiles.forEach((facsimile, index) => {
       let checkedValue = false;
 
-      console.log(this.selectedFacsimile.publication_facsimile_collection_id + ' | ' + facsimile.publication_facsimile_collection_id);
-      console.log(this.selectedFacsimile.page + ' | ' + facsimile.page);
+      console.log('Selected facsimile:')
+      console.log(this.selectedFacsimile);
 
       if (this.selectedFacsimile.publication_facsimile_collection_id === facsimile.publication_facsimile_collection_id
       && (this.selectedFacsimile.page === undefined || this.selectedFacsimile.page === facsimile.page)) {
