@@ -700,12 +700,12 @@ ion-alert.select-text-alert .alert-wrapper {
   .flex-buttons {
     display: flex;
     align-items: flex-start;
+    flex-wrap: wrap;
   }
 
   .flex-buttons button.button {
     font-size: 0.75rem;
     height: 1.875rem !important;
-    flex-wrap: wrap;
   }
 }
 
