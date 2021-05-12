@@ -321,7 +321,9 @@ export class FacsimilesComponent {
   }
 
   changeFacsimile(facs?: any) {
-    if (facs) {
+    if (facs === 'external') {
+      this.selectedFacsimileIsExternal = true;
+    } else if (facs) {
       this.selectedFacsimileIsExternal = false;
       this.selectedFacsimile = facs;
       this.selectedFacsimileName = this.selectedFacsimile.title;
@@ -395,6 +397,7 @@ export class FacsimilesComponent {
       handler: (index: any) => {
         if (parseInt(index) < 0) {
           // External facsimiles selected
+          this.changeFacsimile('external');
         } else {
           this.changeFacsimile(this.facsimiles[parseInt(index)]);
         }
