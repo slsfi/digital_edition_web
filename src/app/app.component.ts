@@ -595,16 +595,9 @@ export class DigitalEditionsApp {
     return list;
   }
 
-  getRandomArbitrary(min, max) {
-    return Math.random() * (max - min) + min;
-  }
-
-  sortListDefined(list, sort ) {
+  sortListDefined(list, sort) {
     for (const coll of list) {
-      let order = sort[coll.id];
-      if( order === undefined ) {
-        order = Math.round(this.getRandomArbitrary(10000, 1000000));
-      }
+      const order = sort[coll.id];
       coll['order'] = order;
     }
 
@@ -761,16 +754,14 @@ export class DigitalEditionsApp {
   }
 
   unSelectCollectionWithChildrenPdf() {
-    if ( this.collectionsListWithTOC !== undefined ){
-      try {
-        for (const collection of this.collectionsListWithTOC) {
-          if (collection.has_children_pdfs && collection.highlight) {
-            collection.highlight = false;
-          }
+    try {
+      for (const collection of this.collectionsListWithTOC) {
+        if (collection.has_children_pdfs && collection.highlight) {
+          collection.highlight = false;
         }
-      } catch (e) {
-        // handle error
       }
+    } catch (e) {
+      // handle error
     }
   }
 
@@ -780,7 +771,7 @@ export class DigitalEditionsApp {
       this.openCollection(collection);
     });
     this.events.subscribe('CollectionWithChildrenPdfs:highlight', (collectionID) => {
-      if ( this.collectionsListWithTOC !== undefined && this.collectionsListWithTOC ) {
+      if ( this.collectionsListWithTOC ) {
         for (const collection of this.collectionsListWithTOC) {
           if (String(collection.id) === String(collectionID)) {
             collection['highlight'] = true;
@@ -884,7 +875,7 @@ export class DigitalEditionsApp {
       this.tocData = data;
       this.tocLoaded = true;
 
-      if (data.searchTocItem && this.collectionsListWithTOC !== undefined) {
+      if (data.searchTocItem) {
         for (const collection of this.collectionsListWithTOC) {
 
           if ((data.collectionID !== undefined && String(collection.id) === String(data.collectionID.id))

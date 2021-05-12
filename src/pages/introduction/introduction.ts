@@ -200,13 +200,11 @@ export class IntroductionPage {
             );
             const pattern = /<div data-id="content">(.*?)<\/div>/;
             const matches = String(this.text).match(pattern);
-            if( matches !== null ) {
-              const the_string = matches[0];
-              this.textMenu = the_string;
-              if (!this.platform.is('mobile')) {
-                if (!this.tocMenuOpen) {
-                  this.tocMenuOpen = true;
-                }
+            const the_string = matches[0];
+            this.textMenu = the_string;
+            if (!this.platform.is('mobile')) {
+              if (!this.tocMenuOpen) {
+                this.tocMenuOpen = true;
               }
             }
             // Try to scroll to an element in the text, checks if "pos" given
@@ -251,7 +249,7 @@ export class IntroductionPage {
                   // the position we need to find).
                   positionElement = document.getElementsByName(this.pos)[1] as HTMLElement;
               }
-              if (positionElement !== null && positionElement !== undefined && positionElement.classList !== null
+              if (positionElement !== null && positionElement !== undefined
               && positionElement.classList.contains('anchor')) {
                 this.scrollToHTMLElement(positionElement);
                 clearInterval(this.intervalTimerId);
