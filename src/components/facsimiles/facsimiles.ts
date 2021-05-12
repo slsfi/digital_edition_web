@@ -323,8 +323,6 @@ export class FacsimilesComponent {
   changeFacsimile(facs?: any) {
     if (facs === 'external') {
       this.selectedFacsimileIsExternal = true;
-      this.selectedFacsimile.page = null;
-      this.selectedFacsimile.first_page = null;
     } else if (facs) {
       this.selectedFacsimileIsExternal = false;
       this.selectedFacsimile = facs;
@@ -337,8 +335,6 @@ export class FacsimilesComponent {
       this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
             this.config.getSettings('app.machineName') +
             `/facsimiles/${facs.publication_facsimile_collection_id}/`;
-    } else {
-      this.selectedFacsimileIsExternal = false;
     }
     this.text = this.sanitizer.bypassSecurityTrustHtml(
       this.selectedFacsimile.content.replace(/images\//g, 'assets/images/')
@@ -381,9 +377,9 @@ export class FacsimilesComponent {
     this.facsimiles.forEach((facsimile, index) => {
       let checkedValue = false;
 
-      if (this.selectedFacsimile.publication_facsimile_collection_id === facsimile.publication_facsimile_collection_id
+      if (!this.selectedFacsimileIsExternal && (this.selectedFacsimile.publication_facsimile_collection_id === facsimile.publication_facsimile_collection_id
       && (this.selectedFacsimile.page === undefined && this.selectedFacsimile.first_page === facsimile.page
-      || this.selectedFacsimile.page === facsimile.page)) {
+      || this.selectedFacsimile.page === facsimile.page))) {
         checkedValue = true;
       }
 
