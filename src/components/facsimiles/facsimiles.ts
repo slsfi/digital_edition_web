@@ -189,7 +189,8 @@ export class FacsimilesComponent {
         );
         this.numberOfPages = this.facsPage['number_of_pages'];
 
-        this.facsPage['title'] = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(this.facsPage['title']));
+        this.facsPage['title'] = this.sanitizer.sanitize(SecurityContext.HTML,
+          this.sanitizer.bypassSecurityTrustHtml(this.facsPage['title']));
 
         this.selectedFacsimile = this.facsPage;
         this.selectedFacsimile.f_col_id = this.facsPage['publication_facsimile_collection_id'];
@@ -204,10 +205,11 @@ export class FacsimilesComponent {
           if ( f['external_url'] === null ) {
             facsimile.title = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(f['title']));
           }
-          this.facsimiles.push(facsimile);
           if ( f['external_url'] !== null ) {
             this.isExternal = true;
             this.externalURLs.push({'title': f['title'], 'url': f['external_url']});
+          } else {
+            this.facsimiles.push(facsimile);
           }
         }
 
@@ -351,6 +353,14 @@ export class FacsimilesComponent {
       cssClass: 'select-text-alert'
     });
 
+    if (this.isExternal && this.externalURLs.length > 0) {
+      alert.addInput({
+        type: 'radio',
+        label: facsTranslations.ExternalHeading,
+        value: -1
+      });
+    }
+
     this.facsimiles.forEach((facsimile, index) => {
       let checkedValue = false;
 
@@ -360,10 +370,10 @@ export class FacsimilesComponent {
         checkedValue = true;
       }
 
-      // Tags are stripped from the title
+      // Tags are stripped from the title which is shown as the label
       alert.addInput({
         type: 'radio',
-        label: facsimile.title.replace(/(<([^>]+)>)/gi, ""),
+        label: facsimile.title.replace(/(<([^>]+)>)/gi, ''),
         value: index,
         checked: checkedValue
       });
@@ -373,7 +383,11 @@ export class FacsimilesComponent {
     alert.addButton({
       text: buttonTranslations.Ok,
       handler: (index: any) => {
-        this.changeFacsimile(this.facsimiles[parseInt(index)]);
+        if (parseInt(index) < 0) {
+          // External facsimiles selected
+        } else {
+          this.changeFacsimile(this.facsimiles[parseInt(index)]);
+        }
       }
     });
 
