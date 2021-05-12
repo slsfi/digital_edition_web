@@ -190,17 +190,16 @@ export class FacsimilesComponent {
         );
         this.numberOfPages = this.facsPage['number_of_pages'];
 
-        this.facsPage['title'] = this.sanitizer.bypassSecurityTrustHtml(this.facsPage['title']);
+        this.facsPage['title'] = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(this.facsPage['title']));
 
         this.selectedFacsimile = this.facsPage;
         this.selectedFacsimile.f_col_id = this.facsPage['publication_facsimile_collection_id'];
-        this.selectedFacsimile.title = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(this.facsPage['title']));
+        this.selectedFacsimile.title = this.facsPage['title'];
         this.selectedFacsimileName = this.selectedFacsimile.title;
 
         // add all
         for (const f of facs) {
           const tmp = f;
-          tmp.title = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(tmp.title));
           const facsimile = new Facsimile(tmp);
           facsimile.itemId = this.itemId;
           facsimile.manuscript_id = f.publication_manuscript_id;
@@ -362,7 +361,7 @@ export class FacsimilesComponent {
 
       alert.addInput({
         type: 'radio',
-        label: this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(facsimile.title)),
+        label: facsimile.title,
         value: index,
         checked: checkedValue
       });
