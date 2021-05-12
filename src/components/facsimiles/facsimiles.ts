@@ -199,7 +199,6 @@ export class FacsimilesComponent {
         // add all
         for (const f of facs) {
           const tmp = f;
-          console.log(f);
           tmp.title = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(tmp.title));
           const facsimile = new Facsimile(tmp);
           facsimile.itemId = this.itemId;
