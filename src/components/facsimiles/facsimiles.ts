@@ -360,6 +360,7 @@ export class FacsimilesComponent {
         checkedValue = true;
       }
 
+      // Tags are stripped from the title
       alert.addInput({
         type: 'radio',
         label: facsimile.title.replace(/(<([^>]+)>)/gi, ""),
