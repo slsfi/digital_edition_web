@@ -23,7 +23,7 @@
 <div class="text-select-wrapper facsimile-header" [ngClass]="isExternal?'external-urls-header':''">
   <h3 *ngIf="isExternal === false" [innerHTML]="selectedFacsimileName"></h3>
   <h3 *ngIf="isExternal === true">{{"Read.Facsimiles.ExternalHeading" | translate}}</h3>
-  <div *ngIf="isExternal === false && facsimiles.length>1" class="flex-buttons">
+  <div *ngIf="facsimiles.length>1" class="flex-buttons">
     <button ion-button (click)="selectFacsimile()">{{"Read.Facsimiles.ChangeFacsimile" | translate}}</button>
   </div>
 </div>
