@@ -362,7 +362,7 @@ export class FacsimilesComponent {
 
       alert.addInput({
         type: 'radio',
-        label: facsimile.title,
+        label: facsimile.title.replace(/(<([^>]+)>)/gi, ""),
         value: index,
         checked: checkedValue
       });
