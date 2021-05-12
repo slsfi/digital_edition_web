@@ -20,15 +20,15 @@
 </div>
 -->
 
-<div class="text-select-wrapper facsimile-header" [ngClass]="isExternal?'external-urls-header':''">
-  <h3 *ngIf="isExternal === false" [innerHTML]="selectedFacsimileName"></h3>
-  <h3 *ngIf="isExternal === true">{{"Read.Facsimiles.ExternalHeading" | translate}}</h3>
-  <div *ngIf="facsimiles.length>1 || (facsimiles.length==1 && isExternal === true)" class="flex-buttons">
+<div class="text-select-wrapper facsimile-header" [ngClass]="selectedFacsimileIsExternal?'external-urls-header':''">
+  <h3 *ngIf="!selectedFacsimileIsExternal" [innerHTML]="selectedFacsimileName"></h3>
+  <h3 *ngIf="selectedFacsimileIsExternal">{{"Read.Facsimiles.ExternalHeading" | translate}}</h3>
+  <div *ngIf="facsimiles.length>1 || (facsimiles.length==1 && selectedFacsimileIsExternal)" class="flex-buttons">
     <button ion-button (click)="selectFacsimile()">{{"Read.Facsimiles.ChangeFacsimile" | translate}}</button>
   </div>
 </div>
 
-<ion-scroll *ngIf="isExternal" scrollY="true" class="external_urls_wrapper" [ngStyle]="{'height': '100%', 'max-height': 'calc(100% - 60px)'}">
+<ion-scroll *ngIf="selectedFacsimileIsExternal" scrollY="true" class="external_urls_wrapper" [ngStyle]="{'height': '100%', 'max-height': 'calc(100% - 60px)'}">
   <div [ngClass]="(readPopoverService.fontsize==0)?'tei xsmallFontSize':(readPopoverService.fontsize==1)?'tei smallFontSize':(readPopoverService.fontsize==2)?'tei mediumFontSize':(readPopoverService.fontsize==3)?'tei largeFontSize':'tei xlargeFontSize'">
     <ul>
       <li *ngFor="let ext of externalURLs"><a target="_blank" href="{{ext.url}}" [innerHTML]="ext.title"></a></li>
@@ -43,7 +43,7 @@
     type="number"></ion-input>
 </ion-item>
 
-<div id="facsimilies-image" *ngIf="!facsimilePagesInfinite && externalURLs.length===0">
+<div id="facsimilies-image" *ngIf="!facsimilePagesInfinite && !selectedFacsimileIsExternal">
   <img
     [src]="images ? images[activeImage] : ''"
     [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
@@ -55,7 +55,7 @@
   >
 </div>
 
-<div id="facsimilies-image" *ngIf="facsimilePagesInfinite && facsNumber && externalURLs.length===0">
+<div id="facsimilies-image" *ngIf="facsimilePagesInfinite && facsNumber && !selectedFacsimileIsExternal">
   <img
     [src]="facsUrl + facsNumber + (facsSize ? '/' + facsSize : '')"
     [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
@@ -67,12 +67,12 @@
   >
 </div>
 
-<ion-fab *ngIf="numberOfPages > 1 && !isExternal" middle left class="leftFacsimileArrow">
+<ion-fab *ngIf="numberOfPages > 1 && !selectedFacsimileIsExternal" middle left class="leftFacsimileArrow">
   <button *ngIf="numberOfPages > 1" ion-fab color="primary" mini (click)="previous()">
     <ion-icon name="arrow-back"></ion-icon>
   </button>
 </ion-fab>
-<ion-fab middle right *ngIf="!isExternal">
+<ion-fab middle right *ngIf="!selectedFacsimileIsExternal">
   <button *ngIf="numberOfPages > 1" ion-fab color="primary" mini (click)="next()">
     <ion-icon name="arrow-forward"></ion-icon>
   </button>

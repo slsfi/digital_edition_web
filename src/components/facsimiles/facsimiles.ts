@@ -49,6 +49,7 @@ export class FacsimilesComponent {
   prevY = 0
   isExternal = false;
   selectedFacsimileName: string;
+  selectedFacsimileIsExternal = false;
 
   facsUrl = '';
   externalURLs = [];
@@ -184,6 +185,10 @@ export class FacsimilesComponent {
           this.facsPage = facs[0];
         }
 
+        if (this.facsPage['external_url'] !== null) {
+          this.selectedFacsimileIsExternal = true;
+        }
+
         this.manualPageNumber = this.activeImage = this.facsNumber = (
           this.facsPage['page_nr'] + this.facsPage['start_page_number'] + this.facsimilePage
         );
@@ -218,6 +223,7 @@ export class FacsimilesComponent {
           this.config.getSettings('app.machineName') +
           `/facsimiles/${this.facsPage['publication_facsimile_collection_id']}/`;
           this.isExternal = false;
+          this.selectedFacsimileIsExternal = false;
         }
 
         if (this.facsimiles.length > 0) {
@@ -316,6 +322,7 @@ export class FacsimilesComponent {
 
   changeFacsimile(facs?: any) {
     if (facs) {
+      this.selectedFacsimileIsExternal = false;
       this.selectedFacsimile = facs;
       this.selectedFacsimileName = this.selectedFacsimile.title;
       this.itemId = this.selectedFacsimile.itemId;
