@@ -199,8 +199,7 @@ export class FacsimilesComponent {
 
         // add all
         for (const f of facs) {
-          const tmp = f;
-          const facsimile = new Facsimile(tmp);
+          const facsimile = new Facsimile(f);
           facsimile.itemId = this.itemId;
           facsimile.manuscript_id = f.publication_manuscript_id;
           this.facsimiles.push(facsimile);
