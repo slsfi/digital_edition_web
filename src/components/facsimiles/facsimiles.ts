@@ -221,7 +221,10 @@ export class FacsimilesComponent {
         }
 
         if (this.facsimiles.length > 0) {
-          console.log('recieved facsimiles (infinite) ,..,', this.facsimiles);
+          console.log('received facsimiles (infinite) ,..,', this.facsimiles);
+        }
+        if (this.externalURLs.length > 0) {
+          console.log('received external facsimiles ,...,', this.externalURLs);
         }
       },
       error => {
@@ -281,7 +284,7 @@ export class FacsimilesComponent {
           this.activeImage = 0;
         }
         if (this.facsimiles.length > 0) {
-          console.log('recieved facsimiles ,..,', this.facsimiles);
+          console.log('received facsimiles ,..,', this.facsimiles);
         }
         this.changeFacsimile();
         this.doAnalytics();
