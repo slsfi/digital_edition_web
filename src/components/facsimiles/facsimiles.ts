@@ -377,7 +377,8 @@ export class FacsimilesComponent {
     this.facsimiles.forEach((facsimile, index) => {
       let checkedValue = false;
 
-      if (!this.selectedFacsimileIsExternal && (this.selectedFacsimile.publication_facsimile_collection_id === facsimile.publication_facsimile_collection_id
+      if (!this.selectedFacsimileIsExternal
+      && (this.selectedFacsimile.publication_facsimile_collection_id === facsimile.publication_facsimile_collection_id
       && (this.selectedFacsimile.page === undefined && this.selectedFacsimile.first_page === facsimile.page
       || this.selectedFacsimile.page === facsimile.page))) {
         checkedValue = true;
