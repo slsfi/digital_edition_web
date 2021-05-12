@@ -40,7 +40,7 @@ export class FacsimileService {
                          this.config.getSettings('app.machineName') +
                         `/facsimiles/${legacy_id}`)
                     .map(res => {
-                      console.log(res);
+                      console.log(res.json());
                       return res.json();
                     })
                     .catch(this.handleError);
