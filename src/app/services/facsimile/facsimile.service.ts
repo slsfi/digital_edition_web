@@ -39,10 +39,7 @@ export class FacsimileService {
     return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
                          this.config.getSettings('app.machineName') +
                         `/facsimiles/${legacy_id}`)
-                    .map(res => {
-                      console.log(res.json());
-                      return res.json();
-                    })
+                    .map(this.extractData)
                     .catch(this.handleError);
   }
 
