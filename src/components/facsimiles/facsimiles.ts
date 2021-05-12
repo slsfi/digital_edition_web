@@ -368,7 +368,7 @@ export class FacsimilesComponent {
 
       alert.addInput({
         type: 'radio',
-        label: this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(facsTitle)),
+        label: facsTitle,
         value: index,
         checked: checkedValue
       });
