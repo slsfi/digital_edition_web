@@ -323,7 +323,8 @@ export class FacsimilesComponent {
   changeFacsimile(facs?: any) {
     if (facs === 'external') {
       this.selectedFacsimileIsExternal = true;
-      this.selectedFacsimile.publication_facsimile_collection_id = null;
+      this.selectedFacsimile.page = null;
+      this.selectedFacsimile.first_page = null;
     } else if (facs) {
       this.selectedFacsimileIsExternal = false;
       this.selectedFacsimile = facs;
@@ -336,6 +337,8 @@ export class FacsimilesComponent {
       this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
             this.config.getSettings('app.machineName') +
             `/facsimiles/${facs.publication_facsimile_collection_id}/`;
+    } else {
+      this.selectedFacsimileIsExternal = false;
     }
     this.text = this.sanitizer.bypassSecurityTrustHtml(
       this.selectedFacsimile.content.replace(/images\//g, 'assets/images/')
