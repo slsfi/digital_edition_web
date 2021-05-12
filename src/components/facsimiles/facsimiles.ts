@@ -363,9 +363,11 @@ export class FacsimilesComponent {
         checkedValue = true;
       }
 
+      const facsTitle: string = '' + facsimile.title + '';
+
       alert.addInput({
         type: 'radio',
-        label: this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(facsimile.title)),
+        label: this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(facsTitle)),
         value: index,
         checked: checkedValue
       });
