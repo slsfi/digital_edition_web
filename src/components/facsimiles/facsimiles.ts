@@ -353,22 +353,15 @@ export class FacsimilesComponent {
     this.facsimiles.forEach((facsimile, index) => {
       let checkedValue = false;
 
-      console.log('Selected facsimile:')
-      console.log(this.selectedFacsimile);
-      console.log('Iterated facsimile:')
-      console.log(facsimile);
-
       if (this.selectedFacsimile.publication_facsimile_collection_id === facsimile.publication_facsimile_collection_id
       && (this.selectedFacsimile.page === undefined && this.selectedFacsimile.first_page === facsimile.page
       || this.selectedFacsimile.page === facsimile.page)) {
         checkedValue = true;
       }
 
-      const facsTitle: string = '' + facsimile.title + '';
-
       alert.addInput({
         type: 'radio',
-        label: facsTitle,
+        label: this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(facsimile.title)),
         value: index,
         checked: checkedValue
       });
