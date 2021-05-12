@@ -323,6 +323,7 @@ export class FacsimilesComponent {
   changeFacsimile(facs?: any) {
     if (facs === 'external') {
       this.selectedFacsimileIsExternal = true;
+      this.selectedFacsimile.publication_facsimile_collection_id = null;
     } else if (facs) {
       this.selectedFacsimileIsExternal = false;
       this.selectedFacsimile = facs;
