@@ -218,7 +218,7 @@ export class FacsimilesComponent {
         }
 
         if (this.facsimiles.length > 0) {
-          console.log('recieved facsimiles ,..,', this.facsimiles);
+          console.log('recieved facsimiles (infinite) ,..,', this.facsimiles);
         }
       },
       error => {
