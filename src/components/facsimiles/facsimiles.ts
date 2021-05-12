@@ -359,7 +359,8 @@ export class FacsimilesComponent {
       console.log(facsimile);
 
       if (this.selectedFacsimile.publication_facsimile_collection_id === facsimile.publication_facsimile_collection_id
-      && (this.selectedFacsimile.page === undefined && this.selectedFacsimile.first_page === facsimile.page || this.selectedFacsimile.page === facsimile.page)) {
+      && (this.selectedFacsimile.page === undefined && this.selectedFacsimile.first_page === facsimile.page
+      || this.selectedFacsimile.page === facsimile.page)) {
         checkedValue = true;
       }
 
