@@ -201,6 +201,9 @@ export class FacsimilesComponent {
           const facsimile = new Facsimile(f);
           facsimile.itemId = this.itemId;
           facsimile.manuscript_id = f.publication_manuscript_id;
+          if ( f['external_url'] === null ) {
+            facsimile.title = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(f['title']));
+          }
           this.facsimiles.push(facsimile);
           if ( f['external_url'] !== null ) {
             this.isExternal = true;
