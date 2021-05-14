@@ -169,75 +169,75 @@ export class FacsimilesComponent {
   getFacsimilePageInfinite() {
     this.facsimileService.getFacsimilePage(this.itemId).subscribe(
       facs => {
-        console.log('facs', facs);
-        this.facsimiles = [];
-        if ( String(this.itemId).indexOf('ch') > 0 ) {
-          facs.forEach( fac => {
-            let section = String(this.itemId).split(';')[0];
-            section = String((String(section).split('_')[2]).replace('ch', ''));
-            if ( String(fac['section_id']) === section ) {
-              this.facsPage = fac;
+        if (facs.length > 0) {
+          this.facsimiles = [];
+          if ( String(this.itemId).indexOf('ch') > 0 ) {
+            facs.forEach( fac => {
+              let section = String(this.itemId).split(';')[0];
+              section = String((String(section).split('_')[2]).replace('ch', ''));
+              if ( String(fac['section_id']) === section ) {
+                this.facsPage = fac;
+              }
+            });
+            if ( this.facsPage === undefined ) {
+              this.facsPage = facs[0];
             }
-          });
-          if ( this.facsPage === undefined ) {
+          } else {
             this.facsPage = facs[0];
           }
+
+          if (this.facsPage['external_url'] !== null) {
+            this.selectedFacsimileIsExternal = true;
+          }
+
+          this.manualPageNumber = this.activeImage = this.facsNumber = (
+            this.facsPage['page_nr'] + this.facsPage['start_page_number'] + this.facsimilePage
+          );
+          this.numberOfPages = this.facsPage['number_of_pages'];
+
+          this.facsPage['title'] = this.sanitizer.sanitize(SecurityContext.HTML,
+            this.sanitizer.bypassSecurityTrustHtml(this.facsPage['title']));
+
+          this.selectedFacsimile = this.facsPage;
+          this.selectedFacsimile.f_col_id = this.facsPage['publication_facsimile_collection_id'];
+          this.selectedFacsimile.title = this.facsPage['title'];
+          this.selectedFacsimileName = this.selectedFacsimile.title;
+
+          // add all
+          for (const f of facs) {
+            const facsimile = new Facsimile(f);
+            facsimile.itemId = this.itemId;
+            facsimile.manuscript_id = f.publication_manuscript_id;
+            if ( f['external_url'] === null ) {
+              facsimile.title = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(f['title']));
+            }
+            if ( f['external_url'] !== null ) {
+              this.isExternal = true;
+              this.externalURLs.push({'title': f['title'], 'url': f['external_url']});
+            } else {
+              this.facsimiles.push(facsimile);
+            }
+          }
+
+          if ( this.facsPage['external_url'] === undefined || this.facsPage['external_url'] === null ) {
+            this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
+            this.config.getSettings('app.machineName') +
+            `/facsimiles/${this.facsPage['publication_facsimile_collection_id']}/`;
+            this.isExternal = false;
+            this.selectedFacsimileIsExternal = false;
+          }
+
+          if (this.facsimiles.length > 0) {
+            console.log('received facsimiles (infinite) ,..,', this.facsimiles);
+          }
+          if (this.externalURLs.length > 0) {
+            console.log('received external facsimiles ,...,', this.externalURLs);
+          }
         } else {
-          this.facsPage = facs[0];
-        }
-
-        if (this.facsPage['external_url'] !== null) {
-          this.selectedFacsimileIsExternal = true;
-        }
-
-        this.manualPageNumber = this.activeImage = this.facsNumber = (
-          this.facsPage['page_nr'] + this.facsPage['start_page_number'] + this.facsimilePage
-        );
-        this.numberOfPages = this.facsPage['number_of_pages'];
-
-        this.facsPage['title'] = this.sanitizer.sanitize(SecurityContext.HTML,
-          this.sanitizer.bypassSecurityTrustHtml(this.facsPage['title']));
-
-        this.selectedFacsimile = this.facsPage;
-        this.selectedFacsimile.f_col_id = this.facsPage['publication_facsimile_collection_id'];
-        this.selectedFacsimile.title = this.facsPage['title'];
-        this.selectedFacsimileName = this.selectedFacsimile.title;
-
-        // add all
-        for (const f of facs) {
-          const facsimile = new Facsimile(f);
-          facsimile.itemId = this.itemId;
-          facsimile.manuscript_id = f.publication_manuscript_id;
-          if ( f['external_url'] === null ) {
-            facsimile.title = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(f['title']));
-          }
-          if ( f['external_url'] !== null ) {
-            this.isExternal = true;
-            this.externalURLs.push({'title': f['title'], 'url': f['external_url']});
-          } else {
-            this.facsimiles.push(facsimile);
-          }
-        }
-
-        if ( this.facsPage['external_url'] === undefined || this.facsPage['external_url'] === null ) {
-          this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
-          this.config.getSettings('app.machineName') +
-          `/facsimiles/${this.facsPage['publication_facsimile_collection_id']}/`;
-          this.isExternal = false;
-          this.selectedFacsimileIsExternal = false;
-        }
-
-        if (this.facsimiles.length > 0) {
-          console.log('received facsimiles (infinite) ,..,', this.facsimiles);
-        }
-        if (this.externalURLs.length > 0) {
-          console.log('received external facsimiles ,...,', this.externalURLs);
-        }
-        if (this.facsimiles.length < 1 && this.externalURLs.length < 1) {
           this.translate.get('Read.Facsimiles.NoFacsimiles').subscribe(
             translation => {
               this.text = translation;
-            }, error => { }
+            }, err => { }
           );
         }
       },
