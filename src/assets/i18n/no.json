@@ -49,11 +49,13 @@
       "ReadFromBeginning": "Läs från början",
       "Established": {
           "Title": "Lästext",
-          "AddButtonText": "Lästextvy"
+          "AddButtonText": "Lästextvy",
+          "NoEstablished": "Det finns ingen utskriven lästext, se faksimil."
       },
       "Comments": {
           "Title": "Kommentarer",
-          "AddButtonText": "Kommentarvy"
+          "AddButtonText": "Kommentarvy",
+          "NoComments": "Inga kommentarer."
       },
       "Manuscripts": {
           "Title": "Manuskript",
@@ -63,7 +65,7 @@
           "NoManuscripts": "Inga manuskript",
           "ChangeManuscript": "Byt manuskript",
           "SelectMsDialogTitle": "Välj manuskript",
-          "SelectMsDialogSubtitle": "Manuskriptet ersätter det manuskript som visas i kolumnen där du klickade"
+          "SelectMsDialogSubtitle": "Manuskriptet ersätter det manuskript som visas i kolumnen där du klickade."
       },
       "Variations": {
           "Title": "Variationer",
@@ -72,9 +74,9 @@
           "ChangeVariation": "Byt variant",
           "OpenNewVariation": "Öppna ny variant",
           "SelectVariationDialogTitle": "Välj variant",
-          "SelectVariationDialogSubtitle": "Varianten ersätter den variant som visas i kolumnen där du klickade",
+          "SelectVariationDialogSubtitle": "Varianten ersätter den variant som visas i kolumnen där du klickade.",
           "OpenNewVariationDialogTitle": "Välj variant",
-          "OpenNewVariationDialogSubtitle": "Varianten öppnas i en ny kolumn"
+          "OpenNewVariationDialogSubtitle": "Varianten öppnas i en ny kolumn."
       },
       "Facsimiles": {
           "Title": "Faksimil",
@@ -85,7 +87,7 @@
           "ChangeFacsimile": "Byt faksimil",
           "NoFacsimiles": "Inga faksimil",
           "SelectFacsDialogTitle": "Välj faksimil",
-          "SelectFacsDialogSubtitle": "Faksimilet ersätter det faksimil som visas i kolumnen där du klickade"
+          "SelectFacsDialogSubtitle": "Faksimilet ersätter det faksimil som visas i kolumnen där du klickade."
       },
       "SongExample": {
           "Title": "Melodi exempel",

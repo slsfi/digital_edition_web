@@ -50,11 +50,13 @@
       "ReadFromBeginning": "From the beginning",
       "Established": {
           "Title": "Established text",
-          "AddButtonText": "Established text view"
+          "AddButtonText": "Established text view",
+          "NoEstablished": "No established text, see facsimiles."
       },
       "Comments": {
           "Title": "Comments",
-          "AddButtonText": "Comments view"
+          "AddButtonText": "Comments view",
+          "NoComments": "No comments."
       },
       "Manuscripts": {
           "Title": "Manuscript",
@@ -64,7 +66,7 @@
           "NoManuscripts": "No manuscripts",
           "ChangeManuscript": "Change manuscript",
           "SelectMsDialogTitle": "Select manuscript",
-          "SelectMsDialogSubtitle": "The manuscript will be shown in the column where you clicked"
+          "SelectMsDialogSubtitle": "The manuscript will be shown in the column where you clicked."
       },
       "Variations": {
           "Title": "Variants",
@@ -73,9 +75,9 @@
           "ChangeVariation": "Change variant",
           "OpenNewVariation": "Open new variant",
           "SelectVariationDialogTitle": "Select variant",
-          "SelectVariationDialogSubtitle": "The variant will be shown in the column where you clicked",
+          "SelectVariationDialogSubtitle": "The variant will be shown in the column where you clicked.",
           "OpenNewVariationDialogTitle": "Select variant",
-          "OpenNewVariationDialogSubtitle": "The variant will open in a new column"
+          "OpenNewVariationDialogSubtitle": "The variant will open in a new column."
       },
       "Facsimiles": {
           "Title": "Facsimiles",
@@ -87,7 +89,7 @@
           "ChangeFacsimile": "Select facsimile",
           "NoFacsimiles": "No facsimiles",
           "SelectFacsDialogTitle": "Select facsimile",
-          "SelectFacsDialogSubtitle": "The facsimile will be shown in the column where you clicked"
+          "SelectFacsDialogSubtitle": "The facsimile will be shown in the column where you clicked."
       },
       "TitlePage": {
           "Title": "Titel page"
