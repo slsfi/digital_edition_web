@@ -169,6 +169,7 @@ export class FacsimilesComponent {
   getFacsimilePageInfinite() {
     this.facsimileService.getFacsimilePage(this.itemId).subscribe(
       facs => {
+        console.log('facs', facs);
         this.facsimiles = [];
         if ( String(this.itemId).indexOf('ch') > 0 ) {
           facs.forEach( fac => {
