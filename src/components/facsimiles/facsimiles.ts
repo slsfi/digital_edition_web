@@ -237,7 +237,10 @@ export class FacsimilesComponent {
           this.translate.get('Read.Facsimiles.NoFacsimiles').subscribe(
             translation => {
               this.text = translation;
-            }, err => { }
+            }, err => {
+              console.error(err);
+              this.text = 'Inga faksimil';
+            }
           );
         }
       },
