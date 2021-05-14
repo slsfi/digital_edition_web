@@ -67,31 +67,33 @@
   >
 </div>
 
-<ion-fab *ngIf="numberOfPages > 1 && !selectedFacsimileIsExternal" middle left class="leftFacsimileArrow">
-  <button *ngIf="numberOfPages > 1" ion-fab color="primary" mini (click)="previous()">
-    <ion-icon name="arrow-back"></ion-icon>
-  </button>
-</ion-fab>
-<ion-fab middle right *ngIf="!selectedFacsimileIsExternal">
-  <button *ngIf="numberOfPages > 1" ion-fab color="primary" mini (click)="next()">
-    <ion-icon name="arrow-forward"></ion-icon>
-  </button>
-  <button ion-fab color="secondary" mini (click)="openZoom()">
-    <ion-icon name="expand"></ion-icon>
-  </button>
-  <button ion-fab color="secondary" mini (click)="zoomIn()">
-    <ion-icon name="add"></ion-icon>
-  </button>
-  <button ion-fab color="secondary" mini (click)="zoomOut()">
-    <ion-icon name="remove"></ion-icon>
-  </button>
-  <button ion-fab color="secondary" mini (click)="rotate()">
-    <ion-icon name="refresh"></ion-icon>
-  </button>
-  <button ion-fab color="secondary" mini (click)="resetFacsimile()">
-    <ion-icon name="undo"></ion-icon>
-  </button>
-</ion-fab>
+<ng-container *ngIf="facsimiles.length>0">
+  <ion-fab *ngIf="numberOfPages > 1 && !selectedFacsimileIsExternal" middle left class="leftFacsimileArrow">
+    <button *ngIf="numberOfPages > 1" ion-fab color="primary" mini (click)="previous()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </button>
+  </ion-fab>
+  <ion-fab middle right *ngIf="!selectedFacsimileIsExternal">
+    <button *ngIf="numberOfPages > 1" ion-fab color="primary" mini (click)="next()">
+      <ion-icon name="arrow-forward"></ion-icon>
+    </button>
+    <button ion-fab color="secondary" mini (click)="openZoom()">
+      <ion-icon name="expand"></ion-icon>
+    </button>
+    <button ion-fab color="secondary" mini (click)="zoomIn()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+    <button ion-fab color="secondary" mini (click)="zoomOut()">
+      <ion-icon name="remove"></ion-icon>
+    </button>
+    <button ion-fab color="secondary" mini (click)="rotate()">
+      <ion-icon name="refresh"></ion-icon>
+    </button>
+    <button ion-fab color="secondary" mini (click)="resetFacsimile()">
+      <ion-icon name="undo"></ion-icon>
+    </button>
+  </ion-fab>
+</ng-container>
 
 <div class="tei" [innerHTML]="text"
   [class.show_comments]="readPopoverService.show.comments"
