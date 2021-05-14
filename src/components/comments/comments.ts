@@ -4,6 +4,7 @@ import { ReadTextComponent } from '../read-text/read-text';
 import { TextService } from '../../app/services/texts/text.service';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { CommentService } from '../../app/services/comments/comment.service';
+import { TranslateService } from '@ngx-translate/core';
 import { Events } from 'ionic-angular';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 /**
@@ -40,7 +41,8 @@ export class CommentsComponent {
     private ngZone: NgZone,
     private elementRef: ElementRef,
     private events: Events,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    public translate: TranslateService
   ) {
   }
 
@@ -70,13 +72,22 @@ export class CommentsComponent {
   setText() {
     this.commentService.getComment(this.link).subscribe(
       text => {
+        console.log('comment text response: ', text);
         this.textLoading = false;
-        // in order to get id attributes for tooltips
-        this.text = this.sanitizer.bypassSecurityTrustHtml (
-          String(text).replace(/images\//g, 'assets/images/')
-            .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiComment $1\"')
-            .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
-        );
+        if (text.length > 0) {
+          // in order to get id attributes for tooltips
+          this.text = this.sanitizer.bypassSecurityTrustHtml (
+            String(text).replace(/images\//g, 'assets/images/')
+              .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiComment $1\"')
+              .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
+          );
+        } else {
+          this.translate.get('Read.Comments.NoComments').subscribe(
+            translation => {
+              this.text = translation;
+            }, err => { }
+          );
+        }
         this.doAnalytics();
       },
       error =>  {
