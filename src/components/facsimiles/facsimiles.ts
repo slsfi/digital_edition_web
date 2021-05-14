@@ -369,7 +369,7 @@ export class FacsimilesComponent {
       alert.addInput({
         type: 'radio',
         label: facsTranslations.ExternalHeading,
-        value: -1,
+        value: null,
         checked: this.selectedFacsimileIsExternal
       });
     }
@@ -388,7 +388,7 @@ export class FacsimilesComponent {
       alert.addInput({
         type: 'radio',
         label: facsimile.title.replace(/(<([^>]+)>)/gi, ''),
-        value: index,
+        value: String(index),
         checked: checkedValue
       });
     });
