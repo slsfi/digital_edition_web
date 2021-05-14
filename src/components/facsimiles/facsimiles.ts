@@ -1,6 +1,6 @@
-import { Component, Input, EventEmitter, Output, SecurityContext } from '@angular/core';
+import { Component, Input, EventEmitter, Output, SecurityContext, NgZone } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ModalController, NavParams, Events, ViewController, Platform } from 'ionic-angular';
+import { AlertController, ModalController, NavParams, Events, ViewController, Platform } from 'ionic-angular';
 import { FacsimileZoomModalPage } from '../../pages/facsimile-zoom/facsimile-zoom';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { FacsimileService } from '../../app/services/facsimile/facsimile.service';
@@ -48,6 +48,8 @@ export class FacsimilesComponent {
   prevX = 0
   prevY = 0
   isExternal = false;
+  selectedFacsimileName: string;
+  selectedFacsimileIsExternal = false;
 
   facsUrl = '';
   externalURLs = [];
@@ -72,6 +74,8 @@ export class FacsimilesComponent {
     protected events: Events,
     private viewctrl: ViewController,
     private platform: Platform,
+    private ngZone: NgZone,
+    private alertCtrl: AlertController,
     public songService: SongService,
     private analyticsService: AnalyticsService
   ) {
@@ -80,6 +84,7 @@ export class FacsimilesComponent {
     this.manualPageNumber = 1;
     this.text = '';
     this.facsimiles = [];
+    this.selectedFacsimileName = '';
 
     const parts = String(this.itemId).split('_')
     this.chapter = null;
@@ -156,6 +161,7 @@ export class FacsimilesComponent {
         this.getFacsimiles();
       }
     } else {
+      this.selectedFacsimileName = this.selectedFacsimile.title;
       this.getFacsimiles(this.selectedFacsimile.itemId);
     }
   }
@@ -179,28 +185,36 @@ export class FacsimilesComponent {
           this.facsPage = facs[0];
         }
 
+        if (this.facsPage['external_url'] !== null) {
+          this.selectedFacsimileIsExternal = true;
+        }
+
         this.manualPageNumber = this.activeImage = this.facsNumber = (
           this.facsPage['page_nr'] + this.facsPage['start_page_number'] + this.facsimilePage
         );
         this.numberOfPages = this.facsPage['number_of_pages'];
 
-        this.facsPage['title'] = this.sanitizer.bypassSecurityTrustHtml(this.facsPage['title']);
+        this.facsPage['title'] = this.sanitizer.sanitize(SecurityContext.HTML,
+          this.sanitizer.bypassSecurityTrustHtml(this.facsPage['title']));
 
         this.selectedFacsimile = this.facsPage;
         this.selectedFacsimile.f_col_id = this.facsPage['publication_facsimile_collection_id'];
-        this.selectedFacsimile.title = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(this.facsPage['title']));
+        this.selectedFacsimile.title = this.facsPage['title'];
+        this.selectedFacsimileName = this.selectedFacsimile.title;
 
         // add all
         for (const f of facs) {
-          const tmp = f;
-          tmp.title = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(tmp.title));
-          const facsimile = new Facsimile(tmp);
+          const facsimile = new Facsimile(f);
           facsimile.itemId = this.itemId;
           facsimile.manuscript_id = f.publication_manuscript_id;
-          this.facsimiles.push(facsimile);
+          if ( f['external_url'] === null ) {
+            facsimile.title = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(f['title']));
+          }
           if ( f['external_url'] !== null ) {
             this.isExternal = true;
             this.externalURLs.push({'title': f['title'], 'url': f['external_url']});
+          } else {
+            this.facsimiles.push(facsimile);
           }
         }
 
@@ -209,6 +223,14 @@ export class FacsimilesComponent {
           this.config.getSettings('app.machineName') +
           `/facsimiles/${this.facsPage['publication_facsimile_collection_id']}/`;
           this.isExternal = false;
+          this.selectedFacsimileIsExternal = false;
+        }
+
+        if (this.facsimiles.length > 0) {
+          console.log('received facsimiles (infinite) ,..,', this.facsimiles);
+        }
+        if (this.externalURLs.length > 0) {
+          console.log('received external facsimiles ,...,', this.externalURLs);
         }
       },
       error => {
@@ -263,8 +285,12 @@ export class FacsimilesComponent {
           } else {
             this.selectedFacsimile = this.facsimiles[this.facsimiles.length - 1];
           }
+          this.selectedFacsimileName = this.selectedFacsimile.title;
           this.images = this.selectedFacsimile.images;
           this.activeImage = 0;
+        }
+        if (this.facsimiles.length > 0) {
+          console.log('received facsimiles ,..,', this.facsimiles);
         }
         this.changeFacsimile();
         this.doAnalytics();
@@ -295,8 +321,12 @@ export class FacsimilesComponent {
   }
 
   changeFacsimile(facs?: any) {
-    if (facs) {
+    if (facs === 'external') {
+      this.selectedFacsimileIsExternal = true;
+    } else if (facs) {
+      this.selectedFacsimileIsExternal = false;
       this.selectedFacsimile = facs;
+      this.selectedFacsimileName = this.selectedFacsimile.title;
       this.itemId = this.selectedFacsimile.itemId;
       this.facsNumber = facs.page;
       this.facsPage = facs.page;
@@ -312,6 +342,71 @@ export class FacsimilesComponent {
     );
     this.images = this.selectedFacsimile.images;
     this.activeImage = this.facsimilePage;
+  }
+
+  selectFacsimile() {
+    let facsTranslations = null;
+    this.translate.get('Read.Facsimiles').subscribe(
+      translation => {
+        facsTranslations = translation;
+      }, error => { }
+    );
+
+    let buttonTranslations = null;
+    this.translate.get('BasicActions').subscribe(
+      translation => {
+        buttonTranslations = translation;
+      }, error => { }
+    );
+
+    const alert = this.alertCtrl.create({
+      title: facsTranslations.SelectFacsDialogTitle,
+      subTitle: facsTranslations.SelectFacsDialogSubtitle,
+      cssClass: 'select-text-alert'
+    });
+
+    if (this.isExternal && this.externalURLs.length > 0) {
+      alert.addInput({
+        type: 'radio',
+        label: facsTranslations.ExternalHeading,
+        value: -1,
+        checked: this.selectedFacsimileIsExternal
+      });
+    }
+
+    this.facsimiles.forEach((facsimile, index) => {
+      let checkedValue = false;
+
+      if (!this.selectedFacsimileIsExternal
+      && (this.selectedFacsimile.publication_facsimile_collection_id === facsimile.publication_facsimile_collection_id
+      && (this.selectedFacsimile.page === undefined && this.selectedFacsimile.first_page === facsimile.page
+      || this.selectedFacsimile.page === facsimile.page))) {
+        checkedValue = true;
+      }
+
+      // Tags are stripped from the title which is shown as the label
+      alert.addInput({
+        type: 'radio',
+        label: facsimile.title.replace(/(<([^>]+)>)/gi, ''),
+        value: index,
+        checked: checkedValue
+      });
+    });
+
+    alert.addButton(buttonTranslations.Cancel);
+    alert.addButton({
+      text: buttonTranslations.Ok,
+      handler: (index: any) => {
+        if (parseInt(index) < 0) {
+          // External facsimiles selected
+          this.changeFacsimile('external');
+        } else {
+          this.changeFacsimile(this.facsimiles[parseInt(index)]);
+        }
+      }
+    });
+
+    alert.present();
   }
 
   previous() {

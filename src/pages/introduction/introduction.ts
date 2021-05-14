@@ -46,6 +46,7 @@ export class IntroductionPage {
   public hasSeparateIntroToc: boolean;
   readPopoverTogglesIntro: Record<string, any> = {};
   toolTipsSettings: Record<string, any> = {};
+  toolTipPosType: string;
   toolTipPosition: object;
   toolTipMaxWidth: string;
   toolTipScaleValue: number;
@@ -100,6 +101,7 @@ export class IntroductionPage {
     this.id = this.params.get('collectionID');
     this.collection = this.params.get('collection');
     this.tocMenuOpen = false;
+    this.toolTipPosType = 'fixed';
     this.toolTipMaxWidth = null;
     this.toolTipScaleValue = null;
     this.toolTipPosition = {
@@ -198,13 +200,11 @@ export class IntroductionPage {
             );
             const pattern = /<div data-id="content">(.*?)<\/div>/;
             const matches = String(this.text).match(pattern);
-            if( matches !== null ) {
-              const the_string = matches[0];
-              this.textMenu = the_string;
-              if (!this.platform.is('mobile')) {
-                if (!this.tocMenuOpen) {
-                  this.tocMenuOpen = true;
-                }
+            const the_string = matches[0];
+            this.textMenu = the_string;
+            if (!this.platform.is('mobile')) {
+              if (!this.tocMenuOpen) {
+                this.tocMenuOpen = true;
               }
             }
             // Try to scroll to an element in the text, checks if "pos" given
@@ -249,7 +249,7 @@ export class IntroductionPage {
                   // the position we need to find).
                   positionElement = document.getElementsByName(this.pos)[1] as HTMLElement;
               }
-              if (positionElement !== null && positionElement !== undefined && positionElement.classList !== null
+              if (positionElement !== null && positionElement !== undefined
               && positionElement.classList.contains('anchor')) {
                 this.scrollToHTMLElement(positionElement);
                 clearInterval(this.intervalTimerId);
@@ -294,7 +294,7 @@ export class IntroductionPage {
 
       /* CLICK EVENTS */
       this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
-        if (!this.userIsTouching && this.tooltipVisible) {
+        if (!this.userIsTouching) {
           this.ngZone.run(() => {
             this.hideToolTip();
           });
@@ -472,18 +472,14 @@ export class IntroductionPage {
                 if (this.toolTipsSettings.personInfo && eventTarget.classList.contains('person')
                 && this.readPopoverService.show.personInfo) {
                   this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                  this.tooltipVisible = true;
                 } else if (this.toolTipsSettings.placeInfo && eventTarget.classList.contains('placeName')
                 && this.readPopoverService.show.placeInfo) {
                   this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                  this.tooltipVisible = true;
                 } else if (this.toolTipsSettings.workInfo && eventTarget.classList.contains('title')
                 && this.readPopoverService.show.workInfo) {
                   this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                  this.tooltipVisible = true;
                 } else if (this.toolTipsSettings.footNotes && eventTarget.classList.contains('ttFoot')) {
                   this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                  this.tooltipVisible = true;
                 }
               });
             }
@@ -700,13 +696,8 @@ export class IntroductionPage {
   }
 
   setToolTipPosition(targetElem: HTMLElement, ttText: string) {
-    // Get viewport width and height.
-    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-
-    // Set vertical offset and toolbar heights.
+    // Set vertical offset and toolbar height.
     const yOffset = 5;
-    const primaryToolbarHeight = 70;
     const secToolbarHeight = 50;
 
     // Set how close to the edges of the "window" the tooltip can be placed. Currently this only applies if the
@@ -720,13 +711,18 @@ export class IntroductionPage {
     // Set min and max width for resized tooltips.
     const resizedToolTipMinWidth = 300;
     const resizedToolTipMaxWidth = 600;
+    
+    // Get viewport width and height.
+    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
     // Set horisontal offset due to possible side pane on the left.
-    const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
     let sidePaneOffsetWidth = 0;
-    if (sidePaneIsOpen) {
-      const sidePane = <HTMLElement>document.querySelector('ion-menu#tableOfContentsMenu');
-      sidePaneOffsetWidth = sidePane.offsetWidth;
+    let primaryToolbarHeight = 70;
+    const contentElem = document.querySelector('page-introduction > ion-content > .scroll-content') as HTMLElement;
+    if (contentElem !== null) {
+      sidePaneOffsetWidth = contentElem.getBoundingClientRect().left;
+      primaryToolbarHeight = contentElem.getBoundingClientRect().top;
     }
 
     // Set variable for determining if the tooltip should be placed above or below the trigger rather than beside it.
@@ -752,6 +748,9 @@ export class IntroductionPage {
 
     // Find the tooltip element.
     const tooltipElement: HTMLElement = document.querySelector('div.toolTip');
+    if (tooltipElement === null) {
+      return;
+    }
 
     // Get tooltip element's default dimensions and computed max-width (latter set by css).
     const initialTTDimensions = this.getToolTipDimensions(tooltipElement, ttText, 0, true);
@@ -971,6 +970,12 @@ export class IntroductionPage {
       top: y + 'px',
       left: (x - sidePaneOffsetWidth) + 'px'
     };
+    if (this.userSettingsService.isDesktop()) {
+      this.toolTipPosType = 'absolute';
+    } else {
+      this.toolTipPosType = 'fixed';
+    }
+    this.tooltipVisible = true;
   }
 
   private getToolTipDimensions(toolTipElem: HTMLElement, toolTipText: string, maxWidth = 0, returnCompMaxWidth: Boolean = false) {
@@ -978,15 +983,20 @@ export class IntroductionPage {
     const hiddenDiv: HTMLElement = document.createElement('div');
 
     // Loop over each class in the tooltip element and add them to the hidden div.
-    const ttClasses: string[] = Array.from(toolTipElem.classList);
-    ttClasses.forEach(
-      function(currentValue, currentIndex, listObj) {
-        hiddenDiv.classList.add(currentValue);
-      },
-    );
+    if (toolTipElem.className !== '') {
+      const ttClasses: string[] = Array.from(toolTipElem.classList);
+      ttClasses.forEach(
+        function(currentValue, currentIndex, listObj) {
+          hiddenDiv.classList.add(currentValue);
+        },
+      );
+    } else {
+      return undefined;
+    }
 
     // Don't display the hidden div initially. Set max-width if defined, otherwise the max-width will be determined by css.
     hiddenDiv.style.display = 'none';
+    hiddenDiv.style.position = 'absolute';
     hiddenDiv.style.top = '0';
     hiddenDiv.style.left = '0';
     if (maxWidth > 0) {
@@ -1212,6 +1222,7 @@ export class IntroductionPage {
 
   hideToolTip() {
     this.setToolTipText('');
+    this.toolTipPosType = 'fixed'; // Position needs to be fixed so we can safely hide it outside viewport
     this.toolTipPosition = {
       top: 0 + 'px',
       left: -1500 + 'px'

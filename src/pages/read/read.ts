@@ -86,6 +86,7 @@ export class ReadPage /*implements OnDestroy*/ {
   showOccurrencesModal = false;
   searchResult: string;
   toolTipsSettings: Record<string, any> = {};
+  toolTipPosType: string;
   toolTipPosition: object;
   toolTipMaxWidth: string;
   toolTipScaleValue: number;
@@ -137,7 +138,7 @@ export class ReadPage /*implements OnDestroy*/ {
   views = [];
   viewsConfig = {
     slideMaxWidth: 600,
-    slideMinWidth: 430,
+    slideMinWidth: 450,
     slidesPerView: 1.2,
     spaceBetween: 20,
     centeredSlides: false,
@@ -217,6 +218,7 @@ export class ReadPage /*implements OnDestroy*/ {
     this.isCached();
     this.searchResult = null;
 
+    this.toolTipPosType = 'fixed';
     this.toolTipMaxWidth = null;
     this.toolTipScaleValue = null;
     this.toolTipPosition = {
@@ -969,7 +971,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
       /* CLICK EVENTS */
       this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
-        if (!this.userIsTouching && this.tooltipVisible) {
+        if (!this.userIsTouching) {
           this.ngZone.run(() => {
             this.hideToolTip();
           });
@@ -1102,13 +1104,14 @@ export class ReadPage /*implements OnDestroy*/ {
         eventTarget = this.getEventTarget(event);
         if (eventTarget['classList'].contains('variantScrollTarget')) {
           // Click on variant lemma --> highlight and scroll all variant columns.
+
           eventTarget.classList.add('highlight');
           this.ngZone.run(() => {
             this.scrollToVariant(eventTarget);
           });
-          setTimeout(function () {
-            eventTarget.classList.remove('highlight');
-          }, 5000);
+          window.setTimeout(function(elem) {
+            elem.classList.remove('highlight');
+          }.bind(null, eventTarget), 5000);
         }
 
         // Possibly click on link.
@@ -1318,41 +1321,35 @@ export class ReadPage /*implements OnDestroy*/ {
                 this.ngZone.run(() => {
                   this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
                 });
-                this.tooltipVisible = true;
               } else if (this.toolTipsSettings.placeInfo
               && eventTarget['classList'].contains('placeName')
               && this.readPopoverService.show.placeInfo) {
                 this.ngZone.run(() => {
                   this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
                 });
-                this.tooltipVisible = true;
               } else if (this.toolTipsSettings.workInfo
               && eventTarget['classList'].contains('title')
               && this.readPopoverService.show.workInfo) {
                 this.ngZone.run(() => {
                   this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
                 });
-                this.tooltipVisible = true;
               } else if (this.toolTipsSettings.comments
               && eventTarget['classList'].contains('comment')
               && this.readPopoverService.show.comments) {
                 this.ngZone.run(() => {
                   this.showCommentTooltip(eventTarget.getAttribute('data-id'), eventTarget);
                 });
-                this.tooltipVisible = true;
               } else if (this.toolTipsSettings.footNotes
               && eventTarget['classList'].contains('teiManuscript')
               && eventTarget['classList'].contains('ttFoot')) {
                 this.ngZone.run(() => {
                   this.showManuscriptFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
                 });
-                this.tooltipVisible = true;
               } else if (this.toolTipsSettings.footNotes
               && eventTarget['classList'].contains('ttFoot')) {
                 this.ngZone.run(() => {
                   this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
                 });
-                this.tooltipVisible = true;
               }
             } else if ( (this.toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges')
             && this.readPopoverService.show.changes)
@@ -1363,12 +1360,10 @@ export class ReadPage /*implements OnDestroy*/ {
               this.ngZone.run(() => {
                 this.showTooltipFromInlineHtml(eventTarget);
               });
-              this.tooltipVisible = true;
             } else if (eventTarget['classList'].contains('ttVariant')) {
               this.ngZone.run(() => {
                 this.showVariantTooltip(eventTarget);
               });
-              this.tooltipVisible = true;
             } else if (eventTarget['classList'].contains('ttMs')) {
               // Check if the tooltip trigger element is in a manuscripts column
               // since ttMs should generally only be triggered there.
@@ -1377,7 +1372,6 @@ export class ReadPage /*implements OnDestroy*/ {
                 this.ngZone.run(() => {
                   this.showTooltipFromInlineHtml(eventTarget);
                 });
-                this.tooltipVisible = true;
               } else {
                 let parentElem: HTMLElement = eventTarget as HTMLElement;
                 parentElem = parentElem.parentElement;
@@ -1388,7 +1382,6 @@ export class ReadPage /*implements OnDestroy*/ {
                   this.ngZone.run(() => {
                     this.showTooltipFromInlineHtml(eventTarget);
                   });
-                  this.tooltipVisible = true;
                 }
               }
             } else if (this.toolTipsSettings.footNotes && eventTarget.hasAttribute('id')
@@ -1396,14 +1389,12 @@ export class ReadPage /*implements OnDestroy*/ {
               this.ngZone.run(() => {
                 this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), eventTarget);
               });
-              this.tooltipVisible = true;
             } else if (eventTarget['classList'].contains('ttFoot')
             && !eventTarget.hasAttribute('id')
             && !eventTarget.hasAttribute('data-id')) {
               this.ngZone.run(() => {
                 this.showTooltipFromInlineHtml(eventTarget);
               });
-              this.tooltipVisible = true;
             }
 
             /* Get the parent node of the event target for the next iteration if a tooltip hasn't been shown already.
@@ -2077,6 +2068,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
   hideToolTip() {
     this.setToolTipText('');
+    this.toolTipPosType = 'fixed'; // Position needs to be fixed so we can safely hide it outside viewport
     this.toolTipPosition = {
       top: 0 + 'px',
       left: -1500 + 'px'
@@ -2087,7 +2079,7 @@ export class ReadPage /*implements OnDestroy*/ {
   hideInfoOverlay() {
     this.setInfoOverlayText('');
     this.setInfoOverlayTitle('');
-    this.infoOverlayPosType = 'fixed'; // Position needs to be fixed so we can hide it outside viewport
+    this.infoOverlayPosType = 'fixed'; // Position needs to be fixed so we can safely hide it outside viewport
     this.infoOverlayPosition = {
       bottom: 0 + 'px',
       left: -1500 + 'px'
@@ -2095,13 +2087,8 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   setToolTipPosition(targetElem: HTMLElement, ttText: string) {
-    // Get viewport width and height.
-    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-
-    // Set vertical offset and toolbar heights.
+    // Set vertical offset and toolbar height.
     const yOffset = 5;
-    const primaryToolbarHeight = 70;
     const secToolbarHeight = 50;
 
     // Set how close to the edges of the "window" the tooltip can be placed. Currently this only applies if the
@@ -2116,20 +2103,39 @@ export class ReadPage /*implements OnDestroy*/ {
     const resizedToolTipMinWidth = 300;
     const resizedToolTipMaxWidth = 600;
 
+    // Get viewport width and height.
+    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    let vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+    // Get how much the read page has scrolled horizontally to the left.
+    // Get read page content element and adjust viewport height with horizontal
+    // scrollbar height if such is present.
+    // Also get how much the read page has scrolled horizontally to the left.
     // Set horisontal offset due to possible side pane on the left.
-    const sidePaneIsOpen = document.querySelector('ion-split-pane').classList.contains('split-pane-visible');
+    let scrollLeft = 0;
+    let horizontalScrollbarOffsetHeight = 0;
     let sidePaneOffsetWidth = 0;
-    if (sidePaneIsOpen) {
-      const sidePane = <HTMLElement>document.querySelector('ion-menu#tableOfContentsMenu');
-      sidePaneOffsetWidth = sidePane.offsetWidth;
+    let primaryToolbarHeight = 70;
+    const contentElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
+    if (contentElem !== null) {
+      scrollLeft = contentElem.scrollLeft;
+      sidePaneOffsetWidth = contentElem.getBoundingClientRect().left;
+      primaryToolbarHeight = contentElem.getBoundingClientRect().top;
+
+      if (contentElem.clientHeight < contentElem.offsetHeight) {
+        horizontalScrollbarOffsetHeight = contentElem.offsetHeight - contentElem.clientHeight;
+      }
     }
+
+    // Adjust effective viewport height if horizontal scrollbar present.
+    vh = vh - horizontalScrollbarOffsetHeight;
 
     // Set variable for determining if the tooltip should be placed above or below the trigger rather than beside it.
     let positionAboveOrBelowTrigger: Boolean = false;
     let positionAbove: Boolean = false;
 
-    // Get rectangle which contains tooltiptrigger element. For trigger elements spanning multiple lines
-    // tooltips are always placed above or below the trigger.
+    // Get rectangle which contains tooltiptrigger element. For trigger elements
+    // spanning multiple lines tooltips are always placed above or below the trigger.
     const elemRects = targetElem.getClientRects();
     let elemRect = null;
     if (elemRects.length === 1) {
@@ -2147,6 +2153,9 @@ export class ReadPage /*implements OnDestroy*/ {
 
     // Find the tooltip element.
     const tooltipElement: HTMLElement = document.querySelector('div.toolTip');
+    if (tooltipElement === null) {
+      return;
+    }
 
     // Get tooltip element's default dimensions and computed max-width (latter set by css).
     const initialTTDimensions = this.getToolTipDimensions(tooltipElement, ttText, 0, true);
@@ -2162,7 +2171,7 @@ export class ReadPage /*implements OnDestroy*/ {
       this.toolTipScaleValue = 1;
     }
 
-    // Calculate default position.
+    // Calculate default position, this is relative to the viewport's top-left corner.
     let x = elemRect.right + triggerPaddingX;
     let y = elemRect.top - primaryToolbarHeight - yOffset;
 
@@ -2364,8 +2373,14 @@ export class ReadPage /*implements OnDestroy*/ {
     // Set tooltip position
     this.toolTipPosition = {
       top: y + 'px',
-      left: (x - sidePaneOffsetWidth) + 'px'
+      left: (x + scrollLeft - sidePaneOffsetWidth) + 'px'
     };
+    if (this.userSettingsService.isDesktop()) {
+      this.toolTipPosType = 'absolute';
+    } else {
+      this.toolTipPosType = 'fixed';
+    }
+    this.tooltipVisible = true;
   }
 
   private getToolTipDimensions(toolTipElem: HTMLElement, toolTipText: string, maxWidth = 0, returnCompMaxWidth: Boolean = false) {
@@ -2373,15 +2388,20 @@ export class ReadPage /*implements OnDestroy*/ {
     const hiddenDiv: HTMLElement = document.createElement('div');
 
     // Loop over each class in the tooltip element and add them to the hidden div.
-    const ttClasses: string[] = Array.from(toolTipElem.classList);
-    ttClasses.forEach(
-      function(currentValue, currentIndex, listObj) {
-        hiddenDiv.classList.add(currentValue);
-      },
-    );
+    if (toolTipElem.className !== '') {
+      const ttClasses: string[] = Array.from(toolTipElem.classList);
+      ttClasses.forEach(
+        function(currentValue, currentIndex, listObj) {
+          hiddenDiv.classList.add(currentValue);
+        },
+      );
+    } else {
+      return undefined;
+    }
 
     // Don't display the hidden div initially. Set max-width if defined, otherwise the max-width will be determined by css.
     hiddenDiv.style.display = 'none';
+    hiddenDiv.style.position = 'absolute';
     hiddenDiv.style.top = '0';
     hiddenDiv.style.left = '0';
     if (maxWidth > 0) {
@@ -2414,22 +2434,31 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   /** Set position and width of infoOverlay element. This function is not exactly
-   *  the same as in introduction.ts due to different page structure in read.
+   *  the same as in introduction.ts due to different page structure on read page.
    */
   private setInfoOverlayPositionAndWidth(triggerElement: HTMLElement, defaultMargins = 20, maxWidth = 600) {
     let margins = defaultMargins;
 
-    // Get viewport height.
+    // Get viewport height and width.
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
-    // Get read page content element and adjust viewport height with horizontal scrollbar height if such is present
-    const contentElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
+    // Get read page content element and adjust viewport height with horizontal
+    // scrollbar height if such is present. Also get how much the read page has
+    // scrolled horizontally to the left.
+    let scrollLeft = 0;
     let horizontalScrollbarOffsetHeight = 0;
-    if (contentElem.clientHeight < contentElem.offsetHeight) {
-      horizontalScrollbarOffsetHeight = contentElem.offsetHeight - contentElem.clientHeight;
+    const contentElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
+    if (contentElem !== null) {
+      scrollLeft = contentElem.scrollLeft;
+
+      if (contentElem.clientHeight < contentElem.offsetHeight) {
+        horizontalScrollbarOffsetHeight = contentElem.offsetHeight - contentElem.clientHeight;
+      }
     }
 
-    // Get bounding rectangle of the div.scroll-content element which is the container for the column that the trigger element resides in.
+    // Get bounding rectangle of the div.scroll-content element which is the
+    // container for the column that the trigger element resides in.
     let containerElem = triggerElement.parentElement;
     while (containerElem !== null && containerElem.parentElement !== null &&
       !(containerElem.classList.contains('scroll-content') &&
@@ -2441,6 +2470,12 @@ export class ReadPage /*implements OnDestroy*/ {
       const containerElemRect = containerElem.getBoundingClientRect();
       let calcWidth = containerElem.clientWidth; // Width without scrollbar
 
+      if (this.userSettingsService.isMobile() && vw > 800) {
+        // Adjust width in mobile view when viewport size over 800 px
+        // since padding changes through CSS then.
+        margins = margins + 16;
+      }
+
       if (calcWidth > maxWidth + 2 * margins) {
         margins = Math.floor((calcWidth - maxWidth) / 2);
         calcWidth = maxWidth;
@@ -2451,7 +2486,7 @@ export class ReadPage /*implements OnDestroy*/ {
       // Set info overlay position
       this.infoOverlayPosition = {
         bottom: (vh - horizontalScrollbarOffsetHeight - containerElemRect.bottom) + 'px',
-        left: (containerElemRect.left + margins - contentElem.getBoundingClientRect().left) + 'px'
+        left: (containerElemRect.left + scrollLeft + margins - contentElem.getBoundingClientRect().left) + 'px'
       };
       if (this.userSettingsService.isDesktop()) {
         this.infoOverlayPosType = 'absolute';

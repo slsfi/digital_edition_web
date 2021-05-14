@@ -1,4 +1,5 @@
 <ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
+<!--
 <div class="tab-container">
   <div *ngFor="let manuscript of manuscripts" (click)="changeManuscript(manuscript)"
     [ngClass]="(selectedManuscript === manuscript)?'first-tab':'tab'">
@@ -10,11 +11,19 @@
 
   </div>
 </div>
+-->
 
-<ion-item *ngIf="!textLoading">
-  <ion-label>{{"Read.Manuscripts.ShowNormalized" | translate}}</ion-label>
-  <ion-toggle [(ngModel)]="normalized" (ionChange)="changeManuscript()"></ion-toggle>
-</ion-item>
+<div *ngIf="!textLoading && manuscripts.length>0" class="text-select-wrapper">
+  <h3 [innerHTML]="selectedManuscriptName"></h3>
+  <div class="flex-buttons">
+    <button *ngIf="manuscripts.length>1" ion-button (click)="selectManuscript()">{{"Read.Manuscripts.ChangeManuscript" | translate}}</button>
+    <button ion-button outline (click)="openFacsimileMan($event, selectedManuscript)">{{"Read.Manuscripts.OpenFacsimile" | translate}}</button>
+  </div>
+  <ion-item>
+    <ion-label>{{"Read.Manuscripts.ShowNormalized" | translate}}</ion-label>
+    <ion-toggle [(ngModel)]="normalized" (ionChange)="changeManuscript()"></ion-toggle>
+  </ion-item>
+</div>
 
 <div class="tei" [innerHTML]="text"
   [class.show_personInfo]="readPopoverService.show.personInfo"

@@ -81,23 +81,35 @@
       "Manuscripts": {
           "Title": "Käsikirjoitus",
           "AddButtonText": "Käsikirjoitus",
-          "SelectManuscript": "Valitse käsikirjoitus",
           "ShowNormalized": "Näytä muutokset toteutettuina",
-          "ShowChanges": "Näytä muutokset",
-          "OpenFacsimile": "Näytä faksimilet"
+          "OpenFacsimile": "Näytä faksimilet",
+          "NoManuscripts": "Käsikirjoituksia ei ole",
+          "ChangeManuscript": "Vaihda käsikirjoitusta",
+          "SelectMsDialogTitle": "Valitse käsikirjoitus",
+          "SelectMsDialogSubtitle": "Käsikirjoitus korvaa sarakkeen käsikirjoituksen"
       },
       "Variations": {
           "Title": "Variantit",
-          "AddButtonText": "Variantit"
+          "AddButtonText": "Variantit",
+          "NoVariations": "Variantteja ei ole",
+          "ChangeVariation": "Vaihda varianttia",
+          "OpenNewVariation": "Avaa uusi variantti",
+          "SelectVariationDialogTitle": "Valitse variantti",
+          "SelectVariationDialogSubtitle": "Variantti korvaa sarakkeen variantin",
+          "OpenNewVariationDialogTitle": "Valitse variantti",
+          "OpenNewVariationDialogSubtitle": "Variantti avautuu uuteen sarakkeeseen"
       },
       "Facsimiles": {
           "Title": "Faksimile",
           "AddButtonText": "Faksimilet",
-          "SelectFacsimiles": "Näytä faksimilet",
           "Page": "Sivu",
           "Of": "",
           "OpenManuscript": "Käsikirjoitus",
-          "ExternalHeading" : "Ulkopuoliset faksimilet"
+          "ExternalHeading" : "Ulkopuoliset faksimilet",
+          "ChangeFacsimile": "Vaihda faksimilea",
+          "NoFacsimiles": "Faksimileja ei ole",
+          "SelectFacsDialogTitle": "Valitse faksimile",
+          "SelectFacsDialogSubtitle": "Faksimile korvaa sarakkeen faksimilen"
       },
       "SongExample": {
           "Title": "Sång exempel",
@@ -337,5 +349,9 @@
   },
   "TOC-translation": {
     "media": "Kuvat"
+  },
+  "BasicActions": {
+    "Ok": "Ok",
+    "Cancel": "Peruuta"
   }
 }

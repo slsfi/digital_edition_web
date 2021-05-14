@@ -64,7 +64,7 @@
         [class.show_normalisations]="readPopoverService.show.normalisations"
         [class.show_changes]="readPopoverService.show.changes"
         [class.show_abbreviations]="readPopoverService.show.abbreviations"
-        [ngStyle]="{'top': toolTipPosition.top, 'left': toolTipPosition.left, 'max-width': toolTipMaxWidth, 'transform': 'scale(' + toolTipScaleValue + ')'}"
+        [ngStyle]="{'position': toolTipPosType, 'top': toolTipPosition.top, 'left': toolTipPosition.left, 'max-width': toolTipMaxWidth, 'transform': 'scale(' + toolTipScaleValue + ')'}"
         [MathJax]="toolTipText">
       </div>
       <div
@@ -84,14 +84,14 @@
         <div class="infoOverlayContent" [MathJax]="infoOverlayText"></div>
       </div>
       <div [ngClass]="views.length > 1 ? 'read-column multiple-columns' : 'read-column single-column'" *ngFor="let view of views; let i = index;" id="read_div_{{i}}" scrollY="true"
-        [ngStyle]="{'position': 'relative','max-width':((maxSingleWindowWidth)/((views.length>1)?views.length:1))+'%','min-width':'25%'}"
+        [ngStyle]="{'position': 'relative','max-width':((maxSingleWindowWidth)/((views.length>1)?views.length:1))+'%','min-width':views.length > 1 ? viewsConfig.slideMinWidth+'px':'25%'}"
         #readColumn>
         <ion-card>
           <ion-card-header class="read-columns__title">
             {{ view.type | translate }}
           </ion-card-header>
           <ion-card-content>
-            <ion-fab top left [ngClass]="(views.length>1)?'close-button-many':'close-button-one'">
+            <ion-fab *ngIf="views.length>1" top left [ngClass]="(views.length>1)?'close-button-many':'close-button-one'">
               <button ion-fab mini>
                 <ion-icon *ngIf="view.established.show" name="menu"></ion-icon>
                 <ion-icon *ngIf="view.comments.show" name="menu"></ion-icon>
@@ -200,6 +200,18 @@
 
   <!-- Mobile Read -->
   <ng-container *ngIf="userSettingsService.isMobile()">
+    <div
+      [ngClass]="'toolTip tei ' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')"
+      [class.show_comments]="readPopoverService.show.comments"
+      [class.show_personInfo]="readPopoverService.show.personInfo"
+      [class.show_placeInfo]="readPopoverService.show.placeInfo"
+      [class.show_workInfo]="readPopoverService.show.workInfo"
+      [class.show_normalisations]="readPopoverService.show.normalisations"
+      [class.show_changes]="readPopoverService.show.changes"
+      [class.show_abbreviations]="readPopoverService.show.abbreviations"
+      [ngStyle]="{'position': toolTipPosType, 'top': toolTipPosition.top, 'left': toolTipPosition.left, 'max-width': toolTipMaxWidth, 'transform': 'scale(' + toolTipScaleValue + ')'}"
+      [MathJax]="toolTipText">
+    </div>
     <div
       [ngClass]="'infoOverlay tei ' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')"
       [class.show_comments]="readPopoverService.show.comments"

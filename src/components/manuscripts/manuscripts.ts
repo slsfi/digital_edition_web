@@ -1,8 +1,9 @@
-import { Component, Input, Renderer, ElementRef, EventEmitter, Output } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Component, Input, ElementRef, EventEmitter, Output, NgZone } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { TextService } from '../../app/services/texts/text.service';
-import { ToastController, Events, ViewController } from 'ionic-angular';
+import { AlertController, ToastController, Events, ViewController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 
@@ -26,26 +27,32 @@ export class ManuscriptsComponent {
   selection: 0;
   manuscripts: any;
   selectedManuscript: any;
+  selectedManuscriptName: string;
   normalized = false;
   errorMessage: string;
   msID: string;
   chapter: string;
   textLoading: Boolean = true;
+  intervalTimerId: number;
 
   constructor(
     protected sanitizer: DomSanitizer,
     protected readPopoverService: ReadPopoverService,
     protected textService: TextService,
     protected storage: Storage,
-    private renderer: Renderer,
     private elementRef: ElementRef,
+    private ngZone: NgZone,
+    private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private events: Events,
+    public translate: TranslateService,
     public viewctrl: ViewController,
     private analyticsService: AnalyticsService
   ) {
     this.text = '';
+    this.selectedManuscriptName = '';
     this.manuscripts = [];
+    this.intervalTimerId = 0;
   }
 
   ngOnInit() {
@@ -85,6 +92,7 @@ export class ManuscriptsComponent {
     event.stopPropagation();
     id.viewType = 'manuscriptFacsimile';
     this.openNewManView.emit(id);
+    this.scrollLastViewIntoView();
   }
 
   getManuscript() {
@@ -92,34 +100,28 @@ export class ManuscriptsComponent {
       res => {
         this.textLoading = false;
         // in order to get id attributes for tooltips
-        console.log('recieved manuscript ,..,', res.manuscripts);
         this.manuscripts = res.manuscripts;
-        this.setManuscript();
+        if (this.manuscripts.length > 0) {
+          console.log('recieved manuscripts ,..,', this.manuscripts);
+          this.setManuscript();
+        } else {
+          console.log('no manuscripts');
+          this.translate.get('Read.Manuscripts.NoManuscripts').subscribe(
+            translation => {
+              this.text = translation;
+            }, error => {
+              console.error(error);
+              this.text = 'Inga manuskript';
+            }
+          );
+        }
       },
-      err => { console.error(err); this.textLoading = false; },
-      () => {
-        console.error('fetched manuscripts'); this.textLoading = false;
+      err => {
+        this.errorMessage = <any>err;
+        console.error(err);
+        this.textLoading = false;
       }
     );
-  }
-
-  changeManuscript(manuscript?: any) {
-    if (manuscript) {
-      this.selectedManuscript = manuscript;
-    }
-    if (this.selectedManuscript && this.selectedManuscript.manuscript_normalized !== undefined) {
-      if (this.normalized) {
-        this.text = this.sanitizer.bypassSecurityTrustHtml(
-          this.selectedManuscript.manuscript_normalized.replace(/images\//g, 'assets/images/')
-            .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiManuscript $1\"')
-        );
-      } else {
-        this.text = this.sanitizer.bypassSecurityTrustHtml(
-          this.selectedManuscript.manuscript_changes.replace(/images\//g, 'assets/images/')
-            .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiManuscript $1\"')
-        );
-      }
-    }
   }
 
   setManuscript() {
@@ -138,6 +140,26 @@ export class ManuscriptsComponent {
     this.changeManuscript();
   }
 
+  changeManuscript(manuscript?: any) {
+    if (manuscript) {
+      this.selectedManuscript = manuscript;
+    }
+    this.selectedManuscriptName = this.selectedManuscript.name;
+    if (this.selectedManuscript && this.selectedManuscript.manuscript_normalized !== undefined) {
+      if (this.normalized) {
+        this.text = this.sanitizer.bypassSecurityTrustHtml(
+          this.selectedManuscript.manuscript_normalized.replace(/images\//g, 'assets/images/')
+            .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiManuscript $1\"')
+        );
+      } else {
+        this.text = this.sanitizer.bypassSecurityTrustHtml(
+          this.selectedManuscript.manuscript_changes.replace(/images\//g, 'assets/images/')
+            .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiManuscript $1\"')
+        );
+      }
+    }
+  }
+
   getCacheText(id: string) {
     this.storage.get(id).then((manuscripts) => {
       this.textLoading = false;
@@ -145,4 +167,79 @@ export class ManuscriptsComponent {
       this.setManuscript();
     });
   }
+
+  selectManuscript() {
+    let msTranslations = null;
+    this.translate.get('Read.Manuscripts').subscribe(
+      translation => {
+        msTranslations = translation;
+      }, error => { }
+    );
+
+    let buttonTranslations = null;
+    this.translate.get('BasicActions').subscribe(
+      translation => {
+        buttonTranslations = translation;
+      }, error => { }
+    );
+
+    const alert = this.alertCtrl.create({
+      title: msTranslations.SelectMsDialogTitle,
+      subTitle: msTranslations.SelectMsDialogSubtitle,
+      cssClass: 'select-text-alert'
+    });
+
+    this.manuscripts.forEach((manuscript, index) => {
+      let checkedValue = false;
+
+      if (this.selectedManuscript.id === manuscript.id) {
+        checkedValue = true;
+      }
+
+      alert.addInput({
+          type: 'radio',
+          label: manuscript.name,
+          value: index,
+          checked: checkedValue
+      });
+    });
+
+    alert.addButton(buttonTranslations.Cancel);
+    alert.addButton({
+      text: buttonTranslations.Ok,
+      handler: (index: any) => {
+        this.changeManuscript(this.manuscripts[parseInt(index)]);
+      }
+    });
+
+    alert.present();
+  }
+
+  /* This function scrolls the read-view horisontally to the last read column.
+   * It's called after adding new views. */
+  scrollLastViewIntoView() {
+    this.ngZone.runOutsideAngular(() => {
+      let interationsLeft = 10;
+      clearInterval(this.intervalTimerId);
+      this.intervalTimerId = setInterval(function() {
+        if (interationsLeft < 1) {
+          clearInterval(this.intervalTimerId);
+        } else {
+          interationsLeft -= 1;
+          const viewElements = document.getElementsByClassName('read-column');
+          if (viewElements[0] !== undefined) {
+            const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
+            const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
+            if (scrollingContainer !== null) {
+              const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
+              scrollingContainer.getBoundingClientRect().left;
+              scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
+              clearInterval(this.intervalTimerId);
+            }
+          }
+        }
+      }.bind(this), 500);
+    });
+  }
+
 }

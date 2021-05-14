@@ -59,23 +59,35 @@
       "Manuscripts": {
           "Title": "Manuscript",
           "AddButtonText": "Manuscript view",
-          "SelectManuscript": "Välj manuscript",
           "ShowNormalized": "Visa ändringar inarbetade",
-          "ShowChanges": "Visa ändringar",
-          "OpenFacsimile": "Open fascimile"
+          "OpenFacsimile": "Open fascimile",
+          "NoManuscripts": "No manuscripts",
+          "ChangeManuscript": "Change manuscript",
+          "SelectMsDialogTitle": "Select manuscript",
+          "SelectMsDialogSubtitle": "The manuscript will be shown in the column where you clicked"
       },
       "Variations": {
-          "Title": "Variations",
-          "AddButtonText": "Variation view"
+          "Title": "Variants",
+          "AddButtonText": "Variant view",
+          "NoVariations": "No variants",
+          "ChangeVariation": "Change variant",
+          "OpenNewVariation": "Open new variant",
+          "SelectVariationDialogTitle": "Select variant",
+          "SelectVariationDialogSubtitle": "The variant will be shown in the column where you clicked",
+          "OpenNewVariationDialogTitle": "Select variant",
+          "OpenNewVariationDialogSubtitle": "The variant will open in a new column"
       },
       "Facsimiles": {
           "Title": "Facsimiles",
           "AddButtonText": "Facsimile view",
-          "SelectFacsimiles": "Choose Facsimile",
           "Page": "Page",
           "Of": "of",
           "OpenManuscript": "Open manuscript",
-          "ExternalHeading" : "External Facsimiles"
+          "ExternalHeading" : "External facsimiles",
+          "ChangeFacsimile": "Select facsimile",
+          "NoFacsimiles": "No facsimiles",
+          "SelectFacsDialogTitle": "Select facsimile",
+          "SelectFacsDialogSubtitle": "The facsimile will be shown in the column where you clicked"
       },
       "TitlePage": {
           "Title": "Titel page"
@@ -261,5 +273,9 @@
   },
   "TOC-translation": {
     "media": "Photografies"
+  },
+  "BasicActions": {
+    "Ok": "Ok",
+    "Cancel": "Cancel"
   }
 }

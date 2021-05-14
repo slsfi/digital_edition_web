@@ -80,23 +80,35 @@
       "Manuscripts": {
           "Title": "Manuskript",
           "AddButtonText": "Manuskript",
-          "SelectManuscript": "Välj manuskript",
           "ShowNormalized": "Visa ändringar inarbetade",
-          "ShowChanges": "Visa ändringar",
-          "OpenFacsimile": "Öppna faksimil"
+          "OpenFacsimile": "Öppna faksimil",
+          "NoManuscripts": "Inga manuskript",
+          "ChangeManuscript": "Byt manuskript",
+          "SelectMsDialogTitle": "Välj manuskript",
+          "SelectMsDialogSubtitle": "Manuskriptet ersätter det manuskript som visas i kolumnen där du klickade"
       },
       "Variations": {
           "Title": "Varianter",
-          "AddButtonText": "Varianter"
+          "AddButtonText": "Varianter",
+          "NoVariations": "Inga varianter",
+          "ChangeVariation": "Byt variant",
+          "OpenNewVariation": "Öppna ny variant",
+          "SelectVariationDialogTitle": "Välj variant",
+          "SelectVariationDialogSubtitle": "Varianten ersätter den variant som visas i kolumnen där du klickade",
+          "OpenNewVariationDialogTitle": "Välj variant",
+          "OpenNewVariationDialogSubtitle": "Varianten öppnas i en ny kolumn"
       },
       "Facsimiles": {
           "Title": "Faksimil",
           "AddButtonText": "Faksimil",
-          "SelectFacsimiles": "Välj faksimil",
           "Page": "Sida",
           "Of": "av",
           "OpenManuscript": "Öppna manuskript",
-          "ExternalHeading" : "Externa faksimil"
+          "ExternalHeading": "Externa faksimil",
+          "ChangeFacsimile": "Byt faksimil",
+          "NoFacsimiles": "Inga faksimil",
+          "SelectFacsDialogTitle": "Välj faksimil",
+          "SelectFacsDialogSubtitle": "Faksimilet ersätter det faksimil som visas i kolumnen där du klickade"
       },
       "SongExample": {
           "Title": "Sång exempel",
@@ -340,5 +352,9 @@
   },
   "TOC-translation": {
     "media": "Fotografier"
+  },
+  "BasicActions": {
+    "Ok": "Ok",
+    "Cancel": "Avbryt"
   }
 }

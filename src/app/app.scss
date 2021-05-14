@@ -659,6 +659,67 @@ ion-backdrop {
   font-size: 10px;
 }
 
+/* Style for alert where a different variant, manuscript or facsimile text can be selected. */
+ion-alert.select-text-alert .alert-wrapper {
+  max-width: 500px;
+  border-radius: $corner-roundness;
+
+  .alert-title {
+    font-size: 1.125rem;
+  }
+
+  .alert-radio-group {
+    max-height: 100%;
+  }
+
+  button.alert-radio-button {
+    font-size: 1.125rem;
+
+    .alert-radio-label {
+      white-space: normal;
+    }
+  }
+}
+
+/* Style for the component i read columns where a different variant, manuscript or facsimile text can be selected. */
+.text-select-wrapper {
+  padding: 0 0 1rem 0;
+  margin: 0 0 1.5rem 0;
+  border-bottom: 1px solid #666;
+  background-color: var(--read-columns-background-color);
+  display: inline-block;
+  width: 100%;
+
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    word-wrap: break-word;
+    white-space: normal;
+    margin: 0 0 0.5rem 0 !important;
+  }
+
+  .flex-buttons {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .flex-buttons button.button {
+    font-size: 0.75rem;
+    height: 1.875rem !important;
+  }
+
+  .flex-buttons + ion-item {
+    margin-top: 0.5rem;
+  }
+}
+.text-select-wrapper.facsimile-header {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.text-select-wrapper.facsimile-header.external-urls-header {
+  margin-bottom: 0 !important;
+}
 
 
 // Load TEI-stylesheets. Moved here from project-variables.scss

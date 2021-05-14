@@ -1,18 +1,15 @@
 <ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
-<div class="tab-container">
-  <div *ngFor="let variation of variations; let i = index" (click)="changeVariation(variation)" [ngClass]="(selectedVariation === variation)?'first-tab':'tab'">
-    {{variation.name}}
-    <div [ngClass]="(selectedVariation === variation)?'open-in-tab':'open-in-tab-hidden'" (click)="openNewVar($event, variation)">{{"Read.OpenInTab" | translate}}</div>
+
+<div *ngIf="!textLoading && variations.length>0" class="text-select-wrapper">
+  <h3 [innerHTML]="selectedVariationName"></h3>
+  <div class="flex-buttons">
+    <button ion-button (click)="selectVariation()">{{'Read.Variations.ChangeVariation' | translate}}</button>
+    <button ion-button outline (click)="selectVariationForNewView()">{{'Read.Variations.OpenNewVariation' | translate}}</button>
   </div>
 </div>
 
 <div class="tei" [innerHTML]="text"
-[class.show_comments]="readPopoverService.show.comments"
-[class.show_personInfo]="readPopoverService.show.personInfo"
-[class.show_abbreviations]="readPopoverService.show.abbreviations"
-[class.show_workInfo]="readPopoverService.show.workInfo"
 [class.show_pageNumbering]="readPopoverService.show.pageNumbering"
 [class.show_pageBreakOriginal]="readPopoverService.show.pageBreakOriginal"
-[class.show_pageBreakEdition]="readPopoverService.show.pageBreakEdition"
 [ngClass]="(readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize'"
 ></div>

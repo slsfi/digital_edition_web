@@ -497,8 +497,8 @@ div.tei {
     p.milestoneWhen, 
     p.milestonePart {
         font-size: 1em !important;
-        color: gray;
-        background-color: #d2ccbf;
+        color: #6a6a6a;
+        background-color: #ececec;
         margin-top: 0.8em !important;
         margin-bottom: 0.8em !important;
         line-height: 1.5em !important;
@@ -507,8 +507,8 @@ div.tei {
     span.milestonePart {
         display: block;
         font-size: 1em !important;
-        color: gray;
-        background-color: #d2ccbf;
+        color: #6a6a6a;
+        background-color: #ececec;
         margin-top: 0.8em !important;
         margin-bottom: 0.8em !important;
         line-height: 1.5em !important;
@@ -517,7 +517,7 @@ div.tei {
     hr.milestoneSmallBar {
         height: 1px;
         border: 0;
-        background-color: rgb(64, 64, 64);
+        background-color: #404040;
         padding: 0;
         margin: 1.5em auto;
         width: 5.625em;
@@ -1770,7 +1770,6 @@ div.tei {
 /* Style for tooltip boxes. The tooltips also inherit styles from div.tei */
 .tei.toolTip {
     z-index: 1001;
-    position: fixed;
     background: #f1f1f1;
     border: 1px solid #222;
     border-radius: $corner-roundness;
@@ -1778,6 +1777,7 @@ div.tei {
     padding: 0.5rem !important;
     white-space: normal;
     max-width: 25em;
+    width: max-content;
     font-size: 1em;
     line-height: 1.4em;
     text-align: left;
@@ -2180,7 +2180,7 @@ page-introduction {
             margin: 1.6em 0 0.85em 0;
         }
         h4.heading4 {
-            font-size: 1em;
+            font-size: 1.065em;
             font-weight: 600;
             font-style: italic;
             margin: 1.4em 0 0.875em 0;

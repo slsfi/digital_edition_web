@@ -144,15 +144,13 @@ export class DigitalEditionList implements OnInit {
       );
   }
 
-  getRandomArbitrary(min, max) {
-    return Math.random() * (max - min) + min;
-  }
-
   sortListDefined(list, sort) {
     for (const coll of list) {
       let order = sort[coll.id];
+      // If the sort order is not defined in the config, just set a high number
+      // so that it will be at the end of the list.
       if ( order === undefined ) {
-        order = Math.round(this.getRandomArbitrary(10000, 1000000));
+        order = 9999;
       }
       coll['order'] = order;
     }
