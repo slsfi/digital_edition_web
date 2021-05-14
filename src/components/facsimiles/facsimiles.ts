@@ -232,6 +232,13 @@ export class FacsimilesComponent {
         if (this.externalURLs.length > 0) {
           console.log('received external facsimiles ,...,', this.externalURLs);
         }
+        if (this.facsimiles.length < 1 && this.externalURLs.length < 1) {
+          this.translate.get('Read.Facsimiles.NoFacsimiles').subscribe(
+            translation => {
+              this.text = translation;
+            }, error => { }
+          );
+        }
       },
       error => {
         console.error('Error loading facsimiles...');
