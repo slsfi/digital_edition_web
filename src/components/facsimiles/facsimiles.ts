@@ -47,7 +47,7 @@ export class FacsimilesComponent {
   latestDeltaY = 0
   prevX = 0
   prevY = 0
-  isExternal = false;
+  externalFacsimilesExist = false;
   selectedFacsimileName: string;
   selectedFacsimileIsExternal = false;
 
@@ -212,7 +212,7 @@ export class FacsimilesComponent {
               facsimile.title = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(f['title']));
             }
             if ( f['external_url'] !== null ) {
-              this.isExternal = true;
+              this.externalFacsimilesExist = true;
               this.externalURLs.push({'title': f['title'], 'url': f['external_url']});
             } else {
               this.facsimiles.push(facsimile);
@@ -223,7 +223,7 @@ export class FacsimilesComponent {
             this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
             this.config.getSettings('app.machineName') +
             `/facsimiles/${this.facsPage['publication_facsimile_collection_id']}/`;
-            this.isExternal = false;
+            this.externalFacsimilesExist = false;
             this.selectedFacsimileIsExternal = false;
           }
 
@@ -373,7 +373,7 @@ export class FacsimilesComponent {
       cssClass: 'select-text-alert'
     });
 
-    if (this.isExternal && this.externalURLs.length > 0) {
+    if (this.externalFacsimilesExist && this.externalURLs.length > 0) {
       alert.addInput({
         type: 'radio',
         label: facsTranslations.ExternalHeading,
