@@ -72,20 +72,20 @@ export class CommentsComponent {
   setText() {
     this.commentService.getComment(this.link).subscribe(
       text => {
-        console.log('comment text response: ', text);
+        console.log('comment received: ', text);
         this.textLoading = false;
-        if (text.length > 0) {
+        if (text === '' || text === null || text === undefined || text.length < 1) {
+          this.translate.get('Read.Comments.NoComments').subscribe(
+            translation => {
+              this.text = translation;
+            }, err => { }
+          );
+        } else {
           // in order to get id attributes for tooltips
           this.text = this.sanitizer.bypassSecurityTrustHtml (
             String(text).replace(/images\//g, 'assets/images/')
               .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiComment $1\"')
               .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
-          );
-        } else {
-          this.translate.get('Read.Comments.NoComments').subscribe(
-            translation => {
-              this.text = translation;
-            }, err => { }
           );
         }
         this.doAnalytics();
