@@ -20,7 +20,7 @@
 </div>
 -->
 
-<div class="text-select-wrapper facsimile-header" [ngClass]="selectedFacsimileIsExternal?'external-urls-header':''">
+<div *ngIf="isExternal || facsimiles.length>0" class="text-select-wrapper facsimile-header" [ngClass]="selectedFacsimileIsExternal?'external-urls-header':''">
   <h3 *ngIf="!selectedFacsimileIsExternal" [innerHTML]="selectedFacsimileName"></h3>
   <h3 *ngIf="selectedFacsimileIsExternal">{{"Read.Facsimiles.ExternalHeading" | translate}}</h3>
   <div *ngIf="facsimiles.length>1 || (facsimiles.length==1 && isExternal)" class="flex-buttons">
