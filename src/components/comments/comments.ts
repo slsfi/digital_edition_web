@@ -72,7 +72,6 @@ export class CommentsComponent {
   setText() {
     this.commentService.getComment(this.link).subscribe(
       text => {
-        console.log('comment received: ', text);
         this.textLoading = false;
         if (text === '' || text === null || text === undefined || text.length < 1) {
           this.translate.get('Read.Comments.NoComments').subscribe(
