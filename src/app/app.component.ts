@@ -500,7 +500,7 @@ export class DigitalEditionsApp {
   }
 
   getCollectionsWithTOC(collections, media?) {
-      if (this.genericSettingsService.show('TOC.MediaCollections')) {
+      if (this.genericSettingsService.show('TOC.MediaCollections') && this.galleryInReadMenu) {
         collections.push(media);
       }
       if (!collections || !collections.length) {
