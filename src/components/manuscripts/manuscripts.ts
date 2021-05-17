@@ -102,7 +102,7 @@ export class ManuscriptsComponent {
         // in order to get id attributes for tooltips
         this.manuscripts = res.manuscripts;
         if (this.manuscripts.length > 0) {
-          console.log('recieved manuscripts ,..,', this.manuscripts);
+          console.log('recieved manuscripts ,..,');
           this.setManuscript();
         } else {
           console.log('no manuscripts');

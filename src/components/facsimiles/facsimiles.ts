@@ -228,10 +228,10 @@ export class FacsimilesComponent {
           }
 
           if (this.facsimiles.length > 0) {
-            console.log('received facsimiles (infinite) ,..,', this.facsimiles);
+            console.log('recieved facsimiles (infinite) ,..,');
           }
           if (this.externalURLs.length > 0) {
-            console.log('received external facsimiles ,...,', this.externalURLs);
+            console.log('recieved external facsimiles ,...,');
           }
         } else {
           this.translate.get('Read.Facsimiles.NoFacsimiles').subscribe(
@@ -301,7 +301,7 @@ export class FacsimilesComponent {
           this.activeImage = 0;
         }
         if (this.facsimiles.length > 0) {
-          console.log('received facsimiles ,..,', this.facsimiles);
+          console.log('recieved facsimiles ,..,');
         }
         this.changeFacsimile();
         this.doAnalytics();
