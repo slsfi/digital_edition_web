@@ -2191,19 +2191,15 @@ page-introduction {
 /* Headings on title pages */
 page-title {
     div.tei div.cont_titlepage {
-        .title {
-            font-size: 1.5em;
+        .title, .subtitle {
+            font-size: 2.25em;
             font-weight: normal;
             line-height: 1.2;
             text-align: center;
             text-transform: uppercase;
         }
         .subtitle {
-            font-size: 2.25em;
-            font-weight: normal;
-            line-height: 1.2;
-            text-align: center;
-            text-transform: uppercase;
+            font-size: 1.5em;
             margin-top: 1em;
         }
         .chapter {
