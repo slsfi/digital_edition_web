@@ -17,7 +17,9 @@
   <h3 [innerHTML]="selectedManuscriptName"></h3>
   <div class="flex-buttons">
     <button *ngIf="manuscripts.length>1" ion-button (click)="selectManuscript()">{{"Read.Manuscripts.ChangeManuscript" | translate}}</button>
+    <!-- Doesn't always open the correct facsimile so hidden until further.
     <button ion-button outline (click)="openFacsimileMan($event, selectedManuscript)">{{"Read.Manuscripts.OpenFacsimile" | translate}}</button>
+    -->
   </div>
   <ion-item>
     <ion-label>{{"Read.Manuscripts.ShowNormalized" | translate}}</ion-label>

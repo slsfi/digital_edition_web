@@ -2043,16 +2043,6 @@ div.tei.show_pageBreakEdition .pb_edition {
 
 
 
-/*titelsidans verktitel*/
-.cont_titlepage h1.title {
-	text-align: center !important;
-}
-
-/*titelsidans ZTS-del*/
-.cont_titlepage h3.chapter {
-	text-align: center !important;
-}
-
 /*fotnotsmarkören*/
 span.footnoteindicator {
     font-size: 0.83em;
@@ -2198,7 +2188,28 @@ page-introduction {
     }
 }
 
-
+/* Headings on title pages */
+page-title {
+    div.tei div.cont_titlepage {
+        .title, .subtitle {
+            font-size: 2.25em;
+            font-weight: normal;
+            line-height: 1.2;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        .subtitle {
+            font-size: 1.5em;
+            margin-top: 1em;
+        }
+        .chapter {
+            font-size: 1.32em;
+            font-weight: normal;
+            line-height: 1.2;
+            text-align: center;
+        }
+    }
+}
 
 
 /*toc: textfärgen
