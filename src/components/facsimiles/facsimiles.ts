@@ -227,10 +227,10 @@ export class FacsimilesComponent {
         }
 
         if (this.facsimiles.length > 0) {
-          console.log('received facsimiles (infinite) ,..,', this.facsimiles);
+          // console.log('received facsimiles (infinite) ,..,', this.facsimiles);
         }
         if (this.externalURLs.length > 0) {
-          console.log('received external facsimiles ,...,', this.externalURLs);
+          // console.log('received external facsimiles ,...,', this.externalURLs);
         }
       },
       error => {

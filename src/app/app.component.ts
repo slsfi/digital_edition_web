@@ -880,7 +880,7 @@ export class DigitalEditionsApp {
       this.tocData = data;
       this.tocLoaded = true;
 
-      if (data.searchTocItem) {
+      if (data.searchTocItem && this.collectionsListWithTOC !== undefined) {
         for (const collection of this.collectionsListWithTOC) {
 
           if ((data.collectionID !== undefined && String(collection.id) === String(data.collectionID.id))

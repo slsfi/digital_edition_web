@@ -341,7 +341,7 @@ export class OccurrencesPage {
     if ( text.facsimilePage ) {
       params['facsimilePage'] = text.facsimilePage;
     } else {
-      params['facsimilePage'] = null;
+      params['facsimilePage'] = undefined;
     }
 
     params['views'] = [
