@@ -429,11 +429,11 @@ export class TableOfContentsAccordionComponent {
   }
 
   setActiveSortingType(e) {
-    console.log('Event target:', e);
-    const thematic = e.target.id === 'thematic' || e.target.parentElement.parentElement.id === 'thematic' || e.target.value === 'thematic';
-    const alphabetic = e.target.id === 'alphabetical' || e.target.parentElement.parentElement.id === 'alphabetical' || e.target.value === 'alphabetical';
-    const chronological = e.target.id === 'chronological' || e.target.parentElement.parentElement.id === 'chronological' || e.target.id === 'chronological';
-    console.log('Selected sorting: ', e.target.value);
+    console.log('Event:', e);
+    const thematic = e.target.id === 'thematic' || e.target.parentElement.parentElement.id === 'thematic' || e === 'thematic';
+    const alphabetic = e.target.id === 'alphabetical' || e.target.parentElement.parentElement.id === 'alphabetical' || e === 'alphabetical';
+    const chronological = e.target.id === 'chronological' || e.target.parentElement.parentElement.id === 'chronological' || e === 'chronological';
+
     if (thematic) {
         this.alphabethicOrderActive = false;
         this.chronologicalOrderActive = false;
