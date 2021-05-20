@@ -332,7 +332,7 @@ export class TableOfContentsAccordionComponent {
     public metadataService: MetadataService
   ) {
     this.collectionFiltersSelectOptions = {
-      cssClass: 'collectionFilersSelectOptionsPopover'
+      cssClass: 'collectionFiltersSelectOptionsPopover'
     };
   }
 
