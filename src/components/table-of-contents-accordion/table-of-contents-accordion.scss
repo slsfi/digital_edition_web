@@ -75,20 +75,20 @@ table-of-contents-accordion {
         border-left-width: 0 !important;
     }
     .collection-filters-select > .item-inner > .input-wrapper {
-        padding: 2px 4px 2px 8px;
+        padding: 4px 4px 4px 8px;
         border: 1px solid #888;
         border-radius: 3px;
         margin: 16px 0;
         background-color: #fafafa;
-        max-height: 2rem;
     }
     .collection-filters-select > .item-inner > .input-wrapper > ion-label {
         width: min-content;
         color: #666;
+        margin: 6px 8px 6px 0;
     }
     .collection-filters-select > .item-inner > .input-wrapper > ion-select {
         max-width: 100%;
-        padding-left: 8px;
+        padding-left: 6px 8px 6px 6px;
 
         .select-text {
             padding-right: 2px;
