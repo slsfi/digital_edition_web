@@ -147,7 +147,17 @@
       "Information": "Tietoa"
   },
   "MediaCollections": {
-      "MediaCollections": "Faksimilet"
+      "MediaCollections": "Faksimilet",
+      "GotoMediaCollection": "Kuvapankkiin",
+      "locations": "Paikat",
+      "location": "Paikka",
+      "tags": "Aihesanat",
+      "tag": "Aihesana",
+      "subjects": "Henkilöt",
+      "subject": "Henkilö",
+      "collections": "Kokoelmat",
+      "works": "Teokset",
+      "photos": "kuvat"
   },
   "TOC": {
       "Home": "Etusivulle",

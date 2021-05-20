@@ -218,6 +218,19 @@
     "OldestFirst": "Oldest first",
     "NewestFirst": "Newest first"
   },
+  "MediaCollections": {
+    "MediaCollections": "Faksimilsamlingar",
+    "GotoMediaCollection": "Gå till bildbanken",
+    "locations": "Locations",
+    "location": "Location",
+    "tags": "Tags",
+    "tag": "Tag",
+    "subjects": "Persons",
+    "subject": "Person",
+    "collections": "Collections",
+    "works": "Works",
+    "photos": "Photos"
+  },
   "Type": "Type",
   "Genre": "Genre",
   "Collection": "Collections",

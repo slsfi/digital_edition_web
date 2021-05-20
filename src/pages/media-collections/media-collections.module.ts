@@ -6,6 +6,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { PipesModule } from '../../pipes/pipes.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { ComponentsModule } from '../../components/components.module';
+import { MarkdownModule } from 'angular2-markdown';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -25,7 +26,8 @@ export function createTranslateLoader(http: HttpClient) {
           deps: [HttpClient]
         }
       }),
-      ComponentsModule
+    ComponentsModule,
+    MarkdownModule
   ],
 })
 export class MediaCollectionsPageModule {}
