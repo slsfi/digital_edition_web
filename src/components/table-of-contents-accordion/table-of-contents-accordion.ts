@@ -429,7 +429,7 @@ export class TableOfContentsAccordionComponent {
   }
 
   setActiveSortingType(e) {
-    console.log('Event target:', e.target);
+    console.log('Event target:', e);
     const thematic = e.target.id === 'thematic' || e.target.parentElement.parentElement.id === 'thematic' || e.target.value === 'thematic';
     const alphabetic = e.target.id === 'alphabetical' || e.target.parentElement.parentElement.id === 'alphabetical' || e.target.value === 'alphabetical';
     const chronological = e.target.id === 'chronological' || e.target.parentElement.parentElement.id === 'chronological' || e.target.id === 'chronological';
