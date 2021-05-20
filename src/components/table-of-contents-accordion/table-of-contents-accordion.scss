@@ -8,7 +8,7 @@ table-of-contents-accordion {
         background-color: unset;
         padding-left: 12px;
 	    border-left: 4px solid transparent;
-        transition: border-left-color 0.1s;
+        /*transition: border-left-color 0.1s;*/
     }
 
     ion-item.item.back-to-list-button {
@@ -38,6 +38,7 @@ table-of-contents-accordion {
         opacity: 1 !important;
     }
 
+    /* These are styles for the buttons for sorting the TOC. */
     .collection-filters {
         ion-label {
             display: flex;
@@ -71,6 +72,7 @@ table-of-contents-accordion {
 
     }
 
+    /* These are styles for the ion-select for selecting how the TOC should be sorted. */
     .collection-filters-select {
         border-left-width: 0 !important;
     }
