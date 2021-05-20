@@ -21,11 +21,11 @@
         </ion-item>
         -->
         <ion-item class="collection-filters-select">
-            <ion-label>Sortera</ion-label>
+            <ion-label>Järjestä</ion-label>
             <ion-select (ionChange)="setActiveSortingType($event)" interface="popover" [selectOptions]="{'cssClass': 'collectionFiltersSelectOptionsPopover'}">
-                <ion-option value="thematic" selected="true">Tematiskt</ion-option>
-                <ion-option value="chronological">Kronologiskt</ion-option>
-                <ion-option value="alphabetical">Alfabetiskt</ion-option>
+                <ion-option value="thematic" selected="true">Temaattisesti</ion-option>
+                <ion-option value="chronological">Kronologisesti</ion-option>
+                <ion-option value="alphabetical">Aakkosjärjestykseen</ion-option>
             </ion-select>
         </ion-item>
     </ng-container>
