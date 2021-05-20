@@ -303,6 +303,8 @@ export class TableOfContentsAccordionComponent {
   thematicOrderActive = true;
   alphabethicOrderActive: boolean;
 
+  collectionFiltersSelectOptions: any;
+
   visibleactiveMenuTree = [];
   visibleTitleStack = [];
 
@@ -329,6 +331,9 @@ export class TableOfContentsAccordionComponent {
     public translate: TranslateService,
     public metadataService: MetadataService
   ) {
+    this.collectionFiltersSelectOptions = {
+      mode: 'ios'
+    };
   }
 
   constructAlphabeticalTOC(data) {
@@ -428,23 +433,18 @@ export class TableOfContentsAccordionComponent {
     });
   }
 
-  setActiveSortingType(e) {
-    console.log('Event:', e);
-    const thematic = e.target.id === 'thematic' || e.target.parentElement.parentElement.id === 'thematic' || e === 'thematic';
-    const alphabetic = e.target.id === 'alphabetical' || e.target.parentElement.parentElement.id === 'alphabetical' || e === 'alphabetical';
-    const chronological = e.target.id === 'chronological' || e.target.parentElement.parentElement.id === 'chronological' || e === 'chronological';
-
-    if (thematic) {
+  setActiveSortingType(type) {
+    if (type === 'thematic') {
         this.alphabethicOrderActive = false;
         this.chronologicalOrderActive = false;
         this.thematicOrderActive = true;
         this.activeMenuTree = this.collapsableItems;
-    } else if (alphabetic) {
+    } else if (type === 'alphabetical') {
         this.alphabethicOrderActive = true;
         this.chronologicalOrderActive = false;
         this.thematicOrderActive = false;
         this.activeMenuTree = this.alphabeticalactiveMenuTree;
-    } else if (chronological) {
+    } else if (type === 'chronological') {
         this.alphabethicOrderActive = false;
         this.chronologicalOrderActive = true;
         this.thematicOrderActive = false;
