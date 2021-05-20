@@ -517,7 +517,8 @@ export class TableOfContentsAccordionComponent {
     }
 
     this.sortSelectOptions = {
-      title: 'Sortera innehållsförteckningen'
+      title: 'Sortera innehållsförteckningen',
+      cssClass: 'select-text-alert'
     };
 
     this.events.subscribe('SelectedItemInMenu', (menu) => {
