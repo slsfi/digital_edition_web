@@ -316,6 +316,8 @@ export class TableOfContentsAccordionComponent {
 
   sortableLetters = [];
   sortSelectOptions: Record<string, any> = {};
+  sortSelectCancelText: string;
+  sortSelectOkText: string;
 
   constructor(
     public platform: Platform,
@@ -516,10 +518,22 @@ export class TableOfContentsAccordionComponent {
       this.sortableLetters = [];
     }
 
+    let buttonTranslations = null;
+    this.translate.get('BasicActions').subscribe(
+      translation => {
+        buttonTranslations = translation;
+      }, error => { }
+    );
     this.sortSelectOptions = {
       title: 'Sortera innehållsförteckningen',
       cssClass: 'select-text-alert'
     };
+    this.translate.get('BasicActions').subscribe(
+      translation => {
+        this.sortSelectCancelText = translation.Cancel;
+        this.sortSelectOkText = translation.Ok;
+      }, error => { }
+    );
 
     this.events.subscribe('SelectedItemInMenu', (menu) => {
       if ( this.collectionId === undefined || this.collectionId === null ) {
