@@ -171,7 +171,14 @@
       "Collections": "Kategorier",
       "PlaymanTradition": "Finlandssvensk spelmanstradition",
       "Books": "Böcker",
-      "All": "Alla"
+      "All": "Alla",
+      "SortOptions": {
+        "Sort": "Sortera",
+        "SortTOC": "Sortera innehållsförteckningen",
+        "Thematic": "Tematiskt",
+        "Chronological": "Kronologiskt",
+        "Alphabetical": "Alfabetiskt"
+      }
   },
   "GalleryPages": {
       "0": "Finland framställdt i teckningar",
