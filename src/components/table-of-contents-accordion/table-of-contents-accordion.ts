@@ -303,8 +303,6 @@ export class TableOfContentsAccordionComponent {
   thematicOrderActive = true;
   alphabethicOrderActive: boolean;
 
-  collectionFiltersSelectOptions: any;
-
   visibleactiveMenuTree = [];
   visibleTitleStack = [];
 
@@ -331,9 +329,6 @@ export class TableOfContentsAccordionComponent {
     public translate: TranslateService,
     public metadataService: MetadataService
   ) {
-    this.collectionFiltersSelectOptions = {
-      cssClass: 'collectionFiltersSelectOptionsPopover'
-    };
   }
 
   constructAlphabeticalTOC(data) {
