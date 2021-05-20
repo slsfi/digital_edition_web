@@ -1184,4 +1184,8 @@ export class TableOfContentsAccordionComponent {
   public isDefinedAndPositive(property: any): boolean {
     return this.isDefined(property) && !isNaN(property) && property > 0;
   }
+
+  selectSortingType(val: any) {
+    console.log('Selected sorting type: ', val);
+  }
 }
