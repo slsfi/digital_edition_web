@@ -315,6 +315,7 @@ export class TableOfContentsAccordionComponent {
   activeMenuTree = [];
 
   sortableLetters = [];
+  sortSelectOptions: Record<string, any> = {};
 
   constructor(
     public platform: Platform,
@@ -514,6 +515,10 @@ export class TableOfContentsAccordionComponent {
     } catch (e) {
       this.sortableLetters = [];
     }
+
+    this.sortSelectOptions = {
+      title: 'Sortera innehållsförteckningen'
+    };
 
     this.events.subscribe('SelectedItemInMenu', (menu) => {
       if ( this.collectionId === undefined || this.collectionId === null ) {
