@@ -128,7 +128,17 @@
       "WriterSearch": "Writers Search",
       "SongTypes": "Song Types",
       "WorkSearch": "Works",
-      "Collections": "Publications"
+      "Collections": "Publications",
+      "PlaymanTradition": "Finlandssvensk spelmanstradition",
+      "Books": "Books",
+      "All": "All",
+      "SortOptions": {
+        "Sort": "Sort",
+        "SortTOC": "Sort the table of contents",
+        "Thematic": "Thematically",
+        "Chronological": "Chronologically",
+        "Alphabetical": "Alphabetically"
+      }
   },
   "GalleryPages": {
       "0": "Headline 1",

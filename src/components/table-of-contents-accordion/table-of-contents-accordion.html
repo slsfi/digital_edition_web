@@ -22,11 +22,11 @@
         -->
         <!--
         <ion-item class="collection-filters-select">
-            <ion-label>Sortera</ion-label>
+            <ion-label>{{ "TOC.SortOptions.Sort" | translate}}</ion-label>
             <ion-select (ionChange)="setActiveSortingType($event)" interface="popover" [selectOptions]="{'cssClass': 'collectionFiltersSelectOptionsPopover'}">
-                <ion-option value="thematic" selected="true">Tematiskt</ion-option>
-                <ion-option value="chronological">Kronologiskt</ion-option>
-                <ion-option value="alphabetical">Alfabetiskt</ion-option>
+                <ion-option value="thematic" selected="true">{{ "TOC.SortOptions.Thematic" | translate}}</ion-option>
+                <ion-option value="chronological">{{ "TOC.SortOptions.Chronological" | translate}}</ion-option>
+                <ion-option value="alphabetical">{{ "TOC.SortOptions.Alphabetical" | translate}}</ion-option>
             </ion-select>
         </ion-item>
         -->

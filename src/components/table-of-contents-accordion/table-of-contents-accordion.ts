@@ -517,16 +517,14 @@ export class TableOfContentsAccordionComponent {
       this.sortableLetters = [];
     }
 
-    let buttonTranslations = null;
-    this.translate.get('BasicActions').subscribe(
+    this.translate.get('TOC.SortOptions.SortTOC').subscribe(
       translation => {
-        buttonTranslations = translation;
+        this.sortSelectOptions = {
+          title: translation,
+          cssClass: 'select-text-alert'
+        };
       }, error => { }
     );
-    this.sortSelectOptions = {
-      title: 'Sortera innehållsförteckningen',
-      cssClass: 'select-text-alert'
-    };
     this.translate.get('BasicActions').subscribe(
       translation => {
         this.sortSelectCancelText = translation.Cancel;
