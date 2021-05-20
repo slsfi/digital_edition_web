@@ -486,32 +486,20 @@ div.tei {
     p.strofePadding {
         padding-left: 20px;
     }
-    /*
-    p.milestoneWhen, p.milestonePart {
-        font-size: 0.9em !important;
-        color: gray;
-        background-color: #d2ccbf;
-        margin-bottom: 1em !important;
-    }
-    */
     p.milestoneWhen, 
-    p.milestonePart {
-        font-size: 1em !important;
+    p.milestonePart,
+    span.milestoneWhen, 
+    span.milestonePart {
+        font-size: 0.9em !important;
         color: #6a6a6a;
         background-color: #ececec;
-        margin-top: 0.8em !important;
-        margin-bottom: 0.8em !important;
+        margin: 0.8em 0 !important;
+        padding: 0 0.8em;
         line-height: 1.5em !important;
     }
     span.milestoneWhen, 
     span.milestonePart {
         display: block;
-        font-size: 1em !important;
-        color: #6a6a6a;
-        background-color: #ececec;
-        margin-top: 0.8em !important;
-        margin-bottom: 0.8em !important;
-        line-height: 1.5em !important;
     }
     hr.milestoneBar,
     hr.milestoneSmallBar {
