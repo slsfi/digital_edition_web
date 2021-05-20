@@ -89,9 +89,11 @@ table-of-contents-accordion {
     .collection-filters-select > .item-inner > .input-wrapper > ion-select {
         max-width: 100%;
         padding: 6px 8px 6px 6px;
+        flex: 2;
 
         .select-text {
             padding-right: 2px;
+            text-align: right;
         }
     }
 
