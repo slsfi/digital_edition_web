@@ -71,6 +71,29 @@ table-of-contents-accordion {
 
     }
 
+    .collection-filters-select {
+        border-left-width: 0 !important;
+    }
+    .collection-filters-select > .item-inner > .input-wrapper {
+        padding: 0 4px 0 8px;
+        border: 1px solid #888;
+        border-radius: 3px;
+        margin: 8px 0;
+        background-color: #fafafa;
+    }
+    .collection-filters-select > .item-inner > .input-wrapper > ion-label {
+        width: min-content;
+        color: #666;
+    }
+    .collection-filters-select > .item-inner > .input-wrapper > ion-select {
+        max-width: 100%;
+        padding-left: 8px;
+
+        .select-text {
+            padding-right: 2px;
+        }
+    }
+
     ion-item.item-ios [item-left], ion-item.item-ios [item-right],
     ion-item.item-md [item-left],
     ion-item.item-md [item-right],
