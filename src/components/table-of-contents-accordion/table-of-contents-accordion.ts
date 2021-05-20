@@ -434,6 +434,7 @@ export class TableOfContentsAccordionComponent {
   }
 
   setActiveSortingType(type) {
+    console.log('Selected sorting: ', type);
     if (type === 'thematic') {
         this.alphabethicOrderActive = false;
         this.chronologicalOrderActive = false;
