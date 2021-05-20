@@ -78,8 +78,9 @@ table-of-contents-accordion {
         padding: 0 4px 0 8px;
         border: 1px solid #888;
         border-radius: 3px;
-        margin: 8px 0;
+        margin: 16px 0;
         background-color: #fafafa;
+        max-height: 2rem;
     }
     .collection-filters-select > .item-inner > .input-wrapper > ion-label {
         width: min-content;
