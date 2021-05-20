@@ -721,6 +721,11 @@ ion-alert.select-text-alert .alert-wrapper {
   margin-bottom: 0 !important;
 }
 
+/* Styles for the popover showing sort options for the TOC in sortable TOCs */
+.collectionFiltersSelectOptionsPopover {
+  overflow-y: hidden;
+}
+
 
 // Load TEI-stylesheets. Moved here from project-variables.scss
 @import '../theme/tei';
