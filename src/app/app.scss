@@ -724,9 +724,10 @@ ion-alert.select-text-alert .alert-wrapper {
 /* Styles for the popover showing sort options for the TOC in sortable TOCs */
 .collectionFiltersSelectOptionsPopover .popover-content {
   overflow-y: hidden;
+  background-color: #fafafa;
 
-  .item-radio-checked ion-label {
-    font-weight: bold;
+  ion-item {
+    background-color: #fafafa;
   }
 }
 
