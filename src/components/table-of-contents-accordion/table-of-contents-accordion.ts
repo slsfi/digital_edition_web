@@ -429,22 +429,25 @@ export class TableOfContentsAccordionComponent {
   }
 
   setActiveSortingType(e) {
-    const thematic = e.target.id === 'thematic' || e.target.parentElement.parentElement.id === 'thematic';
-    const alphabetic = e.target.id === 'alphabetical' || e.target.parentElement.parentElement.id === 'alphabetical';
-    const chronological = e.target.id === 'chronological' || e.target.parentElement.parentElement.id === 'chronological';
-
+    const thematic = e.target.id === 'thematic' || e.target.parentElement.parentElement.id === 'thematic' || e.target.value === 'thematic';
+    const alphabetic = e.target.id === 'alphabetical' || e.target.parentElement.parentElement.id === 'alphabetical' || e.target.value === 'alphabetical';
+    const chronological = e.target.id === 'chronological' || e.target.parentElement.parentElement.id === 'chronological' || e.target.id === 'chronological';
+    console.log('Selected sorting: ', e.target.value);
     if (thematic) {
         this.alphabethicOrderActive = false;
         this.chronologicalOrderActive = false;
         this.thematicOrderActive = true;
+        this.activeMenuTree = this.collapsableItems;
     } else if (alphabetic) {
         this.alphabethicOrderActive = true;
         this.chronologicalOrderActive = false;
         this.thematicOrderActive = false;
+        this.activeMenuTree = this.alphabeticalactiveMenuTree;
     } else if (chronological) {
         this.alphabethicOrderActive = false;
         this.chronologicalOrderActive = true;
         this.thematicOrderActive = false;
+        this.activeMenuTree = this.chronologicalactiveMenuTree;
     }
   }
 
@@ -1185,7 +1188,4 @@ export class TableOfContentsAccordionComponent {
     return this.isDefined(property) && !isNaN(property) && property > 0;
   }
 
-  selectSortingType(val: any) {
-    console.log('Selected sorting type: ', val);
-  }
 }
