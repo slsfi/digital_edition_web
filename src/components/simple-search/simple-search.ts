@@ -54,6 +54,7 @@ export class SimpleSearchComponent {
   facsimileLookupData: Array<object>;
   showFacets: boolean;
   pdfViewOpen: boolean;
+  hideTypeAndDescription = false;
 
   simpleSearchHeight = 0;
   simpleSearchHeightSizeInPx = {
@@ -104,6 +105,13 @@ export class SimpleSearchComponent {
       this.fromResultToOccurrence = this.config.getSettings('simpleSearch.from_result_to_occurrence');
     } catch (e) {
       this.fromResultToOccurrence = false;
+    }
+
+    try {
+      /* Setting for showing occupation of persons in search results */
+      this.hideTypeAndDescription = this.config.getSettings('Occurrences.HideTypeAndDescription');
+    } catch (e) {
+      this.hideTypeAndDescription = false;
     }
 
     this.configOccurrencePdf();
