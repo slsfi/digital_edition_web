@@ -58,12 +58,10 @@ simple-search {
 
     .title, .occupation{
         text-decoration: underline;
-    }
-
-    .title {
         white-space: normal;
     }
-    .title > .dates {
+
+    .title-wrapper > .dates {
         text-decoration: none;
         white-space: normal;
     }
