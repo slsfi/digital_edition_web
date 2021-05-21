@@ -23,7 +23,7 @@
         <!--
         <ion-item class="collection-filters-select">
             <ion-label>{{ "TOC.SortOptions.Sort" | translate}}</ion-label>
-            <ion-select (ionChange)="setActiveSortingType($event)" interface="popover" [selectOptions]="{'cssClass': 'collectionFiltersSelectOptionsPopover'}">
+            <ion-select (ionChange)="setActiveSortingType($event)" interface="popover" [selectOptions]="{'cssClass': 'collectionFiltersSelectOptionsPopover'}" [placeholder]="'TOC.SortOptions.Thematic' | translate">
                 <ion-option value="thematic" selected="true">{{ "TOC.SortOptions.Thematic" | translate}}</ion-option>
                 <ion-option value="chronological">{{ "TOC.SortOptions.Chronological" | translate}}</ion-option>
                 <ion-option value="alphabetical">{{ "TOC.SortOptions.Alphabetical" | translate}}</ion-option>
@@ -32,7 +32,7 @@
         -->
         <ion-item class="collection-filters-select">
             <ion-label>{{ "TOC.SortOptions.Sort" | translate }}</ion-label>
-            <ion-select (ionChange)="setActiveSortingType($event)" [selectOptions]="sortSelectOptions" [cancelText]="'BasicActions.Cancel' | translate" [okText]="'BasicActions.Ok' | translate" [placeholder]="'TOC.SortOptions.Thematic' | translate">
+            <ion-select *ngIf="(sortSelectOptions | keyvalue)?.length" (ionChange)="setActiveSortingType($event)" [selectOptions]="sortSelectOptions" [cancelText]="'BasicActions.Cancel' | translate" [okText]="'BasicActions.Ok' | translate" [placeholder]="'TOC.SortOptions.Thematic' | translate">
                 <ion-option value="thematic" selected="true">{{ "TOC.SortOptions.Thematic" | translate }}</ion-option>
                 <ion-option value="chronological">{{ "TOC.SortOptions.Chronological" | translate }}</ion-option>
                 <ion-option value="alphabetical">{{ "TOC.SortOptions.Alphabetical" | translate }}</ion-option>
