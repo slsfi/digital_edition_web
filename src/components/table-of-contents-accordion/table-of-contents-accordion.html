@@ -32,8 +32,8 @@
         -->
         <ion-item class="collection-filters-select">
             <ion-label>{{ "TOC.SortOptions.Sort" | translate }}</ion-label>
-            <ion-select (ionChange)="setActiveSortingType($event)" [selectOptions]="sortSelectOptions" [cancelText]="sortSelectCancelText" [okText]="sortSelectOkText">
-                <ion-option value="thematic" selected="true" [innerHTML]="sortSelectTexts.Thematic"></ion-option>
+            <ion-select (ionChange)="setActiveSortingType($event)" [selectOptions]="sortSelectOptions" [cancelText]="sortSelectCancelText" [okText]="sortSelectOkText" [placeholder]="sortSelectTexts.Thematic">
+                <ion-option value="thematic" selected="true">{{ "TOC.SortOptions.Thematic" | translate }}</ion-option>
                 <ion-option value="chronological">{{ "TOC.SortOptions.Chronological" | translate }}</ion-option>
                 <ion-option value="alphabetical">{{ "TOC.SortOptions.Alphabetical" | translate }}</ion-option>
             </ion-select>
