@@ -719,6 +719,10 @@ ion-alert.select-text-alert .alert-wrapper {
 .text-select-wrapper.facsimile-header.external-urls-header {
   margin-bottom: 0 !important;
 }
+.mobile-mode-read-content .text-select-wrapper.facsimile-header {
+  margin: 0;
+  padding: 0.5rem 0;
+}
 
 /* Styles for the popover showing sort options for the TOC in sortable TOCs */
 .collectionFiltersSelectOptionsPopover .popover-content {
