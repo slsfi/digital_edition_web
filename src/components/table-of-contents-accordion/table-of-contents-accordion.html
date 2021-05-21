@@ -32,7 +32,7 @@
         -->
         <ion-item class="collection-filters-select">
             <ion-label>{{ "TOC.SortOptions.Sort" | translate }}</ion-label>
-            <ion-select *ngIf="!equals({}, sortSelectOptions)" (ionChange)="setActiveSortingType($event)" [selectOptions]="sortSelectOptions" [cancelText]="'BasicActions.Cancel' | translate" [okText]="'BasicActions.Ok' | translate" [placeholder]="'TOC.SortOptions.Thematic' | translate">
+            <ion-select (ionChange)="setActiveSortingType($event)" [selectOptions]="sortSelectOptions" [cancelText]="'BasicActions.Cancel' | translate" [okText]="'BasicActions.Ok' | translate" [placeholder]="'TOC.SortOptions.Thematic' | translate">
                 <ion-option value="thematic" selected="true">{{ "TOC.SortOptions.Thematic" | translate }}</ion-option>
                 <ion-option value="chronological">{{ "TOC.SortOptions.Chronological" | translate }}</ion-option>
                 <ion-option value="alphabetical">{{ "TOC.SortOptions.Alphabetical" | translate }}</ion-option>
