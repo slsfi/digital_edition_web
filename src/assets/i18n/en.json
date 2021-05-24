@@ -133,11 +133,11 @@
       "Books": "Books",
       "All": "All",
       "SortOptions": {
-        "Sort": "Sort",
-        "SortTOC": "Sort the table of contents",
-        "Thematic": "Thematically",
-        "Chronological": "Chronologically",
-        "Alphabetical": "Alphabetically"
+        "Sort": "Sorting",
+        "SortTOC": "Select sorting for the table of contents",
+        "Thematic": "Default",
+        "Chronological": "Chronological",
+        "Alphabetical": "Alphabetical"
       }
   },
   "GalleryPages": {

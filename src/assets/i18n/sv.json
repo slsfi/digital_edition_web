@@ -173,11 +173,11 @@
       "Books": "Böcker",
       "All": "Alla",
       "SortOptions": {
-        "Sort": "Sortera",
-        "SortTOC": "Sortera innehållsförteckningen",
-        "Thematic": "Tematiskt",
-        "Chronological": "Kronologiskt",
-        "Alphabetical": "Alfabetiskt"
+        "Sort": "Sortering",
+        "SortTOC": "Välj sortering för innehållsförteckningen",
+        "Thematic": "Standard",
+        "Chronological": "Kronologisk",
+        "Alphabetical": "Alfabetisk"
       }
   },
   "GalleryPages": {

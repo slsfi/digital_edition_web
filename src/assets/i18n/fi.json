@@ -172,11 +172,11 @@
       "Books": "Böcker",
       "All": "Alla",
       "SortOptions": {
-        "Sort": "Järjestä",
-        "SortTOC": "Järjestä sisällysluettelo",
-        "Thematic": "Temaattisesti",
-        "Chronological": "Kronologisesti",
-        "Alphabetical": "Aakkosjärjestykseen"
+        "Sort": "Järjestys",
+        "SortTOC": "Valitse sisällysluettelolle järjestys",
+        "Thematic": "Oletus",
+        "Chronological": "Kronologinen",
+        "Alphabetical": "Aakkosellinen"
       }
   },
   "GalleryPages": {
