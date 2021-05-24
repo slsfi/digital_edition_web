@@ -136,12 +136,14 @@ facsimiles {
         text-align: right;
     }
 
+    /*
     .text-select-wrapper .flex-buttons {
         justify-content: space-between;
     }
+    */
 
     ion-item.item.page-number-wrapper {
-        background-color: transparent;
+        background-color: rgb(212, 212, 212);
         padding-left: 0;
 
         div.item-inner {
