@@ -17,7 +17,7 @@
 <ion-item *ngIf="externalURLs.length===0 && numberOfPages>1" class="page-number-wrapper">
   <ion-label>{{"Read.Facsimiles.Page" | translate}} ({{"Read.Facsimiles.Of" | translate}}
     {{numberOfPages ? numberOfPages : (images ? images.length : 0)}}):</ion-label>
-  <ion-input class="page_number_input" type="number" size="12" (change)="setPage($event)" [(ngModel)]="manualPageNumber"></ion-input>
+  <ion-input class="page_number_input" type="number" (change)="setPage($event)" [(ngModel)]="manualPageNumber"></ion-input>
 </ion-item>
 
 <div id="facsimilies-image" *ngIf="!facsimilePagesInfinite && !selectedFacsimileIsExternal">
