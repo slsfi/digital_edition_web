@@ -136,13 +136,18 @@ facsimiles {
         text-align: right;
     }
 
-    ion-item.page-number-wrapper {
+    .text-select-wrapper .flex-buttons {
+        justify-content: space-between;
+    }
+
+    ion-item.item.page-number-wrapper {
         background-color: transparent;
         padding-left: 0;
 
         div.item-inner {
             padding: 0 0 12px 0;
-            box-shadow: inset 0 -1px 0 0 #666 !important;
+            /*box-shadow: inset 0 -1px 0 0 #666 !important;*/
+            box-shadow: none !important;
             border-bottom: 0;
 
             div.input-wrapper {
