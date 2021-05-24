@@ -136,4 +136,42 @@ facsimiles {
         text-align: right;
     }
 
+    ion-item.page-number-wrapper {
+        background-color: transparent;
+        padding-left: 0;
+
+        div.item-inner {
+            padding: 0 0 12px 0;
+            box-shadow: inset 0 -1px 0 0 #666;
+            border-bottom: 0;
+
+            div.input-wrapper {
+                display: inline-block;
+
+                ion-label.page_number_label {
+                    float: left;
+                    margin: 9px 16px 9px 0;
+                    color: var(--dark-color);
+                    max-width: max-content;
+                }
+
+                ion-input.page_number_input {
+                    float: left;
+                    width: auto;
+
+                    input {
+                        width: 5.25rem;
+                        padding: 8px;
+                        border: 1px solid #666;
+                        margin: 0;
+                        border-radius: $corner-roundness;
+                    }
+                    input:focus {
+                        border-color: var(--primary-color);
+                    }
+                }
+            }
+        }
+    }
+
 }
