@@ -7,29 +7,6 @@
 </ion-item>
 <div *ngIf="open" class="{{collectionId}}">
     <ng-container *ngIf="sortableLetters.includes(collectionId)">
-        <!--
-        <ion-item class="collection-filters">
-            <button id="thematic" ion-button [ngClass]="{active: thematicOrderActive}" (click)="activeMenuTree = collapsableItems; setActiveSortingType($event)">
-                <ion-icon name="md-albums"></ion-icon>
-            </button>
-            <button id="chronological" ion-button [ngClass]="{active: chronologicalOrderActive}" (click)="activeMenuTree = chronologicalactiveMenuTree; setActiveSortingType($event)">
-                <ion-icon name="md-time"></ion-icon>
-            </button>
-            <button id="alphabetical" ion-button [ngClass]="{active: alphabethicOrderActive}" (click)="activeMenuTree = alphabeticalactiveMenuTree; setActiveSortingType($event)">
-                <ion-icon name="md-list"></ion-icon>
-            </button>
-        </ion-item>
-        -->
-        <!--
-        <ion-item class="collection-filters-select">
-            <ion-label>{{ "TOC.SortOptions.Sort" | translate}}</ion-label>
-            <ion-select (ionChange)="setActiveSortingType($event)" interface="popover" [selectOptions]="{'cssClass': 'collectionFiltersSelectOptionsPopover'}" [placeholder]="'TOC.SortOptions.Thematic' | translate">
-                <ion-option value="thematic" selected="true">{{ "TOC.SortOptions.Thematic" | translate}}</ion-option>
-                <ion-option value="chronological">{{ "TOC.SortOptions.Chronological" | translate}}</ion-option>
-                <ion-option value="alphabetical">{{ "TOC.SortOptions.Alphabetical" | translate}}</ion-option>
-            </ion-select>
-        </ion-item>
-        -->
         <ion-item class="collection-filters-select">
             <ion-label>{{ "TOC.SortOptions.Sort" | translate }}</ion-label>
             <ion-select (ionChange)="setActiveSortingType($event)" [selectOptions]="sortSelectOptions" [cancelText]="'BasicActions.Cancel' | translate" [okText]="'BasicActions.Ok' | translate" [placeholder]="'TOC.SortOptions.Thematic' | translate">
