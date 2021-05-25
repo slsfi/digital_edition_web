@@ -111,6 +111,8 @@ export class FacsimileZoomModalPage {
 
   previous() {
     if (this.facsimilePagesInfinite) {
+      console.log('Infinite, manualPageNumber = ', this.manualPageNumber);
+      console.log('images.length: ', this.images.length);
       if (Number(this.manualPageNumber) > 1) {
         this.prevFacsimileUrl();
         this.manualPageNumber = Number(this.manualPageNumber) - 1;
