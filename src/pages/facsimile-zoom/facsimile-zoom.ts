@@ -83,7 +83,7 @@ export class FacsimileZoomModalPage {
         this.descriptions = [];
       }
       this.activeImage = this.navParams.get('activeImage');
-      this.manualPageNumber = this.activeImage
+      this.manualPageNumber = this.activeImage;
       this.doAnalytics(String(this.images[this.activeImage]));
     }
 
@@ -173,7 +173,7 @@ export class FacsimileZoomModalPage {
     if ( this.manualPageNumber <= 0 ) {
       this.manualPageNumber = 1;
     }
-    const pNumber = (this.manualPageNumber - 1);
+    const pNumber: number = (this.manualPageNumber - 1);
     if (this.facsimilePagesInfinite) {
       this.facsNumber = pNumber;
       return;
