@@ -467,8 +467,7 @@ export class FacsimilesComponent {
     }
     const pNumber: number = (this.manualPageNumber - 1);
     if (this.facsimilePagesInfinite) {
-      console.log('pNumber', pNumber);
-      this.facsNumber = pNumber;
+      this.facsNumber = this.manualPageNumber;
       return;
     }
     this.activeImage = pNumber;
