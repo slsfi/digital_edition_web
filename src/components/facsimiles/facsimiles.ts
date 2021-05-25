@@ -256,9 +256,6 @@ export class FacsimilesComponent {
   }
 
   prevFacsimileUrl() {
-    if (this.facsNumber === 1) {
-      return;
-    }
     this.facsNumber--;
   }
 
