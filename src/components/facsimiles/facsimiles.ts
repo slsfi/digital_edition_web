@@ -380,7 +380,7 @@ export class FacsimilesComponent {
       alert.addInput({
         type: 'radio',
         label: facsTranslations.ExternalHeading,
-        value: null,
+        value: '-1',
         checked: this.selectedFacsimileIsExternal
       });
     }
