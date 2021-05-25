@@ -251,17 +251,6 @@ export class FacsimilesComponent {
     );
   }
 
-  nextFacsimileUrl() {
-    this.facsNumber++;
-  }
-
-  prevFacsimileUrl() {
-    if (this.facsNumber === 1) {
-      return;
-    }
-    this.facsNumber--;
-  }
-
   getFacsimiles(itemId?: any) {
     if (itemId) {
       this.itemId = itemId
@@ -459,6 +448,17 @@ export class FacsimilesComponent {
       this.activeImage = 0;
       this.manualPageNumber = 1;
     }
+  }
+
+  nextFacsimileUrl() {
+    this.facsNumber++;
+  }
+
+  prevFacsimileUrl() {
+    if (this.facsNumber === 1) {
+      return;
+    }
+    this.facsNumber--;
   }
 
   setPage(e) {
