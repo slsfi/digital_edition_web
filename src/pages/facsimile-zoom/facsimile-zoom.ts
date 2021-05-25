@@ -111,8 +111,13 @@ export class FacsimileZoomModalPage {
 
   previous() {
     if (this.facsimilePagesInfinite) {
-      this.prevFacsimileUrl();
-      this.manualPageNumber = Number(this.manualPageNumber) - 1;
+      if (Number(this.manualPageNumber) > 1) {
+        this.prevFacsimileUrl();
+        this.manualPageNumber = Number(this.manualPageNumber) - 1;
+      } else {
+        this.facsNumber = this.images.length;
+        this.manualPageNumber = this.images.length;
+      }
       return;
     }
 
@@ -130,8 +135,13 @@ export class FacsimileZoomModalPage {
 
   next() {
     if (this.facsimilePagesInfinite) {
-      this.nextFacsimileUrl();
-      this.manualPageNumber = Number(this.manualPageNumber) + 1;
+      if ( (Number(this.manualPageNumber) + 1) <= this.images.length ) {
+        this.nextFacsimileUrl();
+        this.manualPageNumber = Number(this.manualPageNumber) + 1;
+      } else {
+        this.facsNumber = 1;
+        this.manualPageNumber = 1;
+      }
       return;
     }
 
