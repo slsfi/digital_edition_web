@@ -1,14 +1,11 @@
 page-facsimile-zoom {
+  background-color: rgba(2,2,2,0.5);
+
   .facsimile-zoom-image{
     position: relative !important;
     transform-origin: center center;
     top: 5em;
   }
-  /*ion-fab{
-    position: relative !important;
-    margin-top: 0 !important;
-    top:0 !important;
-  }*/
 
   .custom_arrow_left {
     display: inline-block;
@@ -71,34 +68,28 @@ page-facsimile-zoom {
     z-index: 99;
   }
 
+  /*
   .facsimile_button_group ion-item{
     display:inline-block;
   }
+  */
 
   .facsimile_button_group div.item-inner{
     box-shadow: none !important;
-    border: 0px !important;
+    border: 0 !important;
   }
 
+  /*
   .page_number_input input{
     color:  #464646;
     margin: 0px;
   }
+  */
 
   .div_close{
     z-index: 999;
     width: 40%;
   }
-  .div_arrow_left{
-
-  }
-  .div_plus_minus{
-
-  }
-  .div_arrow_right{
-
-  }
-  background-color: rgba(2,2,2,0.5);
 
   pinch-zoom{
     min-width: 100%;
@@ -140,19 +131,55 @@ page-facsimile-zoom {
     flex-direction: column;
   }
 
+  /*
   .buttons ion-item{
     display: flex;
     background-color: color($colors, secondary) !important;
   }
+  */
 
   .description ion-label{
     white-space: normal;
   }
 
-  .page_nubering{
-    display: flex;
-    justify-content: center;
-    width: 40%;
+  ion-item.facsimile-zoom-page-numbering {
+    background-color: #f0eeea;
+    padding-left: 0;
+    width: auto;
+
+    div.item-inner {
+      padding: 8px 0;
+      box-shadow: none !important;
+      border-bottom: 0;
+
+      div.input-wrapper {
+          display: inline-block;
+
+          ion-label.page_number_label {
+              float: left;
+              margin: 9px 16px 9px 8px;
+              color: var(--dark-color);
+              max-width: max-content;
+          }
+
+          ion-input.page_number_input {
+              float: left;
+              width: auto;
+
+              input {
+                  width: 5.25rem;
+                  padding: 8px;
+                  border: 1px solid #666;
+                  margin: 0;
+                  border-radius: $corner-roundness;
+                  background-color: #fafafa;
+              }
+              input:focus {
+                  border-color: var(--primary-color);
+              }
+          }
+      }
+  }
   }
 
   .action_buttons{
