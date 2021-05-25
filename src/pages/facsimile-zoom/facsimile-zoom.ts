@@ -170,12 +170,14 @@ export class FacsimileZoomModalPage {
   }
 
   setPage( e ) {
-    if ( this.manualPageNumber <= 0 ) {
+    if (this.manualPageNumber < 1) {
       this.manualPageNumber = 1;
+    } else if (this.manualPageNumber > this.images.length) {
+      this.manualPageNumber = this.images.length;
     }
     const pNumber: number = (this.manualPageNumber - 1);
     if (this.facsimilePagesInfinite) {
-      this.facsNumber = pNumber;
+      this.facsNumber = this.manualPageNumber;
       return;
     }
     this.activeImage = pNumber;
