@@ -422,9 +422,12 @@ export class FacsimilesComponent {
 
   previous() {
     if (this.facsimilePagesInfinite) {
-      if (this.manualPageNumber > 1) {
+      if (Number(this.manualPageNumber) > 1) {
         this.prevFacsimileUrl();
         this.manualPageNumber = Number(this.manualPageNumber) - 1;
+      } else {
+        this.facsNumber = this.numberOfPages;
+        this.manualPageNumber = this.numberOfPages;
       }
       return;
     }
@@ -448,7 +451,6 @@ export class FacsimilesComponent {
         this.facsNumber = 1;
         this.manualPageNumber = 1;
       }
-      // this.manualPageNumber = Number(this.manualPageNumber) + 1;
       return;
     }
     this.activeImage = (this.activeImage + 1);
