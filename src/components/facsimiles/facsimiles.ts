@@ -407,7 +407,7 @@ export class FacsimilesComponent {
     alert.addButton(buttonTranslations.Cancel);
     alert.addButton({
       text: buttonTranslations.Ok,
-      handler: (index: any) => {
+      handler: (index: string) => {
         if (parseInt(index) < 0) {
           // External facsimiles selected
           this.changeFacsimile('external');
