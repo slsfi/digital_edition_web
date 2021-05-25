@@ -228,10 +228,10 @@ export class FacsimilesComponent {
           }
 
           if (this.facsimiles.length > 0) {
-            console.log('recieved facsimiles (infinite) ,..,');
+            // console.log('recieved facsimiles (infinite) ,..,');
           }
           if (this.externalURLs.length > 0) {
-            console.log('recieved external facsimiles ,...,');
+            // console.log('recieved external facsimiles ,...,');
           }
         } else {
           this.translate.get('Read.Facsimiles.NoFacsimiles').subscribe(
@@ -380,7 +380,7 @@ export class FacsimilesComponent {
       alert.addInput({
         type: 'radio',
         label: facsTranslations.ExternalHeading,
-        value: -1,
+        value: null,
         checked: this.selectedFacsimileIsExternal
       });
     }
@@ -399,7 +399,7 @@ export class FacsimilesComponent {
       alert.addInput({
         type: 'radio',
         label: facsimile.title.replace(/(<([^>]+)>)/gi, ''),
-        value: index,
+        value: String(index),
         checked: checkedValue
       });
     });

@@ -147,7 +147,16 @@
   },
   "MediaCollections": {
       "MediaCollections": "Faksimilsamlingar",
-      "GotoMediaCollection": "Gå till bildbanken"
+      "GotoMediaCollection": "Gå till bildbanken",
+
+      "location": "Plats",
+      "tags": "Ämnesord",
+      "tag": "Ämnesord",
+      "subjects": "Personer",
+      "subject": "Person",
+      "collections": "Samlingar",
+      "works": "Verk",
+      "photos": "foton"
   },
   "media": "Fotografier",
   "TOC": {

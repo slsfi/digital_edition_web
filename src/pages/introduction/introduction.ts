@@ -711,7 +711,7 @@ export class IntroductionPage {
     // Set min and max width for resized tooltips.
     const resizedToolTipMinWidth = 300;
     const resizedToolTipMaxWidth = 600;
-    
+
     // Get viewport width and height.
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);

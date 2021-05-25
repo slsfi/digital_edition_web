@@ -9,6 +9,8 @@ import { LanguageService } from '../../app/services/languages/language.service';
 import { ReferenceDataModalPage } from '../reference-data-modal/reference-data-modal';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { MetadataService } from '../../app/services/metadata/metadata.service';
+import { MdContentService } from '../../app/services/md/md-content.service';
+import { MdContent } from '../../app/models/md-content.model';
 /**
  * Generated class for the FacsimileCollectionPage page.
  *
@@ -50,6 +52,7 @@ export class MediaCollectionPage {
   prevTag = '';
   prevLoc = '';
   prevSub = '';
+  mdContent: MdContent;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -61,7 +64,8 @@ export class MediaCollectionPage {
     public translate: TranslateService,
     public languageService: LanguageService,
     private analyticsService: AnalyticsService,
-    private metadataService: MetadataService
+    private metadataService: MetadataService,
+    private mdContentService: MdContentService
 
   ) {
     this.mediaCollectionId = this.navParams.get('mediaCollectionId');
@@ -78,10 +82,18 @@ export class MediaCollectionPage {
     } catch (e) {
       this.removeScanDetails = false;
     }
+
+    let fileID = '11-' + this.mediaCollectionId;
+    this.mdContent = new MdContent({id: fileID, title: '...', content: null, filename: null});
+
     this.language = this.config.getSettings('i18n.locale');
     this.languageService.getLanguage().subscribe((lang: string) => {
       this.language = lang;
       if (this.mediaCollectionId !== null && this.mediaCollectionId !== 'null') {
+        if ( !String(fileID).includes(lang) ) {
+          fileID = lang + '-' + fileID;
+        }
+        this.getMdContent(fileID);
         this.getCollectionTags();
         this.getCollectionLocations();
         this.getCollectionSubjects();
@@ -368,7 +380,18 @@ export class MediaCollectionPage {
     this.doAnalytics('Filter', 'subject', name);
   }
 
-  private showReference() {
+  getMdContent(fileID: string) {
+    // console.log(`Calling getMdContent from content.ts ${fileID}`);
+    this.mdContentService.getMdContent(fileID)
+        .subscribe(
+            text => {
+              this.mdContent.content = text.content;
+            },
+            error =>  {}
+        );
+  }
+
+  showReference() {
     // Get URL of Page and then the URI
     const modal = this.modalController.create(ReferenceDataModalPage, {id: document.URL, type: 'reference'});
     modal.present();

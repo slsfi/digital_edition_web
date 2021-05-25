@@ -1,97 +1,117 @@
 media-collections {
-    .img-desc {
-        font-size: 12px;
+  .img-desc {
+    font-size: 12px;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+  }
+
+  /* Create two equal columns that sits next to each other */
+  .column {
+    flex: 20%;
+    padding: 0 4px;
+  }
+
+  .column img {
+    margin-top: 8px;
+    vertical-align: middle;
+  }
+
+  ion-card {
+    box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
+    -webkit-box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
+    -moz-box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
+  }
+
+  .card-content {
+    background-color: color($colors, secondary);
+    border-top: 2px solid color($colors, primary);
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    text-transform: none !important;
+  }
+
+  .tagSelect {
+    box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
+    -webkit-box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
+    -moz-box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
+    background-color: color($colors, secondary);
+  }
+
+  .locationSelect {
+    box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
+    -webkit-box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
+    -moz-box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
+    background-color: color($colors, secondary);
+  }
+
+  .subjectSelect {
+    box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
+    -webkit-box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
+    -moz-box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
+    background-color: color($colors, secondary);
+  }
+
+  .filters {
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    padding-left: 1.5rem;
+  }
+
+  .filters ion-item {
+    margin-right: 2rem;
+  }
+
+  img {
+    cursor: pointer;
+  }
+
+  ion-item button {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+  }
+
+  ion-item ion-label {
+    color: black !important;
+    font-size: 1rem !important;
+    margin-left: 0.5rem !important;
+  }
+
+  @media only screen and (max-width: 1024px) {
+    .filters {
+      width: 100%;
+    }
+  }
+
+  @media only screen and (max-width: 800px) {
+    .filters {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+
     }
 
-    .row {
-        display: flex;
-        flex-wrap: wrap;
-        padding: 0 4px;
+    .filters ion-item {
+      margin-bottom: 1rem;
     }
+  }
 
-    /* Create two equal columns that sits next to each other */
-    .column {
-        flex: 20%;
-        padding: 0 4px;
-    }
+  .info {
+    padding-left: 1.5rem;
+  }
 
-    .column img {
-        margin-top: 8px;
-        vertical-align: middle;
-    }
+  .info.markdown {
+    width: 60%;
+  }
 
-    ion-card{
-        box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-        -webkit-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-        -moz-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
+  @media only screen and (max-width: 1024px) {
+    .info.markdown {
+      width: 100%;
     }
-    .card-content{
-        background-color: color($colors, secondary);
-        border-top: 2px solid color($colors, primary);
-    }
-
-    h1 {
-        font-size: 1.8rem;
-        text-transform: none !important;
-    }
-    .tagSelect{
-        box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-        -webkit-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-        -moz-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-        background-color: color($colors, secondary);
-    }
-    .locationSelect{
-        box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-        -webkit-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-        -moz-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-        background-color: color($colors, secondary);
-    }
-    .subjectSelect{
-        box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-        -webkit-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-        -moz-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-        background-color: color($colors, secondary);
-    }
-    .filters{
-        display: flex;
-        flex-direction: row;
-        width: 60%;
-        padding-left: 1.5rem;
-    }
-    .filters ion-item{
-        margin-right: 2rem;
-    }
-    img{
-        cursor: pointer;
-    }
-    ion-item button{
-      background-color: rgba(0,0,0,0.1) !important;
-    }
-    ion-item ion-label{
-      color: black !important;
-      font-size: 1rem !important;
-      margin-left: 0.5rem !important;
-    }
-
-    @media only screen and (max-width: 1024px) {
-        .filters{
-            width: 100%;
-        }
-    }
-
-    @media only screen and (max-width: 800px) {
-      .filters{
-          display: flex;
-          flex-direction: column;
-          width: 100%;
-
-      }
-      .filters ion-item{
-        margin-bottom: 1rem;
-      }
-    }
-
-    .info{
-        padding-left: 1.5rem;
-      }
+  }
 }

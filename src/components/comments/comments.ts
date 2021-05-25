@@ -133,7 +133,8 @@ export class CommentsComponent {
 
           if ( targetElem.classList.contains('xreference')
           || (targetElem.parentElement !== null && targetElem.parentElement.classList.contains('xreference'))
-          || (targetElem.parentElement.parentElement !== null && targetElem.parentElement.parentElement.classList.contains('xreference')) ) {
+          || (targetElem.parentElement.parentElement !== null &&
+            targetElem.parentElement.parentElement.classList.contains('xreference')) ) {
             targetIsLink = true;
           }
 

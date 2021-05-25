@@ -151,6 +151,19 @@
   "BackButton": {
       "default": "Tillbaka"
   },
+  "MediaCollections": {
+    "MediaCollections": "Faksimilsamlingar",
+    "GotoMediaCollection": "Gå till bildbanken",
+    "locations": "Platser",
+    "location": "Plats",
+    "tags": "Ämnesord",
+    "tag": "Ämnesord",
+    "subjects": "Personer",
+    "subject": "Person",
+    "collections": "Samlingar",
+    "works": "Verk",
+    "photos": "foton"
+  },
   "HomePage": {
       "current": "Aktuellt",
       "publishedEditions": "Publicerade utgåvor:",

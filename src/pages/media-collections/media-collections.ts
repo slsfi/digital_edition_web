@@ -7,6 +7,8 @@ import { LanguageService } from '../../app/services/languages/language.service';
 import { TranslateService } from '@ngx-translate/core/src/translate.service';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { MetadataService } from '../../app/services/metadata/metadata.service';
+import { MdContentService } from '../../app/services/md/md-content.service';
+import { MdContent } from '../../app/models/md-content.model';
 
 @IonicPage({
   name: 'media-collections',
@@ -35,6 +37,7 @@ export class MediaCollectionsPage {
   private apiEndPoint: string;
   private projectMachineName: string;
   private removeScanDetails = false;
+  mdContent: MdContent;
   language = 'sv';
   constructor(
     public navCtrl: NavController,
@@ -48,7 +51,8 @@ export class MediaCollectionsPage {
     public translate: TranslateService,
     public cdRef: ChangeDetectorRef,
     private analyticsService: AnalyticsService,
-    private metadataService: MetadataService
+    private metadataService: MetadataService,
+    private mdContentService: MdContentService
   ) {
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.projectMachineName = this.config.getSettings('app.machineName');
@@ -57,9 +61,17 @@ export class MediaCollectionsPage {
     } catch (e) {
       this.removeScanDetails = false;
     }
+
+    let fileID = '11-all';
+    this.mdContent = new MdContent({id: fileID, title: '...', content: null, filename: null});
+
     this.language = this.config.getSettings('i18n.locale');
     this.languageService.getLanguage().subscribe((lang: string) => {
       this.language = lang;
+      if ( !String(fileID).includes(lang) ) {
+        fileID = lang + '-' + fileID;
+      }
+      this.getMdContent(fileID);
       this.getMediaCollections();
       this.getCollectionTags();
       this.getCollectionLocations();
@@ -91,6 +103,18 @@ export class MediaCollectionsPage {
       this.cdRef.detectChanges();
     }).bind(this)();
   }
+
+  getMdContent(fileID: string) {
+    // console.log(`Calling getMdContent from content.ts ${fileID}`);
+    this.mdContentService.getMdContent(fileID)
+        .subscribe(
+            text => {
+              this.mdContent.content = text.content;
+            },
+            error =>  {}
+        );
+  }
+
 
   doAnalytics(type, name) {
     this.analyticsService.doAnalyticsEvent('Filter', type, String(name));

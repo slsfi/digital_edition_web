@@ -6,7 +6,7 @@
 -->
 <ion-header>
   <ion-navbar color="secondary">
-    <ion-title>{{mediaTitle}} - {{mediaCollection.length}} {{"photos" | translate}}</ion-title>
+    <ion-title>{{mediaTitle}} - {{mediaCollection.length}} {{ ("MediaCollections.photos" | translate) !== "MediaCollections.photos" ?  ("MediaCollections.photos" | translate) : ("photos" | translate) }}</ion-title>
     <ion-buttons end>
       <button ion-button clear (click)="showReference()" class="sec-menu-button">
         <ion-icon class="urn-icon" name="share-alt"></ion-icon>
@@ -21,16 +21,23 @@
     <h1>{{mediaTitle}}</h1>
     <p>{{mediaDescription}}</p>
   </div>
+  <div class="info markdown">
+    <markdown [data]="mdContent.content"></markdown>
+  </div>
   <div class="filters">
     <ion-item class="tagSelect" *ngIf="galleryTags.length > 0">
-      <ion-label>{{"tags" | translate}}</ion-label>
+      <ion-label>
+      {{ ("MediaCollections.tags" | translate) !== "MediaCollections.tags" ?  ("MediaCollections.tags" | translate) : ("tags" | translate) }}
+      </ion-label>
       <ion-select [(ngModel)]="tagModel" class="tagSelect" (ngModelChange)="filterCollectionsByTag(tagModel)">
         <ion-option selected value=""></ion-option>
         <ion-option *ngFor="let tag of galleryTags" value="{{tag.name}}">{{tag.name}}</ion-option>
       </ion-select>
     </ion-item>
     <ion-item class="locationSelect" *ngIf="galleryLocations.length > 0">
-      <ion-label>{{"locations" | translate}}</ion-label>
+      <ion-label>
+      {{ ("MediaCollections.locations" | translate) !== "MediaCollections.locations" ?  ("MediaCollections.locations" | translate) : ("tags" | translate) }}
+      </ion-label>
       <ion-select [(ngModel)]="locationModel" class="locationSelect"
         (ngModelChange)="filterCollectionsByLocation(locationModel)">
         <ion-option selected value=""></ion-option>
@@ -38,7 +45,9 @@
       </ion-select>
     </ion-item>
     <ion-item class="subjectSelect" *ngIf="gallerySubjects.length > 0">
-      <ion-label>{{"subjects" | translate}}</ion-label>
+      <ion-label>
+      {{ ("MediaCollections.subjects" | translate) !== "MediaCollections.subjects" ?  ("MediaCollections.subjects" | translate) : ("tags" | translate) }}
+      </ion-label>
       <ion-select [(ngModel)]="subjectModel" class="subjectSelect"
         (ngModelChange)="filterCollectionsBySubject(subjectModel)">
         <ion-option selected value=""></ion-option>

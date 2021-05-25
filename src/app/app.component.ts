@@ -500,7 +500,7 @@ export class DigitalEditionsApp {
   }
 
   getCollectionsWithTOC(collections, media?) {
-      if (this.genericSettingsService.show('TOC.MediaCollections')) {
+      if (this.genericSettingsService.show('TOC.MediaCollections') && this.galleryInReadMenu) {
         collections.push(media);
       }
       if (!collections || !collections.length) {
@@ -597,7 +597,12 @@ export class DigitalEditionsApp {
 
   sortListDefined(list, sort) {
     for (const coll of list) {
-      const order = sort[coll.id];
+      let order = sort[coll.id];
+      // If the sort order is not defined in the config, just set a high number
+      // so that it will be at the end of the list.
+      if ( order === undefined ) {
+        order = 9999;
+      }
       coll['order'] = order;
     }
 
@@ -875,7 +880,7 @@ export class DigitalEditionsApp {
       this.tocData = data;
       this.tocLoaded = true;
 
-      if (data.searchTocItem) {
+      if (data.searchTocItem && this.collectionsListWithTOC !== undefined) {
         for (const collection of this.collectionsListWithTOC) {
 
           if ((data.collectionID !== undefined && String(collection.id) === String(data.collectionID.id))

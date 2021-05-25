@@ -146,7 +146,12 @@ export class DigitalEditionList implements OnInit {
 
   sortListDefined(list, sort) {
     for (const coll of list) {
-      const order = sort[coll.id];
+      let order = sort[coll.id];
+      // If the sort order is not defined in the config, just set a high number
+      // so that it will be at the end of the list.
+      if ( order === undefined ) {
+        order = 9999;
+      }
       coll['order'] = order;
     }
 
