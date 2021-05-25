@@ -460,11 +460,14 @@ export class FacsimilesComponent {
   }
 
   setPage(e) {
-    if (this.manualPageNumber <= 0) {
+    if (this.manualPageNumber < 1) {
       this.manualPageNumber = 1;
+    } else if (this.manualPageNumber > this.numberOfPages) {
+      this.manualPageNumber = this.numberOfPages;
     }
     const pNumber: number = (this.manualPageNumber - 1);
     if (this.facsimilePagesInfinite) {
+      console.log('pNumber', pNumber);
       this.facsNumber = pNumber;
       return;
     }
