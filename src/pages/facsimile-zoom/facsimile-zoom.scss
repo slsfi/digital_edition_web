@@ -69,26 +69,12 @@ page-facsimile-zoom {
     display: flex;
     justify-content: center;
     flex-direction: row;
-    padding-bottom: 1rem;
   }
-
-  /*
-  .facsimile_button_group ion-item{
-    display:inline-block;
-  }
-  */
 
   .facsimile_button_group div.item-inner{
     box-shadow: none !important;
     border: 0 !important;
   }
-
-  /*
-  .page_number_input input{
-    color:  #464646;
-    margin: 0px;
-  }
-  */
 
   .div_close{
     z-index: 999;
@@ -99,17 +85,10 @@ page-facsimile-zoom {
     min-width: 100%;
     min-height: 100%;
   }
-  /*
-  .mobile_pagenr{
-    display: inline-block;
-  }
-  .mobile_pagenr ion-item{
+
+  .description {
     width: 100%;
   }
-  .mobile_pagenr ion-label{
-    color: white;
-  }
-  */
 
   .description .facs-desc {
     display: block;
@@ -117,7 +96,7 @@ page-facsimile-zoom {
     text-align: center;
     background-color: var(--secondary-color);
     padding: 10px;
-    margin: 0px;
+    margin: 0 0 6px 0;
     white-space: normal;
   }
 
@@ -138,18 +117,23 @@ page-facsimile-zoom {
     flex-direction: column;
   }
 
-  /*
-  .buttons ion-item{
+  .action_buttons{
     display: flex;
-    background-color: color($colors, secondary) !important;
+    justify-content: center;
+    width: auto;
   }
-  */
+  .action_buttons > button ion-icon.icon {
+    font-size: 32px;
+  }
 
   ion-item.facsimile-zoom-page-numbering {
     background-color: #f0eeea;
     padding-left: 0;
     margin-left: 8px;
     width: auto;
+    min-height: auto;
+    align-self: center;
+    border-radius: $corner-roundness;
 
     div.item-inner {
       padding: 8px 0;
@@ -161,7 +145,7 @@ page-facsimile-zoom {
 
           ion-label.page_number_label {
               float: left;
-              margin: 9px 8px;
+              margin: 6px 8px;
               color: var(--dark-color);
               max-width: max-content;
           }
@@ -169,10 +153,11 @@ page-facsimile-zoom {
           ion-input.page_number_input {
               float: left;
               width: auto;
+              font-size: 1rem;
 
               input {
-                  width: 5rem;
-                  padding: 8px;
+                  width: 4.5rem;
+                  padding: 5px;
                   border: 1px solid #666;
                   margin: 0;
                   border-radius: $corner-roundness;
@@ -183,19 +168,7 @@ page-facsimile-zoom {
               }
           }
       }
-  }
-  }
-
-  .action_buttons{
-    display: flex;
-    justify-content: center;
-    width: auto;
-  }
-  .action_buttons > button ion-icon.icon {
-    font-size: 1.5rem;
-  }
-  .description {
-    width: 100%;
+    }
   }
 
   /*
