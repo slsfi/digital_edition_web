@@ -39,7 +39,7 @@
                         <ion-input class="page_number_input" (change)="setPage($event)" [(ngModel)]="manualPageNumber" type="number"></ion-input>
                     </ion-item>
                 </div>
-                <div *ngIf="descriptions && descriptions[activeImage]" class="description"
+                <div *ngIf="descriptions && descriptions[activeImage]" class="image-description"
                     [ngStyle]="{'display': showAboutHelp?'':'none'}">
                     <ion-label *ngIf="descriptions && descriptions[activeImage]" class="facs-desc">
                         {{descriptions[activeImage]}}

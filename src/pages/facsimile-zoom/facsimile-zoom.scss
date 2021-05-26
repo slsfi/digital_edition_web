@@ -86,18 +86,16 @@ page-facsimile-zoom {
     min-height: 100%;
   }
 
-  .description {
-    width: 100%;
-  }
-
-  .description .facs-desc {
+  .image-description .facs-desc {
     display: block;
     width: 100%;
     text-align: center;
     background-color: var(--secondary-color);
     padding: 10px;
-    margin: 0 0 6px 0;
+    margin: 0 0 4px 0;
     white-space: normal;
+    line-height: 1.4rem;
+    border-radius: $corner-roundness;
   }
 
   .imgbox {
