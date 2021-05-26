@@ -150,7 +150,7 @@ facsimiles {
 
                 ion-label.page_number_label {
                     float: left;
-                    margin: 9px 16px 9px 8px;
+                    margin: 9px 8px;
                     color: var(--dark-color);
                     max-width: max-content;
                 }
@@ -160,7 +160,7 @@ facsimiles {
                     width: auto;
 
                     input {
-                        width: 5.25rem;
+                        width: 5rem;
                         padding: 8px;
                         border: 1px solid #666;
                         margin: 0;

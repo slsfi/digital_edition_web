@@ -66,6 +66,10 @@ page-facsimile-zoom {
     top: 0;
     width: 100%;
     z-index: 99;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    padding-bottom: 1rem;
   }
 
   /*
@@ -107,13 +111,14 @@ page-facsimile-zoom {
   }
   */
 
-  .facs-desc {
+  .description .facs-desc {
     display: block;
     width: 100%;
     text-align: center;
-    background-color: color($colors, primary);
+    background-color: var(--secondary-color);
     padding: 10px;
     margin: 0px;
+    white-space: normal;
   }
 
   .imgbox {
@@ -140,10 +145,6 @@ page-facsimile-zoom {
   }
   */
 
-  .description ion-label{
-    white-space: normal;
-  }
-
   ion-item.facsimile-zoom-page-numbering {
     background-color: #f0eeea;
     padding-left: 0;
@@ -160,7 +161,7 @@ page-facsimile-zoom {
 
           ion-label.page_number_label {
               float: left;
-              margin: 9px 16px 9px 8px;
+              margin: 9px 8px;
               color: var(--dark-color);
               max-width: max-content;
           }
@@ -170,7 +171,7 @@ page-facsimile-zoom {
               width: auto;
 
               input {
-                  width: 5.25rem;
+                  width: 5rem;
                   padding: 8px;
                   border: 1px solid #666;
                   margin: 0;
@@ -188,14 +189,13 @@ page-facsimile-zoom {
   .action_buttons{
     display: flex;
     justify-content: center;
-    width: 40rem;
+    width: auto;
   }
   .description {
-    display: flex;
-    justify-content: center;
-    width: 40rem;
+    width: 100%;
   }
 
+  /*
   @media only screen and (max-width: 600px) {
     .action_buttons{
       width: 25rem;
@@ -204,13 +204,7 @@ page-facsimile-zoom {
       width: 25rem;
     }
   }
-
-  .facsimile_button_group{
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    padding-bottom: 1rem;
-  }
+  */
 
   img {
       cursor: move;
