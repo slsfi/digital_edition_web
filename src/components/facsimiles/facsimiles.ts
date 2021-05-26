@@ -514,7 +514,7 @@ export class FacsimilesComponent {
 
     modal.present();
     modal.onDidDismiss(data => {
-      console.error('dismissed', data);
+      // console.error('dismissed', data);
     });
   }
 
