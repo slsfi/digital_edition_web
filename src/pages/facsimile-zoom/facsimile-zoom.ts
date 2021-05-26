@@ -79,6 +79,13 @@ export class FacsimileZoomModalPage {
       this.images = this.navParams.get('images');
       try {
         this.descriptions = this.navParams.get('descriptions');
+        if (this.descriptions.length > 0) {
+          this.descriptions.forEach(element => {
+            element = element.trim();
+            element = element.replace('&gt;', '>');
+            element = element.replace('&lt;', '<');
+          });
+        }
       } catch (e) {
         this.descriptions = [];
       }
