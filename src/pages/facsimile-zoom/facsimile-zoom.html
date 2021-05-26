@@ -34,16 +34,13 @@
                     </button>
                     <ion-item class="facsimile-zoom-page-numbering"
                     *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet() && images.length > 1">
-                        <ion-label class="page_number_label">{{"Read.Facsimiles.Page" | translate}}
-                            ({{"Read.Facsimiles.Of" | translate}} {{(images)?images.length:0}}):</ion-label>
+                        <ion-label class="page_number_label">{{"Read.Facsimiles.Page" | translate}} ({{"Read.Facsimiles.Of" | translate}} {{(images)?images.length:0}}):</ion-label>
                         <ion-input class="page_number_input" (change)="setPage($event)" [(ngModel)]="manualPageNumber" type="number"></ion-input>
                     </ion-item>
                 </div>
                 <div *ngIf="descriptions && descriptions[activeImage]" class="image-description"
                     [ngStyle]="{'display': showAboutHelp?'':'none'}">
-                    <ion-label *ngIf="descriptions && descriptions[activeImage]" class="facs-desc">
-                        {{descriptions[activeImage]}}
-                    </ion-label>
+                    <ion-label *ngIf="descriptions && descriptions[activeImage]" class="facs-desc">{{descriptions[activeImage]}}</ion-label>
                 </div>
             </div>
         </div>
