@@ -89,7 +89,6 @@ export class FacsimileZoomModalPage {
 
     try {
       this.backsides = this.navParams.get('backsides');
-      console.log('Backsides: ', this.backsides);
       if ( this.backsides === undefined ) {
         this.backsides = [];
       }
