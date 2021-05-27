@@ -92,8 +92,8 @@ page-facsimile-zoom {
   }
   .facsimile-zoom-image {
     max-width: 100%;
-    // 72px is the height of the toolbar
-    max-height: calc(100vh - 72px);
+    // 114px is the height of the toolbar when description is visible
+    max-height: calc(100vh - 114px);
     margin: auto;
   }
 
