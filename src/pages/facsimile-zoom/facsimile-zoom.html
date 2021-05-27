@@ -3,33 +3,34 @@
         <div middle class="facsimile_button_group">
             <div class="buttons">
                 <div class="action_buttons">
-                    <button *ngIf="images.length > 1" style="display: inline-block;" ion-fab color="primary" mini (click)="previous()">
+                    <button *ngIf="images.length > 1" ion-fab color="primary" mini (click)="previous()">
                         <ion-icon name="arrow-back"></ion-icon>
                     </button>
-                    <button *ngIf="backsides.length" style="display: inline-block;" ion-fab color="primary" mini
+                    <button *ngIf="backsides.length" ion-fab color="primary" mini
                         (click)="backside = !backside">
                         <ion-icon name="repeat"></ion-icon>
                     </button>
-                    <button *ngIf="images.length > 1" style="display: inline-block;" ion-fab color="primary" mini (click)="next()">
+                    <button *ngIf="images.length > 1" ion-fab color="primary" mini (click)="next()">
                         <ion-icon name="arrow-forward"></ion-icon>
                     </button>
                     <button ion-fab mini (click)="rotate()">
                       <ion-icon name="refresh"></ion-icon>
                     </button>
-                    <button *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()"
-                        style="display: inline-block;" ion-fab color="primary" mini (click)="zoomIn()">
+                    <button *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()" ion-fab color="primary" mini (click)="zoomIn()">
                         <ion-icon name="add"></ion-icon>
                     </button>
-                    <button *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()"
-                        style="display: inline-block;" ion-fab color="primary" mini (click)="zoomOut()">
+                    <button *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()" ion-fab color="primary" mini (click)="zoomOut()">
                         <ion-icon name="remove"></ion-icon>
                     </button>
-                    <button *ngIf="descriptions && descriptions[activeImage]" style="display: inline-block;" ion-fab
+                    <button *ngIf="descriptions && descriptions[activeImage]" ion-fab
                         color="primary" mini (click)="showAbout()">
                         <ion-icon name="code-working" *ngIf="showAboutHelp"></ion-icon>
                         <ion-icon name="code" *ngIf="!showAboutHelp"></ion-icon>
                     </button>
-                    <button style="display: inline-block;" ion-fab mini (click)="cancel()">
+                    <button ion-fab mini (click)="resetFacsimile()">
+                        <ion-icon name="undo"></ion-icon>
+                    </button>
+                    <button ion-fab mini (click)="cancel()">
                         <ion-icon name="close" class="close_button"></ion-icon>
                     </button>
                     <ion-item class="facsimile-zoom-page-numbering"
