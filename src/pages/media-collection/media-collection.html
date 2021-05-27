@@ -25,7 +25,7 @@
     <markdown [data]="mdContent.content"></markdown>
   </div>
   <div class="filters">
-    <ion-item class="tagSelect" *ngIf="galleryTags.length > 0">
+    <ion-item class="tagSelect" *ngIf="galleryTags.length > 1">
       <ion-label>
       {{ ("MediaCollections.tags" | translate) !== "MediaCollections.tags" ?  ("MediaCollections.tags" | translate) : ("tags" | translate) }}
       </ion-label>
@@ -34,7 +34,7 @@
         <ion-option *ngFor="let tag of galleryTags" value="{{tag.name}}">{{tag.name}}</ion-option>
       </ion-select>
     </ion-item>
-    <ion-item class="locationSelect" *ngIf="galleryLocations.length > 0">
+    <ion-item class="locationSelect" *ngIf="galleryLocations.length > 1">
       <ion-label>
       {{ ("MediaCollections.locations" | translate) !== "MediaCollections.locations" ?  ("MediaCollections.locations" | translate) : ("tags" | translate) }}
       </ion-label>
@@ -44,7 +44,7 @@
         <ion-option *ngFor="let location of galleryLocations" value="{{location.name}}">{{location.name}}</ion-option>
       </ion-select>
     </ion-item>
-    <ion-item class="subjectSelect" *ngIf="gallerySubjects.length > 0">
+    <ion-item class="subjectSelect" *ngIf="gallerySubjects.length > 1">
       <ion-label>
       {{ ("MediaCollections.subjects" | translate) !== "MediaCollections.subjects" ?  ("MediaCollections.subjects" | translate) : ("tags" | translate) }}
       </ion-label>
