@@ -51,7 +51,7 @@
                     <div *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()">
                         <img alt="facsimile" *ngIf="!facsimilePagesInfinite && (!backside || !backsides[activeImage])"
                           [src]="images[activeImage]"
-                          class="facsimile-zoom-image"
+                          [ngClass]="descriptions && descriptions[activeImage]?'facsimile-zoom-image':'facsimile-zoom-image no-description'"
                           [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
                           (wheel)="onMouseWheel($event)"
                           (pan)="handlePanEvent($event)"
