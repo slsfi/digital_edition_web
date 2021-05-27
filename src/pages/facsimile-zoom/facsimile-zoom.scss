@@ -90,11 +90,17 @@ page-facsimile-zoom {
     display: grid;
     height: 100%;
   }
+
   .facsimile-zoom-image {
     max-width: 100%;
     // 114px is the height of the toolbar when description is visible
     max-height: calc(100vh - 114px);
     margin: auto;
+  }
+
+  .facsimile-zoom-image.no-description {
+    // 64px is the height of the toolbar when description is hidden
+    max-height: calc(100vh - 64px);
   }
 
   .buttons{
