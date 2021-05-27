@@ -1,6 +1,10 @@
 page-facsimile-zoom {
   background-color: rgba(2,2,2,0.5);
 
+  ion-content > div.scroll-content {
+    overflow-y: hidden;
+  }
+
   .facsimile-zoom-image{
     position: relative !important;
     transform-origin: center center;
