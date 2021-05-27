@@ -40,7 +40,7 @@
                 </div>
                 <div *ngIf="descriptions && descriptions[activeImage]" class="image-description"
                     [ngStyle]="{'display': showAboutHelp?'':'none'}">
-                    <ion-label *ngIf="descriptions && descriptions[activeImage]" class="facs-desc">{{descriptions[activeImage]}}</ion-label>
+                    <ion-label *ngIf="descriptions && descriptions[activeImage]" [innerHTML]="descriptions[activeImage]" class="facs-desc"></ion-label>
                 </div>
             </div>
         </div>
