@@ -6,7 +6,7 @@
                     <button *ngIf="images.length > 1" ion-fab color="primary" mini (click)="previous()">
                         <ion-icon name="arrow-back"></ion-icon>
                     </button>
-                    <button *ngIf="backsides.length" ion-fab color="primary" mini
+                    <button *ngIf="backsides.length>1" ion-fab color="primary" mini
                         (click)="backside = !backside">
                         <ion-icon name="repeat"></ion-icon>
                     </button>
