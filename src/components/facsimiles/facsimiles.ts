@@ -491,7 +491,7 @@ export class FacsimilesComponent {
       }
 
       params = {
-        facsimilePagesInfinite: this.facsimilePagesInfinite,
+        facsimilePagesInfinite: false,
         facsUrl: this.facsUrl,
         facsID: this.facsID,
         facsNr: this.facsNr,
