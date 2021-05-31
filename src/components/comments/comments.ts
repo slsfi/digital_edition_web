@@ -1,4 +1,4 @@
-import { Component, Input, Renderer2, ElementRef, EventEmitter, Output, NgZone } from '@angular/core';
+import { Component, Input, Renderer2, ElementRef, EventEmitter, Output } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ReadTextComponent } from '../read-text/read-text';
 import { TextService } from '../../app/services/texts/text.service';
@@ -38,7 +38,6 @@ export class CommentsComponent {
     protected textService: TextService,
     protected sanitizer: DomSanitizer,
     private renderer2: Renderer2,
-    private ngZone: NgZone,
     private elementRef: ElementRef,
     private events: Events,
     private analyticsService: AnalyticsService,
@@ -120,62 +119,59 @@ export class CommentsComponent {
     // We must do it like this since we want to trigger an event on a dynamically loaded innerhtml.
     const nElement: HTMLElement = this.elementRef.nativeElement;
 
-    this.ngZone.runOutsideAngular(() => {
+    /* CLICK EVENTS */
+    this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
+      try {
+        // This check for xreference is necessary since we don't want the comment to
+        // scroll if the clicked target is a link in a comment. Clicks on links are
+        // handled by read.ts.
+        let targetIsLink = false;
+        let targetElem: HTMLElement = event.target as HTMLElement;
 
-      /* CLICK EVENTS */
-      this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
-        try {
-          // This check for xreference is necessary since we don't want the comment to
-          // scroll if the clicked target is a link in a comment. Clicks on links are
-          // handled by read.ts.
-          let targetIsLink = false;
-          let targetElem: HTMLElement = event.target as HTMLElement;
+        if ( targetElem.classList.contains('xreference')
+        || (targetElem.parentElement !== null && targetElem.parentElement.classList.contains('xreference'))
+        || (targetElem.parentElement.parentElement !== null &&
+          targetElem.parentElement.parentElement.classList.contains('xreference')) ) {
+          targetIsLink = true;
+        }
 
-          if ( targetElem.classList.contains('xreference')
-          || (targetElem.parentElement !== null && targetElem.parentElement.classList.contains('xreference'))
-          || (targetElem.parentElement.parentElement !== null &&
-            targetElem.parentElement.parentElement.classList.contains('xreference')) ) {
-            targetIsLink = true;
-          }
+        if (!targetIsLink && this.readPopoverService.show.comments) {
+          // This is linking to a comment lemma ("asterisk") in the reading text,
+          // i.e. the user has clicked a comment in the comments-column.
+          event.preventDefault();
 
-          if (!targetIsLink && this.readPopoverService.show.comments) {
-            // This is linking to a comment lemma ("asterisk") in the reading text,
-            // i.e. the user has clicked a comment in the comments-column.
-            event.preventDefault();
-
-            // Find the comment element that has been clicked in the comment-column.
-            if (!targetElem.classList.contains('commentScrollTarget')) {
+          // Find the comment element that has been clicked in the comment-column.
+          if (!targetElem.classList.contains('commentScrollTarget')) {
+            targetElem = targetElem.parentElement;
+            while (targetElem !== null
+            && !targetElem.classList.contains('commentScrollTarget')
+            && targetElem.tagName !== 'COMMENT') {
               targetElem = targetElem.parentElement;
-              while (targetElem !== null
-              && !targetElem.classList.contains('commentScrollTarget')
-              && targetElem.tagName !== 'COMMENT') {
-                targetElem = targetElem.parentElement;
-              }
-            }
-            if (targetElem !== null && targetElem !== undefined) {
-              // Find the lemma in the reading text. Replace all non-digits at the start of the comment's id with nothing.
-              const numId = targetElem.classList[targetElem.classList.length - 1].replace( /^\D+/g, '');
-              const targetId = 'start' + numId;
-              let lemmaStart = document.querySelector('read-text').querySelector('[data-id="' + targetId + '"]') as HTMLElement;
-              if ( (lemmaStart.parentElement !== null
-              && lemmaStart.parentElement.classList.contains('ttFixed'))
-              || (lemmaStart.parentElement.parentElement !== null
-              && lemmaStart.parentElement.parentElement.classList.contains('ttFixed')) ) {
-                // The lemma is in a footnote, so we should get the second element with targetId
-                lemmaStart = document.querySelector('read-text').querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
-              }
-              if (lemmaStart !== null && lemmaStart !== undefined) {
-                // Scroll to start of lemma in reading text and temporarily prepend arrow.
-                this.scrollToCommentLemma(lemmaStart);
-                // Scroll to comment in the comments-column.
-                this.scrollToComment(numId, targetElem);
-              }
             }
           }
-        } catch (e) {}
-      });
-
+          if (targetElem !== null && targetElem !== undefined) {
+            // Find the lemma in the reading text. Replace all non-digits at the start of the comment's id with nothing.
+            const numId = targetElem.classList[targetElem.classList.length - 1].replace( /^\D+/g, '');
+            const targetId = 'start' + numId;
+            let lemmaStart = document.querySelector('read-text').querySelector('[data-id="' + targetId + '"]') as HTMLElement;
+            if ( (lemmaStart.parentElement !== null
+            && lemmaStart.parentElement.classList.contains('ttFixed'))
+            || (lemmaStart.parentElement.parentElement !== null
+            && lemmaStart.parentElement.parentElement.classList.contains('ttFixed')) ) {
+              // The lemma is in a footnote, so we should get the second element with targetId
+              lemmaStart = document.querySelector('read-text').querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
+            }
+            if (lemmaStart !== null && lemmaStart !== undefined) {
+              // Scroll to start of lemma in reading text and temporarily prepend arrow.
+              this.scrollToCommentLemma(lemmaStart);
+              // Scroll to comment in the comments-column.
+              this.scrollToComment(numId, targetElem);
+            }
+          }
+        }
+      } catch (e) {}
     });
+
   }
 
   /* Use this function to scroll the lemma of a comment into view in the reading text view. */
