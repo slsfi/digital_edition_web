@@ -1,5 +1,5 @@
 import { TranslateService } from '@ngx-translate/core';
-import { Component, Renderer2, ElementRef, SecurityContext, NgZone } from '@angular/core';
+import { Component, Renderer2, ElementRef, SecurityContext } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, Platform, PopoverController, ModalController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LanguageService } from '../../app/services/languages/language.service';
@@ -83,7 +83,6 @@ export class IntroductionPage {
     protected sanitizer: DomSanitizer,
     protected params: NavParams,
     private renderer2: Renderer2,
-    private ngZone: NgZone,
     private tooltipService: TooltipService,
     private elementRef: ElementRef,
     protected popoverCtrl: PopoverController,
@@ -452,45 +451,38 @@ export class IntroductionPage {
       }
     });
 
-    this.ngZone.runOutsideAngular(() => {
+    /* MOUSE OVER EVENTS */
+    this.unlistenMouseoverEvents = this.renderer2.listen(nElement, 'mouseover', (event) => {
+      if (!this.userIsTouching) {
+        // Mouseover effects only if using a cursor, not if the user is touching the screen
+        const eventTarget = this.getEventTarget(event);
 
-      /* MOUSE OVER EVENTS */
-      this.unlistenMouseoverEvents = this.renderer2.listen(nElement, 'mouseover', (event) => {
-        if (!this.userIsTouching) {
-          // Mouseover effects only if using a cursor, not if the user is touching the screen
-          const eventTarget = this.getEventTarget(event);
-
-          if (eventTarget.classList.contains('tooltiptrigger')) {
-            if (eventTarget.hasAttribute('data-id')) {
-              this.ngZone.run(() => {
-                if (this.toolTipsSettings.personInfo && eventTarget.classList.contains('person')
-                && this.readPopoverService.show.personInfo) {
-                  this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                } else if (this.toolTipsSettings.placeInfo && eventTarget.classList.contains('placeName')
-                && this.readPopoverService.show.placeInfo) {
-                  this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                } else if (this.toolTipsSettings.workInfo && eventTarget.classList.contains('title')
-                && this.readPopoverService.show.workInfo) {
-                  this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                } else if (this.toolTipsSettings.footNotes && eventTarget.classList.contains('ttFoot')) {
-                  this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                }
-              });
+        if (eventTarget.classList.contains('tooltiptrigger')) {
+          if (eventTarget.hasAttribute('data-id')) {
+            if (this.toolTipsSettings.personInfo && eventTarget.classList.contains('person')
+            && this.readPopoverService.show.personInfo) {
+              this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+            } else if (this.toolTipsSettings.placeInfo && eventTarget.classList.contains('placeName')
+            && this.readPopoverService.show.placeInfo) {
+              this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+            } else if (this.toolTipsSettings.workInfo && eventTarget.classList.contains('title')
+            && this.readPopoverService.show.workInfo) {
+              this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+            } else if (this.toolTipsSettings.footNotes && eventTarget.classList.contains('ttFoot')) {
+              this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
             }
           }
         }
-      });
-
-      /* MOUSE OUT EVENTS */
-      this.unlistenMouseoutEvents = this.renderer2.listen(nElement, 'mouseout', (event) => {
-        if (!this.userIsTouching && this.tooltipVisible) {
-          this.ngZone.run(() => {
-            this.hideToolTip();
-          });
-        }
-      });
-
+      }
     });
+
+    /* MOUSE OUT EVENTS */
+    this.unlistenMouseoutEvents = this.renderer2.listen(nElement, 'mouseout', (event) => {
+      if (!this.userIsTouching && this.tooltipVisible) {
+        this.hideToolTip();
+      }
+    });
+
   }
 
   showPersonTooltip(id: string, targetElem: HTMLElement, origin: any) {

@@ -1,4 +1,4 @@
-import { Component, Renderer2, ElementRef, OnDestroy, ViewChild, Input, EventEmitter, SecurityContext, NgZone } from '@angular/core';
+import { Component, Renderer2, ElementRef, OnDestroy, ViewChild, Input, EventEmitter, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import {
   App, ViewController, NavController, NavParams, PopoverController, ActionSheetController,
@@ -194,7 +194,6 @@ export class ReadPage /*implements OnDestroy*/ {
     private commentService: CommentService,
     public toastCtrl: ToastController,
     private renderer2: Renderer2,
-    private ngZone: NgZone,
     private elementRef: ElementRef,
     private config: ConfigService,
     public popoverCtrl: PopoverController,
@@ -1279,121 +1278,91 @@ export class ReadPage /*implements OnDestroy*/ {
       }
     });
 
-    this.ngZone.runOutsideAngular(() => {
-
-      /* MOUSE OVER EVENTS */
-      this.unlistenMouseoverEvents = this.renderer2.listen(nElement, 'mouseover', (event) => {
-        if (!this.userIsTouching) {
-          // Mouseover effects only if using a cursor, not if the user is touching the screen
-          let eventTarget = this.getEventTarget(event);
-          // Loop needed for finding correct tooltip trigger when there are nested triggers.
-          while (!this.tooltipVisible && eventTarget['classList'].contains('tooltiptrigger')) {
-            if (eventTarget.hasAttribute('data-id')) {
-              if (this.toolTipsSettings.personInfo
-              && eventTarget['classList'].contains('person')
-              && this.readPopoverService.show.personInfo) {
-                this.ngZone.run(() => {
-                  this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                });
-              } else if (this.toolTipsSettings.placeInfo
-              && eventTarget['classList'].contains('placeName')
-              && this.readPopoverService.show.placeInfo) {
-                this.ngZone.run(() => {
-                  this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                });
-              } else if (this.toolTipsSettings.workInfo
-              && eventTarget['classList'].contains('title')
-              && this.readPopoverService.show.workInfo) {
-                this.ngZone.run(() => {
-                  this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
-                });
-              } else if (this.toolTipsSettings.comments
-              && eventTarget['classList'].contains('comment')
-              && this.readPopoverService.show.comments) {
-                this.ngZone.run(() => {
-                  this.showCommentTooltip(eventTarget.getAttribute('data-id'), eventTarget);
-                });
-              } else if (this.toolTipsSettings.footNotes
-              && eventTarget['classList'].contains('teiManuscript')
-              && eventTarget['classList'].contains('ttFoot')) {
-                this.ngZone.run(() => {
-                  this.showManuscriptFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
-                });
-              } else if (this.toolTipsSettings.footNotes
-              && eventTarget['classList'].contains('ttFoot')) {
-                this.ngZone.run(() => {
-                  this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
-                });
-              }
-            } else if ( (this.toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges')
-            && this.readPopoverService.show.changes)
-            || (this.toolTipsSettings.normalisations && eventTarget['classList'].contains('ttNormalisations')
-            && this.readPopoverService.show.normalisations)
-            || (this.toolTipsSettings.abbreviations && eventTarget['classList'].contains('ttAbbreviations')
-            && this.readPopoverService.show.abbreviations) ) {
-              this.ngZone.run(() => {
-                this.showTooltipFromInlineHtml(eventTarget);
-              });
-            } else if (eventTarget['classList'].contains('ttVariant')) {
-              this.ngZone.run(() => {
-                this.showVariantTooltip(eventTarget);
-              });
-            } else if (eventTarget['classList'].contains('ttMs')) {
-              // Check if the tooltip trigger element is in a manuscripts column
-              // since ttMs should generally only be triggered there.
-              if (eventTarget['classList'].contains('unclear')) {
-                // Tooltips for text with class unclear should be shown in other columns too.
-                this.ngZone.run(() => {
-                  this.showTooltipFromInlineHtml(eventTarget);
-                });
-              } else {
-                let parentElem: HTMLElement = eventTarget as HTMLElement;
-                parentElem = parentElem.parentElement;
-                while (parentElem !== null && parentElem.tagName !== 'MANUSCRIPTS') {
-                  parentElem = parentElem.parentElement;
-                }
-                if (parentElem !== null) {
-                  this.ngZone.run(() => {
-                    this.showTooltipFromInlineHtml(eventTarget);
-                  });
-                }
-              }
-            } else if (this.toolTipsSettings.footNotes && eventTarget.hasAttribute('id')
-            && eventTarget['classList'].contains('teiVariant') && eventTarget['classList'].contains('ttFoot')) {
-              this.ngZone.run(() => {
-                this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), eventTarget);
-              });
-            } else if (eventTarget['classList'].contains('ttFoot')
-            && !eventTarget.hasAttribute('id')
-            && !eventTarget.hasAttribute('data-id')) {
-              this.ngZone.run(() => {
-                this.showTooltipFromInlineHtml(eventTarget);
-              });
+    /* MOUSE OVER EVENTS */
+    this.unlistenMouseoverEvents = this.renderer2.listen(nElement, 'mouseover', (event) => {
+      if (!this.userIsTouching) {
+        // Mouseover effects only if using a cursor, not if the user is touching the screen
+        let eventTarget = this.getEventTarget(event);
+        // Loop needed for finding correct tooltip trigger when there are nested triggers.
+        while (!this.tooltipVisible && eventTarget['classList'].contains('tooltiptrigger')) {
+          if (eventTarget.hasAttribute('data-id')) {
+            if (this.toolTipsSettings.personInfo
+            && eventTarget['classList'].contains('person')
+            && this.readPopoverService.show.personInfo) {
+              this.showPersonTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+            } else if (this.toolTipsSettings.placeInfo
+            && eventTarget['classList'].contains('placeName')
+            && this.readPopoverService.show.placeInfo) {
+              this.showPlaceTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+            } else if (this.toolTipsSettings.workInfo
+            && eventTarget['classList'].contains('title')
+            && this.readPopoverService.show.workInfo) {
+              this.showWorkTooltip(eventTarget.getAttribute('data-id'), eventTarget, event);
+            } else if (this.toolTipsSettings.comments
+            && eventTarget['classList'].contains('comment')
+            && this.readPopoverService.show.comments) {
+              this.showCommentTooltip(eventTarget.getAttribute('data-id'), eventTarget);
+            } else if (this.toolTipsSettings.footNotes
+            && eventTarget['classList'].contains('teiManuscript')
+            && eventTarget['classList'].contains('ttFoot')) {
+              this.showManuscriptFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
+            } else if (this.toolTipsSettings.footNotes
+            && eventTarget['classList'].contains('ttFoot')) {
+              this.showFootnoteTooltip(eventTarget.getAttribute('data-id'), eventTarget);
             }
-
-            /* Get the parent node of the event target for the next iteration if a tooltip hasn't been shown already.
-            * This is for finding nested tooltiptriggers, i.e. a person can be a child of a change. */
-            if (!this.tooltipVisible) {
-              eventTarget = eventTarget['parentNode'];
-              if (!eventTarget['classList'].contains('tooltiptrigger')
-              && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
-                /* The parent isn't a tooltiptrigger, but the parent of the parent is, use it for the next iteration. */
-                eventTarget = eventTarget['parentNode'];
+          } else if ( (this.toolTipsSettings.changes && eventTarget['classList'].contains('ttChanges')
+          && this.readPopoverService.show.changes)
+          || (this.toolTipsSettings.normalisations && eventTarget['classList'].contains('ttNormalisations')
+          && this.readPopoverService.show.normalisations)
+          || (this.toolTipsSettings.abbreviations && eventTarget['classList'].contains('ttAbbreviations')
+          && this.readPopoverService.show.abbreviations) ) {
+            this.showTooltipFromInlineHtml(eventTarget);
+          } else if (eventTarget['classList'].contains('ttVariant')) {
+            this.showVariantTooltip(eventTarget);
+          } else if (eventTarget['classList'].contains('ttMs')) {
+            // Check if the tooltip trigger element is in a manuscripts column
+            // since ttMs should generally only be triggered there.
+            if (eventTarget['classList'].contains('unclear')) {
+              // Tooltips for text with class unclear should be shown in other columns too.
+              this.showTooltipFromInlineHtml(eventTarget);
+            } else {
+              let parentElem: HTMLElement = eventTarget as HTMLElement;
+              parentElem = parentElem.parentElement;
+              while (parentElem !== null && parentElem.tagName !== 'MANUSCRIPTS') {
+                parentElem = parentElem.parentElement;
               }
+              if (parentElem !== null) {
+                this.showTooltipFromInlineHtml(eventTarget);
+              }
+            }
+          } else if (this.toolTipsSettings.footNotes && eventTarget.hasAttribute('id')
+          && eventTarget['classList'].contains('teiVariant') && eventTarget['classList'].contains('ttFoot')) {
+            this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), eventTarget);
+          } else if (eventTarget['classList'].contains('ttFoot')
+          && !eventTarget.hasAttribute('id')
+          && !eventTarget.hasAttribute('data-id')) {
+            this.showTooltipFromInlineHtml(eventTarget);
+          }
+
+          /* Get the parent node of the event target for the next iteration if a tooltip hasn't been shown already.
+          * This is for finding nested tooltiptriggers, i.e. a person can be a child of a change. */
+          if (!this.tooltipVisible) {
+            eventTarget = eventTarget['parentNode'];
+            if (!eventTarget['classList'].contains('tooltiptrigger')
+            && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
+              /* The parent isn't a tooltiptrigger, but the parent of the parent is, use it for the next iteration. */
+              eventTarget = eventTarget['parentNode'];
             }
           }
         }
-      });
+      }
+    });
 
-      /* MOUSE OUT EVENTS */
-      this.unlistenMouseoutEvents = this.renderer2.listen(nElement, 'mouseout', (event) => {
-        if (!this.userIsTouching && this.tooltipVisible) {
-          this.ngZone.run(() => {
-            this.hideToolTip();
-          });
-        }
-      });
-
+    /* MOUSE OUT EVENTS */
+    this.unlistenMouseoutEvents = this.renderer2.listen(nElement, 'mouseout', (event) => {
+      if (!this.userIsTouching && this.tooltipVisible) {
+        this.hideToolTip();
+      }
     });
 
   }
