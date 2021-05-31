@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output, SecurityContext, NgZone } from '@angular/core';
+import { Component, Input, EventEmitter, Output, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AlertController, ModalController, NavParams, Events, ViewController, Platform } from 'ionic-angular';
 import { FacsimileZoomModalPage } from '../../pages/facsimile-zoom/facsimile-zoom';
@@ -74,7 +74,6 @@ export class FacsimilesComponent {
     protected events: Events,
     private viewctrl: ViewController,
     private platform: Platform,
-    private ngZone: NgZone,
     private alertCtrl: AlertController,
     public songService: SongService,
     private analyticsService: AnalyticsService
@@ -492,7 +491,7 @@ export class FacsimilesComponent {
       }
 
       params = {
-        facsimilePagesInfinite: false,
+        facsimilePagesInfinite: this.facsimilePagesInfinite,
         facsUrl: this.facsUrl,
         facsID: this.facsID,
         facsNr: this.facsNr,
