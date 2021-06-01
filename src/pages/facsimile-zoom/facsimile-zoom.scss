@@ -189,6 +189,11 @@ page-facsimile-zoom {
     border-radius: $corner-roundness;
   }
 
+  .image-description .facs-desc .facs-desc-title {
+    font-weight: bold;
+    font-style: italic;
+  }
+
   img {
       cursor: move;
       // https://github.com/hammerjs/hammer.js/issues/1050#issuecomment-267595556
