@@ -125,7 +125,7 @@ export class FacsimileZoomModalPage {
   ionViewDidEnter() {
     this.analyticsService.doPageView('Facsimile-zoom');
     const toolbarElem = document.querySelector('.facsimile_button_group');
-    this.toolbarHeight = toolbarElem.getBoundingClientRect().bottom;
+    this.toolbarHeight = Math.ceil(toolbarElem.getBoundingClientRect().bottom);
     console.log('this.toolbarHeight', this.toolbarHeight);
   }
 
@@ -210,6 +210,9 @@ export class FacsimileZoomModalPage {
 
   showAbout() {
     this.showAboutHelp = !this.showAboutHelp;
+    const toolbarElem = document.querySelector('.facsimile_button_group');
+    this.toolbarHeight = Math.ceil(toolbarElem.getBoundingClientRect().bottom);
+    console.log('this.toolbarHeight', this.toolbarHeight);
   }
 
   setPage( e ) {
