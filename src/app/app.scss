@@ -659,7 +659,8 @@ ion-backdrop {
 }
 
 /* Style for alert where a different variant, manuscript or facsimile text can be selected. */
-ion-alert.select-text-alert .alert-wrapper {
+ion-alert.select-text-alert .alert-wrapper,
+ion-alert.custom-select-alert .alert-wrapper {
   max-width: 500px;
   border-radius: $corner-roundness;
 
