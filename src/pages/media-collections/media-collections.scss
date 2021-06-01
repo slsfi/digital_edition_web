@@ -22,8 +22,6 @@ media-collections {
 
   ion-card {
     box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
-    -webkit-box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
-    -moz-box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
   }
 
   .card-content {
@@ -36,32 +34,18 @@ media-collections {
     text-transform: none !important;
   }
 
-  .tagSelect {
-    box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
-    -webkit-box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
-    -moz-box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
-    background-color: color($colors, secondary);
-  }
-
-  .locationSelect {
-    box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
-    -webkit-box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
-    -moz-box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
-    background-color: color($colors, secondary);
-  }
-
-  .subjectSelect {
-    box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
-    -webkit-box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
-    -moz-box-shadow: 4px 4px 4px -1px rgba(0, 0, 0, 0.42) !important;
-    background-color: color($colors, secondary);
+  .tagSelect,
+  .locationSelect,
+  .subjectSelect{
+    box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
+    background-color: var(--secondary-color);
   }
 
   .filters {
     display: flex;
-    flex-direction: row;
     width: 60%;
     padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
   }
 
   .filters ion-item {
@@ -73,11 +57,11 @@ media-collections {
   }
 
   ion-item button {
-    background-color: rgba(0, 0, 0, 0.1) !important;
+    background-color: rgba(0, 0, 0, 0.07) !important;
   }
 
   ion-item ion-label {
-    color: black !important;
+    color: #000 !important;
     font-size: 1rem !important;
     margin-left: 0.5rem !important;
   }
@@ -103,15 +87,17 @@ media-collections {
 
   .info {
     padding-left: 1.5rem;
+    margin-top: 1rem;
   }
 
-  .info.markdown {
-    width: 60%;
-  }
+  .info.markdown{
+    max-width: 800px;
+    width: 100%;
+    margin-bottom: 2.5rem;
 
-  @media only screen and (max-width: 1024px) {
-    .info.markdown {
-      width: 100%;
+    p {
+      line-height: 1.5;
     }
   }
+
 }
