@@ -26,10 +26,11 @@ export class FacsimileZoomModalPage {
   activeImage: any;
   zoom = 1.0;
   angle = 0;
-  latestDeltaX = 0
-  latestDeltaY = 0
-  prevX = 0
-  prevY = 0
+  latestDeltaX = 0;
+  latestDeltaY = 0;
+  prevX = 0;
+  prevY = 0;
+  toolbarHeight = 0;
 
   facsUrl = '';
   facsimilePagesInfinite = false;
@@ -123,6 +124,9 @@ export class FacsimileZoomModalPage {
 
   ionViewDidEnter() {
     this.analyticsService.doPageView('Facsimile-zoom');
+    const toolbarElem = document.querySelector('.facsimile_button_group');
+    this.toolbarHeight = toolbarElem.getBoundingClientRect().bottom;
+    console.log('this.toolbarHeight', this.toolbarHeight);
   }
 
   doAnalytics(name) {
