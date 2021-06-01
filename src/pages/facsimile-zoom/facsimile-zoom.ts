@@ -210,9 +210,11 @@ export class FacsimileZoomModalPage {
 
   showAbout() {
     this.showAboutHelp = !this.showAboutHelp;
-    const toolbarElem = document.querySelector('.facsimile_button_group');
-    this.toolbarHeight = Math.ceil(toolbarElem.getBoundingClientRect().bottom);
-    console.log('this.toolbarHeight', this.toolbarHeight);
+    setTimeout(function () {
+      const toolbarElem = document.querySelector('.facsimile_button_group');
+      this.toolbarHeight = Math.ceil(toolbarElem.getBoundingClientRect().bottom);
+      console.log('this.toolbarHeight', this.toolbarHeight);
+    }.bind(this), 500);
   }
 
   setPage( e ) {
