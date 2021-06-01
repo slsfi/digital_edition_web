@@ -198,9 +198,11 @@ export class MediaCollectionPage {
   }
 
   openImage(index, mediaCollectionId) {
+    console.log('mediaCollection: ', this.mediaCollection);
     const zoomedImages = this.mediaCollection.map(i => this.getImageUrl(i.front, mediaCollectionId));
     const backsides = zoomedImages.map(i => i.replace('.jpg', 'B.jpg'));
     const descriptions = this.mediaCollection.map(i => i.description);
+    // const imageTitles = this.mediaCollection.map(i => i.description);
 
     const modal = this.modalController.create(FacsimileZoomModalPage,
       { 'images': zoomedImages, 'activeImage': index, 'backsides' : backsides, 'descriptions' : descriptions },
