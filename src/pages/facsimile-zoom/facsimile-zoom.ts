@@ -78,17 +78,19 @@ export class FacsimileZoomModalPage {
       this.doAnalytics(String(this.facsUrl) + String(this.facsNumber));
     } else {
       this.images = this.navParams.get('images');
+
       try {
         this.descriptions = this.navParams.get('descriptions');
       } catch (e) {
         this.descriptions = [];
       }
+
       try {
         this.imageTitles = this.navParams.get('imageTitles');
       } catch (e) {
         this.imageTitles = [];
       }
-      console.log('this.imageTitles.length', this.imageTitles.length);
+
       if (this.imageTitles.length > 0) {
         for (let x = 0; x < this.imageTitles.length; x++) {
           if (this.imageTitles[x] !== '' && this.imageTitles[x] !== 'null' && this.imageTitles[x] !== undefined && this.imageTitles[x] !== null) {
@@ -97,23 +99,6 @@ export class FacsimileZoomModalPage {
         }
       }
 
-      // Merge image titles to descriptions
-      /*
-      if (this.imageTitles.length > 0 && this.descriptions.length > 0
-      && this.imageTitles.length === this.descriptions.length) {
-        for (let x = 0; x < this.imageTitles.length; x++) {
-          let newDescription = '';
-          if (this.imageTitles[x] !== '' && this.imageTitles[x] !== undefined
-          && this.imageTitles[x] !== null) {
-            newDescription += '<span class="mediaImageTitle">' + this.imageTitles[x] + '.</span>';
-          }
-          if (newDescription !== '' && this.descriptions[x] !== ''
-          && this.descriptions[x] !== undefined && this.descriptions[x] !== null) {
-            newDescription += ' ' + this.descriptions[x];
-          } else if 
-        }
-      }
-      */
       this.activeImage = this.navParams.get('activeImage');
       this.manualPageNumber = this.activeImage;
       this.doAnalytics(String(this.images[this.activeImage]));
