@@ -105,4 +105,8 @@ media-collections {
     }
   }
 
+  .info:not(.markdown) + .filters {
+    margin-top: 2rem;
+  }
+
 }
