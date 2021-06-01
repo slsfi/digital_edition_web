@@ -29,7 +29,7 @@
       <ion-label>
       {{ ("MediaCollections.tags" | translate) !== "MediaCollections.tags" ?  ("MediaCollections.tags" | translate) : ("tags" | translate) }}
       </ion-label>
-      <ion-select [(ngModel)]="tagModel" class="tagSelect" (ngModelChange)="filterCollectionsByTag(tagModel)" [okText]="'BasicActions.Ok' | translate" [cancelText]="'BasicActions.Cancel' | translate" [selectOptions]="{'cssClass': 'custom-select-alert'}">
+      <ion-select [(ngModel)]="tagModel" (ngModelChange)="filterCollectionsByTag(tagModel)" [okText]="'BasicActions.Ok' | translate" [cancelText]="'BasicActions.Cancel' | translate" [selectOptions]="{'cssClass': 'custom-select-alert'}">
         <ion-option selected value=""></ion-option>
         <ion-option *ngFor="let tag of galleryTags" value="{{tag.name}}">{{tag.name}}</ion-option>
       </ion-select>
@@ -38,7 +38,7 @@
       <ion-label>
       {{ ("MediaCollections.locations" | translate) !== "MediaCollections.locations" ?  ("MediaCollections.locations" | translate) : ("tags" | translate) }}
       </ion-label>
-      <ion-select [(ngModel)]="locationModel" class="locationSelect"
+      <ion-select [(ngModel)]="locationModel"
         (ngModelChange)="filterCollectionsByLocation(locationModel)" [okText]="'BasicActions.Ok' | translate" [cancelText]="'BasicActions.Cancel' | translate" [selectOptions]="{'cssClass': 'custom-select-alert'}">
         <ion-option selected value=""></ion-option>
         <ion-option *ngFor="let location of galleryLocations" value="{{location.name}}">{{location.name}}</ion-option>
@@ -48,7 +48,7 @@
       <ion-label>
       {{ ("MediaCollections.subjects" | translate) !== "MediaCollections.subjects" ?  ("MediaCollections.subjects" | translate) : ("tags" | translate) }}
       </ion-label>
-      <ion-select [(ngModel)]="subjectModel" class="subjectSelect"
+      <ion-select [(ngModel)]="subjectModel"
         (ngModelChange)="filterCollectionsBySubject(subjectModel)" [okText]="'BasicActions.Ok' | translate" [cancelText]="'BasicActions.Cancel' | translate" [selectOptions]="{'cssClass': 'custom-select-alert'}">
         <ion-option selected value=""></ion-option>
         <ion-option *ngFor="let subject of gallerySubjects" value="{{subject.name}}">{{subject.name}}</ion-option>
