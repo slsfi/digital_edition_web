@@ -52,8 +52,7 @@
                         <img alt="facsimile" *ngIf="!facsimilePagesInfinite && (!backside || !backsides[activeImage])"
                           [src]="images[activeImage]"
                           class="facsimile-zoom-image"
-                          [ngClass]="(!(descriptions && descriptions[activeImage] && imageTitles && imageTitles[activeImage]) || !showAboutHelp)?'no-description':''"
-                          [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
+                          [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)', 'max-height':'toolbarHeight'}"
                           (wheel)="onMouseWheel($event)"
                           (pan)="handlePanEvent($event)"
                           (mouseup)="onMouseUp($event)"
@@ -63,8 +62,7 @@
                         <img alt="facsimile" *ngIf="!facsimilePagesInfinite && backside && backsides[activeImage]"
                           [src]="backSide(images[activeImage])"
                           class="facsimile-zoom-image"
-                          [ngClass]="(!(descriptions && descriptions[activeImage] && imageTitles && imageTitles[activeImage]) || !showAboutHelp)?'no-description':''"
-                          [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
+                          [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)', 'max-height':'toolbarHeight'}"
                           (wheel)="onMouseWheel($event)"
                           (pan)="handlePanEvent($event)"
                           (mouseup)="onMouseUp($event)"
@@ -74,8 +72,7 @@
                         <img alt="facsimile" *ngIf="facsimilePagesInfinite && facsNumber"
                           [src]="facsUrl + facsNumber + '/' + facsSize"
                           class="facsimile-zoom-image"
-                          [ngClass]="(!(descriptions && descriptions[activeImage] && imageTitles && imageTitles[activeImage]) || !showAboutHelp)?'no-description':''"
-                          [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
+                          [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)', 'max-height':'toolbarHeight'}"
                           (wheel)="onMouseWheel($event)"
                           (pan)="handlePanEvent($event)"
                           (mouseup)="onMouseUp($event)"
@@ -86,14 +83,12 @@
                     <div *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet())">
                         <div *ngIf="!facsimilePagesInfinite">
                             <pinch-zoom overflow="visible" backgroundColor="transparent" [limit-zoom]="40" [minPanScale]="0">
-                                <img alt="facsimile" [src]="images[activeImage]" class="facsimile-zoom-image"
-                                [ngClass]="(!(descriptions && descriptions[activeImage] && imageTitles && imageTitles[activeImage]) || !showAboutHelp)?'no-description':''">
+                                <img alt="facsimile" [src]="images[activeImage]" class="facsimile-zoom-image" [ngStyle]="{'max-height':'toolbarHeight'}">
                             </pinch-zoom>
                         </div>
                         <div *ngIf="facsimilePagesInfinite && facsNumber">
                             <pinch-zoom overflow="visible" backgroundColor="transparent" [limit-zoom]="40" [minPanScale]="0">
-                                <img alt="facsimile" [src]="facsUrl + facsNumber" class="facsimile-zoom-image"
-                                [ngClass]="(!(descriptions && descriptions[activeImage] && imageTitles && imageTitles[activeImage]) || !showAboutHelp)?'no-description':''">
+                                <img alt="facsimile" [src]="facsUrl + facsNumber" class="facsimile-zoom-image" [ngStyle]="{'max-height':'toolbarHeight'}">
                             </pinch-zoom>
                         </div>
                     </div>
