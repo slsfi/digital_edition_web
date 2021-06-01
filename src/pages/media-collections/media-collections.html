@@ -2,7 +2,7 @@
     <div class="info">
         <h1>{{"TOC.MediaCollections" | translate }}</h1>
     </div>
-    <div class="info markdown">
+    <div class="info markdown" *ngIf="mdContent.content">
       <markdown [data]="mdContent.content"></markdown>
     </div>
     <div class="filters" *ngIf="galleryTags.length > 1 || galleryLocations.length > 1 || gallerySubjects.length > 1">
