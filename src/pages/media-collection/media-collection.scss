@@ -96,6 +96,10 @@ page-media-collection {
     }
   }
 
+  .info:not(.markdown) + .filters {
+    margin-top: 2rem;
+  }
+
   .img-desc.title {
     font-style: italic;
     font-weight: 700;
