@@ -94,7 +94,9 @@ export class FacsimileZoomModalPage {
       if (this.imageTitles.length > 0) {
         for (let x = 0; x < this.imageTitles.length; x++) {
           if (this.imageTitles[x] !== '' && this.imageTitles[x] !== 'null' && this.imageTitles[x] !== undefined && this.imageTitles[x] !== null) {
-            this.imageTitles[x] = this.imageTitles[x].trim() + '.';
+            if (this.imageTitles[x].slice(-1) !== '.') {
+              this.imageTitles[x] = this.imageTitles[x].trim() + '.';
+            }
           }
         }
       }
