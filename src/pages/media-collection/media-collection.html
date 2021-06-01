@@ -24,7 +24,7 @@
   <div class="info markdown">
     <markdown [data]="mdContent.content"></markdown>
   </div>
-  <div class="filters">
+  <div class="filters" *ngIf="galleryTags.length > 1 || galleryLocations.length > 1 || gallerySubjects.length > 1">
     <ion-item class="tagSelect" *ngIf="galleryTags.length > 1">
       <ion-label>
       {{ ("MediaCollections.tags" | translate) !== "MediaCollections.tags" ?  ("MediaCollections.tags" | translate) : ("tags" | translate) }}
