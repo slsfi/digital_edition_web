@@ -88,12 +88,13 @@ export class FacsimileZoomModalPage {
       } catch (e) {
         this.imageTitles = [];
       }
+      console.log('this.imageTitles.length', this.imageTitles.length);
       if (this.imageTitles.length > 0) {
-        this.imageTitles.forEach(element => {
-          if (element !== '' && element !== 'null' && element !== undefined && element !== null) {
-            element = element.trim() + '.';
+        for (let x = 0; x < this.imageTitles.length; x++) {
+          if (this.imageTitles[x] !== '' && this.imageTitles[x] !== 'null' && this.imageTitles[x] !== undefined && this.imageTitles[x] !== null) {
+            this.imageTitles[x] = this.imageTitles[x].trim() + '.';
           }
-        });
+        }
       }
 
       // Merge image titles to descriptions
