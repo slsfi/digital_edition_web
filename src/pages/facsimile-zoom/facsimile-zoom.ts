@@ -156,6 +156,10 @@ export class FacsimileZoomModalPage {
       this.manualPageNumber = 1;
     }
     this.doAnalytics(String(this.images[this.activeImage]));
+    setTimeout(function () {
+      const toolbarElem = document.querySelector('.facsimile_button_group');
+      this.toolbarHeight = Math.ceil(toolbarElem.getBoundingClientRect().bottom);
+    }.bind(this), 500);
   }
 
   next() {
@@ -177,6 +181,10 @@ export class FacsimileZoomModalPage {
       this.manualPageNumber = 1;
     }
     this.doAnalytics(String(this.images[this.activeImage]));
+    setTimeout(function () {
+      const toolbarElem = document.querySelector('.facsimile_button_group');
+      this.toolbarHeight = Math.ceil(toolbarElem.getBoundingClientRect().bottom);
+    }.bind(this), 500);
   }
 
   nextFacsimileUrl() {
