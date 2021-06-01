@@ -21,8 +21,6 @@ page-media-collection {
 
   ion-card{
     box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-    -webkit-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-    -moz-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
   }
   .card-content{
     background-color: color($colors, secondary);
@@ -46,10 +44,10 @@ page-media-collection {
     margin-bottom: 1.5rem;
   }
 
-    @media only screen and (max-width: 1024px) {
-      .filters{
-          width: 100%;
-      }
+  @media only screen and (max-width: 1024px) {
+    .filters{
+      width: 100%;
+    }
   }
 
   @media only screen and (max-width: 800px) {
