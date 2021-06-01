@@ -41,7 +41,7 @@
                 </div>
                 <div *ngIf="(descriptions && descriptions[activeImage]) || (imageTitles && imageTitles[activeImage])" class="image-description"
                     [ngStyle]="{'display': showAboutHelp?'':'none'}">
-                    <ion-label *ngIf="(descriptions && descriptions[activeImage]) || (imageTitles && imageTitles[activeImage])" class="facs-desc"><span *ngIf="imageTitles && imageTitles[activeImage]" [innerHTML]="imageTitles[activeImage]"></span> <span *ngIf="descriptions && descriptions[activeImage]" [innerHTML]="descriptions[activeImage]"></span></ion-label>
+                    <ion-label *ngIf="(descriptions && descriptions[activeImage]) || (imageTitles && imageTitles[activeImage])" class="facs-desc"><span class="facs-desc-title" *ngIf="imageTitles && imageTitles[activeImage]" [innerHTML]="imageTitles[activeImage]"></span> <span *ngIf="descriptions && descriptions[activeImage]" [innerHTML]="descriptions[activeImage]"></span></ion-label>
                 </div>
             </div>
         </div>
