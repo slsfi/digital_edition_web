@@ -36,7 +36,7 @@ page-media-collection {
   .locationSelect,
   .subjectSelect{
     box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-    // background-color: color($colors, secondary);
+    background-color: var(--secondary-color);
   }
 
   .filters{
@@ -69,10 +69,10 @@ page-media-collection {
   }
 
   ion-item button{
-    background-color: rgba(0,0,0,0.1) !important;
+    background-color: rgba(0,0,0,0.075) !important;
   }
   ion-item ion-label{
-    color: black !important;
+    color: #000 !important;
     font-size: 1rem !important;
     margin-left: 0.5rem !important;
   }
