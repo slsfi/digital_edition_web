@@ -22,6 +22,7 @@ export class FacsimileZoomModalPage {
   images: any[] = [];
   backsides: any;
   descriptions: any;
+  imageTitles: any;
   activeImage: any;
   zoom = 1.0;
   angle = 0;
@@ -82,6 +83,36 @@ export class FacsimileZoomModalPage {
       } catch (e) {
         this.descriptions = [];
       }
+      try {
+        this.imageTitles = this.navParams.get('imageTitles');
+      } catch (e) {
+        this.imageTitles = [];
+      }
+      if (this.imageTitles.length > 0) {
+        this.imageTitles.forEach(element => {
+          if (element !== '' && element !== 'null' && element !== undefined && element !== null) {
+            element = element.trim() + '.';
+          }
+        });
+      }
+
+      // Merge image titles to descriptions
+      /*
+      if (this.imageTitles.length > 0 && this.descriptions.length > 0
+      && this.imageTitles.length === this.descriptions.length) {
+        for (let x = 0; x < this.imageTitles.length; x++) {
+          let newDescription = '';
+          if (this.imageTitles[x] !== '' && this.imageTitles[x] !== undefined
+          && this.imageTitles[x] !== null) {
+            newDescription += '<span class="mediaImageTitle">' + this.imageTitles[x] + '.</span>';
+          }
+          if (newDescription !== '' && this.descriptions[x] !== ''
+          && this.descriptions[x] !== undefined && this.descriptions[x] !== null) {
+            newDescription += ' ' + this.descriptions[x];
+          } else if 
+        }
+      }
+      */
       this.activeImage = this.navParams.get('activeImage');
       this.manualPageNumber = this.activeImage;
       this.doAnalytics(String(this.images[this.activeImage]));

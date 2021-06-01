@@ -202,10 +202,9 @@ export class MediaCollectionPage {
     const backsides = zoomedImages.map(i => i.replace('.jpg', 'B.jpg'));
     const descriptions = this.mediaCollection.map(i => i.description);
     const imageTitles = this.mediaCollection.map(i => i.media_title_translation);
-    console.log('imageTitles: ', imageTitles);
 
     const modal = this.modalController.create(FacsimileZoomModalPage,
-      { 'images': zoomedImages, 'activeImage': index, 'backsides' : backsides, 'descriptions' : descriptions },
+      { 'images': zoomedImages, 'activeImage': index, 'backsides': backsides, 'descriptions': descriptions, 'imageTitles': imageTitles },
       { cssClass: 'facsimile-zoom-modal' }
     );
     modal.present();
