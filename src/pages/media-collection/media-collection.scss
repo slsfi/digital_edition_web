@@ -32,30 +32,21 @@ page-media-collection {
     font-size: 1.8rem;
     text-transform: none !important;
   }
-  .tagSelect{
-      box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-      -webkit-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-      -moz-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-      background-color: color($colors, secondary);
-  }
-  .locationSelect{
-      box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-      -webkit-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-      -moz-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-      background-color: color($colors, secondary);
-  }
+  .tagSelect,
+  .locationSelect,
   .subjectSelect{
-      box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-      -webkit-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-      -moz-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-      background-color: color($colors, secondary);
+    box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
+    -webkit-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
+    -moz-box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
+    background-color: color($colors, secondary);
   }
+
   .filters{
-      display: flex;
-      flex-direction: row;
-      width: 60%;
-      padding-left: 1.5rem;
-      margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
   }
 
     @media only screen and (max-width: 1024px) {
