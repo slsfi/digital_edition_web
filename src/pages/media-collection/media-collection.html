@@ -48,7 +48,7 @@
       <ion-label>
       {{ ("MediaCollections.subjects" | translate) !== "MediaCollections.subjects" ?  ("MediaCollections.subjects" | translate) : ("tags" | translate) }}
       </ion-label>
-      <ion-select [(ngModel)]="subjectModel" class="subjectSelect"
+      <ion-select [(ngModel)]="subjectModel"
         (ngModelChange)="filterCollectionsBySubject(subjectModel)" [okText]="'BasicActions.Ok' | translate" [cancelText]="'BasicActions.Cancel' | translate" [selectOptions]="{'cssClass': 'custom-select-alert'}">
         <ion-option selected value=""></ion-option>
         <ion-option *ngFor="let subject of gallerySubjects" value="{{subject.name}}">{{subject.name}}</ion-option>
