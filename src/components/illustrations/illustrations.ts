@@ -3,6 +3,7 @@ import { NavParams, Events } from 'ionic-angular';
 import { TextService } from '../../app/services/texts/text.service';
 import { ModalController } from 'ionic-angular';
 import { ConfigService } from '@ngx-config/core';
+import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { FacsimileZoomModalPage } from '../../pages/facsimile-zoom/facsimile-zoom';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -29,6 +30,7 @@ export class IllustrationsComponent {
   text: any;
   constructor(
     public navParams: NavParams,
+    protected readPopoverService: ReadPopoverService,
     private textService: TextService,
     private modalCtrl: ModalController,
     private config: ConfigService,
