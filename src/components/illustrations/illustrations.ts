@@ -27,7 +27,6 @@ export class IllustrationsComponent {
   showOne = false;
   apiEndPoint: string;
   projectMachineName: string;
-  text: any;
   constructor(
     public navParams: NavParams,
     protected readPopoverService: ReadPopoverService,
@@ -37,9 +36,7 @@ export class IllustrationsComponent {
     private events: Events,
     public translate: TranslateService,
     private analyticsService: AnalyticsService
-  ) {
-    this.text = '';
-  }
+  ) { }
   ngOnInit() {
     this.getIllustrationImages();
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
@@ -132,16 +129,6 @@ export class IllustrationsComponent {
         const image = {src: '/assets/images/verk/' + String(doodles[i].dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
         console.log(image);
         this.images.push(image);
-      }
-      if (this.images.length < 1) {
-        this.translate.get('Read.Illustrations.Nothing').subscribe(
-          translation => {
-            this.text = translation;
-          }, error => {
-            console.error(error);
-            this.text = 'Inga illustrationer.';
-          }
-        );
       }
     });
   }
