@@ -1,6 +1,4 @@
-<ng-container *ngIf="images.length > 0; then illustrations; else none"></ng-container>
-
-<ng-template #illustrations>
+<ng-container *ngIf="images.length > 0">
   <button ion-button (click)="toggleViewAll()">{{"Read.Illustrations.Showall" | translate}}</button>
   <div *ngIf="viewAll || showOne">
     <div class="illustration-image-wrapper" *ngFor="let image of images">
@@ -11,10 +9,7 @@
       </button>
     </div>
   </div>
-</ng-template>
+</ng-container>
 
-<ng-template #none>
-  <h1>
-    {{"Read.Illustrations.Nothing" | translate}}
-  </h1>
-</ng-template>
+<div *ngIf="images.length < 1" class="tei" [innerHTML]="text" [ngClass]="(readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize'">
+</div>
