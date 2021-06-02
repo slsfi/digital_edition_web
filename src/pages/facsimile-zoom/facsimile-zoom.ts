@@ -79,7 +79,6 @@ export class FacsimileZoomModalPage {
       this.doAnalytics(String(this.facsUrl) + String(this.facsNumber));
     } else {
       this.images = this.navParams.get('images');
-      console.log('images: ', this.images);
 
       try {
         this.descriptions = this.navParams.get('descriptions');
@@ -112,7 +111,7 @@ export class FacsimileZoomModalPage {
       }
 
       this.activeImage = this.navParams.get('activeImage');
-      this.manualPageNumber = this.activeImage;
+      this.manualPageNumber = this.activeImage + 1;
       this.doAnalytics(String(this.images[this.activeImage]));
     }
 
