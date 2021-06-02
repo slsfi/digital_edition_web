@@ -497,7 +497,7 @@ export class FacsimilesComponent {
         facsNr: this.facsNr,
         facsSize: this.facsSize,
         images,
-        activeImage: this.manualPageNumber,
+        activeImage: this.manualPageNumber - 1,
       };
     } else {
       params = {
