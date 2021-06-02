@@ -27,8 +27,7 @@
                     </button>
                     <button *ngIf="(descriptions && descriptions[activeImage]) || (imageTitles && imageTitles[activeImage])" ion-fab
                         color="primary" mini (click)="showAbout()">
-                        <ion-icon name="code-working" *ngIf="showAboutHelp"></ion-icon>
-                        <ion-icon name="code" *ngIf="!showAboutHelp"></ion-icon>
+                        <ion-icon name="information-circle></ion-icon>
                     </button>
                     <button ion-fab mini (click)="cancel()">
                         <ion-icon name="close" class="close_button"></ion-icon>
