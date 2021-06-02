@@ -82,17 +82,19 @@ export class FacsimileZoomModalPage {
 
       try {
         this.descriptions = this.navParams.get('descriptions');
+        if (this.descriptions === undefined) {
+          this.descriptions = [];
+        }
       } catch (e) {
         this.descriptions = [];
       }
 
       try {
         this.imageTitles = this.navParams.get('imageTitles');
+        if (this.imageTitles === undefined) {
+          this.imageTitles = [];
+        }
       } catch (e) {
-        this.imageTitles = [];
-      }
-
-      if (this.imageTitles === undefined) {
         this.imageTitles = [];
       }
 
