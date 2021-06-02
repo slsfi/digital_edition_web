@@ -486,7 +486,7 @@ export class FacsimilesComponent {
     if (this.facsimilePagesInfinite) {
       // TODO: images array contains 0 index that is invalid since page numbers are 1 based.
       const images = []
-      for (let i = 0; i < this.numberOfPages; i++) {
+      for (let i = 1; i < this.numberOfPages + 1; i++) {
         images.push(this.facsUrl + i + '/' + this.facsSize)
       }
 
