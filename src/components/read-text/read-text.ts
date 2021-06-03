@@ -1,5 +1,5 @@
 
-import { Component, Input, ElementRef, Renderer2 } from '@angular/core';
+import { Component, Input, ElementRef, Renderer2, NgZone } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { TextService } from '../../app/services/texts/text.service';
@@ -44,6 +44,7 @@ export class ReadTextComponent {
     protected storage: Storage,
     private toastCtrl: ToastController,
     private renderer2: Renderer2,
+    private ngZone: NgZone,
     private elementRef: ElementRef,
     private config: ConfigService,
     protected modalController: ModalController,
@@ -71,44 +72,46 @@ export class ReadTextComponent {
   }
 
   ngAfterViewInit() {
-    // Scroll to link position if defined.
-    let interationsLeft = 10;
-    clearInterval(this.intervalTimerId);
-    this.intervalTimerId = setInterval(function() {
-      if (interationsLeft < 1) {
-        clearInterval(this.intervalTimerId);
-      } else {
-        interationsLeft -= 1;
-        let posId = null;
-        if (this.nochapterPos !== undefined && this.nochapterPos !== null) {
-          posId = this.nochapterPos;
-        } else if ( this.link !== undefined ) {
-          const linkData = this.link.split(';');
-          if (linkData[1]) {
-            posId = linkData[1];
+    this.ngZone.runOutsideAngular(() => {
+      // Scroll to link position if defined.
+      let interationsLeft = 10;
+      clearInterval(this.intervalTimerId);
+      this.intervalTimerId = setInterval(function() {
+        if (interationsLeft < 1) {
+          clearInterval(this.intervalTimerId);
+        } else {
+          interationsLeft -= 1;
+          let posId = null;
+          if (this.nochapterPos !== undefined && this.nochapterPos !== null) {
+            posId = this.nochapterPos;
+          } else if ( this.link !== undefined ) {
+            const linkData = this.link.split(';');
+            if (linkData[1]) {
+              posId = linkData[1];
+            } else {
+              clearInterval(this.intervalTimerId);
+            }
           } else {
             clearInterval(this.intervalTimerId);
           }
-        } else {
-          clearInterval(this.intervalTimerId);
-        }
 
-        if (posId) {
-          let target = document.getElementsByName('' + posId + '')[0] as HTMLAnchorElement;
-          if ( target && ((target.parentElement && target.parentElement.classList.contains('ttFixed'))
-          || (target.parentElement.parentElement && target.parentElement.parentElement.classList.contains('ttFixed'))) ) {
-            // Position in footnote --> look for second target
-            target = document.getElementsByName('' + posId + '')[1] as HTMLAnchorElement;
-          }
-          if (target) {
-            this.scrollToHTMLElement(target, false);
+          if (posId) {
+            let target = document.getElementsByName('' + posId + '')[0] as HTMLAnchorElement;
+            if ( target && ((target.parentElement && target.parentElement.classList.contains('ttFixed'))
+            || (target.parentElement.parentElement && target.parentElement.parentElement.classList.contains('ttFixed'))) ) {
+              // Position in footnote --> look for second target
+              target = document.getElementsByName('' + posId + '')[1] as HTMLAnchorElement;
+            }
+            if (target) {
+              this.scrollToHTMLElement(target, false);
+              clearInterval(this.intervalTimerId);
+            }
+          } else {
             clearInterval(this.intervalTimerId);
           }
-        } else {
-          clearInterval(this.intervalTimerId);
         }
-      }
-    }.bind(this), 1000);
+      }.bind(this), 1000);
+    });
   }
 
   ngOnDestroy() {
@@ -231,49 +234,64 @@ export class ReadTextComponent {
   private setUpTextListeners() {
     const nElement: HTMLElement = this.elementRef.nativeElement;
 
-    /* CLICK EVENTS */
-    this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
-      event.preventDefault();
-      try {
-        if (this.config.getSettings('settings.showReadTextIllustrations')) {
-          const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
-          const eventTarget = event.target as HTMLElement;
-          if (eventTarget.classList.contains('doodle')) {
-            const image = {src: '/assets/images/verk/' + String(eventTarget.dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
-            this.events.publish('give:illustration', image);
-          }
-          if ( showIllustration.includes(this.link.split('_')[1])) {
-            if (eventTarget.classList.contains('est_figure_graphic')) {
-              // Check if we have the "illustrations" tab open, if not, open
-              if ( document.querySelector('illustrations') === null ) {
-                this.openNewView(event, null, 'illustrations');
-              }
-              const image = {src: event.target.src, class: 'illustration'};
-              this.events.publish('give:illustration', image);
+    this.ngZone.runOutsideAngular(() => {
+
+      /* CLICK EVENTS */
+      this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
+        event.preventDefault();
+        try {
+          if (this.config.getSettings('settings.showReadTextIllustrations')) {
+            const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
+            const eventTarget = event.target as HTMLElement;
+            if (eventTarget.classList.contains('doodle')) {
+              const image = {src: '/assets/images/verk/' + String(eventTarget.dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
+              this.ngZone.run(() => {
+                this.events.publish('give:illustration', image);
+              });
             }
-          } else {
-            if (eventTarget.previousElementSibling !== null &&
-              eventTarget.previousElementSibling.classList.contains('est_figure_graphic')) {
-              // Check if we have the "illustrations" tab open, if not, open
-              if ( document.querySelector('illustrations') === null ) {
-                this.openNewView(event, null, 'illustrations');
+            if ( showIllustration.includes(this.link.split('_')[1])) {
+              if (eventTarget.classList.contains('est_figure_graphic')) {
+                // Check if we have the "illustrations" tab open, if not, open
+                if ( document.querySelector('illustrations') === null ) {
+                  this.ngZone.run(() => {
+                    this.openNewView(event, null, 'illustrations');
+                  });
+                }
+                const image = {src: event.target.src, class: 'illustration'};
+                this.ngZone.run(() => {
+                  this.events.publish('give:illustration', image);
+                });
               }
-              const image = {src: event.target.previousElementSibling.src, class: 'illustration'};
-              this.events.publish('give:illustration', image);
+            } else {
+              if (eventTarget.previousElementSibling !== null &&
+                eventTarget.previousElementSibling.classList.contains('est_figure_graphic')) {
+                // Check if we have the "illustrations" tab open, if not, open
+                if ( document.querySelector('illustrations') === null ) {
+                  this.ngZone.run(() => {
+                    this.openNewView(event, null, 'illustrations');
+                  });
+                }
+                const image = {src: event.target.previousElementSibling.src, class: 'illustration'};
+                this.ngZone.run(() => {
+                  this.events.publish('give:illustration', image);
+                });
+              }
             }
           }
+        } catch (e) {
+          console.error(e);
         }
-      } catch (e) {
-        console.error(e);
-      }
 
-      if (event.target.parentNode.classList.contains('ref_illustration')) {
-        const hashNumber = event.target.parentNode.hash;
-        const imageNumber = hashNumber.split('#')[1];
-        this.openIllustration(imageNumber);
-      }
+        if (event.target.parentNode.classList.contains('ref_illustration')) {
+          const hashNumber = event.target.parentNode.hash;
+          const imageNumber = hashNumber.split('#')[1];
+          this.ngZone.run(() => {
+            this.openIllustration(imageNumber);
+          });
+        }
+      });
+
     });
-
   }
 
   private scrollToHTMLElement(element: HTMLElement, addTag: boolean, position = 'top', timeOut = 5000) {

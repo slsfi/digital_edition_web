@@ -422,19 +422,21 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   ngAfterViewInit() {
-    setTimeout(function () {
-      try {
-        const itemId = 'toc_' + this.establishedText.link;
-        let foundElem = document.getElementById(itemId);
-        if (foundElem === null) {
-          // Scroll to toc item without position
-          foundElem = document.getElementById(itemId.split(';').shift());
+    this.ngZone.runOutsideAngular(() => {
+      setTimeout(function () {
+        try {
+          const itemId = 'toc_' + this.establishedText.link;
+          let foundElem = document.getElementById(itemId);
+          if (foundElem === null) {
+            // Scroll to toc item without position
+            foundElem = document.getElementById(itemId.split(';').shift());
+          }
+          this.scrollToTOC(foundElem);
+        } catch (e) {
+          console.log(e);
         }
-        this.scrollToTOC(foundElem);
-      } catch (e) {
-        console.log(e);
-      }
-    }.bind(this), 1000);
+      }.bind(this), 1000);
+    });
   }
 
   ngOnDestroy() {
@@ -956,330 +958,354 @@ export class ReadPage /*implements OnDestroy*/ {
   private setUpTextListeners() {
     const nElement: HTMLElement = this.elementRef.nativeElement;
 
-    /* CHECK ONCE IF THE USER IF TOUCHING THE SCREEN */
-    this.unlistenFirstTouchStartEvent = this.renderer2.listen(nElement, 'touchstart', (event) => {
-      this.userIsTouching = true;
-      // Don't listen for mouseover and mouseout events since they should have no effect on touch devices
-      this.unlistenMouseoverEvents();
-      this.unlistenMouseoutEvents();
-      this.unlistenFirstTouchStartEvent();
-    });
+    this.ngZone.runOutsideAngular(() => {
 
-    /* CLICK EVENTS */
-    this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
-      if (!this.userIsTouching) {
-        this.hideToolTip();
-      }
-      let eventTarget = this.getEventTarget(event);
-      let modalShown = false;
+      /* CHECK ONCE IF THE USER IF TOUCHING THE SCREEN */
+      this.unlistenFirstTouchStartEvent = this.renderer2.listen(nElement, 'touchstart', (event) => {
+        this.userIsTouching = true;
+        // Don't listen for mouseover and mouseout events since they should have no effect on touch devices
+        this.unlistenMouseoverEvents();
+        this.unlistenMouseoutEvents();
+        this.unlistenFirstTouchStartEvent();
+      });
 
-      // Modal trigger for person-, place- or workinfo and info overlay trigger for footnote and comment.
-      // Loop needed for finding correct tooltip trigger when there are nested triggers.
-      while (!modalShown && eventTarget['classList'].contains('tooltiptrigger')) {
-        if (eventTarget.hasAttribute('data-id')) {
-          if (eventTarget['classList'].contains('person')
-          && this.readPopoverService.show.personInfo) {
-            this.showPersonModal(eventTarget.getAttribute('data-id'));
-            modalShown = true;
-          } else if (eventTarget['classList'].contains('placeName')
-          && this.readPopoverService.show.placeInfo) {
-            this.showPlaceModal(eventTarget.getAttribute('data-id'));
-            modalShown = true;
-          } else if (eventTarget['classList'].contains('title')
-          && this.readPopoverService.show.workInfo) {
-            this.showWorkModal(eventTarget.getAttribute('data-id'));
-            modalShown = true;
-          } else if (eventTarget['classList'].contains('comment')
-          && this.readPopoverService.show.comments) {
-            /* The user has clicked a comment lemma ("asterisk") in the reading-text.
-              Check if comments view is shown. */
-            const viewTypesShown = this.getViewTypesShown();
-            const commentsViewIsShown = viewTypesShown.includes('comments');
-            if (commentsViewIsShown && this.userSettingsService.isDesktop()) {
-              // Scroll to comment in comments view and scroll lemma in reading-text view.
-              const numId = eventTarget.getAttribute('data-id').replace( /^\D+/g, '');
-              const targetId = 'start' + numId;
-              let lemmaStart = document.querySelector('read-text').querySelector('[data-id="' + targetId + '"]') as HTMLElement;
-              if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
-                // The lemma is in a footnote, so we should get the second element with targetId.
-                lemmaStart = document.querySelector('read-text').querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
+      /* CLICK EVENTS */
+      this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
+        if (!this.userIsTouching) {
+          this.ngZone.run(() => {
+            this.hideToolTip();
+          });
+        }
+        let eventTarget = this.getEventTarget(event);
+        let modalShown = false;
+
+        // Modal trigger for person-, place- or workinfo and info overlay trigger for footnote and comment.
+        // Loop needed for finding correct tooltip trigger when there are nested triggers.
+        while (!modalShown && eventTarget['classList'].contains('tooltiptrigger')) {
+          if (eventTarget.hasAttribute('data-id')) {
+            if (eventTarget['classList'].contains('person')
+            && this.readPopoverService.show.personInfo) {
+              this.ngZone.run(() => {
+                this.showPersonModal(eventTarget.getAttribute('data-id'));
+              });
+              modalShown = true;
+            } else if (eventTarget['classList'].contains('placeName')
+            && this.readPopoverService.show.placeInfo) {
+              this.ngZone.run(() => {
+                this.showPlaceModal(eventTarget.getAttribute('data-id'));
+              });
+              modalShown = true;
+            } else if (eventTarget['classList'].contains('title')
+            && this.readPopoverService.show.workInfo) {
+              this.ngZone.run(() => {
+                this.showWorkModal(eventTarget.getAttribute('data-id'));
+              });
+              modalShown = true;
+            } else if (eventTarget['classList'].contains('comment')
+            && this.readPopoverService.show.comments) {
+              /* The user has clicked a comment lemma ("asterisk") in the reading-text.
+                Check if comments view is shown. */
+              const viewTypesShown = this.getViewTypesShown();
+              const commentsViewIsShown = viewTypesShown.includes('comments');
+              if (commentsViewIsShown && this.userSettingsService.isDesktop()) {
+                // Scroll to comment in comments view and scroll lemma in reading-text view.
+                const numId = eventTarget.getAttribute('data-id').replace( /^\D+/g, '');
+                const targetId = 'start' + numId;
+                let lemmaStart = document.querySelector('read-text').querySelector('[data-id="' + targetId + '"]') as HTMLElement;
+                if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
+                  // The lemma is in a footnote, so we should get the second element with targetId.
+                  lemmaStart = document.querySelector('read-text').querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
+                }
+                if (lemmaStart !== null && lemmaStart !== undefined) {
+                  // Scroll to start of lemma in reading text and temporarily prepend arrow.
+                  this.scrollToCommentLemma(lemmaStart);
+                  // Scroll to comment in the comments-column.
+                  const commentSettimeoutId = this.scrollToComment(numId);
+                }
+              } else {
+                // If a comments view isn't shown or viewmode is mobile, show comment in infoOverlay.
+                this.ngZone.run(() => {
+                  this.showCommentInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
+                });
               }
-              if (lemmaStart !== null && lemmaStart !== undefined) {
-                // Scroll to start of lemma in reading text and temporarily prepend arrow.
-                this.scrollToCommentLemma(lemmaStart);
-                // Scroll to comment in the comments-column.
-                const commentSettimeoutId = this.scrollToComment(numId);
-              }
-            } else {
-              // If a comments view isn't shown or viewmode is mobile, show comment in infoOverlay.
-              this.showCommentInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
-            }
-            modalShown = true;
-          } else if (eventTarget['classList'].contains('ttFoot') && eventTarget['classList'].contains('teiManuscript')) {
-            // Footnote reference clicked in manuscript column
-            this.showManuscriptFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
-            modalShown = true;
-          } else if (eventTarget['classList'].contains('ttFoot')) {
-            // Footnote reference clicked in reading text
-            this.showFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
-            modalShown = true;
-          }
-        } else if ((eventTarget['classList'].contains('ttChanges')
-        && this.readPopoverService.show.changes)
-        || (eventTarget['classList'].contains('ttNormalisations')
-        && this.readPopoverService.show.normalisations)
-        || (eventTarget['classList'].contains('ttAbbreviations')
-        && this.readPopoverService.show.abbreviations)) {
-          this.showInfoOverlayFromInlineHtml(eventTarget);
-          modalShown = true;
-        } else if (eventTarget['classList'].contains('ttMs')
-        || eventTarget['classList'].contains('tooltipMs')) {
-          if (eventTarget['classList'].contains('unclear')) {
-            /** Editorial note about unclear text, should be clickable only in
-             *  the reading text column. */
-            let parentElem: HTMLElement = eventTarget as HTMLElement;
-            parentElem = parentElem.parentElement;
-            while (parentElem !== null && parentElem.tagName !== 'READ-TEXT') {
-              parentElem = parentElem.parentElement;
-            }
-            if (parentElem !== null) {
-              this.showInfoOverlayFromInlineHtml(eventTarget);
+              modalShown = true;
+            } else if (eventTarget['classList'].contains('ttFoot') && eventTarget['classList'].contains('teiManuscript')) {
+              // Footnote reference clicked in manuscript column
+              this.ngZone.run(() => {
+                this.showManuscriptFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
+              });
+              modalShown = true;
+            } else if (eventTarget['classList'].contains('ttFoot')) {
+              // Footnote reference clicked in reading text
+              this.ngZone.run(() => {
+                this.showFootnoteInfoOverlay(eventTarget.getAttribute('data-id'), eventTarget);
+              });
               modalShown = true;
             }
+          } else if ((eventTarget['classList'].contains('ttChanges')
+          && this.readPopoverService.show.changes)
+          || (eventTarget['classList'].contains('ttNormalisations')
+          && this.readPopoverService.show.normalisations)
+          || (eventTarget['classList'].contains('ttAbbreviations')
+          && this.readPopoverService.show.abbreviations)) {
+            this.ngZone.run(() => {
+              this.showInfoOverlayFromInlineHtml(eventTarget);
+            });
+            modalShown = true;
+          } else if (eventTarget['classList'].contains('ttMs')
+          || eventTarget['classList'].contains('tooltipMs')) {
+            if (eventTarget['classList'].contains('unclear')) {
+              /** Editorial note about unclear text, should be clickable only in
+               *  the reading text column. */
+              let parentElem: HTMLElement = eventTarget as HTMLElement;
+              parentElem = parentElem.parentElement;
+              while (parentElem !== null && parentElem.tagName !== 'READ-TEXT') {
+                parentElem = parentElem.parentElement;
+              }
+              if (parentElem !== null) {
+                this.ngZone.run(() => {
+                  this.showInfoOverlayFromInlineHtml(eventTarget);
+                });
+                modalShown = true;
+              }
+            }
+          } else if (eventTarget.hasAttribute('id')
+          && eventTarget['classList'].contains('ttFoot')
+          && eventTarget['classList'].contains('teiVariant')) {
+            // Footnote reference clicked in variant.
+            this.ngZone.run(() => {
+              this.showVariantFootnoteInfoOverlay(eventTarget.getAttribute('id'), eventTarget);
+            });
+            modalShown = true;
+          } else if (eventTarget['classList'].contains('ttFoot')
+          && !eventTarget.hasAttribute('id')
+          && !eventTarget.hasAttribute('data-id')) {
+            this.ngZone.run(() => {
+              this.showInfoOverlayFromInlineHtml(eventTarget);
+            });
+            modalShown = true;
           }
-        } else if (eventTarget.hasAttribute('id')
-        && eventTarget['classList'].contains('ttFoot')
-        && eventTarget['classList'].contains('teiVariant')) {
-          // Footnote reference clicked in variant.
-          this.showVariantFootnoteInfoOverlay(eventTarget.getAttribute('id'), eventTarget);
-          modalShown = true;
-        } else if (eventTarget['classList'].contains('ttFoot')
-        && !eventTarget.hasAttribute('id')
-        && !eventTarget.hasAttribute('data-id')) {
-          this.showInfoOverlayFromInlineHtml(eventTarget);
-          modalShown = true;
-        }
 
-        /** Get the parent node of the event target for the next iteration
-         *  if a modal or infoOverlay hasn't been shown already. This is
-         *  for finding nested tooltiptriggers, i.e. a person can be a
-         *  child of a change. */
-        if (!modalShown) {
-          eventTarget = eventTarget['parentNode'];
-          if (!eventTarget['classList'].contains('tooltiptrigger')
-          && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
-            /** The parent isn't a tooltiptrigger, but the parent of the parent
-             *  is, use it for the next iteration. */
+          /** Get the parent node of the event target for the next iteration
+           *  if a modal or infoOverlay hasn't been shown already. This is
+           *  for finding nested tooltiptriggers, i.e. a person can be a
+           *  child of a change. */
+          if (!modalShown) {
             eventTarget = eventTarget['parentNode'];
+            if (!eventTarget['classList'].contains('tooltiptrigger')
+            && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
+              /** The parent isn't a tooltiptrigger, but the parent of the parent
+               *  is, use it for the next iteration. */
+              eventTarget = eventTarget['parentNode'];
+            }
           }
         }
-      }
 
-      eventTarget = this.getEventTarget(event);
-      if (eventTarget['classList'].contains('variantScrollTarget')) {
-        // Click on variant lemma --> highlight and scroll all variant columns.
+        eventTarget = this.getEventTarget(event);
+        if (eventTarget['classList'].contains('variantScrollTarget')) {
+          // Click on variant lemma --> highlight and scroll all variant columns.
 
-        eventTarget.classList.add('highlight');
-        this.scrollToVariant(eventTarget);
-        window.setTimeout(function(elem) {
-          elem.classList.remove('highlight');
-        }.bind(null, eventTarget), 5000);
-      }
+          eventTarget.classList.add('highlight');
+          this.ngZone.run(() => {
+            this.scrollToVariant(eventTarget);
+          });
+          window.setTimeout(function(elem) {
+            elem.classList.remove('highlight');
+          }.bind(null, eventTarget), 5000);
+        }
 
-      // Possibly click on link.
-      eventTarget = event.target as HTMLElement;
-      if (eventTarget !== null && !eventTarget.classList.contains('xreference')) {
-        eventTarget = eventTarget.parentElement;
-        if (eventTarget !== null) {
-          if (!eventTarget.classList.contains('xreference')) {
-            eventTarget = eventTarget.parentElement;
+        // Possibly click on link.
+        eventTarget = event.target as HTMLElement;
+        if (eventTarget !== null && !eventTarget.classList.contains('xreference')) {
+          eventTarget = eventTarget.parentElement;
+          if (eventTarget !== null) {
+            if (!eventTarget.classList.contains('xreference')) {
+              eventTarget = eventTarget.parentElement;
+            }
           }
         }
-      }
 
-      if (eventTarget !== null && eventTarget.classList.contains('xreference')) {
-        event.preventDefault();
-        const anchorElem: HTMLAnchorElement = eventTarget as HTMLAnchorElement;
+        if (eventTarget !== null && eventTarget.classList.contains('xreference')) {
+          event.preventDefault();
+          const anchorElem: HTMLAnchorElement = eventTarget as HTMLAnchorElement;
 
-        if (eventTarget.classList.contains('footnoteReference')) {
-          // Link to (foot)note reference in the same text.
-          let targetId = '';
-          if (anchorElem.hasAttribute('href')) {
-            targetId = anchorElem.getAttribute('href');
-          } else if (anchorElem.parentElement && anchorElem.parentElement.hasAttribute('href')) {
-            targetId = anchorElem.parentElement.getAttribute('href');
-          }
-
-          if (targetId) {
-            let targetColumnId = '';
-            if (anchorElem.className.includes('targetColumnId_')) {
-              for (let i = 0; i < anchorElem.classList.length; i++) {
-                if (anchorElem.classList[i].startsWith('targetColumnId_')) {
-                  targetColumnId = anchorElem.classList[i].replace('targetColumnId_', '');
-                }
-              }
+          if (eventTarget.classList.contains('footnoteReference')) {
+            // Link to (foot)note reference in the same text.
+            let targetId = '';
+            if (anchorElem.hasAttribute('href')) {
+              targetId = anchorElem.getAttribute('href');
+            } else if (anchorElem.parentElement && anchorElem.parentElement.hasAttribute('href')) {
+              targetId = anchorElem.parentElement.getAttribute('href');
             }
 
-            // Find the containing scrollable element.
-            let containerElem = null;
-            if (targetColumnId) {
-              containerElem = document.getElementById(targetColumnId);
-            } else {
-              containerElem = anchorElem.parentElement;
-              while (containerElem !== null && containerElem.parentElement !== null &&
-              !(containerElem.classList.contains('scroll-content') &&
-              containerElem.parentElement.tagName === 'ION-SCROLL')) {
-                containerElem = containerElem.parentElement;
-              }
-              if (containerElem.parentElement === null) {
-                containerElem = null;
-              }
-              if (containerElem === null) {
-                // Check if a footnotereference link in infoOverlay. This method is used to find the container element if in mobile mode.
-                if (anchorElem.parentElement !== null
-                && anchorElem.parentElement.hasAttribute('class')
-                && anchorElem.parentElement.classList.contains('infoOverlayContent')) {
-                  containerElem = document.querySelector('.mobile-mode-read-content > .scroll-content > ion-scroll > .scroll-content');
-                }
-              }
-            }
-
-            if (containerElem !== null) {
-              let dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
-              if (anchorElem.classList.contains('teiVariant')) {
-                // Link to (foot)note reference in variant, uses id-attribute instead of data-id.
-                dataIdSelector = '[id="' + String(targetId).replace('#', '') + '"]';
-              }
-              const target = containerElem.querySelector(dataIdSelector) as HTMLElement;
-              if (target !== null) {
-                this.scrollToHTMLElement(target, 'top');
-              }
-            }
-          }
-        } else if (anchorElem.classList.contains('ref_external')) {
-          // Link to external web page, open in new window/tab.
-          if (anchorElem.hasAttribute('href')) {
-            window.open(anchorElem.href, '_blank');
-          }
-
-        } else {
-          // Link to a reading-text, comment or introduction.
-          // Get the href parts for the targeted text.
-          const hrefLink = anchorElem.href;
-          const hrefTargetItems: Array<string> = decodeURIComponent(String(hrefLink).split('/').pop()).trim().split(' ');
-          let publicationId = '';
-          let textId = '';
-          let chapterId = '';
-          let positionId = '';
-
-          if (anchorElem.classList.contains('ref_readingtext') || anchorElem.classList.contains('ref_comment')) {
-            // Link to reading text or comment.
-
-            publicationId = hrefTargetItems[0];
-            textId = hrefTargetItems[1];
-
-            let comparePageId = publicationId + '_' + textId;
-            if (hrefTargetItems.length > 2 && !hrefTargetItems[2].startsWith('#')) {
-              chapterId = hrefTargetItems[2];
-              comparePageId += '_' + chapterId;
-            }
-
-            let legacyPageId = this.collectionAndPublicationLegacyId;
-            const chIDFromParams = this.params.get('chapterID');
-            if (chIDFromParams !== undefined
-            && chIDFromParams !== null
-            && !chIDFromParams.startsWith('nochapter')
-            && chIDFromParams !== ':chapterID'
-            && chIDFromParams !== 'chapterID') {
-              legacyPageId += '_' + chIDFromParams.split(';').shift();
-            }
-
-            // Check if we are already on the same page.
-            if ( (comparePageId === this.establishedText.link.split(';').shift() || comparePageId === legacyPageId)
-            && hrefTargetItems[hrefTargetItems.length - 1].startsWith('#')) {
-              // We are on the same page and the last item in the target href is a textposition.
-              positionId = hrefTargetItems[hrefTargetItems.length - 1].replace('#', '');
-
-              // Find the element in the correct column (read-text or comments) based on ref type.
-              const matchingElements = document.getElementsByName(positionId);
-              let targetElement = null;
-              let refType = 'READ-TEXT';
-              if (anchorElem.classList.contains('ref_comment')) {
-                refType = 'COMMENTS';
-              }
-              for (let i = 0; i < matchingElements.length; i++) {
-                let parentElem = matchingElements[i].parentElement;
-                while (parentElem !== null && parentElem.tagName !== refType) {
-                  parentElem = parentElem.parentElement;
-                }
-                if (parentElem !== null && parentElem.tagName === refType) {
-                  targetElement = matchingElements[i] as HTMLElement;
-                  if (targetElement.parentElement.classList.contains('ttFixed')
-                  || targetElement.parentElement.parentElement.classList.contains('ttFixed')) {
-                    // Found position is in footnote --> look for next occurence since the first footnote element
-                    // is not displayed (footnote elements are copied to a list at the end of the reading text and that's
-                    // the position we need to find).
-                  } else {
-                    break;
+            if (targetId) {
+              let targetColumnId = '';
+              if (anchorElem.className.includes('targetColumnId_')) {
+                for (let i = 0; i < anchorElem.classList.length; i++) {
+                  if (anchorElem.classList[i].startsWith('targetColumnId_')) {
+                    targetColumnId = anchorElem.classList[i].replace('targetColumnId_', '');
                   }
                 }
               }
-              if (targetElement !== null && targetElement.classList.contains('anchor')) {
-                this.scrollToHTMLElement(targetElement);
-              }
-            } else {
-              // We are not on the same page, open in new window.
-              // (Safari on iOS doesn't allow window.open() inside async calls so
-              // we have to open the new window first and set its location later.)
-              const newWindowRef = window.open();
 
-              this.textService.getCollectionAndPublicationByLegacyId(publicationId + '_' + textId).subscribe(data => {
+              // Find the containing scrollable element.
+              let containerElem = null;
+              if (targetColumnId) {
+                containerElem = document.getElementById(targetColumnId);
+              } else {
+                containerElem = anchorElem.parentElement;
+                while (containerElem !== null && containerElem.parentElement !== null &&
+                !(containerElem.classList.contains('scroll-content') &&
+                containerElem.parentElement.tagName === 'ION-SCROLL')) {
+                  containerElem = containerElem.parentElement;
+                }
+                if (containerElem.parentElement === null) {
+                  containerElem = null;
+                }
+                if (containerElem === null) {
+                  // Check if a footnotereference link in infoOverlay. This method is used to find the container element if in mobile mode.
+                  if (anchorElem.parentElement !== null
+                  && anchorElem.parentElement.hasAttribute('class')
+                  && anchorElem.parentElement.classList.contains('infoOverlayContent')) {
+                    containerElem = document.querySelector('.mobile-mode-read-content > .scroll-content > ion-scroll > .scroll-content');
+                  }
+                }
+              }
+
+              if (containerElem !== null) {
+                let dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
+                if (anchorElem.classList.contains('teiVariant')) {
+                  // Link to (foot)note reference in variant, uses id-attribute instead of data-id.
+                  dataIdSelector = '[id="' + String(targetId).replace('#', '') + '"]';
+                }
+                const target = containerElem.querySelector(dataIdSelector) as HTMLElement;
+                if (target !== null) {
+                  this.scrollToHTMLElement(target, 'top');
+                }
+              }
+            }
+          } else if (anchorElem.classList.contains('ref_external')) {
+            // Link to external web page, open in new window/tab.
+            if (anchorElem.hasAttribute('href')) {
+              window.open(anchorElem.href, '_blank');
+            }
+
+          } else {
+            // Link to a reading-text, comment or introduction.
+            // Get the href parts for the targeted text.
+            const hrefLink = anchorElem.href;
+            const hrefTargetItems: Array<string> = decodeURIComponent(String(hrefLink).split('/').pop()).trim().split(' ');
+            let publicationId = '';
+            let textId = '';
+            let chapterId = '';
+            let positionId = '';
+
+            if (anchorElem.classList.contains('ref_readingtext') || anchorElem.classList.contains('ref_comment')) {
+              // Link to reading text or comment.
+
+              publicationId = hrefTargetItems[0];
+              textId = hrefTargetItems[1];
+
+              let comparePageId = publicationId + '_' + textId;
+              if (hrefTargetItems.length > 2 && !hrefTargetItems[2].startsWith('#')) {
+                chapterId = hrefTargetItems[2];
+                comparePageId += '_' + chapterId;
+              }
+
+              let legacyPageId = this.collectionAndPublicationLegacyId;
+              const chIDFromParams = this.params.get('chapterID');
+              if (chIDFromParams !== undefined
+              && chIDFromParams !== null
+              && !chIDFromParams.startsWith('nochapter')
+              && chIDFromParams !== ':chapterID'
+              && chIDFromParams !== 'chapterID') {
+                legacyPageId += '_' + chIDFromParams.split(';').shift();
+              }
+
+              // Check if we are already on the same page.
+              if ( (comparePageId === this.establishedText.link.split(';').shift() || comparePageId === legacyPageId)
+              && hrefTargetItems[hrefTargetItems.length - 1].startsWith('#')) {
+                // We are on the same page and the last item in the target href is a textposition.
+                positionId = hrefTargetItems[hrefTargetItems.length - 1].replace('#', '');
+
+                // Find the element in the correct column (read-text or comments) based on ref type.
+                const matchingElements = document.getElementsByName(positionId);
+                let targetElement = null;
+                let refType = 'READ-TEXT';
+                if (anchorElem.classList.contains('ref_comment')) {
+                  refType = 'COMMENTS';
+                }
+                for (let i = 0; i < matchingElements.length; i++) {
+                  let parentElem = matchingElements[i].parentElement;
+                  while (parentElem !== null && parentElem.tagName !== refType) {
+                    parentElem = parentElem.parentElement;
+                  }
+                  if (parentElem !== null && parentElem.tagName === refType) {
+                    targetElement = matchingElements[i] as HTMLElement;
+                    if (targetElement.parentElement.classList.contains('ttFixed')
+                    || targetElement.parentElement.parentElement.classList.contains('ttFixed')) {
+                      // Found position is in footnote --> look for next occurence since the first footnote element
+                      // is not displayed (footnote elements are copied to a list at the end of the reading text and that's
+                      // the position we need to find).
+                    } else {
+                      break;
+                    }
+                  }
+                }
+                if (targetElement !== null && targetElement.classList.contains('anchor')) {
+                  this.scrollToHTMLElement(targetElement);
+                }
+              } else {
+                // We are not on the same page, open in new window.
+                // (Safari on iOS doesn't allow window.open() inside async calls so
+                // we have to open the new window first and set its location later.)
+                const newWindowRef = window.open();
+
+                this.textService.getCollectionAndPublicationByLegacyId(publicationId + '_' + textId).subscribe(data => {
+                  if (data[0] !== undefined) {
+                    publicationId = data[0]['coll_id'];
+                    textId = data[0]['pub_id'];
+                  }
+
+                  let hrefString = '#/publication/' + publicationId + '/text/' + textId + '/';
+                  if (chapterId) {
+                    hrefString += chapterId;
+                    if (hrefTargetItems.length > 3 && hrefTargetItems[3].startsWith('#')) {
+                      positionId = hrefTargetItems[3].replace('#', ';');
+                      hrefString += positionId;
+                    }
+                  } else {
+                    hrefString += 'nochapter';
+                    if (hrefTargetItems.length > 2 && hrefTargetItems[2].startsWith('#')) {
+                      positionId = hrefTargetItems[2].replace('#', ';');
+                      hrefString += positionId;
+                    }
+                  }
+                  hrefString += '/not/infinite/nosong/searchtitle/established&comments';
+                  newWindowRef.location.href = hrefString;
+                });
+              }
+
+            } else if (anchorElem.classList.contains('ref_introduction')) {
+              // Link to introduction.
+              publicationId = hrefTargetItems[0];
+
+              this.textService.getCollectionAndPublicationByLegacyId(publicationId).subscribe(data => {
                 if (data[0] !== undefined) {
                   publicationId = data[0]['coll_id'];
-                  textId = data[0]['pub_id'];
                 }
-
-                let hrefString = '#/publication/' + publicationId + '/text/' + textId + '/';
-                if (chapterId) {
-                  hrefString += chapterId;
-                  if (hrefTargetItems.length > 3 && hrefTargetItems[3].startsWith('#')) {
-                    positionId = hrefTargetItems[3].replace('#', ';');
-                    hrefString += positionId;
-                  }
-                } else {
-                  hrefString += 'nochapter';
-                  if (hrefTargetItems.length > 2 && hrefTargetItems[2].startsWith('#')) {
-                    positionId = hrefTargetItems[2].replace('#', ';');
-                    hrefString += positionId;
-                  }
+                let hrefString = '#/publication-introduction/' + publicationId;
+                if (hrefTargetItems.length > 1 && hrefTargetItems[1].startsWith('#')) {
+                  positionId = hrefTargetItems[1];
+                  hrefString += '/' + positionId;
                 }
-                hrefString += '/not/infinite/nosong/searchtitle/established&comments';
-                newWindowRef.location.href = hrefString;
+                // Open the link in a new window/tab.
+                window.open(hrefString, '_blank');
               });
             }
-
-          } else if (anchorElem.classList.contains('ref_introduction')) {
-            // Link to introduction.
-            publicationId = hrefTargetItems[0];
-
-            this.textService.getCollectionAndPublicationByLegacyId(publicationId).subscribe(data => {
-              if (data[0] !== undefined) {
-                publicationId = data[0]['coll_id'];
-              }
-              let hrefString = '#/publication-introduction/' + publicationId;
-              if (hrefTargetItems.length > 1 && hrefTargetItems[1].startsWith('#')) {
-                positionId = hrefTargetItems[1];
-                hrefString += '/' + positionId;
-              }
-              // Open the link in a new window/tab.
-              window.open(hrefString, '_blank');
-            });
           }
         }
-      }
-    });
-
-    this.ngZone.runOutsideAngular(() => {
+      });
 
       /* MOUSE OVER EVENTS */
       this.unlistenMouseoverEvents = this.renderer2.listen(nElement, 'mouseover', (event) => {
@@ -1395,7 +1421,6 @@ export class ReadPage /*implements OnDestroy*/ {
       });
 
     });
-
   }
 
   public get isIntroduction() {
@@ -3005,26 +3030,28 @@ export class ReadPage /*implements OnDestroy*/ {
   /* This function scrolls the read-view horisontally to the last read column.
    * It's called after adding new views. */
   scrollLastViewIntoView() {
-    let interationsLeft = 10;
-    clearInterval(this.intervalTimerId);
-    this.intervalTimerId = setInterval(function() {
-      if (interationsLeft < 1) {
-        clearInterval(this.intervalTimerId);
-      } else {
-        interationsLeft -= 1;
-        const viewElements = document.getElementsByClassName('read-column');
-        if (viewElements[0] !== undefined) {
-          const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
-          const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
-          if (scrollingContainer !== null) {
-            const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
-            scrollingContainer.getBoundingClientRect().left;
-            scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
-            clearInterval(this.intervalTimerId);
+    this.ngZone.runOutsideAngular(() => {
+      let interationsLeft = 10;
+      clearInterval(this.intervalTimerId);
+      this.intervalTimerId = setInterval(function() {
+        if (interationsLeft < 1) {
+          clearInterval(this.intervalTimerId);
+        } else {
+          interationsLeft -= 1;
+          const viewElements = document.getElementsByClassName('read-column');
+          if (viewElements[0] !== undefined) {
+            const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
+            const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
+            if (scrollingContainer !== null) {
+              const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
+              scrollingContainer.getBoundingClientRect().left;
+              scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
+              clearInterval(this.intervalTimerId);
+            }
           }
         }
-      }
-    }.bind(this), 500);
+      }.bind(this), 500);
+    });
   }
 
   printMainContentClasses() {
