@@ -88,6 +88,7 @@ export class OccurrencesPage {
     if ( this.occurrenceResult !== undefined ) {
       this.init();
     } else if ( this.navParams.get('type') && this.navParams.get('id') ) {
+      this.occurrenceResult = new OccurrenceResult();
       this.getObjectData(this.navParams.get('type'), this.navParams.get('id'));
     }
   }
@@ -182,7 +183,7 @@ export class OccurrencesPage {
         } else {
           this.occurrenceResult = data.hits.hits[0]['_source'];
         }
-        if ( type === 'work' ) {
+        if ( type === 'work' && this.noData !== true ) {
           this.occurrenceResult.id = this.occurrenceResult['man_id'];
           this.occurrenceResult.description = this.occurrenceResult['reference'];
           this.occurrenceResult.name = this.occurrenceResult['title'];
@@ -194,7 +195,7 @@ export class OccurrencesPage {
   }
 
   getMediaData() {
-    if (!this.objectType.length) {
+    if (!this.objectType.length || this.occurrenceResult.id === undefined) {
       return;
     }
 
@@ -208,7 +209,7 @@ export class OccurrencesPage {
   }
 
   getGalleryOccurrences() {
-    if (!this.objectType.length) {
+    if (!this.objectType.length || this.occurrenceResult.id === undefined) {
       return;
     }
 
@@ -221,7 +222,7 @@ export class OccurrencesPage {
   }
 
   getArticleData() {
-    if (!this.objectType.length) {
+    if (!this.objectType.length || this.occurrenceResult.id === undefined) {
       return;
     }
 
@@ -307,7 +308,9 @@ export class OccurrencesPage {
         this.getOccurrence(occurence);
       }
     } else {
-      this.getOccurrences(occurrenceResult.id);
+      if ( occurrenceResult !== undefined && occurrenceResult.id !== undefined && occurrenceResult.id ) {
+        this.getOccurrences(occurrenceResult.id);
+      }
     }
   }
 

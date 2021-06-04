@@ -527,7 +527,7 @@ export class OccurrencesResultPage {
    * Media data: image and description about a subject, location or tag
    */
   getMediaData() {
-    if (!this.objectType.length) {
+    if (!this.objectType.length || this.occurrenceResult.id === undefined) {
       return;
     }
 
@@ -541,7 +541,7 @@ export class OccurrencesResultPage {
   }
 
   getArticleData() {
-    if (!this.objectType.length) {
+    if (!this.objectType.length || this.id === undefined) {
       return;
     }
 

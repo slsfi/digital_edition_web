@@ -759,14 +759,16 @@ export class DigitalEditionsApp {
   }
 
   unSelectCollectionWithChildrenPdf() {
-    try {
-      for (const collection of this.collectionsListWithTOC) {
-        if (collection.has_children_pdfs && collection.highlight) {
-          collection.highlight = false;
+    if ( this.collectionsListWithTOC !== undefined ){
+      try {
+        for (const collection of this.collectionsListWithTOC) {
+          if (collection.has_children_pdfs && collection.highlight) {
+            collection.highlight = false;
+          }
         }
+      } catch (e) {
+        // handle error
       }
-    } catch (e) {
-      // handle error
     }
   }
 
@@ -776,7 +778,7 @@ export class DigitalEditionsApp {
       this.openCollection(collection);
     });
     this.events.subscribe('CollectionWithChildrenPdfs:highlight', (collectionID) => {
-      if ( this.collectionsListWithTOC ) {
+      if ( this.collectionsListWithTOC !== undefined && this.collectionsListWithTOC ) {
         for (const collection of this.collectionsListWithTOC) {
           if (String(collection.id) === String(collectionID)) {
             collection['highlight'] = true;

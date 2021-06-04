@@ -200,8 +200,15 @@ export class IntroductionPage {
             );
             const pattern = /<div data-id="content">(.*?)<\/div>/;
             const matches = String(this.text).match(pattern);
-            const the_string = matches[0];
-            this.textMenu = the_string;
+            if( matches !== null ) {
+              const the_string = matches[0];
+              this.textMenu = the_string;
+              if (!this.platform.is('mobile')) {
+                if (!this.tocMenuOpen) {
+                  this.tocMenuOpen = true;
+                }
+              }
+            }
             if (!this.platform.is('mobile')) {
               if (!this.tocMenuOpen) {
                 this.tocMenuOpen = true;
@@ -249,7 +256,7 @@ export class IntroductionPage {
                   // the position we need to find).
                   positionElement = document.getElementsByName(this.pos)[1] as HTMLElement;
               }
-              if (positionElement !== null && positionElement !== undefined
+              if (positionElement !== null && positionElement !== undefined && positionElement.classList !== null
               && positionElement.classList.contains('anchor')) {
                 this.scrollToHTMLElement(positionElement);
                 clearInterval(this.intervalTimerId);
