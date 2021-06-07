@@ -500,10 +500,7 @@ export class DigitalEditionsApp {
   }
 
   getCollectionsWithTOC(collections, media?) {
-      console.log('this.genericSettingsService.show(TOC.MediaCollections)',this.genericSettingsService.show('TOC.MediaCollections'));
-      console.log('this.galleryInReadMenu',this.galleryInReadMenu);
       if (this.genericSettingsService.show('TOC.MediaCollections') && this.galleryInReadMenu) {
-        console.log('push media into collections');
         collections.push(media);
       }
       if (!collections || !collections.length) {
