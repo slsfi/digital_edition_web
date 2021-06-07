@@ -194,7 +194,6 @@ export class IntroductionPage {
         res => {
             this.textLoading = false;
             // in order to get id attributes for tooltips
-            console.log('res.content: ', res.content);
             this.text = this.sanitizer.bypassSecurityTrustHtml(
               res.content.replace(/images\//g, 'assets/images/')
                   .replace(/\.png/g, '.svg')
@@ -211,7 +210,6 @@ export class IntroductionPage {
               }
             } else {
               this.hasSeparateIntroToc = false;
-              this.textMenu = '';
             }
             if (!this.platform.is('mobile')) {
               if (!this.tocMenuOpen) {
@@ -224,7 +222,8 @@ export class IntroductionPage {
         error =>  {
           this.errorMessage = <any>error;
           this.textLoading = false;
-          this.text = 'Could not get introduction.';
+          this.text = 'Could not load introduction.';
+          this.hasSeparateIntroToc = false;
         }
       );
       const selectedStatic = [];
