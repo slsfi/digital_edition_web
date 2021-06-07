@@ -280,6 +280,7 @@ export class DigitalEditionsApp {
 
     try {
       this.galleryInReadMenu = this.config.getSettings('ImageGallery.ShowInReadMenu');
+      console.log('this.galleryInReadMenu', this.galleryInReadMenu);
     } catch (e) {
       this.galleryInReadMenu = true;
     }
