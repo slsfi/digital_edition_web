@@ -312,7 +312,7 @@
         "translation": "TOC.PersonSearch"
     }],
     "ImageGallery": {
-      "ShowInReadMenu": true
+      "ShowInReadMenu": false
     },
     "PersonSearch": {
         "ShowFilter": true,
