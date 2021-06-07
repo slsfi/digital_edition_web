@@ -208,6 +208,9 @@ export class IntroductionPage {
                   this.tocMenuOpen = true;
                 }
               }
+            } else {
+              this.textMenu = '';
+              this.tocMenuOpen = false;
             }
             if (!this.platform.is('mobile')) {
               if (!this.tocMenuOpen) {
@@ -217,8 +220,11 @@ export class IntroductionPage {
             // Try to scroll to an element in the text, checks if "pos" given
             this.scrollToPos();
           },
-        error =>  {this.errorMessage = <any>error; this.textLoading = false; }
-
+        error =>  {
+          this.errorMessage = <any>error;
+          this.textLoading = false;
+          this.text = 'Could not get introduction.';
+        }
       );
       const selectedStatic = [];
       selectedStatic['isIntroduction'] = true;
