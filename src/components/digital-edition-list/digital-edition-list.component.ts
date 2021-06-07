@@ -34,7 +34,7 @@ export class DigitalEditionList implements OnInit {
   hasTitle = true;
   hideBooks = false;
   hasMediaCollections = false;
-  includeMediaCollectionsInList = false;
+  galleryInReadMenu = false;
   collectionSortOrder: any;
 
   @Input() layoutType: string;
@@ -83,9 +83,9 @@ export class DigitalEditionList implements OnInit {
       this.hasMediaCollections = false;
     }
     try {
-      this.includeMediaCollectionsInList = this.config.getSettings('ImageGallery.ShowInReadMenu');
+      this.galleryInReadMenu = this.config.getSettings('ImageGallery.ShowInReadMenu');
     } catch (e) {
-      this.includeMediaCollectionsInList = false;
+      this.galleryInReadMenu = false;
     }
   }
 
@@ -132,7 +132,7 @@ export class DigitalEditionList implements OnInit {
       .subscribe(
         digitalEditions => {
           this.digitalEditions = digitalEditions;
-          if ( this.hasMediaCollections && this.includeMediaCollectionsInList ) {
+          if ( this.hasMediaCollections && this.galleryInReadMenu ) {
             const mediaColl = new DigitalEdition({id: 'mediaCollections', title: 'media'});
             this.digitalEditions.unshift(mediaColl);
           }
