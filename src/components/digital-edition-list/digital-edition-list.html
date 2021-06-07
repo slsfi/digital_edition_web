@@ -29,7 +29,7 @@
   <ion-grid *ngIf="userSettingsService.isTablet()">
     <ion-row>
       <ion-col style="display: flex;justify-content: center;" *ngFor="let edition of digitalEditions" menuClose
-        col-md-6 col-lg-4 col-xl-3 (click)="openCollection(edition, false)">
+        col-sm-6 col-lg-4 col-xl-3 (click)="openCollection(edition, false)">
         <ion-card class="digital-edition"
           style="padding: 20px; margin: 20px; position: relative; background-color: white;">
           <ion-card-header class="digital-edition-list-card-header">
