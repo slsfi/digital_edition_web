@@ -200,7 +200,7 @@ export class IntroductionPage {
             );
             const pattern = /<div data-id="content">(.*?)<\/div>/;
             const matches = String(this.text).match(pattern);
-            if( matches !== null ) {
+            if ( matches !== null ) {
               const the_string = matches[0];
               this.textMenu = the_string;
               if (!this.platform.is('mobile')) {
