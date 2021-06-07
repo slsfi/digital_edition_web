@@ -759,7 +759,7 @@ export class DigitalEditionsApp {
   }
 
   unSelectCollectionWithChildrenPdf() {
-    if ( this.collectionsListWithTOC !== undefined ){
+    if ( this.collectionsListWithTOC !== undefined ) {
       try {
         for (const collection of this.collectionsListWithTOC) {
           if (collection.has_children_pdfs && collection.highlight) {
