@@ -58,7 +58,7 @@ export class EditionsPage {
     // console.log('calling getMdContent from editions.ts');
     this.mdContentService.getMdContent(fileID)
       .subscribe(
-        text => { this.readContent = text.content; },
+        text => { this.readContent = text.content.trim(); },
         error => { this.errorMessage = <any>error }
       );
   }
