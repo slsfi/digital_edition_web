@@ -3,6 +3,7 @@ import Epub, { NavItem, Rendition } from 'epubjs';
 import book from 'epubjs/types/book';
 import {} from 'fs';
 
+
 /**
  * Generated class for the MathJaxComponent component.
  *

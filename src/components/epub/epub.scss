@@ -18,7 +18,7 @@ epub {
   }
 
   #toc_menu {
-    float: left;
+    float: right;
     width: 100%;
   }
 
@@ -82,8 +82,8 @@ epub {
 
   @media (min-width: 1000px) {
     nav#TOC {
-      float: left;
-      height: auto;
+      float: right;
+      height: 100%;
       transition: none;
       z-index: 10;
       width: 50vw;
