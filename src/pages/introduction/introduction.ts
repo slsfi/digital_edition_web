@@ -200,7 +200,7 @@ export class IntroductionPage {
             );
             const pattern = /<div data-id="content">(.*?)<\/div>/;
             const matches = String(this.text).match(pattern);
-            if( matches !== null ) {
+            if ( matches !== null ) {
               const the_string = matches[0];
               this.textMenu = the_string;
               if (!this.platform.is('mobile')) {
@@ -208,6 +208,8 @@ export class IntroductionPage {
                   this.tocMenuOpen = true;
                 }
               }
+            } else {
+              this.hasSeparateIntroToc = false;
             }
             if (!this.platform.is('mobile')) {
               if (!this.tocMenuOpen) {
@@ -217,8 +219,12 @@ export class IntroductionPage {
             // Try to scroll to an element in the text, checks if "pos" given
             this.scrollToPos();
           },
-        error =>  {this.errorMessage = <any>error; this.textLoading = false; }
-
+        error =>  {
+          this.errorMessage = <any>error;
+          this.textLoading = false;
+          this.text = 'Could not load introduction.';
+          this.hasSeparateIntroToc = false;
+        }
       );
       const selectedStatic = [];
       selectedStatic['isIntroduction'] = true;

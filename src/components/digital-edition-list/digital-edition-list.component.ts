@@ -34,6 +34,7 @@ export class DigitalEditionList implements OnInit {
   hasTitle = true;
   hideBooks = false;
   hasMediaCollections = false;
+  galleryInReadMenu = false;
   collectionSortOrder: any;
 
   @Input() layoutType: string;
@@ -81,6 +82,11 @@ export class DigitalEditionList implements OnInit {
     } catch (e) {
       this.hasMediaCollections = false;
     }
+    try {
+      this.galleryInReadMenu = this.config.getSettings('ImageGallery.ShowInReadMenu');
+    } catch (e) {
+      this.galleryInReadMenu = false;
+    }
   }
 
   ngOnInit() {
@@ -126,7 +132,7 @@ export class DigitalEditionList implements OnInit {
       .subscribe(
         digitalEditions => {
           this.digitalEditions = digitalEditions;
-          if ( this.hasMediaCollections ) {
+          if ( this.hasMediaCollections && this.galleryInReadMenu ) {
             const mediaColl = new DigitalEdition({id: 'mediaCollections', title: 'media'});
             this.digitalEditions.unshift(mediaColl);
           }
