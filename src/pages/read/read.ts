@@ -241,146 +241,154 @@ export class ReadPage /*implements OnDestroy*/ {
       console.log(e);
     }
 
-    if (this.params.get('collectionID') !== 'songtypes') {
-      this.setCollectionTitle();
-    }
-
-
-    if (this.userSettingsService.isMobile()) {
-      // this.navBar.backButtonClick
-    }
-
-    let link = null;
-
-    this.maxSingleWindowWidth = 95;
-
-    this.matches = [];
-    this.availableViewModes = [];
-
     // Hide some or all of the display toggles (variations, facsimiles, established etc.)
     this.displayToggles = this.config.getSettings('settings.displayTypesToggles');
-    let foundTrueCount = 0;
-    for (const toggle in this.displayToggles) {
-      if (this.displayToggles[toggle] && toggle !== 'introduction') {
-        this.availableViewModes.push(toggle);
-        foundTrueCount++;
-      }
-    }
-    if (foundTrueCount <= 1) {
-      this.displayToggle = false;
-    }
 
     try {
       this.toolTipsSettings = this.config.getSettings('settings.toolTips');
     } catch (e) {
       this.toolTipsSettings = undefined;
-      console.log('Undefined toolTipsSettings');
-      console.error(e);
-    }
-
-    if (this.params.get('tocItem') !== undefined && this.params.get('tocItem') !== null) {
-      // @TODO: fix this. it is unmaintainable
-      this.id = this.params.get('tocItem').itemId;
-      const collectionIsUndefined = (this.params.get('tocItem').collection_id !== undefined);
-      const linkIdIsNotUndefined = (this.params.get('tocItem').link_id !== undefined);
-      const collectionID = this.params.get('tocItem').collection_id;
-
-      link = (collectionIsUndefined ? collectionID : this.params.get('tocItem').toc_ed_id) + '_'
-        + (this.params.get('tocItem').link_id || this.params.get('tocItem').toc_linkID);
-
-    } else if (this.params.get('collectionID') !== undefined && this.params.get('id') === 'introduction') {
-
-    } else if (this.params.get('collectionID') !== undefined && this.params.get('id') !== undefined) {
-      this.id = this.params.get('id');
-      link = this.params.get('collectionID') + '_' + this.id;
     }
 
     this.show = this.config.getSettings('defaults.ReadModeView');
+  }
 
-    this.setDefaultViews();
-
-    const title = global.getSubtitle();
-    this.tocRoot = this.params.get('root');
-
-    this.establishedText = new EstablishedText({ link: link, id: this.id, title: title, text: '' });
-
-    if (this.params.get('legacyId') !== undefined) {
-      this.legacyId = this.params.get('legacyId');
-      this.establishedText.link = this.params.get('legacyId');
-    } else {
-
-      this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID');
-      this.establishedText.link = this.params.get('collectionID') + '_' + this.params.get('publicationID');
-
-      if (this.params.get('chapterID') !== undefined && !this.params.get('chapterID').startsWith('nochapter') &&
-       this.params.get('chapterID') !== ':chapterID' && this.params.get('chapterID') !== 'chapterID') {
-        this.establishedText.link += '_' + this.params.get('chapterID');
+  ionViewDidLoad() {
+    this.langService.getLanguage().subscribe(lang => {
+      if (this.params.get('collectionID') !== 'songtypes') {
+        this.setCollectionTitle();
       }
 
-      if (this.params.get('chapterID') !== undefined && this.params.get('chapterID').startsWith('nochapter;')) {
-        this.nochapterPos = this.params.get('chapterID').replace('nochapter;', '');
-      } else {
-        this.nochapterPos = null;
+
+      if (this.userSettingsService.isMobile()) {
+        // this.navBar.backButtonClick
       }
 
-      this.viewCtrl.setBackButtonText('');
+      let link = null;
 
-      if (!this.params.get('selectedItemInAccordion')) {
-        const searchTocItem = true;
-        this.getTocRoot(this.params.get('collectionID'), searchTocItem);
-      }
+      this.maxSingleWindowWidth = 95;
 
-      if (this.params.get('collectionID') !== 'songtypes' && !this.appUsesAccordionToc) {
-        this.events.publish('pageLoaded:single-edition', { 'title': title });
-      }
-    }
-    console.log('Established text link: ' + this.establishedText.link);
-
-    if (this.params.get('matches') !== undefined) {
-      this.matches = this.params.get('matches');
-    }
-
-    this.setTocCache();
-
-    this.updateTexts()
-    translate.onLangChange.subscribe((event: LangChangeEvent) => {
-      this.updateTexts();
-    });
+      this.matches = [];
+      this.availableViewModes = [];
 
 
-    /*if (this.params.get('url') !== undefined && this.params.get('url').indexOf('=') !== -1) {
-      this.songID = this.params.get('url').split('=')[1];
-    }*/
-
-    if (this.params.get('song_datafile') !== undefined && this.params.get('song_datafile').indexOf('.json') !== -1) {
-      //
-    }
-
-    if (this.params.get('searchResult') !== undefined) {
-      this.searchResult = this.params.get('searchResult');
-    }
-
-    if (this.params.get('occurrenceResult') !== undefined && this.params.get('showOccurrencesModalOnRead')) {
-      this.hasOccurrenceResults = true;
-      this.showOccurrencesModal = true;
-      this.occurrenceResult = this.params.get('occurrenceResult');
-      this.storage.set('readpage_searchresults', this.params.get('occurrenceResult'));
-    } else {
-      this.storage.get('readpage_searchresults').then((occurrResult) => {
-        if (occurrResult) {
-          this.hasOccurrenceResults = true;
-          this.occurrenceResult = occurrResult;
+      let foundTrueCount = 0;
+      for (const toggle in this.displayToggles) {
+        if (this.displayToggles[toggle] && toggle !== 'introduction') {
+          this.availableViewModes.push(toggle);
+          foundTrueCount++;
         }
+      }
+      if (foundTrueCount <= 1) {
+        this.displayToggle = false;
+      }
+
+
+
+      if (this.params.get('tocItem') !== undefined && this.params.get('tocItem') !== null) {
+        // @TODO: fix this. it is unmaintainable
+        this.id = this.params.get('tocItem').itemId;
+        const collectionIsUndefined = (this.params.get('tocItem').collection_id !== undefined);
+        const linkIdIsNotUndefined = (this.params.get('tocItem').link_id !== undefined);
+        const collectionID = this.params.get('tocItem').collection_id;
+
+        link = (collectionIsUndefined ? collectionID : this.params.get('tocItem').toc_ed_id) + '_'
+          + (this.params.get('tocItem').link_id || this.params.get('tocItem').toc_linkID);
+
+      } else if (this.params.get('collectionID') !== undefined && this.params.get('id') === 'introduction') {
+
+      } else if (this.params.get('collectionID') !== undefined && this.params.get('id') !== undefined) {
+        this.id = this.params.get('id');
+        link = this.params.get('collectionID') + '_' + this.id;
+      }
+
+
+
+      this.setDefaultViews();
+
+      const title = global.getSubtitle();
+      this.tocRoot = this.params.get('root');
+
+      this.establishedText = new EstablishedText({ link: link, id: this.id, title: title, text: '' });
+
+      if (this.params.get('legacyId') !== undefined) {
+        this.legacyId = this.params.get('legacyId');
+        this.establishedText.link = this.params.get('legacyId');
+      } else {
+
+        this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID');
+        this.establishedText.link = this.params.get('collectionID') + '_' + this.params.get('publicationID');
+
+        if (this.params.get('chapterID') !== undefined && !this.params.get('chapterID').startsWith('nochapter') &&
+        this.params.get('chapterID') !== ':chapterID' && this.params.get('chapterID') !== 'chapterID') {
+          this.establishedText.link += '_' + this.params.get('chapterID');
+        }
+
+        if (this.params.get('chapterID') !== undefined && this.params.get('chapterID').startsWith('nochapter;')) {
+          this.nochapterPos = this.params.get('chapterID').replace('nochapter;', '');
+        } else {
+          this.nochapterPos = null;
+        }
+
+        this.viewCtrl.setBackButtonText('');
+
+        if (!this.params.get('selectedItemInAccordion')) {
+          const searchTocItem = true;
+          this.getTocRoot(this.params.get('collectionID'), searchTocItem);
+        }
+
+        if (this.params.get('collectionID') !== 'songtypes' && !this.appUsesAccordionToc) {
+          this.events.publish('pageLoaded:single-edition', { 'title': title });
+        }
+      }
+
+      if (this.params.get('matches') !== undefined) {
+        this.matches = this.params.get('matches');
+      }
+
+      this.setTocCache();
+
+      this.updateTexts();
+
+      this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+        this.updateTexts();
       });
-    }
 
-    this.events.subscribe('show:view', (view, id, chapter) => {
-      // user and time are the same arguments passed in `events.publish(user, time)`
-      console.log('Welcome', view, 'at', id, 'chapter', chapter);
-      this.openNewExternalView(view, id);
+
+      /*if (this.params.get('url') !== undefined && this.params.get('url').indexOf('=') !== -1) {
+        this.songID = this.params.get('url').split('=')[1];
+      }*/
+
+      if (this.params.get('song_datafile') !== undefined && this.params.get('song_datafile').indexOf('.json') !== -1) {
+        //
+      }
+
+      if (this.params.get('searchResult') !== undefined) {
+        this.searchResult = this.params.get('searchResult');
+      }
+
+      if (this.params.get('occurrenceResult') !== undefined && this.params.get('showOccurrencesModalOnRead')) {
+        this.hasOccurrenceResults = true;
+        this.showOccurrencesModal = true;
+        this.occurrenceResult = this.params.get('occurrenceResult');
+        this.storage.set('readpage_searchresults', this.params.get('occurrenceResult'));
+      } else {
+        this.storage.get('readpage_searchresults').then((occurrResult) => {
+          if (occurrResult) {
+            this.hasOccurrenceResults = true;
+            this.occurrenceResult = occurrResult;
+          }
+        });
+      }
+
+      this.events.subscribe('show:view', (view, id, chapter) => {
+        // user and time are the same arguments passed in `events.publish(user, time)`
+        console.log('Welcome', view, 'at', id, 'chapter', chapter);
+        this.openNewExternalView(view, id);
+      });
+
+      this.getAdditionalParams();
     });
-
-    this.getAdditionalParams();
   }
 
   ionViewWillEnter() {
@@ -398,7 +406,9 @@ export class ReadPage /*implements OnDestroy*/ {
     } else {
       this.showText();
     }
-    this.events.publish('pageLoaded:read', { 'title': this.establishedText.title });
+    if ( this.establishedText !== undefined && this.establishedText.title !== undefined ) {
+      this.events.publish('pageLoaded:read', { 'title': this.establishedText.title });
+    }
 
     this.setUpTextListeners();
     this.setCollectionAndPublicationLegacyId();

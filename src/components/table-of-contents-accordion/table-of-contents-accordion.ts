@@ -237,9 +237,13 @@ export class TableOfContentsAccordionComponent {
           value.searchItemId = String(value.searchItemId).replace('_nochapter', '').replace(':chapterID', '');
           if ( String(value.searchItemId).indexOf(';pos') !== -1 ) {
             // Remove the position anchor from search if defined
-            value.searchItemId = String(value.searchItemId).split(';pos')[0];
+            // value.searchItemId = String(value.searchItemId).split(';pos')[0];
           }
-          this.findTocByPubOnly(this.collapsableItems, value.searchItemId);
+          // Try to find the correct position in the TOC. If not found, try to find the nearest.
+          if( this.findTocByPubOnly(this.collapsableItems, value.searchItemId) === false ) {
+            value.searchItemId = String(value.searchItemId).split(';pos')[0];
+            this.findTocByPubOnly(this.collapsableItems, value.searchItemId)
+          }
           this.events.publish('typesAccordion:change', {
             expand: true
           });
@@ -655,6 +659,11 @@ export class TableOfContentsAccordionComponent {
         tocItem.parent.important = true;
         tocItem.parent.selected = true;
         this.openTocItemParentAccordions(tocItem.parent);
+      } else {
+        tocItem.expanded = true;
+        tocItem.collapsed = false;
+        tocItem.important = true;
+
       }
     } catch (e) {console.log(e)}
   }
@@ -706,17 +715,18 @@ export class TableOfContentsAccordionComponent {
 
   findTocByPubOnly(list, publicationID) {
     for (const item of list) {
-      if (item.subOptions && item.subOptions.length) {
-        this.findTocByPubOnly(item.subOptions, publicationID);
-      } else if ((String(item.itemId) === String(publicationID) || Number(item.publication_id) === Number(publicationID))
+      if ((String(item.itemId) === String(publicationID) || Number(item.publication_id) === Number(publicationID))
       ) {
         item.selected = true;
         this.currentOption = item;
         this.openTocItemParentAccordions(item);
         this.foundTocItem = true;
-        break;
+        return this.foundTocItem;
+      } else if (item.subOptions && item.subOptions.length) {
+        this.findTocByPubOnly(item.subOptions, publicationID);
       }
     }
+    return this.foundTocItem;
   }
 
   ngOnDestroy() {
