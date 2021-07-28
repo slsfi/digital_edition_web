@@ -119,15 +119,6 @@ export class IntroductionPage {
     this.intervalTimerId = 0;
 
     try {
-      this.hasSeparateIntroToc = this.config.getSettings('separeateIntroductionToc');
-    } catch (error) {
-      this.hasSeparateIntroToc = false;
-    }
-    if ( this.id !== undefined ) {
-      this.getTocRoot(this.id);
-    }
-
-    try {
       this.toolTipsSettings = this.config.getSettings('settings.toolTips');
     } catch (e) {
       this.toolTipsSettings = undefined;
@@ -192,6 +183,16 @@ export class IntroductionPage {
     this.langService.getLanguage().subscribe(lang => {
       this.textService.getIntroduction(this.id, lang).subscribe(
         res => {
+
+            try {
+              this.hasSeparateIntroToc = this.config.getSettings('separeateIntroductionToc');
+            } catch (error) {
+              this.hasSeparateIntroToc = false;
+            }
+            if ( this.id !== undefined ) {
+              this.getTocRoot(this.id);
+            }
+
             this.textLoading = false;
             // in order to get id attributes for tooltips
             this.text = this.sanitizer.bypassSecurityTrustHtml(
