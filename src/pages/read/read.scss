@@ -328,19 +328,19 @@ page-read .mobile-mode-read-content .scroll-zoom-wrapper {
   padding: 10px;
 }
 
-/* Adjust padding and background color of text column in mobile mode. */
+/* Adjust padding and background color of text and facsimile columns in mobile mode. */
 page-read div.mobile-mode-established {
   padding: 12px;
   background-color: var(--read-columns-background-color);
 }
 page-read div.mobile-mode-facsimiles {
-  background-color: var(--read-columns-background-color);
 
   div.external-urls-header {
     padding-left: 0.75rem !important;
     padding-bottom: 0 !important;
   }
   ion-scroll.external_urls_wrapper {
+    background-color: var(--read-columns-background-color);
     height: 100vh !important;
     max-height: calc(100vh - 260px) !important;
 
