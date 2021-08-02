@@ -333,6 +333,15 @@ page-read div.mobile-mode-established {
   padding: 12px;
   background-color: var(--read-columns-background-color);
 }
+page-read div.mobile-mode-facsimiles {
+  background-color: var(--read-columns-background-color);
+
+  ion-scroll.external_urls_wrapper {
+    height: 100vh !important;
+    max-height: calc(100vh - 250px);
+  }
+}
+
 
 @media(max-width: 800px) {
   ion-backdrop {
