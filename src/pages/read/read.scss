@@ -347,10 +347,9 @@ page-read div.mobile-mode-facsimiles {
       margin-left: 10px !important;
     }
   }
-
-  div.tei {
-    padding: 10px !important;
-  }
+}
+page-read div.mobile-mode-facsimiles > facsimiles > div.tei {
+  padding: 10px;
 }
 
 
