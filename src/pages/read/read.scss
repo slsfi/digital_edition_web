@@ -339,6 +339,14 @@ page-read div.mobile-mode-facsimiles {
   ion-scroll.external_urls_wrapper {
     height: 100vh !important;
     max-height: calc(100vh - 250px) !important;
+
+    ul {
+      margin-left: 10px;
+    }
+  }
+
+  div.tei {
+    padding: 10px;
   }
 }
 
