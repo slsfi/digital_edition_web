@@ -336,17 +336,20 @@ page-read div.mobile-mode-established {
 page-read div.mobile-mode-facsimiles {
   background-color: var(--read-columns-background-color);
 
+  div.external-urls-header {
+    margin-left: 10px !important;
+  }
   ion-scroll.external_urls_wrapper {
     height: 100vh !important;
     max-height: calc(100vh - 250px) !important;
 
     ul {
-      margin-left: 10px;
+      margin-left: 10px !important;
     }
   }
 
   div.tei {
-    padding: 10px;
+    padding: 10px !important;
   }
 }
 
