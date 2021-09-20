@@ -64,8 +64,6 @@ export class ReadPopoverPage {
       this.readToggles = toggles;
     }
 
-    console.log('readToggles: ', this.readToggles);
-
     this.togglesCounter = 0;
     for (const prop in this.readToggles) {
       if (this.readToggles.hasOwnProperty(prop)) {
@@ -76,14 +74,6 @@ export class ReadPopoverPage {
     }
 
     this.show = readPopoverService.show;
-    for (const prop in this.show) {
-      if (this.show.hasOwnProperty(prop)) {
-        if (this.readToggles.hasOwnProperty(prop) && this.readToggles[prop] === false) {
-          this.show[prop] = false;
-        }
-      }
-    }
-    console.log('activated toggles: ', this.show);
     this.fontsize = readPopoverService.fontsize;
   }
 
