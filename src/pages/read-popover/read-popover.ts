@@ -78,7 +78,7 @@ export class ReadPopoverPage {
     this.show = readPopoverService.show;
     for (const prop in this.show) {
       if (this.show.hasOwnProperty(prop)) {
-        if (this.readToggles[prop] === false) {
+        if (this.readToggles.hasOwnProperty(prop) && this.readToggles[prop] === false) {
           this.show[prop] = false;
         }
       }
