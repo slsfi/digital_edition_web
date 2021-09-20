@@ -60,11 +60,11 @@ export class ReadPopoverPage {
     const toggles = this.params.get('toggles');
     this.readToggles = this.config.getSettings('settings.readToggles');
 
-    console.log('readToggles: ', this.readToggles);
-
-    if ( toggles !== undefined ) {
+    if ( toggles !== undefined && toggles !== null && Object.keys(toggles).length !== 0 ) {
       this.readToggles = toggles;
     }
+
+    console.log('readToggles: ', this.readToggles);
 
     this.togglesCounter = 0;
     for (const prop in this.readToggles) {
@@ -83,6 +83,7 @@ export class ReadPopoverPage {
         }
       }
     }
+    console.log('activated toggles: ', this.show);
     this.fontsize = readPopoverService.fontsize;
   }
 
