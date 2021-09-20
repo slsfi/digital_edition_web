@@ -60,6 +60,7 @@ export class ReadPopoverPage {
     const toggles = this.params.get('toggles');
     this.readToggles = this.config.getSettings('settings.readToggles');
 
+    console.log('toggles: ', toggles);
     if ( toggles !== undefined ) {
       this.readToggles = toggles;
     }
