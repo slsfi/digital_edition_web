@@ -13,7 +13,7 @@ export enum Fontsize {
 export class ReadPopoverService {
 
   show = {
-    'comments': true,
+    'comments': false,
     'personInfo': false,
     'abbreviations': false,
     'placeInfo': false,
