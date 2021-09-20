@@ -60,7 +60,8 @@ export class ReadPopoverPage {
     const toggles = this.params.get('toggles');
     this.readToggles = this.config.getSettings('settings.readToggles');
 
-    console.log('toggles: ', toggles);
+    console.log('readToggles: ', this.readToggles);
+
     if ( toggles !== undefined ) {
       this.readToggles = toggles;
     }
@@ -75,6 +76,13 @@ export class ReadPopoverPage {
     }
 
     this.show = readPopoverService.show;
+    for (const prop in this.show) {
+      if (this.show.hasOwnProperty(prop)) {
+        if (this.readToggles[prop] === false) {
+          this.show[prop] = false;
+        }
+      }
+    }
     this.fontsize = readPopoverService.fontsize;
   }
 
