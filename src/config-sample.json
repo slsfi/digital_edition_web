@@ -76,7 +76,7 @@
     ],
     "settings": {
         "readToggles": {
-            "comments": true,
+            "comments": false,
             "personInfo": true,
             "placeInfo": true,
             "workInfo": true,
