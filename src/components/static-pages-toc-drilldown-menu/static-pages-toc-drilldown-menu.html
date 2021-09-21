@@ -1,5 +1,5 @@
 <ion-list *ngIf="menuStack">
-    <ion-item *ngIf="menuStack.length > 1" menuClose (click)="unDrill()" class="mainMenuItem" no-lines>
+    <ion-item *ngIf="menuStack.length > 1" menuClose (click)="unDrill()" class="mainMenuItem back-to-list-button" no-lines>
         <ion-icon name="ios-arrow-back" item-left small></ion-icon>
         <ion-label>{{ "BackButton.default" | translate }}</ion-label>
     </ion-item>
