@@ -1,6 +1,16 @@
 static-pages-toc-drilldown-menu {
-    .selected{
+    ion-item.item.selected {
         font-weight: bold;
-        background-color: rgb(238, 238, 238);
     }
+
+    /* The toc items should not have a background color so that the background color for the entire navigation panel shines through. */
+    ion-item.item {
+        background-color: unset;
+        padding-left: 12px;
+	    border-left: 4px solid transparent;
+    }
+    ion-item.item:hover {
+        border-left-color: var(--main-toc-hover-color);
+    }
+
 }
