@@ -10,7 +10,14 @@ static-pages-toc-drilldown-menu {
         border-left: 4px solid transparent;
         cursor: pointer;
     }
-    ion-item.item:hover {
+
+    ion-item.item.back-to-list-button {
+        padding-left: 12px;
+        border-left: 4px solid transparent;
+    }
+
+    ion-item.item:hover,
+    ion-item.item.back-to-list-button:hover {
         border-left-color: var(--main-toc-hover-color);
     }
 
