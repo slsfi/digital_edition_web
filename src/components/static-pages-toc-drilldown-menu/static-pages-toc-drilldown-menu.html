@@ -2,11 +2,13 @@
     <ion-item *ngIf="menuStack.length > 1" menuClose (click)="unDrill()" class="mainMenuItem">
         <ion-label>
             <ion-icon name="ios-arrow-back" item-left small></ion-icon>
+            <ion-label>{{ "BackButton.default" | translate }}</ion-label>
         </ion-label>
     </ion-item>
     <ng-container *ngFor="let item of menuStack[menuStack.length -1] | orderBy: 'id' ; let i = index;">
         <ion-item *ngIf="item.root" (click)="goBack()" class="back-to-list-button" no-lines>
             <ion-icon name="ios-arrow-back" item-left small></ion-icon>
+            <ion-label>{{ "BackButton.default" | translate }}</ion-label>
         </ion-item>
         <ion-item *ngIf="item.children" (click)="drillDown(item)">
             <p>
