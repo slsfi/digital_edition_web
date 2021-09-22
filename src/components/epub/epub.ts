@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import Epub, { NavItem, Rendition } from 'epubjs';
 import book from 'epubjs/types/book';
 import {} from 'fs';
@@ -30,6 +30,8 @@ export class EpubComponent {
   currentPageNumber: number;
   nextPageNumber: number;
 
+  @HostListener('window:resize', ['$event'])
+
   public tocMenuOpen: boolean;
 
   constructor() {
@@ -43,13 +45,17 @@ export class EpubComponent {
     const vw = (Math.max(document.documentElement.clientWidth, window.innerWidth || 0)) * 0.8;
     const vh = (Math.max(document.documentElement.clientHeight, window.innerHeight || 0)) * 0.8;
 
-    this.rendition = this.book.renderTo('area',  { manager: 'continuous', flow: 'paginated', width: vw, height: vh });
+    this.rendition = this.book.renderTo('area',  { width: '100%', height: vh, spread: 'always' });
     this.displayed = this.rendition.display();
     this.book.ready.then( () => {
       this.loading = false;
       this.createTOC();
       this.setPageNumbers();
     });
+  }
+
+  onResize(event) {
+
   }
 
   createTOC() {
@@ -75,13 +81,13 @@ export class EpubComponent {
     const docfrag = <DocumentFragment>document.createDocumentFragment();
     const element = document.createElement('li');
     const link = document.createElement('a');
-    const _this = this;
+    const _parent = this;
     link.textContent = chapter.label;
     link.setAttribute('href', chapter.href);
     // Make the TOC links clickable
     link.addEventListener('click', function( event ) {
       event.preventDefault();
-      _this.openChapter(chapter.href);
+      _parent.openChapter(chapter.href);
     })
     element.appendChild(link);
     docfrag.appendChild(element);
@@ -109,10 +115,10 @@ export class EpubComponent {
 
   setPageNumbers() {
     try {
-      const _this = this;
+      const _parent = this;
       this.rendition.on('relocated', function(location) {
-        _this.currentPageNumber = location.start.index;
-        _this.nextPageNumber = location.end.index;
+        _parent.currentPageNumber = location.start.index;
+        _parent.nextPageNumber = location.end.index;
       });
     } catch (error) {
       console.log(error)

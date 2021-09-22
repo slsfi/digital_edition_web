@@ -2,6 +2,29 @@ epub {
   background-color: rgb(249, 252, 252);
   display: block;
   height: 100%;
+
+  .secondary > .toolbar-content {
+    /*
+    display: grid;
+    grid-template-columns: auto max-content;
+    */
+    display: flex;
+    justify-content: flex-end;
+
+    ion-buttons {
+      order: 0;
+      width: 100%;
+    }
+  }
+
+  .navigation-buttons-toc{
+    text-align: end;
+  }
+
+  .navigation-buttons-col{
+    display: flex;
+  }
+
   /* sidenav för mobil */
   #TOC {
     margin: 10px;
@@ -62,15 +85,23 @@ epub {
   }
 
   /* navigeringsbalken för inledningar */
-  #toc_text,
-  .menuOpenIcon {
-    background-color: rgb(249, 252, 252);
+  #toc_text,.menuOpenIcon {
+    // background-color: rgb(249, 252, 252);
   }
 
   #toc_text {
-    margin-top: 2.5rem;
-    position: sticky;
+    margin-top: 0rem;
+    position: fixed;
+    z-index: 99;
     padding: 0 20px 70px 20px;
+    right: 1%;
+    background-color: color($colors, light);
+    box-shadow: -5px 0px 5px 1px #aaaaaa;
+    font-size: 1rem;
+  }
+
+  #toc_text > ul, li{
+    list-style-type: none;
   }
 
   /* menylänkarna */
@@ -105,6 +136,7 @@ epub {
 
   .toc-epub-container {
     display: block;
+    margin-top:3rem;
   }
 
   #area{
