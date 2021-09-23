@@ -1,7 +1,8 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, EventEmitter, Input } from '@angular/core';
 import Epub, { NavItem, Rendition } from 'epubjs';
 import book from 'epubjs/types/book';
 import {} from 'fs';
+import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 
 
 /**
@@ -31,16 +32,17 @@ export class EpubComponent {
   nextPageNumber: number;
 
   @HostListener('window:resize', ['$event'])
+  @Input() epubFileName?: String;
 
   public tocMenuOpen: boolean;
 
-  constructor() {
+  constructor( private userSettingsService: UserSettingsService ) {
     this.tocMenuOpen = false;
     this.loading = true;
   }
 
   ngAfterViewInit() {
-    this.book = Epub('../assets/books/2685.epub');
+    this.book = Epub('../assets/books/' + this.epubFileName);
     // Get viewport width and height. Make it a bit smaller
     const vw = (Math.max(document.documentElement.clientWidth, window.innerWidth || 0)) * 0.8;
     const vh = (Math.max(document.documentElement.clientHeight, window.innerHeight || 0)) * 0.8;
@@ -48,9 +50,24 @@ export class EpubComponent {
     this.rendition = this.book.renderTo('area',  { width: '100%', height: vh, spread: 'always' });
     this.displayed = this.rendition.display();
     this.book.ready.then( () => {
-      this.loading = false;
+      setTimeout(() => {
+        this.loading = false;
+      }, 2500);
       this.createTOC();
       this.setPageNumbers();
+    });
+
+    const __parent = this;
+    document.addEventListener('keydown', function( event ) {
+      event.preventDefault();
+      switch (event.code) {
+        case 'ArrowLeft':
+          __parent.prev();
+          break;
+        case 'ArrowRight':
+          __parent.next();
+          break;
+    }
     });
   }
 
@@ -64,6 +81,7 @@ export class EpubComponent {
       function( toc ) {
         const tocDiv = <HTMLDivElement> document.getElementById('toc_text');
         const tocUl = document.createElement('ul');
+        tocUl.className = 'topchapter';
         const docfrag = <DocumentFragment> document.createDocumentFragment();
         toc.forEach( (chapter: NavItem) => {
           // Adds TOC elements recursively to div
@@ -88,11 +106,15 @@ export class EpubComponent {
     link.addEventListener('click', function( event ) {
       event.preventDefault();
       _parent.openChapter(chapter.href);
-    })
+    });
+    if ( chapter.subitems.length > 0 ) {
+      element.className = 'has_subchapters';
+    }
     element.appendChild(link);
     docfrag.appendChild(element);
     if ( chapter.subitems.length > 0 ) {
       const subTocUl = document.createElement('ul');
+      subTocUl.className = 'subchapters';
       chapter.subitems.forEach( (subChapter) => {
         subTocUl.appendChild(this.createTocElement(subChapter));
       });
@@ -127,6 +149,16 @@ export class EpubComponent {
 
   ngOnDestroy() {
     this.book.destroy();
+  }
+
+  swipePrevNext(ev) {
+    if (ev.direction !== undefined) {
+      if (ev.direction === 2) {
+        this.next();
+      } else if (ev.direction === 4) {
+        this.prev();
+      }
+    }
   }
 
   next() {

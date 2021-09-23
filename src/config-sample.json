@@ -295,7 +295,8 @@
             "WorkSearch": true,
             "SongTypes": false,
             "Books": false,
-            "splitReadCollections":[]
+            "splitReadCollections":[],
+            "EPUB": false
         }
     },
     "defaults": {
@@ -515,5 +516,9 @@
         "url":"https://www.sls.fi",
         "logo":"https://granska-topelius.sls.fi/assets/images/logo.svg"
       }
-    }
+    },
+    "AvailableEpubs": [
+      {"SomeName": "2687.epub"},
+      {"SomeName2": "2685.epub"}
+    ]
 }

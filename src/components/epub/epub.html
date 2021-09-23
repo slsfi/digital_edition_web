@@ -7,19 +7,16 @@
     <ion-buttons>
         <ion-grid>
             <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
-              <ion-col class="navigation-buttons-col">
-                <!--div class="navigation-buttons" *ngIf="!loading">
-                  <a (click)="prev()"><ion-icon name="arrow-back"></ion-icon></a>
-                  <a (click)="next()"><ion-icon name="arrow-forward"></ion-icon></a>
-                </div-->
-
-                <button ion-button clear class="navigation-buttons" *ngIf="!loading">
-                  <div id="toc_menu" (click)="prev()" >
+              <ion-col class="navigation-buttons-col" *ngIf="userSettingsService.isMobile() === false">
+                <button ion-button clear class="navigation-buttons" title="prev button">
+                  <div id="toc_menu" (click)="prev()" *ngIf="!loading">
                       <ion-icon name="arrow-back"></ion-icon>
                   </div>
                 </button>
-                <button ion-button clear class="navigation-buttons" *ngIf="!loading">
-                  <div id="toc_menu" (click)="next()" >
+              </ion-col>
+              <ion-col class="navigation-buttons-col right" *ngIf="userSettingsService.isMobile() === false">
+                <button ion-button clear class="navigation-buttons" title="next button">
+                  <div id="toc_menu" (click)="next()" *ngIf="!loading">
                       <ion-icon name="arrow-forward"></ion-icon>
                   </div>
                 </button>
@@ -42,8 +39,27 @@
 </div>
 
 <div class="toc-epub-container">
+  <ion-spinner *ngIf="loading" class="loading" name="crescent"></ion-spinner>
+  <div id="area"  (pan)="swipePrevNext($event)"></div>
+</div>
 
-  <div id="area"></div>
-  <!--div id="currentPageNumber">{{currentPageNumber}}</div>
-  <div id="nextPageNumber">{{nextPageNumber}}</div-->
+<div class="text-changer-mobile-view" *ngIf="userSettingsService.isMobile() === true && tocMenuOpen === false">
+  <ion-grid class="forwardBackward">
+      <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
+        <ion-col class="navigation-buttons-col">
+          <button ion-button clear class="navigation-buttons" title="prev button">
+            <div id="toc_menu" (click)="prev()" *ngIf="!loading">
+                <ion-icon name="arrow-back"></ion-icon>
+            </div>
+          </button>
+        </ion-col>
+        <ion-col class="navigation-buttons-col right">
+          <button ion-button clear class="navigation-buttons" title="next button">
+            <div id="toc_menu" (click)="next()" *ngIf="!loading">
+                <ion-icon name="arrow-forward"></ion-icon>
+            </div>
+          </button>
+        </ion-col>
+      </ion-row>
+  </ion-grid>
 </div>

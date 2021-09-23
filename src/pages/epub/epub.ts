@@ -13,7 +13,7 @@ import { AnalyticsService } from '../../app/services/analytics/analytics.service
 
  @IonicPage({
   name: 'epub',
-  segment: 'epub'
+  segment: 'epub/:selectedFile'
 })
 @Component({
   selector: 'page-epub',
@@ -22,6 +22,7 @@ import { AnalyticsService } from '../../app/services/analytics/analytics.service
 
 export class EpubPage {
 
+  public epubFileName: string = '';
   constructor(
     protected navCtrl: NavController,
     protected viewCtrl: ViewController,
@@ -37,6 +38,7 @@ export class EpubPage {
   }
 
   ionViewDidEnter() {
+    this.epubFileName = this.params.get('selectedFile');
     this.analyticsService.doPageView('Epub');
   }
 

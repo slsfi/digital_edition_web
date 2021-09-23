@@ -23,6 +23,15 @@ epub {
 
   .navigation-buttons-col{
     display: flex;
+    flex-grow: 2;
+  }
+
+  .navigation-buttons-col .navigation-buttons{
+    width: 100%;
+  }
+
+  .navigation-buttons-col.right{
+    flex-direction: row-reverse;
   }
 
   /* sidenav för mobil */
@@ -46,7 +55,6 @@ epub {
   }
 
   #toc_menu.menuOpenIcon {
-    margin-bottom: 12px;
     position: -webkit-sticky;
     position: sticky;
     top: 0;
@@ -54,7 +62,6 @@ epub {
   }
 
   #toc_menu ion-icon {
-    margin: 6px 12px;
     cursor: pointer;
   }
 
@@ -85,15 +92,11 @@ epub {
   }
 
   /* navigeringsbalken för inledningar */
-  #toc_text,.menuOpenIcon {
-    // background-color: rgb(249, 252, 252);
-  }
 
   #toc_text {
     margin-top: 0rem;
     position: fixed;
     z-index: 99;
-    padding: 0 20px 70px 20px;
     right: 1%;
     background-color: color($colors, light);
     box-shadow: -5px 0px 5px 1px #aaaaaa;
@@ -145,5 +148,28 @@ epub {
     margin-left: 3em;
     width: 97%;
     height: auto;
+  }
+
+  .topchapter{
+    padding-left: 1.2rem;
+  }
+
+  .text-changer-mobile-view {
+    .forwardBackward {
+      position: fixed;
+      max-width: 100vw;
+      width: 100%;
+      z-index: 9999;
+      padding: 0px;
+      transform: none;
+      height: 54px;
+    }
+    .forwardBackward.grid{
+      background-color: rgba(99,99,99, 0.6);
+    }
+  }
+
+  .loading{
+    top: 4rem;
   }
 }

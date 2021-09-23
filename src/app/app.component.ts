@@ -154,7 +154,8 @@ export class DigitalEditionsApp {
     galleryAccordion: false,
     collectionsAccordion: [false],
     aboutMenuAccordion: false,
-    pdfAccordion: false
+    pdfAccordion: false,
+    epubs: false
   }
 
   musicAccordion = {
@@ -190,6 +191,9 @@ export class DigitalEditionsApp {
   hasCover = true;
   hasTitle = true;
   tocItems: GeneralTocItem[];
+
+  availableEpubs: any[];
+  epubNames: any[];
 
   galleryInReadMenu = true;
   splitReadCollections: any[];
@@ -305,6 +309,14 @@ export class DigitalEditionsApp {
       this.hasCover = this.config.getSettings('HasCover');
     } catch (e) {
       this.hasCover = true;
+    }
+
+    try {
+      this.availableEpubs = this.config.getSettings('AvailableEpubs');
+      this.epubNames = Object.keys(this.availableEpubs);
+    } catch (e) {
+      this.availableEpubs = [];
+      this.epubNames = [];
     }
 
     try {
@@ -1314,7 +1326,7 @@ export class DigitalEditionsApp {
     nav[0].setRoot('content', params);
   }
 
-  openPage(page, selectedMenu?) {
+  openPage(page, selectedMenu?, selectedFile?) {
     if (selectedMenu) {
       this.unSelectCollectionWithChildrenPdf();
       // Notify other menus to unselect selected items
@@ -1331,7 +1343,11 @@ export class DigitalEditionsApp {
     }*/
     try {
       const nav = this.app.getActiveNavs();
-      nav[0].setRoot(page);
+      if ( selectedFile !== undefined ) {
+        nav[0].setRoot(page, {'selectedFile': selectedFile});
+      } else {
+        nav[0].setRoot(page);
+      }
     } catch (e) {
       console.error('Error opening page');
     }
