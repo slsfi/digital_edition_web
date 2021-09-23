@@ -1,10 +1,8 @@
 import { Component, HostListener, EventEmitter, Input } from '@angular/core';
-import Epub, { NavItem, Rendition } from 'epubjs';
-import book from 'epubjs/types/book';
 import {} from 'fs';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 
-
+declare var ePub;
 /**
  * Generated class for the MathJaxComponent component.
  *
@@ -24,8 +22,8 @@ import { UserSettingsService } from '../../app/services/settings/user-settings.s
 export class EpubComponent {
 
   text: string;
-  book: book;
-  rendition: Rendition;
+  book: any;
+  rendition: any;
   displayed: any;
   loading: boolean;
   currentPageNumber: number;
@@ -42,13 +40,14 @@ export class EpubComponent {
   }
 
   ngAfterViewInit() {
-    this.book = Epub('../assets/books/' + this.epubFileName);
+    this.book = ePub('../assets/books/' + this.epubFileName);
     // Get viewport width and height. Make it a bit smaller
     const vw = (Math.max(document.documentElement.clientWidth, window.innerWidth || 0)) * 0.8;
     const vh = (Math.max(document.documentElement.clientHeight, window.innerHeight || 0)) * 0.8;
-
-    this.rendition = this.book.renderTo('area',  { width: '100%', height: vh, spread: 'always' });
+    const area = document.getElementById("area");
+    this.rendition = this.book.renderTo(area,  { width: '100%' });
     this.displayed = this.rendition.display();
+
     this.book.ready.then( () => {
       setTimeout(() => {
         this.loading = false;
@@ -83,7 +82,7 @@ export class EpubComponent {
         const tocUl = document.createElement('ul');
         tocUl.className = 'topchapter';
         const docfrag = <DocumentFragment> document.createDocumentFragment();
-        toc.forEach( (chapter: NavItem) => {
+        toc.forEach( (chapter) => {
           // Adds TOC elements recursively to div
           docfrag.appendChild(_this.createTocElement(chapter));
           return null;
@@ -95,7 +94,7 @@ export class EpubComponent {
   }
 
   // Recursive TOC creation
-  createTocElement( chapter: NavItem ): DocumentFragment {
+  createTocElement( chapter ): DocumentFragment {
     const docfrag = <DocumentFragment>document.createDocumentFragment();
     const element = document.createElement('li');
     const link = document.createElement('a');

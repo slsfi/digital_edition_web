@@ -22,7 +22,7 @@ import { AnalyticsService } from '../../app/services/analytics/analytics.service
 
 export class EpubPage {
 
-  public epubFileName = '';
+  public epubFileName: String = '';
   constructor(
     protected navCtrl: NavController,
     protected viewCtrl: ViewController,
