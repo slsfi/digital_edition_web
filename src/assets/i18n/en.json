@@ -138,7 +138,8 @@
         "Thematic": "Default",
         "Chronological": "Chronological",
         "Alphabetical": "Alphabetical"
-      }
+      },
+      "EPUBS": "Epub"
   },
   "GalleryPages": {
       "0": "Headline 1",

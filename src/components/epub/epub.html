@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar color="secondary" class="secondary">
+    <ion-title *ngIf="showPage">
+      <div class="page-title">{{appName}}</div>
+      <div class="page-subtitle">Epub</div>
+    </ion-title>
+    <ion-buttons>
+        <ion-grid>
+            <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
+              <ion-col class="navigation-buttons-col" *ngIf="userSettingsService.isMobile() === false">
+                <button ion-button clear class="navigation-buttons" title="prev button">
+                  <div id="toc_menu" (click)="prev()" *ngIf="!loading">
+                      <ion-icon name="arrow-back"></ion-icon>
+                  </div>
+                </button>
+              </ion-col>
+              <ion-col class="navigation-buttons-col right" *ngIf="userSettingsService.isMobile() === false">
+                <button ion-button clear class="navigation-buttons" title="next button">
+                  <div id="toc_menu" (click)="next()" *ngIf="!loading">
+                      <ion-icon name="arrow-forward"></ion-icon>
+                  </div>
+                </button>
+              </ion-col>
+              <ion-col class="navigation-buttons-toc">
+                <button ion-button clear class="sec-menu-button" [ngClass]="tocMenuOpen ? 'menuOpenTOC' : 'menuClosedTOC'">
+                  <div id="toc_menu" (click)="toggleTocMenu()" [ngClass]="tocMenuOpen ? 'menuOpenIcon' : 'menuClosedIcon'">
+                      <ion-icon name="menu" class="intro-toc-button" *ngIf="!tocMenuOpen"></ion-icon>
+                      <ion-icon name="close" class="intro-toc-button" *ngIf="tocMenuOpen"></ion-icon>
+                  </div>
+                </button>
+              </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<div id="toc_text" [ngClass]="tocMenuOpen ? 'menuOpen' : 'menuClosed'" (click)="toggleTocMenu()">
+</div>
+
+<div class="toc-epub-container">
+  <ion-spinner *ngIf="loading" class="loading" name="crescent"></ion-spinner>
+  <div id="area"  (pan)="swipePrevNext($event)"></div>
+</div>
+
+<div class="text-changer-mobile-view" *ngIf="userSettingsService.isMobile() === true && tocMenuOpen === false">
+  <ion-grid class="forwardBackward">
+      <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
+        <ion-col class="navigation-buttons-col">
+          <button ion-button clear class="navigation-buttons" title="prev button">
+            <div id="toc_menu" (click)="prev()" *ngIf="!loading">
+                <ion-icon name="arrow-back"></ion-icon>
+            </div>
+          </button>
+        </ion-col>
+        <ion-col class="navigation-buttons-col right">
+          <button ion-button clear class="navigation-buttons" title="next button">
+            <div id="toc_menu" (click)="next()" *ngIf="!loading">
+                <ion-icon name="arrow-forward"></ion-icon>
+            </div>
+          </button>
+        </ion-col>
+      </ion-row>
+  </ion-grid>
+</div>

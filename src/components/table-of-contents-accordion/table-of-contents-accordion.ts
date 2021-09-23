@@ -240,7 +240,7 @@ export class TableOfContentsAccordionComponent {
             // value.searchItemId = String(value.searchItemId).split(';pos')[0];
           }
           // Try to find the correct position in the TOC. If not found, try to find the nearest.
-          if( this.findTocByPubOnly(this.collapsableItems, value.searchItemId) === false ) {
+          if ( this.findTocByPubOnly(this.collapsableItems, value.searchItemId) === false ) {
             value.searchItemId = String(value.searchItemId).split(';pos')[0];
             this.findTocByPubOnly(this.collapsableItems, value.searchItemId)
           }

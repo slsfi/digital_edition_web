@@ -1,0 +1,175 @@
+epub {
+  background-color: rgb(249, 252, 252);
+  display: block;
+  height: 100%;
+
+  .secondary > .toolbar-content {
+    /*
+    display: grid;
+    grid-template-columns: auto max-content;
+    */
+    display: flex;
+    justify-content: flex-end;
+
+    ion-buttons {
+      order: 0;
+      width: 100%;
+    }
+  }
+
+  .navigation-buttons-toc{
+    text-align: end;
+  }
+
+  .navigation-buttons-col{
+    display: flex;
+    flex-grow: 2;
+  }
+
+  .navigation-buttons-col .navigation-buttons{
+    width: 100%;
+  }
+
+  .navigation-buttons-col.right{
+    flex-direction: row-reverse;
+  }
+
+  /* sidenav för mobil */
+  #TOC {
+    margin: 10px;
+    height: calc(100% - 102px);
+    width: 85%;
+    max-width: 375px;
+    position: absolute;
+    z-index: 10;
+    overflow-x: hidden;
+    transition: 0.25s;
+    font-size: 1rem;
+    box-shadow: 10px 0 5px -2px #888;
+    background-color: rgb(249, 252, 252);
+  }
+
+  #toc_menu {
+    float: right;
+    width: 100%;
+  }
+
+  #toc_menu.menuOpenIcon {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 99;
+  }
+
+  #toc_menu ion-icon {
+    cursor: pointer;
+  }
+
+  .menuClosed {
+    display: none;
+  }
+
+  .menuClosedIcon {
+    background-color: transparent;
+  }
+
+  .intro-toc-button {
+    transition: $opacity-hover-transition;
+  }
+
+  .intro-toc-button:hover {
+    opacity: $opacity-hover;
+  }
+
+  .intro-toc-button:active {
+    opacity: 1;
+  }
+
+  #TOC.menuClosedTOC {
+    width: auto;
+    height: auto;
+    box-shadow: none;
+  }
+
+  /* navigeringsbalken för inledningar */
+
+  #toc_text {
+    margin-top: 0rem;
+    position: fixed;
+    z-index: 99;
+    right: 1%;
+    background-color: color($colors, light);
+    box-shadow: -5px 0px 5px 1px #aaaaaa;
+    font-size: 1rem;
+  }
+
+  #toc_text > ul, li{
+    list-style-type: none;
+  }
+
+  /* menylänkarna */
+  #TOC a {
+    text-decoration: none;
+    color: color($colors, dark);
+    transition: 0.3s;
+  }
+
+  @media (min-width: 1000px) {
+    nav#TOC {
+      float: right;
+      height: 100%;
+      transition: none;
+      z-index: 10;
+      width: 50vw;
+    }
+
+    .menuClosedIcon {
+      background-color: transparent;
+    }
+  }
+
+  @media screen and (max-width: 450px) {
+    /* Gör innehållsförteckningen lite smalare på mycket små skärmar */
+    #TOC {
+      width: 75%;
+      opacity: 97%;
+      height: calc(100% - 70px);
+    }
+  }
+
+  .toc-epub-container {
+    display: block;
+    margin-top:3rem;
+  }
+
+  #area{
+    float: right;
+    display: block;
+    margin-left: 3em;
+    width: 97%;
+    height: auto;
+  }
+
+  .topchapter{
+    padding-left: 1.2rem;
+  }
+
+  .text-changer-mobile-view {
+    .forwardBackward {
+      position: fixed;
+      max-width: 100vw;
+      width: 100%;
+      z-index: 9999;
+      padding: 0px;
+      transform: none;
+      height: 54px;
+    }
+    .forwardBackward.grid{
+      background-color: rgba(99,99,99, 0.6);
+    }
+  }
+
+  .loading{
+    top: 4rem;
+  }
+}
