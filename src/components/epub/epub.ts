@@ -45,7 +45,7 @@ export class EpubComponent {
     const vw = (Math.max(document.documentElement.clientWidth, window.innerWidth || 0)) * 0.8;
     const vh = (Math.max(document.documentElement.clientHeight, window.innerHeight || 0)) * 0.8;
     const area = document.getElementById("area");
-    this.rendition = this.book.renderTo(area,  { width: '100%' });
+    this.rendition = this.book.renderTo(area,   { width: '100%', height: vh, spread: 'always' });
     this.displayed = this.rendition.display();
 
     this.book.ready.then( () => {
