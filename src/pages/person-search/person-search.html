@@ -4,9 +4,9 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
-    <ion-toolbar color="secondary" class="secondary"  *ngIf="userSettingsService.isDesktop()">
-     <ion-title>
+<ion-header no-border>
+    <ion-toolbar color="secondary" class="secondary" *ngIf="userSettingsService.isDesktop()">
+      <ion-title>
         <div class="page-title"></div>
         <div class="page-subtitle"></div>
       </ion-title>
@@ -84,7 +84,7 @@
               <button ion-fab mini (click)="showAll()"><ion-icon name="refresh"></ion-icon></button>
             </ion-scroll>
           </ion-col>
-        </ion-row>
+      </ion-row>
   </ion-grid>
 
 
