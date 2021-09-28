@@ -1017,7 +1017,7 @@ export class DigitalEditionsApp {
       const params = {};
       const nav = this.app.getActiveNavs();
       this.openPage('HomePage');
-      nav[0].setRoot('EditionsPage', params, { animate: false });
+      nav[0].setRoot('HomePage', params, { animate: false });
     });
 
     this.events.subscribe('DigitalEditionList:recieveData', (data) => {
