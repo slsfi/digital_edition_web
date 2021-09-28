@@ -564,6 +564,7 @@ export class PersonSearchPage {
     this.allData = this.cacheData;
     this.loadMorePersons();
     console.log('persons: ', this.persons);
+    console.log('all data: ', this.allData);
     this.content.scrollToTop(400);
   }
 
