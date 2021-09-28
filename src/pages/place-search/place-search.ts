@@ -175,10 +175,10 @@ export class PlaceSearchPage {
     this.allData = this.cacheData;
     this.loadMorePlaces();
     */
-
     this.count = 0;
-    this.places = [];
+    this.from = 0;
     this.searchText = '';
+    this.places = [];
     this.getPlaces();
     this.content.scrollToTop(400);
   }
