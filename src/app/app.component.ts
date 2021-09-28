@@ -1014,7 +1014,10 @@ export class DigitalEditionsApp {
         component: 'app-component'
       });
 
+      const params = {};
+      const nav = this.app.getActiveNavs();
       this.openPage('HomePage');
+      nav[0].setRoot('EditionsPage', params, { animate: false });
     });
 
     this.events.subscribe('DigitalEditionList:recieveData', (data) => {
