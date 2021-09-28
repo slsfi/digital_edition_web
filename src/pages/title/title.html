@@ -39,7 +39,8 @@
         <div *ngIf="hasMDTitle && mdContent && !hasDigitalEditionListChildren" class="tei md_content">
           <markdown [data]="mdContent"></markdown>
         </div>
-        <div *ngIf="!hasMDTitle && !hasDigitalEditionListChildren" class="tei" [innerHTML]="text"></div>
+        <div *ngIf="!hasMDTitle && !hasDigitalEditionListChildren" class="tei"
+        [innerHTML]="text" [ngClass]="((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')"></div>
       </ion-scroll>
     </ion-card-content>
   </ion-card>
