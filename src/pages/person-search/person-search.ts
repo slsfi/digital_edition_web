@@ -568,6 +568,7 @@ export class PersonSearchPage {
     this.count = 0;
     this.from = 0;
     this.searchText = '';
+    this.filters = [];
     this.persons = [];
     this.getPersons();
     this.content.scrollToTop(400);
