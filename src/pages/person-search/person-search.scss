@@ -1,8 +1,4 @@
 page-person-search {
-        .alphabet > .scroll-content {
-        position: relative !important;
-    }
-
     .fixed-content,
     .scroll-content {
         margin-top: 50px;
@@ -12,20 +8,16 @@ page-person-search {
 		font-size: 1.8em;
 	}
 
+    ion-list > div {
+        cursor: pointer;
+    }
+
     .occurence {
         background-color: white;
     }
 
     ul {
         list-style-type: none;
-    }
-
-    .filter-button {
-        font-size: 2.8rem;
-    }
-
-    .searchbar {
-        color: white;
     }
 
     .alphabet {
@@ -37,11 +29,8 @@ page-person-search {
         }
     }
 
-    ion-list > div{
-        cursor: pointer;
-    }
-
     .alphabet-list {
+        position: fixed;
         top: 60px;
         right: 0;
         background: #eaeaea;
@@ -73,19 +62,21 @@ page-person-search {
         }
     }
 
-    .searchContainer{
+    .filter-button {
+        font-size: 2.8rem;
+    }
+
+    .searchbar {
+        color: white;
+    }
+
+    .searchContainer {
         display: flex;
         align-items: stretch;
     }
-    .alphabetContainer{
+    .alphabetContainer {
         flex: 1;
         min-height: fit-content;
     }
-
-    .alphabet ion-scroll {
-      height: 100%;
-      width: 80px;
-      position: inherit;
-  }
 
 }
