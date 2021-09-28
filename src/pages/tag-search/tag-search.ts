@@ -171,11 +171,18 @@ export class TagSearchPage {
   }
 
   showAll() {
+    /*
     this.tags = [];
     this.allData = [];
     this.count = 0;
     this.allData = this.cacheData;
     this.loadMoretags();
+    */
+    this.count = 0;
+    this.from = 0;
+    this.searchText = '';
+    this.tags = [];
+    this.gettags();
     this.content.scrollToTop(400);
   }
 
