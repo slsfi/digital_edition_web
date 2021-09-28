@@ -29,16 +29,8 @@ page-person-search {
     }
 
     .alphabet {
-        .scroll-content {
-            margin-top: 0 !important;
-        }
-
         button {
             margin: 0 !important;
-        }
-        ion-scroll {
-            height: 100%;
-            width: 80px;
         }
         button ion-icon.icon {
             font-size: 32px;
