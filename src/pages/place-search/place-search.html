@@ -80,11 +80,9 @@
               </ion-infinite-scroll>
           </ion-col>
           <ion-col col-2 class="alphabet">
-            <ion-scroll scrollY="true" style="height: 100%; width: 80px; position: fixed;" >
-              <button ion-fab mini (click)="showAll()"><ion-icon name="refresh"></ion-icon></button>
-              <button ion-fab mini *ngFor="let letter of alphabet" class="letter" (click)="sortByLetter(letter)">{{letter}}</button>
-              <button ion-fab mini (click)="showAll()"><ion-icon name="refresh"></ion-icon></button>
-            </ion-scroll>
+            <button ion-fab mini (click)="showAll()"><ion-icon name="refresh"></ion-icon></button>
+            <button ion-fab mini *ngFor="let letter of alphabet" class="letter" (click)="sortByLetter(letter)">{{letter}}</button>
+            <button ion-fab mini (click)="showAll()"><ion-icon name="refresh"></ion-icon></button>
           </ion-col>
         </ion-row>
   </ion-grid>
