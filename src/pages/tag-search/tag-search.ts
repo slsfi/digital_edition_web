@@ -181,6 +181,7 @@ export class TagSearchPage {
     this.count = 0;
     this.from = 0;
     this.searchText = '';
+    this.filters = [];
     this.tags = [];
     this.gettags();
     this.content.scrollToTop(400);
@@ -191,6 +192,7 @@ export class TagSearchPage {
     this.tags = [];
     this.cf.detectChanges();
     this.gettags();
+    this.content.scrollToTop(400);
   }
 
   ionViewDidLeave() {

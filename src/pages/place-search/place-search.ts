@@ -245,6 +245,7 @@ export class PlaceSearchPage {
       this.places = this.allData;
     }
     this.places = list;
+    this.content.scrollToTop(400);
   }
 
   filter(terms) {
