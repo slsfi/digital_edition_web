@@ -568,6 +568,7 @@ export class PersonSearchPage {
     this.persons = [];
     this.allData = [];
     /*this.cf.detectChanges();*/
+    this.searchText = '';
     this.getPersons();
     this.content.scrollToTop(400);
   }
