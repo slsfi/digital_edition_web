@@ -121,7 +121,7 @@ export class DigitalEditionsApp {
   }
 
   pagesWithoutMenu = [];
-  pagesWithClosedMenu = [];
+  pagesWithClosedMenu = ['HomePage'];
 
   public options: Array<TocAccordionMenuOptionModel>;
   public songTypesOptions: {
@@ -1018,6 +1018,7 @@ export class DigitalEditionsApp {
       const nav = this.app.getActiveNavs();
       this.openPage('HomePage');
       nav[0].setRoot('HomePage', params, { animate: false });
+      this.enableTableOfContentsMenu();
     });
 
     this.events.subscribe('DigitalEditionList:recieveData', (data) => {
