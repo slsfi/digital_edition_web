@@ -1017,8 +1017,8 @@ export class DigitalEditionsApp {
       const params = {};
       const nav = this.app.getActiveNavs();
       /*this.openPage('HomePage');*/
-      nav.setRoot('HomePage', params, { animate: false });
-      nav.popToRoot();
+      nav[0].setRoot('HomePage', params, { animate: false });
+      nav[0].popToRoot();
     });
 
     this.events.subscribe('DigitalEditionList:recieveData', (data) => {
