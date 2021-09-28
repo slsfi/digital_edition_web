@@ -183,6 +183,7 @@ export class PersonSearchPage {
     this.persons = [];
     this.cf.detectChanges();
     this.getPersons();
+    this.content.scrollToTop(400);
   }
 
   setData() {
