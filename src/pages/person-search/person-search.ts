@@ -565,6 +565,7 @@ export class PersonSearchPage {
     this.allData = this.cacheData;
     this.loadMorePersons();
     */
+    this.count = 0;
     this.persons = [];
     this.searchText = '';
     this.getPersons();
