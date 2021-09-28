@@ -565,9 +565,9 @@ export class PersonSearchPage {
     this.allData = this.cacheData;
     this.loadMorePersons();
     */
-    this.showLoading = true;
     this.persons = [];
-    this.cf.detectChanges();
+    this.allData = [];
+    /*this.cf.detectChanges();*/
     this.getPersons();
     this.content.scrollToTop(400);
   }
