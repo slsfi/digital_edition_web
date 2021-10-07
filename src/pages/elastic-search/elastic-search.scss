@@ -1,16 +1,16 @@
 page-elastic-search {
+  .fixed-content,
+  .scroll-content {
+    margin-top: 50px;
+  }
+  
+  ion-icon.settings-icon.icon {
+    font-size: 1.8em;
+  }
+
   .word_count span{
     display: inline-block;
     padding-left: 1rem;
-  }
-
-  .fixed-content,
-  .scroll-content {
-    margin-top: 40px !important;
-  }
-
-  ion-icon.settings-icon.icon {
-    font-size: 1.8em;
   }
 
   ion-item.hitItem:hover{
