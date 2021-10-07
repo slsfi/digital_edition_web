@@ -10,10 +10,12 @@
         <ion-grid>
             <ion-row>
               <ion-col>
+                <!--
                 <div name="download" (click)="download()">
                   <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
                   <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
                 </div>
+                -->
               </ion-col>
             </ion-row>
           </ion-grid>
@@ -22,25 +24,27 @@
 </ion-header>
 
 <ion-content padding>
-  <!--<div *ngIf="userSettingsService.isMobile()" right>
+  <!--
+  <div *ngIf="userSettingsService.isMobile()" right>
     <div text-center class="alphabet-list">
       <div *ngFor="let letter of alphabet" nowrap class="letter" (touchstart)="sortByLetter(letter)">
         {{letter}}
       </div>
     </div>
-  </div>-->
+  </div>
   <ion-fab bottom left *ngIf="userSettingsService.isMobile()">
-      <ion-grid>
-          <ion-row>
-            <ion-col>
-                <button ion-fab name="download" (click)="download()">
-                    <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
-                    <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
-                  </button>
-            </ion-col>
-          </ion-row>
-      </ion-grid>
-    </ion-fab>
+    <ion-grid>
+        <ion-row>
+          <ion-col>
+              <button ion-fab name="download" (click)="download()">
+                  <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
+                  <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
+                </button>
+          </ion-col>
+        </ion-row>
+    </ion-grid>
+  </ion-fab>
+  -->
   <ion-grid>
       <ion-row>
           <ion-col col-10>
