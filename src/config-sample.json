@@ -517,8 +517,7 @@
         "logo":"https://granska-topelius.sls.fi/assets/images/logo.svg"
       }
     },
-    "AvailableEpubs": [
-      {"SomeName": "2687.epub"},
-      {"SomeName2": "2685.epub"}
-    ]
+    "AvailableEpubs": {
+      "Dagböcker": "2685.epub"
+    }
 }
