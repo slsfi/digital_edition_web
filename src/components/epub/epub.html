@@ -7,14 +7,14 @@
     <ion-buttons>
         <ion-grid>
             <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
-              <ion-col class="navigation-buttons-col" *ngIf="userSettingsService.isMobile() === false">
+              <ion-col class="navigation-buttons-col" *ngIf="(userSettingsService.isMobile() === false && userSettingsService.isTablet() === false)">
                 <button ion-button clear class="navigation-buttons" title="prev button">
                   <div id="toc_menu" (click)="prev()" *ngIf="!loading">
                       <ion-icon name="arrow-back"></ion-icon>
                   </div>
                 </button>
               </ion-col>
-              <ion-col class="navigation-buttons-col right" *ngIf="userSettingsService.isMobile() === false">
+              <ion-col class="navigation-buttons-col right" *ngIf="(userSettingsService.isMobile() === false && userSettingsService.isTablet() === false)">
                 <button ion-button clear class="navigation-buttons" title="next button">
                   <div id="toc_menu" (click)="next()" *ngIf="!loading">
                       <ion-icon name="arrow-forward"></ion-icon>
@@ -77,7 +77,7 @@
   <div id="area"  (pan)="swipePrevNext($event)"></div>
 </div>
 
-<div class="text-changer-mobile-view" *ngIf="userSettingsService.isMobile() === true && tocMenuOpen === false">
+<div class="text-changer-mobile-view" *ngIf="(userSettingsService.isMobile() === true || userSettingsService.isTablet() === true) && tocMenuOpen === false">
   <ion-grid class="forwardBackward">
       <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
         <ion-col class="navigation-buttons-col">

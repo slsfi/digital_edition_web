@@ -1,6 +1,5 @@
-import { Component, HostListener, EventEmitter, Input } from '@angular/core';
+import { Component, EventEmitter, Input } from '@angular/core';
 import {} from 'fs';
-import { exit } from 'process';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 
 declare var ePub;
@@ -54,9 +53,9 @@ export class EpubComponent {
     const vh = (Math.max(document.documentElement.clientHeight, window.innerHeight || 0)) * 0.8;
     const area = document.getElementById('area');
     if ( this.userSettingsService.isDesktop() ) {
-      this.rendition = this.book.renderTo(area,   { width: '70%', height: vh, spread: 'always' });
+      this.rendition = this.book.renderTo(area,   { width: vw, height: vh, spread: 'always' });
     } else {
-      this.rendition = this.book.renderTo(area,   { width: '100%', height: vh, spread: 'always' });
+      this.rendition = this.book.renderTo(area,   { width: vw, height: vh, spread: 'always' });
     }
     const __this = this;
     this.rendition.on('resized', function(size) {
