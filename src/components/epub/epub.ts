@@ -1,5 +1,6 @@
 import { Component, HostListener, EventEmitter, Input } from '@angular/core';
 import {} from 'fs';
+import { exit } from 'process';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 
 declare var ePub;
@@ -28,15 +29,22 @@ export class EpubComponent {
   loading: boolean;
   currentPageNumber: number;
   nextPageNumber: number;
+  searchText: string;
+  searchResults: any[];
+  searchResultIndex: number;
+  currentHighlight: any;
 
-  @HostListener('window:resize', ['$event'])
   @Input() epubFileName?: String;
 
   public tocMenuOpen: boolean;
+  public searchMenuOpen: boolean;
 
   constructor( private userSettingsService: UserSettingsService ) {
     this.tocMenuOpen = false;
+    this.searchMenuOpen = false;
     this.loading = true;
+    this.searchResults = [];
+    this.searchResultIndex = 0;
   }
 
   ngAfterViewInit() {
@@ -44,8 +52,17 @@ export class EpubComponent {
     // Get viewport width and height. Make it a bit smaller
     const vw = (Math.max(document.documentElement.clientWidth, window.innerWidth || 0)) * 0.8;
     const vh = (Math.max(document.documentElement.clientHeight, window.innerHeight || 0)) * 0.8;
-    const area = document.getElementById("area");
-    this.rendition = this.book.renderTo(area,   { width: '100%', height: vh, spread: 'always' });
+    const area = document.getElementById('area');
+    if ( this.userSettingsService.isDesktop() ) {
+      this.rendition = this.book.renderTo(area,   { width: '70%', height: vh, spread: 'always' });
+    } else {
+      this.rendition = this.book.renderTo(area,   { width: '100%', height: vh, spread: 'always' });
+    }
+    const __this = this;
+    this.rendition.on('resized', function(size) {
+      __this.rendition.resize(size.width, size.height);
+    });
+
     this.displayed = this.rendition.display();
 
     this.book.ready.then( () => {
@@ -58,7 +75,7 @@ export class EpubComponent {
 
     const __parent = this;
     document.addEventListener('keydown', function( event ) {
-      event.preventDefault();
+      // event.preventDefault();
       switch (event.code) {
         case 'ArrowLeft':
           __parent.prev();
@@ -66,12 +83,59 @@ export class EpubComponent {
         case 'ArrowRight':
           __parent.next();
           break;
-    }
+      }
     });
   }
 
-  onResize(event) {
+  doSearch(q): Promise<any> {
+    const search = String(this.searchText);
+    const _book = this.book;
+    this.searchResultIndex = 0;
+    this.searchResults = [];
+    return Promise.all(
+      _book.spine.spineItems.map(item =>
+        item
+        .load(_book.load.bind(_book))
+        .then(item.find.bind(item, search))
+      )
+    ).then(results =>
+      Promise.resolve(
+        this.searchResults = [].concat.apply([], results)
+      ).then( () => {
+        this.nextSearch(true);
+        }
+      )
 
+    );
+  };
+
+  applyHighlight(cfiRange) {
+    // Apply a class to selected text
+    if ( this.currentHighlight !== undefined ) {
+      this.rendition.annotations.remove(this.currentHighlight, 'highlight');
+    }
+    this.rendition.annotations.highlight(cfiRange, {}, (e) => {
+    });
+    this.currentHighlight = cfiRange;
+  }
+
+  nextSearch(forward?: boolean) {
+    if ( forward === undefined && this.searchResultIndex !== 0 ) {
+      this.searchResultIndex--;
+    }
+    if ( this.searchResults !== undefined ) {
+      const res = this.searchResults[this.searchResultIndex];
+      if ( res !== undefined && res['cfi'] !== undefined ) {
+        const url = res['cfi'];
+        if (  url !== undefined ) {
+          this.openChapter(url);
+          this.applyHighlight(url);
+        }
+      }
+    }
+    if ( forward === true && this.searchResultIndex < (this.searchResults.length - 1) ) {
+      this.searchResultIndex++;
+    }
   }
 
   createTOC() {
@@ -131,6 +195,14 @@ export class EpubComponent {
       this.tocMenuOpen = false;
     } else {
       this.tocMenuOpen = true;
+    }
+  }
+
+  toggleSearchMenu() {
+    if ( this.searchMenuOpen ) {
+      this.searchMenuOpen = false;
+    } else {
+      this.searchMenuOpen = true;
     }
   }
 

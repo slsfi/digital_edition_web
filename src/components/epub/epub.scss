@@ -2,7 +2,8 @@ epub {
   background-color: rgb(249, 252, 252);
   display: block;
   height: 100%;
-
+  width: 70%;
+  margin: 0 auto;
   .secondary > .toolbar-content {
     /*
     display: grid;
@@ -142,12 +143,27 @@ epub {
     margin-top:3rem;
   }
 
+
+
   #area{
-    float: right;
-    display: block;
-    margin-left: 3em;
+    display: flex;
+    justify-content: center;
     width: 97%;
     height: auto;
+    padding-top: 3rem;
+  }
+
+  @media screen and (max-width: 450px) {
+    width: inherit;
+    margin: inherit;
+    #area{
+      float: right;
+      display: block;
+      margin-left: 3em;
+      width: 97%;
+      height: auto;
+      padding-top: 0rem;
+    }
   }
 
   .topchapter{
@@ -171,5 +187,47 @@ epub {
 
   .loading{
     top: 4rem;
+  }
+
+  #search_menu {
+    float: right;
+    background-color: rgba(249, 252, 252, 1);
+  }
+
+  #toc_menu.searchOpenIcon {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 99;
+  }
+
+  #search_menu ion-icon {
+    cursor: pointer;
+  }
+
+  .searchClosed {
+    display: none;
+  }
+  .searchOpen{
+    margin: 5px;
+    height: auto;
+    width: auto;
+    max-width: 375px;
+    position: absolute;
+    z-index: 10;
+    right: 1rem;
+    overflow-x: hidden;
+    transition: 0.25s;
+    font-size: 1rem;
+    -webkit-box-shadow: -11px 9px 10px -4px #aaaaaa;
+    -moz-box-shadow: -11px 9px 10px -4px #aaaaaa;
+    box-shadow: -11px 9px 10px -4px #aaaaaa;
+    background-color: rgb(249, 252, 252);
+    .col{
+      padding: 0px;
+    }
+    .search-bar{
+      text-align: center;
+    }
   }
 }

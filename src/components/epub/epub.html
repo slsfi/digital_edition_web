@@ -22,6 +22,12 @@
                 </button>
               </ion-col>
               <ion-col class="navigation-buttons-toc">
+                <button ion-button clear class="sec-menu-button">
+                  <div id="toc_menu" (click)="toggleSearchMenu()">
+                      <ion-icon name="search" class="intro-search-button" *ngIf="!searchMenuOpen"></ion-icon>
+                      <ion-icon name="close" class="intro-search-button" *ngIf="searchMenuOpen"></ion-icon>
+                  </div>
+                </button>
                 <button ion-button clear class="sec-menu-button" [ngClass]="tocMenuOpen ? 'menuOpenTOC' : 'menuClosedTOC'">
                   <div id="toc_menu" (click)="toggleTocMenu()" [ngClass]="tocMenuOpen ? 'menuOpenIcon' : 'menuClosedIcon'">
                       <ion-icon name="menu" class="intro-toc-button" *ngIf="!tocMenuOpen"></ion-icon>
@@ -34,6 +40,34 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
+<div id="search_menu" [ngClass]="searchMenuOpen ? 'searchOpen' : 'searchClosed'">
+  <ion-grid>
+    <ion-row class="search-bar">
+      <ion-col class="navigation-buttons-col right">
+        <div>
+          <ion-searchbar (ionChange)=doSearch($event) *ngIf="!loading" [(ngModel)]="searchText"></ion-searchbar>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
+      <ion-col class="navigation-buttons-col">
+        <button ion-button clear class="navigation-buttons" title="prev button">
+          <div id="toc_menu" (click)="nextSearch()" *ngIf="!loading">
+            <ion-icon name="arrow-back"></ion-icon>
+          </div>
+        </button>
+      </ion-col>
+      <ion-col class="navigation-buttons-col right">
+        <button ion-button clear class="navigation-buttons" title="prev button">
+        <div id="toc_menu" (click)="nextSearch(true)" *ngIf="!loading">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </div>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
 
 <div id="toc_text" [ngClass]="tocMenuOpen ? 'menuOpen' : 'menuClosed'" (click)="toggleTocMenu()">
 </div>
