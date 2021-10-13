@@ -69,7 +69,7 @@ export class EpubComponent {
       __this.rendition.resize(size.width, size.height);
     });
 
-    this.rendition.themes.default({ "p": { "font-size": this.readPopoverService.fontsize + "rem !important"}})
+    this.rendition.themes.default({ 'p': { 'font-size': '1.1em !important'}})
 
     this.displayed = this.rendition.display();
 

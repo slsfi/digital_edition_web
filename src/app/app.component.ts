@@ -1030,7 +1030,7 @@ export class DigitalEditionsApp {
       const params = {};
       const nav = this.app.getActiveNavs();
       nav[0].setRoot('HomePage', params, { animate: false });
-      nav[0].goToRoot();
+      nav[0].goToRoot({animate: false});
     });
 
     this.events.subscribe('DigitalEditionList:recieveData', (data) => {
