@@ -1027,7 +1027,10 @@ export class DigitalEditionsApp {
         component: 'app-component'
       });
 
-      this.openPage('HomePage');
+      const params = {};
+      const nav = this.app.getActiveNavs();
+      nav[0].setRoot('HomePage', params, { animate: false });
+      nav[0].goToRoot();
     });
 
     this.events.subscribe('DigitalEditionList:recieveData', (data) => {

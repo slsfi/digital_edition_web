@@ -1,11 +1,15 @@
 page-work-search {
+    .fixed-content,
+    .scroll-content {
+        margin-top: 50px;
+    }
+
     ion-icon.settings-icon.icon {
 		font-size: 1.8em;
     }
 
-    .fixed-content,
-    .scroll-content {
-        margin-top: 40px !important;
+    ion-list > div {
+        cursor: pointer;
     }
 
     .occurence {
@@ -14,6 +18,15 @@ page-work-search {
 
     ul {
         list-style-type: none;
+    }
+
+    .alphabet {
+        button {
+            margin: 0 !important;
+        }
+        button ion-icon.icon {
+            font-size: 32px;
+        }
     }
 
     .alphabet-list {
@@ -57,23 +70,12 @@ page-work-search {
         color: white;
     }
 
-    .loading{
-        float: right;
-    }
-    .work_title{
+    .work_title {
       font-style: italic;
     }
-    .author{
+    
+    .author {
       color: $grey-color;
     }
 
-    div .item-inner{
-      cursor: pointer;
-    }
-
-    .alphabet ion-scroll {
-      height: 100%;
-      width: 80px;
-      position: inherit;
-  }
 }

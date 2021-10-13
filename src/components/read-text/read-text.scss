@@ -5,9 +5,9 @@ read-text {
       & ~ p.tei:first-of-type::after {
           content: '';
           cursor: pointer;
-          background-image: url('/assets/images/img_placeholder.png');
-          height: 18px;
-          width: 20px;
+          background-image: url('/assets/images/img_placeholder.svg');
+          height: 1.059em; /* equals 18px on default 17px text size */
+          width: 1.176em; /* equals 20px on default 17px text size */
           margin-left: 5px;
           margin-bottom: -3px;
           display: inline-block;

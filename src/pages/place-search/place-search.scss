@@ -1,18 +1,14 @@
 page-place-search {
     .fixed-content,
     .scroll-content {
-        margin-top: 40px !important;
+        margin-top: 50px;
     }
 
     ion-icon.settings-icon.icon {
 		font-size: 1.8em;
     }
 
-    .alphabet > .scroll-content {
-        position: relative !important;
-    }
-
-    ion-list > div{
+    ion-list > div {
         cursor: pointer;
     }
 
@@ -25,12 +21,11 @@ page-place-search {
     }
 
     .alphabet {
-        .scroll-content {
-            margin-top: 0 !important;
-        }
-
         button {
             margin: 0 !important;
+        }
+        button ion-icon.icon {
+            font-size: 32px;
         }
     }
 
@@ -75,9 +70,4 @@ page-place-search {
         color: white;
     }
 
-    .alphabet ion-scroll {
-        height: 100%;
-        width: 80px;
-        position: inherit;
-    }
 }

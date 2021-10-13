@@ -328,11 +328,31 @@ page-read .mobile-mode-read-content .scroll-zoom-wrapper {
   padding: 10px;
 }
 
-/* Adjust padding and background color of text column in mobile mode. */
+/* Adjust padding and background color of text and facsimile columns in mobile mode. */
 page-read div.mobile-mode-established {
   padding: 12px;
   background-color: var(--read-columns-background-color);
 }
+page-read div.mobile-mode-facsimiles {
+
+  div.external-urls-header {
+    padding-left: 0.75rem !important;
+    padding-bottom: 0 !important;
+  }
+  ion-scroll.external_urls_wrapper {
+    background-color: var(--read-columns-background-color);
+    height: 100vh !important;
+    max-height: calc(100vh - 280px) !important;
+
+    ul {
+      margin-left: 10px !important;
+    }
+  }
+}
+page-read div.mobile-mode-facsimiles > facsimiles > div.tei {
+  padding: 10px;
+}
+
 
 @media(max-width: 800px) {
   ion-backdrop {

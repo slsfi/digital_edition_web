@@ -4,16 +4,18 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
+<ion-header no-border>
   <ion-toolbar color="secondary" class="secondary">
     <ion-buttons end>
         <ion-grid>
             <ion-row>
               <ion-col>
+                <!--
                 <div name="download" (click)="download()">
                   <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
                   <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
                 </div>
+                -->
               </ion-col>
             </ion-row>
           </ion-grid>
@@ -22,25 +24,27 @@
 </ion-header>
 
 <ion-content padding>
-  <!--<div *ngIf="userSettingsService.isMobile()" right>
+  <!--
+  <div *ngIf="userSettingsService.isMobile()" right>
     <div text-center class="alphabet-list">
       <div *ngFor="let letter of alphabet" nowrap class="letter" (touchstart)="sortByLetter(letter)">
         {{letter}}
       </div>
     </div>
-  </div>-->
+  </div>
   <ion-fab bottom left *ngIf="userSettingsService.isMobile()">
-      <ion-grid>
-          <ion-row>
-            <ion-col>
-                <button ion-fab name="download" (click)="download()">
-                    <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
-                    <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
-                  </button>
-            </ion-col>
-          </ion-row>
-      </ion-grid>
-    </ion-fab>
+    <ion-grid>
+        <ion-row>
+          <ion-col>
+              <button ion-fab name="download" (click)="download()">
+                  <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
+                  <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
+                </button>
+          </ion-col>
+        </ion-row>
+    </ion-grid>
+  </ion-fab>
+  -->
   <ion-grid>
       <ion-row>
           <ion-col col-10>
@@ -58,10 +62,7 @@
                   </ion-col>
               </ion-row>
               <ion-row class="loadingRow" *ngIf="showLoading">
-                  <ion-col col-6></ion-col>
-                  <ion-col col-6>
-                      <ion-spinner class="loading" name="dots"></ion-spinner>
-                  </ion-col>
+                <ion-spinner class="loading" name="crescent"></ion-spinner>
               </ion-row>
 
             <ion-list>
@@ -80,11 +81,9 @@
               </ion-infinite-scroll>
           </ion-col>
           <ion-col col-2 class="alphabet">
-            <ion-scroll scrollY="true" style="height: 100%; width: 80px; position: fixed;" >
-              <button ion-fab mini (click)="showAll()"><ion-icon name="refresh"></ion-icon></button>
-              <button ion-fab mini *ngFor="let letter of alphabet" class="letter" (click)="sortByLetter(letter)">{{letter}}</button>
-              <button ion-fab mini (click)="showAll()"><ion-icon name="refresh"></ion-icon></button>
-            </ion-scroll>
+            <button ion-fab mini (click)="showAll()"><ion-icon name="refresh"></ion-icon></button>
+            <button ion-fab mini *ngFor="let letter of alphabet" class="letter" (click)="sortByLetter(letter)">{{letter}}</button>
+            <button ion-fab mini (click)="showAll()"><ion-icon name="refresh"></ion-icon></button>
           </ion-col>
         </ion-row>
   </ion-grid>

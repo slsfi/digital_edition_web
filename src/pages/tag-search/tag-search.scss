@@ -1,12 +1,15 @@
 page-tag-search {
-
     .fixed-content,
     .scroll-content {
-        margin-top: 40px !important;
+        margin-top: 50px;
     }
 
     ion-icon.settings-icon.icon {
 		font-size: 1.8em;
+    }
+
+    ion-list > div {
+        cursor: pointer;
     }
 
     .occurence {
@@ -16,22 +19,13 @@ page-tag-search {
     ul {
         list-style-type: none;
     }
-
-    .alphabet > .scroll-content {
-        position: relative !important;
-    }
-
-    ion-list > div{
-        cursor: pointer;
-    }
-
+    
     .alphabet {
-        .scroll-content {
-            margin-top: 0 !important;
-        }
-
         button {
             margin: 0 !important;
+        }
+        button ion-icon.icon {
+            font-size: 32px;
         }
     }
 
@@ -76,9 +70,4 @@ page-tag-search {
         color: white;
     }
 
-    .alphabet ion-scroll {
-      height: 100%;
-      width: 80px;
-      position: inherit;
-  }
 }

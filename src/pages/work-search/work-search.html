@@ -4,8 +4,8 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
-  <ion-toolbar color="secondary" class="secondary" *ngIf="userSettingsService.isDesktop()">
+<ion-header no-border>
+  <ion-toolbar color="secondary" class="secondary">
     <ion-title>
       <div class="page-title"></div>
       <div class="page-subtitle"></div>
@@ -14,10 +14,12 @@
       <ion-grid>
         <ion-row>
           <ion-col>
+            <!--
             <div name="download" (click)="download()">
               <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
               <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
             </div>
+            -->
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -27,6 +29,7 @@
 
 
 <ion-content padding>
+  <!--
   <div *ngIf="userSettingsService.isMobile()" right>
     <div text-center class="alphabet-list">
       <div *ngFor="let letter of alphabet" nowrap class="letter" (touchstart)="sortByLetter(letter)">
@@ -46,6 +49,7 @@
       </ion-row>
     </ion-grid>
   </ion-fab>
+  -->
   <ion-grid>
     <ion-row>
       <ion-col col-10>
@@ -66,10 +70,7 @@
           </ion-col>
         </ion-row>
         <ion-row class="loadingRow" *ngIf="showLoading">
-          <ion-col col-6></ion-col>
-          <ion-col col-6>
-            <ion-spinner class="loading" name="dots"></ion-spinner>
-          </ion-col>
+            <ion-spinner class="loading" name="crescent"></ion-spinner>
         </ion-row>
 
         <ion-list>

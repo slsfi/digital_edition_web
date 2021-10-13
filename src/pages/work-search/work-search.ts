@@ -190,11 +190,18 @@ export class WorkSearchPage {
   }
 
   showAll() {
+    /*
     this.works = [];
     this.allData = [];
     this.count = 0;
     this.allData = this.cacheData;
     this.loadMoreworks();
+    */
+    this.count = 0;
+    this.from = 0;
+    this.searchText = '';
+    this.works = [];
+    this.getworks();
     this.content.scrollToTop(400);
   }
 
@@ -208,6 +215,7 @@ export class WorkSearchPage {
     }
 
     this.works = list;
+    this.content.scrollToTop(400);
   }
 
   ionViewDidLoad() {

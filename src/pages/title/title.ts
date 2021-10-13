@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, PopoverController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Storage } from '@ionic/storage';
 import { LanguageService } from '../../app/services/languages/language.service';
@@ -8,6 +8,8 @@ import { UserSettingsService } from '../../app/services/settings/user-settings.s
 import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
 import { ConfigService } from '@ngx-config/core';
 import { MdContentService } from '../../app/services/md/md-content.service';
+import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
+import { ReadPopoverPage } from '../read-popover/read-popover';
 
 /**
  * Generated class for the TitlePage page.
@@ -52,7 +54,9 @@ export class TitlePage {
     private userSettingsService: UserSettingsService,
     protected tableOfContentsService: TableOfContentsService,
     public config: ConfigService,
-    public mdContentService: MdContentService
+    public mdContentService: MdContentService,
+    protected popoverCtrl: PopoverController,
+    public readPopoverService: ReadPopoverService
   ) {
     this.titleSelected = true;
     this.id = this.params.get('collectionID');
@@ -206,5 +210,24 @@ export class TitlePage {
       }
     }
     this.events.publish('pageLoaded:title');
+  }
+
+  showReadSettingsPopover(myEvent) {
+    const toggles = {
+      'comments': false,
+      'personInfo': false,
+      'placeInfo': false,
+      'workInfo': false,
+      'changes': false,
+      'normalisations': false,
+      'abbreviations': false,
+      'pageNumbering': false,
+      'pageBreakOriginal': false,
+      'pageBreakEdition': false
+    };
+    const popover = this.popoverCtrl.create(ReadPopoverPage, {toggles}, { cssClass: 'popover_settings' });
+    popover.present({
+      ev: myEvent
+    });
   }
 }

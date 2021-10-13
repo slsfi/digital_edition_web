@@ -183,6 +183,7 @@ export class PersonSearchPage {
     this.persons = [];
     this.cf.detectChanges();
     this.getPersons();
+    this.content.scrollToTop(400);
   }
 
   setData() {
@@ -558,11 +559,19 @@ export class PersonSearchPage {
   }
 
   showAll() {
+    /*
     this.persons = [];
     this.allData = [];
     this.count = 0;
     this.allData = this.cacheData;
     this.loadMorePersons();
+    */
+    this.count = 0;
+    this.from = 0;
+    this.searchText = '';
+    this.filters = [];
+    this.persons = [];
+    this.getPersons();
     this.content.scrollToTop(400);
   }
 

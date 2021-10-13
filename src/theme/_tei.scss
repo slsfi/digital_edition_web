@@ -235,6 +235,35 @@ div.tei.xlargeFontSize .teiManuscript.immediate_symbol img {
     height: ceil(0.9 * $text-fontsize-xlarge);
 }
 
+/* Storlek på hand-symbolen i manuskript. */
+div.tei img.teiManuscript.handSymbol {
+    display: inline-block;
+    width:   1em; /* Default om textstorleken inte fungerar. */
+    height:  auto;
+    top: 0;
+}
+div.tei.xsmallFontSize img.teiManuscript.handSymbol {
+    width:  ceil(1 * $text-fontsize-xsmall);
+    height: ceil(1 * $text-fontsize-xsmall);
+}
+div.tei.smallFontSize img.teiManuscript.handSymbol {
+    width:  ceil(1 * $text-fontsize-small);
+    height: ceil(1 * $text-fontsize-small);
+}
+div.tei.mediumFontSize img.teiManuscript.handSymbol {
+    width:  ceil(1 * $text-fontsize-medium);
+    height: ceil(1 * $text-fontsize-medium);
+}
+div.tei.largeFontSize img.teiManuscript.handSymbol {
+    width:  ceil(1 * $text-fontsize-large);
+    height: ceil(1 * $text-fontsize-large);
+}
+div.tei.xlargeFontSize img.teiManuscript.handSymbol {
+    width:  ceil(1 * $text-fontsize-xlarge);
+    height: ceil(1 * $text-fontsize-xlarge);
+}
+
+
 /* Gör så att röda tringeln för början på lemman i lästexten blinkar ljusare. */
 @keyframes filter-animation-brightness {
     0% {

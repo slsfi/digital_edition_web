@@ -168,11 +168,18 @@ export class PlaceSearchPage {
   }
 
   showAll() {
+    /*
     this.places = [];
     this.allData = [];
     this.count = 0;
     this.allData = this.cacheData;
     this.loadMorePlaces();
+    */
+    this.count = 0;
+    this.from = 0;
+    this.searchText = '';
+    this.places = [];
+    this.getPlaces();
     this.content.scrollToTop(400);
   }
 
@@ -238,6 +245,7 @@ export class PlaceSearchPage {
       this.places = this.allData;
     }
     this.places = list;
+    this.content.scrollToTop(400);
   }
 
   filter(terms) {
