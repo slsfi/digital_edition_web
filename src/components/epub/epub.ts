@@ -1,6 +1,10 @@
 import { Component, EventEmitter, Input } from '@angular/core';
 import {} from 'fs';
+import { PopoverController } from 'ionic-angular';
+import { MdContentService } from '../../app/services/md/md-content.service';
+import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
+import { ReadPopoverPage } from '../../pages/read-popover/read-popover';
 
 declare var ePub;
 /**
@@ -38,7 +42,10 @@ export class EpubComponent {
   public tocMenuOpen: boolean;
   public searchMenuOpen: boolean;
 
-  constructor( private userSettingsService: UserSettingsService ) {
+  constructor( private userSettingsService: UserSettingsService,
+    public mdContentService: MdContentService,
+    protected popoverCtrl: PopoverController,
+    public readPopoverService: ReadPopoverService ) {
     this.tocMenuOpen = false;
     this.searchMenuOpen = false;
     this.loading = true;
@@ -61,6 +68,8 @@ export class EpubComponent {
     this.rendition.on('resized', function(size) {
       __this.rendition.resize(size.width, size.height);
     });
+
+    this.rendition.themes.default({ "p": { "font-size": this.readPopoverService.fontsize + "rem !important"}})
 
     this.displayed = this.rendition.display();
 
@@ -239,5 +248,39 @@ export class EpubComponent {
   prev() {
     this.rendition.prev();
     this.setPageNumbers();
+  }
+
+  showReadSettingsPopover(myEvent) {
+    const toggles = {
+      'comments': false,
+      'personInfo': false,
+      'placeInfo': false,
+      'workInfo': false,
+      'changes': false,
+      'normalisations': false,
+      'abbreviations': false,
+      'pageNumbering': false,
+      'pageBreakOriginal': false,
+      'pageBreakEdition': false
+    };
+    const popover = this.popoverCtrl.create(ReadPopoverPage, {toggles}, { cssClass: 'popover_settings' });
+    popover.present({
+      ev: myEvent
+    });
+    popover.onDidDismiss( ret => {
+      /*switch(this.readPopoverService.fontsize){
+        case 0:
+          this.rendition.themes.default({ "p": { "font-size": "0.8rem !important"}})
+        case 1:
+          this.rendition.themes.default({ "p": { "font-size": "1rem !important"}})
+        case 2:
+          this.rendition.themes.default({ "p": { "font-size": "1.2rem !important"}})
+        case 3:
+          this.rendition.themes.default({ "p": { "font-size": "1.7rem !important"}})
+        case 4:
+          this.rendition.themes.default({ "p": { "font-size": "1.9rem !important"}})
+      }*/
+
+    } )
   }
 }

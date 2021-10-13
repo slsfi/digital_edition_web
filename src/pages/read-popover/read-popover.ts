@@ -80,6 +80,7 @@ export class ReadPopoverPage {
   ionViewWillLeave() {
     this.events.publish('ionViewWillLeave', this.constructor.name);
   }
+
   ionViewWillEnter() {
     this.events.publish('ionViewWillEnter', this.constructor.name);
   }

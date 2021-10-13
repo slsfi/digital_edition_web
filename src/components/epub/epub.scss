@@ -4,6 +4,7 @@ epub {
   height: 100%;
   width: 70%;
   margin: 0 auto;
+
   .secondary > .toolbar-content {
     /*
     display: grid;
@@ -102,6 +103,9 @@ epub {
     background-color: color($colors, light);
     box-shadow: -5px 0px 5px 1px #aaaaaa;
     font-size: 1rem;
+    overflow-y: scroll;
+    height: 100%;
+    padding-bottom: 5rem;
   }
 
   #toc_text > ul, li{

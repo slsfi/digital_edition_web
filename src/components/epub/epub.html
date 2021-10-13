@@ -22,6 +22,10 @@
                 </button>
               </ion-col>
               <ion-col class="navigation-buttons-toc">
+                <!--button ion-button clear #settingsIconElement (click)="showReadSettingsPopover($event)" class="sec-menu-button" id="settings-icon">
+                  <ion-icon class="settings-icon" name="settings"></ion-icon>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Popover.Options' | translate }}</span>
+                </button-->
                 <button ion-button clear class="sec-menu-button">
                   <div id="toc_menu" (click)="toggleSearchMenu()">
                       <ion-icon name="search" class="intro-search-button" *ngIf="!searchMenuOpen"></ion-icon>
@@ -74,7 +78,7 @@
 
 <div class="toc-epub-container">
   <ion-spinner *ngIf="loading" class="loading" name="crescent"></ion-spinner>
-  <div id="area"  (pan)="swipePrevNext($event)"></div>
+  <div id="area" (pan)="swipePrevNext($event)" [ngClass]="(readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize'"></div>
 </div>
 
 <div class="text-changer-mobile-view" *ngIf="(userSettingsService.isMobile() === true || userSettingsService.isTablet() === true) && tocMenuOpen === false">
