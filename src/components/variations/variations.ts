@@ -142,7 +142,7 @@ export class VariationsComponent {
     if (this.selectedVariation && this.selectedVariation.content !== undefined) {
       this.text = this.sanitizer.bypassSecurityTrustHtml(
           this.selectedVariation.content.replace(/images\//g, 'assets/images/')
-            .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiVariant $1\"')
+            .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiVariant tei $1\"')
       );
     }
   }
