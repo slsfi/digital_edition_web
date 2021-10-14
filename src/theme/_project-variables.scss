@@ -236,6 +236,7 @@ ion-list-header ion-label {
   text-transform: unset;
 }
 
+/* This hides the search box from the home page by default. */
 .front-page-simple-search {
   display: none;
 }
