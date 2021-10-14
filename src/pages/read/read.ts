@@ -251,6 +251,10 @@ export class ReadPage /*implements OnDestroy*/ {
     }
 
     this.show = this.config.getSettings('defaults.ReadModeView');
+    if (this.userSettingsService.isMobile()) {
+      
+    }
+    console.log('this.show in constr: ', this.show);
   }
 
   ionViewDidLoad() {
