@@ -149,12 +149,12 @@ export class ManuscriptsComponent {
       if (this.normalized) {
         this.text = this.sanitizer.bypassSecurityTrustHtml(
           this.selectedManuscript.manuscript_normalized.replace(/images\//g, 'assets/images/')
-            .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiManuscript $1\"')
+            .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiManuscript tei $1\"')
         );
       } else {
         this.text = this.sanitizer.bypassSecurityTrustHtml(
           this.selectedManuscript.manuscript_changes.replace(/images\//g, 'assets/images/')
-            .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiManuscript $1\"')
+            .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiManuscript tei $1\"')
         );
       }
     }
