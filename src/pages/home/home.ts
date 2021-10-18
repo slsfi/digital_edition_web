@@ -70,12 +70,12 @@ export class HomePage {
     try {
       this.imageUrl = this.config.getSettings('frontpageConfig.imageUrl');
     } catch (e) {
-      this.imageUrl = "assets/images/frontpage-image-landscape.jpg";
+      this.imageUrl = 'assets/images/frontpage-image-landscape.jpg';
     }
     if (this.userSettingsService.isMobile()) {
       try {
         const imageUrlMobile = this.config.getSettings('frontpageConfig.imageUrlMobile');
-        if (imageUrlMobile !== "" && imageUrlMobile !== undefined && imageUrlMobile !== null) {
+        if (imageUrlMobile !== '' && imageUrlMobile !== undefined && imageUrlMobile !== null) {
           this.imageUrl = imageUrlMobile;
         }
         console.log('imageUrlMobile', imageUrlMobile);
