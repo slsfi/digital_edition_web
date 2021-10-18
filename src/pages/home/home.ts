@@ -26,10 +26,10 @@ export class HomePage {
   appMachineName: string;
   homeContent: string;
   homeFooterContent: string;
-  imageOrientationPortrait: Boolean;
-  showSimpleSearch: Boolean;
-  showEditionList: Boolean;
-  showFooter: Boolean;
+  imageOrientationPortrait: Boolean = false;
+  showSimpleSearch: Boolean = false;
+  showEditionList: Boolean = false;
+  showFooter: Boolean = false;
   imageUrl: string;
   errorMessage: string;
   initLanguage: string;
@@ -47,6 +47,7 @@ export class HomePage {
     this.appMachineName = this.config.getSettings('app.machineName');
     this.userSettingsService.temporarilyHideSplitPane();
 
+    this.imageOrientationPortrait = false;
     try {
       this.imageOrientationPortrait = this.config.getSettings('frontpageConfig.imageOrientationIsPortrait');
       if (this.imageOrientationPortrait === undefined || this.imageOrientationPortrait === null) {
