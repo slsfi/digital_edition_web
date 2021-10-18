@@ -3,7 +3,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <div class="banner" [ngStyle]="{'background-image': 'url(\'' + imageUrl + '\')'}">
+        <div class="banner" style="background-image: url('assets/images/frontpage-image-landscape.jpg');">
           <div style="color: white; position: relative; float: left; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
             <h1 class="text-center banner-title">{{appName}}</h1>
             <h3 class="text-center banner-subtitle">{{appSubtitle}}</h3>
@@ -32,11 +32,12 @@
 </ion-content>
 
 <!-- Front page image orientation is portrait in desktop mode -->
+<!--
 <ion-content *ngIf="imageOrientationPortrait">
   <ion-grid>
     <ion-row>
       <ion-col>
-        <div class="portrait-banner" [ngStyle]="{'background-image': 'url(\'' + imageUrl + '\')'}">
+        <div class="portrait-banner" style="background-image: url('assets/images/frontpage-image-landscape.jpg');">
         </div>
       </ion-col>
       <ion-col>
@@ -62,7 +63,7 @@
       </ion-col>
     </ion-row>
 </ion-content>
-
+-->
 
 
 <!--
