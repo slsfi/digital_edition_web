@@ -40,7 +40,6 @@ home-page {
 		background-position: 50% 50%;
 		background-repeat: no-repeat;
 		background-size: cover;
-		width: 28.2%;
 	}
 
 	.banner:before {
@@ -55,6 +54,7 @@ home-page {
 		height: 100%;
 		background-position: 0 0;
 		background-size: 100%;
+		width: 28.2%;
 	}
 
 	.portrait-mode .banner.image-on-right {
@@ -63,6 +63,7 @@ home-page {
 
 	.portrait-mode .text-content {
 		width: 61.8%;
+		padding: 0 2rem;
 	}
 
 	.portrait-mode h1.site-title,
