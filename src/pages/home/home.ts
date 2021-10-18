@@ -76,7 +76,8 @@ export class HomePage {
     try {
       this.imageUrl = this.config.getSettings('frontpageConfig.imageUrl');
     } catch (e) {
-      this.imageUrl = 'assets/images/frontpage-image-portrait.jpg';
+      // this.imageUrl = 'assets/images/frontpage-image-portrait.jpg';
+      this.imageUrl = 'https://granska-topelius.sls.fi/assets/images/frontpage-image-portrait.jpg';
     }
     if (this.userSettingsService.isMobile()) {
       if (this.imageOrientationPortrait) {
