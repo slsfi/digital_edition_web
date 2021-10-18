@@ -49,7 +49,6 @@ export class HomePage {
 
     try {
       this.imageOrientationPortrait = this.config.getSettings('frontpageConfig.imageOrientationIsPortrait');
-      console.log('imageOrientationPortrait from config', this.imageOrientationPortrait);
       if (this.imageOrientationPortrait === undefined || this.imageOrientationPortrait === null) {
         this.imageOrientationPortrait = false;
       }
