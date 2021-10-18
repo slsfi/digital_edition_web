@@ -32,6 +32,7 @@ export class HomePage {
   showEditionList: Boolean = false;
   showFooter: Boolean = false;
   imageUrl: string;
+  imageUrlStyle: string = '';
   errorMessage: string;
   initLanguage: string;
 
@@ -90,7 +91,7 @@ export class HomePage {
         }
       }
     }
-    this.imageUrl = `url(${this.imageUrl})`;
+    this.imageUrlStyle = `url(${this.imageUrl})`;
     console.log('imageOrientationPortrait', this.imageOrientationPortrait);
     console.log('showSimpleSearch', this.showSimpleSearch);
     console.log('showEditionList', this.showEditionList);
