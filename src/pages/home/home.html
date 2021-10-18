@@ -1,7 +1,7 @@
 <ion-content>
   <ion-grid *ngIf="!imageOrientationPortrait" nopadding>
     <!-- Front page image orientation is landscape (always landscape in mobile mode) -->
-    <ion-row>
+    <ion-row nopadding>
       <ion-col>
         <div class="banner" style="background-image: url('assets/images/frontpage-image-landscape.jpg');">
           <div style="color: white; position: relative; float: left; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
@@ -29,9 +29,9 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-grid *ngIf="imageOrientationPortrait">
+  <ion-grid *ngIf="imageOrientationPortrait" nopadding>
     <!-- Front page image orientation is portrait in desktop mode -->
-    <ion-row>
+    <ion-row nopadding>
       <ion-col>
         <div class="portrait-banner" style="background-image: url('assets/images/frontpage-image-landscape.jpg');">
         </div>
