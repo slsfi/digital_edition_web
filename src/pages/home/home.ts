@@ -26,6 +26,11 @@ export class HomePage {
   appMachineName: string;
   homeContent: string;
   homeFooterContent: string;
+  imageOrientationPortrait: Boolean;
+  showSimpleSearch: Boolean;
+  showEditionList: Boolean;
+  showFooter: Boolean;
+  imageUrl: string;
   errorMessage: string;
   initLanguage: string;
 
@@ -41,6 +46,47 @@ export class HomePage {
   ) {
     this.appMachineName = this.config.getSettings('app.machineName');
     this.userSettingsService.temporarilyHideSplitPane();
+
+    try {
+      this.imageOrientationPortrait = this.config.getSettings('frontpageConfig.imageOrientationIsPortrait');
+    } catch (e) {
+      this.imageOrientationPortrait = false;
+    }
+    try {
+      this.showSimpleSearch = this.config.getSettings('frontpageConfig.showSimpleSearch');
+    } catch (e) {
+      this.showSimpleSearch = false;
+    }
+    try {
+      this.showEditionList = this.config.getSettings('frontpageConfig.showEditionList');
+    } catch (e) {
+      this.showEditionList = false;
+    }
+    try {
+      this.showFooter = this.config.getSettings('frontpageConfig.showFooter');
+    } catch (e) {
+      this.showFooter = false;
+    }
+    try {
+      this.imageUrl = this.config.getSettings('frontpageConfig.imageUrl');
+    } catch (e) {
+      this.imageUrl = "assets/images/frontpage-image-landscape.jpg";
+    }
+    if (this.userSettingsService.isMobile()) {
+      try {
+        const imageUrlMobile = this.config.getSettings('frontpageConfig.imageUrlMobile');
+        if (imageUrlMobile !== "" && imageUrlMobile !== undefined && imageUrlMobile !== null) {
+          this.imageUrl = imageUrlMobile;
+        }
+        console.log('imageUrlMobile', imageUrlMobile);
+      } catch (e) {
+      }
+    }
+    console.log('imageOrientationPortrait', this.imageOrientationPortrait);
+    console.log('showSimpleSearch', this.showSimpleSearch);
+    console.log('showEditionList', this.showEditionList);
+    console.log('showFooter', this.showFooter);
+    console.log('imageUrl', this.imageUrl);
 
     this.events.subscribe('language:change', () => {
       this.languageService.getLanguage().subscribe((lang) => {
