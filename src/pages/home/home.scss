@@ -10,6 +10,15 @@ home-page {
 		flex-direction: row;
 	}
 
+	.text-content {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.text-content .footer {
+		align-self: flex-end;
+	}
+
 	.page-title {
 		margin-left: 5px;
 	}
