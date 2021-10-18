@@ -90,7 +90,7 @@ export class HomePage {
         }
       }
     }
-    // this.imageUrl = this.imageUrl + ')';
+    this.imageUrl = `url(${this.imageUrl})`;
     console.log('imageOrientationPortrait', this.imageOrientationPortrait);
     console.log('showSimpleSearch', this.showSimpleSearch);
     console.log('showEditionList', this.showEditionList);
