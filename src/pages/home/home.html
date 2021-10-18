@@ -1,60 +1,28 @@
 <ion-content [ngClass]="imageOrientationPortrait?'portrait-mode':''">
-    <!-- Front page image orientation is landscape (always landscape in mobile mode) -->
-    <div class="banner" [ngClass]="imageOnRight?'image-on-right':''" [ngStyle]="{'background-image': 'url(&quot;' + imageUrl + '&quot;)'}">
-      <div style="color: white; position: relative; float: left; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-        <h1 class="text-center banner-title">{{appName}}</h1>
-        <h3 *ngIf="appSubtitle" class="text-center banner-subtitle">{{appSubtitle}}</h3>
-      </div>
+  <div class="banner" [ngClass]="imageOnRight?'image-on-right':''" [ngStyle]="{'background-image': 'url(&quot;' + imageUrl + '&quot;)'}">
+    <div style="color: white; position: relative; float: left; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+      <h1 class="text-center banner-title">{{appName}}</h1>
+      <h3 *ngIf="appSubtitle" class="text-center banner-subtitle">{{appSubtitle}}</h3>
     </div>
-    <div class="text-content">
-      <div *ngIf="showSimpleSearch" class="front-page-simple-search" col-lg-6 col-md-10 col-sm-12 style="max-width: 800px; margin-left: auto; margin-right: auto;">
-        <simple-search [scrollableSimpleSearch]="true"></simple-search>
-      </div>
+  </div>
 
-      <div class="site-presentation" padding>
-        <div *ngIf="imageOrientationPortrait">
-          <h1 class="site-title">{{appName}}</h1>
-          <h3 *ngIf="appSubtitle" class="site-subtitle">{{appSubtitle}}</h3>
-        </div>
-        <markdown [data]="homeContent"></markdown>
-      </div>
-
-      <footer *ngIf="showFooter" class="footer">
-        <markdown [data]="homeFooterContent"></markdown>
-      </footer>
+  <div class="text-content">
+    <div *ngIf="showSimpleSearch" class="front-page-simple-search" col-lg-6 col-md-10 col-sm-12 style="max-width: 800px; margin-left: auto; margin-right: auto;">
+      <simple-search [scrollableSimpleSearch]="true"></simple-search>
     </div>
-  <!--
-  <ion-grid *ngIf="imageOrientationPortrait">
-    Front page image orientation is portrait in desktop mode
-    <ion-row>
-      <ion-col>
-        <div class="portrait-banner" style="background-image: url('assets/images/frontpage-image-landscape.jpg');">
-        </div>
-      </ion-col>
-      <ion-col>
-        <ion-grid>
-          <ion-row *ngIf="showSimpleSearch">
-            <ion-col class="front-page-simple-search" col-lg-6 col-md-10 col-sm-12 style="max-width: 800px; margin-left: auto; margin-right: auto;">
-              <simple-search [scrollableSimpleSearch]="true"></simple-search>
-            </ion-col>
-          </ion-row>
-          <ion-row style="text-align: center;" padding>
-            <ion-col class="person-text" style="max-width: 1000px; margin-left: auto; margin-right: auto;">
-              <markdown [data]="homeContent"></markdown>
-            </ion-col>
-          </ion-row>
-          <ion-row *ngIf="showFooter">
-            <ion-col>
-              <footer class="footer">
-                <markdown [data]="homeFooterContent"></markdown>
-              </footer>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
--->
+
+    <div class="site-presentation" padding>
+      <div *ngIf="imageOrientationPortrait">
+        <h1 class="site-title">{{appName}}</h1>
+        <h3 *ngIf="appSubtitle" class="site-subtitle">{{appSubtitle}}</h3>
+      </div>
+      <markdown [data]="homeContent"></markdown>
+    </div>
+
+    <footer *ngIf="showFooter" class="footer">
+      <markdown [data]="homeFooterContent"></markdown>
+    </footer>
+  </div>
 </ion-content>
 
 
