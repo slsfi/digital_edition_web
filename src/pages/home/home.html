@@ -1,7 +1,7 @@
 <ion-content [ngClass]="imageOrientationPortrait?'portrait-mode':''">
     <!-- Front page image orientation is landscape (always landscape in mobile mode) -->
     <div class="banner" [ngClass]="imageOnRight?'image-on-right':''" style="background-image: url('assets/images/frontpage-image-landscape.jpg');">
-      <div *ngIf="!imageOrientationPortrait" style="color: white; position: relative; float: left; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+      <div style="color: white; position: relative; float: left; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
         <h1 class="text-center banner-title">{{appName}}</h1>
         <h3 class="text-center banner-subtitle">{{appSubtitle}}</h3>
       </div>
@@ -11,14 +11,12 @@
         <simple-search [scrollableSimpleSearch]="true"></simple-search>
       </div>
 
-      <div padding>
-        <div class="home-content">
-          <div *ngIf="imageOrientationPortrait">
-            <h1 class="site-title">{{appName}}</h1>
-            <h3 *ngIf="appSubtitle" class="site-subtitle">{{appSubtitle}}</h3>
-          </div>
-          <markdown [data]="homeContent"></markdown>
+      <div class="site-presentation" padding>
+        <div *ngIf="imageOrientationPortrait">
+          <h1 class="site-title">{{appName}}</h1>
+          <h3 *ngIf="appSubtitle" class="site-subtitle">{{appSubtitle}}</h3>
         </div>
+        <markdown [data]="homeContent"></markdown>
       </div>
 
       <footer *ngIf="showFooter" class="footer">
