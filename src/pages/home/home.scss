@@ -100,7 +100,7 @@ home-page {
 	.banner-title,
 	.banner-subtitle {
 		font-family: $font-family-header;
-		font-size: calc(1.375rem + 2.15vw);
+		font-size: 2.25em;
 		font-weight: normal;
 		line-height: 1.5;
 		color: #000;
@@ -110,7 +110,7 @@ home-page {
 	}
 
 	.banner-subtitle {
-		font-size: calc(1rem + 0.7vw);
+		font-size: 1.75em;
 		font-style: italic;
 		display: inline-block;
 	}
