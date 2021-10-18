@@ -1,5 +1,4 @@
 <ion-content [ngClass]="imageOrientationPortrait?'portrait-mode':''">
-  <ng-container *ngIf="!imageOrientationPortrait">
     <!-- Front page image orientation is landscape (always landscape in mobile mode) -->
     <div class="banner" style="background-image: url('assets/images/frontpage-image-landscape.jpg');">
       <div style="color: white; position: relative; float: left; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
@@ -22,7 +21,6 @@
         <markdown [data]="homeFooterContent"></markdown>
       </footer>
     </div>
-  </ng-container>
   <!--
   <ion-grid *ngIf="imageOrientationPortrait">
     Front page image orientation is portrait in desktop mode
