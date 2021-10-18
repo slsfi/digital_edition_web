@@ -51,10 +51,10 @@ export class HomePage {
     try {
       this.imageOrientationPortrait = this.config.getSettings('frontpageConfig.imageOrientationIsPortrait');
       if (this.imageOrientationPortrait === undefined || this.imageOrientationPortrait === null) {
-        this.imageOrientationPortrait = false;
+        this.imageOrientationPortrait = true;
       }
     } catch (e) {
-      this.imageOrientationPortrait = false;
+      this.imageOrientationPortrait = true;
     }
     try {
       this.showSimpleSearch = this.config.getSettings('frontpageConfig.showSimpleSearch');
