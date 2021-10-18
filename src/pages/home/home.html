@@ -1,4 +1,4 @@
-<ion-content>
+<ion-content [ngClass]="imageOrientationPortrait?'portrait-mode':''">
   <ng-container *ngIf="!imageOrientationPortrait">
     <!-- Front page image orientation is landscape (always landscape in mobile mode) -->
     <div class="banner" style="background-image: url('assets/images/frontpage-image-landscape.jpg');">
