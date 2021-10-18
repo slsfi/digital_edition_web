@@ -27,6 +27,7 @@ export class HomePage {
   homeContent: string;
   homeFooterContent: string;
   imageOrientationPortrait: Boolean = false;
+  imageOnRight: Boolean = false;
   showSimpleSearch: Boolean = false;
   showEditionList: Boolean = false;
   showFooter: Boolean = false;
@@ -51,6 +52,11 @@ export class HomePage {
       this.imageOrientationPortrait = this.config.getSettings('frontpageConfig.imageOrientationIsPortrait');
     } catch (e) {
       this.imageOrientationPortrait = true;
+    }
+    try {
+      this.imageOnRight = this.config.getSettings('frontpageConfig.imageOnRightInPortrait');
+    } catch (e) {
+      this.imageOnRight = false;
     }
     try {
       this.showSimpleSearch = this.config.getSettings('frontpageConfig.showSimpleSearch');
