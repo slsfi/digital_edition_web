@@ -15,7 +15,7 @@
         <div class="home-content">
           <div *ngIf="imageOrientationPortrait">
             <h1 class="site-title">{{appName}}</h1>
-            <h3 class="site-subtitle">{{appSubtitle}}</h3>
+            <h3 *ngIf="appSubtitle" class="site-subtitle">{{appSubtitle}}</h3>
           </div>
           <markdown [data]="homeContent"></markdown>
         </div>
