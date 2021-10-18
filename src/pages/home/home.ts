@@ -76,19 +76,18 @@ export class HomePage {
     try {
       this.imageUrl = this.config.getSettings('frontpageConfig.imageUrl');
     } catch (e) {
-      this.imageUrl = 'assets/images/frontpage-image-landscape.jpg';
+      this.imageUrl = 'assets/images/frontpage-image-portrait.jpg';
     }
     if (this.userSettingsService.isMobile()) {
       if (this.imageOrientationPortrait) {
-        this.imageOrientationPortrait = false;
-      }
-      try {
-        const imageUrlMobile = this.config.getSettings('frontpageConfig.imageUrlMobile');
-        if (imageUrlMobile !== '' && imageUrlMobile !== undefined && imageUrlMobile !== null) {
-          this.imageUrl = imageUrlMobile;
+        try {
+          const imageUrlMobile = this.config.getSettings('frontpageConfig.imageUrlMobileInPortrait');
+          if (imageUrlMobile !== '' && imageUrlMobile !== undefined && imageUrlMobile !== null) {
+            this.imageUrl = imageUrlMobile;
+          }
+          console.log('imageUrlMobile', imageUrlMobile);
+        } catch (e) {
         }
-        console.log('imageUrlMobile', imageUrlMobile);
-      } catch (e) {
       }
     }
     console.log('imageOrientationPortrait', this.imageOrientationPortrait);
