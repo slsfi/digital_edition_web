@@ -32,7 +32,7 @@ export class HomePage {
   showEditionList: Boolean = false;
   showFooter: Boolean = false;
   imageUrl: string;
-  imageUrlStyle: string = '';
+  imageUrlStyle = '';
   errorMessage: string;
   initLanguage: string;
 
