@@ -14,6 +14,7 @@ home-page {
 		display: flex;
 		flex-direction: column;
 		font-size: 17px;
+		margin: 1.5rem 3rem;
 	}
 
 	.text-content .footer {
@@ -64,7 +65,7 @@ home-page {
 
 	.portrait-mode .text-content {
 		width: 61.8%;
-		margin: 0 3rem;
+		margin-top: 0;
 	}
 
 	.portrait-mode h1.site-title,
