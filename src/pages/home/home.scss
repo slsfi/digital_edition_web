@@ -3,6 +3,11 @@ home-page {
 	/* This hides the vertical scrollbar on the right edge of the viewport area when it is not necessary to show it. Observe that there are two elements with class scroll-content, which is why this needs to be this specific. */
 	ion-content > .scroll-content {
 		overflow: auto;
+		display: flex;
+		flex-direction: column;
+	}
+	ion-content.portrait-mode > .scroll-content {
+		flex-direction: row;
 	}
 
 	.page-title {
