@@ -47,12 +47,8 @@ export class HomePage {
     this.appMachineName = this.config.getSettings('app.machineName');
     this.userSettingsService.temporarilyHideSplitPane();
 
-    this.imageOrientationPortrait = false;
     try {
       this.imageOrientationPortrait = this.config.getSettings('frontpageConfig.imageOrientationIsPortrait');
-      if (this.imageOrientationPortrait === undefined || this.imageOrientationPortrait === null) {
-        this.imageOrientationPortrait = true;
-      }
     } catch (e) {
       this.imageOrientationPortrait = true;
     }
@@ -77,6 +73,9 @@ export class HomePage {
       this.imageUrl = 'assets/images/frontpage-image-landscape.jpg';
     }
     if (this.userSettingsService.isMobile()) {
+      if (this.imageOrientationPortrait) {
+        this.imageOrientationPortrait = false;
+      }
       try {
         const imageUrlMobile = this.config.getSettings('frontpageConfig.imageUrlMobile');
         if (imageUrlMobile !== '' && imageUrlMobile !== undefined && imageUrlMobile !== null) {
