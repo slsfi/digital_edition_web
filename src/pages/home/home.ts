@@ -49,6 +49,9 @@ export class HomePage {
 
     try {
       this.imageOrientationPortrait = this.config.getSettings('frontpageConfig.imageOrientationIsPortrait');
+      if (this.imageOrientationPortrait === undefined || this.imageOrientationPortrait === null) {
+        this.imageOrientationPortrait = false;
+      }
     } catch (e) {
       this.imageOrientationPortrait = false;
     }
