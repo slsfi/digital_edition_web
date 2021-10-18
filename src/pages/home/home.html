@@ -7,20 +7,20 @@
         <h3 class="text-center banner-subtitle">{{appSubtitle}}</h3>
       </div>
     </div>
-    <div *ngIf="showSimpleSearch" class="front-page-simple-search" col-lg-6 col-md-10 col-sm-12 style="max-width: 800px; margin-left: auto; margin-right: auto;">
-      <simple-search [scrollableSimpleSearch]="true"></simple-search>
-    </div>
-
-    <div style="text-align: center;" padding>
-      <div class="person-text" style="max-width: 1000px; margin-left: auto; margin-right: auto;">
-        <markdown [data]="homeContent"></markdown>
+    <div class="text-content">
+      <div *ngIf="showSimpleSearch" class="front-page-simple-search" col-lg-6 col-md-10 col-sm-12 style="max-width: 800px; margin-left: auto; margin-right: auto;">
+        <simple-search [scrollableSimpleSearch]="true"></simple-search>
       </div>
-    </div>
 
-    <div *ngIf="showFooter">
-        <footer class="footer">
-          <markdown [data]="homeFooterContent"></markdown>
-        </footer>
+      <div style="text-align: center;" padding>
+        <div class="person-text" style="max-width: 1000px; margin-left: auto; margin-right: auto;">
+          <markdown [data]="homeContent"></markdown>
+        </div>
+      </div>
+
+      <footer *ngIf="showFooter" class="footer">
+        <markdown [data]="homeFooterContent"></markdown>
+      </footer>
     </div>
   </ng-container>
   <!--
