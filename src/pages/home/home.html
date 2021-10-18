@@ -1,9 +1,9 @@
 <ion-content [ngClass]="imageOrientationPortrait?'portrait-mode':''">
     <!-- Front page image orientation is landscape (always landscape in mobile mode) -->
-    <div class="banner" [ngClass]="imageOnRight?'image-on-right':''" [ngStyle]="{'background-image': 'url(' + imageUrl + ')'}">
+    <div class="banner" [ngClass]="imageOnRight?'image-on-right':''" [ngStyle]="{'background-image': 'url(&quot;' + imageUrl + '&quot;)'}">
       <div style="color: white; position: relative; float: left; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
         <h1 class="text-center banner-title">{{appName}}</h1>
-        <h3 class="text-center banner-subtitle">{{appSubtitle}}</h3>
+        <h3 *ngIf="appSubtitle" class="text-center banner-subtitle">{{appSubtitle}}</h3>
       </div>
     </div>
     <div class="text-content">
