@@ -52,7 +52,7 @@ export class HomePage {
     try {
       this.imageOrientationPortrait = this.config.getSettings('frontpageConfig.imageOrientationIsPortrait');
     } catch (e) {
-      this.imageOrientationPortrait = true;
+      this.imageOrientationPortrait = false;
     }
     try {
       this.imageOnRight = this.config.getSettings('frontpageConfig.imageOnRightInPortrait');
@@ -77,7 +77,8 @@ export class HomePage {
     try {
       this.imageUrl = this.config.getSettings('frontpageConfig.imageUrl');
     } catch (e) {
-      this.imageUrl = 'assets/images/frontpage-image-portrait.jpg';
+      this.imageUrl = 'assets/images/frontpage-image-landscape.jpg';
+      // this.imageUrl = 'assets/images/frontpage-image-portrait.jpg';
     }
     if (this.userSettingsService.isMobile()) {
       if (this.imageOrientationPortrait) {
