@@ -147,6 +147,29 @@
                     </div>
                 </ion-list>
 
+                <ion-list no-margin class="accordion-menu" *ngIf="genericSettingsService.show('TOC.EPUB')">
+                    <ion-item class="header" (tap)="simpleAccordionsExpanded.epubs = !simpleAccordionsExpanded.epubs;" *ngIf="epubNames.length > 1" tappable>
+                        <ion-icon [class.rotate]="simpleAccordionsExpanded.epubs" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
+                        <p>{{"TOC.EPUBS" | translate }}</p>
+                    </ion-item>
+                    <ion-item class="header" *ngIf="epubNames.length == 1" (click)="openPage('epub', null, availableEpubs[epubNames[0]])" tappable>
+                      <p>
+                          {{epubNames[0] | translate }}
+                      </p>
+                    </ion-item>
+                    <div [style.height]="simpleAccordionsExpanded.epubs ? '100%' : '0px'" class="simple-accordion-options options" *ngIf="epubNames.length > 1">
+                      <ng-container *ngFor="let name of epubNames" >
+                        <ion-list class="accordion-menu">
+                          <ion-item class="mainMenuItem" ion-item menuClose detail-push (click)="openPage('epub', null, availableEpubs[name])">
+                              <p>
+                                  {{name | translate }}
+                              </p>
+                          </ion-item>
+                        </ion-list>
+                      </ng-container>
+                    </div>
+                </ion-list>
+
                 <!-- ./MUSIC -->
 
                 <ion-item *ngIf="genericSettingsService.show('TOC.Facsimiles')" menuClose detail-push (click)="openPage('featured-facsimiles')" class="mainMenuItem">
@@ -174,24 +197,6 @@
                         {{"TOC.WorkSearch" | translate }}
                     </p>
                 </ion-item>
-
-                <ion-list no-margin class="accordion-menu" *ngIf="genericSettingsService.show('TOC.EPUB')">
-                    <ion-item class="header" (tap)="simpleAccordionsExpanded.epubs = !simpleAccordionsExpanded.epubs;" tappable>
-                        <ion-icon [class.rotate]="simpleAccordionsExpanded.epubs" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
-                        <p>{{"TOC.EPUBS" | translate }}</p>
-                    </ion-item>
-                    <div [style.height]="simpleAccordionsExpanded.epubs ? '100%' : '0px'" class="simple-accordion-options options">
-                      <ng-container *ngFor="let name of epubNames" >
-                        <ion-list class="accordion-menu">
-                          <ion-item class="mainMenuItem" ion-item menuClose detail-push (click)="openPage('epub', null, availableEpubs[name])">
-                              <p>
-                                  {{name | translate }}
-                              </p>
-                          </ion-item>
-                        </ion-list>
-                      </ng-container>
-                    </div>
-                </ion-list>
 
                 <ion-list *ngIf="genericSettingsService.show('TOC.SongTypes') && !songTypesMenuMarkdown" no-margin class="accordion-menu">
                     <ion-item class="header" (tap)="simpleAccordionsExpanded.songTypesAccordion = !simpleAccordionsExpanded.songTypesAccordion;" tappable>
