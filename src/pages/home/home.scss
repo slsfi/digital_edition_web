@@ -10,6 +10,35 @@ home-page {
 		flex-direction: row;
 	}
 
+	.banner {
+		position: relative;
+		margin: 0;
+		padding: 0;
+		height: 50%;
+		min-height: 50%;
+		background-position: 50% 50%;
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
+
+	.banner-title,
+	.banner-subtitle {
+		font-family: $font-family-header;
+		font-size: calc(1.375rem + 2.15vw);
+		font-weight: normal;
+		line-height: 1.5;
+		color: #000;
+		background-color: $background-color;
+		opacity: 0.8;
+		padding: 0 1rem;
+	}
+
+	.banner-subtitle {
+		font-size: calc(1rem + 0.7vw);
+		font-style: italic;
+		display: inline-block;
+	}
+
 	.text-content {
 		display: flex;
 		flex-direction: column;
@@ -29,28 +58,6 @@ home-page {
 		.toolbar-title-ios {
 			text-align: left;
 		}
-	}
-
-	.banner {
-		position: relative;
-		margin: 0;
-		padding: 0;
-		height: 50%;
-		min-height: 50%;
-		background-position: 50% 50%;
-		background-repeat: no-repeat;
-		background-size: cover;
-	}
-
-	.banner:before {
-		content: "";
-		position: absolute;
-		left: 0; right: 0;
-		top: 0; bottom: 0;
-		background: rgba(93, 106, 126, 0.4);
-	}
-	.banner::before {
-		background: rgba(93, 106, 126, 0) !important;
 	}
 
 	.portrait-mode .banner {
@@ -103,24 +110,6 @@ home-page {
 		img {
 			width: 100%;
 		}
-	}
-
-	.banner-title,
-	.banner-subtitle {
-		font-family: $font-family-header;
-		font-size: calc(1.375rem + 2.15vw);
-		font-weight: normal;
-		line-height: 1.5;
-		color: #000;
-		background-color: $background-color;
-		opacity: 0.8;
-		padding: 0 1rem;
-	}
-
-	.banner-subtitle {
-		font-size: calc(1rem + 0.7vw);
-		font-style: italic;
-		display: inline-block;
 	}
 
 	.site-presentation {
