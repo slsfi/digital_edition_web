@@ -63,13 +63,12 @@ home-page {
 		text-align: center;
 		width: 100%;
 		max-width: 1000px;
-		margin: 0 auto 3rem auto;
+		margin: auto auto 1.5rem auto;
 	}
 
 	.text-content .footer p {
 		font-size: 1rem;
-		color: rgba($color: #000, $alpha: 0.6);
-		margin: 0;
+		color: rgba(0, 0, 0, 0.6);
 	}
 
 	.portrait-mode .banner {
@@ -123,7 +122,8 @@ home-page {
 	}
 
 	.portrait-mode .text-content .footer {
-		margin: 0 0 3rem 0;
+		margin-left: 0;
+		margin-right: 0;
 		text-align: left;
 	}
 
