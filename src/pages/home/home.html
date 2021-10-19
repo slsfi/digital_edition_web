@@ -7,8 +7,14 @@
   </div>
 
   <div class="text-content">
-    <div *ngIf="showSimpleSearch" class="front-page-simple-search" col-lg-6 col-md-10 col-sm-12 style="max-width: 800px; margin-left: auto; margin-right: auto;">
-      <simple-search [scrollableSimpleSearch]="true"></simple-search>
+    <div *ngIf="showSimpleSearch" class="front-page-simple-search">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-lg-6 col-md-10 col-sm-12 style="max-width: 800px; margin-left: auto; margin-right: auto;">
+            <simple-search [scrollableSimpleSearch]="true"></simple-search>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </div>
 
     <div class="site-presentation">
@@ -17,6 +23,10 @@
         <h3 *ngIf="appSubtitle" class="site-subtitle">{{appSubtitle}}</h3>
       </div>
       <markdown [data]="homeContent"></markdown>
+    </div>
+
+    <div *ngIf="showEditionList" class="front-page-edition-list">
+      <digital-editions-list class="edition_boxes" [layoutType]="'auto'"></digital-editions-list>
     </div>
 
     <footer *ngIf="showFooter" class="footer">
