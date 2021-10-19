@@ -62,12 +62,12 @@ export class HomePage {
     try {
       this.showSimpleSearch = this.config.getSettings('frontpageConfig.showSimpleSearch');
     } catch (e) {
-      this.showSimpleSearch = false;
+      this.showSimpleSearch = true;
     }
     try {
       this.showEditionList = this.config.getSettings('frontpageConfig.showEditionList');
     } catch (e) {
-      this.showEditionList = false;
+      this.showEditionList = true;
     }
     try {
       this.showFooter = this.config.getSettings('frontpageConfig.showFooter');
@@ -83,7 +83,7 @@ export class HomePage {
     if (this.userSettingsService.isMobile()) {
       if (this.imageOrientationPortrait) {
         try {
-          const imageUrlMobile = this.config.getSettings('frontpageConfig.imageUrlMobileInPortrait');
+          const imageUrlMobile = this.config.getSettings('frontpageConfig.portraitImageUrlInMobileMode');
           if (imageUrlMobile !== '' && imageUrlMobile !== undefined && imageUrlMobile !== null) {
             this.imageUrl = imageUrlMobile;
           }
