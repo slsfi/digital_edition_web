@@ -21,6 +21,15 @@ home-page {
 		background-size: cover;
 	}
 
+	.banner .title-wrapper {
+		position: relative;
+		float: left;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		text-align: center;
+	}
+
 	.banner-title,
 	.banner-subtitle {
 		font-family: $font-family-header;
