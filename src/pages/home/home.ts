@@ -52,7 +52,7 @@ export class HomePage {
     try {
       this.imageOrientationPortrait = this.config.getSettings('frontpageConfig.imageOrientationIsPortrait');
     } catch (e) {
-      this.imageOrientationPortrait = true;
+      this.imageOrientationPortrait = false;
     }
     try {
       this.imageOnRight = this.config.getSettings('frontpageConfig.imageOnRightInPortrait');
