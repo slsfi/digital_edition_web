@@ -63,7 +63,7 @@ home-page {
 		text-align: center;
 		width: 100%;
 		max-width: 1000px;
-		margin: 0 0 3rem 0;
+		margin: 0 auto 3rem auto;
 	}
 
 	.text-content .footer p {
@@ -78,10 +78,6 @@ home-page {
 		width: 28.2%;
 		min-width: 330px;
 		background-image: none !important;
-		/*
-		background-position: 0 0;
-		background-size: 100%;
-		*/
 	}
 
 	.portrait-mode .banner > img {
@@ -115,10 +111,6 @@ home-page {
 		display: inline-block;
 	}
 
-	.scroll-content .content.content-md {
-		display: none;
-	}
-
 	.site-presentation {
 		text-align: center;
 		max-width: 1000px;
@@ -130,10 +122,19 @@ home-page {
 		margin: 0 0 3rem 0;
 	}
 
+	.portrait-mode .text-content .footer {
+		margin: 0 0 3rem 0;
+		text-align: left;
+	}
+
 	.front-page-simple-search {
 		margin: 1.5rem auto 1.5rem auto;
 		width: 100%;
 		max-width: 800px;
+	}
+
+	.scroll-content .content.content-md {
+		display: none;
 	}
 
 	.background {
