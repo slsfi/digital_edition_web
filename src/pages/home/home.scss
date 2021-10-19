@@ -37,6 +37,7 @@ home-page {
 		padding-left: 0;
 		margin-left: 0;
 		height: 50%;
+		min-height: 50%;
 		background-position: 50% 50%;
 		background-repeat: no-repeat;
 		background-size: cover;
@@ -52,6 +53,7 @@ home-page {
 
 	.portrait-mode .banner {
 		height: 100%;
+		min-height: 100%;
 		background-position: 0 0;
 		background-size: 100%;
 		width: 28.2%;
@@ -180,7 +182,7 @@ footer p {
 }
 
 .front-page-simple-search {
-	margin: 3rem auto 1.5rem auto;
+	margin: 1.5rem auto 1.5rem auto;
 	width: 100%;
 	max-width: 800px;
 
