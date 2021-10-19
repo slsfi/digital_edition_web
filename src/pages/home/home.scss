@@ -13,7 +13,7 @@ home-page {
 	.text-content {
 		display: flex;
 		flex-direction: column;
-		margin: 1.5rem 3rem;
+		margin: 1.5rem 3rem 0 3rem;
 	}
 
 	.text-content .footer {
@@ -180,7 +180,7 @@ footer p {
 }
 
 .front-page-simple-search {
-	margin: 0 auto 3rem auto;
+	margin: 3rem auto 1.5rem auto;
 	width: 100%;
 	max-width: 800px;
 
