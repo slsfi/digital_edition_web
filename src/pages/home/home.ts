@@ -33,6 +33,7 @@ export class HomePage {
   showFooter: Boolean = false;
   imageUrl = '';
   imageUrlStyle = '';
+  portraitImageAltText = '';
   errorMessage: string;
   initLanguage: string;
 
@@ -58,6 +59,11 @@ export class HomePage {
       this.imageOnRight = this.config.getSettings('frontpageConfig.imageOnRightInPortrait');
     } catch (e) {
       this.imageOnRight = false;
+    }
+    try {
+      this.portraitImageAltText = this.config.getSettings('frontpageConfig.portraitImageAltText');
+    } catch (e) {
+      this.portraitImageAltText = "";
     }
     try {
       this.showSimpleSearch = this.config.getSettings('frontpageConfig.showSimpleSearch');
