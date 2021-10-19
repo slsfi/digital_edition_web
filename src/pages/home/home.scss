@@ -60,17 +60,16 @@ home-page {
 
 	.text-content .footer {
 		align-self: flex-end;
+		text-align: center;
+		width: 100%;
+		max-width: 1000px;
+		margin: 0 0 3rem 0;
 	}
 
-	.page-title {
-		margin-left: 5px;
-	}
-
-	.toolbar-ios ion-title {
-		padding: 0;
-		.toolbar-title-ios {
-			text-align: left;
-		}
+	.text-content .footer p {
+		font-size: 1rem;
+		color: rgba($color: #000, $alpha: 0.6);
+		margin: 0;
 	}
 
 	.portrait-mode .banner {
@@ -116,12 +115,25 @@ home-page {
 		display: inline-block;
 	}
 
-	.foreground {
-		width:100%;
-	}
-
 	.scroll-content .content.content-md {
 		display: none;
+	}
+
+	.site-presentation {
+		text-align: center;
+		max-width: 1000px;
+		margin: 0 auto 3rem auto;
+	}
+
+	.portrait-mode .site-presentation {
+		text-align: left;
+		margin: 0 0 3rem 0;
+	}
+
+	.front-page-simple-search {
+		margin: 1.5rem auto 1.5rem auto;
+		width: 100%;
+		max-width: 800px;
 	}
 
 	.background {
@@ -133,19 +145,12 @@ home-page {
 		}
 	}
 
-	.site-presentation {
-		text-align: center;
-		max-width: 1000px;
-		margin: 0 auto 3rem auto;
-	}
-
-	.portrait-mode .site-presentation {
-		text-align: left;
-		margin: 0;
-	}
-
 	.fp_h1 {
 		font-size: 2rem;
+	}
+
+	.foreground {
+		width:100%;
 	}
 
 	.foreground {
@@ -165,22 +170,10 @@ home-page {
 		line-height: 1.8rem;
 	}
 
-}
-
-footer {
-	text-align: center;
-	padding-bottom: 2rem;
-}
-
-footer p {
-	font-size: 1rem;
-	color: rgba($color: #000, $alpha: 0.6);
-	margin: 0;
-}
-
-.front-page-simple-search {
-	margin: 1.5rem auto 1.5rem auto;
-	width: 100%;
-	max-width: 800px;
-
+	.toolbar-ios ion-title {
+		padding: 0;
+		.toolbar-title-ios {
+			text-align: left;
+		}
+	}
 }
