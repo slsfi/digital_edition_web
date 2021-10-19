@@ -52,7 +52,7 @@ export class HomePage {
     try {
       this.imageOrientationPortrait = this.config.getSettings('frontpageConfig.imageOrientationIsPortrait');
     } catch (e) {
-      this.imageOrientationPortrait = false;
+      this.imageOrientationPortrait = true;
     }
     try {
       this.imageOnRight = this.config.getSettings('frontpageConfig.imageOnRightInPortrait');
@@ -62,12 +62,12 @@ export class HomePage {
     try {
       this.showSimpleSearch = this.config.getSettings('frontpageConfig.showSimpleSearch');
     } catch (e) {
-      this.showSimpleSearch = true;
+      this.showSimpleSearch = false;
     }
     try {
       this.showEditionList = this.config.getSettings('frontpageConfig.showEditionList');
     } catch (e) {
-      this.showEditionList = true;
+      this.showEditionList = false;
     }
     try {
       this.showFooter = this.config.getSettings('frontpageConfig.showFooter');
