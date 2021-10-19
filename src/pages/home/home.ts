@@ -72,7 +72,7 @@ export class HomePage {
     try {
       this.showFooter = this.config.getSettings('frontpageConfig.showFooter');
     } catch (e) {
-      this.showFooter = false;
+      this.showFooter = true;
     }
     try {
       this.imageUrl = this.config.getSettings('frontpageConfig.imageUrl');
