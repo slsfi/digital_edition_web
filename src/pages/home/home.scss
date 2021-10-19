@@ -89,7 +89,8 @@ home-page {
 	}
 
 	.portrait-mode .text-content {
-		width: 61.8%;
+		/*width: 61.8%;*/
+		max-width: 1000px;
 		margin-top: 0;
 	}
 
