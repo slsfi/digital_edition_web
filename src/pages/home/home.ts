@@ -31,7 +31,7 @@ export class HomePage {
   showSimpleSearch: Boolean = false;
   showEditionList: Boolean = false;
   showFooter: Boolean = false;
-  imageUrl: string;
+  imageUrl = '';
   imageUrlStyle = '';
   errorMessage: string;
   initLanguage: string;
