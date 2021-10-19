@@ -8,13 +8,7 @@
 
   <div class="text-content">
     <div *ngIf="showSimpleSearch" class="front-page-simple-search">
-      <ion-grid>
-        <ion-row>
-          <ion-col col-lg-6 col-md-10 col-sm-12 style="max-width: 800px; margin-left: auto; margin-right: auto;">
-            <simple-search [scrollableSimpleSearch]="true"></simple-search>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+      <simple-search [scrollableSimpleSearch]="true"></simple-search>
     </div>
 
     <div class="site-presentation">
