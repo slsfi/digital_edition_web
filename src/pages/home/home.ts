@@ -57,7 +57,7 @@ export class HomePage {
     try {
       this.imageOnRight = this.config.getSettings('frontpageConfig.imageOnRightInPortrait');
     } catch (e) {
-      this.imageOnRight = false;
+      this.imageOnRight = true;
     }
     try {
       this.showSimpleSearch = this.config.getSettings('frontpageConfig.showSimpleSearch');
