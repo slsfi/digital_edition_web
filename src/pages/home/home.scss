@@ -89,9 +89,20 @@ home-page {
 	}
 
 	.portrait-mode .text-content {
-		/*width: 61.8%;*/
 		max-width: 1000px;
 		margin-top: 0;
+	}
+
+	.portrait-mode .text-content .front-page-simple-search {
+		order: 1;
+	}
+
+	.portrait-mode .text-content .front-page-edition-list {
+		order: 2;
+	}
+
+	.portrait-mode .text-content .footer {
+		order: 3;
 	}
 
 	.portrait-mode h1.site-title,
