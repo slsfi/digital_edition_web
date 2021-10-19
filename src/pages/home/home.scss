@@ -122,7 +122,7 @@ home-page {
 	.site-presentation {
 		text-align: center;
 		max-width: 1000px;
-		margin: 0 auto;
+		margin: 0 auto 3rem 0;
 	}
 
 	.portrait-mode .site-presentation {
@@ -180,5 +180,8 @@ footer p {
 }
 
 .front-page-simple-search {
-	margin: 0 auto;
+	margin: 0 auto 3rem auto;
+	width: 100%;
+	max-width: 800px;
+
 }
