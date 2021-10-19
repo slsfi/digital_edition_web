@@ -4,7 +4,7 @@
       <h1 class="banner-title">{{appName}}</h1>
       <h3 *ngIf="appSubtitle" class="banner-subtitle">{{appSubtitle}}</h3>
     </div>
-    <img *ngIf="imageOrientationPortrait" [src]="imageUrl" alt="cover-image">
+    <img *ngIf="imageOrientationPortrait" [src]="imageUrl" [alt]="portraitImageAltText">
   </div>
 
   <div class="text-content">
