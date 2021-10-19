@@ -1,6 +1,6 @@
 <ion-content [ngClass]="imageOrientationPortrait?'portrait-mode':''">
   <div class="banner" [ngClass]="imageOnRight?'image-on-right':''" [style.background-image]='imageUrlStyle'>
-    <div class="title-wrapper" style="color: white; position: relative; float: left; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+    <div class="title-wrapper">
       <h1 class="banner-title">{{appName}}</h1>
       <h3 *ngIf="appSubtitle" class="banner-subtitle">{{appSubtitle}}</h3>
     </div>
