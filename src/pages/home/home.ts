@@ -68,7 +68,7 @@ export class HomePage {
     try {
       this.showSimpleSearch = this.config.getSettings('frontpageConfig.showSimpleSearch');
     } catch (e) {
-      this.showSimpleSearch = true;
+      this.showSimpleSearch = false;
     }
     try {
       this.showEditionList = this.config.getSettings('frontpageConfig.showEditionList');
@@ -78,7 +78,7 @@ export class HomePage {
     try {
       this.showFooter = this.config.getSettings('frontpageConfig.showFooter');
     } catch (e) {
-      this.showFooter = false;
+      this.showFooter = true;
     }
     try {
       this.imageUrl = this.config.getSettings('frontpageConfig.imageUrl');
