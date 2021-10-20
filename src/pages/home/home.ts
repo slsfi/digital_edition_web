@@ -63,7 +63,7 @@ export class HomePage {
     try {
       this.portraitImageAltText = this.config.getSettings('frontpageConfig.portraitImageAltText');
     } catch (e) {
-      this.portraitImageAltText = "";
+      this.portraitImageAltText = '';
     }
     try {
       this.showSimpleSearch = this.config.getSettings('frontpageConfig.showSimpleSearch');
