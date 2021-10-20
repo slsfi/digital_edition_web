@@ -93,6 +93,7 @@ home-page {
 		margin-top: 0;
 	}
 
+	/*
 	.portrait-mode .text-content .front-page-simple-search {
 		order: 1;
 	}
@@ -104,9 +105,10 @@ home-page {
 	.portrait-mode .text-content .footer {
 		order: 3;
 	}
+	*/
 
-	.portrait-mode h1.site-title,
-	.portrait-mode h1.site-subtitle {
+	.portrait-mode .site-title,
+	.portrait-mode .site-subtitle {
 		font-family: $font-family-header;
 		font-size: 2.5em;
 		font-weight: normal;
@@ -116,7 +118,7 @@ home-page {
 		padding: 0 0 0.5rem 0;
 	}
 
-	.portrait-mode h3.site-subtitle {
+	.portrait-mode .site-subtitle {
 		font-size: 1.75em;
 		font-style: italic;
 		display: inline-block;
