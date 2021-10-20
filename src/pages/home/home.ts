@@ -68,12 +68,12 @@ export class HomePage {
     try {
       this.showSimpleSearch = this.config.getSettings('frontpageConfig.showSimpleSearch');
     } catch (e) {
-      this.showSimpleSearch = false;
+      this.showSimpleSearch = true;
     }
     try {
       this.showEditionList = this.config.getSettings('frontpageConfig.showEditionList');
     } catch (e) {
-      this.showEditionList = false;
+      this.showEditionList = true;
     }
     try {
       this.showFooter = this.config.getSettings('frontpageConfig.showFooter');
