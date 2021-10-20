@@ -62,13 +62,14 @@ $fab-content-margin:            0;
 
 
 // Customize the grid breakpoints: added xxl and xxxl breakpoints to the default values
-$grid-breakpoints: 	(
+$grid-breakpoints: (
     xs: 0,
     sm: 576px,
     md: 768px,
     lg: 992px,
     xl: 1200px,
-    xxl: 1800px
+    xxl: 1400px,
+    xxxl: 1600px
 );
 
 
