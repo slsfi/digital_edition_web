@@ -8,15 +8,16 @@
   </div>
 
   <div class="text-content">
+    <div *ngIf="imageOrientationPortrait" class="title-wrapper">
+      <h1 class="site-title">{{appName}}</h1>
+      <h3 *ngIf="appSubtitle" class="site-subtitle">{{appSubtitle}}</h3>
+    </div>
+
     <div *ngIf="showSimpleSearch" class="front-page-simple-search">
       <simple-search [scrollableSimpleSearch]="true"></simple-search>
     </div>
 
     <div class="site-presentation">
-      <div *ngIf="imageOrientationPortrait">
-        <h1 class="site-title">{{appName}}</h1>
-        <h3 *ngIf="appSubtitle" class="site-subtitle">{{appSubtitle}}</h3>
-      </div>
       <markdown [data]="homeContent"></markdown>
     </div>
 
