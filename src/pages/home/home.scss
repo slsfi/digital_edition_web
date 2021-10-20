@@ -121,7 +121,7 @@ home-page {
 	.portrait-mode .site-subtitle {
 		font-size: 1.75em;
 		font-style: italic;
-		display: inline-block;
+		margin-top: -1.5rem;
 	}
 
 	.site-presentation {
@@ -145,6 +145,14 @@ home-page {
 		margin: 1.5rem auto 1.5rem auto;
 		width: 100%;
 		max-width: 800px;
+	}
+
+	.portrait-mode .front-page-simple-search {
+		margin-left: 0;
+
+		simple-search ion-grid.grid {
+			padding: 0;
+		}
 	}
 
 	.scroll-content .content.content-md {
