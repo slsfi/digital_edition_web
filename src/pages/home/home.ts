@@ -58,7 +58,7 @@ export class HomePage {
     try {
       this.imageOnRight = this.config.getSettings('frontpageConfig.imageOnRightInPortrait');
     } catch (e) {
-      this.imageOnRight = true;
+      this.imageOnRight = false;
     }
     try {
       this.portraitImageAltText = this.config.getSettings('frontpageConfig.portraitImageAltText');
@@ -73,12 +73,12 @@ export class HomePage {
     try {
       this.showEditionList = this.config.getSettings('frontpageConfig.showEditionList');
     } catch (e) {
-      this.showEditionList = true;
+      this.showEditionList = false;
     }
     try {
       this.showFooter = this.config.getSettings('frontpageConfig.showFooter');
     } catch (e) {
-      this.showFooter = true;
+      this.showFooter = false;
     }
     try {
       this.imageUrl = this.config.getSettings('frontpageConfig.imageUrl');
