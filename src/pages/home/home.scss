@@ -180,7 +180,7 @@ home-page {
 		}
 	}
 	@media only screen and (max-width: 900px) {
-		.portrait-mode .scroll-content {
+		ion-content.portrait-mode > .scroll-content {
 			flex-direction: column;
 		}
 		.portrait-mode .banner {
