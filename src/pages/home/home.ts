@@ -86,7 +86,6 @@ export class HomePage {
       // this.imageUrl = 'assets/images/frontpage-image-landscape.jpg';
       this.imageUrl = 'assets/images/frontpage-image-portrait.jpg';
     }
-    console.log('mobile mode? ', this.userSettingsService.isMobile());
     if (this.userSettingsService.isMobile()) {
       console.log('mobile mode!');
       if (this.imageOrientationPortrait) {
@@ -147,6 +146,10 @@ export class HomePage {
       }
       this.events.publish('title-logo:setTitle', this.config.getSettings('app.page-title.' + lang));
     });
+  }
+
+  ionViewDidLoad() {
+    console.log('mobile mode? ', this.userSettingsService.isMobile());
   }
 
   getMdContent(fileID: string) {
