@@ -169,6 +169,41 @@ home-page {
 		}
 	}
 
+	@media only screen and (max-width: 1180px) {
+		.portrait-mode .banner {
+			min-width: 280px;
+		}
+	}
+	@media only screen and (max-width: 985px) {
+		.portrait-mode .banner {
+			min-width: 240px;
+		}
+	}
+	@media only screen and (max-width: 900px) {
+		.portrait-mode .scroll-content {
+			flex-direction: column;
+		}
+		.portrait-mode .banner {
+			order: 0;
+			height: auto;
+			min-height: auto;
+			width: 100%;
+			min-width: 100%;
+		}
+		.portrait-mode .text-content {
+			order: 1;
+		}
+		.portrait-mode .text-content .site-title {
+			font-size: 1.75em;
+		}
+		.portrait-mode .text-content .site-subtitle {
+			font-size: 1.35em;
+		}
+		.portrait-mode .front-page-simple-search {
+			max-width: 100%;
+		}
+	}
+
 	.scroll-content .content.content-md {
 		display: none;
 	}
