@@ -76,6 +76,10 @@ digital-editions-list {
         margin: 0 !important;
       }
 
+      ion-item.item ion-thumbnail img {
+        height: auto;
+      }
+
       h2 {
         margin-left: 15px;
         white-space: normal;
