@@ -86,6 +86,7 @@ export class HomePage {
       // this.imageUrl = 'assets/images/frontpage-image-landscape.jpg';
       this.imageUrl = 'assets/images/frontpage-image-portrait.jpg';
     }
+    console.log('mobile mode? ', this.userSettingsService.isMobile());
     if (this.userSettingsService.isMobile()) {
       console.log('mobile mode!');
       if (this.imageOrientationPortrait) {
