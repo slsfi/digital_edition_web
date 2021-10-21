@@ -87,6 +87,7 @@ export class HomePage {
       this.imageUrl = 'assets/images/frontpage-image-portrait.jpg';
     }
     if (this.userSettingsService.isMobile()) {
+      console.log('mobile mode!');
       if (this.imageOrientationPortrait) {
         try {
           const imageUrlMobile = this.config.getSettings('frontpageConfig.portraitImageUrlInMobileMode');
