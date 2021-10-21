@@ -61,7 +61,7 @@ export class HomePage {
     try {
       this.imageOnRight = this.config.getSettings('frontpageConfig.imageOnRightInPortrait');
     } catch (e) {
-      this.imageOnRight = true;
+      this.imageOnRight = false;
     }
     try {
       this.titleOnImage = this.config.getSettings('frontpageConfig.siteTitleOnTopOfImageInPortraitInMobileMode');
@@ -112,11 +112,6 @@ export class HomePage {
     }
 
     this.imageUrlStyle = `url(${this.imageUrl})`;
-    console.log('imageOrientationPortrait', this.imageOrientationPortrait);
-    console.log('showSimpleSearch', this.showSimpleSearch);
-    console.log('showEditionList', this.showEditionList);
-    console.log('showFooter', this.showFooter);
-    console.log('imageUrl', this.imageUrl);
 
     this.events.subscribe('language:change', () => {
       this.languageService.getLanguage().subscribe((lang) => {
