@@ -57,6 +57,9 @@ home-page {
 	.text-content .front-page-edition-list {
 		margin: 0 auto 3rem auto;
 	}
+	.text-content .front-page-edition-list .grid-mobile {
+		padding: 0;
+	}
 
 	/* Override the number of columns in the edition list to 1, 2 or max 3 based on screen width in portrait mode.
 	   Both [col-xxl-3] and [col-xl-3] are needed as selectors as one is for desktop, the other tablet. */
@@ -144,6 +147,10 @@ home-page {
 		margin: 0 auto 3rem auto;
 	}
 
+	.site-presentation p:first-of-type {
+		margin-top: 0;
+	}
+
 	.portrait-mode .site-presentation {
 		text-align: left;
 		margin: 0 0 3rem 0;
@@ -192,6 +199,7 @@ home-page {
 		}
 		.portrait-mode .text-content {
 			order: 1;
+			margin: 1.5rem 1.5rem 0 1.5rem;
 		}
 		.portrait-mode .text-content .site-title {
 			font-size: 1.75em;
