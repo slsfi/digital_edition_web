@@ -146,22 +146,6 @@ export class HomePage {
       }
       this.events.publish('title-logo:setTitle', this.config.getSettings('app.page-title.' + lang));
     });
-    if (this.userSettingsService.isMobile()) {
-      console.log('mobile mode!');
-      if (this.imageOrientationPortrait) {
-        try {
-          const imageUrlMobile = this.config.getSettings('frontpageConfig.portraitImageUrlInMobileMode');
-          if (imageUrlMobile !== '' && imageUrlMobile !== undefined && imageUrlMobile !== null) {
-            this.imageUrl = imageUrlMobile;
-          }
-          console.log('imageUrlMobile', imageUrlMobile);
-        } catch (e) {
-          // Remove this when done testing!
-          this.imageUrl = 'assets/images/frontpage-image-square.jpg';
-        }
-      }
-    }
-    this.imageUrlStyle = `url(${this.imageUrl})`;
   }
 
   getMdContent(fileID: string) {
