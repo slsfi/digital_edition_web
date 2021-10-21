@@ -90,19 +90,18 @@ export class HomePage {
 
     // Get viewport width
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    console.log('viewport width: ', vw);
 
-    if (vw <= 900) {
-      if (this.imageOrientationPortrait) {
-        try {
-          const imageUrlMobile = this.config.getSettings('frontpageConfig.portraitImageUrlInMobileMode');
-          if (imageUrlMobile !== '' && imageUrlMobile !== undefined && imageUrlMobile !== null) {
-            this.imageUrl = imageUrlMobile;
-          }
-          console.log('imageUrlMobile', imageUrlMobile);
-        } catch (e) {
-          // Remove this when done testing!
-          this.imageUrl = 'assets/images/frontpage-image-square.jpg';
+    if (vw <= 900 && this.imageOrientationPortrait) {
+      try {
+        const imageUrlMobile = this.config.getSettings('frontpageConfig.portraitImageUrlInMobileMode');
+        if (imageUrlMobile !== '' && imageUrlMobile !== undefined && imageUrlMobile !== null) {
+          this.imageUrl = imageUrlMobile;
         }
+        console.log('imageUrlMobile', imageUrlMobile);
+      } catch (e) {
+        // Remove this when done testing!
+        this.imageUrl = 'assets/images/frontpage-image-square.jpg';
       }
     }
     this.imageUrlStyle = `url(${this.imageUrl})`;
