@@ -1,6 +1,6 @@
 <ion-content [ngClass]="imageOrientationPortrait?'portrait-mode':''">
   <div class="banner" [ngClass]="imageOnRight?'image-on-right':''" [style.background-image]='imageUrlStyle'>
-    <div *ngIf="!imageOrientationPortrait" class="title-wrapper">
+    <div *ngIf="!imageOrientationPortrait || titleOnImage" class="title-wrapper" [ngClass]="titleOnImage?'title-on-image':''">
       <h1 class="banner-title">{{appName}}</h1>
       <h3 *ngIf="appSubtitle" class="banner-subtitle">{{appSubtitle}}</h3>
     </div>
@@ -8,7 +8,7 @@
   </div>
 
   <div class="text-content">
-    <div *ngIf="imageOrientationPortrait" class="title-wrapper">
+    <div *ngIf="imageOrientationPortrait && !titleOnImage" class="title-wrapper">
       <h1 class="site-title">{{appName}}</h1>
       <h3 *ngIf="appSubtitle" class="site-subtitle">{{appSubtitle}}</h3>
     </div>
