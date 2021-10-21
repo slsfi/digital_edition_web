@@ -40,6 +40,8 @@ home-page {
 		background-color: $background-color;
 		opacity: 0.8;
 		padding: 0 1rem;
+		margin-left: 1rem;
+		margin-right: 1rem;
 	}
 
 	.banner-subtitle {
@@ -192,6 +194,14 @@ home-page {
 			width: 100%;
 			min-width: 100%;
 		}
+		.portrait-mode.title-on-image .banner .title-wrapper {
+			position: absolute;
+			width: max-content;
+			max-width: 100%;
+		}
+		.portrait-mode.title-on-image .text-content .title-wrapper {
+			display: none;
+		}
 		.portrait-mode .text-content {
 			order: 1;
 			margin: 1.5rem 1.5rem 0 1.5rem;
@@ -207,6 +217,12 @@ home-page {
 			max-width: 100%;
 		}
 	}
+	@media only screen and (min-width: 901px) {
+		.portrait-mode.title-on-image .banner .title-wrapper {
+			display: none;
+		}
+	}
+
 
 	.scroll-content .content.content-md {
 		display: none;
