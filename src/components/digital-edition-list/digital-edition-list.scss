@@ -72,6 +72,10 @@ digital-editions-list {
         margin: 0.5rem 0;
       }
 
+      ion-item.item.item-block .item-inner {
+        border-bottom: 0;
+      }
+
       ion-thumbnail {
         padding: 0 !important;
         margin: 0 !important;
