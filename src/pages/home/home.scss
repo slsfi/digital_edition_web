@@ -217,6 +217,11 @@ home-page {
 			max-width: 100%;
 		}
 	}
+	@media only screen and (max-width: 680px) {
+		.text-content {
+			margin: 1.5rem 1.5rem 0 1.5rem;
+		}
+	}
 	@media only screen and (min-width: 901px) {
 		.portrait-mode.title-on-image .banner .title-wrapper {
 			display: none;
