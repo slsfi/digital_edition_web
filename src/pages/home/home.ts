@@ -92,6 +92,9 @@ export class HomePage {
           const imageUrlMobile = this.config.getSettings('frontpageConfig.portraitImageUrlInMobileMode');
           if (imageUrlMobile !== '' && imageUrlMobile !== undefined && imageUrlMobile !== null) {
             this.imageUrl = imageUrlMobile;
+          } else {
+            // Remove this when done testing!
+            this.imageUrl = 'assets/images/frontpage-image-square.jpg';
           }
           console.log('imageUrlMobile', imageUrlMobile);
         } catch (e) {
