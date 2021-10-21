@@ -64,6 +64,11 @@ export class HomePage {
       this.imageOnRight = false;
     }
     try {
+      this.titleOnImage = this.config.getSettings('frontpageConfig.siteTitleOnTopOfImageInPortraitInMobileMode');
+    } catch (e) {
+      this.titleOnImage = true;
+    }
+    try {
       this.portraitImageAltText = this.config.getSettings('frontpageConfig.portraitImageAltText');
     } catch (e) {
       this.portraitImageAltText = '';
@@ -104,12 +109,8 @@ export class HomePage {
         // Remove this when done testing!
         this.imageUrl = 'assets/images/frontpage-image-square.jpg';
       }
-      try {
-        this.titleOnImage = this.config.getSettings('frontpageConfig.siteTitleOnTopOfImageInPortraitInMobileMode');
-      } catch (e) {
-        this.titleOnImage = true;
-      }
     }
+
     this.imageUrlStyle = `url(${this.imageUrl})`;
     console.log('imageOrientationPortrait', this.imageOrientationPortrait);
     console.log('showSimpleSearch', this.showSimpleSearch);
