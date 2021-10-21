@@ -61,12 +61,12 @@ export class HomePage {
     try {
       this.imageOnRight = this.config.getSettings('frontpageConfig.imageOnRightInPortrait');
     } catch (e) {
-      this.imageOnRight = false;
+      this.imageOnRight = true;
     }
     try {
       this.titleOnImage = this.config.getSettings('frontpageConfig.siteTitleOnTopOfImageInPortraitInMobileMode');
     } catch (e) {
-      this.titleOnImage = false;
+      this.titleOnImage = true;
     }
     try {
       this.portraitImageAltText = this.config.getSettings('frontpageConfig.portraitImageAltText');
