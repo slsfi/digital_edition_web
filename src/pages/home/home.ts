@@ -28,6 +28,7 @@ export class HomePage {
   homeFooterContent: string;
   imageOrientationPortrait: Boolean = false;
   imageOnRight: Boolean = false;
+  titleOnImage: Boolean = false;
   showSimpleSearch: Boolean = false;
   showEditionList: Boolean = false;
   showFooter: Boolean = false;
@@ -51,6 +52,7 @@ export class HomePage {
     this.appMachineName = this.config.getSettings('app.machineName');
     this.userSettingsService.temporarilyHideSplitPane();
 
+    // Get config for front page image and text content
     try {
       this.imageOrientationPortrait = this.config.getSettings('frontpageConfig.imageOrientationIsPortrait');
     } catch (e) {
@@ -62,6 +64,11 @@ export class HomePage {
       this.imageOnRight = false;
     }
     try {
+      this.titleOnImage = this.config.getSettings('frontpageConfig.siteTitleOnTopOfImageInPortraitInMobileMode');
+    } catch (e) {
+      this.titleOnImage = true;
+    }
+    try {
       this.portraitImageAltText = this.config.getSettings('frontpageConfig.portraitImageAltText');
     } catch (e) {
       this.portraitImageAltText = '';
@@ -69,7 +76,7 @@ export class HomePage {
     try {
       this.showSimpleSearch = this.config.getSettings('frontpageConfig.showSimpleSearch');
     } catch (e) {
-      this.showSimpleSearch = false;
+      this.showSimpleSearch = true;
     }
     try {
       this.showEditionList = this.config.getSettings('frontpageConfig.showEditionList');
