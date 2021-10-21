@@ -43,6 +43,7 @@ export class HomePage {
     public translate: TranslateService,
     public languageService: LanguageService,
     private events: Events,
+    private platform: Platform,
     private mdContentService: MdContentService,
     private userSettingsService: UserSettingsService,
     private navParams: NavParams
@@ -86,6 +87,7 @@ export class HomePage {
       // this.imageUrl = 'assets/images/frontpage-image-landscape.jpg';
       this.imageUrl = 'assets/images/frontpage-image-portrait.jpg';
     }
+    console.log('platform mobile?', this.platform.is('mobile'));
     if (this.userSettingsService.isMobile()) {
       console.log('mobile mode!');
       if (this.imageOrientationPortrait) {
