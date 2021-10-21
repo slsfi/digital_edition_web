@@ -87,9 +87,11 @@ export class HomePage {
       // this.imageUrl = 'assets/images/frontpage-image-landscape.jpg';
       this.imageUrl = 'assets/images/frontpage-image-portrait.jpg';
     }
-    console.log('platform mobile?', this.platform.is('mobile'));
-    if (this.userSettingsService.isMobile()) {
-      console.log('mobile mode!');
+
+    // Get viewport width
+    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+
+    if (vw <= 900) {
       if (this.imageOrientationPortrait) {
         try {
           const imageUrlMobile = this.config.getSettings('frontpageConfig.portraitImageUrlInMobileMode');
@@ -148,10 +150,6 @@ export class HomePage {
       }
       this.events.publish('title-logo:setTitle', this.config.getSettings('app.page-title.' + lang));
     });
-  }
-
-  ionViewDidLoad() {
-    console.log('mobile mode? ', this.userSettingsService.isMobile());
   }
 
   getMdContent(fileID: string) {
