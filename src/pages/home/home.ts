@@ -66,7 +66,7 @@ export class HomePage {
     try {
       this.titleOnImage = this.config.getSettings('frontpageConfig.siteTitleOnTopOfImageInPortraitInMobileMode');
     } catch (e) {
-      this.titleOnImage = true;
+      this.titleOnImage = false;
     }
     try {
       this.portraitImageAltText = this.config.getSettings('frontpageConfig.portraitImageAltText');
