@@ -58,6 +58,14 @@ home-page {
 		margin: 0 auto 3rem auto;
 	}
 
+	@media only screen and (min-width: 1550px) {
+		.portrait-mode .text-content .front-page-edition-list [col-xxl-2] {
+			flex: 0 0 33.33%;
+			width: 33.33%;
+			max-width: 33.33%;
+		}
+	}
+
 	.text-content .footer {
 		text-align: center;
 		width: 100%;
@@ -93,20 +101,6 @@ home-page {
 		max-width: 1000px;
 		margin-top: 0;
 	}
-
-	/*
-	.portrait-mode .text-content .front-page-simple-search {
-		order: 1;
-	}
-
-	.portrait-mode .text-content .front-page-edition-list {
-		order: 2;
-	}
-
-	.portrait-mode .text-content .footer {
-		order: 3;
-	}
-	*/
 
 	.portrait-mode .site-title,
 	.portrait-mode .site-subtitle {
