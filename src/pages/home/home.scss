@@ -129,7 +129,7 @@ home-page {
 		font-family: $font-family-header;
 		font-size: 2.5em;
 		font-weight: normal;
-		line-height: 1.5;
+		line-height: 1.25;
 		text-align: left;
 		color: #000;
 		padding: 0 0 0.5rem 0;
@@ -138,17 +138,13 @@ home-page {
 	.portrait-mode .site-subtitle {
 		font-size: 1.75em;
 		font-style: italic;
-		margin-top: -1.5rem;
+		margin-top: -1.25rem;
 	}
 
 	.site-presentation {
 		text-align: center;
 		max-width: 1000px;
 		margin: 0 auto 3rem auto;
-	}
-
-	.site-presentation p:first-of-type {
-		margin-top: 0;
 	}
 
 	.portrait-mode .site-presentation {
@@ -203,6 +199,7 @@ home-page {
 		}
 		.portrait-mode .text-content .site-title {
 			font-size: 1.75em;
+			margin-top: 0.5rem;
 		}
 		.portrait-mode .text-content .site-subtitle {
 			font-size: 1.35em;
