@@ -56,7 +56,7 @@ export class HomePage {
     try {
       this.imageOrientationPortrait = this.config.getSettings('frontpageConfig.imageOrientationIsPortrait');
     } catch (e) {
-      this.imageOrientationPortrait = true;
+      this.imageOrientationPortrait = false;
     }
     try {
       this.imageOnRight = this.config.getSettings('frontpageConfig.imageOnRightIfPortrait');
@@ -71,12 +71,12 @@ export class HomePage {
     try {
       this.portraitImageAltText = this.config.getSettings('frontpageConfig.portraitImageAltText');
     } catch (e) {
-      this.portraitImageAltText = 'front-image';
+      this.portraitImageAltText = 'front image';
     }
     try {
       this.showSimpleSearch = this.config.getSettings('frontpageConfig.showSimpleSearch');
     } catch (e) {
-      this.showSimpleSearch = true;
+      this.showSimpleSearch = false;
     }
     try {
       this.showEditionList = this.config.getSettings('frontpageConfig.showEditionList');
@@ -86,18 +86,16 @@ export class HomePage {
     try {
       this.showFooter = this.config.getSettings('frontpageConfig.showFooter');
     } catch (e) {
-      this.showFooter = true;
+      this.showFooter = false;
     }
     try {
       this.imageUrl = this.config.getSettings('frontpageConfig.imageUrl');
     } catch (e) {
-      // this.imageUrl = 'assets/images/frontpage-image-landscape.jpg';
-      this.imageUrl = 'assets/images/frontpage-image-portrait.jpg';
+      this.imageUrl = 'assets/images/frontpage-image-landscape.jpg';
     }
 
     // Get viewport width
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    console.log('viewport width: ', vw);
 
     // Change front page image if viewport size max 900px and the image orientation is set to portrait
     if (vw <= 900 && this.imageOrientationPortrait) {
@@ -107,8 +105,6 @@ export class HomePage {
           this.imageUrl = imageUrlMobile;
         }
       } catch (e) {
-        // Remove this when done testing!
-        this.imageUrl = 'assets/images/frontpage-image-square.jpg';
       }
     }
 
