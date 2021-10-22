@@ -81,7 +81,7 @@ export class HomePage {
     try {
       this.showEditionList = this.config.getSettings('frontpageConfig.showEditionList');
     } catch (e) {
-      this.showEditionList = true;
+      this.showEditionList = false;
     }
     try {
       this.showFooter = this.config.getSettings('frontpageConfig.showFooter');
