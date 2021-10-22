@@ -59,12 +59,12 @@ export class HomePage {
       this.imageOrientationPortrait = true;
     }
     try {
-      this.imageOnRight = this.config.getSettings('frontpageConfig.imageOnRightInPortrait');
+      this.imageOnRight = this.config.getSettings('frontpageConfig.imageOnRightIfPortrait');
     } catch (e) {
       this.imageOnRight = false;
     }
     try {
-      this.titleOnImage = this.config.getSettings('frontpageConfig.siteTitleOnTopOfImageInPortraitInMobileMode');
+      this.titleOnImage = this.config.getSettings('frontpageConfig.siteTitleOnTopOfImageInMobileModeIfPortrait');
     } catch (e) {
       this.titleOnImage = false;
     }
@@ -108,7 +108,7 @@ export class HomePage {
         }
       } catch (e) {
         // Remove this when done testing!
-        // this.imageUrl = 'assets/images/frontpage-image-square.jpg';
+        this.imageUrl = 'assets/images/frontpage-image-square.jpg';
       }
     }
 
