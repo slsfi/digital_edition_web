@@ -53,8 +53,7 @@ home-page {
 		background-color: $background-color;
 		opacity: 0.8;
 		padding: 0 1rem;
-		margin-left: 1rem;
-		margin-right: 1rem;
+		margin: 1.2rem 1rem 1rem 1rem;
 	}
 
 	.banner-subtitle {
@@ -146,6 +145,8 @@ home-page {
 		text-align: left;
 		color: #000;
 		padding: 0 0 0.5rem 0;
+		margin-top: 1.2rem;
+		margin-bottom: 1rem;
 	}
 
 	.portrait-mode .site-subtitle {
