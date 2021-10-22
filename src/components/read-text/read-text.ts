@@ -238,13 +238,22 @@ export class ReadTextComponent {
 
       /* CLICK EVENTS */
       this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
-        event.preventDefault();
         try {
+          const eventTarget = event.target as HTMLElement;
+          // some of the texts e.g. ordsprak.sls.fi links to external sites
+          if ( eventTarget.hasAttribute('href') === true && eventTarget.getAttribute('href').includes('http') === false ) {
+            event.preventDefault();
+          }
           if (this.config.getSettings('settings.showReadTextIllustrations')) {
             const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
-            const eventTarget = event.target as HTMLElement;
+
             if (eventTarget.classList.contains('doodle')) {
               const image = {src: '/assets/images/verk/' + String(eventTarget.dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
+              if ( document.querySelector('illustrations') === null ) {
+                this.ngZone.run(() => {
+                  this.openNewView(event, null, 'illustrations');
+                });
+              }
               this.ngZone.run(() => {
                 this.events.publish('give:illustration', image);
               });
