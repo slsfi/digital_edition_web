@@ -2,7 +2,7 @@
   <div class="banner" [class.image-on-right]="imageOnRight" [style.background-image]="imageUrlStyle">
     <div *ngIf="!imageOrientationPortrait || titleOnImage" class="title-wrapper">
       <h1 class="banner-title">{{appName}}</h1>
-      <h3 *ngIf="appSubtitle" class="banner-subtitle">{{appSubtitle}}</h3>
+      <p *ngIf="appSubtitle" role="doc-subtitle" class="banner-subtitle">{{appSubtitle}}</p>
     </div>
     <img *ngIf="imageOrientationPortrait" [src]="imageUrl" [alt]="portraitImageAltText">
   </div>
@@ -10,7 +10,7 @@
   <div class="text-content">
     <div *ngIf="imageOrientationPortrait" class="title-wrapper">
       <h1 class="site-title">{{appName}}</h1>
-      <h3 *ngIf="appSubtitle" class="site-subtitle">{{appSubtitle}}</h3>
+      <p *ngIf="appSubtitle" role="doc-subtitle" class="site-subtitle">{{appSubtitle}}</p>
     </div>
 
     <div *ngIf="showSimpleSearch" class="front-page-simple-search">
