@@ -1,13 +1,26 @@
 home-page {
 
-	/* This hides the vertical scrollbar on the right edge of the viewport area when it is not necessary to show it. Observe that there are two elements with class scroll-content, which is why this needs to be this specific. */
 	ion-content > .scroll-content {
 		overflow: auto;
 		display: flex;
 		flex-direction: column;
 	}
+
 	ion-content.portrait-mode > .scroll-content {
 		flex-direction: row;
+	}
+
+	h1 {
+		text-transform: none;
+	}
+
+	h2 {
+		font-size: 1.6rem;
+		margin-top: 0;
+	}
+
+	p {
+		line-height: 1.8rem;
 	}
 
 	.banner {
@@ -55,39 +68,25 @@ home-page {
 		flex-direction: column;
 		margin: 1.5rem 3rem 0 3rem;
 	}
+	
+	.text-content .front-page-simple-search {
+		margin: 1.5rem auto 1.5rem auto;
+		width: 100%;
+		max-width: 800px;
+	}
+
+	.text-content .site-presentation {
+		text-align: center;
+		max-width: 1000px;
+		margin: 0 auto 3rem auto;
+	}
 
 	.text-content .front-page-edition-list {
 		margin: 0 auto 3rem auto;
 	}
+
 	.text-content .front-page-edition-list .grid-mobile {
 		padding: 0;
-	}
-
-	/* Override the number of columns in the edition list to 1, 2 or max 3 based on screen width in portrait mode.
-	   Both [col-xxl-3] and [col-xl-3] are needed as selectors as one is for desktop, the other tablet. */
-	@media only screen and (min-width: 0) {
-		.portrait-mode .text-content .front-page-edition-list [col-xxl-3],
-		.portrait-mode .text-content .front-page-edition-list [col-xl-3] {
-			flex: 0 0 100%;
-			width: 100%;
-			max-width: 100%;
-		}
-	}
-	@media only screen and (min-width: 992px) {
-		.portrait-mode .text-content .front-page-edition-list [col-xxl-3],
-		.portrait-mode .text-content .front-page-edition-list [col-xl-3] {
-			flex: 0 0 50%;
-			width: 50%;
-			max-width: 50%;
-		}
-	}
-	@media only screen and (min-width: 1550px) {
-		.portrait-mode .text-content .front-page-edition-list [col-xxl-3],
-		.portrait-mode .text-content .front-page-edition-list [col-xl-3] {
-			flex: 0 0 33.33333%;
-			width: 33.33333%;
-			max-width: 33.33333%;
-		}
 	}
 
 	.text-content .footer {
@@ -124,6 +123,19 @@ home-page {
 	.portrait-mode .text-content {
 		max-width: 1000px;
 	}
+	
+	.portrait-mode .text-content .front-page-simple-search {
+		margin-left: 0;
+	}
+
+	.portrait-mode .text-content .front-page-simple-search ion-grid.grid {
+		padding: 0;
+	}
+
+	.portrait-mode .text-content .site-presentation {
+		text-align: left;
+		margin: 0 0 3rem 0;
+	}
 
 	.portrait-mode .site-title,
 	.portrait-mode .site-subtitle {
@@ -142,51 +154,61 @@ home-page {
 		margin-top: -1.25rem;
 	}
 
-	.site-presentation {
-		text-align: center;
-		max-width: 1000px;
-		margin: 0 auto 3rem auto;
-	}
-
-	.portrait-mode .site-presentation {
-		text-align: left;
-		margin: 0 0 3rem 0;
-	}
-
 	.portrait-mode .text-content .footer {
 		margin-left: 0;
 		margin-right: 0;
 		text-align: left;
 	}
 
-	.front-page-simple-search {
-		margin: 1.5rem auto 1.5rem auto;
-		width: 100%;
-		max-width: 800px;
-	}
-
-	.portrait-mode .front-page-simple-search {
-		margin-left: 0;
-
-		simple-search ion-grid.grid {
-			padding: 0;
+	/* Override the number of columns in the edition list to 1, 2 or max 3 
+	 based on screen width in portrait mode. Both [col-xxl-3] and [col-xl-3] 
+	 are needed as selectors as one is for desktop, the other tablet. */
+	@media only screen and (min-width: 0) {
+		.portrait-mode .text-content .front-page-edition-list [col-xxl-3],
+		.portrait-mode .text-content .front-page-edition-list [col-xl-3] {
+			flex: 0 0 100%;
+			width: 100%;
+			max-width: 100%;
 		}
 	}
+
+	@media only screen and (min-width: 992px) {
+		.portrait-mode .text-content .front-page-edition-list [col-xxl-3],
+		.portrait-mode .text-content .front-page-edition-list [col-xl-3] {
+			flex: 0 0 50%;
+			width: 50%;
+			max-width: 50%;
+		}
+	}
+
+	@media only screen and (min-width: 1550px) {
+		.portrait-mode .text-content .front-page-edition-list [col-xxl-3],
+		.portrait-mode .text-content .front-page-edition-list [col-xl-3] {
+			flex: 0 0 33.33333%;
+			width: 33.33333%;
+			max-width: 33.33333%;
+		}
+	}
+
+	/* The following rules are adjustments for small screens. */
 
 	@media only screen and (max-width: 1180px) {
 		.portrait-mode .banner {
 			min-width: 280px;
 		}
 	}
+
 	@media only screen and (max-width: 985px) {
 		.portrait-mode .banner {
 			min-width: 240px;
 		}
 	}
+
 	@media only screen and (max-width: 900px) {
 		ion-content.portrait-mode > .scroll-content {
 			flex-direction: column;
 		}
+
 		.portrait-mode .banner {
 			order: 0;
 			height: auto;
@@ -194,40 +216,49 @@ home-page {
 			width: 100%;
 			min-width: 100%;
 		}
+
 		.portrait-mode.title-on-image .banner .title-wrapper {
 			position: absolute;
 			width: max-content;
 			max-width: 100%;
 		}
+
 		.portrait-mode.title-on-image .text-content .title-wrapper {
 			display: none;
 		}
+
 		.portrait-mode .text-content {
 			order: 1;
 			margin: 1.5rem 1.5rem 0 1.5rem;
 		}
+
 		.portrait-mode .text-content .site-title {
 			font-size: 1.75em;
 			margin-top: 0.5rem;
 		}
+
 		.portrait-mode .text-content .site-subtitle {
 			font-size: 1.35em;
 		}
-		.portrait-mode .front-page-simple-search {
+
+		.portrait-mode .text-content .front-page-simple-search {
 			max-width: 100%;
 		}
 	}
+
 	@media only screen and (max-width: 680px) {
 		.text-content {
 			margin: 1.5rem 1.5rem 0 1.5rem;
 		}
 	}
+
 	@media only screen and (min-width: 901px) {
 		.portrait-mode.title-on-image .banner .title-wrapper {
 			display: none;
 		}
 	}
 
+	/*The rules below are old and apparently not applied at all. */
 
 	.scroll-content .content.content-md {
 		display: none;
@@ -236,7 +267,6 @@ home-page {
 	.background {
 		width: 100%;
 		height: auto;
-
 		img {
 			width: 100%;
 		}
@@ -252,19 +282,6 @@ home-page {
 
 	.foreground {
 		border-bottom: 5px solid $orange-color;
-	}
-
-	h1 {
-		text-transform: none;
-	}
-
-	h2 {
-		font-size: 1.6rem;
-		margin-top: 0;
-	}
-
-	p {
-		line-height: 1.8rem;
 	}
 
 	.toolbar-ios ion-title {
