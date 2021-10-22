@@ -76,12 +76,12 @@ export class HomePage {
     try {
       this.showSimpleSearch = this.config.getSettings('frontpageConfig.showSimpleSearch');
     } catch (e) {
-      this.showSimpleSearch = false;
+      this.showSimpleSearch = true;
     }
     try {
       this.showEditionList = this.config.getSettings('frontpageConfig.showEditionList');
     } catch (e) {
-      this.showEditionList = false;
+      this.showEditionList = true;
     }
     try {
       this.showFooter = this.config.getSettings('frontpageConfig.showFooter');
@@ -99,6 +99,7 @@ export class HomePage {
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     console.log('viewport width: ', vw);
 
+    // Change front page image if viewport size max 900px and the image orientation is set to portrait
     if (vw <= 900 && this.imageOrientationPortrait) {
       try {
         const imageUrlMobile = this.config.getSettings('frontpageConfig.portraitImageUrlInMobileMode');
