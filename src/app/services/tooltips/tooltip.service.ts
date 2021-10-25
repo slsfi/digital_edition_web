@@ -96,7 +96,7 @@ export class TooltipService {
           const doc = range.createContextualFragment(data);
           const element = doc.querySelector('.' + elementId);
           const formatedCommentData = element.innerHTML.replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiComment $1\"')
-                .replace(/(&lt;)/g, '<').replace(/(teiComment teiComment )/g, 'teiComment ').replace(/(&gt;)/g, '>');
+                .replace(/(teiComment teiComment )/g, 'teiComment ').replace(/(&lt;)/g, '<').replace(/(&gt;)/g, '>');
 
           return {
             'name': 'Comment',
