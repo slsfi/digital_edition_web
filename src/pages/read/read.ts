@@ -741,8 +741,13 @@ export class ReadPage /*implements OnDestroy*/ {
     const defaultReadModes: any = this.config.getSettings('defaults.ReadModeView');
     if (defaultReadModes !== undefined && defaultReadModes.length > 0) {
       if (defaultReadModes instanceof Array) {
+        let defaultReadModeForMobileSelected = false;
         defaultReadModes.forEach(function (val) {
-          this.show = val;
+          if (!defaultReadModeForMobileSelected && this.displayToggles[val]) {
+            /* Sets the default view on mobile to the first default read mode view which is available. */
+            this.show = val;
+            defaultReadModeForMobileSelected = true;
+          }
           this.addView(val);
         }.bind(this));
       } else {
@@ -750,6 +755,7 @@ export class ReadPage /*implements OnDestroy*/ {
         this.addView(defaultReadModes);
       }
     } else {
+      this.show = 'established';
       this.addView('established');
     }
   }

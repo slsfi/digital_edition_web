@@ -1,16 +1,18 @@
 <div *ngIf="layoutType == 'auto'">
   <ion-grid *ngIf="userSettingsService.isDesktop() && !userSettingsService.isTablet()">
     <ion-row>
-      <ion-col style="display: flex;justify-content: center;" *ngFor="let edition of digitalEditions" menuClose
-        col-md-6 col-lg-4 col-xl-3 (click)="openCollection(edition, false)">
+      <ion-col style="display: flex; justify-content: center;" *ngFor="let edition of digitalEditions" menuClose
+      col-sm-12 col-md-6 col-xl-4 col-xxl-3 col-xxxl-2 (click)="openCollection(edition, false)">
         <ion-card class="digital-edition"
           style="padding: 20px; position: relative; background-color: white;">
           <ion-card-header class="digital-edition-list-card-header">
             <img
               src="{{editionImages[edition.id] ? (editionImages[edition.id]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
-            <ion-icon class="download" *ngIf="edition.isDownload" name="cloud-download">
+            <ion-icon class="download" *ngIf="edition.isDownload" name="download">
             </ion-icon>
+            <!--
             <ion-icon class="download" *ngIf="!edition.isDownload" name="book"></ion-icon>
+            -->
           </ion-card-header>
           <ion-card-content class="digital-edition-list-card-content">
             <div style="background-color: white; text-align: center;">
@@ -28,15 +30,17 @@
 
   <ion-grid *ngIf="userSettingsService.isTablet()">
     <ion-row>
-      <ion-col style="display: flex;justify-content: center;" *ngFor="let edition of digitalEditions" menuClose
+      <ion-col style="display: flex; justify-content: center;" *ngFor="let edition of digitalEditions" menuClose
         col-sm-6 col-lg-4 col-xl-3 (click)="openCollection(edition, false)">
         <ion-card class="digital-edition"
           style="padding: 20px; position: relative; background-color: white;">
           <ion-card-header class="digital-edition-list-card-header">
             <img
               src="{{editionImages[edition.id] ? (editionImages[edition.id]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
+            <!--
             <ion-icon class="download" *ngIf="!edition.isDownload" name="book"></ion-icon>
-            <ion-icon class="download" *ngIf="edition.isDownload" name="cloud-download">
+            -->
+            <ion-icon class="download" *ngIf="edition.isDownload" name="download">
             </ion-icon>
           </ion-card-header>
           <ion-card-content class="digital-edition-list-card-content">
@@ -60,9 +64,11 @@
             <ion-thumbnail item-left>
               <img
                 src="{{editionImages[edition.id] ? (editionImages[edition.id]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
+              <!--
               <ion-icon class="download" *ngIf="!edition.isDownload" name="book"></ion-icon>
+              -->
               <ion-icon class="download" *ngIf="edition.isDownload"
-                name="cloud-download"></ion-icon>
+                name="download"></ion-icon>
             </ion-thumbnail>
             <h2>{{ ('TOC-translation.' + edition.title | translate) !== 'TOC-translation.' + edition.title  ?  ('TOC-translation.' + edition.title | translate) : edition.title }}</h2>
             <div class="book_download_container">
@@ -86,8 +92,10 @@
           <ion-card-header class="digital-edition-list-card-header">
             <img
               src="{{editionImages[edition.id] ? (editionImages[editionid]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
+            <!--
             <ion-icon class="download" *ngIf="!edition.isDownload" name="book"></ion-icon>
-            <ion-icon class="download" *ngIf="edition.isDownload" name="cloud-download">
+            -->
+            <ion-icon class="download" *ngIf="edition.isDownload" name="download">
             </ion-icon>
           </ion-card-header>
           <ion-card-content class="digital-edition-list-card-content">
@@ -115,9 +123,11 @@
             <ion-thumbnail item-left>
               <img
                 src="{{editionImages[edition.id] ? (editionImages[edition.id]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
+              <!--
               <ion-icon class="download" *ngIf="!edition.isDownload" name="book"></ion-icon>
+              -->
               <ion-icon class="download" *ngIf="edition.isDownload"
-                name="cloud-download"></ion-icon>
+                name="download"></ion-icon>
             </ion-thumbnail>
             <h2>{{ ('TOC-translation.' + edition.title | translate) !== 'TOC-translation.' + edition.title  ?  ('TOC-translation.' + edition.title | translate) : edition.title }}</h2>
             <div class="book_download_container">
@@ -133,9 +143,11 @@
             <ion-thumbnail item-left>
               <img
                 src="{{editionImages[edition.id] ? (editionImages[edition.id]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
+              <!--
               <ion-icon class="download" *ngIf="!edition.isDownload" name="book"></ion-icon>
+              -->
               <ion-icon class="download" *ngIf="edition.isDownload"
-                name="cloud-download"></ion-icon>
+                name="download"></ion-icon>
             </ion-thumbnail>
             <h2>{{ ('TOC-translation.' + edition.title | translate) !== 'TOC-translation.' + edition.title  ?  ('TOC-translation.' + edition.title | translate) : edition.title }}</h2>
             <div class="book_download_container">
@@ -153,9 +165,11 @@
             <ion-thumbnail item-left>
               <img
                 src="{{editionImages[edition.id] ? (editionImages[edition.id]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
+              <!--
               <ion-icon class="download" *ngIf="!edition.isDownload" name="book"></ion-icon>
+              -->
               <ion-icon class="download" *ngIf="edition.isDownload"
-                name="cloud-download"></ion-icon>
+                name="download"></ion-icon>
             </ion-thumbnail>
             <h2>{{ ('TOC-translation.' + edition.title | translate) !== 'TOC-translation.' + edition.title  ?  ('TOC-translation.' + edition.title | translate) : edition.title }}</h2>
            <div class="book_download_container">

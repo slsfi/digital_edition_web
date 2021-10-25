@@ -61,6 +61,18 @@ $tabs-tab-color-inactive:     #fff;
 $fab-content-margin:            0;
 
 
+// Customize the grid breakpoints: added xxl and xxxl breakpoints to the default values
+$grid-breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1550px,
+    xxxl: 2050px
+);
+
+
 
 // App iOS Variables
 // --------------------------------------------------

@@ -26,6 +26,15 @@ export class HomePage {
   appMachineName: string;
   homeContent: string;
   homeFooterContent: string;
+  imageOrientationPortrait: Boolean = false;
+  imageOnRight: Boolean = false;
+  titleOnImage: Boolean = false;
+  showSimpleSearch: Boolean = false;
+  showEditionList: Boolean = false;
+  showFooter: Boolean = false;
+  imageUrl = '';
+  imageUrlStyle = '';
+  portraitImageAltText = '';
   errorMessage: string;
   initLanguage: string;
 
@@ -35,12 +44,71 @@ export class HomePage {
     public translate: TranslateService,
     public languageService: LanguageService,
     private events: Events,
+    private platform: Platform,
     private mdContentService: MdContentService,
     private userSettingsService: UserSettingsService,
     private navParams: NavParams
   ) {
     this.appMachineName = this.config.getSettings('app.machineName');
     this.userSettingsService.temporarilyHideSplitPane();
+
+    // Get config for front page image and text content
+    try {
+      this.imageOrientationPortrait = this.config.getSettings('frontpageConfig.imageOrientationIsPortrait');
+    } catch (e) {
+      this.imageOrientationPortrait = false;
+    }
+    try {
+      this.imageOnRight = this.config.getSettings('frontpageConfig.imageOnRightIfPortrait');
+    } catch (e) {
+      this.imageOnRight = false;
+    }
+    try {
+      this.titleOnImage = this.config.getSettings('frontpageConfig.siteTitleOnTopOfImageInMobileModeIfPortrait');
+    } catch (e) {
+      this.titleOnImage = false;
+    }
+    try {
+      this.portraitImageAltText = this.config.getSettings('frontpageConfig.portraitImageAltText');
+    } catch (e) {
+      this.portraitImageAltText = 'front image';
+    }
+    try {
+      this.showSimpleSearch = this.config.getSettings('frontpageConfig.showSimpleSearch');
+    } catch (e) {
+      this.showSimpleSearch = false;
+    }
+    try {
+      this.showEditionList = this.config.getSettings('frontpageConfig.showEditionList');
+    } catch (e) {
+      this.showEditionList = false;
+    }
+    try {
+      this.showFooter = this.config.getSettings('frontpageConfig.showFooter');
+    } catch (e) {
+      this.showFooter = false;
+    }
+    try {
+      this.imageUrl = this.config.getSettings('frontpageConfig.imageUrl');
+    } catch (e) {
+      this.imageUrl = 'assets/images/frontpage-image-landscape.jpg';
+    }
+
+    // Get viewport width
+    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+
+    // Change front page image if viewport size max 900px and the image orientation is set to portrait
+    if (vw <= 900 && this.imageOrientationPortrait) {
+      try {
+        const imageUrlMobile = this.config.getSettings('frontpageConfig.portraitImageUrlInMobileMode');
+        if (imageUrlMobile !== '' && imageUrlMobile !== undefined && imageUrlMobile !== null) {
+          this.imageUrl = imageUrlMobile;
+        }
+      } catch (e) {
+      }
+    }
+
+    this.imageUrlStyle = `url(${this.imageUrl})`;
 
     this.events.subscribe('language:change', () => {
       this.languageService.getLanguage().subscribe((lang) => {

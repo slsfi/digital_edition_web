@@ -133,7 +133,7 @@ $opacity-hover-transition: opacity 0.2s;
     --#{$key_name}-color: #{$value};
   }
 
-  --background-color:              #ecebe4;
+  --main-background-color:              #ecebe4;
 
   --persName-color:                #f9e0bf;
   --persName-color-rgb:              249, 224, 191;
@@ -234,10 +234,6 @@ div.md_content markdown td {
 /* ??? */
 ion-list-header ion-label {
   text-transform: unset;
-}
-
-.front-page-simple-search {
-  display: none;
 }
 
 h1.mainH1Header {
