@@ -2609,13 +2609,18 @@ export class ReadPage /*implements OnDestroy*/ {
 
   addView(type: string, id?: string, fab?: FabContainer, external?: boolean) {
     if (fab !== undefined) {
-      fab.close();
+      try{
+        fab.close();
+      } catch (e) {
+
+      }
     }
     if (external === true) {
       this.external = id;
     } else {
       this.external = null;
     }
+
     if (this.availableViewModes.indexOf(type) !== -1) {
       this.views.push({
         content: `This is an upcoming ${type} view`,

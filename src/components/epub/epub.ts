@@ -97,24 +97,26 @@ export class EpubComponent {
 
   doSearch(q): Promise<any> {
     const search = String(this.searchText);
-    const _book = this.book;
-    this.searchResultIndex = 0;
-    this.searchResults = [];
-    return Promise.all(
-      _book.spine.spineItems.map(item =>
-        item
-        .load(_book.load.bind(_book))
-        .then(item.find.bind(item, search))
-      )
-    ).then(results =>
-      Promise.resolve(
-        this.searchResults = [].concat.apply([], results)
-      ).then( () => {
-        this.nextSearch(true);
-        }
-      )
+    if( search.length > 0 ) {
+      const _book = this.book;
+      this.searchResultIndex = 0;
+      this.searchResults = [];
+      return Promise.all(
+        _book.spine.spineItems.map(item =>
+          item
+          .load(_book.load.bind(_book))
+          .then(item.find.bind(item, search))
+        )
+      ).then(results =>
+        Promise.resolve(
+          this.searchResults = [].concat.apply([], results)
+        ).then( () => {
+          this.nextSearch(true);
+          }
+        )
 
-    );
+      );
+    }
   };
 
   applyHighlight(cfiRange) {
@@ -127,9 +129,10 @@ export class EpubComponent {
     this.currentHighlight = cfiRange;
   }
 
-  nextSearch(forward?: boolean) {
-    if ( forward === undefined && this.searchResultIndex !== 0 ) {
-      this.searchResultIndex--;
+  nextSearch( first?: boolean ) {
+    console.log(this.searchResultIndex);
+    if ( this.searchResultIndex < (this.searchResults.length - 1) && first === undefined ) {
+      this.searchResultIndex++;
     }
     if ( this.searchResults !== undefined ) {
       const res = this.searchResults[this.searchResultIndex];
@@ -141,8 +144,23 @@ export class EpubComponent {
         }
       }
     }
-    if ( forward === true && this.searchResultIndex < (this.searchResults.length - 1) ) {
-      this.searchResultIndex++;
+    console.log(this.searchResultIndex);
+  }
+
+  prevSearch() {
+    if( this.searchResultIndex !== 0 ) {
+      this.searchResultIndex--;
+    }
+    if ( this.searchResults !== undefined ) {
+
+      const res = this.searchResults[this.searchResultIndex];
+      if ( res !== undefined && res['cfi'] !== undefined ) {
+        const url = res['cfi'];
+        if (  url !== undefined ) {
+          this.openChapter(url);
+          this.applyHighlight(url);
+        }
+      }
     }
   }
 

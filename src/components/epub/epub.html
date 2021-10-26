@@ -57,14 +57,22 @@
     <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
       <ion-col class="navigation-buttons-col">
         <button ion-button clear class="navigation-buttons" title="prev button">
-          <div id="toc_menu" (click)="nextSearch()" *ngIf="!loading">
+          <div id="toc_menu" (click)="prevSearch()" *ngIf="!loading">
             <ion-icon name="arrow-back"></ion-icon>
           </div>
         </button>
       </ion-col>
-      <ion-col class="navigation-buttons-col right">
+      <ion-col class="navigation-buttons-col">
         <button ion-button clear class="navigation-buttons" title="prev button">
-        <div id="toc_menu" (click)="nextSearch(true)" *ngIf="!loading">
+          <div id="toc_menu" *ngIf="!loading">
+            <p *ngIf="searchResultIndex === 0 && searchResults.length>0">1 / {{searchResults.length}}</p>
+            <p *ngIf="searchResultIndex > 0">{{searchResultIndex + 1}} / {{searchResults.length}}</p>
+          </div>
+        </button>
+      </ion-col>
+      <ion-col class="navigation-buttons-col right">
+        <button ion-button clear class="navigation-buttons" title="next button">
+        <div id="toc_menu" (click)="nextSearch()" *ngIf="!loading">
           <ion-icon name="arrow-forward"></ion-icon>
         </div>
         </button>
