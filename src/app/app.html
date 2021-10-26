@@ -35,7 +35,7 @@
                         <ion-icon [class.rotate]="simpleAccordionsExpanded.epubs" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>
                         <p>{{"TOC.EPUBS" | translate }}</p>
                     </ion-item>
-                    <ion-item class="header" *ngIf="epubNames.length == 1" (click)="openPage('epub', null, availableEpubs[epubNames[0]])" tappable>
+                    <ion-item class="header" *ngIf="epubNames.length == 1" (click)="openPage('epub', null, availableEpubs[epubNames[0]]['filename'])" tappable>
                       <p>
                           {{epubNames[0] | translate }}
                       </p>
@@ -43,7 +43,7 @@
                     <div [style.height]="simpleAccordionsExpanded.epubs ? '100%' : '0px'" class="simple-accordion-options options" *ngIf="epubNames.length > 1">
                       <ng-container *ngFor="let name of epubNames" >
                         <ion-list class="accordion-menu">
-                          <ion-item class="mainMenuItem" ion-item menuClose detail-push (click)="openPage('epub', null, availableEpubs[name])">
+                          <ion-item class="mainMenuItem" ion-item menuClose detail-push (click)="openPage('epub', null, availableEpubs[name]['filename'])">
                               <p>
                                   {{name | translate }}
                               </p>

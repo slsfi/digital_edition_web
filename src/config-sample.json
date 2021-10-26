@@ -530,6 +530,9 @@
       }
     },
     "AvailableEpubs": {
-      "Dagböcker": "2685.epub"
+      "Dagböcker": {
+        "filename": "NY_soderholm_dagbocker.epub",
+        "download": "https://www.sls.fi/sv/utgivning/kerstin-soderholms-dagbocker"
+      }
     }
 }

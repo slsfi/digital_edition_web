@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input } from '@angular/core';
+import { ConfigService } from '@ngx-config/core';
 import {} from 'fs';
 import { PopoverController } from 'ionic-angular';
 import { MdContentService } from '../../app/services/md/md-content.service';
@@ -37,15 +38,19 @@ export class EpubComponent {
   searchResultIndex: number;
   currentHighlight: any;
 
-  @Input() epubFileName?: String;
+  @Input() epubFileName?: string;
 
   public tocMenuOpen: boolean;
   public searchMenuOpen: boolean;
 
+  public availableEpubs: object;
+  public downloadURL: any;
+
   constructor( private userSettingsService: UserSettingsService,
     public mdContentService: MdContentService,
     protected popoverCtrl: PopoverController,
-    public readPopoverService: ReadPopoverService ) {
+    public readPopoverService: ReadPopoverService,
+    private config: ConfigService ) {
     this.tocMenuOpen = false;
     this.searchMenuOpen = false;
     this.loading = true;
@@ -93,6 +98,18 @@ export class EpubComponent {
           break;
       }
     });
+
+    try {
+      this.availableEpubs = this.config.getSettings('AvailableEpubs');
+      for( const epub in this.availableEpubs ) {
+        if( this.availableEpubs[epub]['filename'] === this.epubFileName ) {
+          this.downloadURL = this.availableEpubs[epub]['download'];
+        }
+      }
+
+    } catch (e) {
+      this.availableEpubs = [];
+    }
   }
 
   doSearch(q): Promise<any> {
@@ -300,5 +317,9 @@ export class EpubComponent {
       }*/
 
     } )
+  }
+
+  downloadEpub() {
+    const ref = window.open(this.downloadURL, '_blank');
   }
 }
