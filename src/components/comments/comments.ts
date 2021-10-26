@@ -84,6 +84,7 @@ export class CommentsComponent {
           this.text = this.sanitizer.bypassSecurityTrustHtml (
             String(text).replace(/images\//g, 'assets/images/')
               .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiComment $1\"')
+              .replace(/(teiComment teiComment )/g, 'teiComment ')
               .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
           );
         }
