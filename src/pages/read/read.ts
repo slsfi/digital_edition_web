@@ -2609,7 +2609,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
   addView(type: string, id?: string, fab?: FabContainer, external?: boolean) {
     if (fab !== undefined) {
-      try{
+      try {
         fab.close();
       } catch (e) {
 
