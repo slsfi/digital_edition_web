@@ -60,6 +60,7 @@ export class FacsimilesComponent {
   facsPage: any;
   facsNumber = 0;
   facsimileDefaultZoomLevel = 1;
+  facsimileZoomPageLevel = 1;
   numberOfPages: number;
   chapter: string;
 
@@ -103,6 +104,13 @@ export class FacsimilesComponent {
     } catch (e) {
       this.facsimileDefaultZoomLevel = 1;
     }
+
+    try {
+      this.facsimileZoomPageLevel = this.config.getSettings('settings.facsimileZoomPageLevel');
+    } catch (e) {
+      this.facsimileZoomPageLevel = 1;
+    }
+
   }
 
   openNewFacs(event: Event, id: any) {
@@ -266,7 +274,7 @@ export class FacsimilesComponent {
             }
             const f_url = this.facsimileService.getFacsimileImage(f.publication_facsimile_collection_id, i, this.facsimileDefaultZoomLevel);
             facsimile.images.push(f_url);
-            const zf_url = this.facsimileService.getFacsimileImage(f.publication_facsimile_collection_id, i, 1);
+            const zf_url = this.facsimileService.getFacsimileImage(f.publication_facsimile_collection_id, i, this.facsimileZoomPageLevel);
             facsimile.zoomedImages.push(zf_url);
           }
           facsimile.itemId = this.itemId;
