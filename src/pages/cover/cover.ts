@@ -30,6 +30,8 @@ export class CoverPage {
 
   errorMessage: any;
   mdContent: string;
+  image_alt = '';
+  image_src = '';
   lang = 'sv';
   hasMDCover = false;
   hasDigitalEditionListChildren = false;
@@ -134,7 +136,18 @@ export class CoverPage {
   getMdContent(fileID: string) {
     this.mdContentService.getMdContent(fileID)
         .subscribe(
-            text => { this.mdContent = text.content; },
+            text => {
+              this.mdContent = text.content;
+              /* Extract image url and alt-text from markdown content. */
+              this.image_alt = this.mdContent.match(/!\[(.*?)\]\(.*?\)/)[1];
+              if (this.image_alt === null) {
+                this.image_alt = 'Cover image';
+              }
+              this.image_src = this.mdContent.match(/!\[.*?\]\((.*?)\)/)[1];
+              if (this.image_src === null) {
+                this.image_src = '';
+              }
+            },
             error =>  {this.errorMessage = <any>error}
         );
   }
@@ -173,6 +186,7 @@ export class CoverPage {
           );
         });
       } else {
+        /* Why is this here? The if below is never true since checking for !isNaN above. */
         if (isNaN(Number(this.id))) {
           this.langService.getLanguage().subscribe(lang => {
             const fileID = lang + '-08';
