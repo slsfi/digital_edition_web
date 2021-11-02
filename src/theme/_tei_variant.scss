@@ -1,13 +1,5 @@
 .teiVariant {
 
-    span.anchorScrollTarget {
-        cursor: pointer;
-    }
-    span.anchorScrollTarget img{
-        display: inline;
-        width: 0.9rem;
-    }
-
     p[class*="p"]{
         text-indent: 30px !important;
     }    
@@ -23,12 +15,26 @@
         font-variant: initial !important;
     }
 
+    img {
+        width: 0.9rem;
+        display: inline-block;
+    }
+
     &.variantScrollTarget {
         cursor: pointer;
     }
 
     &.variantScrollTarget.highlight {
         font-weight: bold;
+    }
+
+    &.anchorScrollTarget {
+        cursor: pointer;
+    }
+
+    &.var_margin {
+        position: absolute;
+        left: -1em;
     }
 }
 
