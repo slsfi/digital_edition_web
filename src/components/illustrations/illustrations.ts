@@ -22,9 +22,11 @@ export class IllustrationsComponent {
   illustrationsPath = 'assets/images/illustrations/2/';
   imgPath: any;
   images: Array<Object> = [];
+  imageCountTotal = 0;
   selectedImage: Array<string> = [];
-  viewAll = false;
+  viewAll = true;
   showOne = false;
+  textLoading: Boolean = true;
   apiEndPoint: string;
   projectMachineName: string;
   constructor(
@@ -89,13 +91,11 @@ export class IllustrationsComponent {
     });
   }
 
-  toggleViewAll() {
-    this.viewAll = !this.viewAll;
+  viewAllIllustrations() {
+    this.textLoading = true;
+    this.viewAll = true;
     this.showOne = false;
-
-    if (this.viewAll) {
-      this.getIllustrationImages();
-    }
+    this.getIllustrationImages();
   }
 
   zoomImage(image) {
@@ -109,31 +109,98 @@ export class IllustrationsComponent {
   }
 
   scrollToPositionInText(image) {
-    image = image.replace('http:', '');
-    const target = document.querySelector(`[src="${image}"]`);
-    target.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
+    let imageSrc = image.src;
+    let target = null as HTMLElement;
+    try {
+      if (image.class === 'doodle') {
+        const imageDataId = 'tag_' + imageSrc.replace('/assets/images/verk/', '').replace('.jpg', '');
+        target = document.querySelector(`img.doodle[data-id="${imageDataId}"]`) as HTMLElement;
+        if (target !== null && target.previousElementSibling !== null && target.previousElementSibling !== undefined) {
+          if (target.previousElementSibling.previousElementSibling !== null
+            && target.previousElementSibling.previousElementSibling !== undefined
+            && target.previousElementSibling.previousElementSibling.classList.contains('ttNormalisations')) {
+            // Change the scroll target from the doodle icon itself to the preceding word which the icon represents.
+            target = target.previousElementSibling.previousElementSibling as HTMLElement;
+          }
+        }
+      } else {
+        imageSrc = imageSrc.replace('http:', '');
+        target = document.querySelector(`[src="${imageSrc}"]`) as HTMLElement;
+      }
+
+      if (target !== null && target.parentElement !== null && target.parentElement !== undefined) {
+        // Prepend arrow to the image/icon in the reading text and scroll into view
+        const tmpImage: HTMLImageElement = new Image();
+        tmpImage.src = 'assets/images/ms_arrow_right.svg';
+        tmpImage.alt = 'ms arrow right image';
+        tmpImage.classList.add('inl_ms_arrow');
+        target.parentElement.insertBefore(tmpImage, target);
+        this.scrollElementIntoView(tmpImage);
+        setTimeout(function() {
+          target.parentElement.removeChild(tmpImage);
+        }, 5000);
+      }
+    } catch (e) {
+      console.log('Error scrolling to image position in text.');
+    }
   }
 
   private getIllustrationImages() {
     this.images = [];
-    this.textService.getEstablishedText(this.itemId).subscribe(text => {
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(text, 'text/html');
-      const images: any = xmlDoc.querySelectorAll('img.est_figure_graphic');
-      const doodles: any = xmlDoc.querySelectorAll('img.doodle');
-      for (let i = 0; i < images.length ; i++) {
-        const image = {src: images[i].src, class: 'illustration'};
-        this.images.push(image);
-      }
-      for (let i = 0; i < doodles.length ; i++) {
-        const image = {src: '/assets/images/verk/' + String(doodles[i].dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
-        console.log(image);
-        this.images.push(image);
-      }
-    });
+    this.textService.getEstablishedText(this.itemId).subscribe(
+      text => {
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(text, 'text/html');
+        const images: any = xmlDoc.querySelectorAll('img.est_figure_graphic');
+        const doodles: any = xmlDoc.querySelectorAll('img.doodle');
+        for (let i = 0; i < images.length ; i++) {
+          const image = {src: images[i].src, class: 'illustration'};
+          this.images.push(image);
+        }
+        for (let i = 0; i < doodles.length ; i++) {
+          const image = {src: '/assets/images/verk/' + String(doodles[i].dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
+          console.log(image);
+          this.images.push(image);
+        }
+        this.imageCountTotal = this.images.length;
+        this.textLoading = false;
+      },
+      error => { this.textLoading = false; }
+    );
   }
 
   doAnalytics() {
     this.analyticsService.doAnalyticsEvent('Illustration', 'Illustration', String(this.itemId));
+  }
+
+  /** This function can be used to scroll a container so that the element which it
+   *  contains is placed either at the top edge of the container or in the center
+   *  of the container. This function can be called multiple times simultaneously
+   *  on elements in different containers, unlike the native scrollIntoView function
+   *  which cannot be called multiple times simultaneously in Chrome due to a bug.
+   *  Valid values for yPosition are 'top' and 'center'. */
+   private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0) {
+    if (element === undefined || element === null || (yPosition !== 'center' && yPosition !== 'top')) {
+      return;
+    }
+    // Find the scrollable container of the element which is to be scrolled into view
+    let container = element.parentElement;
+    while (container !== null && container.parentElement !== null &&
+     !container.classList.contains('scroll-content')) {
+      container = container.parentElement;
+    }
+    if (container === null || container.parentElement === null) {
+      return;
+    }
+
+    const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
+    let baseOffset = 10;
+    if (yPosition === 'center') {
+      baseOffset = Math.floor(container.offsetHeight / 2);
+      if (baseOffset > 45) {
+        baseOffset = baseOffset - 45;
+      }
+    }
+    container.scrollTo({top: y - baseOffset - offset, behavior: 'smooth'});
   }
 }

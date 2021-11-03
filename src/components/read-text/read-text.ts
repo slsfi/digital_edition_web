@@ -261,29 +261,39 @@ export class ReadTextComponent {
             if ( showIllustration.includes(this.link.split('_')[1])) {
               if (eventTarget.classList.contains('est_figure_graphic')) {
                 // Check if we have the "illustrations" tab open, if not, open
+                const image = {src: event.target.src, class: 'illustration'};
                 if ( document.querySelector('illustrations') === null ) {
                   this.ngZone.run(() => {
                     this.openNewView(event, null, 'illustrations');
+                    // Wait for the DOM to get updated with the illustrations tab before publishing image
+                    setTimeout(function () {
+                      this.events.publish('give:illustration', image);
+                    }.bind(this), 1000);
+                  });
+                } else {
+                  this.ngZone.run(() => {
+                    this.events.publish('give:illustration', image);
                   });
                 }
-                const image = {src: event.target.src, class: 'illustration'};
-                this.ngZone.run(() => {
-                  this.events.publish('give:illustration', image);
-                });
               }
             } else {
               if (eventTarget.previousElementSibling !== null &&
                 eventTarget.previousElementSibling.classList.contains('est_figure_graphic')) {
                 // Check if we have the "illustrations" tab open, if not, open
+                const image = {src: event.target.previousElementSibling.src, class: 'illustration'};
                 if ( document.querySelector('illustrations') === null ) {
                   this.ngZone.run(() => {
                     this.openNewView(event, null, 'illustrations');
+                    // Wait for the DOM to get updated with the illustrations tab before publishing image
+                    setTimeout(function () {
+                      this.events.publish('give:illustration', image);
+                    }.bind(this), 1000);
+                  });
+                } else {
+                  this.ngZone.run(() => {
+                    this.events.publish('give:illustration', image);
                   });
                 }
-                const image = {src: event.target.previousElementSibling.src, class: 'illustration'};
-                this.ngZone.run(() => {
-                  this.events.publish('give:illustration', image);
-                });
               }
             }
           }
