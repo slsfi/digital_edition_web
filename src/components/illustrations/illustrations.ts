@@ -23,6 +23,7 @@ export class IllustrationsComponent {
   imgPath: any;
   images: Array<Object> = [];
   imageCountTotal = 0;
+  imagesCache: Array<Object> = [];
   selectedImage: Array<string> = [];
   viewAll = true;
   showOne = false;
@@ -92,10 +93,9 @@ export class IllustrationsComponent {
   }
 
   viewAllIllustrations() {
-    this.textLoading = true;
     this.viewAll = true;
     this.showOne = false;
-    this.getIllustrationImages();
+    this.images = this.imagesCache;
   }
 
   zoomImage(image) {
@@ -163,6 +163,7 @@ export class IllustrationsComponent {
           this.images.push(image);
         }
         this.imageCountTotal = this.images.length;
+        this.imagesCache = this.images;
         this.textLoading = false;
       },
       error => { this.textLoading = false; }
