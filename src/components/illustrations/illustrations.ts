@@ -39,7 +39,10 @@ export class IllustrationsComponent {
     private events: Events,
     public translate: TranslateService,
     private analyticsService: AnalyticsService
-  ) { }
+  ) {
+    this.deRegisterEventListeners();
+    this.registerEventListeners();
+  }
   ngOnInit() {
     this.getIllustrationImages();
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
@@ -48,48 +51,30 @@ export class IllustrationsComponent {
   }
 
   ngOnDestroy() {
-    this.events.unsubscribe('give:illustration');
+    this.deRegisterEventListeners();
   }
 
   ngAfterViewInit() {
-    document.body.addEventListener('click', (event: any) => {
-      if (event.target.previousElementSibling || event.target.classList.contains('est_figure_graphic')) {
-        try {
-          if (this.config.getSettings('settings.showReadTextIllustrations')) {
-            const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
+  }
 
-            if ( showIllustration.includes(this.itemId.split('_')[1])) {
-              if (event.target.classList.contains('est_figure_graphic') || event.target.classList.contains('doodle')) {
-                this.events.subscribe('give:illustration', (image) => {
-                  if (image) {
-                    this.showOne = true;
-                    this.viewAll = false;
-                    this.images = [image];
-                  } else {
-                    this.showOne = false;
-                  }
-                });
-              }
-            } else {
-              if (event.target.previousElementSibling.classList.contains('est_figure_graphic') ||
-              event.target.classList.contains('doodle')) {
-                this.events.subscribe('give:illustration', (image) => {
-                  if (image) {
-                    this.showOne = true;
-                    this.viewAll = false;
-                    this.images = [image];
-                  } else {
-                    this.showOne = false;
-                  }
-                });
-              }
-            }
-          }
-        } catch (e) {
-          console.error(e)
-        }
-      }
+  registerEventListeners() {
+    this.events.subscribe('give:illustration', (image) => {
+      this.showSingleImage(image);
     });
+  }
+
+  deRegisterEventListeners() {
+    this.events.unsubscribe('give:illustration');
+  }
+
+  showSingleImage(image) {
+    if (image) {
+      this.showOne = true;
+      this.viewAll = false;
+      this.images = [image];
+    } else {
+      this.showOne = false;
+    }
   }
 
   viewAllIllustrations() {
