@@ -250,6 +250,14 @@ div.tei.xlargeFontSize .teiManuscript.immediate_symbol img {
     height: ceil(0.9 * $text-fontsize-xlarge);
 }
 
+/* Symbol/icon representing a drawing etc. */
+div.tei img.symbol {
+    display: inline-block;
+    width:   1em; /* Default om textstorleken inte fungerar. */
+    height:  auto;
+    vertical-align: middle;
+}
+
 /* Storlek på hand-symbolen i manuskript. */
 div.tei img.teiManuscript.handSymbol {
     display: inline-block;
@@ -257,23 +265,28 @@ div.tei img.teiManuscript.handSymbol {
     height:  auto;
     top: 0;
 }
-div.tei.xsmallFontSize img.teiManuscript.handSymbol {
+div.tei.xsmallFontSize img.teiManuscript.handSymbol,
+div.tei.xsmallFontSize img.symbol {
     width:  ceil(1 * $text-fontsize-xsmall);
     height: ceil(1 * $text-fontsize-xsmall);
 }
-div.tei.smallFontSize img.teiManuscript.handSymbol {
+div.tei.smallFontSize img.teiManuscript.handSymbol,
+div.tei.smallFontSize img.symbol {
     width:  ceil(1 * $text-fontsize-small);
     height: ceil(1 * $text-fontsize-small);
 }
-div.tei.mediumFontSize img.teiManuscript.handSymbol {
+div.tei.mediumFontSize img.teiManuscript.handSymbol,
+div.tei.mediumFontSize img.symbol {
     width:  ceil(1 * $text-fontsize-medium);
     height: ceil(1 * $text-fontsize-medium);
 }
-div.tei.largeFontSize img.teiManuscript.handSymbol {
+div.tei.largeFontSize img.teiManuscript.handSymbol,
+div.tei.largeFontSize img.symbol {
     width:  ceil(1 * $text-fontsize-large);
     height: ceil(1 * $text-fontsize-large);
 }
-div.tei.xlargeFontSize img.teiManuscript.handSymbol {
+div.tei.xlargeFontSize img.teiManuscript.handSymbol,
+div.tei.xlargeFontSize img.symbol {
     width:  ceil(1 * $text-fontsize-xlarge);
     height: ceil(1 * $text-fontsize-xlarge);
 }
@@ -1116,10 +1129,6 @@ div.tei {
     }
 
     /* OTHER */
-    img.symbol {
-        position: relative;
-        bottom: -2px;
-    }
     /* Keyword_symbol is a small rectangular gif. */
     img.keyword_symbol {
         display: inline-block;
@@ -1735,7 +1744,7 @@ div.tei {
     }
     img.doodle {
         cursor: pointer;
-        display: none !important; /* By default doodles are not shown except when illustrations-view is shown. */
+        display: none !important; /* By default doodles in read-text are not shown except when illustrations-view is shown. */
     }
     
     .pdf_figure_graphic {
@@ -1832,12 +1841,16 @@ read-text div.tei.clickable-illustrations .est_figure_graphic {
     cursor: pointer;
 }
 
-/* In mobile mode doodles are not clickable since they can't be opened in an illustrations-view. */
-.mobile-mode-established read-text div.tei img.doodle {
+/* In mobile mode doodles are not clickable since they can't be opened in an illustrations-view. Same for doodles in manuscripts-view. */
+.mobile-mode-established read-text div.tei img.doodle,
+manuscripts div.tei img.teiManuscript.doodle {
     cursor: default;
 }
 
-.illustrations-view-shown read-text div.tei img.doodle {
+/* Show doodles in read-text when there is an illustrations-view open and
+   always in manuscript-views. */
+.illustrations-view-shown read-text div.tei img.doodle,
+manuscripts div.tei img.teiManuscript.doodle {
     display: inline-block !important;
 }
 

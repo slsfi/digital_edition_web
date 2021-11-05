@@ -174,12 +174,6 @@ p {
   cursor: pointer;
 }
 
-// Same selectors with different decl in tei.scss. Combine?
-img.symbol {
-  width: 0.6rem;
-  display: inline;
-}
-
 /* Den okände von Wright, tidslinje-tabell i markdown*/
 /* feta den första kolumnen */
 div.md_content markdown td:first-child {}
