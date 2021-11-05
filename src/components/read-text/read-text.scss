@@ -45,3 +45,8 @@ read-text {
         display: none;
     }
 }
+
+/* Icons that open corresponding images in the illustrations-view are not clickable in mobile mode. */
+.mobile-mode-established read-text img.hide-illustration + span.tei.figureP.iconBefore::before {
+    cursor: default;
+}

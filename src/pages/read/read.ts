@@ -101,6 +101,7 @@ export class ReadPage /*implements OnDestroy*/ {
   nochapterPos: string;
   userIsTouching: Boolean = false;
   collectionAndPublicationLegacyId: string;
+  illustrationsViewShown: Boolean = false;
 
   maxSingleWindowWidth: Number;
 
@@ -806,6 +807,12 @@ export class ReadPage /*implements OnDestroy*/ {
     const url = `#/publication/${colID}/text/${pubID}/${chapter_id}/${facs_id}/${facs_nr}/${song_id}/${search_title}/`;
 
     const viewModes = this.getViewTypesShown();
+
+    if (viewModes.includes('illustrations')) {
+      this.illustrationsViewShown = true;
+    } else {
+      this.illustrationsViewShown = false;
+    }
 
     // this causes problems with back, thus this check.
     if (!this.navCtrl.canGoBack() ) {
@@ -2616,12 +2623,14 @@ export class ReadPage /*implements OnDestroy*/ {
       this.addView('facsimiles', event.id);
     } else if (event.viewType === 'facsimileManuscript') {
       this.addView('manuscripts', event.id);
+    } else if (event.viewType === 'illustrations') {
+      this.addView(event.viewType, event.id, undefined, undefined, event);
     } else {
       this.addView(event.viewType, event.id);
     }
   }
 
-  addView(type: string, id?: string, fab?: FabContainer, external?: boolean) {
+  addView(type: string, id?: string, fab?: FabContainer, external?: boolean, image?: any) {
     if (fab !== undefined) {
       try {
         fab.close();
@@ -2646,7 +2655,7 @@ export class ReadPage /*implements OnDestroy*/ {
         variations: { show: (type === 'variations'), id: id },
         introduction: { show: (type === 'introduction'), id: id },
         songexample: { show: (type === 'songexample'), id: id },
-        illustrations: { show: (type === 'illustrations'), id: id }
+        illustrations: { show: (type === 'illustrations'), image: image }
       });
 
       this.updateURL();

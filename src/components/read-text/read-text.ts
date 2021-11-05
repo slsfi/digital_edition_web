@@ -1,5 +1,4 @@
-
-import { Component, Input, ElementRef, Renderer2, NgZone } from '@angular/core';
+import { Component, Input, ElementRef, EventEmitter, Output, Renderer2, NgZone } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { TextService } from '../../app/services/texts/text.service';
@@ -7,6 +6,7 @@ import { Storage } from '@ionic/storage';
 import { ToastController, Events, ModalController, App } from 'ionic-angular';
 import { IllustrationPage } from '../../pages/illustration/illustration';
 import { ConfigService } from '@ngx-config/core';
+import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { TextCacheService } from '../../app/services/texts/text-cache.service';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 /**
@@ -25,12 +25,15 @@ export class ReadTextComponent {
   @Input() matches?: Array<string>;
   @Input() external?: string;
   @Input() nochapterPos?: string;
+  @Output() openNewIllustrView: EventEmitter<any> = new EventEmitter();
   public text: any;
   protected errorMessage: string;
   defaultView: string;
   apiEndPoint: string;
   appMachineName: string;
   textLoading: Boolean = true;
+  illustrationsVisibleInReadtext: Boolean = false;
+  illustrationsViewAvailable: Boolean = false;
   intervalTimerId: number;
   pos: string;
   private unlistenClickEvents: () => void;
@@ -47,6 +50,7 @@ export class ReadTextComponent {
     private ngZone: NgZone,
     private elementRef: ElementRef,
     private config: ConfigService,
+    public userSettingsService: UserSettingsService,
     protected modalController: ModalController,
     private analyticsService: AnalyticsService
   ) {
@@ -54,6 +58,15 @@ export class ReadTextComponent {
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.defaultView = this.config.getSettings('defaults.ReadModeView');
     this.intervalTimerId = 0;
+
+    try {
+      const displayTypes = this.config.getSettings('settings.displayTypesToggles');
+      if (displayTypes.illustrations === true) {
+        this.illustrationsViewAvailable = true;
+      }
+    } catch (e) {
+      this.illustrationsViewAvailable = false;
+    }
   }
 
   ngOnInit() {
@@ -64,9 +77,11 @@ export class ReadTextComponent {
           this.link = data[0]['coll_id'] + '_' + data[0]['pub_id'];
         }
         this.setText();
+        this.setIllustrationsInReadtextStatus();
       });
     } else {
       this.setText();
+      this.setIllustrationsInReadtextStatus();
     }
     this.setUpTextListeners();
   }
@@ -118,6 +133,9 @@ export class ReadTextComponent {
     this.unlistenClickEvents();
   }
 
+  /* This method does not work when an open illustrations-view has been previously
+     removed and then an attempt to reopen one from the read-text is made. New
+     illustrations-views are opened with the openIllustrationInNewView method. */
   openNewView( event, id: any, type: string ) {
     let openId = id;
     let chapter = null;
@@ -126,6 +144,14 @@ export class ReadTextComponent {
       chapter = 'ch' + String(String(id).split('ch')[1]).trim();
     }
     this.events.publish('show:view', type, openId, chapter);
+  }
+
+  /** Function for opening the passed image in a new illustrations-view. */
+  openIllustrationInNewView(image: any) {
+    image.viewType = 'illustrations';
+    image.id = null;
+    this.openNewIllustrView.emit(image);
+    this.scrollLastViewIntoView();
   }
 
   private setIllustrationImages() {
@@ -231,6 +257,23 @@ export class ReadTextComponent {
     );
   }
 
+  /** Checks config settings if the current reading text has illustrations that are
+   *  shown inline in the reading text view (based on matching publication id or collection id).
+   *  Sets this.illustrationsVisibleInReadtext either true or false. */
+  private setIllustrationsInReadtextStatus() {
+    let showIllustrations = [];
+    try {
+      showIllustrations = this.config.getSettings('settings.showReadTextIllustrations');
+    } catch (e) {
+      showIllustrations = [];
+    }
+    if (showIllustrations.includes(this.link.split('_')[0]) || showIllustrations.includes(this.link.split('_')[1])) {
+        this.illustrationsVisibleInReadtext = true;
+    } else {
+      this.illustrationsVisibleInReadtext = false;
+    }
+  }
+
   private setUpTextListeners() {
     const nElement: HTMLElement = this.elementRef.nativeElement;
 
@@ -240,60 +283,45 @@ export class ReadTextComponent {
       this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
         try {
           const eventTarget = event.target as HTMLElement;
-          // some of the texts e.g. ordsprak.sls.fi links to external sites
+
+          // Some of the texts e.g. ordsprak.sls.fi links to external sites
           if ( eventTarget.hasAttribute('href') === true && eventTarget.getAttribute('href').includes('http') === false ) {
             event.preventDefault();
           }
-          if (this.config.getSettings('settings.showReadTextIllustrations')) {
-            const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
 
-            if (eventTarget.classList.contains('doodle')) {
-              const image = {src: '/assets/images/verk/' + String(eventTarget.dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
-              if ( document.querySelector('illustrations') === null ) {
-                this.ngZone.run(() => {
-                  this.openNewView(event, null, 'illustrations');
-                });
-              }
-              this.ngZone.run(() => {
-                this.events.publish('give:illustration', image);
-              });
-            }
-            if ( showIllustration.includes(this.link.split('_')[1])) {
-              if (eventTarget.classList.contains('est_figure_graphic')) {
-                // Check if we have the "illustrations" tab open, if not, open
-                const image = {src: event.target.src, class: 'illustration'};
-                if ( document.querySelector('illustrations') === null ) {
-                  this.ngZone.run(() => {
-                    this.openNewView(event, null, 'illustrations');
-                    // Wait for the DOM to get updated with the illustrations tab before publishing image
-                    setTimeout(function () {
-                      this.events.publish('give:illustration', image);
-                    }.bind(this), 1000);
-                  });
-                } else {
-                  this.ngZone.run(() => {
-                    this.events.publish('give:illustration', image);
-                  });
-                }
+          if (!this.userSettingsService.isMobile()) {
+            let image = null;
+
+            // Check if click on an illustration or icon representing an illustration
+            if (eventTarget.classList.contains('doodle') && eventTarget.hasAttribute('src')) {
+              // Click on a pictogram ("doodle")
+              image = {src: '/assets/images/verk/' + String(eventTarget.dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
+            } else if (this.illustrationsVisibleInReadtext) {
+              // There are possibly visible illustrations in the read text. Check if click on such an image.
+              if (eventTarget.classList.contains('est_figure_graphic') && eventTarget.hasAttribute('src')) {
+                image = {src: event.target.src, class: 'visible-illustration'};
               }
             } else {
-              if (eventTarget.previousElementSibling !== null &&
-                eventTarget.previousElementSibling.classList.contains('est_figure_graphic')) {
-                // Check if we have the "illustrations" tab open, if not, open
-                const image = {src: event.target.previousElementSibling.src, class: 'illustration'};
-                if ( document.querySelector('illustrations') === null ) {
-                  this.ngZone.run(() => {
-                    this.openNewView(event, null, 'illustrations');
-                    // Wait for the DOM to get updated with the illustrations tab before publishing image
-                    setTimeout(function () {
-                      this.events.publish('give:illustration', image);
-                    }.bind(this), 1000);
-                  });
-                } else {
-                  this.ngZone.run(() => {
-                    this.events.publish('give:illustration', image);
-                  });
-                }
+              // Check if click on an icon representing an image which is NOT visible in the reading text
+              if (eventTarget.previousElementSibling !== null
+              && eventTarget.previousElementSibling.classList.contains('est_figure_graphic')
+              && eventTarget.previousElementSibling.hasAttribute('src')) {
+                image = {src: event.target.previousElementSibling.src, class: 'illustration'};
+              }
+            }
+
+            // Check if we have an image to show in the illustrations-view
+            if (image !== null) {
+              // Check if we have an illustrations-view open, if not, open and display the clicked image there
+              if (document.querySelector('illustrations') === null) {
+                this.ngZone.run(() => {
+                  this.openIllustrationInNewView(image);
+                });
+              } else {
+                // Display image in an illustrations-view which is already open
+                this.ngZone.run(() => {
+                  this.events.publish('give:illustration', image);
+                });
               }
             }
           }
@@ -301,6 +329,7 @@ export class ReadTextComponent {
           console.error(e);
         }
 
+        // Check if click on an icon which links to an illustration that should be opened in a modal
         if (event.target.parentNode.classList.contains('ref_illustration')) {
           const hashNumber = event.target.parentNode.hash;
           const imageNumber = hashNumber.split('#')[1];
@@ -383,5 +412,32 @@ export class ReadTextComponent {
 
   doAnalytics() {
     this.analyticsService.doAnalyticsEvent('Established', 'Established', String(this.link));
+  }
+
+  /* This function scrolls the read-view horisontally to the last read column.
+   * It's called after adding new views. */
+  scrollLastViewIntoView() {
+    this.ngZone.runOutsideAngular(() => {
+      let interationsLeft = 10;
+      clearInterval(this.intervalTimerId);
+      this.intervalTimerId = window.setInterval(function() {
+        if (interationsLeft < 1) {
+          clearInterval(this.intervalTimerId);
+        } else {
+          interationsLeft -= 1;
+          const viewElements = document.getElementsByClassName('read-column');
+          if (viewElements[0] !== undefined) {
+            const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
+            const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
+            if (scrollingContainer !== null) {
+              const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
+              scrollingContainer.getBoundingClientRect().left;
+              scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
+              clearInterval(this.intervalTimerId);
+            }
+          }
+        }
+      }.bind(this), 500);
+    });
   }
 }

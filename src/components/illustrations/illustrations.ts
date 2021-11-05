@@ -19,6 +19,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class IllustrationsComponent {
   @Input() itemId: string;
+  @Input() initialImage: Record<string, any> = {};
   illustrationsPath = 'assets/images/illustrations/2/';
   imgPath: any;
   images: Array<Object> = [];
@@ -29,6 +30,7 @@ export class IllustrationsComponent {
   showOne = false;
   textLoading: Boolean = true;
   apiEndPoint: string;
+  appMachineName: string;
   projectMachineName: string;
   constructor(
     public navParams: NavParams,
@@ -40,11 +42,11 @@ export class IllustrationsComponent {
     public translate: TranslateService,
     private analyticsService: AnalyticsService
   ) {
-    this.deRegisterEventListeners();
     this.registerEventListeners();
   }
   ngOnInit() {
     this.getIllustrationImages();
+    this.appMachineName = this.config.getSettings('app.machineName');
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.projectMachineName = this.config.getSettings('app.machineName');
     this.doAnalytics();
@@ -114,16 +116,20 @@ export class IllustrationsComponent {
       }
 
       if (target !== null && target.parentElement !== null && target.parentElement !== undefined) {
-        // Prepend arrow to the image/icon in the reading text and scroll into view
-        const tmpImage: HTMLImageElement = new Image();
-        tmpImage.src = 'assets/images/ms_arrow_right.svg';
-        tmpImage.alt = 'ms arrow right image';
-        tmpImage.classList.add('inl_ms_arrow');
-        target.parentElement.insertBefore(tmpImage, target);
-        this.scrollElementIntoView(tmpImage);
-        setTimeout(function() {
-          target.parentElement.removeChild(tmpImage);
-        }, 5000);
+        if (image.class !== 'visible-illustration') {
+          // Prepend arrow to the image/icon in the reading text and scroll into view
+          const tmpImage: HTMLImageElement = new Image();
+          tmpImage.src = 'assets/images/ms_arrow_right.svg';
+          tmpImage.alt = 'ms arrow right image';
+          tmpImage.classList.add('inl_ms_arrow');
+          target.parentElement.insertBefore(tmpImage, target);
+          this.scrollElementIntoView(tmpImage);
+          setTimeout(function() {
+            target.parentElement.removeChild(tmpImage);
+          }, 5000);
+        } else {
+          this.scrollElementIntoView(target, 'top', 75);
+        }
       }
     } catch (e) {
       console.log('Error scrolling to image position in text.');
@@ -134,21 +140,42 @@ export class IllustrationsComponent {
     this.images = [];
     this.textService.getEstablishedText(this.itemId).subscribe(
       text => {
+        const c_id = String(this.itemId).split('_')[0];
+        let galleryId = 44;
+        try {
+          galleryId = this.config.getSettings('settings.galleryCollectionMapping')[c_id];
+        } catch ( err ) {
+        }
+        if ( String(text).includes('/images/verk/http') ) {
+          text = text.replace(/images\/verk\//g, '');
+        } else {
+          text = text.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/${galleryId}/`);
+        }
+
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(text, 'text/html');
         const images: any = xmlDoc.querySelectorAll('img.est_figure_graphic');
         const doodles: any = xmlDoc.querySelectorAll('img.doodle');
         for (let i = 0; i < images.length ; i++) {
-          const image = {src: images[i].src, class: 'illustration'};
+          let illustrationClass = 'illustration';
+          if (!images[i].classList.contains('hide-illustration')) {
+            illustrationClass = 'visible-illustration';
+          }
+          const image = {src: images[i].src, class: illustrationClass};
           this.images.push(image);
         }
         for (let i = 0; i < doodles.length ; i++) {
           const image = {src: '/assets/images/verk/' + String(doodles[i].dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
-          console.log(image);
           this.images.push(image);
         }
         this.imageCountTotal = this.images.length;
         this.imagesCache = this.images;
+        if (typeof this.initialImage !== 'undefined' && this.initialImage) {
+          this.images = [];
+          this.images.push(this.initialImage);
+          this.viewAll = false;
+          this.showOne = true;
+        }
         this.textLoading = false;
       },
       error => { this.textLoading = false; }

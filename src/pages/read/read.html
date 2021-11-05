@@ -56,7 +56,7 @@
     </ion-fab>
 
     <div class="read-columns" drag-scroll-y-disabled scrollbar-hidden="true" reachesRightBound="true"
-      snap-disabled="true" snap-offset="0" [ngClass]="views.length > 1 ? 'multiple-columns' : 'single-column'">
+      snap-disabled="true" snap-offset="0" [ngClass]="views.length > 1 ? 'multiple-columns' : 'single-column'" [class.illustrations-view-shown]="illustrationsViewShown">
       <div
         [ngClass]="'toolTip tei ' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')"
         [class.show_comments]="readPopoverService.show.comments"
@@ -116,7 +116,7 @@
             <!-- Don't scroll in facsimile view -->
             <ion-scroll [scrollY]="!view.facsimiles.show" style="height:100vh;" class="card" #scrollBar>
               <div *ngIf="view.established.show">
-                <read-text [link]="establishedText.link" [matches]="matches" [external]="external" [nochapterPos]="nochapterPos"></read-text>
+                <read-text [link]="establishedText.link" [matches]="matches" [external]="external" [nochapterPos]="nochapterPos" (openNewIllustrView)="openNewView($event)"></read-text>
               </div>
               <div *ngIf="view.comments.show">
                 <comments [link]="establishedText.link" [matches]="matches" [external]="external" (openNewIntroView)="openNewView($event)">
@@ -143,7 +143,7 @@
                 <song-example [songDatafile]="song_id" [legacyId]="legacyId"></song-example>
               </div>
               <div *ngIf="view.illustrations.show">
-                <illustrations [itemId]="establishedText.link"></illustrations>
+                <illustrations [initialImage]="view.illustrations.image" [itemId]="establishedText.link"></illustrations>
               </div>
             </ion-scroll>
           </ion-card-content>
