@@ -101,6 +101,7 @@ export class ReadPage /*implements OnDestroy*/ {
   nochapterPos: string;
   userIsTouching: Boolean = false;
   collectionAndPublicationLegacyId: string;
+  illustrationsViewShown: Boolean = false;
 
   maxSingleWindowWidth: Number;
 
@@ -807,6 +808,12 @@ export class ReadPage /*implements OnDestroy*/ {
 
     const viewModes = this.getViewTypesShown();
 
+    if (viewModes.includes('illustrations')) {
+      this.illustrationsViewShown = true;
+    } else {
+      this.illustrationsViewShown = false;
+    }
+
     // this causes problems with back, thus this check.
     if (!this.navCtrl.canGoBack() ) {
       window.history.replaceState('', '', url.concat(viewModes.join('&')));
@@ -948,25 +955,39 @@ export class ReadPage /*implements OnDestroy*/ {
     if (event.target.hasAttribute('data-id')) {
       return event.target;
     }
-
-    if (event.target !== undefined && event.target['classList'] !== undefined
-    && event.target['classList'].contains('tooltiptrigger')) {
-      eventTarget = event.target;
-    } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'] !== undefined
-    && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
-      eventTarget = event['target']['parentNode'];
-    } else if (event['target']['parentNode']['parentNode'] !== undefined && event['target']['parentNode']['classList'] !== undefined &&
-     event['target']['parentNode']['parentNode']['classList'].contains('tooltiptrigger')) {
-      eventTarget = event['target']['parentNode']['parentNode'];
-    } else if (event.target !== undefined && event['target']['classList'] !== undefined &&
-    event['target']['classList'].contains('anchor')) {
-      eventTarget = event.target;
-    } else if (event.target !== undefined && event['target']['classList'] !== undefined &&
-    event['target']['classList'].contains('variantScrollTarget')) {
-      eventTarget = event.target;
-    } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'] !== undefined &&
-    event['target']['parentNode']['classList'].contains('variantScrollTarget')) {
-      eventTarget = event['target']['parentNode'];
+    try {
+      if (event.target !== undefined && event.target !== null && event.target['classList'] !== undefined
+      && event.target['classList'].contains('tooltiptrigger')) {
+        eventTarget = event.target;
+      } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null
+      && event['target']['parentNode']['classList'] !== undefined
+      && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
+        eventTarget = event['target']['parentNode'];
+      } else if (event['target']['parentNode']['parentNode'] !== undefined && event['target']['parentNode']['parentNode'] !== null
+      && event['target']['parentNode']['classList'] !== undefined
+      && event['target']['parentNode']['parentNode']['classList'].contains('tooltiptrigger')) {
+        eventTarget = event['target']['parentNode']['parentNode'];
+      } else if (event.target !== undefined && event.target !== null && event['target']['classList'] !== undefined
+      && event['target']['classList'].contains('anchor')) {
+        eventTarget = event.target;
+      } else if (event.target !== undefined && event.target !== null && event['target']['classList'] !== undefined
+      && event['target']['classList'].contains('variantScrollTarget')) {
+        eventTarget = event.target;
+      } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null
+      && event['target']['parentNode']['classList'] !== undefined
+      && event['target']['parentNode']['classList'].contains('variantScrollTarget')) {
+        eventTarget = event['target']['parentNode'];
+      } else if (event.target !== undefined && event.target !== null && event['target']['classList'] !== undefined
+      && event['target']['classList'].contains('anchorScrollTarget')) {
+        eventTarget = event.target;
+      } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null
+      && event['target']['parentNode']['classList'] !== undefined
+      && event['target']['parentNode']['classList'].contains('anchorScrollTarget')) {
+        eventTarget = event['target']['parentNode'];
+      }
+    } catch (e) {
+      console.log('Error resolving event target in getEventTarget in read.ts');
+      console.error(e);
     }
     return eventTarget;
   }
@@ -1118,7 +1139,7 @@ export class ReadPage /*implements OnDestroy*/ {
         }
 
         eventTarget = this.getEventTarget(event);
-        if (eventTarget['classList'].contains('variantScrollTarget')) {
+        if (eventTarget['classList'].contains('variantScrollTarget') || eventTarget['classList'].contains('anchorScrollTarget')) {
           // Click on variant lemma --> highlight and scroll all variant columns.
 
           eventTarget.classList.add('highlight');
@@ -2602,12 +2623,14 @@ export class ReadPage /*implements OnDestroy*/ {
       this.addView('facsimiles', event.id);
     } else if (event.viewType === 'facsimileManuscript') {
       this.addView('manuscripts', event.id);
+    } else if (event.viewType === 'illustrations') {
+      this.addView(event.viewType, event.id, undefined, undefined, event);
     } else {
       this.addView(event.viewType, event.id);
     }
   }
 
-  addView(type: string, id?: string, fab?: FabContainer, external?: boolean) {
+  addView(type: string, id?: string, fab?: FabContainer, external?: boolean, image?: any) {
     if (fab !== undefined) {
       try {
         fab.close();
@@ -2632,7 +2655,7 @@ export class ReadPage /*implements OnDestroy*/ {
         variations: { show: (type === 'variations'), id: id },
         introduction: { show: (type === 'introduction'), id: id },
         songexample: { show: (type === 'songexample'), id: id },
-        illustrations: { show: (type === 'illustrations'), id: id }
+        illustrations: { show: (type === 'illustrations'), image: image }
       });
 
       this.updateURL();
@@ -2837,20 +2860,53 @@ export class ReadPage /*implements OnDestroy*/ {
     this.scrollElementIntoView(element);
     this.hideToolTip();
     try {
-      const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span.teiVariant');
-      for (let i = 0; i < elems.length; i++) {
-        if (elems[i].id === element.id) {
-          elems[i].style.fontWeight = 'bold';
-          this.scrollElementIntoView(elems[i]);
-          setTimeout(function () {
-            if (elems[i] !== undefined) {
-              elems[i].style.fontWeight = null;
+      if (element['classList'].contains('variantScrollTarget')) {
+        const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span.teiVariant');
+        for (let i = 0; i < elems.length; i++) {
+          if (elems[i].id === element.id) {
+            elems[i].style.fontWeight = 'bold';
+            this.scrollElementIntoView(elems[i]);
+            setTimeout(function () {
+              if (elems[i] !== undefined) {
+                elems[i].style.fontWeight = null;
+              }
+            }, 5000);
+          }
+        }
+      } else if (element['classList'].contains('anchorScrollTarget')) {
+        const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span.teiVariant.anchorScrollTarget');
+        const elementClassList = element.className.split(' ');
+        let targetClassName = '';
+        let targetCompClassName = '';
+        for (let x = 0; x < elementClassList.length; x++) {
+          if (elementClassList[x].startsWith('struct')) {
+            targetClassName = elementClassList[x];
+            break;
+          }
+        }
+        if (targetClassName.endsWith('a')) {
+          targetCompClassName = targetClassName.substr(0, targetClassName.length - 1) + 'b';
+        } else {
+          targetCompClassName = targetClassName.substr(0, targetClassName.length - 1) + 'a';
+        }
+        let iClassList = [];
+        for (let i = 0; i < elems.length; i++) {
+          iClassList = elems[i].className.split(' ');
+          for (let y = 0; y < iClassList.length; y++) {
+            if (iClassList[y] === targetClassName || iClassList[y] === targetCompClassName) {
+              this.scrollElementIntoView(elems[i]);
+              elems[i].classList.add('highlight');
+              setTimeout(function () {
+                if (elems[i] !== undefined) {
+                  elems[i].classList.remove('highlight');
+                }
+              }, 5000);
+              break;
             }
-          }, 5000);
+          }
         }
       }
     } catch (e) {
-
     }
   }
 
@@ -3054,7 +3110,7 @@ export class ReadPage /*implements OnDestroy*/ {
     this.ngZone.runOutsideAngular(() => {
       let interationsLeft = 10;
       clearInterval(this.intervalTimerId);
-      this.intervalTimerId = setInterval(function() {
+      this.intervalTimerId = window.setInterval(function() {
         if (interationsLeft < 1) {
           clearInterval(this.intervalTimerId);
         } else {

@@ -1,20 +1,23 @@
 <ng-container *ngIf="images.length > 0; then illustrations; else none"></ng-container>
 
 <ng-template #illustrations>
-  <button ion-button (click)="toggleViewAll()">{{"Read.Illustrations.Showall" | translate}}</button>
-  <div *ngIf="viewAll || showOne">
-    <div class="illustration-image-wrapper" *ngFor="let image of images">
-      <img alt="illustration" src="{{ image.src }}" (click)="zoomImage(image.src)" alt="illustration" [ngClass]="image.class?image.class:''">
-      <button class="scroll-to-illustration-button" ion-button icon-start (click)="scrollToPositionInText(image.src)">
-        <ion-icon name="image"></ion-icon>
-        {{"Read.Illustrations.Goto" | translate}}
-      </button>
-    </div>
-  </div>
+  <ng-container *ngIf="!textLoading">
+    <button *ngIf="!viewAll && imageCountTotal > 1" ion-button class="view-all-button" (click)="viewAllIllustrations()">{{"Read.Illustrations.Showall" | translate}}</button>
+    <ng-container *ngIf="viewAll || showOne">
+      <div class="illustration-image-wrapper" *ngFor="let image of images">
+        <img alt="illustration" src="{{ image.src }}" (click)="zoomImage(image.src)" alt="illustration" [ngClass]="image.class?image.class:''">
+        <button class="scroll-to-illustration-button" ion-button icon-start (click)="scrollToPositionInText(image)">
+          <ion-icon name="image"></ion-icon>
+          {{"Read.Illustrations.Goto" | translate}}
+        </button>
+      </div>
+    </ng-container>
+  </ng-container>
 </ng-template>
 
 <ng-template #none>
-  <div class="tei" [ngClass]="(readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize'">
+  <div *ngIf="!textLoading" class="tei" [ngClass]="(readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize'">
     {{"Read.Illustrations.Nothing" | translate}}
   </div>
+  <ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
 </ng-template>

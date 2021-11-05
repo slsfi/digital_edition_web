@@ -122,16 +122,14 @@ export class IntroductionPage {
       this.toolTipsSettings = this.config.getSettings('settings.toolTips');
     } catch (e) {
       this.toolTipsSettings = undefined;
-      console.log('Undefined toolTipsSettings');
-      console.error(e);
+      console.log('Can\'t get settings.toolTips from config. Tooltips not available.');
     }
 
     try {
       this.readPopoverTogglesIntro = this.config.getSettings('settings.introToggles');
     } catch (e) {
       this.readPopoverTogglesIntro = undefined;
-      console.log('Undefined readPopoverTogglesIntro');
-      console.error(e);
+      console.log('Can\'t get settings.readPopoverTogglesIntro from config. Using default values.');
     }
     if (this.readPopoverTogglesIntro === undefined ||
      this.readPopoverTogglesIntro === null ||
@@ -247,7 +245,7 @@ export class IntroductionPage {
     this.ngZone.runOutsideAngular(() => {
       let interationsLeft = 10;
       clearInterval(this.intervalTimerId);
-      this.intervalTimerId = setInterval(function() {
+      this.intervalTimerId = window.setInterval(function() {
         if (interationsLeft < 1) {
           clearInterval(this.intervalTimerId);
         } else {

@@ -193,7 +193,7 @@ export class FacsimilesComponent {
             this.facsPage = facs[0];
           }
 
-          if (this.facsPage['external_url'] !== null) {
+          if (this.facsPage['external_url'] !== null && this.facsPage['external_url'] !== '') {
             this.selectedFacsimileIsExternal = true;
           }
 
@@ -215,10 +215,10 @@ export class FacsimilesComponent {
             const facsimile = new Facsimile(f);
             facsimile.itemId = this.itemId;
             facsimile.manuscript_id = f.publication_manuscript_id;
-            if ( f['external_url'] === null ) {
+            if ( f['external_url'] === null || f['external_url'] === '' ) {
               facsimile.title = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(f['title']));
             }
-            if ( f['external_url'] !== null ) {
+            if ( f['external_url'] !== null && f['external_url'] !== '' ) {
               this.externalFacsimilesExist = true;
               this.externalURLs.push({'title': f['title'], 'url': f['external_url']});
             } else {
@@ -226,7 +226,8 @@ export class FacsimilesComponent {
             }
           }
 
-          if ( this.facsPage['external_url'] === undefined || this.facsPage['external_url'] === null ) {
+          if ( this.facsPage['external_url'] === undefined || this.facsPage['external_url'] === null
+            || this.facsPage['external_url'] === '' ) {
             this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
             this.config.getSettings('app.machineName') +
             `/facsimiles/${this.facsPage['publication_facsimile_collection_id']}/`;

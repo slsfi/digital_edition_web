@@ -1,11 +1,17 @@
 illustrations {
   .illustration-image-wrapper {
-    margin: 10px 0;
+    margin: 0 0 1rem 0;
     img {
       cursor: zoom-in;
       width: auto;
       height: auto;
     }
+  }
+  div.illustration-image-wrapper:last-of-type {
+    padding-bottom: 2rem;
+  }
+  button.view-all-button + div.illustration-image-wrapper {
+    margin-top: 1rem;
   }
   .scroll-to-illustration-button {
     text-transform: initial;

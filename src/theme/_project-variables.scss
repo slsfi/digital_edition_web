@@ -174,23 +174,9 @@ p {
   cursor: pointer;
 }
 
-// almost the same rule declared in tei_variants
-.anchorScrollTarget img {
-  font-size: 0.6rem;
-  width: 0.6rem;
-  display: inline;
-}
-
 // Same selectors with different decl in tei.scss. Combine?
 img.symbol {
   width: 0.6rem;
-  display: inline;
-}
-
-// almost the same rule declared in tei_variants
-.teiVariant img {
-  font-size: 0.9rem;
-  width: 0.9rem;
   display: inline;
 }
 
