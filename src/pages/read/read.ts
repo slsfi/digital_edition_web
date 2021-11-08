@@ -2700,7 +2700,7 @@ export class ReadPage /*implements OnDestroy*/ {
   /** Reorders the given array by moving the item at position 'fromIndex'
    *  to the position 'toIndex'. Returns the reordered array. */
   moveArrayItem(array: any[], fromIndex: number, toIndex: number) {
-    let reorderedArray = array;
+    const reorderedArray = array;
     if (fromIndex > -1 && toIndex > -1 && fromIndex < array.length
       && toIndex < array.length && fromIndex !== toIndex) {
       reorderedArray.splice(toIndex, 0, reorderedArray.splice(fromIndex, 1)[0]);
