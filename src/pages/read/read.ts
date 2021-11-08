@@ -2686,12 +2686,26 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   swipeTabs(prefix: string, id: number) {
-    const elem1: HTMLElement = document.getElementById(prefix + id.toString());
-    if (elem1.nextSibling !== null && elem1.nodeType === elem1.nextSibling.nodeType) {
-      elem1.parentElement.insertBefore(elem1.nextSibling, elem1);
-    } else if (elem1.previousSibling !== null && elem1.previousSibling.nodeType === elem1.nodeType) {
-      elem1.parentElement.insertBefore(elem1, elem1.previousSibling);
+    if (id === this.views.length - 1) {
+      // Last (right-most) column selected, move it to the left
+      this.views = this.moveArrayItem(this.views, id, id - 1);
+    } else {
+      // Move column one step to the right
+      this.views = this.moveArrayItem(this.views, id, id + 1);
     }
+    this.updateURL();
+    this.updateCachedViewModes();
+  }
+
+  /** Reorders the given array by moving the item at position 'fromIndex'
+   *  to the position 'toIndex'. Returns the reordered array. */
+  moveArrayItem(array: any[], fromIndex: number, toIndex: number) {
+    let reorderedArray = array;
+    if (fromIndex > -1 && toIndex > -1 && fromIndex < array.length
+      && toIndex < array.length && fromIndex !== toIndex) {
+      reorderedArray.splice(toIndex, 0, reorderedArray.splice(fromIndex, 1)[0]);
+    }
+    return reorderedArray;
   }
 
   adjustSlidesSize() {
