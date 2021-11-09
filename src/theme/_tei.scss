@@ -165,24 +165,24 @@ div.tei span.add_margin img,
 div.tei img.doodle,
 div.tei span.anchorScrollTarget img,
 div.tei span.anchorScrollTarget.highlight img,
-div.tei a.ref_variant img {
+div.tei a.ref_variant img,
+div.tei span.extVariantsTrigger img {
     display: inline-block;
     width:   0.75em; /* Default om textstorleken inte fungerar. */
     height:  0.75em;
-    animation: filter-animation-brightness 1.5s infinite;
 }
-div.tei span.add_margin img,
-div.tei img.doodle,
-div.tei span.anchorScrollTarget img,
-div.tei a.ref_variant img {
-    animation: none;
+div.tei span.anchor_lemma img,
+div.tei img.inl_ms_arrow,
+div.tei span.anchorScrollTarget.highlight img {
+    animation: filter-animation-brightness 1.5s infinite;
 }
 div.tei.xsmallFontSize span.anchor_lemma img,
 div.tei.xsmallFontSize img.inl_ms_arrow,
 div.tei.xsmallFontSize span.add_margin img,
 div.tei.xsmallFontSize img.doodle,
 div.tei.xsmallFontSize span.anchorScrollTarget img,
-div.tei.xsmallFontSize a.ref_variant img {
+div.tei.xsmallFontSize a.ref_variant img,
+div.tei.xsmallFontSize span.extVariantsTrigger img {
     width:  ceil(0.75 * $text-fontsize-xsmall);
     height: ceil(0.75 * $text-fontsize-xsmall);
 }
@@ -191,7 +191,8 @@ div.tei.smallFontSize img.inl_ms_arrow,
 div.tei.smallFontSize span.add_margin img,
 div.tei.smallFontSize img.doodle,
 div.tei.smallFontSize span.anchorScrollTarget img,
-div.tei.smallFontSize a.ref_variant img {
+div.tei.smallFontSize a.ref_variant img,
+div.tei.smallFontSize span.extVariantsTrigger img {
     width:  ceil(0.75 * $text-fontsize-small);
     height: ceil(0.75 * $text-fontsize-small);
 }
@@ -200,7 +201,8 @@ div.tei.mediumFontSize img.inl_ms_arrow,
 div.tei.mediumFontSize span.add_margin img,
 div.tei.mediumFontSize img.doodle,
 div.tei.mediumFontSize span.anchorScrollTarget img,
-div.tei.mediumFontSize a.ref_variant img {
+div.tei.mediumFontSize a.ref_variant img,
+div.tei.mediumFontSize span.extVariantsTrigger img {
     width:  ceil(0.75 * $text-fontsize-medium);
     height: ceil(0.75 * $text-fontsize-medium);
 }
@@ -209,7 +211,8 @@ div.tei.largeFontSize img.inl_ms_arrow,
 div.tei.largeFontSize span.add_margin img,
 div.tei.largeFontSize img.doodle,
 div.tei.largeFontSize span.anchorScrollTarget img,
-div.tei.largeFontSize a.ref_variant img {
+div.tei.largeFontSize a.ref_variant img,
+div.tei.largeFontSize span.extVariantsTrigger img {
     width:  ceil(0.75 * $text-fontsize-large);
     height: ceil(0.75 * $text-fontsize-large);
 }
@@ -218,7 +221,8 @@ div.tei.xlargeFontSize img.inl_ms_arrow,
 div.tei.xlargeFontSize span.add_margin img,
 div.tei.xlargeFontSize img.doodle,
 div.tei.xlargeFontSize span.anchorScrollTarget img,
-div.tei.xlargeFontSize a.ref_variant img {
+div.tei.xlargeFontSize a.ref_variant img,
+div.tei.xlargeFontSize span.extVariantsTrigger img {
     width:  ceil(0.75 * $text-fontsize-xlarge);
     height: ceil(0.75 * $text-fontsize-xlarge);
 }
