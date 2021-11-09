@@ -2685,16 +2685,32 @@ export class ReadPage /*implements OnDestroy*/ {
     this.updateCachedViewModes();
   }
 
-  swipeTabs(id: number) {
-    if (id === this.views.length - 1) {
-      // Last (right-most) column selected, move it to the left
-      this.views = this.moveArrayItem(this.views, id, id - 1);
-    } else {
-      // Move column one step to the right
+  /** Moves the view with index id one step to the right, i.e. exchange
+   *  positions with the view on the right. If a FabContainer is passed
+   *  it is closed. */
+  moveViewRight(id: number, fab?: FabContainer) {
+    if (id > -1 && id < this.views.length-1) {
       this.views = this.moveArrayItem(this.views, id, id + 1);
+      this.updateURL();
+      this.updateCachedViewModes();
+      if (fab !== undefined) {
+        fab.close();
+      }
     }
-    this.updateURL();
-    this.updateCachedViewModes();
+  }
+
+  /** Moves the view with index id one step to the left, i.e. exchange
+   *  positions with the view on the left. If a FabContainer is passed
+   *  it is closed. */
+  moveViewLeft(id: number, fab?: FabContainer) {
+    if (id > 0 && id < this.views.length) {
+      this.views = this.moveArrayItem(this.views, id, id - 1);
+      this.updateURL();
+      this.updateCachedViewModes();
+      if (fab !== undefined) {
+        fab.close();
+      }
+    }
   }
 
   /** Reorders the given array by moving the item at position 'fromIndex'

@@ -93,7 +93,7 @@
             {{ view.type | translate }}
           </ion-card-header>
           <ion-card-content>
-            <ion-fab *ngIf="views.length>1" top left [ngClass]="(views.length>1)?'close-button-many':'close-button-one'">
+            <ion-fab *ngIf="views.length>1" top left #fabmenu [ngClass]="(views.length>1)?'column-options-many':'column-options-one'">
               <button ion-fab mini>
                 <ion-icon *ngIf="view.established.show" name="menu"></ion-icon>
                 <ion-icon *ngIf="view.comments.show" name="menu"></ion-icon>
@@ -108,9 +108,11 @@
                 <button ion-fab *ngIf="displayToggle" (click)="removeSlide(i)">
                   <ion-icon name="trash"></ion-icon>
                 </button>
-                <button ion-fab (click)="swipeTabs(i)">
-                  <ion-icon *ngIf="i<views.length-1" name="return-right"></ion-icon>
-                  <ion-icon *ngIf="i==views.length-1" name="return-left"></ion-icon>
+                <button ion-fab *ngIf="i > -1 && views.length-1 > i" (click)="moveViewRight(i, fabmenu)">
+                  <ion-icon name="return-right"></ion-icon>
+                </button>
+                <button ion-fab *ngIf="views.length > i && i > 0" (click)="moveViewLeft(i, fabmenu)">
+                  <ion-icon name="return-left"></ion-icon>
                 </button>
               </ion-fab-list>
             </ion-fab>
