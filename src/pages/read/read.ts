@@ -1092,8 +1092,8 @@ export class ReadPage /*implements OnDestroy*/ {
           } else if (eventTarget['classList'].contains('ttMs')
           || eventTarget['classList'].contains('tooltipMs')) {
             if (eventTarget['classList'].contains('unclear')) {
-              /** Editorial note about unclear text, should be clickable only in
-               *  the reading text column. */
+              /* Editorial note about unclear text, should be clickable only in
+                 the reading text column. */
               let parentElem: HTMLElement = eventTarget as HTMLElement;
               parentElem = parentElem.parentElement;
               while (parentElem !== null && parentElem.tagName !== 'READ-TEXT') {
@@ -1123,16 +1123,16 @@ export class ReadPage /*implements OnDestroy*/ {
             modalShown = true;
           }
 
-          /** Get the parent node of the event target for the next iteration
-           *  if a modal or infoOverlay hasn't been shown already. This is
-           *  for finding nested tooltiptriggers, i.e. a person can be a
-           *  child of a change. */
+          /* Get the parent node of the event target for the next iteration
+             if a modal or infoOverlay hasn't been shown already. This is
+             for finding nested tooltiptriggers, i.e. a person can be a
+             child of a change. */
           if (!modalShown) {
             eventTarget = eventTarget['parentNode'];
             if (!eventTarget['classList'].contains('tooltiptrigger')
             && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
-              /** The parent isn't a tooltiptrigger, but the parent of the parent
-               *  is, use it for the next iteration. */
+              /* The parent isn't a tooltiptrigger, but the parent of the parent
+                 is, use it for the next iteration. */
               eventTarget = eventTarget['parentNode'];
             }
           }
@@ -2871,7 +2871,6 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   private scrollToVariant(element: HTMLElement) {
-    this.scrollElementIntoView(element);
     this.hideToolTip();
     try {
       if (element['classList'].contains('variantScrollTarget')) {
@@ -2908,14 +2907,15 @@ export class ReadPage /*implements OnDestroy*/ {
           iClassList = elems[i].className.split(' ');
           for (let y = 0; y < iClassList.length; y++) {
             if (iClassList[y] === targetClassName || iClassList[y] === targetCompClassName) {
-              this.scrollElementIntoView(elems[i]);
               elems[i].classList.add('highlight');
               setTimeout(function () {
                 if (elems[i] !== undefined) {
                   elems[i].classList.remove('highlight');
                 }
               }, 5000);
-              break;
+              if (iClassList[y] === targetClassName) {
+                this.scrollElementIntoView(elems[i]);
+              }
             }
           }
         }
