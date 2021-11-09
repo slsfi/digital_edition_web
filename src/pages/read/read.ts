@@ -2685,7 +2685,7 @@ export class ReadPage /*implements OnDestroy*/ {
     this.updateCachedViewModes();
   }
 
-  swipeTabs(prefix: string, id: number) {
+  swipeTabs(id: number) {
     if (id === this.views.length - 1) {
       // Last (right-most) column selected, move it to the left
       this.views = this.moveArrayItem(this.views, id, id - 1);

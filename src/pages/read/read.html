@@ -108,8 +108,9 @@
                 <button ion-fab *ngIf="displayToggle" (click)="removeSlide(i)">
                   <ion-icon name="trash"></ion-icon>
                 </button>
-                <button ion-fab (click)="swipeTabs('read_div_', i)">
-                  <ion-icon name="swap"></ion-icon>
+                <button ion-fab (click)="swipeTabs(i)">
+                  <ion-icon *ngIf="i<views.length-1" name="return-right"></ion-icon>
+                  <ion-icon *ngIf="i==views.length-1" name="return-left"></ion-icon>
                 </button>
               </ion-fab-list>
             </ion-fab>
