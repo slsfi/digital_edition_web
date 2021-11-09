@@ -1,58 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   version="1.1"
-   id="svg3998"
-   width="12"
-   height="12"
-   viewBox="0 0 12 12"
-   sodipodi:docname="ms_arrow_right_gray.svg"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)">
-  <metadata
-     id="metadata4004">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <defs
-     id="defs4002" />
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1595"
-     inkscape:window-height="774"
-     id="namedview4000"
-     showgrid="false"
-     inkscape:zoom="19.666667"
-     inkscape:cx="-0.33050847"
-     inkscape:cy="12.101695"
-     inkscape:window-x="2256"
-     inkscape:window-y="231"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="svg3998" />
-  <polygon
-     transform="matrix(0,0.24692258,0.2583867,0,-0.30916488,-0.02405425)"
-     points="2.927,6.226 46.072,6.226 24.5,43.593 "
-     id="polygon2"
-     style="fill:#666666" />
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 14.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 43363)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="50px" height="50px" fill = "rgb(102, 102, 102)"  viewBox="0 0 50 50" enable-background="new 0 0 50 50" xml:space="preserve">
+<polygon points="4.317,3.337 41.684,24.909 4.317,46.482 "/>
 </svg>
