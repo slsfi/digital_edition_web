@@ -35,7 +35,12 @@
     &.var_margin {
         position: absolute;
         left: -1em;
+        text-indent: 1.25em !important;
     }
+}
+
+.teiVariant.ref_variant + .teiVariant.ref_variant {
+    margin-left: -0.125em;
 }
 
 p.strofeSpacing {

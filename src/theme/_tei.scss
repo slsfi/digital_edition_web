@@ -173,7 +173,8 @@ div.tei span.extVariantsTrigger img {
 }
 div.tei span.anchor_lemma img,
 div.tei img.inl_ms_arrow,
-div.tei span.anchorScrollTarget.highlight img {
+div.tei span.anchorScrollTarget.highlight img,
+div.tei a.ref_variant.tooltiptrigger.highlight img {
     animation: filter-animation-brightness 1.5s infinite;
 }
 div.tei.xsmallFontSize span.anchor_lemma img,

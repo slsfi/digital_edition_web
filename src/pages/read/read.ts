@@ -1221,6 +1221,38 @@ export class ReadPage /*implements OnDestroy*/ {
                 }
               }
             }
+          } else if (anchorElem.classList.contains('ref_variant')) {
+            // Click on link to another variant text
+            const sid = 'sid-' + anchorElem.href.split(';sid-')[1];
+            const varTargets = Array.from(document.querySelectorAll('#' + sid));
+
+            if (varTargets.length > 0) {
+              this.scrollElementIntoView(anchorElem);
+              anchorElem.classList.add('highlight');
+              window.setTimeout(function(elem) {
+                elem.classList.remove('highlight');
+              }.bind(null, anchorElem), 5000);
+
+              varTargets.forEach(function(varTarget: HTMLElement) {
+                this.scrollElementIntoView(varTarget);
+                if (varTarget.firstElementChild !== null
+                  && varTarget.firstElementChild !== undefined) {
+                  if (varTarget.firstElementChild.classList.contains('var_margin')) {
+                    const marginElem = varTarget.firstElementChild;
+
+                    // Highlight all children of the margin element that have the ref_variant class
+                    const refVariants = Array.from(marginElem.querySelectorAll('.ref_variant'));
+                    refVariants.forEach(function(refVariant: HTMLElement) {
+                      refVariant.classList.add('highlight');
+                      window.setTimeout(function(elem) {
+                        elem.classList.remove('highlight');
+                      }.bind(null, refVariant), 5000);
+                    });
+                  }
+                }
+              }.bind(this));
+            }
+
           } else if (anchorElem.classList.contains('ref_external')) {
             // Link to external web page, open in new window/tab.
             if (anchorElem.hasAttribute('href')) {
@@ -2689,7 +2721,7 @@ export class ReadPage /*implements OnDestroy*/ {
    *  positions with the view on the right. If a FabContainer is passed
    *  it is closed. */
   moveViewRight(id: number, fab?: FabContainer) {
-    if (id > -1 && id < this.views.length-1) {
+    if (id > -1 && id < this.views.length - 1) {
       this.views = this.moveArrayItem(this.views, id, id + 1);
       this.updateURL();
       this.updateCachedViewModes();
