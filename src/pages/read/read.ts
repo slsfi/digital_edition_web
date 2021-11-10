@@ -956,41 +956,38 @@ export class ReadPage /*implements OnDestroy*/ {
       return event.target;
     }
     try {
-      if (event.target !== undefined && event.target !== null && event.target['classList'] !== undefined
-      && event.target['classList'].contains('tooltiptrigger')) {
-        eventTarget = event.target;
-      } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null
-      && event['target']['parentNode']['classList'] !== undefined
-      && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
-        eventTarget = event['target']['parentNode'];
-      } else if (event['target']['parentNode']['parentNode'] !== undefined && event['target']['parentNode']['parentNode'] !== null
-      && event['target']['parentNode']['classList'] !== undefined
-      && event['target']['parentNode']['parentNode']['classList'].contains('tooltiptrigger')) {
-        eventTarget = event['target']['parentNode']['parentNode'];
-      } else if (event.target !== undefined && event.target !== null && event['target']['classList'] !== undefined
-      && event['target']['classList'].contains('anchor')) {
-        eventTarget = event.target;
-      } else if (event.target !== undefined && event.target !== null && event['target']['classList'] !== undefined
-      && event['target']['classList'].contains('variantScrollTarget')) {
-        eventTarget = event.target;
-      } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null
-      && event['target']['parentNode']['classList'] !== undefined
-      && event['target']['parentNode']['classList'].contains('variantScrollTarget')) {
-        eventTarget = event['target']['parentNode'];
-      } else if (event.target !== undefined && event.target !== null && event['target']['classList'] !== undefined
-      && event['target']['classList'].contains('anchorScrollTarget')) {
-        eventTarget = event.target;
-      } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null
-      && event['target']['parentNode']['classList'] !== undefined
-      && event['target']['parentNode']['classList'].contains('anchorScrollTarget')) {
-        eventTarget = event['target']['parentNode'];
-      } else if (event.target !== undefined && event.target !== null && event['target']['classList'] !== undefined
-      && event['target']['classList'].contains('extVariantsTrigger')) {
-        eventTarget = event.target;
-      } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null
-      && event['target']['parentNode']['classList'] !== undefined
-      && event['target']['parentNode']['classList'].contains('extVariantsTrigger')) {
-        eventTarget = event['target']['parentNode'];
+      if (event.target !== undefined && event.target !== null) {
+        if (event.target['classList'] !== undefined && event.target['classList'].contains('tooltiptrigger')) {
+          eventTarget = event.target;
+        } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null
+        && event['target']['parentNode']['classList'] !== undefined
+        && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
+          eventTarget = event['target']['parentNode'];
+        } else if (event['target']['parentNode']['parentNode'] !== undefined && event['target']['parentNode']['parentNode'] !== null
+        && event['target']['parentNode']['classList'] !== undefined
+        && event['target']['parentNode']['parentNode']['classList'].contains('tooltiptrigger')) {
+          eventTarget = event['target']['parentNode']['parentNode'];
+        } else if (event['target']['classList'] !== undefined && event['target']['classList'].contains('anchor')) {
+          eventTarget = event.target;
+        } else if (event['target']['classList'] !== undefined && event['target']['classList'].contains('variantScrollTarget')) {
+          eventTarget = event.target;
+        } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null
+        && event['target']['parentNode']['classList'] !== undefined
+        && event['target']['parentNode']['classList'].contains('variantScrollTarget')) {
+          eventTarget = event['target']['parentNode'];
+        } else if (event['target']['classList'] !== undefined && event['target']['classList'].contains('anchorScrollTarget')) {
+          eventTarget = event.target;
+        } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null
+        && event['target']['parentNode']['classList'] !== undefined
+        && event['target']['parentNode']['classList'].contains('anchorScrollTarget')) {
+          eventTarget = event['target']['parentNode'];
+        } else if (event['target']['classList'] !== undefined && event['target']['classList'].contains('extVariantsTrigger')) {
+          eventTarget = event.target;
+        } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null
+        && event['target']['parentNode']['classList'] !== undefined
+        && event['target']['parentNode']['classList'].contains('extVariantsTrigger')) {
+          eventTarget = event['target']['parentNode'];
+        }
       }
     } catch (e) {
       console.log('Error resolving event target in getEventTarget() in read.ts');
