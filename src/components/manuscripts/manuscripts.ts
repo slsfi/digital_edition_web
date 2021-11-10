@@ -56,7 +56,7 @@ export class ManuscriptsComponent {
   }
 
   ngOnInit() {
-    const parts = String(this.itemId).split('_')
+    const parts = String(this.itemId).split('_');
     this.chapter = null;
     if ( parts[2] !== undefined ) {
       this.chapter = parts[2];
