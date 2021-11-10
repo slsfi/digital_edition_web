@@ -984,9 +984,16 @@ export class ReadPage /*implements OnDestroy*/ {
       && event['target']['parentNode']['classList'] !== undefined
       && event['target']['parentNode']['classList'].contains('anchorScrollTarget')) {
         eventTarget = event['target']['parentNode'];
+      } else if (event.target !== undefined && event.target !== null && event['target']['classList'] !== undefined
+      && event['target']['classList'].contains('extVariantsTrigger')) {
+        eventTarget = event.target;
+      } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null
+      && event['target']['parentNode']['classList'] !== undefined
+      && event['target']['parentNode']['classList'].contains('extVariantsTrigger')) {
+        eventTarget = event['target']['parentNode'];
       }
     } catch (e) {
-      console.log('Error resolving event target in getEventTarget in read.ts');
+      console.log('Error resolving event target in getEventTarget() in read.ts');
       console.error(e);
     }
     return eventTarget;
@@ -1149,6 +1156,17 @@ export class ReadPage /*implements OnDestroy*/ {
           window.setTimeout(function(elem) {
             elem.classList.remove('highlight');
           }.bind(null, eventTarget), 5000);
+        } else if (eventTarget['classList'].contains('extVariantsTrigger')) {
+          // Click on trigger for showing links to external variants
+          if (eventTarget.nextElementSibling !== null && eventTarget.nextElementSibling !== undefined) {
+            if (eventTarget.nextElementSibling.classList.contains('extVariants')
+            && !eventTarget.nextElementSibling.classList.contains('show-extVariants')) {
+              eventTarget.nextElementSibling.classList.add('show-extVariants');
+            } else if (eventTarget.nextElementSibling.classList.contains('extVariants')
+            && eventTarget.nextElementSibling.classList.contains('show-extVariants')) {
+              eventTarget.nextElementSibling.classList.remove('show-extVariants');
+            }
+          }
         }
 
         // Possibly click on link.
@@ -1248,6 +1266,14 @@ export class ReadPage /*implements OnDestroy*/ {
                         elem.classList.remove('highlight');
                       }.bind(null, refVariant), 5000);
                     });
+
+                    if (marginElem.firstElementChild !== null && marginElem.firstElementChild !== undefined
+                      && marginElem.firstElementChild.classList.contains('extVariantsTrigger')) {
+                        marginElem.firstElementChild.classList.add('highlight');
+                        window.setTimeout(function(elem) {
+                          elem.classList.remove('highlight');
+                        }.bind(null, marginElem.firstElementChild), 5000);
+                    }
                   }
                 }
               }.bind(this));
