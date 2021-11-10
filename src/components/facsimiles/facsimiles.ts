@@ -202,6 +202,11 @@ export class FacsimilesComponent {
           this.selectedFacsimile.title = this.facsPage['title'];
           this.selectedFacsimileName = this.selectedFacsimile.title;
 
+          let sectionId = '';
+          if ( String(this.itemId).indexOf('ch') > 0 ) {
+            sectionId = String((String(String(this.itemId).split(';')[0]).split('_')[2]).replace('ch', ''));
+          }
+
           // add all
           for (const f of facs) {
             const facsimile = new Facsimile(f);
@@ -214,7 +219,13 @@ export class FacsimilesComponent {
               this.externalFacsimilesExist = true;
               this.externalURLs.push({'title': f['title'], 'url': f['external_url']});
             } else {
-              this.facsimiles.push(facsimile);
+              if ( sectionId !== '' ) {
+                if ( String(f['section_id']) === sectionId ) {
+                  this.facsimiles.push(facsimile);
+                }
+              } else {
+                this.facsimiles.push(facsimile);
+              }
             }
           }
 
