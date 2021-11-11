@@ -26,6 +26,10 @@
                   <ion-icon class="settings-icon" name="settings"></ion-icon>
                   <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Popover.Options' | translate }}</span>
                 </button-->
+                <button ion-button clear class="sec-menu-button" (click)="downloadEpub()">
+                    <ion-icon name="download" class="intro-dowload-button"></ion-icon>
+                    <span class="side-title">{{'download' | translate }}</span>
+                </button>
                 <button ion-button clear class="sec-menu-button">
                   <div id="toc_menu" (click)="toggleSearchMenu()">
                       <ion-icon name="search" class="intro-search-button" *ngIf="!searchMenuOpen"></ion-icon>

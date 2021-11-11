@@ -130,7 +130,8 @@
         "getFacsimilePagesInfinite": false,
         "showReadTextIllustrations": [],
         "galleryCollectionMapping": {"214": 44},
-        "facsimileDefaultZoomLevel": 3
+        "facsimileDefaultZoomLevel": 3,
+        "facsimileZoomPageLevel": 1
     },
     "i18n": {
         "languages": [
@@ -529,6 +530,9 @@
       }
     },
     "AvailableEpubs": {
-      "Dagböcker": "2685.epub"
+      "Dagböcker": {
+        "filename": "NY_soderholm_dagbocker.epub",
+        "download": "https://www.sls.fi/sv/utgivning/kerstin-soderholms-dagbocker"
+      }
     }
 }
