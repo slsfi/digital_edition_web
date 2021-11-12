@@ -164,8 +164,12 @@ export class TextService {
   getVariations(id: string): Observable<any> {
     const c_id = `${id}`.split('_')[0];
     const pub_id = `${id}`.split('_')[1];
+    let chapter = `${id}`.split('_')[2];
+    if (chapter !== undefined && chapter !== null) {
+        chapter = chapter.split(';')[0];
+    }
     const url = this.config.getSettings('app.apiEndpoint') + '/' +
-    this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/var';
+    this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/var' + ((chapter) ? '/' + chapter + '' : '');
     return this.http.get( url )
         .map(res => {
           return res.json();
