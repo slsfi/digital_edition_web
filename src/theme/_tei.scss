@@ -1862,8 +1862,9 @@ manuscripts div.tei img.teiManuscript.doodle {
 }
 
 /* Show doodles in read-text when there is an illustrations-view open and
-   always in manuscript-views. */
+   always in manuscript-views. Also always show 'unkown' doodle images in read-text. */
 .illustrations-view-shown read-text div.tei img.doodle,
+read-text div.tei img.doodle.unknown,
 manuscripts div.tei img.teiManuscript.doodle {
     display: inline-block !important;
 }

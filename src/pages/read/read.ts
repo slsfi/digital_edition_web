@@ -1500,6 +1500,19 @@ export class ReadPage /*implements OnDestroy*/ {
               }
             }
           }
+
+          /* Check if mouse over doodle image which has a parent tooltiptrigger */
+          if (eventTarget.hasAttribute('data-id')
+          && eventTarget['classList'].contains('doodle')
+          && eventTarget['classList'].contains('unknown')) {
+            if (eventTarget['parentNode'] !== undefined && eventTarget['parentNode'] !== null
+            && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
+              eventTarget = eventTarget['parentNode'];
+              this.ngZone.run(() => {
+                this.showTooltipFromInlineHtml(eventTarget);
+              });
+            }
+          }
         }
       });
 
