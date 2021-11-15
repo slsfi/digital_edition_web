@@ -1546,6 +1546,7 @@ div.tei {
     }
     p.item {
         text-indent: 0 !important;
+        contain: none; /* Needed to override Ionic's generic style for .item */
     }
     p.item_indented {
         margin-left: 40px !important;
