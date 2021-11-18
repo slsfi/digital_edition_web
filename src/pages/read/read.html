@@ -121,6 +121,19 @@
               <div *ngIf="view.established.show">
                 <read-text [link]="establishedText.link" [matches]="matches" [external]="external" [nochapterPos]="nochapterPos" (openNewIllustrView)="openNewView($event)"></read-text>
               </div>
+
+              <div *ngIf="view.established.show && !multilingualEST">
+                <read-text [link]="establishedText.link" [matches]="matches" [external]="external" [nochapterPos]="nochapterPos" (openNewIllustrView)="openNewView($event)"></read-text>
+              </div>
+
+              <div *ngIf="multilingualEST && displayToggles['established']">
+                <div *ngFor="let lang of estLanguages">
+                  <div *ngIf="view['established_' + lang].show">
+                    <read-text [link]="establishedText.link + '_' + lang" [matches]="matches" [external]="external" [nochapterPos]="nochapterPos" (openNewIllustrView)="openNewView($event)"></read-text>
+                  </div>
+                </div>
+              </div>
+
               <div *ngIf="view.comments.show">
                 <comments [link]="establishedText.link" [matches]="matches" [external]="external" (openNewIntroView)="openNewView($event)">
                 </comments>
@@ -166,10 +179,16 @@
         <ion-icon name="albums"></ion-icon>
         <ion-label>{{ "Read.ShowAll" | translate }}</ion-label>
       </button>
-      <button ion-fab (click)="addView('established', undefined, fab); scrollLastViewIntoView()" *ngIf="displayToggles['established']">
+      <button ion-fab (click)="addView('established', undefined, fab); scrollLastViewIntoView()" *ngIf="!multilingualEST && displayToggles['established']">
         <ion-icon name="book"></ion-icon>
         <ion-label>{{ "Read.Established.AddButtonText" | translate }}</ion-label>
       </button>
+      <div *ngIf="multilingualEST && displayToggles['established']">
+        <button ion-fab (click)="addView('established', undefined, fab, null, null, lang); scrollLastViewIntoView()" *ngFor="let lang of estLanguages">
+          <ion-icon name="book"></ion-icon>
+          <ion-label>{{ "Read.Established.AddButtonText" | translate }} - {{lang}}</ion-label>
+        </button>
+      </div>
       <button ion-fab (click)="addView('comments', undefined, fab); scrollLastViewIntoView()" *ngIf="displayToggles['comments']">
         <ion-icon name="chatbubbles"></ion-icon>
         <ion-label>{{ "Read.Comments.AddButtonText" | translate }}</ion-label>
