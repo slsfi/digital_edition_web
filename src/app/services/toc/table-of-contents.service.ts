@@ -10,8 +10,18 @@ export class TableOfContentsService {
 
   private tableOfContentsUrl = '/toc/';  // plus an id...
   private prevNextUrl = '/table-of-contents/';  // plus an id...
+  apiEndpoint: string;
 
   constructor(private http: Http, private config: ConfigService) {
+    this.apiEndpoint = this.config.getSettings('app.apiEndpoint');
+    try {
+      const simpleApi = this.config.getSettings('app.simpleApi');
+      if (simpleApi) {
+        this.apiEndpoint = simpleApi;
+      }
+    } catch (e) {
+
+    }
   }
 
   getToc(): Observable<any> {
@@ -21,7 +31,7 @@ export class TableOfContentsService {
   }
 
   getTableOfContents (id: string) {
-    return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
+    return this.http.get(  this.apiEndpoint + '/' +
                            this.config.getSettings('app.machineName') +
                            this.tableOfContentsUrl + id)
                     .map(this.extractData)
@@ -30,7 +40,7 @@ export class TableOfContentsService {
 
   async getTableOfContentsPromise (id: string): Promise<any> {
     try {
-      const response =  await this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
+      const response =  await this.http.get(  this.apiEndpoint + '/' +
                         this.config.getSettings('app.machineName') +
                         this.tableOfContentsUrl + id)
                         .toPromise();
