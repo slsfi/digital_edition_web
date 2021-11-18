@@ -73,6 +73,9 @@ export class ReadPage /*implements OnDestroy*/ {
   textType: TextType = TextType.ReadText;
 
   id: string;
+  multilingualEST: false;
+  estLanguages = [];
+  estLang: "none";
   establishedText: EstablishedText;
   errorMessage: string;
   appName: string;
@@ -239,6 +242,20 @@ export class ReadPage /*implements OnDestroy*/ {
     try {
       this.appUsesAccordionToc = this.config.getSettings('AccordionTOC');
     } catch (e) {
+      console.log(e);
+    }
+
+    try {
+      const i18n = this.config.getSettings('i18n');
+      console.log(i18n)
+
+      this.multilingualEST = i18n.multilingualEST;
+      this.estLanguages = i18n.estLanguages;
+      this.estLang = i18n.estLanguages[0];
+    } catch (e) {
+      this.multilingualEST = false;
+      this.estLanguages = [];
+      this.estLang = 'none';
       console.log(e);
     }
 
