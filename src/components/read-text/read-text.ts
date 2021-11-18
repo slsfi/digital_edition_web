@@ -59,8 +59,6 @@ export class ReadTextComponent {
     this.defaultView = this.config.getSettings('defaults.ReadModeView');
     this.intervalTimerId = 0;
 
-    console.log("READ:" + this.link);
-
     try {
       const displayTypes = this.config.getSettings('settings.displayTypesToggles');
       if (displayTypes.illustrations === true) {
@@ -86,6 +84,7 @@ export class ReadTextComponent {
       this.setIllustrationsInReadtextStatus();
     }
     this.setUpTextListeners();
+
   }
 
   ngAfterViewInit() {

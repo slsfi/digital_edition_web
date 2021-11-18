@@ -252,7 +252,6 @@ export class ReadPage /*implements OnDestroy*/ {
       this.multilingualEST = i18n.multilingualEST;
       this.estLanguages = i18n.estLanguages;
       this.estLang = i18n.estLanguages[0];
-      console.log("estlanguages", this.estLanguages);
     } catch (e) {
       this.multilingualEST = false;
       this.estLanguages = [];
@@ -327,7 +326,6 @@ export class ReadPage /*implements OnDestroy*/ {
 
       const title = global.getSubtitle();
       this.tocRoot = this.params.get('root');
-
       this.establishedText = new EstablishedText({ link: link, id: this.id, title: title, text: '' });
 
       if (this.params.get('legacyId') !== undefined) {
@@ -539,7 +537,6 @@ export class ReadPage /*implements OnDestroy*/ {
     this.tocService.getTableOfContents(id)
       .subscribe(
         tocItems => {
-          console.log('get toc root... --- --- in read');
           tocItems.selectedCollId = null;
           tocItems.selectedPubId = null;
           if (this.params.get('collectionID') && this.params.get('publicationID')) {
@@ -562,7 +559,6 @@ export class ReadPage /*implements OnDestroy*/ {
           && chIDFromParams !== ':chapterID'
           && chIDFromParams !== 'chapterID') {
             tocItems.selectedChapterId = chIDFromParams;
-            console.log('toc chapterId: ' + tocItems.selectedChapterId);
           } else {
             tocItems.selectedChapterId = '';
           }

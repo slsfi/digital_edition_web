@@ -118,15 +118,12 @@
             </ion-fab>
             <!-- Don't scroll in facsimile view -->
             <ion-scroll [scrollY]="!view.facsimiles.show" style="height:100vh;" class="card" #scrollBar>
-              <div *ngIf="view.established.show">
+
+              <div *ngIf="view.established.show && !multilingualEST && establishedText.link">
                 <read-text [link]="establishedText.link" [matches]="matches" [external]="external" [nochapterPos]="nochapterPos" (openNewIllustrView)="openNewView($event)"></read-text>
               </div>
 
-              <div *ngIf="view.established.show && !multilingualEST">
-                <read-text [link]="establishedText.link" [matches]="matches" [external]="external" [nochapterPos]="nochapterPos" (openNewIllustrView)="openNewView($event)"></read-text>
-              </div>
-
-              <div *ngIf="multilingualEST && displayToggles['established']">
+              <div *ngIf="multilingualEST && displayToggles['established'] && establishedText.link">
                 <div *ngFor="let lang of estLanguages">
                   <div *ngIf="view['established_' + lang].show">
                     <read-text [link]="establishedText.link + '_' + lang" [matches]="matches" [external]="external" [nochapterPos]="nochapterPos" (openNewIllustrView)="openNewView($event)"></read-text>
