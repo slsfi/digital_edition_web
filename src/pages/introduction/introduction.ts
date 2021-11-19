@@ -398,7 +398,13 @@ export class IntroductionPage {
 
             } else if (anchorElem.classList.contains('ref_introduction')) {
               // Link to introduction.
-              publicationId = hrefTargetItems[0];
+              if (hrefTargetItems.length == 1 && hrefTargetItems[0].startsWith('#')) {
+                // If only a position starting with a hash, assume it's in the same publication.
+                publicationId = this.id;
+                positionId = hrefTargetItems[0];
+              } else {
+                publicationId = hrefTargetItems[0];
+              }
               if (hrefTargetItems.length > 1 && hrefTargetItems[hrefTargetItems.length - 1].startsWith('#')) {
                 positionId = hrefTargetItems[hrefTargetItems.length - 1];
               }
