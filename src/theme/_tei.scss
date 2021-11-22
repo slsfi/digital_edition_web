@@ -1677,17 +1677,17 @@ div.tei {
     .frontmatterNext + span {
         margin-top: 1em !important;
     }
+    div.comment_background {
+        font-size: 0.95em;
+        margin: 1.75em 0;
+    }
+    div.comment_background p,
     div.comment_background h3 {
         color: #55524c;
-        font-size: 1.05em !important;
     }
-    div.comment_background p {
-        color: #55524c;
-        font-size: 1.05em !important;
-    }
-    span.comment_background {
-        color: #55524c;
-        font-size: 1.05em !important;
+    div.comment_background h3 {
+        font-size: 1.1em;
+        margin-bottom: 0.5em;
     }
     div.comment_background p:first-child {
         margin-top: 1.5em;
