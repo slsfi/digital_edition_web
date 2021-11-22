@@ -22,6 +22,7 @@ import { GenericSettingsService } from '../../app/services/settings/generic-sett
 export class TopMenuComponent {
   @Input() splitPaneMobile?: boolean;
   @Input() splitPanePossible?: boolean;
+  @Input() splitPaneOpen?: boolean;
   @Output() hamburgerMenuClick = new EventEmitter();
 
   public title: string;
