@@ -398,7 +398,7 @@ export class IntroductionPage {
 
             } else if (anchorElem.classList.contains('ref_introduction')) {
               // Link to introduction.
-              if (hrefTargetItems.length == 1 && hrefTargetItems[0].startsWith('#')) {
+              if (hrefTargetItems.length === 1 && hrefTargetItems[0].startsWith('#')) {
                 // If only a position starting with a hash, assume it's in the same publication.
                 publicationId = this.id;
                 positionId = hrefTargetItems[0];
