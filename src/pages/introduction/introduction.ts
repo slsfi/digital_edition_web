@@ -527,32 +527,62 @@ export class IntroductionPage {
     this.tooltipService.getPersonTooltip(id).subscribe(
       tooltip => {
         let text = '';
+        let uncertainPretext = '';
+        let fictionalPretext = '';
+        if (targetElem.classList.contains('uncertain')) {
+          this.translate.get('uncertainPersonCorresp').subscribe(
+            translation => {
+              if (translation !== 'uncertainPersonCorresp') {
+                uncertainPretext = translation + ' ';
+              }
+            }, error => { }
+          );
+        }
+        if (targetElem.classList.contains('fictional')) {
+          this.translate.get('fictionalPersonCorresp').subscribe(
+            translation => {
+              if (translation !== 'fictionalPersonCorresp') {
+                fictionalPretext = translation + ':<br/>';
+              }
+            }, error => { }
+          );
+        }
         if ( tooltip.date_born !== null || tooltip.date_deceased !== null ) {
-          const date_born = String(tooltip.date_born).split('-')[0].replace(/^0+/, '');
-          const date_deceased = String(tooltip.date_deceased).split('-')[0].replace(/^0+/, '');
+          // Get the born and deceased years without leading zeros and possible 'BC' indicators
+          const year_born = String(tooltip.date_born).split('-')[0].replace(/^0+/, '').split(' ')[0];
+          const year_deceased = String(tooltip.date_deceased).split('-')[0].replace(/^0+/, '').split(' ')[0];
+          // Get translation for 'BC'
           let bcTranslation = 'BC';
           this.translate.get('BC').subscribe(
             translation => {
               bcTranslation = translation;
             }, error => { }
           );
-          const bcIndicator = (String(tooltip.date_deceased).includes('BC')) ? ' ' + bcTranslation : '';
+          const bcIndicatorDeceased = (String(tooltip.date_deceased).includes('BC')) ? ' ' + bcTranslation : '';
+          let bcIndicatorBorn = (String(tooltip.date_born).includes('BC')) ? ' ' + bcTranslation : '';
+          if (String(tooltip.date_born).includes('BC') && bcIndicatorDeceased === bcIndicatorBorn) {
+            // Born and deceased BC, don't add indicator to year born
+            bcIndicatorBorn = '';
+          }
           text = '<b>' + tooltip.name + '</b> (';
-          if (date_born !== null && date_deceased !== null && date_born !== 'null' && date_born !== 'null') {
-            text += date_born + '–' + date_deceased + '' + bcIndicator;
-          } else if (date_born !== null && date_born !== 'null') {
-            text += '* ' + date_born + bcIndicator;
-          } else if (date_deceased !== null && date_deceased !== 'null') {
-            text += '&#8224; ' + date_deceased + bcIndicator;
+          if (year_born !== null && year_deceased !== null && year_born !== 'null' && year_born !== 'null') {
+            text += year_born + bcIndicatorBorn + '–' + year_deceased + bcIndicatorDeceased;
+          } else if (year_born !== null && year_born !== 'null') {
+            text += '* ' + year_born + bcIndicatorBorn;
+          } else if (year_deceased !== null && year_deceased !== 'null') {
+            text += '&#8224; ' + year_deceased + bcIndicatorDeceased;
           }
           text += ')';
         } else {
           text = '<b>' + tooltip.name + '</b>';
         }
 
-        if ( tooltip.description !== null ) {
+        if (tooltip.description !== null) {
           text += ', ' + tooltip.description
         }
+
+        text = uncertainPretext + text;
+        text = fictionalPretext + text;
 
         this.setToolTipPosition(targetElem, text);
         this.setToolTipText(text);
