@@ -7,6 +7,7 @@ import { ToastController, Events, ModalController, App } from 'ionic-angular';
 import { IllustrationPage } from '../../pages/illustration/illustration';
 import { ConfigService } from '@ngx-config/core';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
+import { TranslateService } from '@ngx-translate/core';
 import { TextCacheService } from '../../app/services/texts/text-cache.service';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 /**
@@ -51,6 +52,7 @@ export class ReadTextComponent {
     private elementRef: ElementRef,
     private config: ConfigService,
     public userSettingsService: UserSettingsService,
+    public translate: TranslateService,
     protected modalController: ModalController,
     private analyticsService: AnalyticsService
   ) {
@@ -224,33 +226,45 @@ export class ReadTextComponent {
     this.textService.getEstablishedText(this.link).subscribe(
       text => {
         this.textLoading = false;
-        const c_id = String(this.link).split('_')[0];
-        let galleryId = 44;
-        try {
-          galleryId = this.config.getSettings('settings.galleryCollectionMapping')[c_id];
-        } catch ( err ) {
-
-        }
-        if ( String(text).includes('/images/verk/http') ) {
-          text = text.replace(/images\/verk\//g, '');
+        if (text === '' || text === '<html xmlns="http://www.w3.org/1999/xhtml"><head></head><body>File not found</body></html>') {
+          console.log('no reading text');
+          this.translate.get('Read.Established.NoEstablished').subscribe(
+            translation => {
+              this.text = translation;
+            }, error => {
+              console.error(error);
+              this.text = 'Ingen lästext';
+            }
+          );
         } else {
-          text = text.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/${galleryId}/`);
-        }
-        text = text.replace(/\.png/g, '.svg');
-        text = text.replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"');
-        text = text.replace(/images\//g, 'assets/images/');
-        this.text = this.sanitizer.bypassSecurityTrustHtml(
-          text
-        );
-        if (this.matches instanceof Array && this.matches.length > 0) {
-          let tmpText: any = '';
-          this.matches.forEach(function (val) {
-            const re = new RegExp('(' + val + ')', 'ig');
-            tmpText = this.sanitizer.bypassSecurityTrustHtml(
-              text.replace(re, '<match>$1</match>')
-            );
-          }.bind(this));
-          this.text = tmpText;
+          const c_id = String(this.link).split('_')[0];
+          let galleryId = 44;
+          try {
+            galleryId = this.config.getSettings('settings.galleryCollectionMapping')[c_id];
+          } catch ( err ) {
+
+          }
+          if ( String(text).includes('/images/verk/http') ) {
+            text = text.replace(/images\/verk\//g, '');
+          } else {
+            text = text.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/${galleryId}/`);
+          }
+          text = text.replace(/\.png/g, '.svg');
+          text = text.replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"');
+          text = text.replace(/images\//g, 'assets/images/');
+          this.text = this.sanitizer.bypassSecurityTrustHtml(
+            text
+          );
+          if (this.matches instanceof Array && this.matches.length > 0) {
+            let tmpText: any = '';
+            this.matches.forEach(function (val) {
+              const re = new RegExp('(' + val + ')', 'ig');
+              tmpText = this.sanitizer.bypassSecurityTrustHtml(
+                text.replace(re, '<match>$1</match>')
+              );
+            }.bind(this));
+            this.text = tmpText;
+          }
         }
       },
       error => { this.errorMessage = <any>error; this.textLoading = false; }
