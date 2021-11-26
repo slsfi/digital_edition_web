@@ -51,7 +51,7 @@ export class PersonSearchPage {
   personsCopy: any[] = [];
   searchText: string;
   texts: SingleOccurrence[] = [];
-  infiniteScrollNumber = 200;
+  infiniteScrollNumber = 800;
 
   personTitle: string;
   selectedLinkID: string;
@@ -107,6 +107,11 @@ export class PersonSearchPage {
         this.personSearchTypes = this.config.getSettings('PersonSearchTypes');
       } catch (e) {
         this.personSearchTypes = [];
+      }
+      try {
+        this.infiniteScrollNumber = this.config.getSettings('PersonSearch.InitialLoadNumber');
+      } catch (e) {
+        this.infiniteScrollNumber = 800;
       }
     });
   }

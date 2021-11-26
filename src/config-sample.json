@@ -329,7 +329,8 @@
     },
     "PersonSearch": {
         "ShowFilter": true,
-        "ShowPublishedStatus": 2
+        "ShowPublishedStatus": 2,
+        "InitialLoadNumber": 800
     },
     "LocationSearch": {
         "ShowFilter": true,
