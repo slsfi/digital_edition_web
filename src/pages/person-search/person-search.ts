@@ -204,7 +204,7 @@ export class PersonSearchPage {
 
   getPersons() {
     this.showLoading = true;
-    this.semanticDataService.getSubjectsElastic(this.from, this.searchText, this.filters).subscribe(
+    this.semanticDataService.getSubjectsElastic(this.from, this.searchText, this.filters, this.infiniteScrollNumber).subscribe(
       persons => {
         const personsTmp = [];
         persons = persons.hits.hits;
