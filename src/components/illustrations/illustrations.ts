@@ -100,14 +100,25 @@ export class IllustrationsComponent {
     let target = null as HTMLElement;
     try {
       if (image.class === 'doodle') {
-        const imageDataId = 'tag_' + imageSrc.replace('/assets/images/verk/', '').replace('.jpg', '');
+        let imageDataId = 'tag_' + imageSrc.replace('/assets/images/verk/', '').replace('.jpg', '');
         target = document.querySelector(`img.doodle[data-id="${imageDataId}"]`) as HTMLElement;
-        if (target !== null && target.previousElementSibling !== null && target.previousElementSibling !== undefined) {
-          if (target.previousElementSibling.previousElementSibling !== null
-            && target.previousElementSibling.previousElementSibling !== undefined
-            && target.previousElementSibling.previousElementSibling.classList.contains('ttNormalisations')) {
-            // Change the scroll target from the doodle icon itself to the preceding word which the icon represents.
-            target = target.previousElementSibling.previousElementSibling as HTMLElement;
+        if (target === null) {
+          // Try dropping the prefix 'tag_' from image data-id as unknown pictograms don't have this
+          imageDataId = imageDataId.replace('tag_', '');
+          target = document.querySelector(`img.doodle[data-id="${imageDataId}"]`) as HTMLElement;
+        }
+        if (target !== null) {
+          if (target.previousElementSibling !== null && target.previousElementSibling !== undefined) {
+            if (target.previousElementSibling.previousElementSibling !== null
+              && target.previousElementSibling.previousElementSibling !== undefined
+              && target.previousElementSibling.previousElementSibling.classList.contains('ttNormalisations')) {
+              // Change the scroll target from the doodle icon itself to the preceding word which the icon represents.
+              target = target.previousElementSibling.previousElementSibling as HTMLElement;
+            }
+          } else if (target.parentElement !== null && target.parentElement !== undefined) {
+            if (target.parentElement.classList.contains('ttNormalisations')) {
+              target = target.parentElement as HTMLElement;
+            }
           }
         }
       } else {

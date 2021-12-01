@@ -1,4 +1,4 @@
-<top-menu (hamburgerMenuClick)="toggleSplitPane()" [splitPanePossible]="splitPanePossible" [ngClass]="{'splitPanePossible': splitPanePossible}"></top-menu>
+<top-menu (hamburgerMenuClick)="toggleSplitPane()" [splitPanePossible]="splitPanePossible" [splitPaneOpen]="splitPaneOpen" [ngClass]="{'splitPanePossible': splitPanePossible}"></top-menu>
 <ion-split-pane [when]="splitPaneOpen && splitPanePossible">
 
     <!-- logged out menu -->
