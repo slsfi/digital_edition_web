@@ -193,7 +193,7 @@ export class FacsimilesComponent {
             this.facsPage = facs[0];
           }
 
-          if (this.facsPage['external_url'] !== null && this.facsPage['external_url'] !== '') {
+          if (this.facsPage['external_url'] !== null && this.facsPage['external_url'] !== '' && this.facsPage['folder_path'] == null) {
             this.selectedFacsimileIsExternal = true;
           }
 
