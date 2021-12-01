@@ -237,12 +237,15 @@ export class FacsimilesComponent {
             }
           }
 
-          if ( this.facsPage['external_url'] === undefined || this.facsPage['external_url'] === null
-            || this.facsPage['external_url'] === '' ) {
+          if (this.facsPage['external_url'] === undefined || this.facsPage['external_url'] === null
+            || this.facsPage['external_url'] === '') {
+            this.externalFacsimilesExist = false;
+            this.selectedFacsimileIsExternal = false;
+          }
+          if (this.facsPage['folder_path']) {
             this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
             this.config.getSettings('app.machineName') +
             `/facsimiles/${this.facsPage['publication_facsimile_collection_id']}/`;
-            this.externalFacsimilesExist = false;
             this.selectedFacsimileIsExternal = false;
           }
 
