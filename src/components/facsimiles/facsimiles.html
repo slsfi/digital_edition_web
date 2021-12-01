@@ -35,7 +35,7 @@
 
 <div id="facsimilies-image" *ngIf="facsimilePagesInfinite && facsNumber && !selectedFacsimileIsExternal">
   <img
-    [src]="facsUrl + facsNumber + (facsSize ? '/' + facsSize : '')"
+    [src]="facsBase ? facsBase +'/'+ facsPage['publication_facsimile_collection_id'] +'/'+ facsSize + '/' + facsNumber + '.jpg' : facsUrl + facsNumber + (facsSize ? '/' + facsSize : '')"
     [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
     (wheel)="onMouseWheel($event)"
     (pan)="handleSwipeEvent($event)"
