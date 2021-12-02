@@ -2767,7 +2767,7 @@ export class ReadPage /*implements OnDestroy*/ {
       const view = {
         content: `This is an upcoming ${type} view`,
         type,
-        established: { show: (type === 'established'), id: id },
+        established: { show: (type === 'established' && !this.multilingualEST), id: id },
         comments: { show: (type === 'comments'), id: id },
         facsimiles: { show: (type === 'facsimiles'), id: id },
         manuscripts: { show: (type === 'manuscripts'), id: id },
