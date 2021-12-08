@@ -207,7 +207,12 @@ export class TextService {
       chapter = String(chapter).split(';')[0];
     }
 
-    return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
+    let api = this.apiEndPoint
+    if ( this.useSimpleApi) {
+      api = this.simpleApi;
+    }
+
+    return this.http.get(  api + '/' +
         this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/ms' + ((chapter) ? '/' + chapter + '' : ''))
         .map(res => {
           return res.json();
