@@ -1095,7 +1095,7 @@ export class ReadPage /*implements OnDestroy*/ {
             modalShown = true;
           } else if (eventTarget['classList'].contains('ttMs')
           || eventTarget['classList'].contains('tooltipMs')) {
-            if (eventTarget['classList'].contains('unclear')) {
+            if (eventTarget['classList'].contains('unclear') || eventTarget['classList'].contains('gap')) {
               /* Editorial note about unclear text, should be clickable only in
                  the reading text column. */
               let parentElem: HTMLElement = eventTarget as HTMLElement;
@@ -1459,8 +1459,8 @@ export class ReadPage /*implements OnDestroy*/ {
             } else if (eventTarget['classList'].contains('ttMs')) {
               // Check if the tooltip trigger element is in a manuscripts column
               // since ttMs should generally only be triggered there.
-              if (eventTarget['classList'].contains('unclear')) {
-                // Tooltips for text with class unclear should be shown in other columns too.
+              if (eventTarget['classList'].contains('unclear') || eventTarget['classList'].contains('gap')) {
+                // Tooltips for text with class unclear or gap should be shown in other columns too.
                 this.ngZone.run(() => {
                   this.showTooltipFromInlineHtml(eventTarget);
                 });

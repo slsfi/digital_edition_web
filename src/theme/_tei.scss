@@ -1459,6 +1459,7 @@ div.tei {
         font-weight: normal !important;
         margin: 0.8em 0 1em 0 !important;
     }
+    /* .academicsub not used */
     h4.tei.academicsub {
         font-style: italic;
         text-align: center;
@@ -1901,6 +1902,7 @@ div.tei {
 }
 
 read-text div.tei .unclear.tooltiptrigger,
+read-text div.tei .gap.tooltiptrigger,
 read-text div.tei .revision.tooltiptrigger,
 read-text div.tei.clickable-illustrations .est_figure_graphic {
     cursor: pointer;
