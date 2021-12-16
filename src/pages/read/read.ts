@@ -251,29 +251,7 @@ export class ReadPage /*implements OnDestroy*/ {
       this.toolTipsSettings = undefined;
     }
 
-    // Set the default read mode view for mobile based on config. Established and facsimiles are the only options.
-    const defaultReadModes: any = this.config.getSettings('defaults.ReadModeView');
-    if (defaultReadModes !== undefined && defaultReadModes.length > 0) {
-      if (defaultReadModes instanceof Array) {
-        let defaultReadModeForMobileSelected = false;
-        defaultReadModes.forEach(function (val) {
-          if (!defaultReadModeForMobileSelected && this.displayToggles[val] && (val === 'established' || val === 'facsimiles')) {
-            /* Sets the default view on mobile to the first default read mode view which is available as
-               long as it's established or facsimiles. */
-            this.show = val;
-            defaultReadModeForMobileSelected = true;
-          }
-        }.bind(this));
-      } else {
-        if (defaultReadModes === 'facsimiles') {
-          this.show = 'facsimiles';
-        } else {
-          this.show = 'established';
-        }
-      }
-    } else {
-      this.show = 'established';
-    }
+    this.show = this.config.getSettings('defaults.ReadModeView');
   }
 
   ionViewDidLoad() {
@@ -755,7 +733,7 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   /**
-   * Supports also multiple default read-modes.
+   * Supports also multiple deafault read-modes.
    * If there are multiple it loops through every read-mode (array of strings).
    * If it's not an array it just sets the string value it gets from config.json.
    * And if no config for this was set at all it sets established as the default.
@@ -764,16 +742,23 @@ export class ReadPage /*implements OnDestroy*/ {
     const defaultReadModes: any = this.config.getSettings('defaults.ReadModeView');
     if (defaultReadModes !== undefined && defaultReadModes.length > 0) {
       if (defaultReadModes instanceof Array) {
+        let defaultReadModeForMobileSelected = false;
         defaultReadModes.forEach(function (val) {
+          if (!defaultReadModeForMobileSelected && this.displayToggles[val]) {
+            /* Sets the default view on mobile to the first default read mode view which is available. */
+            this.show = val;
+            defaultReadModeForMobileSelected = true;
+          }
           this.addView(val);
         }.bind(this));
       } else {
+        this.show = defaultReadModes;
         this.addView(defaultReadModes);
       }
     } else {
+      this.show = 'established';
       this.addView('established');
     }
-    console.log('Default read mode views set from config.');
   }
 
   updateURL() {
