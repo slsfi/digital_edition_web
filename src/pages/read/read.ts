@@ -1146,6 +1146,12 @@ export class ReadPage /*implements OnDestroy*/ {
               this.showInfoOverlayFromInlineHtml(eventTarget);
             });
             modalShown = true;
+          } else if (eventTarget['classList'].contains('ttComment')) {
+            alert("comment");
+            this.ngZone.run(() => {
+              this.showInfoOverlayFromInlineHtml(eventTarget);
+            });
+            modalShown = true;
           }
 
           /* Get the parent node of the event target for the next iteration
@@ -1503,6 +1509,12 @@ export class ReadPage /*implements OnDestroy*/ {
                 this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), eventTarget);
               });
             } else if (eventTarget['classList'].contains('ttFoot')
+            && !eventTarget.hasAttribute('id')
+            && !eventTarget.hasAttribute('data-id')) {
+              this.ngZone.run(() => {
+                this.showTooltipFromInlineHtml(eventTarget);
+              });
+            } else if (eventTarget['classList'].contains('ttComment')
             && !eventTarget.hasAttribute('id')
             && !eventTarget.hasAttribute('data-id')) {
               this.ngZone.run(() => {
@@ -2159,6 +2171,16 @@ export class ReadPage /*implements OnDestroy*/ {
         title = 'abbreviation';
         if (targetElem.firstElementChild !== null
         && targetElem.firstElementChild.classList.contains('abbr')) {
+          text = '<p class="infoOverlayText"><span class="ioLemma">'
+          + targetElem.firstElementChild.innerHTML
+          + '</span><span class="ioDescription">'
+          + targetElem.nextElementSibling.innerHTML + '</span></p>';
+        }
+      } else if (targetElem.nextElementSibling.classList.contains('ttComment')) {
+        // Abbreviation.
+        title = 'comments';
+        if (targetElem.firstElementChild !== null
+        && targetElem.firstElementChild.classList.contains('noteText')) {
           text = '<p class="infoOverlayText"><span class="ioLemma">'
           + targetElem.firstElementChild.innerHTML
           + '</span><span class="ioDescription">'
