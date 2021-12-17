@@ -1676,7 +1676,7 @@ export class ReadPage /*implements OnDestroy*/ {
             // Born and deceased BC, don't add indicator to year born
             bcIndicatorBorn = '';
           }
-          text = '<b>' + tooltip.name + '</b> (';
+          text = '<b>' + tooltip.name.trim() + '</b> (';
           if (year_born !== null && year_deceased !== null && year_born !== 'null' && year_born !== 'null') {
             text += year_born + bcIndicatorBorn + '–' + year_deceased + bcIndicatorDeceased;
           } else if (year_born !== null && year_born !== 'null') {
@@ -1686,7 +1686,7 @@ export class ReadPage /*implements OnDestroy*/ {
           }
           text += ')';
         } else {
-          text = '<b>' + tooltip.name + '</b>';
+          text = '<b>' + tooltip.name.trim() + '</b>';
         }
 
         if (tooltip.description !== null) {
