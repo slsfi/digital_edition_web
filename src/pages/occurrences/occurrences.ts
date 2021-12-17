@@ -130,6 +130,8 @@ export class OccurrencesPage {
         bcTranslation = translation;
       }, error => { }
     );
+    console.log('occurrenceResult.date_born:', this.occurrenceResult.date_born);
+    console.log('occurrenceResult.date_deceased:', this.occurrenceResult.date_deceased);
     const bcIndicatorDeceased = (String(this.occurrenceResult.date_deceased).includes('BC')) ? ' ' + bcTranslation : '';
     let bcIndicatorBorn = (String(this.occurrenceResult.date_born).includes('BC')) ? ' ' + bcTranslation : '';
     if (String(this.occurrenceResult.date_born).includes('BC') && bcIndicatorDeceased === bcIndicatorBorn) {
