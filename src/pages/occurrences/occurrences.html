@@ -18,9 +18,9 @@
           <ion-card-header>
             <div class="info">
               <h3>
-                <span *ngIf="occupation && !hideTypeAndDescription" class="occupation">{{occupation}} - </span>
+                <span *ngIf="occupation && !hideTypeAndDescription" class="occupation">{{occupation}} – </span>
                 <span class="title">{{title}}</span>
-                <span *ngIf="date_born!=null||date_deceased!=null" class="date_born">({{date_born}}–{{date_deceased}})</span>
+                <span *ngIf="year_born != null || year_deceased != null" class="year_born_deceased">({{year_born_deceased_string}})</span>
                 <span *ngIf="latitude" class="latitude">({{"Occurrences.latitude" | translate}} {{latitude}}, </span>
                 <span *ngIf="longitude" class="longitude">{{"Occurrences.longitude" | translate}} {{longitude}})</span>
               </h3>
