@@ -139,11 +139,11 @@ export class OccurrencesPage {
     // Construct string with year born and year deceased for output
     this.year_born_deceased_string = '';
     if (this.year_born !== null && this.year_deceased !== null && this.year_born !== 'null' && this.year_born !== 'null') {
-      this.year_born_deceased_string += this.year_born + bcIndicatorBorn + '–' + this.year_deceased + bcIndicatorDeceased;
+      this.year_born_deceased_string += '(' + this.year_born + bcIndicatorBorn + '–' + this.year_deceased + bcIndicatorDeceased + ')';
     } else if (this.year_born !== null && this.year_born !== 'null') {
-      this.year_born_deceased_string += '* ' + this.year_born + bcIndicatorBorn;
+      this.year_born_deceased_string += '(* ' + this.year_born + bcIndicatorBorn + ')';
     } else if (this.year_deceased !== null && this.year_deceased !== 'null') {
-      this.year_born_deceased_string += '&#8224; ' + this.year_deceased + bcIndicatorDeceased;
+      this.year_born_deceased_string += '(&#8224; ' + this.year_deceased + bcIndicatorDeceased + ')';
     }
 
     try {
