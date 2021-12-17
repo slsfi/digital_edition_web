@@ -209,7 +209,9 @@ export class PersonSearchPage {
         const personsTmp = [];
         persons = persons.hits.hits;
         persons.forEach(element => {
+          console.log('person element', element);
           element = element['_source'];
+          element = element['year_born_deceased'];
           const sortBy = [];
           let sortByName = String(element['full_name']).toLowerCase().replace('ʽ', '');
           sortByName = sortByName.replace('de ', '');
