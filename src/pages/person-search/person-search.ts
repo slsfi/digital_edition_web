@@ -211,7 +211,6 @@ export class PersonSearchPage {
         persons.forEach(element => {
           console.log('person element', element);
           element = element['_source'];
-          element = element['year_born_deceased'];
           const sortBy = [];
           let sortByName = String(element['full_name']).toLowerCase().replace('ʽ', '');
           sortByName = sortByName.replace('de ', '');
@@ -225,7 +224,7 @@ export class PersonSearchPage {
           if ( element['date_born'] !== null ) {
             element['date_born'] = String(element['date_born']).replace(/^0+/, '');
           }
-          element['year_born_deceased'] = element['date_born'] + '–' + element['date_deceased'];
+          element.year_born_deceased = element['date_born'] + '–' + element['date_deceased'];
           sortBy.push(sortByName);
           element['sortBy'] = sortBy.join();
           const ltr = element['sortBy'].charAt(0);
