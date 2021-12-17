@@ -209,7 +209,6 @@ export class PersonSearchPage {
         const personsTmp = [];
         persons = persons.hits.hits;
         persons.forEach(element => {
-          console.log('person element', element);
           element = element['_source'];
           const sortBy = [];
           let sortByName = String(element['full_name']).toLowerCase().replace('ʽ', '');
@@ -248,6 +247,7 @@ export class PersonSearchPage {
           }
         });
 
+        console.log('persons', this.persons);
         this.allData = this.persons;
         this.cacheData = this.persons;
         this.showLoading = false;
