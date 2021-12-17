@@ -69,7 +69,7 @@
                     <ion-item-divider color="light">{{p.firstOfItsKind.toLocaleUpperCase()}}</ion-item-divider>
                   </ion-item>
                   <ion-item *ngIf="p?.sortBy.length > 1" (click)="openPerson(p)">
-                    <p>{{p.full_name}} <span *ngIf="p.date_born || p.date_deceased">({{(p.date_born)?p.date_born.split('-')[0]:p.date_born}}–{{(p.date_deceased)?p.date_deceased.split('-')[0]:p.date_deceased}}{{(p.date_born !== null && p.date_born.includes('BC'))?(' '+('BC'|translate)):''}})</span> <span *ngIf="p.date_born || p.date_deceased">{{p.year_born_deceased}}</span></p>
+                    <p>{{p.full_name}} <span *ngIf="p.date_born || p.date_deceased">({{(p.date_born)?p.date_born.split('-')[0]:p.date_born}}–{{(p.date_deceased)?p.date_deceased.split('-')[0]:p.date_deceased}}{{(p.date_born !== null && p.date_born.includes('BC'))?(' '+('BC'|translate)):''}})</span></p>
                   </ion-item>
                 </div>
             </ion-list>
