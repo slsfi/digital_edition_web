@@ -223,7 +223,7 @@ export class PersonSearchPage {
           if ( element['date_born'] !== null ) {
             element['date_born'] = String(element['date_born']).replace(/^0+/, '');
           }
-          element.year_born_deceased = element['date_born'] + '–' + element['date_deceased'];
+          element['year_born_deceased'] = 'test';
           sortBy.push(sortByName);
           element['sortBy'] = sortBy.join();
           const ltr = element['sortBy'].charAt(0);
@@ -247,7 +247,6 @@ export class PersonSearchPage {
           }
         });
 
-        console.log('persons', this.persons);
         this.allData = this.persons;
         this.cacheData = this.persons;
         this.showLoading = false;
