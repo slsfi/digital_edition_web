@@ -253,8 +253,7 @@ export class PersonSearchPage {
           } else if (element['date_deceased'] !== null && element['date_deceased'] !== 'null') {
             element['year_born_deceased'] += '(&#8224; ' + element['date_deceased'] + bcIndicatorDeceased + ')';
           }
-          
-          // element['year_born_deceased'] = element['date_born'] + '–' + element['date_deceased'];
+
           sortBy.push(sortByName);
           element['sortBy'] = sortBy.join();
           const ltr = element['sortBy'].charAt(0);
