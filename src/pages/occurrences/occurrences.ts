@@ -136,6 +136,8 @@ export class OccurrencesPage {
       // Born and deceased are both BC --> don't add indicator to year born
       bcIndicatorBorn = '';
     }
+    console.log('occurrenceResult.date_born', this.occurrenceResult.date_born);
+    console.log('occurrenceResult.date_deceased', this.occurrenceResult.date_deceased);
     // Construct string with year born and year deceased for output
     this.year_born_deceased_string = '';
     if (this.year_born !== null && this.year_deceased !== null && this.year_born !== 'null' && this.year_deceased !== 'null') {
