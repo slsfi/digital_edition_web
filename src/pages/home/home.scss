@@ -109,6 +109,8 @@ home-page {
 		width: 28.2%;
 		min-width: 370px;
 		background-image: none !important;
+		position: sticky;
+		top: 0;
 	}
 
 	.portrait-mode .banner > img {
@@ -218,6 +220,7 @@ home-page {
 			min-height: auto;
 			width: 100%;
 			min-width: 100%;
+			position: relative;
 		}
 
 		.portrait-mode.title-on-image .banner .title-wrapper {
