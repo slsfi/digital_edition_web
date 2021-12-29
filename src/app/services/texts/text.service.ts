@@ -12,6 +12,10 @@ export class TextService {
 
   textCache: any;
   apiEndPoint: string;
+
+  simpleApi: string;
+  useSimpleApi = false;
+
   appMachineName: string;
 
   constructor(private http: Http, private config: ConfigService, private cache: TextCacheService) {
@@ -22,6 +26,18 @@ export class TextService {
   getEstablishedText(id: string): Observable<any> {
     this.appMachineName = this.config.getSettings('app.machineName');
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
+
+    try {
+      const simpleApi = this.config.getSettings('app.simpleApi');
+      if (simpleApi) {
+        this.useSimpleApi = true;
+        this.simpleApi = simpleApi;
+      }
+
+    } catch (e) {
+
+    }
+
     const c_id = `${id}`.split('_')[0];
     const pub_id = `${id}`.split('_')[1];
     let ch_id = null;
@@ -35,7 +51,13 @@ export class TextService {
 
     const textId = id;
 
-    return this.http.get(  `${this.apiEndPoint}/${this.appMachineName}/text/${c_id}/${pub_id}/est${((ch_id === null) ? '' : '/' + ch_id)}`)
+    let api = this.apiEndPoint
+    if ( this.useSimpleApi) {
+      api = this.simpleApi;
+    }
+    let url = `${api}/${this.appMachineName}/text/${c_id}/${pub_id}/est${((ch_id === null) ? '' : '/' + ch_id)}`;
+
+    return this.http.get( url )
           .map(res => {
             const body = res.json();
 
@@ -185,7 +207,12 @@ export class TextService {
       chapter = String(chapter).split(';')[0];
     }
 
-    return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
+    let api = this.apiEndPoint
+    if ( this.useSimpleApi) {
+      api = this.simpleApi;
+    }
+
+    return this.http.get(  api + '/' +
         this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/ms' + ((chapter) ? '/' + chapter + '' : ''))
         .map(res => {
           return res.json();
