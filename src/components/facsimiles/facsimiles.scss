@@ -92,3 +92,10 @@ facsimiles {
     }
 
 }
+.mobile-mode-facsimiles facsimiles .facsimile-header {
+  display: none;
+}
+
+.mobile-mode-facsimiles facsimiles #facsimilies-image {
+  padding-top: 1rem;
+}

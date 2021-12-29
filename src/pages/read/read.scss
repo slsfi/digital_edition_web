@@ -363,4 +363,7 @@ page-read div.mobile-mode-facsimiles > facsimiles > div.tei {
   page-read .scroll-content {
     padding: 0 !important;
   }
+  ion-scroll {
+    overflow-y: auto;
+  }
 }

@@ -246,6 +246,9 @@
             <ion-segment-button value="established" *ngIf="displayToggles['established']">
               {{ "Read.Established.Title" | translate }}
             </ion-segment-button>
+            <!--ion-segment-button value="manuscripts" *ngIf="displayToggles['manuscripts']">
+              {{ "Read.Manuscripts.Title" | translate }}
+            </ion-segment-button-->
             <ion-segment-button value="facsimiles" *ngIf="displayToggles['facsimiles']">
               {{ "Read.Facsimiles.Title" | translate }}
             </ion-segment-button>
@@ -255,6 +258,9 @@
           <div *ngSwitchCase="'established'" class="mobile-mode-established">
             <read-text [link]="establishedText.link" [matches]="matches"></read-text>
           </div>
+          <!--div *ngSwitchCase="'manuscripts'" class="mobile-mode-manuscripts">
+            <manuscripts [linkID]="views[0].manuscripts.id" [itemId]="establishedText.link" [matches]="matches"></manuscripts>
+          </div-->
           <div *ngSwitchCase="'facsimiles'" class="mobile-mode-facsimiles">
             <facsimiles [itemId]="establishedText.link" [matches]="matches" [facsID]="facs_id" [facsNr]="facs_nr"
               [songID]="song_id"></facsimiles>
@@ -269,4 +275,4 @@
   </ng-container>
 
 </ion-content>
-<text-changer *ngIf="(userSettingsService.isMobile()) && show=='established' && infoOverlayText==''" class="text-changer-mobile-view" [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
+<text-changer *ngIf="(userSettingsService.isMobile()) && (show=='established' || show=='manuscripts' || show=='facsimiles') && infoOverlayText==''" class="text-changer-mobile-view" [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
