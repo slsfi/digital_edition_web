@@ -97,14 +97,14 @@
   <ion-grid class="forwardBackward">
       <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
         <ion-col class="navigation-buttons-col">
-          <button ion-button clear class="navigation-buttons" title="prev button">
+          <button ion-button clear class="navigation-buttons" title="prev button" id="epub-arrow-back">
             <div id="toc_menu" (click)="prev()" *ngIf="!loading">
                 <ion-icon name="arrow-back"></ion-icon>
             </div>
           </button>
         </ion-col>
         <ion-col class="navigation-buttons-col right">
-          <button ion-button clear class="navigation-buttons" title="next button">
+          <button ion-button clear class="navigation-buttons" title="next button" id="epub-arrow-forward">
             <div id="toc_menu" (click)="next()" *ngIf="!loading">
                 <ion-icon name="arrow-forward"></ion-icon>
             </div>
