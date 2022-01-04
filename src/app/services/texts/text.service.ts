@@ -19,11 +19,6 @@ export class TextService {
   appMachineName: string;
 
   constructor(private http: Http, private config: ConfigService, private cache: TextCacheService) {
-
-  }
-
-
-  getEstablishedText(id: string): Observable<any> {
     this.appMachineName = this.config.getSettings('app.machineName');
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
 
@@ -37,7 +32,9 @@ export class TextService {
     } catch (e) {
 
     }
+  }
 
+  getEstablishedText(id: string): Observable<any> {
     const c_id = `${id}`.split('_')[0];
     const pub_id = `${id}`.split('_')[1];
     let ch_id = null;
@@ -207,7 +204,7 @@ export class TextService {
       chapter = String(chapter).split(';')[0];
     }
 
-    let api = this.apiEndPoint
+    let api = this.apiEndPoint;
     if ( this.useSimpleApi) {
       api = this.simpleApi;
     }
