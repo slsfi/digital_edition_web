@@ -1,4 +1,3 @@
-
 <div *ngIf="externalFacsimilesExist || facsimiles.length>0" class="text-select-wrapper facsimile-header" [ngClass]="selectedFacsimileIsExternal?'external-urls-header':''">
   <h3 *ngIf="!selectedFacsimileIsExternal" [innerHTML]="selectedFacsimileName"></h3>
   <h3 *ngIf="selectedFacsimileIsExternal">{{"Read.Facsimiles.ExternalHeading" | translate}}</h3>
@@ -35,7 +34,7 @@
 
 <div id="facsimilies-image" *ngIf="facsimilePagesInfinite && facsNumber && !selectedFacsimileIsExternal">
   <img
-    [src]="facsBase ? facsBase +'/'+ facsPage['publication_facsimile_collection_id'] +'/'+ facsSize + '/' + facsNumber + '.jpg' : facsUrl + facsNumber + (facsSize ? '/' + facsSize : '')"
+    [src]="facsUrl + facsNumber + (facsSize ? '/' + facsSize : '')"
     [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
     (wheel)="onMouseWheel($event)"
     (pan)="handleSwipeEvent($event)"

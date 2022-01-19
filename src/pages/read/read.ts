@@ -73,9 +73,6 @@ export class ReadPage /*implements OnDestroy*/ {
   textType: TextType = TextType.ReadText;
 
   id: string;
-  multilingualEST: false;
-  estLanguages = [];
-  estLang: "none";
   establishedText: EstablishedText;
   errorMessage: string;
   appName: string;
@@ -245,20 +242,6 @@ export class ReadPage /*implements OnDestroy*/ {
       console.log(e);
     }
 
-    try {
-      const i18n = this.config.getSettings('i18n');
-      console.log(i18n)
-
-      this.multilingualEST = i18n.multilingualEST;
-      this.estLanguages = i18n.estLanguages;
-      this.estLang = i18n.estLanguages[0];
-    } catch (e) {
-      this.multilingualEST = false;
-      this.estLanguages = [];
-      this.estLang = 'none';
-      console.log(e);
-    }
-
     // Hide some or all of the display toggles (variations, facsimiles, established etc.)
     this.displayToggles = this.config.getSettings('settings.displayTypesToggles');
 
@@ -326,6 +309,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
       const title = global.getSubtitle();
       this.tocRoot = this.params.get('root');
+
       this.establishedText = new EstablishedText({ link: link, id: this.id, title: title, text: '' });
 
       if (this.params.get('legacyId') !== undefined) {
@@ -537,6 +521,7 @@ export class ReadPage /*implements OnDestroy*/ {
     this.tocService.getTableOfContents(id)
       .subscribe(
         tocItems => {
+          console.log('get toc root... --- --- in read');
           tocItems.selectedCollId = null;
           tocItems.selectedPubId = null;
           if (this.params.get('collectionID') && this.params.get('publicationID')) {
@@ -559,6 +544,7 @@ export class ReadPage /*implements OnDestroy*/ {
           && chIDFromParams !== ':chapterID'
           && chIDFromParams !== 'chapterID') {
             tocItems.selectedChapterId = chIDFromParams;
+            console.log('toc chapterId: ' + tocItems.selectedChapterId);
           } else {
             tocItems.selectedChapterId = '';
           }
@@ -617,14 +603,7 @@ export class ReadPage /*implements OnDestroy*/ {
     viewmodes.forEach(function (viewmode) {
       // set the first viewmode as default
       this.show = viewmodes[0];
-
-      // check if it is similar to established_sv
-      const parts = viewmode.split('_');
-      if (parts.length > 1) {
-        this.addView(parts[0],null, null, null, null, parts[1]);
-      } else {
-        this.addView(viewmode);
-      }
+      this.addView(viewmode);
     }.bind(this));
   }
 
@@ -1146,12 +1125,6 @@ export class ReadPage /*implements OnDestroy*/ {
               this.showInfoOverlayFromInlineHtml(eventTarget);
             });
             modalShown = true;
-          } else if (eventTarget['classList'].contains('ttComment')) {
-            alert("comment");
-            this.ngZone.run(() => {
-              this.showInfoOverlayFromInlineHtml(eventTarget);
-            });
-            modalShown = true;
           }
 
           /* Get the parent node of the event target for the next iteration
@@ -1509,12 +1482,6 @@ export class ReadPage /*implements OnDestroy*/ {
                 this.showVariantFootnoteTooltip(eventTarget.getAttribute('id'), eventTarget);
               });
             } else if (eventTarget['classList'].contains('ttFoot')
-            && !eventTarget.hasAttribute('id')
-            && !eventTarget.hasAttribute('data-id')) {
-              this.ngZone.run(() => {
-                this.showTooltipFromInlineHtml(eventTarget);
-              });
-            } else if (eventTarget['classList'].contains('ttComment')
             && !eventTarget.hasAttribute('id')
             && !eventTarget.hasAttribute('data-id')) {
               this.ngZone.run(() => {
@@ -2176,16 +2143,6 @@ export class ReadPage /*implements OnDestroy*/ {
           + '</span><span class="ioDescription">'
           + targetElem.nextElementSibling.innerHTML + '</span></p>';
         }
-      } else if (targetElem.nextElementSibling.classList.contains('ttComment')) {
-        // Abbreviation.
-        title = 'comments';
-        if (targetElem.firstElementChild !== null
-        && targetElem.firstElementChild.classList.contains('noteText')) {
-          text = '<p class="infoOverlayText"><span class="ioLemma">'
-          + targetElem.firstElementChild.innerHTML
-          + '</span><span class="ioDescription">'
-          + targetElem.nextElementSibling.innerHTML + '</span></p>';
-        }
       } else if (targetElem.classList.contains('ttFoot')
       && targetElem.nextElementSibling !== null
       && targetElem.nextElementSibling.classList.contains('ttFoot')) {
@@ -2771,7 +2728,7 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 
-  addView(type: string, id?: string, fab?: FabContainer, external?: boolean, image?: any, language?: string) {
+  addView(type: string, id?: string, fab?: FabContainer, external?: boolean, image?: any) {
     if (fab !== undefined) {
       try {
         fab.close();
@@ -2786,10 +2743,10 @@ export class ReadPage /*implements OnDestroy*/ {
     }
 
     if (this.availableViewModes.indexOf(type) !== -1) {
-      const view = {
+      this.views.push({
         content: `This is an upcoming ${type} view`,
         type,
-        established: { show: (type === 'established' && !this.multilingualEST), id: id },
+        established: { show: (type === 'established'), id: id },
         comments: { show: (type === 'comments'), id: id },
         facsimiles: { show: (type === 'facsimiles'), id: id },
         manuscripts: { show: (type === 'manuscripts'), id: id },
@@ -2797,17 +2754,7 @@ export class ReadPage /*implements OnDestroy*/ {
         introduction: { show: (type === 'introduction'), id: id },
         songexample: { show: (type === 'songexample'), id: id },
         illustrations: { show: (type === 'illustrations'), image: image }
-      }
-      if (this.multilingualEST) {
-        for (let lang of this.estLanguages) {
-          view['established_' + lang] = { show: (type === 'established' && language === lang), id: id }
-        }
-        if (type == 'established' && language) {
-          view["type"] = 'established_' + language;
-        }
-      }
-
-      this.views.push(view);
+      });
 
       this.updateURL();
       this.updateCachedViewModes();

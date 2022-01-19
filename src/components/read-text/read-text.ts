@@ -86,7 +86,6 @@ export class ReadTextComponent {
       this.setIllustrationsInReadtextStatus();
     }
     this.setUpTextListeners();
-
   }
 
   ngAfterViewInit() {

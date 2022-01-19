@@ -135,13 +135,11 @@
     },
     "i18n": {
         "languages": [
-			"sv", "fi"
+            "sv",
+            "en"
         ],
         "locale": "sv",
-        "enableLanguageChanges": false,
-        "multilingualTOC": false,
-        "multilingualEST": false,
-        "estLanguages": []
+        "enableLanguageChanges": true
     },
     "collectionDownloads": {
         "isDownloadOnly": false,
