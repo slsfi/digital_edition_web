@@ -8,14 +8,14 @@
         <ion-grid>
             <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
               <ion-col class="navigation-buttons-col" *ngIf="(userSettingsService.isMobile() === false && userSettingsService.isTablet() === false)">
-                <button ion-button clear class="navigation-buttons" title="prev button">
+                <button ion-button clear class="navigation-buttons" title="prev button" id="epub-arrow-prev">
                   <div id="toc_menu" (click)="prev()" *ngIf="!loading">
                       <ion-icon name="arrow-back"></ion-icon>
                   </div>
                 </button>
               </ion-col>
               <ion-col class="navigation-buttons-col right" *ngIf="(userSettingsService.isMobile() === false && userSettingsService.isTablet() === false)">
-                <button ion-button clear class="navigation-buttons" title="next button">
+                <button ion-button clear class="navigation-buttons" title="next button" id="epub-arrow-next">
                   <div id="toc_menu" (click)="next()" *ngIf="!loading">
                       <ion-icon name="arrow-forward"></ion-icon>
                   </div>
@@ -60,14 +60,14 @@
     </ion-row>
     <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
       <ion-col class="navigation-buttons-col">
-        <button ion-button clear class="navigation-buttons" title="prev button" id="epub-arrow-back">
+        <button ion-button clear class="navigation-buttons" title="prev button">
           <div id="toc_menu" (click)="prevSearch()" *ngIf="!loading">
             <ion-icon name="arrow-back"></ion-icon>
           </div>
         </button>
       </ion-col>
       <ion-col class="navigation-buttons-col">
-        <button ion-button clear class="navigation-buttons" title="prev button" id="epub-arrow-forward">
+        <button ion-button clear class="navigation-buttons" title="prev button">
           <div id="toc_menu" *ngIf="!loading">
             <p *ngIf="searchResultIndex === 0 && searchResults.length>0">1 / {{searchResults.length}}</p>
             <p *ngIf="searchResultIndex > 0">{{searchResultIndex + 1}} / {{searchResults.length}}</p>
@@ -97,14 +97,14 @@
   <ion-grid class="forwardBackward">
       <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
         <ion-col class="navigation-buttons-col">
-          <button ion-button clear class="navigation-buttons" title="prev button" id="epub-arrow-back">
+          <button ion-button clear class="navigation-buttons" title="prev button" id="epub-arrow-prev">
             <div id="toc_menu" (click)="prev()" *ngIf="!loading">
                 <ion-icon name="arrow-back"></ion-icon>
             </div>
           </button>
         </ion-col>
         <ion-col class="navigation-buttons-col right">
-          <button ion-button clear class="navigation-buttons" title="next button" id="epub-arrow-forward">
+          <button ion-button clear class="navigation-buttons" title="next button" id="epub-arrow-next">
             <div id="toc_menu" (click)="next()" *ngIf="!loading">
                 <ion-icon name="arrow-forward"></ion-icon>
             </div>
