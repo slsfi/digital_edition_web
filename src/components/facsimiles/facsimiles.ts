@@ -52,6 +52,7 @@ export class FacsimilesComponent {
   selectedFacsimileIsExternal = false;
 
   facsUrl = '';
+  facsBase = null;
   externalURLs = [];
   facsimilePagesInfinite = false;
   // If defined, this size will be appended to the image url.
@@ -79,6 +80,7 @@ export class FacsimilesComponent {
     public songService: SongService,
     private analyticsService: AnalyticsService
   ) {
+
     this.deRegisterEventListeners();
     this.registerEventListeners();
     this.manualPageNumber = 1;
@@ -111,6 +113,13 @@ export class FacsimilesComponent {
       this.facsimileZoomPageLevel = 1;
     }
 
+    try {
+      this.facsBase = this.config.getSettings('app.facsimileBase');
+    } catch (e) {
+      ;
+    }
+
+
   }
 
   openNewFacs(event: Event, id: any) {
@@ -133,6 +142,7 @@ export class FacsimilesComponent {
   }
 
   ngOnInit() {
+
     if (!this.selectedFacsimile) {
       let getFacsimilePagesInfinite = false;
       try {
@@ -237,12 +247,16 @@ export class FacsimilesComponent {
             }
           }
 
-          if ( this.facsPage['external_url'] === undefined || this.facsPage['external_url'] === null
-            || this.facsPage['external_url'] === '' ) {
+          if (this.facsPage['external_url'] === undefined || this.facsPage['external_url'] === null
+            || this.facsPage['external_url'] === '') {
+            this.externalFacsimilesExist = false;
+            this.selectedFacsimileIsExternal = false;
+          }
+          if (this.facsPage['folder_path']) {
             this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
             this.config.getSettings('app.machineName') +
             `/facsimiles/${this.facsPage['publication_facsimile_collection_id']}/`;
-            this.externalFacsimilesExist = false;
+
             this.selectedFacsimileIsExternal = false;
           }
 
@@ -343,6 +357,7 @@ export class FacsimilesComponent {
     if (facs === 'external') {
       this.selectedFacsimileIsExternal = true;
     } else if (facs) {
+
       this.selectedFacsimileIsExternal = false;
       this.selectedFacsimile = facs;
       this.selectedFacsimileName = this.selectedFacsimile.title;
@@ -416,6 +431,9 @@ export class FacsimilesComponent {
     alert.addButton({
       text: buttonTranslations.Ok,
       handler: (index: string) => {
+
+        console.log("byter faksimil, ", index);
+
         if (parseInt(index) < 0) {
           // External facsimiles selected
           this.changeFacsimile('external');
