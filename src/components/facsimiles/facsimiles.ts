@@ -116,7 +116,6 @@ export class FacsimilesComponent {
     try {
       this.facsBase = this.config.getSettings('app.facsimileBase');
     } catch (e) {
-      ;
     }
 
 
@@ -148,7 +147,6 @@ export class FacsimilesComponent {
       try {
         getFacsimilePagesInfinite = this.config.getSettings('settings.getFacsimilePagesInfinite')
       } catch (e) {
-
       }
 
       if (getFacsimilePagesInfinite) {
@@ -247,17 +245,19 @@ export class FacsimilesComponent {
             }
           }
 
+          /**
+           * * The following code block has been restored to its state before 29.12.2021 because the
+           * * modifications then broke the facsimiles for all SLS projects.
+           * * this.facsPage['folder_path'] can't be a condition for setting this.facsUrl, since folder_path
+           * * is not used for any facsimile_collection in any SLS project. // SK
+           */
           if (this.facsPage['external_url'] === undefined || this.facsPage['external_url'] === null
             || this.facsPage['external_url'] === '') {
             this.externalFacsimilesExist = false;
             this.selectedFacsimileIsExternal = false;
-          }
-          if (this.facsPage['folder_path']) {
             this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
-            this.config.getSettings('app.machineName') +
-            `/facsimiles/${this.facsPage['publication_facsimile_collection_id']}/`;
-
-            this.selectedFacsimileIsExternal = false;
+              this.config.getSettings('app.machineName') +
+              `/facsimiles/${this.facsPage['publication_facsimile_collection_id']}/`;
           }
 
           if (this.facsimiles.length > 0) {
