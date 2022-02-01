@@ -16,6 +16,7 @@ import { Storage } from '@ionic/storage';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
 import { ReferenceDataModalPage } from '../../pages/reference-data-modal/reference-data-modal';
 import { OccurrencesPage } from '../occurrences/occurrences';
+import { IllustrationPage } from '../illustration/illustration';
 
 /**
  * Generated class for the IntroductionPage page.
@@ -455,6 +456,11 @@ export class IntroductionPage {
                 });
               }
             }
+          } else if (anchorElem.classList.contains('ref_illustration')) {
+            const imageNumber = anchorElem.hash.split('#')[1];
+            this.ngZone.run(() => {
+              this.showIllustrationModal(imageNumber);
+            });
           } else {
             // Link in the introduction's TOC or link to (foot)note reference
             let targetId = '';
@@ -1308,6 +1314,16 @@ export class IntroductionPage {
   showWorkModal(id: string) {
     const modal = this.modalController.create(OccurrencesPage, { id: id, type: 'work' });
     modal.present();
+  }
+
+  showIllustrationModal(imageNumber: string) {
+    const modal = this.modalController.create(IllustrationPage,
+      { 'imageNumber': imageNumber },
+      { cssClass: 'foo' }
+    );
+    modal.present();
+    modal.onDidDismiss(data => {
+    });
   }
 
   showPopover(myEvent) {

@@ -16,10 +16,6 @@ page-illustration {
         background-color: #fff !important;
     }
 
-    .illustration-box > ion-card-content {
-        padding-top: 0;
-    }
-
     ion-scroll.illustration-box img {
         cursor: move;
         // https://github.com/hammerjs/hammer.js/issues/1050#issuecomment-267595556
@@ -55,5 +51,9 @@ page-illustration {
 
     ion-fab[right].expand-button {
         right: 12px;
+    }
+
+    img.illustration-img-thumb + div {
+        padding-top: 0.5rem;
     }
 }

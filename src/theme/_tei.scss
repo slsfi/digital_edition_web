@@ -259,9 +259,34 @@ div.tei.xlargeFontSize .teiManuscript.immediate_symbol img {
 /* Symbol/icon representing a drawing etc. */
 div.tei img.symbol {
     display: inline-block;
-    width:   1em; /* Default om textstorleken inte fungerar. */
+    width:   1.17em; /* Default om textstorleken inte fungerar. */
     height:  auto;
-    vertical-align: middle;
+    vertical-align: text-bottom;
+}
+div.tei.xsmallFontSize img.symbol {
+    width:  ceil(1.17 * $text-fontsize-xsmall);
+    height: ceil(1.17 * $text-fontsize-xsmall);
+    vertical-align: floor(-0.2 * $text-fontsize-xsmall);
+}
+div.tei.smallFontSize img.symbol {
+    width:  ceil(1.17 * $text-fontsize-small);
+    height: ceil(1.17 * $text-fontsize-small);
+    vertical-align: floor(-0.2 * $text-fontsize-small);
+}
+div.tei.mediumFontSize img.symbol {
+    width:  ceil(1.17 * $text-fontsize-medium);
+    height: ceil(1.17 * $text-fontsize-medium);
+    vertical-align: floor(-0.2 * $text-fontsize-medium);
+}
+div.tei.largeFontSize img.symbol {
+    width:  ceil(1.17 * $text-fontsize-large);
+    height: ceil(1.17 * $text-fontsize-large);
+    vertical-align: floor(-0.2 * $text-fontsize-large);
+}
+div.tei.xlargeFontSize img.symbol {
+    width:  ceil(1.17 * $text-fontsize-xlarge);
+    height: ceil(1.17 * $text-fontsize-xlarge);
+    vertical-align: floor(-0.2 * $text-fontsize-xlarge);
 }
 
 /* Storlek på hand-symbolen i manuskript. */
@@ -271,28 +296,23 @@ div.tei img.teiManuscript.handSymbol {
     height:  auto;
     top: 0;
 }
-div.tei.xsmallFontSize img.teiManuscript.handSymbol,
-div.tei.xsmallFontSize img.symbol {
+div.tei.xsmallFontSize img.teiManuscript.handSymbol {
     width:  ceil(1 * $text-fontsize-xsmall);
     height: ceil(1 * $text-fontsize-xsmall);
 }
-div.tei.smallFontSize img.teiManuscript.handSymbol,
-div.tei.smallFontSize img.symbol {
+div.tei.smallFontSize img.teiManuscript.handSymbol {
     width:  ceil(1 * $text-fontsize-small);
     height: ceil(1 * $text-fontsize-small);
 }
-div.tei.mediumFontSize img.teiManuscript.handSymbol,
-div.tei.mediumFontSize img.symbol {
+div.tei.mediumFontSize img.teiManuscript.handSymbol {
     width:  ceil(1 * $text-fontsize-medium);
     height: ceil(1 * $text-fontsize-medium);
 }
-div.tei.largeFontSize img.teiManuscript.handSymbol,
-div.tei.largeFontSize img.symbol {
+div.tei.largeFontSize img.teiManuscript.handSymbol {
     width:  ceil(1 * $text-fontsize-large);
     height: ceil(1 * $text-fontsize-large);
 }
-div.tei.xlargeFontSize img.teiManuscript.handSymbol,
-div.tei.xlargeFontSize img.symbol {
+div.tei.xlargeFontSize img.teiManuscript.handSymbol {
     width:  ceil(1 * $text-fontsize-xlarge);
     height: ceil(1 * $text-fontsize-xlarge);
 }
