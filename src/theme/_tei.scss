@@ -20,10 +20,10 @@
 /* Padding below the columns so their height won't end precisely after the texts */
 page-title div.tei,
 page-introduction div.tei,
-read-text div.tei,
-comments div.tei,
-variations div.tei,
-manuscripts div.tei {
+read-text > div.tei,
+comments > div.tei,
+variations > div.tei,
+manuscripts > div.tei {
     padding-bottom: 20vh;
 }
 
