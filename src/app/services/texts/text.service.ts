@@ -52,7 +52,7 @@ export class TextService {
     if ( this.useSimpleApi) {
       api = this.simpleApi;
     }
-    let url = `${api}/${this.appMachineName}/text/${c_id}/${pub_id}/est${((ch_id === null) ? '' : '/' + ch_id)}`;
+    const url = `${api}/${this.appMachineName}/text/${c_id}/${pub_id}/est${((ch_id === null) ? '' : '/' + ch_id)}`;
 
     return this.http.get( url )
           .map(res => {

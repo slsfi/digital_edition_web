@@ -75,7 +75,7 @@ export class ReadPage /*implements OnDestroy*/ {
   id: string;
   multilingualEST: false;
   estLanguages = [];
-  estLang: "none";
+  estLang: 'none';
   establishedText: EstablishedText;
   errorMessage: string;
   appName: string;
@@ -621,7 +621,7 @@ export class ReadPage /*implements OnDestroy*/ {
       // check if it is similar to established_sv
       const parts = viewmode.split('_');
       if (parts.length > 1) {
-        this.addView(parts[0],null, null, null, null, parts[1]);
+        this.addView(parts[0], null, null, null, null, parts[1]);
       } else {
         this.addView(viewmode);
       }
@@ -1147,7 +1147,7 @@ export class ReadPage /*implements OnDestroy*/ {
             });
             modalShown = true;
           } else if (eventTarget['classList'].contains('ttComment')) {
-            alert("comment");
+            console.log('comment');
             this.ngZone.run(() => {
               this.showInfoOverlayFromInlineHtml(eventTarget);
             });
@@ -2799,11 +2799,11 @@ export class ReadPage /*implements OnDestroy*/ {
         illustrations: { show: (type === 'illustrations'), image: image }
       }
       if (this.multilingualEST) {
-        for (let lang of this.estLanguages) {
+        for (const lang of this.estLanguages) {
           view['established_' + lang] = { show: (type === 'established' && language === lang), id: id }
         }
-        if (type == 'established' && language) {
-          view["type"] = 'established_' + language;
+        if (type === 'established' && language) {
+          view['type'] = 'established_' + language;
         }
       }
 

@@ -432,7 +432,7 @@ export class FacsimilesComponent {
       text: buttonTranslations.Ok,
       handler: (index: string) => {
 
-        console.log("byter faksimil, ", index);
+        console.log('changing facsimile, ', index);
 
         if (parseInt(index) < 0) {
           // External facsimiles selected

@@ -101,8 +101,8 @@ export class EpubComponent {
 
     try {
       this.availableEpubs = this.config.getSettings('AvailableEpubs');
-      for( const epub in this.availableEpubs ) {
-        if( this.availableEpubs[epub]['filename'] === this.epubFileName ) {
+      for ( const epub in this.availableEpubs ) {
+        if ( this.availableEpubs[epub]['filename'] === this.epubFileName ) {
           this.downloadURL = this.availableEpubs[epub]['download'];
         }
       }
@@ -114,7 +114,7 @@ export class EpubComponent {
 
   doSearch(q): Promise<any> {
     const search = String(this.searchText);
-    if( search.length > 0 ) {
+    if ( search.length > 0 ) {
       const _book = this.book;
       this.searchResultIndex = 0;
       this.searchResults = [];
@@ -165,7 +165,7 @@ export class EpubComponent {
   }
 
   prevSearch() {
-    if( this.searchResultIndex !== 0 ) {
+    if ( this.searchResultIndex !== 0 ) {
       this.searchResultIndex--;
     }
     if ( this.searchResults !== undefined ) {

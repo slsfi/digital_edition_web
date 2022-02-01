@@ -55,7 +55,7 @@ export class TableOfContentsService {
     if (this.multilingualTOC) {
       url += '/' + this.lang;
     } else {
-      console.log("not multilingual toc");
+      console.log('not multilingual toc');
     }
 
     return this.http.get(url)
