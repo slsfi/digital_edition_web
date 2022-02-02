@@ -74,7 +74,7 @@ export class EpubComponent {
       __this.rendition.resize(size.width, size.height);
     });
 
-    this.rendition.themes.default({ 'p': { 'font-size': '1.1em !important'}})
+    this.rendition.themes.default({ 'body': { 'font-size': '1.0625em'}});
 
     this.displayed = this.rendition.display();
 
