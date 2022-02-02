@@ -36,12 +36,17 @@ page-illustration {
 		opacity: 1;
 	}
 
-    p {
-      line-height: 1rem;
-    }
-
     a {
         cursor: pointer;
+    }
+
+    .media-metadata p {
+        font-size: 1.0625em;
+        line-height: 1.5;
+    }
+
+    .media-metadata .media-collection-link ion-icon {
+        vertical-align: middle;
     }
 
     ion-fab[right] {

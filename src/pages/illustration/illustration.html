@@ -29,12 +29,12 @@
     <ion-card class="illustration-box">
       <ion-card-content>
         <img class="illustration-img-thumb" alt="illustration" [src]="imgPath">
-        <div>
-          <p><b>{{imgMetadata['full_name']}}, <i>{{imgMetadata['media_title_translation']}}</i></b></p>
+        <div class="media-metadata">
+          <p><b>{{imgMetadata['full_name']}}<ng-container *ngIf="imgMetadata['full_name'] && imgMetadata['media_title_translation']">, </ng-container><i>{{imgMetadata['media_title_translation']}}</i></b></p>
           <p>{{imgMetadata['media_art_technique_translation']}}</p>
           <p>{{imgMetadata['media_collection_title_translation']}}</p>
           <p>{{imgMetadata['art_location']}}</p>
-          <p>
+          <p class="media-collection-link">
             <a (click)="goToMediaCollection()">
               <ion-icon name="photos"></ion-icon> {{ "MediaCollections.GotoMediaCollection" | translate }}
             </a>

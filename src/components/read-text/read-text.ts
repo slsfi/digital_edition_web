@@ -136,7 +136,7 @@ export class ReadTextComponent {
     this.unlistenClickEvents();
   }
 
-  /** 
+  /**
    *  ! This method does not work when an open illustrations-view has been previously
    *  ! removed and then an attempt to reopen one from the read-text is made. New
    *  ! illustrations-views are opened with the openIllustrationInNewView method. */
