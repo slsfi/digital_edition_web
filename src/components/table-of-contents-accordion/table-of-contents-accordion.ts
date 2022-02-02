@@ -342,7 +342,7 @@ export class TableOfContentsAccordionComponent {
     const list = this.flattenList(data.tocItems);
 
     for (const child of list) {
-        if (child.type !== 'section_title') {
+        if (child.type !== 'section_title' && child.type !== 'subtitle') {
             this.alphabeticalactiveMenuTree.push(child);
         }
     }
@@ -363,7 +363,7 @@ export class TableOfContentsAccordionComponent {
     const list = this.flattenList(data.tocItems);
 
     for (const child of list) {
-        if (child.date && child.type !== 'section_title') {
+        if (child.date && child.type !== 'section_title' && child.type !== 'subtitle') {
             this.chronologicalactiveMenuTree.push(child);
         }
     }
