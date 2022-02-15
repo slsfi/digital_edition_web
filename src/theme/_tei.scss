@@ -2136,7 +2136,8 @@ div.tei .tooltip { display: none; }
     font-weight: normal !important;
 }
 .tei.show_pageNumbering span.lNumber,
-.tei.show_pageNumbering p.parIndent span.paragraph_number {
+.tei.show_pageNumbering p.parIndent span.paragraph_number,
+.tei.show_pageNumbering p.hangingIndent span.paragraph_number {
     margin-left: -65px;
 }
 /* Vänster padding för lästext och inledning när styckenumreringen visas */
