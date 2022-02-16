@@ -22,7 +22,7 @@
 // START OF ORIGINAL VARIABLES.SCSS RULES
 .searchbar-search-icon{
 	left: 1rem !important;
-	top: 0.5rem !important;
+	top: 0.4375rem !important;
 	width: 2rem !important;
 	height: 2rem !important;
 }
@@ -33,6 +33,10 @@
 
 .button-md{
 	height: 2.3rem !important;
+}
+
+.button-md.searchbar-clear-icon {
+  height: 100% !important;
 }
 
 .tei.heading{
