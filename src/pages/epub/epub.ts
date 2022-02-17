@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { App, NavController, ViewController, NavParams, PopoverController, IonicPage, Events, Platform } from 'ionic-angular';
-
 import { ConfigService } from '@ngx-config/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
+import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 
 /**
  * Desktop version shows collection cover page.
@@ -32,7 +32,8 @@ export class EpubPage {
     protected translate: TranslateService,
     protected events: Events,
     protected platform: Platform,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    private userSettingsService: UserSettingsService
   ) {
 
   }
@@ -47,6 +48,14 @@ export class EpubPage {
   }
 
   ionViewWillEnter() {
+  }
+
+  printContentClasses() {
+    if (this.userSettingsService.isMobile() || this.userSettingsService.isTablet()) {
+      return 'mobile-view-epub';
+    } else {
+      return '';
+    }
   }
 
 }

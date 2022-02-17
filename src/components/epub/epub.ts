@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input } from '@angular/core';
+import { Component, Input, NgZone, Renderer2 } from '@angular/core';
 import { ConfigService } from '@ngx-config/core';
 import {} from 'fs';
 import { PopoverController } from 'ionic-angular';
 import { MdContentService } from '../../app/services/md/md-content.service';
-import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
+import { ReadPopoverService, Fontsize } from '../../app/services/settings/read-popover.service';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { ReadPopoverPage } from '../../pages/read-popover/read-popover';
+import { Subscription } from 'rxjs/Subscription';
 
 declare var ePub;
 /**
@@ -31,13 +32,25 @@ export class EpubComponent {
   rendition: any;
   displayed: any;
   loading: boolean;
-  currentPageNumber: number;
-  nextPageNumber: number;
   searchText: string;
   searchResults: any[];
   searchResultIndex: number;
   currentHighlight: any;
-
+  fontsize: Fontsize;
+  splitPaneObserver: any;
+  splitPaneVisible: boolean;
+  epubCreators: string[];
+  epubContributors: string[];
+  epubTitle: string;
+  epubCoverImageBlob: Blob;
+  currentLocationCfi: any;
+  previousLocationCfi: any;
+  atStart: boolean;
+  atEnd: boolean;
+  currentPositionPercentage: string;
+  currentSectionLabel: string;
+  fontsizeSubscription: Subscription;
+  
   @Input() epubFileName?: string;
 
   public tocMenuOpen: boolean;
@@ -46,58 +59,200 @@ export class EpubComponent {
   public availableEpubs: object;
   public downloadURL: any;
 
+  private unlistenKeyDownEvents: () => void;
+
   constructor( private userSettingsService: UserSettingsService,
     public mdContentService: MdContentService,
     protected popoverCtrl: PopoverController,
     public readPopoverService: ReadPopoverService,
+    private renderer2: Renderer2,
+    private ngZone: NgZone,
     private config: ConfigService ) {
     this.tocMenuOpen = false;
     this.searchMenuOpen = false;
     this.loading = true;
     this.searchResults = [];
     this.searchResultIndex = 0;
+    this.splitPaneObserver = null;
+    this.splitPaneVisible = false;
+    this.fontsize = this.readPopoverService.fontsize;
+    this.epubCreators = [];
+    this.epubContributors = [];
+    this.epubTitle = '';
+    this.epubCoverImageBlob = null;
+    this.currentLocationCfi = '';
+    this.previousLocationCfi = '';
+    this.atStart = true;
+    this.atEnd = false;
+    this.currentPositionPercentage = '0 %';
+    this.currentSectionLabel = '';
+    this.fontsizeSubscription = null;
+  }
+
+  ngOnInit() {
+    this.subscribeToReadPopoverFontsizeChanges();
+  }
+
+  ngOnDestroy() {
+    if (this.splitPaneObserver !== null && this.splitPaneObserver !== undefined) {
+      this.splitPaneObserver.disconnect();
+    }
+    this.fontsizeSubscription.unsubscribe();
+    this.unlistenKeyDownEvents();
+    this.book.destroy();
   }
 
   ngAfterViewInit() {
-    this.book = ePub('../assets/books/' + this.epubFileName);
-    // Get viewport width and height. Make it a bit smaller
-    const vw = (Math.max(document.documentElement.clientWidth, window.innerWidth || 0)) * 0.8;
-    const vh = (Math.max(document.documentElement.clientHeight, window.innerHeight || 0)) * 0.8;
-    const area = document.getElementById('area');
-    if ( this.userSettingsService.isDesktop() ) {
-      this.rendition = this.book.renderTo(area,   { width: vw, height: vh, spread: 'always' });
-    } else {
-      this.rendition = this.book.renderTo(area,   { width: vw, height: vh, spread: 'always' });
-    }
-    const __this = this;
-    this.rendition.on('resized', function(size) {
-      __this.rendition.resize(size.width, size.height);
-    });
+    this.ngZone.runOutsideAngular(() => {
+      this.book = ePub('../assets/books/' + this.epubFileName);
 
-    this.rendition.themes.default({ 'body': { 'font-size': '1.0625em'}});
-
-    this.displayed = this.rendition.display();
-
-    this.book.ready.then( () => {
-      setTimeout(() => {
-        this.loading = false;
-      }, 2500);
-      this.createTOC();
-      this.setPageNumbers();
-    });
-
-    const __parent = this;
-    document.addEventListener('keydown', function( event ) {
-      // event.preventDefault();
-      switch (event.code) {
-        case 'ArrowLeft':
-          __parent.prev();
-          break;
-        case 'ArrowRight':
-          __parent.next();
-          break;
+      /*
+        Get the dimensions of the epub rendering area. Adjust the size of the rendering
+        to even numbers (helps rendering of spreads).
+      */
+      const area = document.getElementById('area');
+      let areaWidth = Math.floor(area.getBoundingClientRect().width);
+      let areaHeight = Math.floor(area.getBoundingClientRect().height);
+      if (!this.numberIsEven(areaWidth)) {
+        areaWidth = areaWidth - 1;
       }
-    });
+      if (!this.numberIsEven(areaHeight)) {
+        areaHeight = areaHeight - 1;
+      }
+
+      this.rendition = this.book.renderTo(area, { width: areaWidth, height: areaHeight, spread: 'auto' });
+
+      /*
+        Register epub themes for switching font size and setting font family to browser default serif for the
+        search to highlight matches correctly.
+      */
+      this.rendition.themes.register('fontsize_0', { 'body': { 'font-size': '1em' } });
+      this.rendition.themes.register('fontsize_1', { 'body': { 'font-size': '1.0625em' } });
+      this.rendition.themes.register('fontsize_2', { 'body': { 'font-size': '1.125em' } });
+      this.rendition.themes.register('fontsize_3', { 'body': { 'font-size': '1.1875em' } });
+      this.rendition.themes.register('fontsize_4', { 'body': { 'font-size': '1.3125em' } });
+      this.rendition.themes.register('search_fontsize_0', { '*': { 'font-family': 'serif !important' },
+        'body': { 'font-size': '1em' } });
+      this.rendition.themes.register('search_fontsize_1', { '*': { 'font-family': 'serif !important' },
+        'body': { 'font-size': '1.0625em' } });
+      this.rendition.themes.register('search_fontsize_2', { '*': { 'font-family': 'serif !important' },
+        'body': { 'font-size': '1.125em' } });
+      this.rendition.themes.register('search_fontsize_3', { '*': { 'font-family': 'serif !important' },
+        'body': { 'font-size': '1.1875em' } });
+      this.rendition.themes.register('search_fontsize_4', { '*': { 'font-family': 'serif !important' },
+        'body': { 'font-size': '1.3125em' } });
+
+      this.rendition.themes.select('fontsize_' + this.fontsize);
+
+      this.displayed = this.rendition.display();
+
+      this.book.ready.then( () => {
+        // Remove loading spinner with a delay
+        setTimeout(() => {
+          this.ngZone.run(() => {
+            this.loading = false;
+          });
+        }, 2500);
+
+        /*
+          Get epub title, creator(s), contributor(s) and cover image (as a blob) from the epub.
+          Since the metadata object provided by the epub.js library doesn't support multiple
+          creators or contributors we have to get those directly from the epub package document.
+        */
+        this.epubTitle = this.book.package.metadata.title;
+
+        let opfFilePath = String(this.book.container.packagePath);
+        if (!opfFilePath.startsWith('/')) {
+          opfFilePath = '/' + opfFilePath;
+        }
+
+        this.book.archive.getText(opfFilePath).then((res) => {
+          try {
+            if (res !== undefined && res !== null) {
+              const parser = new DOMParser();
+              const opf = parser.parseFromString(res, 'text/xml');
+              const creatorElements = opf.getElementsByTagName('dc:creator');
+              for (let i = 0; i < creatorElements.length; i++) {
+                this.epubCreators.push(creatorElements.item(i).textContent);
+              }
+              const contributorElements = opf.getElementsByTagName('dc:contributor');
+              for (let i = 0; i < contributorElements.length; i++) {
+                this.epubContributors.push(contributorElements.item(i).textContent);
+              }
+            }
+          } catch {}
+        });
+
+        this.book.archive.getBlob(this.book.cover).then((res) => {
+          try {
+            this.epubCoverImageBlob = res;
+          } catch (e) {
+            this.epubCoverImageBlob = null;
+          }
+          // Generate table of contents view
+          this.ngZone.run(() => {
+            this.createTOC();
+          });
+        });
+
+        // Generate locations for calculating percentage positions throughout the book
+        this.book.locations.generate();
+      });
+
+      // Event fired when current location (i.e. page or spread) in book changes
+      this.rendition.on('relocated', (location) => {
+        this.ngZone.run(() => {
+
+          // Store current cfi location in book and check if at start or end of book
+          this.previousLocationCfi = this.currentLocationCfi;
+          this.currentLocationCfi = location.start.cfi;
+          if (location.atStart) {
+            this.atStart = true;
+          } else {
+            this.atStart = false;
+          }
+          if (location.atEnd) {
+            this.atEnd = true;
+          } else {
+            this.atEnd = false;
+          }
+
+          // Get the current position in the book as a percentage with one decimal
+          if (this.atStart) {
+            this.currentPositionPercentage = '0.0 %';
+          } else if (this.atEnd) {
+            this.currentPositionPercentage = '100.0 %';
+          } else {
+            this.currentPositionPercentage = (parseFloat(this.book.locations.percentageFromCfi(this.currentLocationCfi)) * 100).toFixed(1) + ' %'
+          }
+        });
+
+        // Get the label of the current section from the epub
+        const getNavItemByHref = href => (function flatten(arr) {
+          return [].concat(...arr.map(v => [v, ...flatten(v.subitems)]));
+        })(this.book.navigation.toc).filter(
+            item => this.book.canonical(item.href.split('#')[0]) === this.book.canonical(href)
+        )[0] || null;
+
+        const navItemHref = getNavItemByHref(this.rendition.currentLocation().start.href);
+
+        this.ngZone.run(() => {
+          if (navItemHref !== null && navItemHref !== undefined) {
+            this.currentSectionLabel = navItemHref.label;
+          } else {
+            this.currentSectionLabel = '';
+          }
+          if (this.currentSectionLabel === null || this.currentSectionLabel === undefined) {
+            this.currentSectionLabel = '';
+          }
+        });
+      });
+
+      this.setUpInputListeners();
+
+      this.setUpDOMMutationObservers();
+
+    }); // End of runOutsideAngular
 
     try {
       this.availableEpubs = this.config.getSettings('AvailableEpubs');
@@ -106,10 +261,10 @@ export class EpubComponent {
           this.downloadURL = this.availableEpubs[epub]['download'];
         }
       }
-
     } catch (e) {
       this.availableEpubs = [];
     }
+
   }
 
   doSearch(q): Promise<any> {
@@ -128,10 +283,10 @@ export class EpubComponent {
         Promise.resolve(
           this.searchResults = [].concat.apply([], results)
         ).then( () => {
+          // console.log(this.searchResults);
           this.nextSearch(true);
           }
         )
-
       );
     }
   };
@@ -141,27 +296,26 @@ export class EpubComponent {
     if ( this.currentHighlight !== undefined ) {
       this.rendition.annotations.remove(this.currentHighlight, 'highlight');
     }
-    this.rendition.annotations.highlight(cfiRange, {}, (e) => {
-    });
+    this.rendition.annotations.highlight(cfiRange);
     this.currentHighlight = cfiRange;
   }
 
   nextSearch( first?: boolean ) {
-    console.log(this.searchResultIndex);
     if ( this.searchResultIndex < (this.searchResults.length - 1) && first === undefined ) {
       this.searchResultIndex++;
     }
     if ( this.searchResults !== undefined ) {
       const res = this.searchResults[this.searchResultIndex];
-      if ( res !== undefined && res['cfi'] !== undefined ) {
-        const url = res['cfi'];
-        if (  url !== undefined ) {
-          this.openChapter(url);
-          this.applyHighlight(url);
+      // console.log(res);
+      if ( res !== undefined && res.cfi !== undefined ) {
+        const url = res.cfi;
+        if ( url !== undefined ) {
+          this.rendition.display(url).then( () => {
+            this.applyHighlight(url);
+          });
         }
       }
     }
-    console.log(this.searchResultIndex);
   }
 
   prevSearch() {
@@ -169,16 +323,25 @@ export class EpubComponent {
       this.searchResultIndex--;
     }
     if ( this.searchResults !== undefined ) {
-
       const res = this.searchResults[this.searchResultIndex];
-      if ( res !== undefined && res['cfi'] !== undefined ) {
-        const url = res['cfi'];
-        if (  url !== undefined ) {
-          this.openChapter(url);
-          this.applyHighlight(url);
+      if ( res !== undefined && res.cfi !== undefined ) {
+        const url = res.cfi;
+        if ( url !== undefined ) {
+          this.rendition.display(url).then( () => {
+            this.applyHighlight(url);
+          });
         }
       }
     }
+  }
+
+  clearSearch() {
+    if ( this.currentHighlight !== undefined ) {
+      this.rendition.annotations.remove(this.currentHighlight, 'highlight');
+    }
+    this.searchText = '';
+    this.searchResultIndex = 0;
+    this.searchResults = [];
   }
 
   createTOC() {
@@ -186,15 +349,53 @@ export class EpubComponent {
     this.book.loaded.navigation.then(
       function( toc ) {
         const tocDiv = <HTMLDivElement> document.getElementById('toc_text');
-        const tocUl = document.createElement('ul');
+        const tocUl = document.createElement('ol');
         tocUl.className = 'topchapter';
         const docfrag = <DocumentFragment> document.createDocumentFragment();
+
         toc.forEach( (chapter) => {
           // Adds TOC elements recursively to div
           docfrag.appendChild(_this.createTocElement(chapter));
           return null;
         });
         tocUl.appendChild(docfrag);
+
+        // Add cover, creator(s)/contributor(s) and title to TOC
+        if (_this.epubCoverImageBlob !== null && _this.epubCoverImageBlob !== undefined) {
+          const tocCoverImg = document.createElement('img');
+          tocCoverImg.className = 'epub_cover';
+          tocCoverImg.alt = 'cover';
+          tocCoverImg.src = URL.createObjectURL(_this.epubCoverImageBlob);
+          tocDiv.appendChild(tocCoverImg);
+        }
+
+        if (_this.epubCreators.length > 0) {
+          const tocCreatorP = document.createElement('p');
+          tocCreatorP.className = 'epub_creator';
+          tocCreatorP.innerText = _this.formatWriterNamesForTOC(_this.epubCreators);
+          tocDiv.appendChild(tocCreatorP);
+        }
+
+        // If no creators, use contributors instead
+        if (_this.epubCreators.length < 1 && _this.epubContributors.length > 0) {
+          const tocCreatorP = document.createElement('p');
+          tocCreatorP.className = 'epub_creator';
+          tocCreatorP.innerText = _this.formatWriterNamesForTOC(_this.epubContributors);
+          tocDiv.appendChild(tocCreatorP);
+        }
+
+        if (_this.epubTitle) {
+          const tocTitleP = document.createElement('p');
+          tocTitleP.className = 'epub_title';
+          tocTitleP.innerText = _this.epubTitle;
+          tocDiv.appendChild(tocTitleP);
+        }
+
+        // Add horizontal ruler
+        if (_this.epubCreators.length > 0 || _this.epubContributors.length > 0 || _this.epubTitle) {
+          tocDiv.appendChild(document.createElement('hr'));
+        }
+
         tocDiv.appendChild(tocUl);
       }
     );
@@ -219,7 +420,7 @@ export class EpubComponent {
     element.appendChild(link);
     docfrag.appendChild(element);
     if ( chapter.subitems.length > 0 ) {
-      const subTocUl = document.createElement('ul');
+      const subTocUl = document.createElement('ol');
       subTocUl.className = 'subchapters';
       chapter.subitems.forEach( (subChapter) => {
         subTocUl.appendChild(this.createTocElement(subChapter));
@@ -242,29 +443,30 @@ export class EpubComponent {
   }
 
   toggleSearchMenu() {
+    let currentLocation = this.currentLocationCfi;
     if ( this.searchMenuOpen ) {
       this.searchMenuOpen = false;
+      if (this.currentHighlight !== undefined && this.currentHighlight !== null) {
+        currentLocation = this.currentHighlight;
+      }
+      this.clearSearch();
+      this.rendition.themes.select('fontsize_' + this.fontsize);
+      try {
+        this.rendition.clear();
+        this.rendition.start();
+      } catch {}
+      this.rendition.display(currentLocation);
     } else {
       this.searchMenuOpen = true;
+      this.rendition.themes.select('search_fontsize_' + this.fontsize);
+      this.rendition.display(currentLocation);
     }
   }
 
-  setPageNumbers() {
-    try {
-      const _parent = this;
-      this.rendition.on('relocated', function(location) {
-        _parent.currentPageNumber = location.start.index;
-        _parent.nextPageNumber = location.end.index;
-      });
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  ngOnDestroy() {
-    this.book.destroy();
-  }
-
+  /**
+   * Commented because pan/swipe didn't work.
+   */
+  /*
   swipePrevNext(ev) {
     if (ev.direction !== undefined) {
       if (ev.direction === 2) {
@@ -274,15 +476,14 @@ export class EpubComponent {
       }
     }
   }
+  */
 
   next() {
     this.rendition.next();
-    this.setPageNumbers();
   }
 
   prev() {
     this.rendition.prev();
-    this.setPageNumbers();
   }
 
   showReadSettingsPopover(myEvent) {
@@ -302,24 +503,159 @@ export class EpubComponent {
     popover.present({
       ev: myEvent
     });
-    popover.onDidDismiss( ret => {
-      /*switch(this.readPopoverService.fontsize){
-        case 0:
-          this.rendition.themes.default({ "p": { "font-size": "0.8rem !important"}})
-        case 1:
-          this.rendition.themes.default({ "p": { "font-size": "1rem !important"}})
-        case 2:
-          this.rendition.themes.default({ "p": { "font-size": "1.2rem !important"}})
-        case 3:
-          this.rendition.themes.default({ "p": { "font-size": "1.7rem !important"}})
-        case 4:
-          this.rendition.themes.default({ "p": { "font-size": "1.9rem !important"}})
-      }*/
-
-    } )
   }
 
   downloadEpub() {
     const ref = window.open(this.downloadURL, '_blank');
   }
+
+  /**
+   * Set up a DOM mutation observer for detecting when the left menu (ion-split-pane)
+   * is opened and closed. Resize epub when this happens. This is necessary for the
+   * epub to render correctly in mobile mode when the split pane is opened and closed.
+   */
+  setUpDOMMutationObservers() {
+    // Options for the observer (which mutations to observe)
+    const config = { attributes: true, childList: false, subtree: false };
+
+    // Check if split pane menu is visible
+    if (document.querySelector('ion-split-pane.split-pane-visible') !== null) {
+      this.splitPaneVisible = true;
+    } else {
+      this.splitPaneVisible = false;
+    }
+
+    // Select ion-split-pane element in order to observe for mutations
+    const splitPaneElement = document.querySelector('top-menu + ion-split-pane');
+
+    // Callback function to execute when mutations are observed
+    const callbackSplitPane = function(mutationsList, observer) {
+      for (const mutation of mutationsList) {
+        if (mutation.type === 'attributes') {
+          if (mutation.attributeName === 'class') {
+            if ((mutation.target.className.includes('split-pane-visible') && !this.splitPaneVisible)
+              || (!mutation.target.className.includes('split-pane-visible') && this.splitPaneVisible)) {
+              this.splitPaneVisible = !this.splitPaneVisible;
+              // Split pane has been either opened or closed --> get the size of the epub area and resize epub
+              const area = document.querySelector('.toc-epub-container > #area');
+              let areaWidth = Math.floor(area.getBoundingClientRect().width);
+              let areaHeight = Math.floor(area.getBoundingClientRect().height);
+              if (!this.numberIsEven(areaWidth)) {
+                areaWidth = areaWidth - 1;
+              }
+              if (!this.numberIsEven(areaHeight)) {
+                areaHeight = areaHeight - 1;
+              }
+              try {
+                this.rendition.resize(areaWidth, areaHeight);
+              } catch {
+                console.log('epub.js threw an error resizing the rendering area');
+              }
+            }
+          }
+        }
+      }
+    }.bind(this);
+
+    // Create an observer instance linked to the callback function
+    this.splitPaneObserver = new MutationObserver(callbackSplitPane);
+
+    // Start observing the target node for configured mutations
+    this.splitPaneObserver.observe(splitPaneElement, config);
+
+  }
+
+  /**
+   * Get fontsize changes from the read popover service and update epub font size
+   * when new size has been set.
+   */
+  subscribeToReadPopoverFontsizeChanges() {
+    this.fontsizeSubscription = this.readPopoverService.fontsize$.subscribe(newFontsize => {
+      if (newFontsize in Fontsize && newFontsize !== this.fontsize) {
+        this.setEpubFontsize(newFontsize);
+      }
+    });
+  }
+
+  setEpubFontsize(fontsize: Fontsize) {
+    const currentLocation = this.currentLocationCfi;
+    if (this.searchMenuOpen) {
+      this.rendition.themes.select('search_fontsize_' + fontsize);
+    } else {
+      this.rendition.themes.select('fontsize_' + fontsize);
+    }
+    this.fontsize = fontsize;
+    try {
+      this.rendition.clear();
+      this.rendition.start();
+    } catch {}
+    this.rendition.display(currentLocation);
+  }
+
+  /**
+   * Given an array with names of people, this function return a string where the names
+   * have been concatenated. A comma (,) is used as a separator between all of the names
+   * except between the second to last and last, which are separated by an ampersand (&).
+   * @param names An array of strings with the names that are to be concatenated.
+   * @returns A string with the names concatenated.
+   */
+  formatWriterNamesForTOC(names: string[]) {
+    let names_str = '';
+    for (let i = 0; i < names.length; i++) {
+      names_str = names_str + names[i];
+      if (names.length > 2) {
+        if (i < names.length - 2) {
+          names_str = names_str + ', ';
+        } else if (i < names.length - 1) {
+          names_str = names_str + ' \u0026 ';
+        }
+      } else if (names.length === 2 && i < 1) {
+        names_str = names_str + ' \u0026 ';
+      }
+    }
+    return names_str;
+  }
+
+  /**
+   * Check if an integer is even.
+   */
+  numberIsEven(value: number) {
+    if (value % 2 === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private setUpInputListeners() {
+    /* KEYDOWN EVENTS */
+    /* We need to listen on the whole document for next/prev in epub to work! */
+    this.unlistenKeyDownEvents = this.renderer2.listen('document', 'keydown', (event) => {
+      switch (event.code) {
+        case 'ArrowLeft':
+          this.prev();
+          break;
+        case 'ArrowRight':
+          this.next();
+          break;
+        case 'Enter':
+          /*
+            Move to next search match if 'enter' key pressed in epub search bar. Since we are
+            listening on the whole document we need to make sure we catch the key stroke in
+            the epub's search bar and not elsewhere.
+          */
+          if (event.target.className.includes('searchbar-input')) {
+            if (event.target.parentElement !== null) {
+              if (event.target.parentElement.parentElement !== null) {
+                if (event.target.parentElement.parentElement.className.includes('epub-search-bar')) {
+                  this.nextSearch();
+                  break;
+                }
+              }
+            }
+          }
+      }
+    });
+  }
+
 }

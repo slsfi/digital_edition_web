@@ -374,5 +374,12 @@
   "BasicActions": {
     "Ok": "Ok",
     "Cancel": "Peruuta"
+  },
+  "Epub": {
+    "DisplayOptions": "Tekstikoko",
+    "Download": "Lataa",
+    "Search": "Haku",
+    "SearchPhrase": "Hakulause",
+    "Contents": "Sisältö"
   }
 }

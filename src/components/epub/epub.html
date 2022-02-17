@@ -6,41 +6,40 @@
     </ion-title>
     <ion-buttons>
         <ion-grid>
-            <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
+            <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center justify-content-end>
               <ion-col class="navigation-buttons-col" *ngIf="(userSettingsService.isMobile() === false && userSettingsService.isTablet() === false)">
-                <button ion-button clear class="navigation-buttons" title="prev button" id="epub-arrow-prev">
-                  <div id="toc_menu" (click)="prev()" *ngIf="!loading">
-                      <ion-icon name="arrow-back"></ion-icon>
-                  </div>
+                <button ion-button clear class="navigation-buttons" [ngClass]="atStart ? 'disabled-nav-button' : ''" title="prev button" id="epub-arrow-prev" (click)="prev()" *ngIf="!loading">
+                  <ion-icon name="arrow-back"></ion-icon>
                 </button>
               </ion-col>
-              <ion-col class="navigation-buttons-col right" *ngIf="(userSettingsService.isMobile() === false && userSettingsService.isTablet() === false)">
-                <button ion-button clear class="navigation-buttons" title="next button" id="epub-arrow-next">
-                  <div id="toc_menu" (click)="next()" *ngIf="!loading">
-                      <ion-icon name="arrow-forward"></ion-icon>
-                  </div>
+              <ion-col class="navigation-buttons-col current-section-label-col" *ngIf="(userSettingsService.isMobile() === false && userSettingsService.isTablet() === false)">
+                <div class="current-section-label" *ngIf="!loading">
+                  <span [innerHTML]="currentSectionLabel"></span>
+                </div>
+              </ion-col>
+              <ion-col class="navigation-buttons-col" *ngIf="(userSettingsService.isMobile() === false && userSettingsService.isTablet() === false)">
+                <button ion-button clear class="navigation-buttons" [ngClass]="atEnd ? 'disabled-nav-button' : ''" title="next button" id="epub-arrow-next" (click)="next()" *ngIf="!loading">
+                  <ion-icon name="arrow-forward"></ion-icon>
                 </button>
               </ion-col>
               <ion-col class="navigation-buttons-toc">
-                <!--button ion-button clear #settingsIconElement (click)="showReadSettingsPopover($event)" class="sec-menu-button" id="settings-icon">
+                <button ion-button clear #settingsIconElement (click)="showReadSettingsPopover($event)" class="sec-menu-button" id="settings-icon">
                   <ion-icon class="settings-icon" name="settings"></ion-icon>
-                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Popover.Options' | translate }}</span>
-                </button-->
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Epub.DisplayOptions' | translate }}</span>
+                </button>
                 <button ion-button clear class="sec-menu-button" (click)="downloadEpub()">
                     <ion-icon name="download" class="intro-dowload-button"></ion-icon>
-                    <span class="side-title">{{'download' | translate }}</span>
+                    <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Epub.Download' | translate }}</span>
                 </button>
-                <button ion-button clear class="sec-menu-button">
-                  <div id="toc_menu" (click)="toggleSearchMenu()">
-                      <ion-icon name="search" class="intro-search-button" *ngIf="!searchMenuOpen"></ion-icon>
-                      <ion-icon name="close" class="intro-search-button" *ngIf="searchMenuOpen"></ion-icon>
-                  </div>
+                <button ion-button clear class="sec-menu-button" (click)="toggleSearchMenu()">
+                  <ion-icon name="search" class="intro-search-button" *ngIf="!searchMenuOpen"></ion-icon>
+                  <ion-icon name="close" class="intro-search-button" *ngIf="searchMenuOpen"></ion-icon>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Epub.Search' | translate }}</span>
                 </button>
-                <button ion-button clear class="sec-menu-button" [ngClass]="tocMenuOpen ? 'menuOpenTOC' : 'menuClosedTOC'">
-                  <div id="toc_menu" (click)="toggleTocMenu()" [ngClass]="tocMenuOpen ? 'menuOpenIcon' : 'menuClosedIcon'">
-                      <ion-icon name="menu" class="intro-toc-button" *ngIf="!tocMenuOpen"></ion-icon>
-                      <ion-icon name="close" class="intro-toc-button" *ngIf="tocMenuOpen"></ion-icon>
-                  </div>
+                <button ion-button clear class="sec-menu-button" [ngClass]="tocMenuOpen ? 'menuOpenTOC' : 'menuClosedTOC'"  (click)="toggleTocMenu()">
+                  <ion-icon name="menu" class="intro-toc-button" *ngIf="!tocMenuOpen"></ion-icon>
+                  <ion-icon name="close" class="intro-toc-button" *ngIf="tocMenuOpen"></ion-icon>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Epub.Contents' | translate }}</span>
                 </button>
               </ion-col>
             </ion-row>
@@ -52,33 +51,25 @@
 <div id="search_menu" [ngClass]="searchMenuOpen ? 'searchOpen' : 'searchClosed'">
   <ion-grid>
     <ion-row class="search-bar">
-      <ion-col class="navigation-buttons-col right">
-        <div>
-          <ion-searchbar (ionChange)=doSearch($event) *ngIf="!loading" [(ngModel)]="searchText"></ion-searchbar>
-        </div>
+      <ion-col class="navigation-buttons-col">
+        <ion-searchbar class="epub-search-bar" (ionChange)=doSearch($event) (ionClear)="clearSearch($event)" *ngIf="!loading" [(ngModel)]="searchText" placeholder="{{'Epub.SearchPhrase' | translate}}"></ion-searchbar>
       </ion-col>
     </ion-row>
     <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
-      <ion-col class="navigation-buttons-col">
-        <button ion-button clear class="navigation-buttons" title="prev button">
-          <div id="toc_menu" (click)="prevSearch()" *ngIf="!loading">
-            <ion-icon name="arrow-back"></ion-icon>
-          </div>
+      <ion-col class="navigation-buttons-col search-nav-button">
+        <button *ngIf="!loading" ion-button clear class="navigation-buttons" title="prev button" (click)="prevSearch()">
+          <ion-icon name="arrow-back"></ion-icon>
         </button>
       </ion-col>
       <ion-col class="navigation-buttons-col">
-        <button ion-button clear class="navigation-buttons" title="prev button">
-          <div id="toc_menu" *ngIf="!loading">
-            <p *ngIf="searchResultIndex === 0 && searchResults.length>0">1 / {{searchResults.length}}</p>
-            <p *ngIf="searchResultIndex > 0">{{searchResultIndex + 1}} / {{searchResults.length}}</p>
+          <div class="search-count" *ngIf="!loading">
+            <span *ngIf="searchResultIndex === 0 && searchResults.length>0">1 / {{searchResults.length}}</span>
+            <span *ngIf="searchResultIndex > 0">{{searchResultIndex + 1}} / {{searchResults.length}}</span>
           </div>
-        </button>
       </ion-col>
-      <ion-col class="navigation-buttons-col right">
-        <button ion-button clear class="navigation-buttons" title="next button">
-        <div id="toc_menu" (click)="nextSearch()" *ngIf="!loading">
+      <ion-col class="navigation-buttons-col search-nav-button">
+        <button *ngIf="!loading" ion-button clear class="navigation-buttons" title="next button" (click)="nextSearch()">
           <ion-icon name="arrow-forward"></ion-icon>
-        </div>
         </button>
       </ion-col>
     </ion-row>
@@ -89,27 +80,34 @@
 </div>
 
 <div class="toc-epub-container">
-  <ion-spinner *ngIf="loading" class="loading" name="crescent"></ion-spinner>
-  <div id="area" (pan)="swipePrevNext($event)" [ngClass]="(readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize'"></div>
+  <div *ngIf="loading" class="spinner-wrapper">
+    <ion-spinner class="loading" name="crescent"></ion-spinner>
+  </div>
+  <div id="area"></div>
 </div>
 
-<div class="text-changer-mobile-view" *ngIf="(userSettingsService.isMobile() === true || userSettingsService.isTablet() === true) && tocMenuOpen === false">
+<div class="text-changer-mobile-view" *ngIf="(userSettingsService.isMobile() === true || userSettingsService.isTablet() === true)">
   <ion-grid class="forwardBackward">
       <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
         <ion-col class="navigation-buttons-col">
-          <button ion-button clear class="navigation-buttons" title="prev button" id="epub-arrow-prev">
-            <div id="toc_menu" (click)="prev()" *ngIf="!loading">
-                <ion-icon name="arrow-back"></ion-icon>
-            </div>
+          <button ion-button clear class="navigation-buttons" [ngClass]="atStart ? 'disabled-nav-button' : ''" title="prev button" id="epub-arrow-prev" (click)="prev()" *ngIf="!loading">
+            <ion-icon name="arrow-back"></ion-icon>
           </button>
         </ion-col>
-        <ion-col class="navigation-buttons-col right">
-          <button ion-button clear class="navigation-buttons" title="next button" id="epub-arrow-next">
-            <div id="toc_menu" (click)="next()" *ngIf="!loading">
-                <ion-icon name="arrow-forward"></ion-icon>
-            </div>
+        <ion-col class="navigation-buttons-col text-changer-current-section-label-col">
+          <div class="current-section-label" *ngIf="!loading">
+            <span [innerHTML]="currentSectionLabel"></span>
+          </div>
+        </ion-col>
+        <ion-col class="navigation-buttons-col">
+          <button ion-button clear class="navigation-buttons" [ngClass]="atEnd ? 'disabled-nav-button' : ''" title="next button" id="epub-arrow-next" (click)="next()" *ngIf="!loading">
+            <ion-icon name="arrow-forward"></ion-icon>
           </button>
         </ion-col>
       </ion-row>
   </ion-grid>
+</div>
+
+<div class="current-position-container" *ngIf="!loading">
+  <span [innerHTML]="currentPositionPercentage"></span>
 </div>

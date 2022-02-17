@@ -292,5 +292,12 @@
   "BasicActions": {
     "Ok": "Ok",
     "Cancel": "Avbryt"
+  },
+  "Epub": {
+    "DisplayOptions": "Textstorlek",
+    "Download": "Ladda ner",
+    "Search": "Sök",
+    "SearchPhrase": "Söktext",
+    "Contents": "Innehåll"
   }
 }

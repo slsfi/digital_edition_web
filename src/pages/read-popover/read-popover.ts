@@ -199,6 +199,7 @@ export class ReadPopoverPage {
     if (size in Fontsize) {
       this.fontsize = size;
       this.readPopoverService.fontsize = this.fontsize;
+      this.readPopoverService.sendFontsizeToSubscribers(this.fontsize);
       this.doAnalytics('setFontSize - ' + Fontsize[size]);
     }
   }

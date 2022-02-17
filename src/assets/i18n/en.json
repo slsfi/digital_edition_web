@@ -304,5 +304,12 @@
   "BasicActions": {
     "Ok": "Ok",
     "Cancel": "Cancel"
+  },
+  "Epub": {
+    "DisplayOptions": "Text size",
+    "Download": "Download",
+    "Search": "Search",
+    "SearchPhrase": "Search phrase",
+    "Contents": "Contents"
   }
 }
