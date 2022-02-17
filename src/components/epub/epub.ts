@@ -50,7 +50,7 @@ export class EpubComponent {
   currentPositionPercentage: string;
   currentSectionLabel: string;
   fontsizeSubscription: Subscription;
-  
+
   @Input() epubFileName?: string;
 
   public tocMenuOpen: boolean;
