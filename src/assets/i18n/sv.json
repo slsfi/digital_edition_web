@@ -308,6 +308,8 @@
   "tag": "Ämnesord",
   "subjects": "Personer",
   "subject": "Person",
+  "uncertainPersonCorresp": "ev.",
+  "fictionalPersonCorresp": "historisk förebild",
   "collections": "Samlingar",
   "works": "Verk",
   "photos": "foton",

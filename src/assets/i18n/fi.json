@@ -307,6 +307,8 @@
   "tag": "Aihesana",
   "subjects": "Henkilöt",
   "subject": "Henkilö",
+  "uncertainPersonCorresp": "ev.",
+  "fictionalPersonCorresp": "historisk förebild",
   "collections": "Samlingar",
   "works": "Verk",
   "photos": "foton",
