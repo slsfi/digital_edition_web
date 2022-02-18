@@ -50,6 +50,7 @@ export class EpubComponent {
   currentPositionPercentage: string;
   currentSectionLabel: string;
   fontsizeSubscription: Subscription;
+  windowResizeTimeoutId: any;
 
   @Input() epubFileName?: string;
 
@@ -87,6 +88,7 @@ export class EpubComponent {
     this.currentPositionPercentage = '0 %';
     this.currentSectionLabel = '';
     this.fontsizeSubscription = null;
+    this.windowResizeTimeoutId = null;
   }
 
   ngOnInit() {
@@ -251,6 +253,8 @@ export class EpubComponent {
       this.setUpInputListeners();
 
       this.setUpDOMMutationObservers();
+
+      this.setUpWindowResizeListener();
 
     }); // End of runOutsideAngular
 
@@ -463,21 +467,6 @@ export class EpubComponent {
     }
   }
 
-  /**
-   * Commented because pan/swipe didn't work.
-   */
-  /*
-  swipePrevNext(ev) {
-    if (ev.direction !== undefined) {
-      if (ev.direction === 2) {
-        this.next();
-      } else if (ev.direction === 4) {
-        this.prev();
-      }
-    }
-  }
-  */
-
   next() {
     this.rendition.next();
   }
@@ -536,21 +525,8 @@ export class EpubComponent {
             if ((mutation.target.className.includes('split-pane-visible') && !this.splitPaneVisible)
               || (!mutation.target.className.includes('split-pane-visible') && this.splitPaneVisible)) {
               this.splitPaneVisible = !this.splitPaneVisible;
-              // Split pane has been either opened or closed --> get the size of the epub area and resize epub
-              const area = document.querySelector('.toc-epub-container > #area');
-              let areaWidth = Math.floor(area.getBoundingClientRect().width);
-              let areaHeight = Math.floor(area.getBoundingClientRect().height);
-              if (!this.numberIsEven(areaWidth)) {
-                areaWidth = areaWidth - 1;
-              }
-              if (!this.numberIsEven(areaHeight)) {
-                areaHeight = areaHeight - 1;
-              }
-              try {
-                this.rendition.resize(areaWidth, areaHeight);
-              } catch {
-                console.log('epub.js threw an error resizing the rendering area');
-              }
+              // Split pane has been either opened or closed --> resize epub
+              this.resizeEpub();
             }
           }
         }
@@ -628,10 +604,58 @@ export class EpubComponent {
   }
 
   private setUpInputListeners() {
-    /* KEYDOWN EVENTS */
-    /* We need to listen on the whole document for next/prev in epub to work! */
+    /*
+      1. Listen for keydown events inside the epub rendition. This is needed for prev/next on keydown
+      to work after the user has clicked inside the epub iframe.
+    */
+    this.rendition.on('keydown', (event) => {
+      switch (event.key) {
+        case 'ArrowLeft':
+          this.prev();
+          break;
+        case 'ArrowRight':
+          this.next();
+          break;
+      }
+    });
+
+    /*
+      2. Add touch event listeners to the epub content in order to enable swipe gestures for flipping page.
+    */
+    this.rendition.hooks.content.register((contents) => {
+      const el = contents.document.documentElement;
+      if (el) {
+        let start: Touch;
+        let end: Touch;
+
+        // Define the minimum length of the horizontal touch action to be registered as a swipe.
+        // This is a fraction between 0 and 1 and is relative to the epub's width.
+        const horizontalTouchLengthThreshold = 0.12;
+
+        el.addEventListener('touchstart', (event: TouchEvent) => {
+          start = event.changedTouches[0];
+        });
+
+        el.addEventListener('touchend', (event: TouchEvent) => {
+          end = event.changedTouches[0];
+          const elBook = document.querySelector('div.toc-epub-container'); // Parent div, which contains div#area
+          if (elBook) {
+            const bound = elBook.getBoundingClientRect();
+            const hr = (end.screenX - start.screenX) / bound.width;
+            const vr = Math.abs((end.screenY - start.screenY) / bound.height);
+            if (hr > horizontalTouchLengthThreshold && vr < 0.1) return this.prev();
+            if (hr < -horizontalTouchLengthThreshold && vr < 0.1) return this.next();
+          }
+        });
+      }
+    });
+
+    /*
+      3. We also need to listen on the whole document for next/prev in epub to work when the user has clicked
+      somewhere outside the epub iframe.
+    */
     this.unlistenKeyDownEvents = this.renderer2.listen('document', 'keydown', (event) => {
-      switch (event.code) {
+      switch (event.key) {
         case 'ArrowLeft':
           this.prev();
           break;
@@ -656,6 +680,37 @@ export class EpubComponent {
           }
       }
     });
+  }
+
+  private setUpWindowResizeListener() {
+    const timeout = 300;
+    window.addEventListener('resize', () => {
+      // clear the timeout
+      clearTimeout(this.windowResizeTimeoutId);
+      // start timing for event "completion"
+      this.windowResizeTimeoutId = setTimeout(() => {
+        this.resizeEpub();
+      }, timeout);
+    });
+  }
+
+  private resizeEpub() {
+    // Get the dimensions of the epub containing element, div#area, and round off to even integers
+    const area = document.querySelector('.toc-epub-container > #area');
+    let areaWidth = Math.floor(area.getBoundingClientRect().width);
+    let areaHeight = Math.floor(area.getBoundingClientRect().height);
+    if (!this.numberIsEven(areaWidth)) {
+      areaWidth = areaWidth - 1;
+    }
+    if (!this.numberIsEven(areaHeight)) {
+      areaHeight = areaHeight - 1;
+    }
+    // Resize the epub rendition with the area's dimensions
+    try {
+      this.rendition.resize(areaWidth, areaHeight);
+    } catch {
+      console.log('epub.js threw an error resizing the rendering area');
+    }
   }
 
 }
