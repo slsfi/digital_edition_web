@@ -51,6 +51,7 @@ export class EpubComponent {
   currentSectionLabel: string;
   fontsizeSubscription: Subscription;
   windowResizeTimeoutId: any;
+  handleWindowResize: any;
 
   @Input() epubFileName?: string;
 
@@ -89,6 +90,7 @@ export class EpubComponent {
     this.currentSectionLabel = '';
     this.fontsizeSubscription = null;
     this.windowResizeTimeoutId = null;
+    this.handleWindowResize = null;
   }
 
   ngOnInit() {
@@ -101,6 +103,7 @@ export class EpubComponent {
     }
     this.fontsizeSubscription.unsubscribe();
     this.unlistenKeyDownEvents();
+    window.removeEventListener('resize', this.handleWindowResize);
     this.book.destroy();
   }
 
@@ -622,6 +625,12 @@ export class EpubComponent {
     /*
       2. Add touch event listeners to the epub content in order to enable swipe gestures for flipping page.
     */
+    /**
+      * ! SWIPE SUPPORT DISABLED for now. It works great until this.rendition.clear() and
+      * ! this.rendition.start() have to be run, i.e. when changing epub theme and font size.
+      * ! After that swiping turns multiple pages/spreads instead of one.
+      */
+    /*
     this.rendition.hooks.content.register((contents) => {
       const el = contents.document.documentElement;
       if (el) {
@@ -643,12 +652,17 @@ export class EpubComponent {
             const bound = elBook.getBoundingClientRect();
             const hr = (end.screenX - start.screenX) / bound.width;
             const vr = Math.abs((end.screenY - start.screenY) / bound.height);
-            if (hr > horizontalTouchLengthThreshold && vr < 0.1) return this.prev();
-            if (hr < -horizontalTouchLengthThreshold && vr < 0.1) return this.next();
+            if (hr > horizontalTouchLengthThreshold && vr < 0.1) {
+              return this.prev();
+            }
+            if (hr < -horizontalTouchLengthThreshold && vr < 0.1) {
+              return this.next();
+            }
           }
         });
       }
     });
+    */
 
     /*
       3. We also need to listen on the whole document for next/prev in epub to work when the user has clicked
@@ -683,18 +697,21 @@ export class EpubComponent {
   }
 
   private setUpWindowResizeListener() {
-    const timeout = 300;
-    window.addEventListener('resize', () => {
-      // clear the timeout
-      clearTimeout(this.windowResizeTimeoutId);
-      // start timing for event "completion"
-      this.windowResizeTimeoutId = setTimeout(() => {
-        this.resizeEpub();
-      }, timeout);
-    });
+    this.handleWindowResize = this.onWindowResize.bind(this);
+    window.addEventListener('resize', this.handleWindowResize);
   }
 
-  private resizeEpub() {
+  private onWindowResize() {
+    const timeout = 300;
+    // clear the timeout
+    clearTimeout(this.windowResizeTimeoutId);
+    // start timing for event "completion"
+    this.windowResizeTimeoutId = setTimeout(() => {
+      this.resizeEpub();
+    }, timeout);
+  }
+
+  resizeEpub() {
     // Get the dimensions of the epub containing element, div#area, and round off to even integers
     const area = document.querySelector('.toc-epub-container > #area');
     let areaWidth = Math.floor(area.getBoundingClientRect().width);
