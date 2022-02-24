@@ -521,7 +521,7 @@ export class FacsimilesComponent {
       return this.facsBase +'/'+ facs_collection_id +'/'+ size + '/' + page + '.jpg';
     }
 
-    return this.facsUrl + i + '/' + this.facsSize;
+    return this.facsUrl + page + '/' + size; // the api returns the actual image render and thus does not need a .jpg etc
   }
 
   openZoom() {
