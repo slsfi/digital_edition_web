@@ -1147,7 +1147,6 @@ export class ReadPage /*implements OnDestroy*/ {
             });
             modalShown = true;
           } else if (eventTarget['classList'].contains('ttComment')) {
-            alert("comment");
             this.ngZone.run(() => {
               this.showInfoOverlayFromInlineHtml(eventTarget);
             });
