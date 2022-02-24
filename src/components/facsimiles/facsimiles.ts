@@ -516,6 +516,14 @@ export class FacsimilesComponent {
     }
   }
 
+  constructImageUrl(facs_collection_id, page, size) {
+    if (this.facsBase && !this.selectedFacsimileIsExternal) {
+      return this.facsBase +'/'+ facs_collection_id +'/'+ size + '/' + page + '.jpg';
+    }
+
+    return this.facsUrl + i + '/' + this.facsSize;
+  }
+
   openZoom() {
     let modal = null;
     let params: object;
@@ -524,7 +532,7 @@ export class FacsimilesComponent {
     if (this.facsimilePagesInfinite) {
       const images = []
       for (let i = 1; i < this.numberOfPages + 1; i++) {
-        images.push(this.facsUrl + i + '/' + this.facsSize)
+        images.push(this.constructImageUrl(this.selectedFacsimile['f_col_id'], i, this.facsSize));
       }
 
       params = {
@@ -536,6 +544,7 @@ export class FacsimilesComponent {
         images,
         activeImage: this.manualPageNumber - 1,
       };
+
     } else {
       params = {
         images: this.selectedFacsimile.zoomedImages,

@@ -22,7 +22,7 @@
 </ion-item>
 
 <div id="facsimilies-image" *ngIf="!facsimilePagesInfinite && !selectedFacsimileIsExternal">
-  <img
+ <img
     [src]="images ? images[activeImage] : ''"
     [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
     (wheel)="onMouseWheel($event)"
