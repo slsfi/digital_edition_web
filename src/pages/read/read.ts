@@ -1483,6 +1483,7 @@ export class ReadPage /*implements OnDestroy*/ {
                 this.showVariantTooltip(eventTarget);
               });
             } else if (eventTarget['classList'].contains('ttMs')) {
+
               // Check if the tooltip trigger element is in a manuscripts column
               // since ttMs should generally only be triggered there.
               if (eventTarget['classList'].contains('unclear')) {
@@ -1491,9 +1492,10 @@ export class ReadPage /*implements OnDestroy*/ {
                   this.showTooltipFromInlineHtml(eventTarget);
                 });
               } else {
+
                 let parentElem: HTMLElement = eventTarget as HTMLElement;
                 parentElem = parentElem.parentElement;
-                while (parentElem !== null && parentElem.tagName !== 'MANUSCRIPTS') {
+                while (parentElem !== null && (parentElem.tagName !== 'MANUSCRIPTS' && parentElem.tagName !== 'READ-TEXT')) {
                   parentElem = parentElem.parentElement;
                 }
                 if (parentElem !== null) {
