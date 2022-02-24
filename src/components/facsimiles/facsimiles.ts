@@ -211,7 +211,6 @@ export class FacsimilesComponent {
             this.facsPage['page_nr'] + this.facsPage['start_page_number'] + this.facsimilePage
           );
           this.numberOfPages = this.facsPage['number_of_pages'];
-
           this.facsPage['title'] = this.sanitizer.sanitize(SecurityContext.HTML,
             this.sanitizer.bypassSecurityTrustHtml(this.facsPage['title']));
 
@@ -354,10 +353,12 @@ export class FacsimilesComponent {
   }
 
   changeFacsimile(facs?: any) {
+
+    console.log("changing facsimile", facs);
+
     if (facs === 'external') {
       this.selectedFacsimileIsExternal = true;
     } else if (facs) {
-
       this.selectedFacsimileIsExternal = false;
       this.selectedFacsimile = facs;
       this.selectedFacsimileName = this.selectedFacsimile.title;
@@ -532,7 +533,7 @@ export class FacsimilesComponent {
     if (this.facsimilePagesInfinite) {
       const images = []
       for (let i = 1; i < this.numberOfPages + 1; i++) {
-        images.push(this.constructImageUrl(this.selectedFacsimile['f_col_id'], i, this.facsSize));
+        images.push(this.constructImageUrl(this.selectedFacsimile['publication_facsimile_collection_id'], i, this.facsSize));
       }
 
       params = {
