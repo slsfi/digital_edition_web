@@ -1,6 +1,6 @@
 <ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
 
-<div id="ms" *ngIf="!textLoading && manuscripts.length>0" class="text-select-wrapper">
+<div *ngIf="!textLoading && manuscripts.length>0" class="text-select-wrapper">
   <h3 [innerHTML]="selectedManuscriptName"></h3>
   <div class="flex-buttons">
     <button *ngIf="manuscripts.length>1" ion-button (click)="selectManuscript()">{{"Read.Manuscripts.ChangeManuscript" | translate}}</button>
@@ -14,7 +14,7 @@
   </ion-item>
 </div>
 
-<div class="tei" [innerHTML]="text"
+<div id="ms" class="tei" [innerHTML]="text"
   [class.show_personInfo]="readPopoverService.show.personInfo"
   [class.show_placeInfo]="readPopoverService.show.placeInfo"
   [class.show_workInfo]="readPopoverService.show.workInfo"
