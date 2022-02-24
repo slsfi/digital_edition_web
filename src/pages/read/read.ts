@@ -2186,6 +2186,11 @@ export class ReadPage /*implements OnDestroy*/ {
           + targetElem.firstElementChild.innerHTML
           + '</span><span class="ioDescription">'
           + targetElem.nextElementSibling.innerHTML + '</span></p>';
+        } else if (targetElem.nextElementSibling !== null
+          && targetElem.nextElementSibling.classList.contains('noteText')) {
+            console.log(targetElem.nextElementSibling.innerHTML);
+            text = '<p class="infoOverlayText">' +
+             targetElem.nextElementSibling.innerHTML + '</p>';
         }
       } else if (targetElem.classList.contains('ttFoot')
       && targetElem.nextElementSibling !== null
