@@ -310,7 +310,8 @@
             "SongTypes": false,
             "Books": false,
             "splitReadCollections":[],
-            "EPUB": false
+            "EPUB": false,
+            "ExtraText": false,
         }
     },
     "defaults": {

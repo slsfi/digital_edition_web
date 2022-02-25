@@ -25,7 +25,7 @@ export class TextChangerComponent {
   nextItemTitle: string;
   lastItem: boolean;
   currentItemTitle: string;
-
+  textTwo: string;
   displayNext: Boolean = true;
   displayPrev: Boolean = true;
 
@@ -51,6 +51,7 @@ export class TextChangerComponent {
   }
 
   ngOnInit() {
+
     this.setupData();
   }
 
@@ -64,6 +65,9 @@ export class TextChangerComponent {
           for (let i = 0; i < val.children.length; i++) {
             if (val.children[i].itemId.split('_')[1] === c_id) {
               this.currentItemTitle = val.children[i].text;
+              if (val.children[i].text_two) {
+                this.textTwo = val.children[i].text_two;
+              }
               this.storage.set('currentTOCItemTitle', this.currentItemTitle);
               this.nextItemTitle = String(val.children[i + 1].text);
               this.prevItemTitle =  String(val.children[i - 1].text);
@@ -158,6 +162,9 @@ export class TextChangerComponent {
     this.prevItem = this.flattened[prevId];
     this.prevItemTitle = String(this.prevItem.text);
     this.currentItemTitle = String(this.flattened[currentId].text);
+    if (this.flattened[currentId].text_two) {
+      this.textTwo = String(this.flattened[currentId].text_two);
+    }
     this.storage.set('currentTOCItemTitle', this.currentItemTitle);
   }
 
