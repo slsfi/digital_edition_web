@@ -14,7 +14,7 @@
   </ion-item>
 </div>
 
-<div class="tei" [innerHTML]="text"
+<div class="tei teiContainer teiManuscript" [innerHTML]="text"
   [class.show_personInfo]="readPopoverService.show.personInfo"
   [class.show_placeInfo]="readPopoverService.show.placeInfo"
   [class.show_workInfo]="readPopoverService.show.workInfo"
@@ -22,4 +22,3 @@
   [class.show_pageBreakOriginal]="readPopoverService.show.pageBreakOriginal"
   [ngClass]="(readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize'">
 </div>
-

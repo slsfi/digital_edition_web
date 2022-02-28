@@ -5,6 +5,8 @@
         cursor: help;
     } 
 
+    /*
+    // These rules are duplicates. They also exist in tei.scss under div.tei
     .add_over{
         vertical-align: super;
         color: #0000a1;
@@ -16,11 +18,6 @@
     .deletion_subst{
         text-decoration: line-through;
     }
-    
-    span.underline{
-        border-bottom: 1px solid black;
-        font-style: normal !important;
-    }
     .add_subst {
         color: #0000a1;
     }
@@ -28,7 +25,14 @@
         vertical-align: -30%;
         color: #0000a1;
     }
-
+    */
+    
+    span.underline{
+        border-bottom: 1px solid black;
+        font-style: normal !important;
+    }
+    
+    /* Is this used in ms? */
     span.lemma{
         background-color: #c1bac1;
     }

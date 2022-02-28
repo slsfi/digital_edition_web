@@ -36,10 +36,10 @@
   <ion-card *ngIf="!hasDigitalEditionListChildren">
     <ion-card-content>
       <ion-scroll scrollY="true" style="height:80vh;" class="card">
-        <div *ngIf="hasMDTitle && mdContent && !hasDigitalEditionListChildren" class="tei md_content">
+        <div *ngIf="hasMDTitle && mdContent && !hasDigitalEditionListChildren" class="tei teiContainer md_content">
           <markdown [data]="mdContent"></markdown>
         </div>
-        <div *ngIf="!hasMDTitle && !hasDigitalEditionListChildren" class="tei"
+        <div *ngIf="!hasMDTitle && !hasDigitalEditionListChildren" class="tei teiContainer"
         [innerHTML]="text" [ngClass]="((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')"></div>
       </ion-scroll>
     </ion-card-content>

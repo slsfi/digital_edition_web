@@ -8,7 +8,7 @@
 </div>
 
 <ion-scroll *ngIf="selectedFacsimileIsExternal" scrollY="true" class="external_urls_wrapper" [ngStyle]="{'height': '100%', 'max-height': 'calc(100% - 60px)'}">
-  <div [ngClass]="(readPopoverService.fontsize==0)?'tei xsmallFontSize':(readPopoverService.fontsize==1)?'tei smallFontSize':(readPopoverService.fontsize==2)?'tei mediumFontSize':(readPopoverService.fontsize==3)?'tei largeFontSize':'tei xlargeFontSize'">
+  <div [ngClass]="(readPopoverService.fontsize==0)?'tei teiContainer xsmallFontSize':(readPopoverService.fontsize==1)?'tei teiContainer smallFontSize':(readPopoverService.fontsize==2)?'tei teiContainer mediumFontSize':(readPopoverService.fontsize==3)?'tei teiContainer largeFontSize':'tei teiContainer xlargeFontSize'">
     <ul>
       <li *ngFor="let ext of externalURLs"><a target="_blank" href="{{ext.url}}" [innerHTML]="ext.title"></a></li>
     </ul>
@@ -73,6 +73,6 @@
   </ion-fab>
 </ng-container>
 
-<div class="tei" [innerHTML]="text"
+<div class="tei teiContainer" [innerHTML]="text"
   [ngClass]="(readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize'">
 </div>

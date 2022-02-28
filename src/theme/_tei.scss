@@ -4,30 +4,30 @@
 
 /* Widths of div.tei on different screen resolutions */
 @media only screen and (max-width: 600px) {
-    div.tei {
+    div.teiContainer {
         max-width: 100%;
     }
 }
 @media only screen and (min-width: 600px) {
-    div.tei {
+    div.teiContainer {
         max-width: 650px;
     }
-    page-introduction div.tei {
+    page-introduction div.teiContainer {
         max-width: 100%;
     }
 }
 
 /* Padding below the columns so their height won't end precisely after the texts */
-page-title div.tei,
-page-introduction div.tei,
-read-text > div.tei,
-comments > div.tei,
-variations > div.tei,
-manuscripts > div.tei {
+page-title ion-scroll div.teiContainer,
+page-introduction ion-scroll div.teiContainer,
+read-text > div.teiContainer,
+comments > div.teiContainer,
+variations > div.teiContainer,
+manuscripts > div.teiContainer {
     padding-bottom: 20vh;
 }
 
-div.tei {
+div.teiContainer {
     font-family: $font-app-tei;
     font-size: $text-fontsize-small;
     line-height: 1.6em;
@@ -479,6 +479,7 @@ div.tei {
     .true-underline {
         text-decoration: underline;
     }
+    /* .manuscriptText doesn't exist in html! */
     div.manuscriptText p.underline, 
     div.manuscriptText h3.underline {
         font-style: normal;
