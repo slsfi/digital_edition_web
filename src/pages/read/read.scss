@@ -162,13 +162,6 @@ page-read {
     transform: translateY(-50%);
   }
 
-  .forwardBackward {
-    height: 100%;
-    align-items: center;
-    padding-left: 1em;
-    padding-right: 1em;
-  }
-
   .tei {
     transition-property: padding-left;
     transition-duration: 0.2s;
@@ -247,8 +240,8 @@ page-read {
     color: #78756f;
   }
 
-  h1 {
-    font-size: 1.3rem !important;
+  .content h1 {
+    font-size: 1.3rem;
     text-transform: none;
   }
 
@@ -276,17 +269,6 @@ page-read {
     }
     .scroll-zoom-wrapper {
       padding: 16px 12px;
-    }
-    .text-changer-desktop-view {
-      max-width: 80%;
-    }
-
-    .forwardBackward__previouspage-name {
-      display: none;
-    }
-
-    .forwardBackward__nextpage-name {
-      display: none;
     }
   }
 
@@ -321,7 +303,7 @@ ion-fab .fab-list-active .fab-backdrop {
 }
 
 page-read .mobile-mode-read-content > .scroll-content {
-  padding: 50px 0 0 0 !important;
+  padding: 50px 0 50px 0 !important;
 }
 
 page-read .mobile-mode-read-content .scroll-zoom-wrapper {

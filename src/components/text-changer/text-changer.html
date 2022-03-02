@@ -1,7 +1,7 @@
 <div class="forwardBackward">
   <div class="backwardButtonDiv">
     <button class="backwardButton" (click)="previous()">
-      <ion-icon name="arrow-round-back"></ion-icon>
+      <ion-icon name="arrow-back"></ion-icon>
       <p *ngIf="!(userSettingsService.isMobile()) && !(userSettingsService.isTablet())" class="forwardBackward__previouspage-name">{{ ('TOC-translation.' + prevItemTitle | translate) !== 'TOC-translation.' + prevItemTitle  ?  ('TOC-translation.' + prevItemTitle | translate) : prevItemTitle }}</p>
     </button>
   </div>
@@ -9,7 +9,7 @@
   <div class="forwardButtonDiv">
     <button [disabled]="lastItem" class="forwardButton" (click)="next()">
       <p *ngIf="!(userSettingsService.isMobile()) && !(userSettingsService.isTablet())" class="forwardBackward__nextpage-name">{{ ('TOC-translation.' + nextItemTitle | translate) !== 'TOC-translation.' + nextItemTitle  ?  ('TOC-translation.' + nextItemTitle | translate) : nextItemTitle }}</p>
-      <ion-icon name="arrow-round-forward"></ion-icon>
+      <ion-icon name="arrow-forward"></ion-icon>
     </button>
   </div>
 </div>
