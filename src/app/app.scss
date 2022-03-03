@@ -737,6 +737,15 @@ ion-alert.custom-select-alert .alert-wrapper {
   }
 }
 
+/* On small screens, make the left navigation menu into an overlay menu so the content doesn't reflow
+   when opening or closing the menu. */
+@media only screen and (max-width: 800px) {
+  ion-split-pane.split-pane-visible > .split-pane-side {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
 
 // Load TEI-stylesheets. Moved here from project-variables.scss
 @import '../theme/tei';
