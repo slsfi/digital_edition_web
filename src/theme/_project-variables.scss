@@ -1,5 +1,6 @@
 /*  
-  This file contains CUSTOM SASS VARIABLES USED IN THIS APP and must not contain any style rules.
+  This file contains CUSTOM SASS VARIABLES and CUSTOM CSS PROPERTIES used in this app and must 
+  not contain any style rules.
 
   Overrides to Ionic's Sass variables belong in src/theme/variables.scss which imports this file.
 
@@ -7,79 +8,6 @@
 
   Other custom style rules belong in the individual scss-files for components and pages.
 */
-
-
-// Move @font-face rules to app.scss
-@font-face {
-  font-family: "Muli";
-  src: url(../assets/fonts/Muli-Regular.ttf) format("truetype");
-  font-display: swap;
-  font-style: normal;
-  font-weight: 400;
-}
-@font-face {
-  font-family: "Muli";
-  src: url(../assets/fonts/Muli-Bold.ttf) format("truetype");
-  font-display: swap;
-  font-style: normal;
-  font-weight: 700;
-}
-@font-face {
-  font-family: "Muli";
-  src: url(../assets/fonts/Muli-Italic.ttf) format("truetype");
-  font-display: swap;
-  font-style: italic;
-  font-weight: 400;
-}
-@font-face {
-  font-family: "Muli";
-  src: url(../assets/fonts/Muli-BoldItalic.ttf) format("truetype");
-  font-display: swap;
-  font-style: italic;
-  font-weight: 700;
-}
-@font-face {
-  font-family: "Muli";
-  src: url(../assets/fonts/Muli-Light.ttf) format("truetype");
-  font-display: swap;
-  font-style: normal;
-  font-weight: 300;
-}
-@font-face {
-  font-family: "Muli";
-  src: url(../assets/fonts/Muli-LightItalic.ttf) format("truetype");
-  font-display: swap;
-  font-style: italic;
-  font-weight: 300;
-}
-@font-face {
-  font-family: "Muli";
-  src: url(../assets/fonts/Muli-SemiBold.ttf) format("truetype");
-  font-display: swap;
-  font-weight: 600;
-}
-@font-face {
-  font-family: "Muli";
-  src: url(../assets/fonts/Muli-SemiBoldItalic.ttf) format("truetype");
-  font-display: swap;
-  font-style: italic;
-  font-weight: 600;
-}
-
-
-// CUSTOM FONT FAMILY VARIABLES
-// --------------------------------------------------
-$font-family-header:            $font-family-base;
-$font-family-top-menu:          $font-family-base;
-
-// Tei fonts
-$font-app-tei:                  $font-family-base;
-$font-comment-modal-tei:        $font-app-tei;
-$font-semantic-data-model-tei:  $font-app-tei;
-$font-stamp-print-tei:          "Times New Roman", serif;
-$font-tei-note-editorial:       $font-app-tei;
-
-
 
 // CUSTOM FONT SIZE VARIABLES
 // --------------------------------------------------
@@ -128,13 +56,12 @@ $opacity-hover-transition: opacity 0.2s;
 // CSS CUSTOM PROPERTIES
 // --------------------------------------------------
 :root {
+  // Colors
   // Create css custom properties from the scss map $colours defined in variables.scss
   @each $key_name, $value in $colors {
     --#{$key_name}-color: #{$value};
   }
-
-  --main-background-color:              #ecebe4;
-
+  --main-background-color:         #ecebe4;
   --persName-color:                #f9e0bf;
   --persName-color-rgb:              249, 224, 191;
   --placeName-color:               #dee8ca;
@@ -147,17 +74,25 @@ $opacity-hover-transition: opacity 0.2s;
   --normalisations-color-rgb:        230, 230, 230;
   --abbreviations-color:           #ffe2fa;
   --abbreviations-color-rgb:         255, 226, 250;
-  
   --pageBreakOriginal-color:       #c34be1;
   --pageBreakEdition-color:        #d58205;
-
 	--infoOverlay-bg-color:          #333;
 	--infoOverlay-text-color:        #e3e3e3;
   --main-toc-hover-color:            var(--primary-color);
   --read-columns-background-color: #fafafa;
   --back-button-bg-color:          #e8e4df; // Ideally something between secondary color & $background-color
   --back-button-text-color:          var(--dark-color);
-  --tooltip-bg-color:                #fafafa;
+  --tooltip-bg-color:              #fafafa;
+
+  // Font stacks
+  --system-font-stack:               -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  --base-font-stack:                 "SourceSans", var(--system-font-stack);
+  --home-banner-font-stack:          var(--base-font-stack);
+  --top-menu-font-stack:             var(--base-font-stack);
+  --tei-font-stack:                  "SourceSerif", var(--system-font-stack);
+  --tei-blackletter-font-stack:      "SourceSans", var(--system-font-stack);
+  --tei-print-stamp-font-stack:      Cambria, "Hoefler Text", Utopia, "Liberation Serif", "Nimbus Roman No9 L Regular", Times, "Times New Roman", serif;
+  --tei-editorial-note-font-stack:   "Helvetica Neue", "Arial Nova", Helvetica, Arial, sans-serif;
 }
 
 

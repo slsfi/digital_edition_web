@@ -28,7 +28,7 @@ manuscripts > div.teiContainer {
 }
 
 div.teiContainer {
-    font-family: $font-app-tei;
+    font-family: var(--tei-font-stack);
     font-size: $text-fontsize-small;
     line-height: 1.6em;
     white-space: normal;
@@ -454,7 +454,7 @@ div.tei {
     }
     .stamp, 
     .print {
-        font-family: $font-stamp-print-tei;
+        font-family: var(--tei-print-stamp-font-stack);
         letter-spacing: 1px;
     }
     .left {
@@ -1085,12 +1085,12 @@ div.tei {
     }
     .tei_note_editorial {
         color: #a66e37 !important;
-        font-family: $font-tei-note-editorial;
+        font-family: var(--tei-editorial-note-font-stack);
         font-size: 0.9em;
     }
     .tei_note_editorial_margin {
         color: #a66e37 !important;
-        font-family: $font-tei-note-editorial;
+        font-family: var(--tei-editorial-note-font-stack);
         font-size: 0.9em;
         padding-left: 15px;
         padding-right: 15px;
@@ -1620,7 +1620,7 @@ div.tei {
         font-size: 0.88235em;
     }
     .blackletter {
-        font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif !important;
+        font-family: var(--tei-blackletter-font-stack) !important;
     }
     p.paragraphDiary {
         margin-top: 0.5em !important;
@@ -1934,7 +1934,7 @@ div.tei {
     line-height: 1.4em;
     text-align: left;
     transform-origin: left top; /* This is necessary for the scaling to work properly if the tooltip wouldn't fit in view otherwise. */
-    font-family: $font-family-base;
+    font-family: var(--base-font-stack);
 
     /* Styles for (foot)notes in tooltips */
     a.footnoteReference {
@@ -2013,7 +2013,7 @@ page-introduction div.tei figure {
     line-height: 1.4em;
     overflow: auto;
     border-radius: $corner-roundness $corner-roundness 0 0;
-    font-family: $font-family-base;
+    font-family: var(--base-font-stack);
 
     .infoOverlayHeader {
         display: inline-block;

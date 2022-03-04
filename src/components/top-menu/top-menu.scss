@@ -18,7 +18,7 @@ top-menu {
   }
 
   span {
-    font-family: $font-family-top-menu;
+    font-family: var(--top-menu-font-stack);
     font-size: 1rem;
   }
 

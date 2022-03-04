@@ -1,4 +1,191 @@
-// http://ionicframework.com/docs/v2/theming/
+/* Source sans 3 fonts */
+@font-face {
+  font-family: "SourceSans";
+  src:  url('../assets/fonts/SourceSans/woff2/SourceSans3-Regular.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSans/woff/SourceSans3-Regular.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSans/ttf/SourceSans3-Regular.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "SourceSans";
+  src:  url('../assets/fonts/SourceSans/woff2/SourceSans3-Bold.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSans/woff/SourceSans3-Bold.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSans/ttf/SourceSans3-Bold.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700;
+}
+@font-face {
+  font-family: "SourceSans";
+  src:  url('../assets/fonts/SourceSans/woff2/SourceSans3-It.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSans/woff/SourceSans3-It.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSans/ttf/SourceSans3-It.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "SourceSans";
+  src:  url('../assets/fonts/SourceSans/woff2/SourceSans3-BoldIt.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSans/woff/SourceSans3-BoldIt.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSans/ttf/SourceSans3-BoldIt.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 700;
+}
+@font-face {
+  font-family: "SourceSans";
+  src:  url('../assets/fonts/SourceSans/woff2/SourceSans3-Semibold.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSans/woff/SourceSans3-Semibold.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSans/ttf/SourceSans3-Semibold.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+}
+@font-face {
+  font-family: "SourceSans";
+  src:  url('../assets/fonts/SourceSans/woff2/SourceSans3-SemiboldIt.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSans/woff/SourceSans3-SemiboldIt.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSans/ttf/SourceSans3-SemiboldIt.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 600;
+}
+@font-face {
+  font-family: "SourceSans";
+  src:  url('../assets/fonts/SourceSans/woff2/SourceSans3-Light.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSans/woff/SourceSans3-Light.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSans/ttf/SourceSans3-Light.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 300;
+}
+@font-face {
+  font-family: "SourceSans";
+  src:  url('../assets/fonts/SourceSans/woff2/SourceSans3-LightIt.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSans/woff/SourceSans3-LightIt.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSans/ttf/SourceSans3-LightIt.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* Source serif 4 fonts */
+@font-face {
+  font-family: "SourceSerif";
+  src:  url('../assets/fonts/SourceSerif/woff2/SourceSerif4-Regular.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSerif/woff/SourceSerif4-Regular.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSerif/ttf/SourceSerif4-Regular.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "SourceSerif";
+  src:  url('../assets/fonts/SourceSerif/woff2/SourceSerif4-Bold.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSerif/woff/SourceSerif4-Bold.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSerif/ttf/SourceSerif4-Bold.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700;
+}
+@font-face {
+  font-family: "SourceSerif";
+  src:  url('../assets/fonts/SourceSerif/woff2/SourceSerif4-It.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSerif/woff/SourceSerif4-It.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSerif/ttf/SourceSerif4-It.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "SourceSerif";
+  src:  url('../assets/fonts/SourceSerif/woff2/SourceSerif4-BoldIt.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSerif/woff/SourceSerif4-BoldIt.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSerif/ttf/SourceSerif4-BoldIt.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 700;
+}
+@font-face {
+  font-family: "SourceSerif";
+  src:  url('../assets/fonts/SourceSerif/woff2/SourceSerif4-Semibold.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSerif/woff/SourceSerif4-Semibold.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSerif/ttf/SourceSerif4-Semibold.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+}
+@font-face {
+  font-family: "SourceSerif";
+  src:  url('../assets/fonts/SourceSerif/woff2/SourceSerif4-SemiboldIt.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSerif/woff/SourceSerif4-SemiboldIt.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSerif/ttf/SourceSerif4-SemiboldIt.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 600;
+}
+
+/* Muli fonts */
+@font-face {
+  font-family: "Muli";
+  src: url('../assets/fonts/Muli/Muli-Regular.ttf') format("truetype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Muli";
+  src: url('../assets/fonts/Muli/Muli-Bold.ttf') format("truetype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Muli";
+  src: url('../assets/fonts/Muli/Muli-Italic.ttf') format("truetype");
+  font-display: swap;
+  font-style: italic;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Muli";
+  src: url('../assets/fonts/Muli/Muli-BoldItalic.ttf') format("truetype");
+  font-display: swap;
+  font-style: italic;
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Muli";
+  src: url('../assets/fonts/Muli/Muli-Light.ttf') format("truetype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Muli";
+  src: url('../assets/fonts/Muli/Muli-LightItalic.ttf') format("truetype");
+  font-display: swap;
+  font-style: italic;
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Muli";
+  src: url('../assets/fonts/Muli/Muli-SemiBold.ttf') format("truetype");
+  font-display: swap;
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Muli";
+  src: url('../assets/fonts/Muli/Muli-SemiBoldItalic.ttf') format("truetype");
+  font-display: swap;
+  font-style: italic;
+  font-weight: 600;
+}
+
+// http://ionicframework.com/docs/v3/theming/
 
 
 // App Global Sass
@@ -137,7 +324,7 @@ ion-label {
 .selectable { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
 
 ion-app, ion-app.md {
-  font-family: $font-family-base;
+  font-family: var(--base-font-stack);
   font-size: 1.4rem;
   background-color: #fff;
 }
@@ -156,7 +343,6 @@ h1 {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: $font-family-header;
   font-weight: 700;
 }
 
@@ -166,7 +352,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 p, blockquote {
-  font-family: $font-family-base;
   line-height: 2.2rem;
 }
 
@@ -265,7 +450,7 @@ p, blockquote {
 
   /*.banner-title {
       @extend h1;
-      font-family: $font-family-base;
+      font-family: var(--home-banner-font-stack);
       margin-top: 0;
   }
   .banner-subtitle {
