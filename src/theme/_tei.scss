@@ -353,68 +353,10 @@ div.tei {
     .padded h3 {
         padding-left: 100px;
     }
-    h3.title {
-        text-align: center;
-        font-weight: normal !important;
-        font-variant: small-caps !important;
-    }
-    h3.title1 {
-        font-size: 1.5em !important;
-        font-weight: normal !important;
-        padding-top: 10px;
-    }
-    h3.poemtitle,
-    h3.lettertitle,
-    h3.tei.letterTitle {
-        font-variant: small-caps;
-        font-weight: normal !important;
-    }
-    h1.poemtitle, 
-    h1.lettertitle {
-        font-variant: small-caps;
-        font-weight: normal !important;
-        font-size: 1.5em;
-    }
-    h3.sub, 
-    h3.shortstory, 
-    h3.section {
-        font-weight: normal !important;
-        font-size: 1.2em !important;
-    }
-    h3.sub2 {
-        font-weight: normal !important;
-        font-size: 1.15em !important;
-    }
 
-    h3.section
-    {
-        font-size: 1.4em !important;
-    }
-    h3.motto
-    {
-        font-size: 1.1em !important;
-        font-style: italic;
-        font-weight: normal !important;
-    }
-    h3.motto_ms
-    {
-        font-size: 1.2em !important;
-        font-weight: normal !important;
-    }
     p.authorHeader {
         text-indent: 0 !important;
         margin-bottom: 0.5em;
-    }
-    h3.shortstory {
-        font-size: 1.1em;
-    }
-    h3.titleTopMargin,
-    h3.tei.titleTopMargin {
-        margin-top: 2em !important;
-    }
-    h3.titleBottomMargin,
-    h3.tei.titleBottomMargin {
-        margin-bottom: 2em !important;
     }
 
     p.invisiblelg {
@@ -480,6 +422,7 @@ div.tei {
         text-decoration: underline;
     }
     /* .manuscriptText doesn't exist in html! */
+    /*
     div.manuscriptText p.underline, 
     div.manuscriptText h3.underline {
         font-style: normal;
@@ -489,6 +432,7 @@ div.tei {
         font-style: normal;
         border-bottom: 1px solid black;
     }
+    */
     .tei_hi_medium {
         text-decoration: none;
         color: #000;
@@ -687,7 +631,7 @@ div.tei {
 
     .sub {
         vertical-align: sub;
-        font-size: 0.75em;
+        font-size: 0.8235em;
     }
     /* Är den här rätt? Jfr ovan. Definierades urspr i project_variables såhär */
     /*
@@ -700,14 +644,15 @@ div.tei {
 
     .sup {
         vertical-align: super;
-        font-size: 0.75em;
+        font-size: 0.8235em;
     }
     .raised {
         vertical-align: 60%;
         line-height: 0.5em;
-        font-size: 0.75em;
+        font-size: 0.8235em;
     }
 
+    /* These rules for raised and sup are unneeded, this is fixed by xsl in conjunction with the above css-rules. */
     /* Maintext will show raised text differently */
     /*.mainText .raised::before, .mainText .sup::before {
         content: ":";
@@ -765,6 +710,7 @@ div.tei {
         font-style: normal;
         text-decoration: none;
     }
+    /*
     .cont_manuscript span.underline2 {
         border-bottom: 3px double black;
         font-style: normal;
@@ -775,6 +721,7 @@ div.tei {
         position: relative;
         text-indent: 30px;
     }
+    */
     span.dashUnderline {
         border-bottom: 1px dashed black;
     }
@@ -794,10 +741,12 @@ div.tei {
         font-size: 120%;
     }
     /* Finns ingen .mainText på generiska, avser lästexten */
+    /*
     .mainText .encreasedSize {
         font-style: italic;
         font-size: 100%;
     }
+    */
     .segment {
     }
     .anchor_lemma {
@@ -899,7 +848,7 @@ div.tei {
     .delSpan {
         background-color: #a5a299;
         display: inline-block;
-        left: -30px;
+        left: -1.7647em;
         position: relative;
     }
     .delSpan_noIndent {
@@ -909,7 +858,7 @@ div.tei {
     .delSpan_editorial {
         background-color: #cd955e;
         display: inline-block;
-        left: -30px;
+        left: -1.7647em;
         position: relative;
     }
     .delSpan_noIndent_editorial {
@@ -919,7 +868,7 @@ div.tei {
     .delSpan_medium {
         background-color: #a3b550;
         display: inline-block;
-        left: -30px;
+        left: -1.7647em;
         position: relative;
     }
     .delSpan_noIndent_medium {
@@ -1420,13 +1369,138 @@ div.tei {
         padding-left: 1em;
     }
 
-    /* THESE WERE PREVIOUSLU OUTSIDE div.tei {} */
+    /* These heading styles are maybe not in use, at least in Topelius. Maybe from Parland? */
+    h1.poemtitle, 
+    h1.lettertitle {
+        font-variant: small-caps;
+        font-weight: normal !important;
+        font-size: 1.5em;
+    }
+    h3.title {
+        text-align: center;
+        font-weight: normal !important;
+        font-variant: small-caps !important;
+    }
+    h3.title1 {
+        font-size: 1.5em !important;
+        font-weight: normal !important;
+        padding-top: 10px;
+    }
+    h3.poemtitle,
+    h3.lettertitle,
+    h3.tei.letterTitle {
+        font-variant: small-caps;
+        font-weight: normal !important;
+    }
+    h3.sub, 
+    h3.shortstory, 
+    h3.section {
+        font-weight: normal !important;
+        font-size: 1.2em !important;
+    }
+    h3.shortstory {
+        font-size: 1.1em;
+    }
+    h3.section {
+        font-size: 1.4em !important;
+    }
+    h3.sub2 {
+        font-weight: normal !important;
+        font-size: 1.15em !important;
+    }
+    h3.motto {
+        font-size: 1.1em !important;
+        font-style: italic;
+        font-weight: normal !important;
+    }
+    h3.motto_ms {
+        font-size: 1.2em !important;
+        font-weight: normal !important;
+    }
+    h3.titleTopMargin,
+    h3.tei.titleTopMargin {
+        margin-top: 2em !important;
+    }
+    h3.titleBottomMargin,
+    h3.tei.titleBottomMargin {
+        margin-bottom: 2em !important;
+    }
+
+    /* STYLES FOR HEADINGS */
+    h1.tei {
+        font-size: 1.3530em; /* 23px when 1em = 17px */
+    }
+    h2.tei {
+        font-size: 1.2353em; /* 21px */
+    }
+    h3.tei {
+        font-size: 1.1765em; /* 20px */
+    }
+    h4.tei {
+        font-size: 1.0589em; /* 18px */ /* 1.1177em = 19px*/
+    }
+    h5.tei {
+        font-size: 1em; /* 17px */
+    }
+    h6.tei {
+        font-size: 0.9412em; /* 16px */
+    }
+    h1.tei.title {
+        font-variant: small-caps;
+        text-align: center;
+        font-weight: normal;
+        margin: 1em 0;
+    }
+    h1.tei.poemtitle {
+        font-variant: small-caps;
+        text-align: left;
+        font-weight: normal !important;
+        margin: 1em 0 !important;
+    }
+    h1.tei.poemtitleFromMs, 
+    h1.tei.poemtitleSuite {
+        font-style: italic;
+        text-align: left;
+        font-weight: normal !important;
+        margin: 1em 0 !important;
+        font-size: 1.3529em;
+    }
+    h2.tei.zts {
+        font-variant: small-caps;
+        font-size: 1.3em !important;
+        text-align: center;
+        font-weight: normal !important;
+        color: gray;
+        margin: 1em 0 !important;
+    }
+    h2.tei.section {
+        text-align: center !important;
+        font-weight: normal !important;
+        margin: 1em 0 !important;
+    }
+    h2.tei.poemsection {
+        font-style: italic;
+        text-align: left;
+        font-weight: normal !important;
+        margin: 1em 0 !important;
+    }
+    h2.tei.section2 {
+        font-style: italic;
+        text-align: center;
+        font-weight: normal !important;
+        margin: 1em 0 !important;
+    }
+    h2.tei.poemsection2 {
+        font-style: italic;
+        text-align: left;
+        font-weight: normal !important;
+        margin: 1em 0 !important;
+    }
     h3.tei.chapter {
         font-style: italic;
         text-align: center;
         font-weight: normal !important;
         margin: 1.3em 0 1em 0 !important;
-        font-size: 1.4em !important;
     }
     h3.tei.poem {
         font-style: italic;
@@ -1457,8 +1531,8 @@ div.tei {
         font-style: italic;
         text-align: center;
         font-weight: normal !important;
-        margin: 0.7em 0 1em 0 !important;
-        font-size: 1.25em !important;
+        margin: 1em 0 !important;
+        /*font-size: 1.25em !important;*/
     }
     h4.tei.poemsub {
         font-style: italic;
@@ -1466,7 +1540,6 @@ div.tei {
         font-weight: normal !important;
         margin: 0.8em 0 1em 0 !important;
     }
-    
     h4.tei.poemsubdiary {
         font-style: italic;
         text-align: left;
@@ -1481,6 +1554,7 @@ div.tei {
         margin: 0.8em 0 1em 0 !important;
     }
     /* .academicsub not used */
+    /*
     h4.tei.academicsub {
         font-style: italic;
         text-align: center;
@@ -1488,38 +1562,38 @@ div.tei {
         margin: 1em 0 0.7em 0 !important;
         font-size: 1.3em !important;
     }
+    */
     h5.tei.motto {
         font-style: italic;
         text-align: right;
         font-weight: normal !important;
         margin: 0.5em 0 0.7em 0 !important;
-        font-size: 1.1em !important;
+        font-size: 0.88235em;
     }
     h5.tei.poemmotto {
         font-style: italic;
         text-align: left;
         font-weight: normal !important;
         margin: 0.5em 0 1.2em 0 !important;
+        font-size: 0.88235em;
     }
     h5.tei.sub2est {
         font-style: italic;
         text-align: center;
         font-weight: normal !important;
-        margin: 0.6em 0 0.8em 0 !important;
-        font-size: 1.1em !important;
+        margin: 1.3em 0 0.8em 0 !important;
     }
     h5.tei.poemsub2 {
         font-style: italic;
         text-align: left;
         font-weight: normal !important;
-        margin: 0.6em 0 0.8em 0 !important;
+        margin: 1.3em 0 0.8em 0 !important;
     }
     h6.tei.sub3 {
         font-style: italic;
         text-align: center;
         font-weight: normal !important;
         font-family: Georgia, serif;
-        font-size: 1.1em !important;
         margin: 0.5em 0 0.8em 0 !important;
     }
     h6.tei.poemsub3 {
@@ -1527,7 +1601,6 @@ div.tei {
         text-align: left;
         font-weight: normal !important;
         font-family: Georgia, serif;
-        font-size: 1.1em !important;
         margin: 0.5em 0 0.8em 0 !important;
     }
     h6.tei.motto2 {
@@ -1535,16 +1608,16 @@ div.tei {
         text-align: right;
         font-family: Georgia, serif;
         font-weight: normal !important;
-        font-size: 1.1em !important;
         margin: 0.5em 0 0.5em 0 !important;
+        font-size: 0.88235em;
     }
     h6.tei.poemmotto2 {
         font-style: italic;
         text-align: left;
         font-family: Georgia, serif;
         font-weight: normal !important;
-        font-size: 1.1em !important;
         margin: 0.5em 0 0.5em 0 !important;
+        font-size: 0.88235em;
     }
     .blackletter {
         font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif !important;
@@ -1725,6 +1798,7 @@ div.tei {
     }
 
     /* Det finns inten .mainText på generiska plattformen */
+    /*
     .mainText span.uppercase {
         font-variant: small-caps;
     }
@@ -1734,6 +1808,7 @@ div.tei {
     .c_ms span.uppercase {
         text-transform: uppercase;
     }
+    */
     .smallcaps {
         font-variant: small-caps;
     }
@@ -1749,7 +1824,7 @@ div.tei {
         font-style: italic;
     }
     */
-    /*dramatik, scen- och personanvisningar*/
+    /*Bl.a. dramatik, scen- och personanvisningar, också i andra utgåvor än Dramatik */
     span.smallFont {
         font-size: 0.91em;
     }
@@ -1757,10 +1832,13 @@ div.tei {
         font-size: 0.91em !important;
         color: gray;
     }
+    /*
     .c_ms span.dashUnderline {
         border-bottom: 1px dashed black;
     }
-    /*Finns ingen .mainText på generiska plattformen */
+    */
+    /*Finns ingen .mainText på generiska plattformen --> lagt till read-text div.tei span.dashUnderline nedan */
+    /*
     .mainText span.dashUnderline {
         font-style: italic;
     }
@@ -1773,6 +1851,7 @@ div.tei {
     .c_ms .encreasedSize {
         font-size: 120%;
     }
+    */
     .footnotePoem {
         display: block;
         text-indent: 15px;
@@ -1838,61 +1917,6 @@ div.tei {
         display: inline-block;
         margin: 0 0.5em 0 0;
     }
-    
-    h1.tei.title {
-        font-variant: small-caps;
-        text-align: center;
-        font-weight: normal;
-        font-size: 1.5em;
-        margin: 1em 0;
-    }
-    h1.tei.poemtitle {
-        font-variant: small-caps;
-        text-align: left;
-        font-weight: normal !important;
-        font-size: 1.5em !important;
-        margin: 1em 0 !important;
-    }
-    h1.tei.poemtitleFromMs, 
-    h1.tei.poemtitleSuite {
-        font-style: italic;
-        text-align: left;
-        font-weight: normal !important;
-        font-size: 1.5em !important;
-        margin: 1em 0 !important;
-    }
-    h2.tei.zts {
-        font-variant: small-caps;
-        font-size: 1.3em !important;
-        text-align: center;
-        font-weight: normal !important;
-        color: gray;
-        margin: 1em 0 !important;
-    }
-    
-    h2.tei.section {
-        text-align: center !important;
-        font-weight: normal !important;
-        margin: 1em 0 !important;
-    }
-    h2.tei.poemsection {
-        font-style: italic;
-        text-align: left;
-        font-weight: normal !important;
-        margin: 1em 0 !important;
-    }
-    h2.tei.section2 {
-        font-style: italic;
-        text-align: center;
-        font-weight: normal !important;
-        margin: 1em 0 !important;
-    }
-    h2.tei.poemsection2 {
-        font-style: italic;
-        text-align: left;
-        font-weight: normal !important;
-        margin: 1em 0 !important;
-    }
 }
 
 /* Style for tooltip boxes. The tooltips also inherit styles from div.tei */
@@ -1910,6 +1934,7 @@ div.tei {
     line-height: 1.4em;
     text-align: left;
     transform-origin: left top; /* This is necessary for the scaling to work properly if the tooltip wouldn't fit in view otherwise. */
+    font-family: $font-family-base;
 
     /* Styles for (foot)notes in tooltips */
     a.footnoteReference {
@@ -1988,6 +2013,7 @@ page-introduction div.tei figure {
     line-height: 1.4em;
     overflow: auto;
     border-radius: $corner-roundness $corner-roundness 0 0;
+    font-family: $font-family-base;
 
     .infoOverlayHeader {
         display: inline-block;
@@ -2141,6 +2167,10 @@ div.tei .tooltip { display: none; }
 .tei.show_pageNumbering p.hangingIndent span.paragraph_number {
     margin-left: -65px;
 }
+.tei.show_pageNumbering p.labelledLines_before span.lNumber {
+    margin-left: -145px;
+}
+
 /* Vänster padding för lästext och inledning när styckenumreringen visas */
 read-text .tei.show_pageNumbering,
 page-introduction .tei.show_pageNumbering {
@@ -2187,14 +2217,54 @@ div.tei.show_pageBreakEdition .pb_edition {
     opacity: 1;
 }
 
-
-
 /*fotnotsmarkören*/
 span.footnoteindicator {
     font-size: 0.83em;
     line-height: 0.5em;
     vertical-align: super;
     cursor: pointer;
+}
+
+/* Overrides for read-text */
+read-text div.tei {
+    span.dashUnderline {
+        font-style: italic;
+        border-bottom: none;
+    }
+    .encreasedSize {
+        font-style: italic;
+        font-size: 100%;
+    }
+    span.uppercase,
+    span.uppercaseDiary {
+        font-variant: small-caps;
+        text-transform: none;
+    }
+    .encircled {
+        font-style: italic;
+        border: none;
+    }
+}
+
+manuscripts div.tei {
+    span.uppercase {
+        text-transform: uppercase;
+        font-variant: normal;
+    }
+    span.dashUnderline {
+        border-bottom: 1px dashed black;
+    }
+    .encircled {
+        border: 1px solid gray;
+    }
+    .encreasedSize {
+        font-size: 120%;
+    }
+    p.underline, 
+    h3.underline {
+        font-style: normal;
+        text-decoration: underline;
+    }
 }
 
 /* Introduction specific */

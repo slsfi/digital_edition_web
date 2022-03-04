@@ -1,4 +1,4 @@
-.teiManuscript{
+div.tei.teiManuscript {
 
     .tooltiptrigger.ttMs,
     .tooltiptrigger.tooltipMs {
@@ -27,28 +27,39 @@
     }
     */
     
-    span.underline{
+    span.underline {
         border-bottom: 1px solid black;
-        font-style: normal !important;
+        font-style: normal;
+    }
+    span.underline2 {
+        border-bottom: 3px double black;
+        font-style: normal;
+        text-decoration: none;
     }
     
     /* Is this used in ms? */
-    span.lemma{
+    span.lemma {
         background-color: #c1bac1;
     }
 
-    p[class*="p"]{
+    p {
+        line-height: 180%;
+        position: relative;
+        text-indent: 1.7647em;
+    }
+
+    /* This causes problems for <p> with .noIndent and is unnecessary.
+    p[class*="p"] {
         text-indent: 30px !important;
-    }    
+    }
+    */
     
-    h4{
+    h4 {
         margin: 1em 0 .5em !important;
-        font-size: 1.1em !important;
     }
     
-    h3{
-        margin: 1.1em 0 .6em !important;
-        font-size: 1.3em !important;
+    h3 {
+        margin: 1.1em 0 .6em;
         font-variant: normal;
     }
 }

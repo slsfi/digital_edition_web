@@ -1,17 +1,20 @@
-.teiVariant {
+div.tei.teiVariant {
 
+    /* This rule doesn't seem to have any effect in variants and is anyway really badly formed. */
+    /*
     p[class*="p"]{
         text-indent: 30px !important;
-    }    
+    }
+    */
     
-    h4{
+    h4 {
         margin: 1em 0 .5em !important;
-        font-size: 1.1em !important;
+        font-size: 1.0589em;
     }
     
-    h3{
+    h3 {
         margin: 1.1em 0 .6em !important;
-        font-size: 1.4em !important;
+        font-size: 1.1765em;
         font-variant: initial !important;
     }
 
