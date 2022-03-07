@@ -89,7 +89,7 @@ $opacity-hover-transition: opacity 0.2s;
   --base-font-stack:                 "Roboto", var(--system-font-stack);
   --home-banner-font-stack:          var(--base-font-stack);
   --top-menu-font-stack:             var(--base-font-stack);
-  --tei-font-stack:                  "Spectral", Constantia, "Lucida Bright", Lucidabright, "Lucida Serif", Lucida, "DejaVu Serif", "Bitstream Vera Serif", "Liberation Serif", Georgia, serif, var(--system-font-stack);
+  --tei-font-stack:                  Constantia, "Lucida Bright", Lucidabright, "Lucida Serif", Lucida, "DejaVu Serif", "Bitstream Vera Serif", "Liberation Serif", Georgia, serif;
   --tei-blackletter-font-stack:      "Roboto", var(--system-font-stack);
   --tei-print-stamp-font-stack:      Cambria, "Hoefler Text", Utopia, "Liberation Serif", "Nimbus Roman No9 L Regular", Times, "Times New Roman", serif;
   --tei-editorial-note-font-stack:   "Helvetica Neue", "Arial Nova", Helvetica, Arial, sans-serif;
