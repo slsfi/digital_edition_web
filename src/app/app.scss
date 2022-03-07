@@ -1,7 +1,8 @@
 /* Roboto fonts */
 @font-face {
   font-family: "Roboto";
-  src:  url('../assets/fonts/Roboto/woff2/Roboto-Regular-webfont.woff2') format('woff2'),
+  src:  local('Roboto'),
+        url('../assets/fonts/Roboto/woff2/Roboto-Regular-webfont.woff2') format('woff2'),
         url('../assets/fonts/Roboto/woff/Roboto-Regular-webfont.woff') format('woff'),
         url('../assets/fonts/Roboto/ttf/Roboto-Regular-webfont.ttf') format('truetype');
   font-display: swap;
@@ -67,80 +68,6 @@
   src:  url('../assets/fonts/Roboto/woff2/Roboto-LightItalic-webfont.woff2') format('woff2'),
         url('../assets/fonts/Roboto/woff/Roboto-LightItalic-webfont.woff') format('woff'),
         url('../assets/fonts/Roboto/ttf/Roboto-LightItalic-webfont.ttf') format('truetype');
-  font-display: swap;
-  font-style: italic;
-  font-weight: 300;
-}
-
-/* Source sans 3 fonts */
-@font-face {
-  font-family: "SourceSans";
-  src:  url('../assets/fonts/SourceSans/woff2/SourceSans3-Regular.otf.woff2') format('woff2'),
-        url('../assets/fonts/SourceSans/woff/SourceSans3-Regular.otf.woff') format('woff'),
-        url('../assets/fonts/SourceSans/ttf/SourceSans3-Regular.ttf') format('truetype');
-  font-display: swap;
-  font-style: normal;
-  font-weight: 400;
-}
-@font-face {
-  font-family: "SourceSans";
-  src:  url('../assets/fonts/SourceSans/woff2/SourceSans3-Bold.otf.woff2') format('woff2'),
-        url('../assets/fonts/SourceSans/woff/SourceSans3-Bold.otf.woff') format('woff'),
-        url('../assets/fonts/SourceSans/ttf/SourceSans3-Bold.ttf') format('truetype');
-  font-display: swap;
-  font-style: normal;
-  font-weight: 700;
-}
-@font-face {
-  font-family: "SourceSans";
-  src:  url('../assets/fonts/SourceSans/woff2/SourceSans3-It.otf.woff2') format('woff2'),
-        url('../assets/fonts/SourceSans/woff/SourceSans3-It.otf.woff') format('woff'),
-        url('../assets/fonts/SourceSans/ttf/SourceSans3-It.ttf') format('truetype');
-  font-display: swap;
-  font-style: italic;
-  font-weight: 400;
-}
-@font-face {
-  font-family: "SourceSans";
-  src:  url('../assets/fonts/SourceSans/woff2/SourceSans3-BoldIt.otf.woff2') format('woff2'),
-        url('../assets/fonts/SourceSans/woff/SourceSans3-BoldIt.otf.woff') format('woff'),
-        url('../assets/fonts/SourceSans/ttf/SourceSans3-BoldIt.ttf') format('truetype');
-  font-display: swap;
-  font-style: italic;
-  font-weight: 700;
-}
-@font-face {
-  font-family: "SourceSans";
-  src:  url('../assets/fonts/SourceSans/woff2/SourceSans3-Semibold.otf.woff2') format('woff2'),
-        url('../assets/fonts/SourceSans/woff/SourceSans3-Semibold.otf.woff') format('woff'),
-        url('../assets/fonts/SourceSans/ttf/SourceSans3-Semibold.ttf') format('truetype');
-  font-display: swap;
-  font-style: normal;
-  font-weight: 600;
-}
-@font-face {
-  font-family: "SourceSans";
-  src:  url('../assets/fonts/SourceSans/woff2/SourceSans3-SemiboldIt.otf.woff2') format('woff2'),
-        url('../assets/fonts/SourceSans/woff/SourceSans3-SemiboldIt.otf.woff') format('woff'),
-        url('../assets/fonts/SourceSans/ttf/SourceSans3-SemiboldIt.ttf') format('truetype');
-  font-display: swap;
-  font-style: italic;
-  font-weight: 600;
-}
-@font-face {
-  font-family: "SourceSans";
-  src:  url('../assets/fonts/SourceSans/woff2/SourceSans3-Light.otf.woff2') format('woff2'),
-        url('../assets/fonts/SourceSans/woff/SourceSans3-Light.otf.woff') format('woff'),
-        url('../assets/fonts/SourceSans/ttf/SourceSans3-Light.ttf') format('truetype');
-  font-display: swap;
-  font-style: normal;
-  font-weight: 300;
-}
-@font-face {
-  font-family: "SourceSans";
-  src:  url('../assets/fonts/SourceSans/woff2/SourceSans3-LightIt.otf.woff2') format('woff2'),
-        url('../assets/fonts/SourceSans/woff/SourceSans3-LightIt.otf.woff') format('woff'),
-        url('../assets/fonts/SourceSans/ttf/SourceSans3-LightIt.ttf') format('truetype');
   font-display: swap;
   font-style: italic;
   font-weight: 300;
