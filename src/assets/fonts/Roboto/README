@@ -1,0 +1,53 @@
+Roboto v2.318
+https://github.com/googlefonts/roboto/releases
+
+The webfonts in ttf, woff and woff2 format have been generated using the
+Fontsquirrel Webfont Generator at https://www.fontsquirrel.com/tools/webfont-generator
+
+The following settings were used in the generator:
+
+Font formats:
+	TrueType
+	WOFF
+	WOFF2
+
+Truetype Hinting:
+	Keep Existing
+
+Rendering:
+	Fix GASP Table
+
+Vertical Metrics:
+	Auto-Adjust Vertical Metrics
+
+Fix Missing Glyphs:
+	Spaces
+	Hyphens
+
+X-height Matching:
+	None
+
+Subsetting:
+	Custom Subsetting...
+
+Character Type:
+	Punctuation
+	Currency
+	Typographics
+	Math Symbols
+	Alt Punctuation
+	Diacriticals
+
+Unicode Tables:
+	Basic Latin
+	Latin-1 Sup
+	Currency Symbols
+	Punctuation
+	Latin Extended-A
+	Latin Extended-B
+	Latin Extended +
+
+Advanced Options:
+	Font Name Suffix: -webfont
+	Em Square Value: 2048
+	Adjust Glyph Spacing: 0
