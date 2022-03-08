@@ -23,19 +23,19 @@ div.tei.teiVariant {
         display: inline-block;
     }
 
-    &.variantScrollTarget {
+    .variantScrollTarget {
         cursor: pointer;
     }
 
-    &.variantScrollTarget.highlight {
+    .variantScrollTarget.highlight {
         font-weight: bold;
     }
 
-    &.anchorScrollTarget {
+    .anchorScrollTarget {
         cursor: pointer;
     }
 
-    &.var_margin {
+    .var_margin {
         position: absolute;
         left: -1em;
         text-indent: 1.25em !important;
