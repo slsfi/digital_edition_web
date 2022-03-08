@@ -2157,7 +2157,8 @@ div.tei .tooltip { display: none; }
     margin-left: -35px;
     text-align: left;
     width: 30px;
-    font-size: 0.7rem;
+    font-family: var(--app-base-font-stack);
+    font-size: 0.6875rem;
 	text-indent: 0;
     font-style: normal !important;
     font-weight: normal !important;

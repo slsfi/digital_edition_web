@@ -32,6 +32,7 @@ div.tei {
 
     span.teiComment {
         &.notePosition {
+            font-family: var(--app-base-font-stack);
             font-weight: normal;
             font-size: 0.6875em;
             padding-right: 0.5em;
