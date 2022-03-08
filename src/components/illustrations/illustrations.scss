@@ -13,7 +13,10 @@ illustrations {
   button.view-all-button + div.illustration-image-wrapper {
     margin-top: 1rem;
   }
-  .scroll-to-illustration-button {
-    text-transform: initial;
+  button.button {
+    font-size: 0.75rem;
+    height: 1.875rem !important;
   }
 }
+
+
