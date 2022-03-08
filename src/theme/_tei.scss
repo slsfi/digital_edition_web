@@ -1934,7 +1934,7 @@ div.tei {
     line-height: 1.4em;
     text-align: left;
     transform-origin: left top; /* This is necessary for the scaling to work properly if the tooltip wouldn't fit in view otherwise. */
-    font-family: var(--base-font-stack);
+    font-family: var(--app-base-font-stack);
 
     /* Styles for (foot)notes in tooltips */
     a.footnoteReference {
@@ -2013,7 +2013,7 @@ page-introduction div.tei figure {
     line-height: 1.4em;
     overflow: auto;
     border-radius: $corner-roundness $corner-roundness 0 0;
-    font-family: var(--base-font-stack);
+    font-family: var(--app-base-font-stack);
 
     .infoOverlayHeader {
         display: inline-block;

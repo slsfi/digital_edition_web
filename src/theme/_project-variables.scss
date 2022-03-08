@@ -88,9 +88,9 @@ $opacity-hover-transition: opacity 0.2s;
   --system-font-stack:               -apple-system, BlinkMacSystemFont, "Segoe UI",
                                      Roboto, Oxygen-Sans, Ubuntu, Cantarell,
                                      "Helvetica Neue", sans-serif;
-  --base-font-stack:                 "Roboto", var(--system-font-stack);
-  --home-banner-font-stack:          var(--base-font-stack);
-  --top-menu-font-stack:             var(--base-font-stack);
+  --app-base-font-stack:             "Roboto", var(--system-font-stack);
+  --home-banner-font-stack:          var(--app-base-font-stack);
+  --top-menu-font-stack:             var(--app-base-font-stack);
   --tei-font-stack:                  "SourceSerif", Constantia, "Lucida Bright",
                                      Lucidabright, "Lucida Serif", Lucida,
                                      "DejaVu Serif", "Bitstream Vera Serif",
