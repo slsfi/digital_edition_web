@@ -1826,10 +1826,10 @@ div.tei {
     */
     /*Bl.a. dramatik, scen- och personanvisningar, också i andra utgåvor än Dramatik */
     span.smallFont {
-        font-size: 0.91em;
+        font-size: 0.9412em;
     }
     .small {
-        font-size: 0.91em !important;
+        font-size: 0.9412em !important;
         color: gray;
     }
     /*
@@ -1982,7 +1982,7 @@ page-introduction div.tei h6.heading6 + .table-wrapper {
 }
 page-introduction div.tei table {
     margin: 0.3em 0;
-    font-size: 0.91em;
+    font-size: 0.9412em;
 }
 page-introduction div.tei tr:first-child > td,
 page-introduction div.tei tr:first-child > th {
@@ -1992,7 +1992,7 @@ page-introduction div.tei tr:last-child > td {
     padding-bottom: 0;
 }
 page-introduction div.tei figure {
-    font-size: 0.91em;
+    font-size: 0.9412em;
     margin: 2em 0;
 }
 
@@ -2276,7 +2276,7 @@ page-introduction div.tei .est_figure_graphic {
     padding-right: 0;
 }
 page-introduction div.tei .parIndent {
-    font-size: 0.91em;
+    font-size: 0.9412em;
 }
 
 /* Headings in introductions */
@@ -2288,35 +2288,36 @@ page-introduction {
         h3.heading3,
         h4.heading4,
         h5.heading5 {
-            font-weight: 600;
-            line-height: 1.05;
+            font-weight: normal;
+            line-height: 1.125;
         }
         h1.title {
-            font-size: 1.2em;
+            font-size: 1.1875rem;
+            font-weight: 700;
             margin: 1.2em 0 0.6em 0;
             text-transform: uppercase;
         }
         h2.heading2 {
-            font-size: 1.2em;
+            font-size: 1rem;
+            font-weight: 700;
             margin: 1.2em 0 0.6em 0;
-            font-variant: small-caps;
         }
         h3.heading3 {
-            font-size: 1em;
+            font-size: 1rem;
             margin: 0.1em 0 0.4em 0;
         }
         h4.heading4 {
-            font-size: 1em;
+            font-size: 1rem;
             margin: 0.1em 0 0.4em 0;
             padding-left: 1.75em;
         }
         h5.heading5 {
-            font-size: 0.875em;
+            font-size: 0.875rem;
             margin: 0.5em 0 0.457em 0;
             padding-left: 4em;
         }
         span.writer {
-            font-size: 0.75rem;
+            font-size: 0.8125rem;
             font-variant: normal;
             font-weight: normal;
             font-style: normal;
@@ -2338,8 +2339,7 @@ page-introduction {
             text-indent: 0;
         }
         header p[role="doc-subtitle"] {
-            font-size: 1.3em;
-            font-weight: 600;
+            font-size: 1.2942em;
             font-style: italic;
             margin: 0.75em 0;
         }
@@ -2347,12 +2347,13 @@ page-introduction {
             font-size: 1em;
             margin: 1.75em 0;
             text-transform: uppercase;
+            letter-spacing: 0.02em;
         }
         h1.title + p.writer {
             margin: 1em 0;
         }
         header h1.title > span.writer {
-            font-size: 0.515em;
+            font-size: 0.5556em;
             font-variant: normal;
             font-weight: normal;
         }
@@ -2368,27 +2369,25 @@ page-introduction {
             line-height: 1.2;
         }
         h1.title {
-            font-size: 1.6em;
-            font-weight: 600;
+            font-size: 1.5883em;
             text-transform: uppercase;
             text-align: center;
             margin: 0;
+            letter-spacing: 0.02em;
         }
         h2.heading2 {
-            font-size: 1.6em;
-            font-weight: 600;
+            font-size: 1.353em;
             font-variant: small-caps;
             margin: 1.7em 0 0.85em 0;
         }
         h3.heading3 {
-            font-size: 1.2em;
+            font-size: 1.2353em;
             font-weight: 600;
             font-style: italic;
             margin: 1.6em 0 0.85em 0;
         }
         h4.heading4 {
-            font-size: 1.065em;
-            font-weight: 600;
+            font-size: 1.11765em;
             font-style: italic;
             margin: 1.4em 0 0.875em 0;
         }
@@ -2398,19 +2397,26 @@ page-introduction {
             margin: 1.35em 0 0.875em 0;
         }
         h6.heading6 {
-            font-size: 0.875em;
-            text-transform: uppercase;
+            font-size: 0.9412em;
             margin: 1.5em 0 1em 0;
         }
         h2.heading2 > span.writer {
-            font-size: 0.55em;
+            font-size: 0.6087em;
             font-variant: normal;
+            font-weight: normal;
             text-transform: uppercase;
+            letter-spacing: 0.02em;
         }
         h3.heading3 > span.writer {
-            font-size: 0.735em;
+            font-size: 0.6667em;
             font-style: normal;
+            font-weight: normal;
             text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+        h2.heading2 + div > h3.heading3,
+        h2.heading2 + h3.heading3 {
+            margin-top: 1.238em;
         }
     }
 }
