@@ -319,6 +319,7 @@ body {
   -moz-user-select: text;
   -ms-user-select: text;
   user-select: text;
+  text-rendering: auto;
 }
 
 ion-split-pane {
