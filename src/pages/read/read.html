@@ -96,6 +96,8 @@
             <ion-fab *ngIf="views.length>1" top left #fabmenu [ngClass]="(views.length>1)?'column-options-many':'column-options-one'">
               <button ion-fab mini>
                 <ion-icon *ngIf="view.established.show" name="menu"></ion-icon>
+                <ion-icon *ngIf="view.established_sv && view.established_sv.show" name="menu"></ion-icon>
+                <ion-icon *ngIf="view.established_fi && view.established_fi.show" name="menu"></ion-icon>
                 <ion-icon *ngIf="view.comments.show" name="menu"></ion-icon>
                 <ion-icon *ngIf="view.facsimiles.show" name="menu"></ion-icon>
                 <ion-icon *ngIf="view.manuscripts.show" name="menu"></ion-icon>
