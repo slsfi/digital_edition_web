@@ -1,5 +1,8 @@
-Roboto v2.318
-https://github.com/googlefonts/roboto/releases
+Roboto v2.317
+Downloaded from https://fonts.google.com/specimen/Roboto
+A newer version (v2.318) exists in https://github.com/googlefonts/roboto/releases
+but there is not a hinted variant available, so that's why the files from Google Fonts
+have been used.
 
 The webfonts in ttf, woff and woff2 format have been generated using the
 Fontsquirrel Webfont Generator at https://www.fontsquirrel.com/tools/webfont-generator
@@ -18,7 +21,7 @@ Rendering:
 	Fix GASP Table
 
 Vertical Metrics:
-	Auto-Adjust Vertical Metrics
+	No adjustment
 
 Fix Missing Glyphs:
 	Spaces
@@ -28,24 +31,7 @@ X-height Matching:
 	None
 
 Subsetting:
-	Custom Subsetting...
-
-Character Type:
-	Punctuation
-	Currency
-	Typographics
-	Math Symbols
-	Alt Punctuation
-	Diacriticals
-
-Unicode Tables:
-	Basic Latin
-	Latin-1 Sup
-	Currency Symbols
-	Punctuation
-	Latin Extended-A
-	Latin Extended-B
-	Latin Extended +
+	None
 
 Advanced Options:
 	Font Name Suffix: -webfont
