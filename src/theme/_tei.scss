@@ -2426,7 +2426,9 @@ page-introduction {
 /* Headings on title pages */
 page-title {
     div.tei {
-        .title, .subtitle {
+        .title,
+        .subtitle,
+        .collectiontitle {
             font-size: 2.2353em;
             font-weight: normal;
             line-height: 1.2;
@@ -2436,6 +2438,12 @@ page-title {
         .subtitle {
             font-size: 1.4706em;
             margin-top: 1em;
+        }
+        .collectiontitle {
+            font-size: 1.8824em;
+            margin-top: 0.25em;
+            margin-bottom: 1em;
+            letter-spacing: 0.1em;
         }
         .chapter {
             font-size: 1.2942em;
