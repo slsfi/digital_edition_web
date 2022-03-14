@@ -1903,11 +1903,25 @@ div.tei {
         text-align: left;
         margin: 0.5em 0;
     }
-    .est_figure_graphic {
+    .est_figure_graphic,
+    .est_figure_graphic_left {
         width: auto;
         max-width: 100%;
         padding-right: 0.5rem;
+        float: left;
     }
+    .est_figure_graphic_right {
+        width: auto;
+        max-width: 100%;
+        padding-left: 0.5rem;
+        float: right;
+    }
+    .est_figure_graphic_middle {
+        width: auto;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
     img.doodle {
         cursor: pointer;
         display: none !important; /* By default doodles in read-text are not shown except when illustrations-view is shown. */
