@@ -2168,6 +2168,11 @@ div.tei .tooltip { display: none; }
 .tei.show_pageNumbering p.hangingIndent span.paragraph_number {
     margin-left: -65px;
 }
+
+.tei.show_pageNumbering p.item_indented span.paragraph_number {
+    margin-left: -75px;
+}
+
 .tei.show_pageNumbering p.labelledLines_before span.lNumber {
     margin-left: -145px;
 }
