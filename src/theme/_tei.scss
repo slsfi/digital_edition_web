@@ -2217,6 +2217,7 @@ page-read .mobile-mode-established .tei.show_pageNumbering {
 div.tei.show_pageBreakOriginal .pb_orig,
 div.tei.show_pageBreakEdition .pb_zts,
 div.tei.show_pageBreakEdition .pb_edition {
+    font-family: var(--app-base-font-stack);
     display: contents;
     position: absolute;
     margin-left: -40px;
