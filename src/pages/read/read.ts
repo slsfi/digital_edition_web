@@ -3079,9 +3079,9 @@ export class ReadPage /*implements OnDestroy*/ {
           }
         }
         if (targetClassName.endsWith('a')) {
-          targetCompClassName = targetClassName.substr(0, targetClassName.length - 1) + 'b';
+          targetCompClassName = targetClassName.substring(0, targetClassName.length - 1) + 'b';
         } else {
-          targetCompClassName = targetClassName.substr(0, targetClassName.length - 1) + 'a';
+          targetCompClassName = targetClassName.substring(0, targetClassName.length - 1) + 'a';
         }
         let iClassList = [];
         for (let i = 0; i < elems.length; i++) {
