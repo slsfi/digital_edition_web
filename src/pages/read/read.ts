@@ -996,6 +996,10 @@ export class ReadPage /*implements OnDestroy*/ {
         && event['target']['parentNode']['classList'] !== undefined
         && event['target']['parentNode']['classList'].contains('variantScrollTarget')) {
           eventTarget = event['target']['parentNode'];
+        } else if (event['target']['parentNode']['parentNode'] !== undefined && event['target']['parentNode']['parentNode'] !== null
+        && event['target']['parentNode']['parentNode']['classList'] !== undefined
+        && event['target']['parentNode']['parentNode']['classList'].contains('variantScrollTarget')) {
+          eventTarget = event['target']['parentNode']['parentNode'];
         } else if (event['target']['classList'] !== undefined && event['target']['classList'].contains('anchorScrollTarget')) {
           eventTarget = event.target;
         } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null
@@ -1170,6 +1174,7 @@ export class ReadPage /*implements OnDestroy*/ {
         }
 
         eventTarget = this.getEventTarget(event);
+        console.log(eventTarget);
         if (eventTarget['classList'].contains('variantScrollTarget') || eventTarget['classList'].contains('anchorScrollTarget')) {
           // Click on variant lemma --> highlight and scroll all variant columns.
 
@@ -3041,20 +3046,29 @@ export class ReadPage /*implements OnDestroy*/ {
     this.hideToolTip();
     try {
       if (element['classList'].contains('variantScrollTarget')) {
-        const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span.teiVariant');
-        for (let i = 0; i < elems.length; i++) {
-          if (elems[i].id === element.id) {
-            elems[i].style.fontWeight = 'bold';
-            this.scrollElementIntoView(elems[i]);
-            setTimeout(function () {
-              if (elems[i] !== undefined) {
-                elems[i].style.fontWeight = null;
+        const variantContElems: NodeListOf<HTMLElement> = document.querySelectorAll('variations');
+        for (let v = 0; v < variantContElems.length; v++) {
+          const elems: NodeListOf<HTMLElement> = variantContElems[v].querySelectorAll('.teiVariant');
+          let variantNotScrolled = true;
+          for (let i = 0; i < elems.length; i++) {
+            if (elems[i].id === element.id) {
+              if (!elems[i].classList.contains('highlight')) {
+                elems[i].classList.add('highlight');
               }
-            }, 5000);
+              if (variantNotScrolled) {
+                variantNotScrolled = false;
+                this.scrollElementIntoView(elems[i]);
+              }
+              setTimeout(function () {
+                if (elems[i] !== undefined) {
+                  elems[i].classList.remove('highlight');
+                }
+              }, 5000);
+            }
           }
         }
       } else if (element['classList'].contains('anchorScrollTarget')) {
-        const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span.teiVariant.anchorScrollTarget');
+        const elems: NodeListOf<HTMLElement> = document.querySelectorAll('.teiVariant.anchorScrollTarget');
         const elementClassList = element.className.split(' ');
         let targetClassName = '';
         let targetCompClassName = '';
@@ -3065,9 +3079,9 @@ export class ReadPage /*implements OnDestroy*/ {
           }
         }
         if (targetClassName.endsWith('a')) {
-          targetCompClassName = targetClassName.substr(0, targetClassName.length - 1) + 'b';
+          targetCompClassName = targetClassName.substring(0, targetClassName.length - 1) + 'b';
         } else {
-          targetCompClassName = targetClassName.substr(0, targetClassName.length - 1) + 'a';
+          targetCompClassName = targetClassName.substring(0, targetClassName.length - 1) + 'a';
         }
         let iClassList = [];
         for (let i = 0; i < elems.length; i++) {

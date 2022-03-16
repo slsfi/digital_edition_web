@@ -27,7 +27,8 @@ div.tei.teiVariant {
         cursor: pointer;
     }
 
-    .variantScrollTarget.highlight {
+    .variantScrollTarget.highlight,
+    .variantScrollTarget.highlight .teiVariant {
         font-weight: bold;
     }
 
