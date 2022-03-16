@@ -875,7 +875,7 @@ ion-alert.custom-select-alert .alert-wrapper {
   }
 
   button.alert-radio-button {
-    font-size: 1.125rem;
+    font-size: 1rem;
 
     .alert-radio-label {
       white-space: normal;
@@ -890,11 +890,10 @@ ion-alert.custom-select-alert .alert-wrapper {
   margin: 0 0 1.5rem 0;
   border-bottom: 1px solid #666;
   background-color: var(--read-columns-background-color);
-  display: inline-block;
   width: 100%;
 
   h3 {
-    font-size: 1.125rem;
+    font-size: 1rem;
     font-weight: 600;
     word-wrap: break-word;
     white-space: normal;
