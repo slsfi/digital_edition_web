@@ -1400,6 +1400,10 @@ export class ReadPage /*implements OnDestroy*/ {
                     }
                   }
                   hrefString += '/not/infinite/nosong/searchtitle/established&comments';
+                  if (this.multilingualEST && this.translate.currentLang) {
+                    hrefString = hrefString.replace('established', 'established_' + this.translate.currentLang);
+                  }
+
                   newWindowRef.location.href = hrefString;
                 });
               }
@@ -1645,7 +1649,6 @@ export class ReadPage /*implements OnDestroy*/ {
 
       tmpContent = documentFragment.querySelector(selector).innerHTML || '';
     }
-
     this.establishedText.content = tmpContent.replace(/images\//g, 'assets/images/').replace(/\.png/g, '.svg');
   }
 
@@ -1835,6 +1838,8 @@ export class ReadPage /*implements OnDestroy*/ {
     }
 
     footnoteText = footnoteText.replace(' xmlns:tei="http://www.tei-c.org/ns/1.0"', '');
+
+
 
     // Get column id of the column where the footnote is.
     let containerElem = targetElem.parentElement;
