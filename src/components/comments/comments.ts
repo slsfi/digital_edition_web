@@ -314,22 +314,52 @@ export class CommentsComponent {
   getCorrespondanceMetadata() {
     this.commentService.getCorrespondanceMetadata(String(this.link).split('_')[1]).subscribe(
       text => {
-        if (text.length > 0) {
+        if (text['subjects'].length > 0) {
+          const senders = [];
+          const receivers = [];
           text['subjects'].forEach(subject => {
-            if ( subject['avsändare'] ) {
-              this.sender = subject['avsändare'];
+            if ( subject['avs\u00e4ndare'] ) {
+              senders.push(subject['avs\u00e4ndare']);
             }
             if ( subject['mottagare'] ) {
-              this.receiver = subject['mottagare'];
+              receivers.push(subject['mottagare']);
             }
           });
+          this.sender = this.concatenateNames(senders);
+          this.receiver = this.concatenateNames(receivers);
         }
+        if (text['letter'] !== undefined && text['letter'] !== null) {
           this.letter = text['letter'];
-          this.doAnalytics();
-        },
-      error =>  {
-        this.errorMessage = <any>error
+        }
+        this.doAnalytics();
+      },
+      error => {
+        this.errorMessage = <any>error;
       }
     );
+  }
+
+  /**
+   * Given an array with names of people, this function return a string where the names
+   * have been concatenated. A semicolon (;) is used as a separator between all of the names
+   * except between the second to last and last, which are separated by an ampersand (&).
+   * @param names An array of strings with the names that are to be concatenated.
+   * @returns A string with the names concatenated.
+   */
+   concatenateNames(names: string[]) {
+    let names_str = '';
+    for (let i = 0; i < names.length; i++) {
+      names_str = names_str + names[i];
+      if (names.length > 2) {
+        if (i < names.length - 2) {
+          names_str = names_str + '; ';
+        } else if (i < names.length - 1) {
+          names_str = names_str + ' \u0026 ';
+        }
+      } else if (names.length === 2 && i < 1) {
+        names_str = names_str + ' \u0026 ';
+      }
+    }
+    return names_str;
   }
 }
