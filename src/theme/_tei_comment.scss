@@ -30,6 +30,11 @@ div.tei {
         }
     }
 
+    h3.teiComment.smallCaps + p.paragraphSpace + h4.teiComment.italics,
+    h3.teiComment.smallCaps + h4.teiComment.italics {
+        margin-top: 1.25em;
+    }
+
     span.teiComment {
         &.notePosition {
             font-family: var(--app-base-font-stack);

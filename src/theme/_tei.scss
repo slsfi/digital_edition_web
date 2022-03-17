@@ -483,6 +483,9 @@ div.tei {
         text-indent: 0 !important;
         margin-bottom: 1em;
     }
+    .parIndent + .right + .right {
+        margin-top: -1em;
+    }
     .img_left {
         float: left;
         padding-right: 8px;
@@ -518,8 +521,9 @@ div.tei {
     p.milestonePart,
     span.milestoneWhen, 
     span.milestonePart {
-        font-size: 0.94em !important;
-        color: #6a6a6a;
+        font-family: var(--app-base-font-stack);
+        font-size: 0.8824em !important;
+        color: #4e4e4e;
         background-color: #ececec;
         margin: 0.8em 0 !important;
         padding: 0 0.8em !important;
@@ -1104,14 +1108,6 @@ div.tei {
         color: color($colors, dark);
     }
 
-    /* OTHER */
-    /* Keyword_symbol is a small rectangular gif. */
-    img.keyword_symbol {
-        display: inline-block;
-        width: auto;
-        height: auto;
-    }
-
     /* VARIANTS */
     /*
     span.lemma
@@ -1445,6 +1441,9 @@ div.tei {
     h6.tei {
         font-size: 0.9412em; /* 16px */
     }
+    h3.tei:first-child {
+        margin-top: inherit;
+    }
     h1.tei.title {
         font-variant: small-caps;
         text-align: center;
@@ -1490,6 +1489,15 @@ div.tei {
         font-weight: normal !important;
         margin: 1em 0 !important;
     }
+    p + h2.tei.section2,
+    p + span + h2.tei.section2,
+    p + a + h2.tei.section2,
+    p + a + span + h2.tei.section2,
+    p + a + span + span + h2.tei.section2,
+    p + span + a + h2.tei.section2,
+    p + span + span + a + h2.tei.section2 {
+        margin-top: 2em !important;
+    }
     h2.tei.poemsection2 {
         font-style: italic;
         text-align: left;
@@ -1501,6 +1509,15 @@ div.tei {
         text-align: center;
         font-weight: normal !important;
         margin: 1.3em 0 1em 0 !important;
+    }
+    p + h3.tei.chapter,
+    p + span + h3.tei.chapter,
+    p + a + h3.tei.chapter,
+    p + a + span + h3.tei.chapter,
+    p + a + span + span + h3.tei.chapter,
+    p + span + a + h3.tei.chapter,
+    p + span + span + a + h3.tei.chapter {
+        margin-top: 1.75em !important;
     }
     h3.tei.poem {
         font-style: italic;
@@ -2218,11 +2235,8 @@ div.tei.show_pageBreakOriginal .pb_orig,
 div.tei.show_pageBreakEdition .pb_zts,
 div.tei.show_pageBreakEdition .pb_edition {
     font-family: var(--app-base-font-stack);
-    display: contents;
-    position: absolute;
-    margin-left: -40px;
-    text-align: right;
-    width: 30px;
+    line-height: 1;
+    display: inline;
 }
 div.tei.show_pageBreakOriginal .pb_orig {
     color: var(--pageBreakOriginal-color);
