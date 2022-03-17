@@ -247,16 +247,25 @@ export class ReadPage /*implements OnDestroy*/ {
 
     try {
       const i18n = this.config.getSettings('i18n');
-      console.log(i18n)
+      console.log('i18n: ', i18n);
 
-      this.multilingualEST = i18n.multilingualEST;
-      this.estLanguages = i18n.estLanguages;
-      this.estLang = i18n.estLanguages[0];
+      if (i18n.multilingualEST !== undefined) {
+        this.multilingualEST = i18n.multilingualEST;
+      } else {
+        this.multilingualEST = false;
+      }
+      if (i18n.estLanguages !== undefined) {
+        this.estLanguages = i18n.estLanguages;
+        this.estLang = i18n.estLanguages[0];
+      } else {
+        this.estLanguages = [];
+        this.estLang = 'none';
+      }
     } catch (e) {
       this.multilingualEST = false;
       this.estLanguages = [];
       this.estLang = 'none';
-      console.log(e);
+      console.error(e);
     }
 
     // Hide some or all of the display toggles (variations, facsimiles, established etc.)
@@ -1174,7 +1183,6 @@ export class ReadPage /*implements OnDestroy*/ {
         }
 
         eventTarget = this.getEventTarget(event);
-        console.log(eventTarget);
         if (eventTarget['classList'].contains('variantScrollTarget') || eventTarget['classList'].contains('anchorScrollTarget')) {
           // Click on variant lemma --> highlight and scroll all variant columns.
 
