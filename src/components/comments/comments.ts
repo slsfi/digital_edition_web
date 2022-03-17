@@ -314,24 +314,27 @@ export class CommentsComponent {
   getCorrespondanceMetadata() {
     this.commentService.getCorrespondanceMetadata(String(this.link).split('_')[1]).subscribe(
       text => {
-        if (text['subjects'].length > 0) {
-          const senders = [];
-          const receivers = [];
-          text['subjects'].forEach(subject => {
-            if ( subject['avs\u00e4ndare'] ) {
-              senders.push(subject['avs\u00e4ndare']);
-            }
-            if ( subject['mottagare'] ) {
-              receivers.push(subject['mottagare']);
-            }
-          });
-          this.sender = this.concatenateNames(senders);
-          this.receiver = this.concatenateNames(receivers);
+        if (text['subjects'] !== undefined && text['subjects'] !== null) {
+          if (text['subjects'].length > 0) {
+            const senders = [];
+            const receivers = [];
+            text['subjects'].forEach(subject => {
+              if ( subject['avs\u00e4ndare'] ) {
+                senders.push(subject['avs\u00e4ndare']);
+              }
+              if ( subject['mottagare'] ) {
+                receivers.push(subject['mottagare']);
+              }
+            });
+            this.sender = this.concatenateNames(senders);
+            this.receiver = this.concatenateNames(receivers);
+          }
         }
+
         if (text['letter'] !== undefined && text['letter'] !== null) {
           this.letter = text['letter'];
+          this.doAnalytics();
         }
-        this.doAnalytics();
       },
       error => {
         this.errorMessage = <any>error;
