@@ -1433,7 +1433,7 @@ div.tei {
         font-size: 1.1765em; /* 20px */
     }
     h4.tei {
-        font-size: 1.0589em; /* 18px */ /* 1.1177em = 19px*/
+        font-size: 1.0589em; /* 18px */
     }
     h5.tei {
         font-size: 1em; /* 17px */
@@ -1477,6 +1477,9 @@ div.tei {
         font-weight: normal !important;
         margin: 1em 0 !important;
     }
+    p ~ h2.tei.section {
+        margin-top: 2em !important;
+    }
     h2.tei.poemsection {
         font-style: italic;
         text-align: left;
@@ -1489,13 +1492,7 @@ div.tei {
         font-weight: normal !important;
         margin: 1em 0 !important;
     }
-    p + h2.tei.section2,
-    p + span + h2.tei.section2,
-    p + a + h2.tei.section2,
-    p + a + span + h2.tei.section2,
-    p + a + span + span + h2.tei.section2,
-    p + span + a + h2.tei.section2,
-    p + span + span + a + h2.tei.section2 {
+    p ~ h2.tei.section2 {
         margin-top: 2em !important;
     }
     h2.tei.poemsection2 {
@@ -1510,14 +1507,12 @@ div.tei {
         font-weight: normal !important;
         margin: 1.3em 0 1em 0 !important;
     }
-    p + h3.tei.chapter,
-    p + span + h3.tei.chapter,
-    p + a + h3.tei.chapter,
-    p + a + span + h3.tei.chapter,
-    p + a + span + span + h3.tei.chapter,
-    p + span + a + h3.tei.chapter,
-    p + span + span + a + h3.tei.chapter {
+    p ~ h3.tei.chapter {
         margin-top: 1.75em !important;
+    }
+    h2.tei.section + h3.tei.chapter,
+    h2.tei.section2 + h3.tei.chapter {
+        margin-top: 1.3em !important;
     }
     h3.tei.poem {
         font-style: italic;
