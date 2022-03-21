@@ -1427,6 +1427,14 @@ div.tei {
     }
 
     /* STYLES FOR HEADINGS */
+    h1.tei,
+    h2.tei,
+    h3.tei,
+    h4.tei,
+    h5.tei,
+    h6.tei {
+        line-height: 1.25;
+    }
     h1.tei {
         font-size: 1.3530em; /* 23px when 1em = 17px */
     }
