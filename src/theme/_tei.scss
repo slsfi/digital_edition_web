@@ -545,6 +545,10 @@ div.tei {
     hr.milestoneSmallBar {
         width: 2.25em;
     }
+    p.strofe + hr.milestoneBar,
+    p.strofe + hr.milestoneSmallBar {
+        margin-top: 0.5em;
+    }
     p.teiOpener {
         margin-bottom: 1.5em !important;
     }
@@ -1531,7 +1535,7 @@ div.tei {
     h3.tei.ms {
         text-align: left;
         font-weight: normal !important;
-        margin: 1.3em 0 1em 0 !important;
+        margin: 1.3em 0 1.3em 0 !important;
     }
     h3.tei.diary {
         font-variant: small-caps;
