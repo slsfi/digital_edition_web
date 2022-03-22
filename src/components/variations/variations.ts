@@ -95,7 +95,7 @@ export class VariationsComponent {
         this.variations = res.variations;
         if (this.variations.length > 0) {
           console.log('recieved variations ,..,');
-          this.storage.set(this.varID, this.variations);
+          // this.storage.set(this.varID, this.variations);
           this.setVariation();
         } else {
           console.log('no variations');
