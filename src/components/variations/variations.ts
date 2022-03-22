@@ -57,7 +57,7 @@ export class VariationsComponent {
   }
 
   ngOnInit() {
-    this.varID = this.itemId + '_var';
+    this.varID = this.itemId.split(';')[0] + '_var';
     // console.log('variation varID', this.varID);
     // console.log('variation linkID', this.linkID);
     // console.log('variation sortOrder', this.sortOrder);
@@ -79,6 +79,7 @@ export class VariationsComponent {
     this.storage.get(this.varID).then((variations) => {
       if (variations) {
         this.getCacheText(this.varID);
+        console.log('Retrieved variations from cache');
       } else {
         this.getVariation();
       }
@@ -94,6 +95,7 @@ export class VariationsComponent {
         this.variations = res.variations;
         if (this.variations.length > 0) {
           console.log('recieved variations ,..,');
+          this.storage.set(this.varID, this.variations);
           this.setVariation();
         } else {
           console.log('no variations');
@@ -137,7 +139,7 @@ export class VariationsComponent {
   getCacheText(id: string) {
     this.storage.get(id).then((variations) => {
       this.textLoading = false;
-      this.variations = this.variations;
+      this.variations = variations;
       this.setVariation();
     });
   }
