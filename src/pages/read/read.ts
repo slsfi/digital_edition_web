@@ -623,6 +623,8 @@ export class ReadPage /*implements OnDestroy*/ {
       viewmodes[0] = this.show;
     }
 
+    let variationsViewOrderNumber = 0;
+
     viewmodes.forEach(function (viewmode) {
       // set the first viewmode as default
       this.show = viewmodes[0];
@@ -632,7 +634,12 @@ export class ReadPage /*implements OnDestroy*/ {
       if (parts.length > 1) {
         this.addView(parts[0], null, null, null, null, parts[1]);
       } else {
-        this.addView(viewmode);
+        if (viewmode === 'variations') {
+          this.addView(viewmode, null, null, null, null, null, variationsViewOrderNumber);
+          variationsViewOrderNumber++;
+        } else {
+          this.addView(viewmode);
+        }
       }
     }.bind(this));
   }
@@ -2784,7 +2791,7 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 
-  addView(type: string, id?: string, fab?: FabContainer, external?: boolean, image?: any, language?: string) {
+  addView(type: string, id?: string, fab?: FabContainer, external?: boolean, image?: any, language?: string, variationSortOrder?: string) {
     if (fab !== undefined) {
       try {
         fab.close();
@@ -2806,7 +2813,7 @@ export class ReadPage /*implements OnDestroy*/ {
         comments: { show: (type === 'comments'), id: id },
         facsimiles: { show: (type === 'facsimiles'), id: id },
         manuscripts: { show: (type === 'manuscripts'), id: id },
-        variations: { show: (type === 'variations'), id: id },
+        variations: { show: (type === 'variations'), id: id, variationSortOrder: variationSortOrder },
         introduction: { show: (type === 'introduction'), id: id },
         songexample: { show: (type === 'songexample'), id: id },
         illustrations: { show: (type === 'illustrations'), image: image }

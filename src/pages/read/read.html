@@ -145,7 +145,7 @@
                   (openNewManView)="openNewView($event)"></manuscripts>
               </div>
               <div *ngIf="view.variations.show">
-                <variations [linkID]="view.variations.id" [itemId]="establishedText.link" [matches]="matches"
+                <variations [linkID]="view.variations.id" [itemId]="establishedText.link" [matches]="matches" [sortOrder]="view.variations.variationSortOrder"
                   (openNewVarView)="openNewView($event)"></variations>
               </div>
               <div *ngIf="view.introduction.show">

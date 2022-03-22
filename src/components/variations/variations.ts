@@ -23,6 +23,7 @@ export class VariationsComponent {
   @Input() itemId: string;
   @Input() linkID?: string;
   @Input() matches?: Array<string>;
+  @Input() sortOrder?: string;
   @ViewChild('toolTip') toolTip: ElementRef;
   @Output() openNewVarView: EventEmitter<any> = new EventEmitter();
 
@@ -57,6 +58,9 @@ export class VariationsComponent {
 
   ngOnInit() {
     this.varID = this.itemId + '_var';
+    // console.log('variation varID', this.varID);
+    // console.log('variation linkID', this.linkID);
+    // console.log('variation sortOrder', this.sortOrder);
     this.setText();
   }
 
@@ -121,7 +125,11 @@ export class VariationsComponent {
     if (this.linkID && this.linkID !== undefined && inputVariation !== undefined ) {
       this.selectedVariation = inputVariation;
     } else {
-      this.selectedVariation = this.variations[0];
+      if (this.sortOrder && this.variations[parseInt(this.sortOrder)] !== undefined) {
+        this.selectedVariation = this.variations[parseInt(this.sortOrder)];
+      } else {
+        this.selectedVariation = this.variations[0];
+      }
     }
     this.changeVariation();
   }
