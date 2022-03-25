@@ -53,6 +53,7 @@ export class VariationsComponent {
     this.text = '';
     this.selectedVariationName = '';
     this.variations = [];
+    this.varID = '';
     this.intervalTimerId = 0;
   }
 
