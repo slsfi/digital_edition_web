@@ -207,17 +207,13 @@ export class ReadTextComponent {
 
           if (this.matches instanceof Array && this.matches.length > 0) {
             console.log('search matches:', this.matches);
-            let tmpText: any = '';
             this.matches.forEach((val) => {
               const re = new RegExp('(' + val + ')', 'ig');
-              tmpText = this.sanitizer.bypassSecurityTrustHtml(
-                readtext.replace(re, '<match>$1</match>')
-              );
+              readtext = readtext.replace(re, '<match>$1</match>');
             });
-            this.text = tmpText;
-          } else {
-            this.text = this.sanitizer.bypassSecurityTrustHtml(readtext);
           }
+
+          this.text = this.sanitizer.bypassSecurityTrustHtml(readtext);
           console.log('Retrieved read-text from cache');
         } else {
           console.log('Failed to retrieve read-text text from cache');
@@ -246,29 +242,25 @@ export class ReadTextComponent {
             }
           );
         } else {
-          const processedText = this.postprocessReadtext(content);
-
-          if (this.matches instanceof Array && this.matches.length > 0) {
-            console.log('search matches:', this.matches);
-            let tmpText: any = '';
-            this.matches.forEach((val) => {
-              const re = new RegExp('(' + val + ')', 'ig');
-              tmpText = this.sanitizer.bypassSecurityTrustHtml(
-                processedText.replace(re, '<match>$1</match>')
-              );
-            });
-            this.text = tmpText;
-          } else {
-            this.text = this.sanitizer.bypassSecurityTrustHtml(processedText);
-          }
+          let processedText = this.postprocessReadtext(content);
 
           if (!this.textService.readtextIdsInStorage.includes(this.estID)) {
             this.textService.readtextIdsInStorage.push(this.estID);
             this.storage.set(this.estID, processedText);
           }
+
+          if (this.matches instanceof Array && this.matches.length > 0) {
+            console.log('search matches:', this.matches);
+            this.matches.forEach((val) => {
+              const re = new RegExp('(' + val + ')', 'ig');
+              processedText = processedText.replace(re, '<match>$1</match>');
+            });
+          }
+
+          this.text = this.sanitizer.bypassSecurityTrustHtml(processedText);
         }
       },
-      error => { this.errorMessage = <any>error; this.textLoading = false; }
+      error => { this.errorMessage = <any>error; this.textLoading = false; this.text = 'Lästexten kunde inte hämtas.'; }
     );
   }
 
