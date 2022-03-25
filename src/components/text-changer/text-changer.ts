@@ -251,7 +251,7 @@ export class TextChangerComponent {
     }
     params['selectedItemInAccordion'] = true;
     console.log('Opening read from TextChanged.open()');
-    console.log(params);
+    // console.log(params);
     nav[0].setRoot('read', params);
   }
 
