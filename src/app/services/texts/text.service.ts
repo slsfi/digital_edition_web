@@ -22,6 +22,7 @@ export class TextService {
   previousReadViewTextId: string;
   variationsOrder: number[] = [];
   varIdsInStorage: string[] = [];
+  readtextIdsInStorage: string[] = [];
 
   constructor(private http: Http, private config: ConfigService, private cache: TextCacheService) {
     this.appMachineName = this.config.getSettings('app.machineName');
@@ -40,6 +41,7 @@ export class TextService {
     this.previousReadViewTextId = '';
     this.variationsOrder = [];
     this.varIdsInStorage = [];
+    this.readtextIdsInStorage = [];
   }
 
   getEstablishedText(id: string): Observable<any> {

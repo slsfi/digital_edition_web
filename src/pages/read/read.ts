@@ -635,8 +635,9 @@ export class ReadPage /*implements OnDestroy*/ {
     if (this.textService.readViewTextId.split('_')[0] === this.textService.previousReadViewTextId.split('_')[0]) {
       sameCollection = true;
     } else {
-      // A different collection than last time page-read was loaded --> clear variations stored in storage
-      // and variationsOrder array in textService.
+      // A different collection than last time page-read was loaded --> clear read-texts and variations
+      // stored in storage and variationsOrder array in textService.
+      this.clearReadtextsFromStorage();
       this.textService.variationsOrder = [];
       this.clearVariationsFromStorage();
     }
@@ -3399,6 +3400,19 @@ export class ReadPage /*implements OnDestroy*/ {
         console.log('could not get publication data trying to resolve collection and publication legacy id');
       }
     );
+  }
+
+/**
+   * Removes all read-texts that are stored in storage based on the ids in the readtextIdsInStorage
+   * array in textService, and empties the array.
+   */
+  clearReadtextsFromStorage() {
+    if (this.textService.readtextIdsInStorage.length > 0) {
+      this.textService.readtextIdsInStorage.forEach((readtextId) => {
+        this.storage.remove(readtextId);
+      });
+      this.textService.readtextIdsInStorage = [];
+    }
   }
 
   /**
