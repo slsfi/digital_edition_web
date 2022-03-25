@@ -194,7 +194,7 @@
         <ion-icon name="clipboard"></ion-icon>
         <ion-label>{{ "Read.Manuscripts.AddButtonText" | translate }}</ion-label>
       </button>
-      <button ion-fab (click)="addView('variations', undefined, fab); scrollLastViewIntoView()" *ngIf="displayToggles['variations']">
+      <button ion-fab (click)="addView('variations', undefined, fab); addVariationSortOrderToService(0); scrollLastViewIntoView()" *ngIf="displayToggles['variations']">
         <ion-icon name="copy"></ion-icon>
         <ion-label>{{ "Read.Variations.AddButtonText" | translate }}</ion-label>
       </button>

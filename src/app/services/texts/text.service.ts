@@ -18,6 +18,11 @@ export class TextService {
 
   appMachineName: string;
 
+  readViewTextId: string;
+  previousReadViewTextId: string;
+  variationsOrder: number[] = [];
+  varIdsInStorage: string[] = [];
+
   constructor(private http: Http, private config: ConfigService, private cache: TextCacheService) {
     this.appMachineName = this.config.getSettings('app.machineName');
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
@@ -28,10 +33,13 @@ export class TextService {
         this.useSimpleApi = true;
         this.simpleApi = simpleApi;
       }
-
     } catch (e) {
-
     }
+
+    this.readViewTextId = '';
+    this.previousReadViewTextId = '';
+    this.variationsOrder = [];
+    this.varIdsInStorage = [];
   }
 
   getEstablishedText(id: string): Observable<any> {
@@ -283,4 +291,5 @@ export class TextService {
     }
     return Observable.throw(errMsg);
   }
+
 }
