@@ -637,6 +637,7 @@ export class ReadPage /*implements OnDestroy*/ {
     } else {
       // A different collection than last time page-read was loaded --> clear read-texts and variations
       // stored in storage and variationsOrder array in textService.
+      console.log('Clearing cached read-texts and variations from storage');
       this.clearReadtextsFromStorage();
       this.textService.variationsOrder = [];
       this.clearVariationsFromStorage();
