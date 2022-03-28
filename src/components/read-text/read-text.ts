@@ -204,15 +204,7 @@ export class ReadTextComponent {
       this.storage.get(this.estID).then((readtext) => {
         if (readtext) {
           this.textLoading = false;
-
-          if (this.matches instanceof Array && this.matches.length > 0) {
-            console.log('search matches:', this.matches);
-            this.matches.forEach((val) => {
-              const re = new RegExp('(' + val + ')', 'ig');
-              readtext = readtext.replace(re, '<match>$1</match>');
-            });
-          }
-
+          readtext = this.insertSearchMatchTags(readtext);
           this.text = this.sanitizer.bypassSecurityTrustHtml(readtext);
           console.log('Retrieved read-text from cache');
         } else {
@@ -249,14 +241,7 @@ export class ReadTextComponent {
             this.storage.set(this.estID, processedText);
           }
 
-          if (this.matches instanceof Array && this.matches.length > 0) {
-            console.log('search matches:', this.matches);
-            this.matches.forEach((val) => {
-              const re = new RegExp('(' + val + ')', 'ig');
-              processedText = processedText.replace(re, '<match>$1</match>');
-            });
-          }
-
+          processedText = this.insertSearchMatchTags(processedText);
           this.text = this.sanitizer.bypassSecurityTrustHtml(processedText);
         }
       },
@@ -283,6 +268,24 @@ export class ReadTextComponent {
     text = text.replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"');
     text = text.replace(/images\//g, 'assets/images/');
 
+    return text;
+  }
+
+  /**
+   * TODO: The regex doesn't work if the match string in the text is interspersed with tags.
+   * For instance, in the text the match could have a span indicating page break:
+   * Tavast<span class="tei pb_zts">|87|</span>länningar. This occurrence will not be marked
+   * with <match> tags in a search for "Tavastlänningar". However, these kind of matches are
+   * found on the elastic-search page.
+   */
+  private insertSearchMatchTags(text: string) {
+    if (this.matches instanceof Array && this.matches.length > 0) {
+      console.log('search matches:', this.matches);
+      this.matches.forEach((val) => {
+        const re = new RegExp('(' + val + ')', 'ig');
+        text = text.replace(re, '<match>$1</match>');
+      });
+    }
     return text;
   }
 
