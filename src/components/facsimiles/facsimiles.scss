@@ -2,6 +2,13 @@ facsimiles {
     .leftFacsimileArrow {
         left: 0;
         right: auto !important;
+        margin-bottom: 15rem;
+    }
+
+    .rightFacsimileArrow {
+        right: 0;
+        left: auto !important;
+        margin-bottom: 15rem;
     }
 
     #facsimilies-image {

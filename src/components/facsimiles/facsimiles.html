@@ -46,15 +46,17 @@
 </div>
 
 <ng-container *ngIf="facsimiles.length>0 || facsimilePagesInfinite && facsNumber">
-  <ion-fab *ngIf="numberOfPages > 1 && !selectedFacsimileIsExternal" middle left class="leftFacsimileArrow">
+  <ion-fab *ngIf="numberOfPages > 1 && !selectedFacsimileIsExternal" bottom left class="leftFacsimileArrow">
     <button *ngIf="numberOfPages > 1" ion-fab color="primary" mini (click)="previous()">
       <ion-icon name="arrow-back"></ion-icon>
     </button>
   </ion-fab>
-  <ion-fab middle right *ngIf="!selectedFacsimileIsExternal">
+  <ion-fab bottom right *ngIf="!selectedFacsimileIsExternal" class="rightFacsimileArrow">
     <button *ngIf="numberOfPages > 1" ion-fab color="primary" mini (click)="next()">
       <ion-icon name="arrow-forward"></ion-icon>
     </button>
+  </ion-fab>
+  <ion-fab bottom right>
     <button ion-fab color="secondary" mini (click)="openZoom()">
       <ion-icon name="expand"></ion-icon>
     </button>
