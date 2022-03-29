@@ -6,7 +6,7 @@
                     <button *ngIf="images.length > 1" ion-fab color="primary" mini (click)="previous()">
                         <ion-icon name="arrow-back"></ion-icon>
                     </button>
-                    <button *ngIf="backsides.length>1" ion-fab color="primary" mini
+                    <button *ngIf="backsides.length > 1" ion-fab color="primary" mini
                         (click)="backside = !backside">
                         <ion-icon name="repeat"></ion-icon>
                     </button>
@@ -36,6 +36,10 @@
                     *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet() && images.length > 1">
                         <ion-label class="page_number_label">{{"Read.Facsimiles.Page" | translate}} ({{"Read.Facsimiles.Of" | translate}} {{(images)?images.length:0}}):</ion-label>
                         <ion-input class="page_number_input" (change)="setPage($event)" [(ngModel)]="manualPageNumber" type="number"></ion-input>
+                    </ion-item>
+                    <ion-item class="facsimile-zoom-page-numbering"
+                    *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet() && images.length == 1">
+                        <ion-label class="page_number_label">{{"Read.Facsimiles.Page" | translate}}  {{manualPageNumber}} {{"Read.Facsimiles.Of" | translate}} {{(images)?images.length:0}}</ion-label>
                     </ion-item>
                 </div>
                 <div *ngIf="(descriptions && descriptions[activeImage]) || (imageTitles && imageTitles[activeImage])" class="image-description"
