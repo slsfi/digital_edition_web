@@ -45,7 +45,7 @@
   >
 </div>
 
-<ng-container *ngIf="facsimiles.length>0">
+<ng-container *ngIf="facsimiles.length>0 || facsimilePagesInfinite && facsNumber">
   <ion-fab *ngIf="numberOfPages > 1 && !selectedFacsimileIsExternal" middle left class="leftFacsimileArrow">
     <button *ngIf="numberOfPages > 1" ion-fab color="primary" mini (click)="previous()">
       <ion-icon name="arrow-back"></ion-icon>
