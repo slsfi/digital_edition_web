@@ -237,21 +237,21 @@ export class PersonSearchPage {
           }
 
           // Get the born and deceased years without leading zeros and possible 'BC' indicators
-          element['date_born'] = (element['date_born'] !== undefined && element['date_born'] !== null) ?
+          const year_born_numeric = (element['date_born'] !== undefined && element['date_born'] !== null) ?
             String(element['date_born']).split('-')[0].replace(/^0+/, '').split(' ')[0] : null;
-          element['date_deceased'] = (element['date_deceased'] !== undefined && element['date_deceased'] !== null) ?
+          const year_deceased_numeric = (element['date_deceased'] !== undefined && element['date_deceased'] !== null) ?
             String(element['date_deceased']).split('-')[0].replace(/^0+/, '').split(' ')[0] : null;
 
           // Construct string with year born and year deceased for output
           element['year_born_deceased'] = '';
-          if (element['date_born'] !== null && element['date_deceased'] !== null
-          && element['date_born'] !== 'null' && element['date_deceased'] !== 'null') {
-            element['year_born_deceased'] += '(' + element['date_born'] + bcIndicatorBorn + '–'
-            + element['date_deceased'] + bcIndicatorDeceased + ')';
-          } else if (element['date_born'] !== null && element['date_born'] !== 'null') {
-            element['year_born_deceased'] += '(* ' + element['date_born'] + bcIndicatorBorn + ')';
-          } else if (element['date_deceased'] !== null && element['date_deceased'] !== 'null') {
-            element['year_born_deceased'] += '(&#8224; ' + element['date_deceased'] + bcIndicatorDeceased + ')';
+          if (year_born_numeric !== null && year_deceased_numeric !== null
+          && year_born_numeric !== 'null' && year_deceased_numeric !== 'null') {
+            element['year_born_deceased'] += '(' + year_born_numeric + bcIndicatorBorn + '–'
+            + year_deceased_numeric + bcIndicatorDeceased + ')';
+          } else if (year_born_numeric !== null && year_born_numeric !== 'null') {
+            element['year_born_deceased'] += '(* ' + year_born_numeric + bcIndicatorBorn + ')';
+          } else if (year_deceased_numeric !== null && year_deceased_numeric !== 'null') {
+            element['year_born_deceased'] += '(&#8224; ' + year_deceased_numeric + bcIndicatorDeceased + ')';
           }
 
           sortBy.push(sortByName);
