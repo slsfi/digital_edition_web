@@ -105,6 +105,7 @@ export class ReadPage /*implements OnDestroy*/ {
   userIsTouching: Boolean = false;
   collectionAndPublicationLegacyId: string;
   illustrationsViewShown: Boolean = false;
+  simpleWorkMetadata: Boolean;
 
   maxSingleWindowWidth: Number;
 
@@ -1822,9 +1823,36 @@ export class ReadPage /*implements OnDestroy*/ {
       this.setToolTipText(this.tooltips.works[id]);
       return;
     }
-    this.semanticDataService.getSingleObjectElastic('work', id).subscribe(
-      tooltip => {
-        if ( tooltip.hits.hits[0] === undefined || tooltip.hits.hits[0]['_source'] === undefined ) {
+
+    if (this.simpleWorkMetadata === undefined) {
+      try {
+        this.simpleWorkMetadata = this.config.getSettings('usesimpleWorkMetadata');
+      } catch (e) {
+        this.simpleWorkMetadata = false;
+      }
+    }
+
+    if (this.simpleWorkMetadata === false || this.simpleWorkMetadata === undefined) {
+      this.semanticDataService.getSingleObjectElastic('work', id).subscribe(
+        tooltip => {
+          if ( tooltip.hits.hits[0] === undefined || tooltip.hits.hits[0]['_source'] === undefined ) {
+            let noInfoFound = 'Could not get work information';
+            this.translate.get('Occurrences.NoInfoFound').subscribe(
+              translation => {
+                noInfoFound = translation;
+              }, err => { }
+            );
+            this.setToolTipPosition(targetElem, noInfoFound);
+            this.setToolTipText(noInfoFound);
+            return;
+          }
+          tooltip = tooltip.hits.hits[0]['_source'];
+          const description = '<span class="work_title">' + tooltip.title  + '</span><br/>' + tooltip.reference;
+          this.setToolTipPosition(targetElem, description);
+          this.setToolTipText(description);
+          this.tooltips.works[id] = description;
+        },
+        error => {
           let noInfoFound = 'Could not get work information';
           this.translate.get('Occurrences.NoInfoFound').subscribe(
             translation => {
@@ -1833,25 +1861,27 @@ export class ReadPage /*implements OnDestroy*/ {
           );
           this.setToolTipPosition(targetElem, noInfoFound);
           this.setToolTipText(noInfoFound);
-          return;
         }
-        tooltip = tooltip.hits.hits[0]['_source'];
-        const description = '<span class="work_title">' + tooltip.title  + '</span><br/>' + tooltip.reference;
-        this.setToolTipPosition(targetElem, description);
-        this.setToolTipText(description);
-        this.tooltips.works[id] = description;
-      },
-      error => {
-        let noInfoFound = 'Could not get work information';
-        this.translate.get('Occurrences.NoInfoFound').subscribe(
-          translation => {
-            noInfoFound = translation;
-          }, err => { }
-        );
-        this.setToolTipPosition(targetElem, noInfoFound);
-        this.setToolTipText(noInfoFound);
-      }
-    );
+      );
+    } else {
+      this.tooltipService.getWorkTooltip(id).subscribe(
+        tooltip => {
+          this.setToolTipPosition(targetElem, tooltip.description);
+          this.setToolTipText(tooltip.description);
+          this.tooltips.works[id] = tooltip.description;
+        },
+        error => {
+          let noInfoFound = 'Could not get work information';
+          this.translate.get('Occurrences.NoInfoFound').subscribe(
+            translation => {
+              noInfoFound = translation;
+            }, err => { }
+          );
+          this.setToolTipPosition(targetElem, noInfoFound);
+          this.setToolTipText(noInfoFound);
+        }
+      );
+    }
   }
 
   showFootnoteTooltip(id: string, targetElem: HTMLElement) {

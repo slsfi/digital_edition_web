@@ -19,7 +19,7 @@
             <div class="info">
               <h3>
                 <span *ngIf="occupation && !hideTypeAndDescription" class="occupation">{{occupation}} – </span>
-                <span class="title">{{title}}</span>
+                <span class="title" [innerHTML]="title"></span>
                 <span *ngIf="year_born != null || year_deceased != null" class="year_born_deceased" [innerHTML]="year_born_deceased_string"></span>
                 <span *ngIf="latitude" class="latitude">({{"Occurrences.latitude" | translate}} {{latitude}}, </span>
                 <span *ngIf="longitude" class="longitude">{{"Occurrences.longitude" | translate}} {{longitude}})</span>
@@ -34,7 +34,7 @@
           </ion-card-header>
           <ion-card-content *ngIf="texts">
               <ion-list class="description_list">
-                <ion-item class="item-stable" (click)="showFilters()">
+                <ion-item *ngIf="!simpleWorkMetadata" class="item-stable" (click)="showFilters()">
                     <ion-grid>
                       <ion-row *ngIf="city">
                         <ion-col class="header">
