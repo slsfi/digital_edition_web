@@ -260,7 +260,8 @@
       "journal": "Journal",
       "isbn": "ISBN",
       "published_year": "Utgivningsår",
-      "authors": "Författare"
+      "authors": "Författare",
+      "workOccurrencesDisabled": "Förekomster för verk är inte tillgängliga."
   },
   "ElasticSearch": {
     "NoHits": "Din sökning matchade inga dokument",

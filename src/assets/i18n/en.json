@@ -212,7 +212,8 @@
     "journal": "Journal",
     "isbn": "ISBN",
     "published_year": "Year of publication",
-    "authors": "Authors"
+    "authors": "Authors",
+    "workOccurrencesDisabled": "Occurrences for works are disabled."
   },
   "ElasticSearch": {
     "NoHits": "No matches",

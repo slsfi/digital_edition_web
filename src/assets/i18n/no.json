@@ -220,7 +220,8 @@
       "description": "Beskrivning",
       "no_occurrences": "Inga förekomster",
       "download": "ladda ner pdf",
-      "articles": "Artiklar"
+      "articles": "Artiklar",
+      "workOccurrencesDisabled": "Förekomster för verk är inte tillgängliga."
   },
   "est": "Lästext",
   "ms": "Manuskript",

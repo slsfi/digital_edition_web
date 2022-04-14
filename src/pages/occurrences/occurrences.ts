@@ -96,11 +96,11 @@ export class OccurrencesPage {
 
     this.occurrenceResult = this.navParams.get('occurrenceResult');
     if ( this.occurrenceResult !== undefined ) {
-      console.log('Getting occurrenceResult from navParams:');
-      console.log(this.occurrenceResult);
+      // console.log('Getting occurrenceResult from navParams:');
+      // console.log(this.occurrenceResult);
       this.init();
     } else if ( this.navParams.get('type') && this.navParams.get('id') ) {
-      console.log('occurrenceResult not in navParams, getting object data');
+      // console.log('occurrenceResult not in navParams, getting object data');
       this.occurrenceResult = new OccurrenceResult();
       this.getObjectData(this.navParams.get('type'), this.navParams.get('id'));
     }
@@ -148,8 +148,6 @@ export class OccurrencesPage {
       // Born and deceased are both BC --> don't add indicator to year born
       bcIndicatorBorn = '';
     }
-    console.log('occurrenceResult.date_born', this.occurrenceResult.date_born);
-    console.log('occurrenceResult.date_deceased', this.occurrenceResult.date_deceased);
     // Construct string with year born and year deceased for output
     this.year_born_deceased_string = '';
     if (this.year_born !== null && this.year_deceased !== null && this.year_born !== 'null' && this.year_deceased !== 'null') {

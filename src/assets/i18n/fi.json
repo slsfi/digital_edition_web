@@ -267,7 +267,8 @@
       "journal": "Journal",
       "isbn": "ISBN",
       "published_year": "Julkaisuvuosi",
-      "authors": "Kirjoittaja"
+      "authors": "Kirjoittaja",
+      "workOccurrencesDisabled": "Teosten esiintymät eivät ole saatavilla."
   },
   "ElasticSearch": {
     "NoHits": "Haku ei vastannut yhtään asiakirjaa",
