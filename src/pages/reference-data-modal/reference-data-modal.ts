@@ -93,7 +93,7 @@ export class ReferenceDataModalPage {
                   }
                   if (this.referenceData['reference_text']) {
                     this.referenceData['reference_text'] = String(this.referenceData['reference_text']).trim();
-                    if (this.referenceData['reference_text'].substring(this.referenceData['reference_text'].length-1) !== ',') {
+                    if (this.referenceData['reference_text'].substring(this.referenceData['reference_text'].length - 1) !== ',') {
                       this.referenceData['reference_text'] = this.referenceData['reference_text'] + ',';
                     }
                     this.referenceData['reference_text'] = this.referenceData['reference_text'] + ' ';
