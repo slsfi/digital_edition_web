@@ -16,8 +16,10 @@ import { Storage } from '@ionic/storage';
 })
 export class ReferenceDataModalPage {
 
+  public urnResolverUrl: string;
   public referenceData: any;
   public title: string;
+  public origin: string;
 
   constructor(  public navCtrl: NavController,
                 public viewCtrl: ViewController,
@@ -28,6 +30,16 @@ export class ReferenceDataModalPage {
                 private events: Events
 
   ) {
+    // Get url to use for resolving URNs
+    this.urnResolverUrl = this.referenceDataService.getUrnResolverUrl();
+
+    // Check if params contain info about which page has initiated the reference modal
+    try {
+      this.origin = String(params.get('origin'));
+    } catch (e) {
+      this.origin = '';
+    }
+
     const id = decodeURIComponent(String(params.get('id')).split('#')[1]);
     const idParts = id.split('/');
     let relevantParts = '';
@@ -78,6 +90,13 @@ export class ReferenceDataModalPage {
                   if ( currentTOCItemTitle !== '' && currentTOCItemTitle !== undefined && this.referenceData['reference_text'] ) {
                     this.referenceData['reference_text'] =
                     String(this.referenceData['reference_text']).replace('[title]', currentTOCItemTitle)
+                  }
+                  if (this.referenceData['reference_text']) {
+                    this.referenceData['reference_text'] = String(this.referenceData['reference_text']).trim();
+                    if (this.referenceData['reference_text'].substring(this.referenceData['reference_text'].length-1) !== ',') {
+                      this.referenceData['reference_text'] = this.referenceData['reference_text'] + ',';
+                    }
+                    this.referenceData['reference_text'] = this.referenceData['reference_text'] + ' ';
                   }
                 });
               }

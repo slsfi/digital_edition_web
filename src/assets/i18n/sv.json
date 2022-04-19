@@ -334,7 +334,8 @@
       "mail": "E-post",
       "thisPage": "Hänvisa till denna sida",
       "established": "Hänvisa till denna lästext",
-      "intro": "Hänvisa till denna inledning",
+      "intro": "Hänvisa till delutgåvans inledning",
+      "titlepage": "Hänvisa till denna delutgåva",
       "missing": "Sidan saknar URN"
   },
   "Song": {

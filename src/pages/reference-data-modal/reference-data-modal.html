@@ -23,16 +23,18 @@
       </ion-card-header>
       <ion-card-content>
         <ion-item>
-          <div class="urn" *ngIf="referenceData['urn']"><a target="_blank" href="{{ 'https://urn.fi/' + referenceData['urn']}}">{{'https://urn.fi/' + referenceData['urn']}}</a></div>
-          <div class="urn" *ngIf="!referenceData['urn']">{{(('Reference.missing' | translate)==('Reference.missing'))?'-':'Reference.missing' | translate}}</div>
+          <div class="urn" *ngIf="referenceData['urn']"><a target="_blank" href="{{ urnResolverUrl + referenceData['urn']}}">{{urnResolverUrl + referenceData['urn']}}</a></div>
+          <div class="urn" *ngIf="!referenceData['urn']">{{(('Reference.missing' | translate)==('Reference.missing'))?'–':'Reference.missing' | translate}}</div>
         </ion-item>
         <ion-item *ngIf="referenceData['reference_text']">
-            <label class="ref-category-label">{{'Reference.established' | translate}}:</label>
-            <div class="urn" [innerHTML]="referenceData['reference_text'] + ' ' + referenceData['urn']">...</div>
+            <label *ngIf="origin == 'page-title'" class="ref-category-label">{{'Reference.titlepage' | translate}}:</label>
+            <label *ngIf="origin == 'page-introduction'" class="ref-category-label">{{'Reference.intro' | translate}}:</label>
+            <label *ngIf="origin == 'page-read'" class="ref-category-label">{{'Reference.established' | translate}}:</label>
+            <div class="urn" [innerHTML]="referenceData['reference_text'] + urnResolverUrl + referenceData['urn']"></div>
         </ion-item>
-        <ion-item *ngIf="referenceData['intro_reference_text']">
+        <ion-item *ngIf="referenceData['intro_reference_text'] && origin != 'page-introduction'">
             <label class="ref-category-label">{{'Reference.intro' | translate}}:</label>
-            <div class="urn" [innerHTML]="referenceData['intro_reference_text']">...z</div>
+            <div class="urn" [innerHTML]="referenceData['intro_reference_text']"></div>
         </ion-item>
       </ion-card-content>
     </ion-card>

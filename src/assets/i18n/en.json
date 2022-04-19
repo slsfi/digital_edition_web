@@ -286,7 +286,8 @@
       "mail": "Mail",
       "thisPage": "Refer to this page",
       "established": "Refer to this text",
-      "intro": "Refer to this introduction",
+      "intro": "Refer to the introduction of this edition",
+      "titlepage": "Refer to this edition",
       "missing": "This page does not have a URN"
   },
   "established": "Readtext",

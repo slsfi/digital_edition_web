@@ -8,10 +8,15 @@ import { ConfigService } from '@ngx-config/core';
 export class ReferenceDataService {
 
   private referenceDataUrl = '/urn/';
+  private urnResolverUrl: string;
   textCache: any;
 
   constructor(private http: Http, private config: ConfigService) {
-
+    try {
+      this.urnResolverUrl = this.config.getSettings('urnResolverUrl');
+    } catch (e) {
+      this.urnResolverUrl = 'https://urn.fi/';
+    }
   }
 
   getReferenceData(id: string): Observable<any> {
@@ -42,6 +47,10 @@ export class ReferenceDataService {
       errMsg = error.message ? error.message : error.toString();
     }
     return Observable.throw(errMsg);
+  }
+
+  public getUrnResolverUrl() {
+    return this.urnResolverUrl;
   }
 
 }

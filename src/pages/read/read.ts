@@ -2793,7 +2793,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
   private showReference() {
     // Get URL of Page and then the URI
-    const modal = this.modalCtrl.create(ReferenceDataModalPage, {id: document.URL, type: 'reference'});
+    const modal = this.modalCtrl.create(ReferenceDataModalPage, {id: document.URL, type: 'reference', origin: 'page-read'});
     modal.present();
     modal.onDidDismiss(data => {
       // console.log('dismissed', data);

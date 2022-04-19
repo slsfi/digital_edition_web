@@ -260,6 +260,7 @@
       "thisPage": "Hänvisa till denna sida",
       "established": "Hänvisa till denna lästext",
       "intro": "Hänvisa till denna inledning",
+      "titlepage": "Hänvisa till denna delutgåva",
       "missing": "Sidan saknar URN"
   },
   "Song": {
