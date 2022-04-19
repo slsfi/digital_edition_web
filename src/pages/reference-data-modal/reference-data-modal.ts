@@ -28,7 +28,7 @@ export class ReferenceDataModalPage {
                 private events: Events
 
   ) {
-    const id = String(params.get('id')).split('#')[1];
+    const id = decodeURIComponent(String(params.get('id')).split('#')[1]);
     const idParts = id.split('/');
     let relevantParts = '';
     if ( idParts[0] !== undefined ) {
@@ -64,17 +64,23 @@ export class ReferenceDataModalPage {
           data => {
               this.referenceData = data;
               if ( String(data).length === 0 && id.includes('/') ) {
-                const newId = id.slice(0, id.lastIndexOf('/'));
+                let newId = '';
+                if (id.slice(id.lastIndexOf('/')).includes(';')) {
+                  newId = id.slice(0, id.lastIndexOf(';'));
+                } else {
+                  newId = id.slice(0, id.lastIndexOf('/'));
+                }
                 if ( newId.length > 0 ) {
                   this.getReferenceData(newId);
                 }
+              } else {
+                this.storage.get('currentTOCItemTitle').then((currentTOCItemTitle) => {
+                  if ( currentTOCItemTitle !== '' && currentTOCItemTitle !== undefined && this.referenceData['reference_text'] ) {
+                    this.referenceData['reference_text'] =
+                    String(this.referenceData['reference_text']).replace('[title]', currentTOCItemTitle)
+                  }
+                });
               }
-              this.storage.get('currentTOCItemTitle').then((currentTOCItemTitle) => {
-                if ( currentTOCItemTitle !== '' && currentTOCItemTitle !== undefined && this.referenceData['reference_text'] ) {
-                  this.referenceData['reference_text'] =
-                  String(this.referenceData['reference_text']).replace('[title]', currentTOCItemTitle)
-                }
-              });
           },
           error =>  {
               this.referenceData = 'Unable to get referenceData';
