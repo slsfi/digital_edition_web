@@ -6,7 +6,7 @@
     <ion-buttons>
         <ion-grid>
             <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
-              <ion-col>
+              <ion-col *ngIf="showURNButton">
                 <button ion-button clear (click)="showReference()" class="sec-menu-button">
                   <ion-icon class="urn-icon" name="share-alt"></ion-icon>
                   <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.refer' | translate }}</span>

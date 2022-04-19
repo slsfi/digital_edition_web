@@ -333,10 +333,14 @@
       "share": "Dela",
       "mail": "E-post",
       "thisPage": "Hänvisa till denna sida",
+      "permaLink": "Beständig webbadress",
+      "topMenu": "Hänvisa till denna webbutgåva",
       "established": "Hänvisa till denna lästext",
       "intro": "Hänvisa till delutgåvans inledning",
-      "titlepage": "Hänvisa till denna delutgåva",
-      "missing": "Sidan saknar URN"
+      "pageTitle": "Hänvisa till denna delutgåva",
+      "pageEpub": "Hänvisa till denna text",
+      "mediaCollection": "Hänvisa till denna bildsamling",
+      "missing": "Sidan saknar beständig webbadress"
   },
   "Song": {
       "Playman": "Spelman",

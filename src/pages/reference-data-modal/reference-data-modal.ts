@@ -3,6 +3,7 @@ import { NavController, ViewController, NavParams, Events } from 'ionic-angular'
 import { DomSanitizer } from '@angular/platform-browser';
 import { ReferenceDataService } from '../../app/services/reference-data/reference-data.service';
 import { Storage } from '@ionic/storage';
+import { TranslateService } from '@ngx-translate/core';
 
 /*
   Generated class for the ReferenceDataModal page.
@@ -20,6 +21,8 @@ export class ReferenceDataModalPage {
   public referenceData: any;
   public title: string;
   public origin: string;
+  public thisPageTranslation: boolean;
+  public permaLinkTranslation: boolean;
 
   constructor(  public navCtrl: NavController,
                 public viewCtrl: ViewController,
@@ -27,7 +30,8 @@ export class ReferenceDataModalPage {
                 private storage: Storage,
                 private sanitizer: DomSanitizer,
                 private referenceDataService: ReferenceDataService,
-                private events: Events
+                private events: Events,
+                public translate: TranslateService,
 
   ) {
     // Get url to use for resolving URNs
@@ -39,6 +43,26 @@ export class ReferenceDataModalPage {
     } catch (e) {
       this.origin = '';
     }
+
+    // Check if these label translations exist
+    this.translate.get('Reference.thisPage').subscribe(
+      translation => {
+        if (translation) {
+          this.thisPageTranslation = true;
+        } else {
+          this.thisPageTranslation = false;
+        }
+      }, error => { this.thisPageTranslation = false; }
+    );
+    this.translate.get('Reference.permaLink').subscribe(
+      translation => {
+        if (translation) {
+          this.permaLinkTranslation = true;
+        } else {
+          this.permaLinkTranslation = false;
+        }
+      }, error => { this.permaLinkTranslation = false; }
+    );
 
     const id = decodeURIComponent(String(params.get('id')).split('#')[1]);
     const idParts = id.split('/');

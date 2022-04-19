@@ -53,6 +53,8 @@ export class MediaCollectionPage {
   prevLoc = '';
   prevSub = '';
   mdContent: MdContent;
+  showURNButton: boolean;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -81,6 +83,12 @@ export class MediaCollectionPage {
       this.removeScanDetails = this.config.getSettings('galleryImages.removeScanDetails');
     } catch (e) {
       this.removeScanDetails = false;
+    }
+
+    try {
+      this.showURNButton = this.config.getSettings('showURNButton.mediaCollection');
+    } catch (e) {
+      this.showURNButton = true;
     }
 
     let fileID = '11-' + this.mediaCollectionId;
@@ -394,7 +402,7 @@ export class MediaCollectionPage {
 
   showReference() {
     // Get URL of Page and then the URI
-    const modal = this.modalController.create(ReferenceDataModalPage, {id: document.URL, type: 'reference'});
+    const modal = this.modalController.create(ReferenceDataModalPage, {id: document.URL, type: 'reference', origin: 'media-collection'});
     modal.present();
     modal.onDidDismiss(data => {
       // console.log('dismissed', data);

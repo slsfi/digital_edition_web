@@ -106,6 +106,7 @@ export class ReadPage /*implements OnDestroy*/ {
   collectionAndPublicationLegacyId: string;
   illustrationsViewShown: Boolean = false;
   simpleWorkMetadata: Boolean;
+  showURNButton: Boolean;
 
   maxSingleWindowWidth: Number;
 
@@ -267,6 +268,12 @@ export class ReadPage /*implements OnDestroy*/ {
       this.estLanguages = [];
       this.estLang = 'none';
       console.error(e);
+    }
+
+    try {
+      this.showURNButton = this.config.getSettings('showURNButton.pageRead');
+    } catch (e) {
+      this.showURNButton = true;
     }
 
     // Hide some or all of the display toggles (variations, facsimiles, established etc.)

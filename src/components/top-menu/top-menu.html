@@ -31,6 +31,10 @@
                   <span class="side-title">{{'TopMenu.AdvancedSearch' | translate }}
                     <strong>(BETA)</strong></span>
                 </button>
+                <button *ngIf="showTopURNButton" ion-button (click)="showReference($event)">
+                  <ion-icon name="share-alt"></ion-icon>
+                  <span class="side-title">{{'Reference.refer' | translate }}</span>
+                </button>
                 <button *ngIf="showHelpButton" ion-button class="top-menu-button" (click)="help()">
                   <ion-icon name="help"></ion-icon>
                 </button>
@@ -49,14 +53,14 @@
                 <button ion-button (click)="searchApp()" class="searchButton" id="searchIcon">
                   <ion-icon name="search"></ion-icon>
                 </button>
+                <button *ngIf="showTopURNButton" ion-button (click)="showReference($event)">
+                  <ion-icon name="share-alt"></ion-icon>
+                </button>
                 <button *ngIf="showHelpButton" ion-button class="top-menu-button" (click)="help()">
                   <ion-icon name="help"></ion-icon>
                 </button>
                 <button *ngIf="showViewToggle" ion-button (click)="showUserSettingsPopover($event)" end>
                   <ion-icon name="md-globe"></ion-icon>
-                </button>
-                <button *ngIf="showTopURNButton" ion-button (click)="showReference($event)">
-                  <ion-icon class="bookmark-icon" name="ios-link"></ion-icon>
                 </button>
               </ion-buttons>
             </ion-col>
@@ -92,14 +96,15 @@
                   <span class="side-title">{{'TopMenu.AdvancedSearch' | translate }}
                     <strong>(BETA)</strong></span>
                 </button>
+                <button *ngIf="showTopURNButton" ion-button class="top-menu-button" (click)="showReference($event)">
+                  <ion-icon name="share-alt"></ion-icon>
+                  <span class="side-title">{{'Reference.refer' | translate }}</span>
+                </button>
                 <button *ngIf="showHelpButton" ion-button class="top-menu-button" (click)="help()">
                   <ion-icon name="help"></ion-icon>
                 </button>
                 <button *ngIf="showViewToggle" ion-button class="top-menu-button" (click)="showUserSettingsPopover($event)" end>
                   <ion-icon name="md-globe"></ion-icon>
-                </button>
-                <button *ngIf="showTopURNButton" ion-button class="top-menu-button" (click)="showReference($event)">
-                  <ion-icon class="bookmark-icon" name="ios-link"></ion-icon>
                 </button>
               </ion-buttons>
             </ion-col>
@@ -112,11 +117,11 @@
                 <button ion-button (click)="searchApp()" id="searchIcon" end>
                   <ion-icon name="search"></ion-icon>
                 </button>
+                <button *ngIf="showTopURNButton" ion-button (click)="showReference($event)">
+                  <ion-icon name="share-alt"></ion-icon>
+                </button>
                 <button *ngIf="showViewToggle" ion-button (click)="showUserSettingsPopover($event)" end>
                   <ion-icon name="md-globe"></ion-icon>
-                </button>
-                <button *ngIf="showTopURNButton" ion-button (click)="showReference($event)">
-                  <ion-icon class="bookmark-icon" name="ios-link"></ion-icon>
                 </button>
               </ion-buttons>
             </ion-col>

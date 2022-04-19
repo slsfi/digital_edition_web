@@ -23,6 +23,10 @@
                 </button>
               </ion-col>
               <ion-col class="navigation-buttons-toc">
+                <button *ngIf="showURNButton" ion-button clear class="sec-menu-button" (click)="showReference()">
+                  <ion-icon class="urn-icon" name="share-alt"></ion-icon>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.refer' | translate }}</span>
+                </button>
                 <button ion-button clear #settingsIconElement (click)="showReadSettingsPopover($event)" class="sec-menu-button" id="settings-icon">
                   <ion-icon class="settings-icon" name="settings"></ion-icon>
                   <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Epub.DisplayOptions' | translate }}</span>

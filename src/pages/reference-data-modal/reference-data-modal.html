@@ -18,18 +18,22 @@
 <ion-content padding>
   <ion-col>
     <ion-card>
-      <ion-card-header>
+      <ion-card-header *ngIf="thisPageTranslation">
         <label class="header">{{"Reference.thisPage" | translate}}</label>
       </ion-card-header>
       <ion-card-content>
         <ion-item>
+          <label *ngIf="permaLinkTranslation && referenceData['urn']" class="ref-category-label">{{'Reference.permaLink' | translate}}:</label>
           <div class="urn" *ngIf="referenceData['urn']"><a target="_blank" href="{{ urnResolverUrl + referenceData['urn']}}">{{urnResolverUrl + referenceData['urn']}}</a></div>
           <div class="urn" *ngIf="!referenceData['urn']">{{(('Reference.missing' | translate)==('Reference.missing'))?'–':'Reference.missing' | translate}}</div>
         </ion-item>
         <ion-item *ngIf="referenceData['reference_text']">
-            <label *ngIf="origin == 'page-title'" class="ref-category-label">{{'Reference.titlepage' | translate}}:</label>
+            <label *ngIf="origin == 'page-title'" class="ref-category-label">{{'Reference.pageTitle' | translate}}:</label>
             <label *ngIf="origin == 'page-introduction'" class="ref-category-label">{{'Reference.intro' | translate}}:</label>
             <label *ngIf="origin == 'page-read'" class="ref-category-label">{{'Reference.established' | translate}}:</label>
+            <label *ngIf="origin == 'page-epub'" class="ref-category-label">{{'Reference.pageEpub' | translate}}:</label>
+            <label *ngIf="origin == 'media-collection'" class="ref-category-label">{{'Reference.mediaCollection' | translate}}:</label>
+            <label *ngIf="origin == 'top-menu'" class="ref-category-label">{{'Reference.topMenu' | translate}}:</label>
             <div class="urn" [innerHTML]="referenceData['reference_text'] + urnResolverUrl + referenceData['urn']"></div>
         </ion-item>
         <ion-item *ngIf="referenceData['intro_reference_text'] && origin != 'page-introduction'">

@@ -41,7 +41,7 @@ export class TitlePage {
   protected collection: any;
   titleSelected: boolean;
   collectionID: any;
-  showReferButtonInMenu: Boolean = false;
+  showURNButton: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -78,9 +78,9 @@ export class TitlePage {
     }
 
     try {
-      this.showReferButtonInMenu = this.config.getSettings('showReferButtonOnPageTitle');
+      this.showURNButton = this.config.getSettings('showURNButton.pageTitle');
     } catch (e) {
-      this.showReferButtonInMenu = false;
+      this.showURNButton = false;
     }
 
     this.lang = this.config.getSettings('i18n.locale');

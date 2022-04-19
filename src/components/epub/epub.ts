@@ -1,11 +1,12 @@
 import { Component, Input, NgZone, Renderer2 } from '@angular/core';
 import { ConfigService } from '@ngx-config/core';
 import {} from 'fs';
-import { PopoverController } from 'ionic-angular';
+import { PopoverController, ModalController } from 'ionic-angular';
 import { MdContentService } from '../../app/services/md/md-content.service';
 import { ReadPopoverService, Fontsize } from '../../app/services/settings/read-popover.service';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { ReadPopoverPage } from '../../pages/read-popover/read-popover';
+import { ReferenceDataModalPage } from '../../pages/reference-data-modal/reference-data-modal';
 import { Subscription } from 'rxjs/Subscription';
 
 declare var ePub;
@@ -61,15 +62,19 @@ export class EpubComponent {
   public availableEpubs: object;
   public downloadURL: any;
 
+  public showURNButton: boolean;
+
   private unlistenKeyDownEvents: () => void;
 
   constructor( private userSettingsService: UserSettingsService,
     public mdContentService: MdContentService,
     protected popoverCtrl: PopoverController,
+    private modalController: ModalController,
     public readPopoverService: ReadPopoverService,
     private renderer2: Renderer2,
     private ngZone: NgZone,
-    private config: ConfigService ) {
+    private config: ConfigService
+  ) {
     this.tocMenuOpen = false;
     this.searchMenuOpen = false;
     this.loading = true;
@@ -91,6 +96,12 @@ export class EpubComponent {
     this.fontsizeSubscription = null;
     this.windowResizeTimeoutId = null;
     this.handleWindowResize = null;
+
+    try {
+      this.showURNButton = this.config.getSettings('showURNButton.epub');
+    } catch (e) {
+      this.showURNButton = false;
+    }
   }
 
   ngOnInit() {
@@ -728,6 +739,15 @@ export class EpubComponent {
     } catch {
       console.log('epub.js threw an error resizing the rendering area');
     }
+  }
+
+  private showReference() {
+    // Get URL of Page and then the URI
+    const modal = this.modalController.create(ReferenceDataModalPage, {id: document.URL, type: 'reference', origin: 'page-epub'});
+    modal.present();
+    modal.onDidDismiss(data => {
+      // console.log('dismissed', data);
+    });
   }
 
 }

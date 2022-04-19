@@ -332,10 +332,14 @@
       "share": "Jaa",
       "mail": "Sähköposti",
       "thisPage": "Lähdevittaus",
+      "permaLink": "Pysyvä osoite",
+      "topMenu": "Lähdeviittaus tähän digitaaliseen editioon",
       "established": "Lähdevittaus tähän lukutekstiin",
       "intro": "Lähdevittaus tähän johdantoon",
-      "titlepage": "Lähdeviittaus editioon",
-      "missing": "Sivulta puuttuu URN"
+      "pageTitle": "Lähdeviittaus editioon",
+      "pageEpub": "Lähdeviittaus tähän tekstiin",
+      "mediaCollection": "Lähdeviittaus tähän kuvakokoelmaan",
+      "missing": "Sivulla ei ole pysyvää osoitetta"
   },
   "Song": {
       "Playman": "Spelman",
