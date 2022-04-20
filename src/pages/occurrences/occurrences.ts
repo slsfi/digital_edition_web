@@ -88,7 +88,7 @@ export class OccurrencesPage {
   ) {
     if (this.simpleWorkMetadata === undefined) {
       try {
-        this.simpleWorkMetadata = this.config.getSettings('usesimpleWorkMetadata');
+        this.simpleWorkMetadata = this.config.getSettings('useSimpleWorkMetadata');
       } catch (e) {
         this.simpleWorkMetadata = false;
       }
