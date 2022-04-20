@@ -59,7 +59,6 @@ export class TopMenuComponent {
     }
     try {
       this.showTopURNButton = this.config.getSettings('showURNButton.topMenu');
-      console.log('this.showTopURNButton', this.showTopURNButton);
     } catch ( e ) {
       try {
         this.showTopURNButton = this.config.getSettings('app.showTopURNButton');

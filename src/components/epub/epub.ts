@@ -98,7 +98,7 @@ export class EpubComponent {
     this.handleWindowResize = null;
 
     try {
-      this.showURNButton = this.config.getSettings('showURNButton.epub');
+      this.showURNButton = this.config.getSettings('showURNButton.pageEpub');
     } catch (e) {
       this.showURNButton = false;
     }
