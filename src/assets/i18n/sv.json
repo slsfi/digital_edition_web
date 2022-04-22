@@ -260,7 +260,8 @@
       "journal": "Journal",
       "isbn": "ISBN",
       "published_year": "Utgivningsår",
-      "authors": "Författare"
+      "authors": "Författare",
+      "workOccurrencesDisabled": "Förekomster för verk är inte tillgängliga."
   },
   "ElasticSearch": {
     "NoHits": "Din sökning matchade inga dokument",
@@ -332,9 +333,14 @@
       "share": "Dela",
       "mail": "E-post",
       "thisPage": "Hänvisa till denna sida",
+      "permaLink": "Beständig webbadress",
+      "topMenu": "Hänvisa till denna webbutgåva",
       "established": "Hänvisa till denna lästext",
-      "intro": "Hänvisa till denna inledning",
-      "missing": "Sidan saknar URN"
+      "intro": "Hänvisa till delutgåvans inledning",
+      "pageTitle": "Hänvisa till denna delutgåva",
+      "pageEpub": "Hänvisa till denna text",
+      "mediaCollection": "Hänvisa till denna bildsamling",
+      "missing": "Sidan saknar beständig webbadress"
   },
   "Song": {
       "Playman": "Spelman",

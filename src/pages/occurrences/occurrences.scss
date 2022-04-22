@@ -22,7 +22,7 @@ page-occurrences {
 
     .col {
         white-space: normal !important;
-        padding: 0 0 4px 0;
+        padding: 2px 0 2px 0;
     }
 
     .custom-card {
@@ -44,14 +44,15 @@ page-occurrences {
 
     .info h3 {
         font-size: 2rem;
+        line-height: 1.05;
     }
 
     .info {
         .occupation {
-            font-size: 1.375rem;
+            font-size: 1.3125rem;
         }
         .title {
-            font-size: 1.375rem;
+            font-size: 1.3125rem;
         }
     }
 
@@ -152,5 +153,8 @@ page-occurrences {
     }
     .list_of_occurrences_item ion-label.label {
         padding-left: 1rem;
+    }
+    ion-list.description_list.list_border_top {
+        border-top: 1px solid #dedede;
     }
   }

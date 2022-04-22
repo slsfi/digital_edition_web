@@ -3,6 +3,7 @@ import { NavController, ViewController, NavParams, Events } from 'ionic-angular'
 import { DomSanitizer } from '@angular/platform-browser';
 import { ReferenceDataService } from '../../app/services/reference-data/reference-data.service';
 import { Storage } from '@ionic/storage';
+import { TranslateService } from '@ngx-translate/core';
 
 /*
   Generated class for the ReferenceDataModal page.
@@ -16,8 +17,12 @@ import { Storage } from '@ionic/storage';
 })
 export class ReferenceDataModalPage {
 
+  public urnResolverUrl: string;
   public referenceData: any;
   public title: string;
+  public origin: string;
+  public thisPageTranslation: boolean;
+  public permaLinkTranslation: boolean;
 
   constructor(  public navCtrl: NavController,
                 public viewCtrl: ViewController,
@@ -25,10 +30,41 @@ export class ReferenceDataModalPage {
                 private storage: Storage,
                 private sanitizer: DomSanitizer,
                 private referenceDataService: ReferenceDataService,
-                private events: Events
+                private events: Events,
+                public translate: TranslateService,
 
   ) {
-    const id = String(params.get('id')).split('#')[1];
+    // Get url to use for resolving URNs
+    this.urnResolverUrl = this.referenceDataService.getUrnResolverUrl();
+
+    // Check if params contain info about which page has initiated the reference modal
+    try {
+      this.origin = String(params.get('origin'));
+    } catch (e) {
+      this.origin = '';
+    }
+
+    // Check if these label translations exist
+    this.translate.get('Reference.thisPage').subscribe(
+      translation => {
+        if (translation) {
+          this.thisPageTranslation = true;
+        } else {
+          this.thisPageTranslation = false;
+        }
+      }, error => { this.thisPageTranslation = false; }
+    );
+    this.translate.get('Reference.permaLink').subscribe(
+      translation => {
+        if (translation) {
+          this.permaLinkTranslation = true;
+        } else {
+          this.permaLinkTranslation = false;
+        }
+      }, error => { this.permaLinkTranslation = false; }
+    );
+
+    const id = decodeURIComponent(String(params.get('id')).split('#')[1]);
     const idParts = id.split('/');
     let relevantParts = '';
     if ( idParts[0] !== undefined ) {
@@ -64,17 +100,30 @@ export class ReferenceDataModalPage {
           data => {
               this.referenceData = data;
               if ( String(data).length === 0 && id.includes('/') ) {
-                const newId = id.slice(0, id.lastIndexOf('/'));
+                let newId = '';
+                if (id.slice(id.lastIndexOf('/')).includes(';')) {
+                  newId = id.slice(0, id.lastIndexOf(';'));
+                } else {
+                  newId = id.slice(0, id.lastIndexOf('/'));
+                }
                 if ( newId.length > 0 ) {
                   this.getReferenceData(newId);
                 }
+              } else {
+                this.storage.get('currentTOCItemTitle').then((currentTOCItemTitle) => {
+                  if ( currentTOCItemTitle !== '' && currentTOCItemTitle !== undefined && this.referenceData['reference_text'] ) {
+                    this.referenceData['reference_text'] =
+                    String(this.referenceData['reference_text']).replace('[title]', currentTOCItemTitle)
+                  }
+                  if (this.referenceData['reference_text']) {
+                    this.referenceData['reference_text'] = String(this.referenceData['reference_text']).trim();
+                    if (this.referenceData['reference_text'].substring(this.referenceData['reference_text'].length - 1) !== ',') {
+                      this.referenceData['reference_text'] = this.referenceData['reference_text'] + ',';
+                    }
+                    this.referenceData['reference_text'] = this.referenceData['reference_text'] + ' ';
+                  }
+                });
               }
-              this.storage.get('currentTOCItemTitle').then((currentTOCItemTitle) => {
-                if ( currentTOCItemTitle !== '' && currentTOCItemTitle !== undefined && this.referenceData['reference_text'] ) {
-                  this.referenceData['reference_text'] =
-                  String(this.referenceData['reference_text']).replace('[title]', currentTOCItemTitle)
-                }
-              });
           },
           error =>  {
               this.referenceData = 'Unable to get referenceData';

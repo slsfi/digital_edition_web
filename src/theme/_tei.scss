@@ -545,6 +545,10 @@ div.tei {
     hr.milestoneSmallBar {
         width: 2.25em;
     }
+    p.strofe + hr.milestoneBar,
+    p.strofe + hr.milestoneSmallBar {
+        margin-top: 0.5em;
+    }
     p.teiOpener {
         margin-bottom: 1.5em !important;
     }
@@ -1423,6 +1427,14 @@ div.tei {
     }
 
     /* STYLES FOR HEADINGS */
+    h1.tei,
+    h2.tei,
+    h3.tei,
+    h4.tei,
+    h5.tei,
+    h6.tei {
+        line-height: 1.35;
+    }
     h1.tei {
         font-size: 1.3530em; /* 23px when 1em = 17px */
     }
@@ -1531,7 +1543,7 @@ div.tei {
     h3.tei.ms {
         text-align: left;
         font-weight: normal !important;
-        margin: 1.3em 0 1em 0 !important;
+        margin: 1.3em 0 1.3em 0 !important;
     }
     h3.tei.diary {
         font-variant: small-caps;
@@ -2303,6 +2315,7 @@ page-introduction div.tei span.footnoteindicator {
 }
 page-introduction div.tei .est_figure_graphic {
     padding-right: 0;
+    float: none;
 }
 page-introduction div.tei .parIndent {
     font-size: 0.9412em;

@@ -212,7 +212,8 @@
     "journal": "Journal",
     "isbn": "ISBN",
     "published_year": "Year of publication",
-    "authors": "Authors"
+    "authors": "Authors",
+    "workOccurrencesDisabled": "Occurrences for works are disabled."
   },
   "ElasticSearch": {
     "NoHits": "No matches",
@@ -284,9 +285,14 @@
       "share": "Share",
       "mail": "Mail",
       "thisPage": "Refer to this page",
+      "permaLink": "Permalink",
+      "topMenu": "Refer to this digital edition",
       "established": "Refer to this text",
-      "intro": "Refer to this introduction",
-      "missing": "This page does not have a URN"
+      "intro": "Refer to the introduction of this edition",
+      "pageTitle": "Refer to this edition",
+      "pageEpub": "Refer to this text",
+      "mediaCollection": "Refer to this media collection",
+      "missing": "This page does not have a persistent identifier"
   },
   "established": "Readtext",
   "comments": "Commentary",

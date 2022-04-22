@@ -105,6 +105,8 @@ export class ReadPage /*implements OnDestroy*/ {
   userIsTouching: Boolean = false;
   collectionAndPublicationLegacyId: string;
   illustrationsViewShown: Boolean = false;
+  simpleWorkMetadata: Boolean;
+  showURNButton: Boolean;
 
   maxSingleWindowWidth: Number;
 
@@ -268,6 +270,12 @@ export class ReadPage /*implements OnDestroy*/ {
       console.error(e);
     }
 
+    try {
+      this.showURNButton = this.config.getSettings('showURNButton.pageRead');
+    } catch (e) {
+      this.showURNButton = true;
+    }
+
     // Hide some or all of the display toggles (variations, facsimiles, established etc.)
     this.displayToggles = this.config.getSettings('settings.displayTypesToggles');
 
@@ -331,8 +339,6 @@ export class ReadPage /*implements OnDestroy*/ {
 
 
 
-      this.setDefaultViews();
-
       const title = global.getSubtitle();
       this.tocRoot = this.params.get('root');
       this.establishedText = new EstablishedText({ link: link, id: this.id, title: title, text: '' });
@@ -368,9 +374,17 @@ export class ReadPage /*implements OnDestroy*/ {
         }
       }
 
+      // Save the id of the previous and current read view text in textService.
+      if (this.establishedText && this.establishedText.link) {
+        this.textService.previousReadViewTextId = this.textService.readViewTextId;
+        this.textService.readViewTextId = this.establishedText.link;
+      }
+
       if (this.params.get('matches') !== undefined) {
         this.matches = this.params.get('matches');
       }
+
+      this.setDefaultViews();
 
       this.setTocCache();
 
@@ -623,6 +637,20 @@ export class ReadPage /*implements OnDestroy*/ {
       viewmodes[0] = this.show;
     }
 
+    let variationsViewOrderNumber = 0;
+    let sameCollection = false;
+    // Check if the same collection as the previous time page-read was loaded.
+    if (this.textService.readViewTextId.split('_')[0] === this.textService.previousReadViewTextId.split('_')[0]) {
+      sameCollection = true;
+    } else {
+      // A different collection than last time page-read was loaded --> clear read-texts and variations
+      // stored in storage and variationsOrder array in textService.
+      console.log('Clearing cached read-texts and variations from storage');
+      this.clearReadtextsFromStorage();
+      this.textService.variationsOrder = [];
+      this.clearVariationsFromStorage();
+    }
+
     viewmodes.forEach(function (viewmode) {
       // set the first viewmode as default
       this.show = viewmodes[0];
@@ -632,7 +660,18 @@ export class ReadPage /*implements OnDestroy*/ {
       if (parts.length > 1) {
         this.addView(parts[0], null, null, null, null, parts[1]);
       } else {
-        this.addView(viewmode);
+        if (viewmode === 'variations') {
+          // this.addView(viewmode, null, null, null, null, null, variationsViewOrderNumber);
+          if (sameCollection && this.textService.variationsOrder.length > 0) {
+            this.addView(viewmode, null, null, null, null, null, this.textService.variationsOrder[variationsViewOrderNumber]);
+          } else {
+            this.addView(viewmode, null, null, null, null, null, variationsViewOrderNumber);
+            this.textService.variationsOrder.push(variationsViewOrderNumber);
+          }
+          variationsViewOrderNumber++;
+        } else {
+          this.addView(viewmode);
+        }
       }
     }.bind(this));
   }
@@ -1791,9 +1830,36 @@ export class ReadPage /*implements OnDestroy*/ {
       this.setToolTipText(this.tooltips.works[id]);
       return;
     }
-    this.semanticDataService.getSingleObjectElastic('work', id).subscribe(
-      tooltip => {
-        if ( tooltip.hits.hits[0] === undefined || tooltip.hits.hits[0]['_source'] === undefined ) {
+
+    if (this.simpleWorkMetadata === undefined) {
+      try {
+        this.simpleWorkMetadata = this.config.getSettings('useSimpleWorkMetadata');
+      } catch (e) {
+        this.simpleWorkMetadata = false;
+      }
+    }
+
+    if (this.simpleWorkMetadata === false || this.simpleWorkMetadata === undefined) {
+      this.semanticDataService.getSingleObjectElastic('work', id).subscribe(
+        tooltip => {
+          if ( tooltip.hits.hits[0] === undefined || tooltip.hits.hits[0]['_source'] === undefined ) {
+            let noInfoFound = 'Could not get work information';
+            this.translate.get('Occurrences.NoInfoFound').subscribe(
+              translation => {
+                noInfoFound = translation;
+              }, err => { }
+            );
+            this.setToolTipPosition(targetElem, noInfoFound);
+            this.setToolTipText(noInfoFound);
+            return;
+          }
+          tooltip = tooltip.hits.hits[0]['_source'];
+          const description = '<span class="work_title">' + tooltip.title  + '</span><br/>' + tooltip.reference;
+          this.setToolTipPosition(targetElem, description);
+          this.setToolTipText(description);
+          this.tooltips.works[id] = description;
+        },
+        error => {
           let noInfoFound = 'Could not get work information';
           this.translate.get('Occurrences.NoInfoFound').subscribe(
             translation => {
@@ -1802,25 +1868,27 @@ export class ReadPage /*implements OnDestroy*/ {
           );
           this.setToolTipPosition(targetElem, noInfoFound);
           this.setToolTipText(noInfoFound);
-          return;
         }
-        tooltip = tooltip.hits.hits[0]['_source'];
-        const description = '<span class="work_title">' + tooltip.title  + '</span><br/>' + tooltip.reference;
-        this.setToolTipPosition(targetElem, description);
-        this.setToolTipText(description);
-        this.tooltips.works[id] = description;
-      },
-      error => {
-        let noInfoFound = 'Could not get work information';
-        this.translate.get('Occurrences.NoInfoFound').subscribe(
-          translation => {
-            noInfoFound = translation;
-          }, err => { }
-        );
-        this.setToolTipPosition(targetElem, noInfoFound);
-        this.setToolTipText(noInfoFound);
-      }
-    );
+      );
+    } else {
+      this.tooltipService.getWorkTooltip(id).subscribe(
+        tooltip => {
+          this.setToolTipPosition(targetElem, tooltip.description);
+          this.setToolTipText(tooltip.description);
+          this.tooltips.works[id] = tooltip.description;
+        },
+        error => {
+          let noInfoFound = 'Could not get work information';
+          this.translate.get('Occurrences.NoInfoFound').subscribe(
+            translation => {
+              noInfoFound = translation;
+            }, err => { }
+          );
+          this.setToolTipPosition(targetElem, noInfoFound);
+          this.setToolTipText(noInfoFound);
+        }
+      );
+    }
   }
 
   showFootnoteTooltip(id: string, targetElem: HTMLElement) {
@@ -2624,8 +2692,9 @@ export class ReadPage /*implements OnDestroy*/ {
     return dimensions;
   }
 
-  /** Set position and width of infoOverlay element. This function is not exactly
-   *  the same as in introduction.ts due to different page structure on read page.
+  /**
+   * Set position and width of infoOverlay element. This function is not exactly
+   * the same as in introduction.ts due to different page structure on read page.
    */
   private setInfoOverlayPositionAndWidth(triggerElement: HTMLElement, defaultMargins = 20, maxWidth = 600) {
     let margins = defaultMargins;
@@ -2731,7 +2800,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
   private showReference() {
     // Get URL of Page and then the URI
-    const modal = this.modalCtrl.create(ReferenceDataModalPage, {id: document.URL, type: 'reference'});
+    const modal = this.modalCtrl.create(ReferenceDataModalPage, {id: document.URL, type: 'reference', origin: 'page-read'});
     modal.present();
     modal.onDidDismiss(data => {
       // console.log('dismissed', data);
@@ -2784,7 +2853,7 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 
-  addView(type: string, id?: string, fab?: FabContainer, external?: boolean, image?: any, language?: string) {
+  addView(type: string, id?: string, fab?: FabContainer, external?: boolean, image?: any, language?: string, variationSortOrder?: number) {
     if (fab !== undefined) {
       try {
         fab.close();
@@ -2806,7 +2875,7 @@ export class ReadPage /*implements OnDestroy*/ {
         comments: { show: (type === 'comments'), id: id },
         facsimiles: { show: (type === 'facsimiles'), id: id },
         manuscripts: { show: (type === 'manuscripts'), id: id },
-        variations: { show: (type === 'variations'), id: id },
+        variations: { show: (type === 'variations'), id: id, variationSortOrder: variationSortOrder },
         introduction: { show: (type === 'introduction'), id: id },
         songexample: { show: (type === 'songexample'), id: id },
         illustrations: { show: (type === 'illustrations'), image: image }
@@ -2843,42 +2912,51 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   removeSlide(i) {
+    this.removeVariationSortOrderFromService(i);
     this.views.splice(i, 1);
     this.adjustSlidesSize();
     this.updateURL();
     this.updateCachedViewModes();
   }
 
-  /** Moves the view with index id one step to the right, i.e. exchange
-   *  positions with the view on the right. If a FabContainer is passed
-   *  it is closed. */
+  /**
+   * Moves the view with index id one step to the right, i.e. exchange
+   * positions with the view on the right. If a FabContainer is passed
+   * it is closed.
+   */
   moveViewRight(id: number, fab?: FabContainer) {
     if (id > -1 && id < this.views.length - 1) {
       this.views = this.moveArrayItem(this.views, id, id + 1);
       this.updateURL();
       this.updateCachedViewModes();
+      this.switchVariationSortOrdersInService(id, id + 1);
       if (fab !== undefined) {
         fab.close();
       }
     }
   }
 
-  /** Moves the view with index id one step to the left, i.e. exchange
-   *  positions with the view on the left. If a FabContainer is passed
-   *  it is closed. */
+  /**
+   * Moves the view with index id one step to the left, i.e. exchange
+   * positions with the view on the left. If a FabContainer is passed
+   * it is closed.
+   */
   moveViewLeft(id: number, fab?: FabContainer) {
     if (id > 0 && id < this.views.length) {
       this.views = this.moveArrayItem(this.views, id, id - 1);
       this.updateURL();
       this.updateCachedViewModes();
+      this.switchVariationSortOrdersInService(id, id - 1);
       if (fab !== undefined) {
         fab.close();
       }
     }
   }
 
-  /** Reorders the given array by moving the item at position 'fromIndex'
-   *  to the position 'toIndex'. Returns the reordered array. */
+  /**
+   * Reorders the given array by moving the item at position 'fromIndex'
+   * to the position 'toIndex'. Returns the reordered array.
+   */
   moveArrayItem(array: any[], fromIndex: number, toIndex: number) {
     const reorderedArray = array;
     if (fromIndex > -1 && toIndex > -1 && fromIndex < array.length
@@ -3141,7 +3219,8 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 
-  /* Use this function to scroll to the comment with the specified numeric id
+  /**
+   * Use this function to scroll to the comment with the specified numeric id
    * (excluding prefixes like 'end') in the first comments view on the page.
    * Alternatively, the comment element can be passed as an optional parameter.
    */
@@ -3276,12 +3355,14 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 
-  /** This function can be used to scroll a container so that the element which it
-   *  contains is placed either at the top edge of the container or in the center
-   *  of the container. This function can be called multiple times simultaneously
-   *  on elements in different containers, unlike the native scrollIntoView function
-   *  which cannot be called multiple times simultaneously in Chrome due to a bug.
-   *  Valid values for yPosition are 'top' and 'center'. */
+  /**
+   * This function can be used to scroll a container so that the element which it
+   * contains is placed either at the top edge of the container or in the center
+   * of the container. This function can be called multiple times simultaneously
+   * on elements in different containers, unlike the native scrollIntoView function
+   * which cannot be called multiple times simultaneously in Chrome due to a bug.
+   * Valid values for yPosition are 'top' and 'center'.
+   */
   private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0) {
     if (element === undefined || element === null || (yPosition !== 'center' && yPosition !== 'top')) {
       return;
@@ -3307,8 +3388,10 @@ export class ReadPage /*implements OnDestroy*/ {
     container.scrollTo({top: y - baseOffset - offset, behavior: 'smooth'});
   }
 
-  /* This function scrolls the read-view horisontally to the last read column.
-   * It's called after adding new views. */
+  /**
+   * This function scrolls the read-view horisontally to the last read column.
+   * It's called after adding new views.
+   * */
   scrollLastViewIntoView() {
     this.ngZone.runOutsideAngular(() => {
       let interationsLeft = 10;
@@ -3355,5 +3438,110 @@ export class ReadPage /*implements OnDestroy*/ {
         console.log('could not get publication data trying to resolve collection and publication legacy id');
       }
     );
+  }
+
+/**
+   * Removes all read-texts that are stored in storage based on the ids in the readtextIdsInStorage
+   * array in textService, and empties the array.
+   */
+  clearReadtextsFromStorage() {
+    if (this.textService.readtextIdsInStorage.length > 0) {
+      this.textService.readtextIdsInStorage.forEach((readtextId) => {
+        this.storage.remove(readtextId);
+      });
+      this.textService.readtextIdsInStorage = [];
+    }
+  }
+
+  /**
+   * Removes all variations that are stored in storage based on the ids in the varIdsInStorage
+   * array in textService, and empties the array.
+   */
+  clearVariationsFromStorage() {
+    if (this.textService.varIdsInStorage.length > 0) {
+      this.textService.varIdsInStorage.forEach((varId) => {
+        this.storage.remove(varId);
+      });
+      this.textService.varIdsInStorage = [];
+    }
+  }
+
+  /**
+   * Adds the sort order of a variation to the variationsOrder array in textService.
+   */
+  addVariationSortOrderToService(sortOrder: number) {
+    if (sortOrder !== null && sortOrder !== undefined) {
+      this.textService.variationsOrder.push(sortOrder);
+    }
+  }
+
+  /**
+   * Removes the sort order of the variations column with the given index from the variationsOrder
+   * array in textService.
+   */
+  removeVariationSortOrderFromService(columnIndex: number) {
+    const columnElem = document.querySelector('div#read_div_' + columnIndex);
+    if (columnElem) {
+      const currentVarElem = columnElem.querySelector('variations');
+      if (currentVarElem) {
+        /* Find the index of the current variations column among just the variations columns */
+        const key = this.findVariationsColumnIndex(columnIndex);
+        /* Remove the sort order of the removed variations column from textService */
+        if (key !== undefined) {
+          if (this.textService.variationsOrder[key] !== undefined) {
+            this.textService.variationsOrder.splice(key, 1);
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Switches the positions of two variations columns' sort orders in the variationsOrder array
+   * in textService.
+   */
+  switchVariationSortOrdersInService(currentColumnIndex: number, otherColumnIndex: number) {
+    /* Check if either the current column or the one it is changing places with is a variations column */
+    const currentColumnElem = document.querySelector('div#read_div_' + currentColumnIndex);
+    const otherColumnElem = document.querySelector('div#read_div_' + otherColumnIndex);
+    if (currentColumnElem && otherColumnElem) {
+      const currentVarElem = currentColumnElem.querySelector('variations');
+      const otherVarElem = otherColumnElem.querySelector('variations');
+      if (currentVarElem && otherVarElem) {
+        /* Find the indices of the two variations column among just the variations columns */
+        const currentVarIndex = this.findVariationsColumnIndex(currentColumnIndex);
+        let otherVarIndex = currentVarIndex + 1;
+        if (otherColumnIndex < currentColumnIndex) {
+          otherVarIndex = currentVarIndex - 1;
+        }
+        this.textService.variationsOrder = this.moveArrayItem(this.textService.variationsOrder, currentVarIndex, otherVarIndex);
+      }
+    }
+
+  }
+
+  /**
+   * Given the read column index of a variations column, this function returns the index of the
+   * column among just the variations columns in the read view. So, for instance, if there are
+   * 3 read columns in total, 2 of which are variations columns, this function can tell if the
+   * variations column with index columnIndex is the first or second variations column.
+   */
+  findVariationsColumnIndex(columnIndex: number) {
+    const columnElems = Array.from(document.querySelectorAll('div.read-column'));
+    const varColIds = [];
+    columnElems.forEach(function(column) {
+      const varElem = column.querySelector('variations');
+      if (varElem) {
+        varColIds.push(column.id);
+      }
+    });
+    let varIndex = undefined;
+    for (let i = 0; i < varColIds.length; i++) {
+      if (varColIds[i] === 'read_div_' + columnIndex) {
+        varIndex = i;
+        break;
+      }
+    }
+    return varIndex;
   }
 }

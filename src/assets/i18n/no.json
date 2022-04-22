@@ -220,7 +220,8 @@
       "description": "Beskrivning",
       "no_occurrences": "Inga förekomster",
       "download": "ladda ner pdf",
-      "articles": "Artiklar"
+      "articles": "Artiklar",
+      "workOccurrencesDisabled": "Förekomster för verk är inte tillgängliga."
   },
   "est": "Lästext",
   "ms": "Manuskript",
@@ -251,15 +252,20 @@
   "criticalNote": "Utgivarens anmärkning",
   "download": "Ladda ner",
   "Reference": {
-      "title": "Källhänvisning",
-      "refer": "Hänvisa",
-      "urn": "URN",
-      "share": "Dela",
-      "mail": "E-post",
-      "thisPage": "Hänvisa till denna sida",
-      "established": "Hänvisa till denna lästext",
-      "intro": "Hänvisa till denna inledning",
-      "missing": "Sidan saknar URN"
+    "title": "Källhänvisning",
+    "refer": "Hänvisa",
+    "urn": "URN",
+    "share": "Dela",
+    "mail": "E-post",
+    "thisPage": "Hänvisa till denna sida",
+    "permaLink": "Beständig webbadress",
+    "topMenu": "Hänvisa till denna webbutgåva",
+    "established": "Hänvisa till denna lästext",
+    "intro": "Hänvisa till delutgåvans inledning",
+    "pageTitle": "Hänvisa till denna delutgåva",
+    "pageEpub": "Hänvisa till denna text",
+    "mediaCollection": "Hänvisa till denna bildsamling",
+    "missing": "Sidan saknar beständig webbadress"
   },
   "Song": {
       "Playman": "Spelman",

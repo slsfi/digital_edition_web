@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, PopoverController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, PopoverController, ModalController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Storage } from '@ionic/storage';
 import { LanguageService } from '../../app/services/languages/language.service';
@@ -10,6 +10,7 @@ import { ConfigService } from '@ngx-config/core';
 import { MdContentService } from '../../app/services/md/md-content.service';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { ReadPopoverPage } from '../read-popover/read-popover';
+import { ReferenceDataModalPage } from '../../pages/reference-data-modal/reference-data-modal';
 
 /**
  * Generated class for the TitlePage page.
@@ -40,6 +41,7 @@ export class TitlePage {
   protected collection: any;
   titleSelected: boolean;
   collectionID: any;
+  showURNButton: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -56,7 +58,8 @@ export class TitlePage {
     public config: ConfigService,
     public mdContentService: MdContentService,
     protected popoverCtrl: PopoverController,
-    public readPopoverService: ReadPopoverService
+    public readPopoverService: ReadPopoverService,
+    private modalController: ModalController
   ) {
     this.titleSelected = true;
     this.id = this.params.get('collectionID');
@@ -72,6 +75,12 @@ export class TitlePage {
       this.hasMDTitle = this.config.getSettings('ProjectStaticMarkdownTitleFolder');
     } catch (e) {
       this.hasMDTitle = '';
+    }
+
+    try {
+      this.showURNButton = this.config.getSettings('showURNButton.pageTitle');
+    } catch (e) {
+      this.showURNButton = false;
     }
 
     this.lang = this.config.getSettings('i18n.locale');
@@ -228,6 +237,15 @@ export class TitlePage {
     const popover = this.popoverCtrl.create(ReadPopoverPage, {toggles}, { cssClass: 'popover_settings' });
     popover.present({
       ev: myEvent
+    });
+  }
+
+  private showReference() {
+    // Get URL of Page and then the URI
+    const modal = this.modalController.create(ReferenceDataModalPage, {id: document.URL, type: 'reference', origin: 'page-title'});
+    modal.present();
+    modal.onDidDismiss(data => {
+      // console.log('dismissed', data);
     });
   }
 }

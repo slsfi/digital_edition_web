@@ -8,6 +8,7 @@ import { HtmlContentService } from '../../app/services/html/html-content.service
 import { LanguageService } from '../../app/services/languages/language.service';
 import { MdContentService } from '../../app/services/md/md-content.service';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
+import { TextService } from '../../app/services/texts/text.service';
 
 /**
  * HomePage is the first page user sees.
@@ -47,6 +48,7 @@ export class HomePage {
     private platform: Platform,
     private mdContentService: MdContentService,
     private userSettingsService: UserSettingsService,
+    protected textService: TextService,
     private navParams: NavParams
   ) {
     this.appMachineName = this.config.getSettings('app.machineName');
@@ -148,6 +150,18 @@ export class HomePage {
       }
       this.events.publish('title-logo:setTitle', this.config.getSettings('app.page-title.' + lang));
     });
+  }
+
+  ionViewDidLoad() {
+    /* Update the variables in textService that keep track of which texts have
+       recently been opened in page-read. The purpose of this is to cause
+       texts that are cached in storage to be cleared upon the next visit
+       to page-read after visiting home. */
+    if (this.textService.previousReadViewTextId !== undefined
+     && this.textService.readViewTextId !== undefined) {
+      this.textService.previousReadViewTextId = this.textService.readViewTextId;
+      this.textService.readViewTextId = '';
+    }
   }
 
   getMdContent(fileID: string) {

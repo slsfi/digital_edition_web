@@ -18,10 +18,18 @@ div.tei.teiVariant {
         font-variant: initial !important;
     }
 
+    h1.poemtitle {
+        font-variant: normal !important;
+        font-style: italic !important;
+        font-size: 1.3530em;
+    }
+
+    /*
     img {
         width: 0.9rem;
         display: inline-block;
     }
+    */
 
     .variantScrollTarget {
         cursor: pointer;
@@ -40,6 +48,12 @@ div.tei.teiVariant {
         position: absolute;
         left: -1em;
         text-indent: 1.25em !important;
+    }
+    .tit_figure_graphic {
+        width: auto;
+        max-width: 100%;
+        display: block;
+        margin: 0 auto;
     }
 }
 

@@ -45,6 +45,7 @@ export class IntroductionPage {
   protected pos: any;
   public tocMenuOpen: boolean;
   public hasSeparateIntroToc: boolean;
+  public showURNButton: boolean;
   readPopoverTogglesIntro: Record<string, any> = {};
   toolTipsSettings: Record<string, any> = {};
   toolTipPosType: string;
@@ -153,6 +154,12 @@ export class IntroductionPage {
       this.readPopoverTogglesIntro.normalisations = false;
       this.readPopoverTogglesIntro.abbreviations = false;
       this.readPopoverTogglesIntro.pageBreakOriginal = false;
+    }
+
+    try {
+      this.showURNButton = this.config.getSettings('showURNButton.pageIntroduction');
+    } catch (e) {
+      this.showURNButton = true;
     }
 
     // Check if we have a pos parmeter in the URL, if we have one we can use it for scrolling the text on the page to that position.
@@ -1343,7 +1350,7 @@ export class IntroductionPage {
 
   private showReference() {
     // Get URL of Page and then the URI
-    const modal = this.modalController.create(ReferenceDataModalPage, {id: document.URL, type: 'reference'});
+    const modal = this.modalController.create(ReferenceDataModalPage, {id: document.URL, type: 'reference', origin: 'page-introduction'});
     modal.present();
     modal.onDidDismiss(data => {
       // console.log('dismissed', data);

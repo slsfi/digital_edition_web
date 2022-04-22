@@ -2,8 +2,7 @@
 /* Roboto fonts */
 @font-face {
   font-family: "Roboto";
-  src:  local('Roboto'),
-        url('../assets/fonts/Roboto/woff2/Roboto-Regular-webfont.woff2') format('woff2'),
+  src:  url('../assets/fonts/Roboto/woff2/Roboto-Regular-webfont.woff2') format('woff2'),
         url('../assets/fonts/Roboto/woff/Roboto-Regular-webfont.woff') format('woff'),
         url('../assets/fonts/Roboto/ttf/Roboto-Regular-webfont.ttf') format('truetype');
   font-display: swap;
@@ -12,8 +11,7 @@
 }
 @font-face {
   font-family: "Roboto";
-  src:  local('Roboto'),
-        url('../assets/fonts/Roboto/woff2/Roboto-Italic-webfont.woff2') format('woff2'),
+  src:  url('../assets/fonts/Roboto/woff2/Roboto-Italic-webfont.woff2') format('woff2'),
         url('../assets/fonts/Roboto/woff/Roboto-Italic-webfont.woff') format('woff'),
         url('../assets/fonts/Roboto/ttf/Roboto-Italic-webfont.ttf') format('truetype');
   font-display: swap;
@@ -22,8 +20,7 @@
 }
 @font-face {
   font-family: "Roboto";
-  src:  local('Roboto'),
-        url('../assets/fonts/Roboto/woff2/Roboto-Bold-webfont.woff2') format('woff2'),
+  src:  url('../assets/fonts/Roboto/woff2/Roboto-Bold-webfont.woff2') format('woff2'),
         url('../assets/fonts/Roboto/woff/Roboto-Bold-webfont.woff') format('woff'),
         url('../assets/fonts/Roboto/ttf/Roboto-Bold-webfont.ttf') format('truetype');
   font-display: swap;
@@ -32,8 +29,7 @@
 }
 @font-face {
   font-family: "Roboto";
-  src:  local('Roboto'),
-        url('../assets/fonts/Roboto/woff2/Roboto-BoldItalic-webfont.woff2') format('woff2'),
+  src:  url('../assets/fonts/Roboto/woff2/Roboto-BoldItalic-webfont.woff2') format('woff2'),
         url('../assets/fonts/Roboto/woff/Roboto-BoldItalic-webfont.woff') format('woff'),
         url('../assets/fonts/Roboto/ttf/Roboto-BoldItalic-webfont.ttf') format('truetype');
   font-display: swap;

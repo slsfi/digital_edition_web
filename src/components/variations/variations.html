@@ -3,7 +3,7 @@
 <div *ngIf="!textLoading && variations.length>0" class="text-select-wrapper">
   <h3 [innerHTML]="selectedVariationName"></h3>
   <div class="flex-buttons">
-    <button ion-button (click)="selectVariation()">{{'Read.Variations.ChangeVariation' | translate}}</button>
+    <button ion-button (click)="selectVariation($event)">{{'Read.Variations.ChangeVariation' | translate}}</button>
     <button ion-button outline (click)="selectVariationForNewView()">{{'Read.Variations.OpenNewVariation' | translate}}</button>
   </div>
 </div>

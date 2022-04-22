@@ -58,9 +58,13 @@ export class TopMenuComponent {
       this.showViewToggle = true;
     }
     try {
-      this.showTopURNButton = this.config.getSettings('app.showTopURNButton');
+      this.showTopURNButton = this.config.getSettings('showURNButton.topMenu');
     } catch ( e ) {
-      this.showTopURNButton = true;
+      try {
+        this.showTopURNButton = this.config.getSettings('app.showTopURNButton');
+      } catch ( e ) {
+        this.showTopURNButton = true;
+      }
     }
 
     try {
@@ -153,7 +157,7 @@ export class TopMenuComponent {
   }
   private showReference(event) {
     // Get URL of Page and then the URI
-    const modal = this.modalController.create(ReferenceDataModalPage, {id: document.URL, type: 'reference'});
+    const modal = this.modalController.create(ReferenceDataModalPage, {id: document.URL, type: 'reference', origin: 'top-menu'});
     modal.present();
     modal.onDidDismiss(data => {
       console.log('dismissed', data);

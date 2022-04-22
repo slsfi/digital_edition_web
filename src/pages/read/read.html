@@ -6,7 +6,7 @@
     <ion-buttons>
         <ion-grid>
             <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
-              <ion-col>
+              <ion-col *ngIf="showURNButton">
                 <button ion-button clear (click)="showReference()" class="sec-menu-button">
                   <ion-icon class="urn-icon" name="share-alt"></ion-icon>
                   <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.refer' | translate }}</span>
@@ -145,7 +145,7 @@
                   (openNewManView)="openNewView($event)"></manuscripts>
               </div>
               <div *ngIf="view.variations.show">
-                <variations [linkID]="view.variations.id" [itemId]="establishedText.link" [matches]="matches"
+                <variations [linkID]="view.variations.id" [itemId]="establishedText.link" [matches]="matches" [sortOrder]="view.variations.variationSortOrder"
                   (openNewVarView)="openNewView($event)"></variations>
               </div>
               <div *ngIf="view.introduction.show">
@@ -194,7 +194,7 @@
         <ion-icon name="clipboard"></ion-icon>
         <ion-label>{{ "Read.Manuscripts.AddButtonText" | translate }}</ion-label>
       </button>
-      <button ion-fab (click)="addView('variations', undefined, fab); scrollLastViewIntoView()" *ngIf="displayToggles['variations']">
+      <button ion-fab (click)="addView('variations', undefined, fab); addVariationSortOrderToService(0); scrollLastViewIntoView()" *ngIf="displayToggles['variations']">
         <ion-icon name="copy"></ion-icon>
         <ion-label>{{ "Read.Variations.AddButtonText" | translate }}</ion-label>
       </button>

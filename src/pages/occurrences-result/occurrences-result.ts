@@ -96,6 +96,7 @@ export class OccurrencesResultPage {
     this.events.publish('ionViewWillLeave', this.constructor.name);
   }
   ionViewWillEnter() {
+    console.log('entering occurrence result page');
     this.events.publish('ionViewWillEnter', this.constructor.name);
     this.segments = 'info';
     this.getParamsData();
