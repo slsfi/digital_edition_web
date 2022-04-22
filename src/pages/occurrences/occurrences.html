@@ -33,8 +33,8 @@
             </div>
           </ion-card-header>
           <ion-card-content *ngIf="texts">
-              <ion-list class="description_list">
-                <ion-item *ngIf="!simpleWorkMetadata" class="item-stable" (click)="showFilters()">
+              <ion-list class="description_list" [ngClass]="((simpleWorkMetadata && (objectType == 'work' || objectType == 'work_manifestation')) || (objectType == 'tags') || (objectType == 'tag')) ? 'list_border_top' : ''">
+                <ion-item *ngIf="!((objectType == 'work' || objectType == 'work_manifestation') && simpleWorkMetadata) && objectType != 'tags' && objectType != 'tag'" class="item-stable" (click)="showFilters()">
                     <ion-grid>
                       <ion-row *ngIf="city">
                         <ion-col class="header">
