@@ -154,7 +154,10 @@ page-occurrences {
     .list_of_occurrences_item ion-label.label {
         padding-left: 1rem;
     }
-    ion-list.description_list.list_border_top {
+    ion-item-divider.occurrences_title {
         border-top: 1px solid #dedede;
+    }
+    ion-item + ion-item-divider.occurrences_title {
+        border-top: 0;
     }
   }

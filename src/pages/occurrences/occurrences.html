@@ -33,8 +33,8 @@
             </div>
           </ion-card-header>
           <ion-card-content *ngIf="texts">
-              <ion-list class="description_list" [ngClass]="((simpleWorkMetadata && (objectType == 'work' || objectType == 'work_manifestation')) || (objectType == 'tags' || objectType == 'tag') && (source == null || source == '')) ? 'list_border_top' : ''">
-                <ion-item *ngIf="!((objectType == 'work' || objectType == 'work_manifestation') && simpleWorkMetadata) && !((objectType == 'tags' || objectType == 'tag') && source != null && source != '')" class="item-stable" (click)="showFilters()">
+              <ion-list class="description_list">
+                <ion-item *ngIf="city || region || country || place_of_birth || (type && !hideTypeAndDescription) || source || publisher || published_year || isbn || (authors && authors[0] !== undefined) || journal || (description && !hideTypeAndDescription) || description || articleData.length > 0 || longitude" class="item-stable" (click)="showFilters()">
                     <ion-grid>
                       <ion-row *ngIf="city">
                         <ion-col class="header">
@@ -108,7 +108,7 @@
                             <span *ngIf="isbn" class="source">{{isbn}}</span>
                         </ion-col>
                       </ion-row>
-                      <ion-row *ngIf="authors && authors[0] !== undefined ">
+                      <ion-row *ngIf="authors && authors[0] !== undefined">
                         <ion-col class="header">
                           {{"Occurrences.authors" | translate}}
                         </ion-col>
@@ -158,7 +158,7 @@
                 <ion-item text-wrap style="margin-top: 10px;" *ngIf="galleryOccurrenceData.length > 0" (click)="openGallery(galleryOccurrenceData[0])">
                   <button ion-button outline item-end>{{"TOC.MediaCollections" | translate}}</button>
                 </ion-item>
-                <ion-item-divider>{{"Occurrences.Title" | translate}}</ion-item-divider>
+                <ion-item-divider class="occurrences_title">{{"Occurrences.Title" | translate}}</ion-item-divider>
                 <ion-list class="occurrences_list">
                   <ion-item *ngIf="isLoading"><ion-spinner class="loading" name="crescent"></ion-spinner></ion-item>
                   <ion-item *ngFor="let collection of groupedTexts">
