@@ -213,6 +213,72 @@
   font-weight: 300;
 }
 
+/* Inter fonts */
+@font-face {
+  font-family: "Inter";
+  src:  url('../assets/fonts/Inter/woff2/Inter-Regular.woff2') format('woff2'),
+        url('../assets/fonts/Inter/ttf/Inter-Regular.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Inter";
+  src:  url('../assets/fonts/Inter/woff2/Inter-Italic.woff2') format('woff2'),
+        url('../assets/fonts/Inter/ttf/Inter-Italic.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Inter";
+  src:  url('../assets/fonts/Inter/woff2/Inter-Bold.woff2') format('woff2'),
+        url('../assets/fonts/Inter/ttf/Inter-Bold.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Inter";
+  src:  url('../assets/fonts/Inter/woff2/Inter-BoldItalic.woff2') format('woff2'),
+        url('../assets/fonts/Inter/ttf/Inter-BoldItalic.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Inter";
+  src:  url('../assets/fonts/Inter/woff2/Inter-SemiBold.woff2') format('woff2'),
+        url('../assets/fonts/Inter/ttf/Inter-SemiBold.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Inter";
+  src:  url('../assets/fonts/Inter/woff2/Inter-SemiBoldItalic.woff2') format('woff2'),
+        url('../assets/fonts/Inter/ttf/Inter-SemiBoldItalic.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Inter";
+  src:  url('../assets/fonts/Inter/woff2/Inter-Light.woff2') format('woff2'),
+        url('../assets/fonts/Inter/ttf/Inter-Light.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Inter";
+  src:  url('../assets/fonts/Inter/woff2/Inter-LightItalic.woff2') format('woff2'),
+        url('../assets/fonts/Inter/ttf/Inter-LightItalic.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 300;
+}
+
 
 // http://ionicframework.com/docs/v3/theming/
 
