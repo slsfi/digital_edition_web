@@ -815,6 +815,14 @@ export class DigitalEditionsApp {
 
     this.events.subscribe('exitActiveCollection', () => {
         this.enableContentMenu();
+        // Try to close all the expanded Collections
+        try{
+          for (const collection of this.collectionsListWithTOC) {
+            collection.expanded = false;
+          }
+        } catch ( e ){
+
+        }
     });
 
     // Unselect accordion items that doesn't belong to current menu
