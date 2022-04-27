@@ -817,12 +817,13 @@ export class DigitalEditionsApp {
       this.enableContentMenu();
       // Try to close all the expanded Collections
       try{
-        // Check if there is a need to expand
-        // Otherwise we might change smth after user clicks on accordion
-        for ( let i = 0; i < this.splitReadCollections.length; i++ ) {
+        // Check if we have many Read Collections, if so, minimize all
+        if ( this.splitReadCollections.length > 1 ) {
+          for ( let i = 0; i < this.splitReadCollections.length; i++ ) {
             this.simpleAccordionsExpanded.collectionsAccordion[i] = false;
+          }
+          this.cdRef.detectChanges();
         }
-        this.cdRef.detectChanges();
       } catch ( e ){
 
       }
