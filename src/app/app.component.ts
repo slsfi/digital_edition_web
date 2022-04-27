@@ -817,9 +817,12 @@ export class DigitalEditionsApp {
         this.enableContentMenu();
         // Try to close all the expanded Collections
         try{
-          for (const collection of this.collectionsListWithTOC) {
-            collection.expanded = false;
+          // Check if there is a need to expand
+          // Otherwise we might change smth after user clicks on accordion
+          for ( let i = 0; i < this.splitReadCollections.length; i++ ) {
+              this.simpleAccordionsExpanded.collectionsAccordion[i] = false;
           }
+          this.cdRef.detectChanges();
         } catch ( e ){
 
         }
