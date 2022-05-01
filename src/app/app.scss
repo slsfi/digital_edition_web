@@ -73,7 +73,7 @@
   font-weight: 300;
 }
 
-/* Source serif 4 fonts */
+/* Source Serif 4 fonts */
 @font-face {
   font-family: "SourceSerif";
   src:  url('../assets/fonts/SourceSerif/woff2/SourceSerif4-Regular.otf.woff2') format('woff2'),
@@ -217,6 +217,7 @@
 @font-face {
   font-family: "Inter";
   src:  url('../assets/fonts/Inter/woff2/Inter-Regular.woff2') format('woff2'),
+        url('../assets/fonts/Inter/woff/Inter-Regular.woff') format('woff'),
         url('../assets/fonts/Inter/ttf/Inter-Regular.ttf') format('truetype');
   font-display: swap;
   font-style: normal;
@@ -225,6 +226,7 @@
 @font-face {
   font-family: "Inter";
   src:  url('../assets/fonts/Inter/woff2/Inter-Italic.woff2') format('woff2'),
+        url('../assets/fonts/Inter/woff/Inter-Italic.woff') format('woff'),
         url('../assets/fonts/Inter/ttf/Inter-Italic.ttf') format('truetype');
   font-display: swap;
   font-style: italic;
@@ -233,6 +235,7 @@
 @font-face {
   font-family: "Inter";
   src:  url('../assets/fonts/Inter/woff2/Inter-Bold.woff2') format('woff2'),
+        url('../assets/fonts/Inter/woff/Inter-Bold.woff') format('woff'),
         url('../assets/fonts/Inter/ttf/Inter-Bold.ttf') format('truetype');
   font-display: swap;
   font-style: normal;
@@ -241,6 +244,7 @@
 @font-face {
   font-family: "Inter";
   src:  url('../assets/fonts/Inter/woff2/Inter-BoldItalic.woff2') format('woff2'),
+        url('../assets/fonts/Inter/woff/Inter-BoldItalic.woff') format('woff'),
         url('../assets/fonts/Inter/ttf/Inter-BoldItalic.ttf') format('truetype');
   font-display: swap;
   font-style: italic;
@@ -249,6 +253,7 @@
 @font-face {
   font-family: "Inter";
   src:  url('../assets/fonts/Inter/woff2/Inter-SemiBold.woff2') format('woff2'),
+        url('../assets/fonts/Inter/woff/Inter-SemiBold.woff') format('woff'),
         url('../assets/fonts/Inter/ttf/Inter-SemiBold.ttf') format('truetype');
   font-display: swap;
   font-style: normal;
@@ -257,6 +262,7 @@
 @font-face {
   font-family: "Inter";
   src:  url('../assets/fonts/Inter/woff2/Inter-SemiBoldItalic.woff2') format('woff2'),
+        url('../assets/fonts/Inter/woff/Inter-SemiBoldItalic.woff') format('woff'),
         url('../assets/fonts/Inter/ttf/Inter-SemiBoldItalic.ttf') format('truetype');
   font-display: swap;
   font-style: italic;
@@ -265,6 +271,7 @@
 @font-face {
   font-family: "Inter";
   src:  url('../assets/fonts/Inter/woff2/Inter-Light.woff2') format('woff2'),
+        url('../assets/fonts/Inter/woff/Inter-Light.woff') format('woff'),
         url('../assets/fonts/Inter/ttf/Inter-Light.ttf') format('truetype');
   font-display: swap;
   font-style: normal;
@@ -273,7 +280,74 @@
 @font-face {
   font-family: "Inter";
   src:  url('../assets/fonts/Inter/woff2/Inter-LightItalic.woff2') format('woff2'),
+        url('../assets/fonts/Inter/woff/Inter-LightItalic.woff') format('woff'),
         url('../assets/fonts/Inter/ttf/Inter-LightItalic.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* Rosario fonts */
+@font-face {
+  font-family: "Rosario";
+  src:  url('../assets/fonts/Rosario/woff2/Rosario-Regular.woff2') format('woff2'),
+        url('../assets/fonts/Rosario/ttf/Rosario-Regular.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Rosario";
+  src:  url('../assets/fonts/Rosario/woff2/Rosario-Italic.woff2') format('woff2'),
+        url('../assets/fonts/Rosario/ttf/Rosario-Italic.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Rosario";
+  src:  url('../assets/fonts/Rosario/woff2/Rosario-Bold.woff2') format('woff2'),
+        url('../assets/fonts/Rosario/ttf/Rosario-Bold.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Rosario";
+  src:  url('../assets/fonts/Rosario/woff2/Rosario-BoldItalic.woff2') format('woff2'),
+        url('../assets/fonts/Rosario/ttf/Rosario-BoldItalic.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Rosario";
+  src:  url('../assets/fonts/Rosario/woff2/Rosario-SemiBold.woff2') format('woff2'),
+        url('../assets/fonts/Rosario/ttf/Rosario-SemiBold.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Rosario";
+  src:  url('../assets/fonts/Rosario/woff2/Rosario-SemiBoldItalic.woff2') format('woff2'),
+        url('../assets/fonts/Rosario/ttf/Rosario-SemiBoldItalic.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Rosario";
+  src:  url('../assets/fonts/Rosario/woff2/Rosario-Light.woff2') format('woff2'),
+        url('../assets/fonts/Rosario/ttf/Rosario-Light.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Rosario";
+  src:  url('../assets/fonts/Rosario/woff2/Rosario-LightItalic.woff2') format('woff2'),
+        url('../assets/fonts/Rosario/ttf/Rosario-LightItalic.ttf') format('truetype');
   font-display: swap;
   font-style: italic;
   font-weight: 300;
