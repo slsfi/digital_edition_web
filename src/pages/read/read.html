@@ -85,7 +85,7 @@
         </div>
         <div class="infoOverlayContent" [MathJax]="infoOverlayText"></div>
       </div>
-      <div [ngClass]="views.length > 1 ? 'read-column multiple-columns' : 'read-column single-column'" *ngFor="let view of views; let i = index;" id="read_div_{{i}}" scrollY="true"
+      <div *ngFor="let view of views; let i = index;" id="read_div_{{i}}" class="column_type_{{view.type}}" [ngClass]="views.length > 1 ? 'read-column multiple-columns' : 'read-column single-column'" scrollY="true"
         [ngStyle]="{'position': 'relative','max-width':((maxSingleWindowWidth)/((views.length>1)?views.length:1))+'%','min-width':views.length > 1 ? viewsConfig.slideMinWidth+'px':'25%'}"
         #readColumn>
         <ion-card>
