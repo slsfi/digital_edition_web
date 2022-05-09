@@ -1928,29 +1928,28 @@ div.tei {
         margin: 0.5em 0;
     }
     .est_figure_graphic,
-    .est_figure_graphic_left {
+    .est_figure_graphic.align_figure_left {
         width: auto;
         max-width: 100%;
         padding-right: 0.5rem;
+        padding-left: 0;
         float: left;
     }
-    .est_figure_graphic_right {
-        width: auto;
-        max-width: 100%;
+    .est_figure_graphic.align_figure_right {
+        padding-right: 0;
         padding-left: 0.5rem;
         float: right;
     }
-    .est_figure_graphic_middle {
-        width: auto;
-        max-width: 100%;
+    .est_figure_graphic.align_figure_middle {
+        padding-right: 0;
+        padding-left: 0;
         margin: 0 auto;
+        float: none;
     }
-
     img.doodle {
         cursor: pointer;
         display: none !important; /* By default doodles in read-text are not shown except when illustrations-view is shown. */
     }
-    
     .pdf_figure_graphic {
         display: inline-block;
         margin: 0 0.5em 0 0;
