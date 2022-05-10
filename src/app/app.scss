@@ -670,6 +670,15 @@ ion-fab{
   }
 }
 
+/* These two rules fix the vertical alignment of icons in fab-buttons. */
+.fab[mini],
+.fab-list-active .fab {
+  line-height: 1;
+}
+.fab[mini] .fab-close-icon {
+  line-height: 1.75;
+}
+
 .item-block{
   min-height: 2.2rem;
 }
