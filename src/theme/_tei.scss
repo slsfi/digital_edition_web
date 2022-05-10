@@ -2,21 +2,6 @@
     This file contains style rules which are applied exclusively to the contents of the <div> elements with class "tei" on the title page, in the introduction and in the columns on the read page.
 */
 
-/* Widths of div.tei on different screen resolutions */
-@media only screen and (max-width: 600px) {
-    div.teiContainer {
-        max-width: 100%;
-    }
-}
-@media only screen and (min-width: 600px) {
-    div.teiContainer {
-        max-width: 650px;
-    }
-    page-introduction div.teiContainer {
-        max-width: 100%;
-    }
-}
-
 /* Padding below the columns so their height won't end precisely after the texts */
 page-title ion-scroll div.teiContainer,
 page-introduction ion-scroll div.teiContainer,
@@ -32,6 +17,7 @@ div.teiContainer {
     font-size: $text-fontsize-small;
     line-height: 1.6em;
     white-space: normal;
+    max-width: 100%;
 }
 
 /* Textstorlekar. */

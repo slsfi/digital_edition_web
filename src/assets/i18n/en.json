@@ -100,7 +100,8 @@
       "CoverPage": {
         "Title": "Cover"
       },
-      "ShowAll": "Show all"
+      "ShowAll": "Show all",
+      "AddColumn": "Add column"
   },
   "About": {
       "Title": "About the Edition",

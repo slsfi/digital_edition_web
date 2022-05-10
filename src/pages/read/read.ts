@@ -107,8 +107,7 @@ export class ReadPage /*implements OnDestroy*/ {
   illustrationsViewShown: Boolean = false;
   simpleWorkMetadata: Boolean;
   showURNButton: Boolean;
-
-  maxSingleWindowWidth: Number;
+  backdropWidth: number;
 
   prevItem: any;
   nextItem: any;
@@ -142,14 +141,6 @@ export class ReadPage /*implements OnDestroy*/ {
   songDatafile = '';
 
   views = [];
-  viewsConfig = {
-    slideMaxWidth: 600,
-    slideMinWidth: 450,
-    slidesPerView: 1.2,
-    spaceBetween: 20,
-    centeredSlides: false,
-    pager: false
-  };
 
   show = 'established'; // Mobile tabs
 
@@ -241,6 +232,8 @@ export class ReadPage /*implements OnDestroy*/ {
     };
     this.intervalTimerId = 0;
 
+    this.backdropWidth = 0;
+
     try {
       this.appUsesAccordionToc = this.config.getSettings('AccordionTOC');
     } catch (e) {
@@ -300,8 +293,6 @@ export class ReadPage /*implements OnDestroy*/ {
       }
 
       let link = null;
-
-      this.maxSingleWindowWidth = 95;
 
       this.matches = [];
       this.availableViewModes = [];
@@ -487,6 +478,7 @@ export class ReadPage /*implements OnDestroy*/ {
         }
       }.bind(this), 1000);
     });
+    this.setFabBackdropWidth();
   }
 
   ngOnDestroy() {
@@ -2914,7 +2906,6 @@ export class ReadPage /*implements OnDestroy*/ {
   removeSlide(i) {
     this.removeVariationSortOrderFromService(i);
     this.views.splice(i, 1);
-    this.adjustSlidesSize();
     this.updateURL();
     this.updateCachedViewModes();
   }
@@ -2964,27 +2955,6 @@ export class ReadPage /*implements OnDestroy*/ {
       reorderedArray.splice(toIndex, 0, reorderedArray.splice(fromIndex, 1)[0]);
     }
     return reorderedArray;
-  }
-
-  adjustSlidesSize() {
-
-    let width = this.platform.width();
-    const splitpane = document.querySelector('ion-split-pane');
-    const splitPaneIsVisible = (splitpane.className.indexOf('split-pane-visible') >= 0);
-
-    if (splitPaneIsVisible) {
-      const splitPane = document.querySelector('ion-split-pane ion-menu.split-pane-side.menu-enabled');
-      const dimensions = splitPane.getBoundingClientRect();
-      width = width - dimensions.width;
-    }
-
-    if (width / this.viewsConfig.slideMinWidth < (this.views.length + 1)) {
-      this.viewsConfig.slidesPerView = width / this.viewsConfig.slideMinWidth;
-      this.viewsConfig.centeredSlides = true;
-    } else {
-      this.viewsConfig.slidesPerView = this.views.length + 1;
-      this.viewsConfig.centeredSlides = false;
-    }
   }
 
   swipePrevNext(myEvent) {
@@ -3544,4 +3514,12 @@ export class ReadPage /*implements OnDestroy*/ {
     }
     return varIndex;
   }
+
+  setFabBackdropWidth() {
+    const pageReadElem = document.querySelector('page-read > ion-content > div.scroll-content');
+    if (pageReadElem) {
+      this.backdropWidth = pageReadElem.scrollWidth;
+    }
+  }
+
 }

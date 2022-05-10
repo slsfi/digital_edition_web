@@ -101,7 +101,8 @@
           "AddButtonText": ""
       },
       "ShowAll": "Visa alla",
-      "ShowSearchResults": "Förekomster"
+      "ShowSearchResults": "Förekomster",
+      "AddColumn": "Ny kolumn"
   },
   "About": {
       "Title": "Arkivverket kildeutgivelser",

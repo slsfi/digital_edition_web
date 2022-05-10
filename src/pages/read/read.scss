@@ -73,10 +73,6 @@ page-read {
     width: 100%;
   }
 
-  .column-container {
-    text-align: center;
-  }
-
   .column-container .card {
     text-align: left;
   }
@@ -111,33 +107,26 @@ page-read {
     /*overflow-x: auto;
     overflow-y: hidden;  overflow is now set on the parent element div.scroll-content */
     white-space: nowrap;
-
-    /*the bar with a heading for the column*/
-    &__title {
-      background: color($colors, secondary);
-      font-size: 0.75rem;
-      font-weight: bold;
-      padding: 16px 22px;
-    }
-
-    &.single-column .read-column {
-      max-width: initial !important;
-      margin-left: auto;
-      margin-right: auto;
-      display: block;
-    }
-
-    &.multiple-columns .read-column {
-      display: inline-block;
-    }
+    display: flex;
+    align-content: center;
 
     .read-column {
-      display: inline-block;
-      width: 97%;
+      position: relative;
+      flex: 1 1 auto;
+      max-width: 730px;
+      min-width: 500px;
 
       ion-card {
         background-color: var(--read-columns-background-color);
         margin-bottom: 0;
+
+        /*the bar with a heading for the column*/
+        .read-columns__title {
+          background: var(--secondary-color);
+          font-size: 0.75rem;
+          font-weight: bold;
+          padding: 16px 22px;
+        }
 
         .card-content {
           padding: 0;
@@ -148,6 +137,46 @@ page-read {
         }
       }
     }
+
+    .read-column.column_type_facsimiles {
+      max-width: 100%;
+    }
+  }
+
+  .add-view-column {
+    position: relative;
+    flex: 0 0 auto;
+    width: 80px;
+    display: flex;
+    visibility: hidden; /* Hides the column by default, set to visible below when preceded by a read-column in the DOM. This prevents the column from flashing to the left in page-read when read-columns have not been loaded yet. */
+
+    ion-fab {
+      top:-5px;
+    }
+
+    .add-column {
+      background: var(--add-read-column-bg-color);
+      color: var(--add-read-column-text-color);
+      margin: 10px 25px 0 25px;
+      width: 30px;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .add-column p {
+      transform: rotate(90deg) translateX(100%);
+      text-transform: uppercase;
+      font-size: 0.8125rem;
+      font-weight: bold;
+      line-height: 1;
+      margin: 0;
+    }
+  }
+  .read-column + .add-view-column {
+    visibility: visible;
   }
 
   .swipeCenter {
@@ -298,7 +327,7 @@ ion-fab .fab-list-active .fab-backdrop {
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.60);
+  background: rgba(0, 0, 0, 0.65);
   z-index: -1;
 }
 
