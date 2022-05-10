@@ -229,7 +229,11 @@ export class MediaCollectionPage {
       const addedTags: Array<any> = [];
       tags.forEach(element => {
         if (addedTags.indexOf(element['id']) === -1) {
-          this.galleryTags.push({ 'name': String(element['name']), id: element['id'], 'media_collection_id': element['media_collection_id'] });
+          this.galleryTags.push({
+            'name': String(element['name']),
+            id: element['id'],
+            'media_collection_id': element['media_collection_id']
+          });
           addedTags.push(element['id']);
         }
       });
@@ -258,7 +262,11 @@ export class MediaCollectionPage {
       const addedLocations: Array<any> = [];
       locations.forEach(element => {
         if (addedLocations.indexOf(element['id']) === -1) {
-          this.galleryLocations.push({ 'name': String(element['name']), id: element['id'], 'media_collection_id': element['media_collection_id'] });
+          this.galleryLocations.push({
+            'name': String(element['name']),
+            id: element['id'],
+            'media_collection_id': element['media_collection_id']
+          });
           addedLocations.push(element['id']);
         }
       });
@@ -287,7 +295,11 @@ export class MediaCollectionPage {
       const addedSubjects: Array<any> = [];
       subjects.forEach(element => {
         if (addedSubjects.indexOf(element['id']) === -1) {
-          this.gallerySubjects.push({ 'name': String(element['name']), id: element['id'], 'media_collection_id': element['media_collection_id'] });
+          this.gallerySubjects.push({
+            'name': String(element['name']),
+            id: element['id'],
+            'media_collection_id': element['media_collection_id']
+          });
           addedSubjects.push(element['id']);
         }
       });
