@@ -816,7 +816,7 @@ export class DigitalEditionsApp {
     this.events.subscribe('exitActiveCollection', () => {
       this.enableContentMenu();
       // Try to close all the expanded Collections
-      try{
+      try {
         // Check if we have many Read Collections, if so, minimize all
         if ( this.splitReadCollections.length > 1 ) {
           for ( let i = 0; i < this.splitReadCollections.length; i++ ) {
@@ -824,8 +824,7 @@ export class DigitalEditionsApp {
           }
           this.cdRef.detectChanges();
         }
-      } catch ( e ){
-
+      } catch ( e ) {
       }
     });
 
@@ -1041,8 +1040,8 @@ export class DigitalEditionsApp {
 
       const params = {};
       const nav = this.app.getActiveNavs();
+      this.enableContentMenu();
       nav[0].setRoot('HomePage', params, { animate: false });
-      nav[0].goToRoot({animate: false});
     });
 
     this.events.subscribe('DigitalEditionList:recieveData', (data) => {
