@@ -814,7 +814,19 @@ export class DigitalEditionsApp {
     });
 
     this.events.subscribe('exitActiveCollection', () => {
-        this.enableContentMenu();
+      this.enableContentMenu();
+      // Try to close all the expanded Collections
+      try{
+        // Check if we have many Read Collections, if so, minimize all
+        if ( this.splitReadCollections.length > 1 ) {
+          for ( let i = 0; i < this.splitReadCollections.length; i++ ) {
+            this.simpleAccordionsExpanded.collectionsAccordion[i] = false;
+          }
+          this.cdRef.detectChanges();
+        }
+      } catch ( e ){
+
+      }
     });
 
     // Unselect accordion items that doesn't belong to current menu

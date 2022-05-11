@@ -19,7 +19,7 @@ RUN mkdir www
 
 RUN npm install
 RUN npm install cheerio
-RUN npm install rev-hash
+RUN npm install rev-hash@3.0.0
 RUN npm i -g @ionic/cli
 RUN npm i -g cordova
 RUN npm i -g native-run
