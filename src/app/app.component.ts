@@ -1038,9 +1038,23 @@ export class DigitalEditionsApp {
         component: 'app-component'
       });
 
+      this.enableContentMenu();
+      // Try to close all the expanded accordions in toc
+      try {
+        for ( let i = 0; i < this.splitReadCollections.length; i++ ) {
+          this.simpleAccordionsExpanded.collectionsAccordion[i] = false;
+        }
+        this.simpleAccordionsExpanded.aboutMenuAccordion = false;
+        this.simpleAccordionsExpanded.epubs = false;
+        this.simpleAccordionsExpanded.galleryAccordion = false;
+        this.simpleAccordionsExpanded.musicAccordion = false;
+        this.simpleAccordionsExpanded.pdfAccordion = false;
+        this.simpleAccordionsExpanded.songTypesAccordion = false;
+        this.cdRef.detectChanges();
+      } catch ( e ) {
+      }
       const params = {};
       const nav = this.app.getActiveNavs();
-      this.enableContentMenu();
       nav[0].setRoot('HomePage', params, { animate: false });
     });
 
