@@ -996,8 +996,9 @@ export class TableOfContentsAccordionComponent {
 
   exit() {
     this.events.publish('exitActiveCollection');
+    const params = {};
     const nav = this.app.getActiveNavs();
-    nav[0].goToRoot({animate: false});
+    nav[0].setRoot('HomePage', params, { animate: false });
     this.alphabethicOrderActive = false;
     this.chronologicalOrderActive = false;
     this.thematicOrderActive = false;
