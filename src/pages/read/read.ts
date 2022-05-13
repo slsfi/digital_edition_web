@@ -1288,8 +1288,9 @@ export class ReadPage /*implements OnDestroy*/ {
                 if (containerElem === null) {
                   // Check if a footnotereference link in infoOverlay. This method is used to find the container element if in mobile mode.
                   if (anchorElem.parentElement !== null
-                  && anchorElem.parentElement.hasAttribute('class')
-                  && anchorElem.parentElement.classList.contains('infoOverlayContent')) {
+                  && anchorElem.parentElement.parentElement !== null
+                  && anchorElem.parentElement.parentElement.hasAttribute('class')
+                  && anchorElem.parentElement.parentElement.classList.contains('infoOverlayContent')) {
                     containerElem = document.querySelector('.mobile-mode-read-content > .scroll-content > ion-scroll > .scroll-content');
                   }
                 }
