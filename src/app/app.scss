@@ -512,21 +512,21 @@ p, blockquote {
 }
 
 .back-to-list-button {
-  background-color: var(--back-button-bg-color) !important;
+  background-color: var(--toc-back-button-background-color) !important;
 
   .back-button-text {
-    color: var(--back-button-text-color);
+    color: var(--toc-back-button-text-color);
     font-size: 1rem;
   }
   ion-icon,
   ion-label {
-    color: var(--back-button-text-color);
+    color: var(--toc-back-button-text-color);
   }
   &.item-md ion-icon[item-left] + .item-inner {
     margin-left: 0;
   }
   p{
-    color: var(--back-button-text-color) !important;
+    color: var(--toc-back-button-text-color) !important;
     font-size: 1rem !important;
   }
   .label{
@@ -797,7 +797,7 @@ ion-menu {
   }
   &#contentMenu ion-item.mainMenuItem:hover,
   &#contentMenu ion-list.accordion-menu ion-item.item:hover {
-    border-left-color: var(--main-toc-hover-color);
+    border-left-color: var(--toc-hover-color);
   }
   &#contentMenu .simple-accordion-options ion-list.accordion-menu > ion-item.item,
   &#contentMenu .simple-accordion-options ion-list ion-item.item,
