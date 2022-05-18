@@ -182,6 +182,11 @@ export class IntroductionPage {
 
   ionViewWillEnter() {
     this.events.publish('ionViewWillEnter', this.constructor.name);
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'introduction'});
+    this.events.publish('SelectedItemInMenu', {
+      menuID: this.params.get('collectionID'),
+      component: 'introduction'
+    });
     this.setUpTextListeners();
     this.setCollectionLegacyId();
   }

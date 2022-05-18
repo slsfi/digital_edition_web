@@ -22,11 +22,11 @@
                 <button *ngIf="showTopMusicButton" ion-button class="top-menu-button" (click)="music()">
                   {{'TopMenu.Music' | translate }}
                 </button>
-                <button *ngIf="showTopSimpleSearchButton" ion-button class="top-menu-button" (click)="searchApp()" id="searchIcon">
+                <button *ngIf="showTopSimpleSearchButton" ion-button class="top-menu-button simple-search-button" (click)="searchApp()" id="searchIcon">
                   <ion-icon name="search"></ion-icon>
                   <span class="side-title">{{'TopMenu.SimpleSearch' | translate }}</span>
                 </button>
-                <button *ngIf="showTopElasticButton" ion-button class="top-menu-button" (click)="elasticSearch()" id="searchIcon">
+                <button *ngIf="showTopElasticButton" ion-button class="top-menu-button elastic-search-button" (click)="elasticSearch()" id="searchIcon">
                   <ion-icon name="search"></ion-icon>
                   <span class="side-title">{{'TopMenu.AdvancedSearch' | translate }}
                     <strong>(BETA)</strong></span>
@@ -49,7 +49,7 @@
                   <ion-icon *ngIf="!splitPaneOpen" name="menu"></ion-icon>
                   <ion-icon *ngIf="splitPaneOpen" name="close"></ion-icon>
                 </button>
-                <button *ngIf="showTopSimpleSearchButton || showTopElasticButton" ion-button (click)="searchApp()" class="searchButton" id="searchIcon">
+                <button *ngIf="showTopSimpleSearchButton || showTopElasticButton" ion-button (click)="searchApp()" class="searchButton simple-search-button" id="searchIcon">
                   <ion-icon name="search"></ion-icon>
                 </button>
                 <button *ngIf="showTopURNButton" ion-button (click)="showReference($event)">
@@ -87,10 +87,10 @@
                 <button *ngIf="showTopMusicButton" ion-button class="top-menu-button" (click)="music()">
                   {{'TopMenu.Music' | translate }}
                 </button>
-                <button *ngIf="showTopSimpleSearchButton" ion-button class="top-menu-button" (click)="searchApp()" id="searchIcon">
+                <button *ngIf="showTopSimpleSearchButton" ion-button class="top-menu-button simple-search-button" (click)="searchApp()" id="searchIcon">
                   <ion-icon name="search"></ion-icon>
                 </button>
-                <button *ngIf="showTopElasticButton" ion-button class="top-menu-button" (click)="elasticSearch()" id="searchIcon">
+                <button *ngIf="showTopElasticButton" ion-button class="top-menu-button elastic-search-button" (click)="elasticSearch()" id="searchIcon">
                   <ion-icon name="search"></ion-icon>
                   <span class="side-title">{{'TopMenu.AdvancedSearch' | translate }}
                     <strong>(BETA)</strong></span>
@@ -113,7 +113,7 @@
                   <ion-icon *ngIf="!splitPaneOpen" name="menu"></ion-icon>
                   <ion-icon *ngIf="splitPaneOpen" name="close"></ion-icon>
                 </button>
-                <button *ngIf="showTopSimpleSearchButton || showTopElasticButton" ion-button (click)="searchApp()" id="searchIcon" end>
+                <button *ngIf="showTopSimpleSearchButton || showTopElasticButton" ion-button (click)="searchApp()" id="searchIcon" class="searchButton simple-search-button" end>
                   <ion-icon name="search"></ion-icon>
                 </button>
                 <button *ngIf="showTopURNButton" ion-button (click)="showReference($event)">

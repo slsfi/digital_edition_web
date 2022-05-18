@@ -431,7 +431,6 @@ export class ReadPage /*implements OnDestroy*/ {
     } else {
       this.viewCtrl.showBackButton(false);
     }
-
     if (this.params.get('publicationID') === 'first') {
       this.showFirstText();
     } else {
@@ -1626,6 +1625,11 @@ export class ReadPage /*implements OnDestroy*/ {
     this.textType = TextType.ReadText;
   }
 
+  /**
+   * TODO: This function doesn't seem to work as intended. It probably fails because it uses
+   * TODO: legacyId, which should be legacy_id if you look at what the API returns. Most projects
+   * TODO: don't use legacy_id.
+   */
   private showFirstText() {
     this.textType = TextType.ReadText;
     const cache_id = 'col_' + this.params.get('collectionID') + 'first_pub';

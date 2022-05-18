@@ -115,7 +115,7 @@ export class TableOfContentsDrilldownMenuComponent {
       (a.text.toUpperCase() < b.text.toUpperCase()) ? -1 : (a.text.toUpperCase() > b.text.toUpperCase()) ? 1 : 0);
   }
 
-  constructChronologialTOC(data) {
+  constructChronologicalTOC(data) {
     this.chronologicalMenuStack = [];
     this.chronologicalTitleStack = [];
     const list = data.tocItems.children;
@@ -248,7 +248,7 @@ export class TableOfContentsDrilldownMenuComponent {
 
       this.constructToc(data);
       this.constructAlphabeticalTOC(data);
-      this.constructChronologialTOC(data);
+      this.constructChronologicalTOC(data);
 
 
       this.visibleMenuStack = this.menuStack;

@@ -189,8 +189,12 @@ export class MediaCollectionPage {
     this.events.publish('ionViewWillLeave', this.constructor.name);
   }
   ionViewWillEnter() {
-
     this.events.publish('ionViewWillEnter', this.constructor.name);
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'media-collection'});
+    this.events.publish('SelectedItemInMenu', {
+      menuID: this.mediaCollectionId,
+      component: 'media-collection'
+    });
   }
 
   ionViewDidLoad() {

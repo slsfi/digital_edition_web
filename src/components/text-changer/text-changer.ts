@@ -69,7 +69,7 @@ export class TextChangerComponent {
               this.currentToc = toc;
               if (toc && toc.children) {
                 for (let i = 0; i < toc.children.length; i++) {
-                  if (toc.children[i].itemId.split('_')[1] === c_id) {
+                  if (toc.children[i].itemId !== undefined && toc.children[i].itemId.split('_')[1] === c_id) {
                     this.currentItemTitle = toc.children[i].text;
                     this.storage.set('currentTOCItemTitle', this.currentItemTitle);
                     this.nextItemTitle = String(toc.children[i + 1].text);
@@ -236,7 +236,7 @@ export class TextChangerComponent {
     const params = {tocItem: item, collection: {title: item.itemId}};
     const nav = this.app.getActiveNavs();
 
-    this.events.publish('selectOneItem', item.text);
+    this.events.publish('selectOneItem', item.itemId);
 
     params['tocLinkId'] = item.itemId;
     const parts = item.itemId.split('_');

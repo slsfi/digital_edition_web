@@ -786,6 +786,10 @@ input{
   }
 }
 
+.outer-content ion-item.item.selected-toc-item {
+  font-weight: bold;
+}
+
 /* Table of content styles for simple accordion lists, including nested lists*/
 ion-menu {
   &#contentMenu ion-item.mainMenuItem,

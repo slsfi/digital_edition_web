@@ -136,7 +136,11 @@ export class HomePage {
   }
   ionViewWillEnter() {
     this.events.publish('ionViewWillEnter', this.constructor.name);
-    this.events.publish('tableOfContents:unSelectSelectedTocItem', true);
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'home'});
+    this.events.publish('SelectedItemInMenu', {
+      menuID: 'home',
+      component: 'home'
+    });
     this.events.publish('musicAccordion:reset', true);
     this.languageService.getLanguage().subscribe((lang: string) => {
       this.getMdContent(lang + '-01');

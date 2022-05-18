@@ -199,7 +199,11 @@ export class PlaceSearchPage {
     this.metadataService.addKeywords();
 
     this.events.publish('ionViewWillEnter', this.constructor.name);
-    this.events.publish('tableOfContents:unSelectSelectedTocItem', true);
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'place-search'});
+    this.events.publish('SelectedItemInMenu', {
+      menuID: 'placeSearch',
+      component: 'place-search'
+    });
     this.selectMusicAccordionItem();
   }
 

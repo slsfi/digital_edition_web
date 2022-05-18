@@ -177,7 +177,11 @@ export class PersonSearchPage {
 
   ionViewWillEnter() {
     this.events.publish('ionViewWillEnter', this.constructor.name);
-    this.events.publish('tableOfContents:unSelectSelectedTocItem', true);
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'person-search'});
+    this.events.publish('SelectedItemInMenu', {
+      menuID: 'personSearch',
+      component: 'person-search'
+    });
     this.getParamsData();
     this.selectMusicAccordionItem();
     this.setData();

@@ -83,6 +83,18 @@ export class MediaCollectionsPage {
     (async () => {
       this.galleries = await this.galleryService.getGalleries(this.language);
       this.allGalleries = this.galleries;
+      this.allGalleries.sort(function(a, b) {
+        const titleA = a.title.toLowerCase(); // ignore upper and lowercase
+        const titleB = b.title.toLowerCase(); // ignore upper and lowercase
+        if (titleA < titleB) {
+          return -1;
+        }
+        if (titleA > titleB) {
+          return 1;
+        }
+        return 0;
+      });
+      this.galleries = this.allGalleries;
       this.cdRef.detectChanges();
     }).bind(this)();
   }
@@ -319,10 +331,10 @@ export class MediaCollectionsPage {
     this.metadataService.addKeywords();
 
     this.events.publish('ionViewWillEnter', this.constructor.name);
-    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'title'});
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'media-collections'});
     this.events.publish('SelectedItemInMenu', {
       menuID: 'mediaCollections',
-      component: 'title-page'
+      component: 'media-collections'
     });
   }
 

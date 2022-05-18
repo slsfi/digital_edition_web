@@ -33,6 +33,7 @@ export class ContentPage /*implements OnDestroy*/ {
   songCategories: Array<string> = [];
   songCategory: string;
   songExample: string;
+  fileID: string;
 
   constructor(
     public navCtrl: NavController,
@@ -48,8 +49,8 @@ export class ContentPage /*implements OnDestroy*/ {
     private analyticsService: AnalyticsService
   ) {
     const data = this.config.getSettings('staticPages.about');
-    let fileID = this.params.get('id');
-    this.mdContent = new MdContent({id: fileID, title: '...', content: null, filename: null});
+    this.fileID = this.params.get('id');
+    this.mdContent = new MdContent({id: this.fileID, title: '...', content: null, filename: null});
     this.lang = this.config.getSettings('i18n.locale');
 
     this.langService.getLanguage().subscribe((lang) => {
@@ -59,17 +60,16 @@ export class ContentPage /*implements OnDestroy*/ {
     this.events.subscribe('language:change', () => {
       this.langService.getLanguage().subscribe((lang) => {
         this.lang = lang;
-        if ( !String(fileID).includes(lang) ) {
-          const tmpId = String(fileID).split('-')
-          fileID = lang + '-' + tmpId[1] + '-' + tmpId[2];
+        if ( !String(this.fileID).includes(lang) ) {
+          const tmpId = String(this.fileID).split('-')
+          this.fileID = lang + '-' + tmpId[1] + '-' + tmpId[2];
         }
-        this.getMdContent(fileID);
+        this.getMdContent(this.fileID);
         this.songCategoriesConfig();
       });
     });
 
-
-    if (!this.params.get('selectedItemInAccordion')) {
+    if (!this.params.get('selectedItemInAccordion') || this.params.get('selectedItemInAccordion') === undefined) {
       this.searchTocItem();
     }
     this.songCategoriesConfig();
@@ -77,6 +77,7 @@ export class ContentPage /*implements OnDestroy*/ {
 
   ngOnDestroy() {
     this.events.unsubscribe('language:change');
+    this.events.unsubscribe('aboutMarkdownTOC:loaded');
   }
   songCategoriesConfig() {
     try {
@@ -106,11 +107,14 @@ export class ContentPage /*implements OnDestroy*/ {
     let playmanTraditionPageID = '03-03';
     playmanTraditionPageID = `${language}-${playmanTraditionPageID}`;
 
-    if (playManTraditionPageInMusicAccordion && this.params.get('id') === playmanTraditionPageID) {
+    if (playManTraditionPageInMusicAccordion && this.fileID === playmanTraditionPageID) {
       this.events.publish('musicAccordion:SetSelected', {musicAccordionKey: 'playmanTraditionPage'});
     } else {
-      this.events.publish('tableOfContents:findMarkdownTocItem', {
-        markdownID: this.params.get('id')
+      // Wait for the About-markdownpages TOC to be loaded before proceeding to find markdown TOC item
+      this.events.subscribe('aboutMarkdownTOC:loaded', (toc) => {
+        this.events.publish('tableOfContents:findMarkdownTocItem', {
+          markdownID: this.fileID
+        });
       });
     }
   }
