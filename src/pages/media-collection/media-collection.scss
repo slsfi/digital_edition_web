@@ -43,31 +43,25 @@ page-media-collection {
 
   .filters{
     display: flex;
-    width: 60%;
+    width: 100%;
     padding: 0 1.5rem;
     margin-bottom: 1.5rem;
   }
 
-  @media only screen and (max-width: 1024px) {
-    .filters{
-      width: 100%;
-    }
-  }
 
   @media only screen and (max-width: 800px) {
     .filters{
         display: flex;
         flex-direction: column;
-        width: 100%;
-
     }
     .filters ion-item{
       margin-bottom: 1rem;
     }
   }
-  .filters ion-item{
-      margin-right: 2rem;
-      padding: 0px;
+  .filters ion-item {
+    max-width: 400px;
+    margin-right: 2rem;
+    padding-left: 6px;
   }
 
   ion-item button{

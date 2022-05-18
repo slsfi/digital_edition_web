@@ -96,54 +96,65 @@ export class IllustrationsComponent {
   }
 
   scrollToPositionInText(image) {
-    let imageSrc = image.src;
-    let target = null as HTMLElement;
-    try {
-      if (image.class === 'doodle') {
-        let imageDataId = 'tag_' + imageSrc.replace('/assets/images/verk/', '').replace('.jpg', '');
-        target = document.querySelector(`img.doodle[data-id="${imageDataId}"]`) as HTMLElement;
-        if (target === null) {
-          // Try dropping the prefix 'tag_' from image data-id as unknown pictograms don't have this
-          imageDataId = imageDataId.replace('tag_', '');
-          target = document.querySelector(`img.doodle[data-id="${imageDataId}"]`) as HTMLElement;
-        }
-        if (target !== null) {
-          if (target.previousElementSibling !== null && target.previousElementSibling !== undefined) {
-            if (target.previousElementSibling.previousElementSibling !== null
-              && target.previousElementSibling.previousElementSibling !== undefined
-              && target.previousElementSibling.previousElementSibling.classList.contains('ttNormalisations')) {
-              // Change the scroll target from the doodle icon itself to the preceding word which the icon represents.
-              target = target.previousElementSibling.previousElementSibling as HTMLElement;
-            }
-          } else if (target.parentElement !== null && target.parentElement !== undefined) {
-            if (target.parentElement.classList.contains('ttNormalisations')) {
-              target = target.parentElement as HTMLElement;
+    const imageSrc = image.src;
+    let imageFilename = '';
+    if (imageSrc) {
+      imageFilename = imageSrc.substring(imageSrc.lastIndexOf('/') + 1);
+      let target = null as HTMLElement;
+      const readtextElem = document.querySelector('read-text');
+      try {
+        if (image.class === 'doodle') {
+          // Get the image filename without format and prepend tag_ to it
+          let imageDataId = 'tag_' + imageFilename.substring(0, imageFilename.lastIndexOf('.'));
+          target = readtextElem.querySelector(`img.doodle[data-id="${imageDataId}"]`) as HTMLElement;
+          if (target === null) {
+            // Try dropping the prefix 'tag_' from image data-id as unknown pictograms don't have this
+            imageDataId = imageDataId.replace('tag_', '');
+            target = readtextElem.querySelector(`img.doodle[data-id="${imageDataId}"]`) as HTMLElement;
+          }
+          if (target !== null) {
+            if (target.previousElementSibling !== null && target.previousElementSibling !== undefined) {
+              if (target.previousElementSibling.previousElementSibling !== null
+                && target.previousElementSibling.previousElementSibling !== undefined
+                && target.previousElementSibling.previousElementSibling.classList.contains('ttNormalisations')) {
+                // Change the scroll target from the doodle icon itself to the preceding word which the icon represents.
+                target = target.previousElementSibling.previousElementSibling as HTMLElement;
+              }
+            } else if (target.parentElement !== null && target.parentElement !== undefined) {
+              if (target.parentElement.classList.contains('ttNormalisations')) {
+                target = target.parentElement as HTMLElement;
+              }
             }
           }
-        }
-      } else {
-        imageSrc = imageSrc.replace('http:', '');
-        target = document.querySelector(`[src="${imageSrc}"]`) as HTMLElement;
-      }
-
-      if (target !== null && target.parentElement !== null && target.parentElement !== undefined) {
-        if (image.class !== 'visible-illustration') {
-          // Prepend arrow to the image/icon in the reading text and scroll into view
-          const tmpImage: HTMLImageElement = new Image();
-          tmpImage.src = 'assets/images/ms_arrow_right.svg';
-          tmpImage.alt = 'ms arrow right image';
-          tmpImage.classList.add('inl_ms_arrow');
-          target.parentElement.insertBefore(tmpImage, target);
-          this.scrollElementIntoView(tmpImage);
-          setTimeout(function() {
-            target.parentElement.removeChild(tmpImage);
-          }, 5000);
         } else {
-          this.scrollElementIntoView(target, 'top', 75);
+          // Get the image element with src-attribute value ending in image filename
+          const imageSrcFilename = '/' + imageFilename;
+          target = readtextElem.querySelector(`[src$="${imageSrcFilename}"]`) as HTMLElement;
         }
+
+        if (target !== null && target.parentElement !== null && target.parentElement !== undefined) {
+          if (image.class !== 'visible-illustration') {
+            // Prepend arrow to the image/icon in the reading text and scroll into view
+            const tmpImage: HTMLImageElement = new Image();
+            tmpImage.src = 'assets/images/ms_arrow_right.svg';
+            tmpImage.alt = 'ms arrow right image';
+            tmpImage.classList.add('inl_ms_arrow');
+            target.parentElement.insertBefore(tmpImage, target);
+            this.scrollElementIntoView(tmpImage);
+            setTimeout(function() {
+              target.parentElement.removeChild(tmpImage);
+            }, 5000);
+          } else {
+            this.scrollElementIntoView(target, 'top', 75);
+          }
+        } else {
+          console.log('Unable to find target when scrolling to image position in text, imageSrc:', imageSrc);
+        }
+      } catch (e) {
+        console.log('Error scrolling to image position in text.');
       }
-    } catch (e) {
-      console.log('Error scrolling to image position in text.');
+    } else {
+      console.log('Empty src-attribute for image, unable to scroll to position in text.');
     }
   }
 

@@ -220,7 +220,11 @@ export class ElasticSearchPage {
   ionViewWillEnter() {
     console.log('will enter elastic search');
     this.events.publish('ionViewWillEnter', this.constructor.name)
-    this.events.publish('tableOfContents:unSelectSelectedTocItem', true)
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'elastic-search'});
+    this.events.publish('SelectedItemInMenu', {
+      menuID: 'elasticSearch',
+      component: 'elastic-search'
+    });
     this.getParamsData();
   }
 

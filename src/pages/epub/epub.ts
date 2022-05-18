@@ -35,11 +35,10 @@ export class EpubPage {
     private analyticsService: AnalyticsService,
     private userSettingsService: UserSettingsService
   ) {
-
+    this.epubFileName = this.params.get('selectedFile');
   }
 
   ionViewDidEnter() {
-    this.epubFileName = this.params.get('selectedFile');
     this.analyticsService.doPageView('Epub');
   }
 
@@ -48,6 +47,12 @@ export class EpubPage {
   }
 
   ionViewWillEnter() {
+    this.events.publish('ionViewWillEnter', this.constructor.name);
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'page-epub'});
+    this.events.publish('SelectedItemInMenu', {
+      menuID: this.epubFileName,
+      component: 'page-epub'
+    });
   }
 
   printContentClasses() {

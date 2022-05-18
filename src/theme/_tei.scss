@@ -2,21 +2,6 @@
     This file contains style rules which are applied exclusively to the contents of the <div> elements with class "tei" on the title page, in the introduction and in the columns on the read page.
 */
 
-/* Widths of div.tei on different screen resolutions */
-@media only screen and (max-width: 600px) {
-    div.teiContainer {
-        max-width: 100%;
-    }
-}
-@media only screen and (min-width: 600px) {
-    div.teiContainer {
-        max-width: 650px;
-    }
-    page-introduction div.teiContainer {
-        max-width: 100%;
-    }
-}
-
 /* Padding below the columns so their height won't end precisely after the texts */
 page-title ion-scroll div.teiContainer,
 page-introduction ion-scroll div.teiContainer,
@@ -32,6 +17,7 @@ div.teiContainer {
     font-size: $text-fontsize-small;
     line-height: 1.6em;
     white-space: normal;
+    max-width: 100%;
 }
 
 /* Textstorlekar. */
@@ -1216,7 +1202,7 @@ div.tei {
         padding: 3px;
         margin-left: 0.25em;
         border: 1px solid rgb(152, 0, 0);
-        background: var(--tooltip-bg-color);
+        background: var(--tooltip-background-color);
         border-radius: $corner-roundness;
         box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
     }
@@ -1928,29 +1914,28 @@ div.tei {
         margin: 0.5em 0;
     }
     .est_figure_graphic,
-    .est_figure_graphic_left {
+    .est_figure_graphic.align_figure_left {
         width: auto;
         max-width: 100%;
         padding-right: 0.5rem;
+        padding-left: 0;
         float: left;
     }
-    .est_figure_graphic_right {
-        width: auto;
-        max-width: 100%;
+    .est_figure_graphic.align_figure_right {
+        padding-right: 0;
         padding-left: 0.5rem;
         float: right;
     }
-    .est_figure_graphic_middle {
-        width: auto;
-        max-width: 100%;
+    .est_figure_graphic.align_figure_middle {
+        padding-right: 0;
+        padding-left: 0;
         margin: 0 auto;
+        float: none;
     }
-
     img.doodle {
         cursor: pointer;
         display: none !important; /* By default doodles in read-text are not shown except when illustrations-view is shown. */
     }
-    
     .pdf_figure_graphic {
         display: inline-block;
         margin: 0 0.5em 0 0;
@@ -1960,7 +1945,7 @@ div.tei {
 /* Style for tooltip boxes. The tooltips also inherit styles from div.tei */
 .tei.toolTip {
     z-index: 1001;
-    background: var(--tooltip-bg-color);
+    background: var(--tooltip-background-color);
     border: 1px solid #222;
     border-radius: $corner-roundness;
     box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
@@ -2038,7 +2023,7 @@ page-introduction div.tei figure {
 .tei.infoOverlay {
     z-index: 1000;
     display: inline-block;
-    background: var(--infoOverlay-bg-color);
+    background: var(--infoOverlay-background-color);
     margin: 0;
     padding: 0;
     max-height: 50%;
@@ -2058,7 +2043,7 @@ page-introduction div.tei figure {
         padding: 12px 16px 8px 16px;
         position: sticky;
 	    top: 0;
-        background: var(--infoOverlay-bg-color);
+        background: var(--infoOverlay-background-color);
 	    width: 100%;
         z-index: 10;
 

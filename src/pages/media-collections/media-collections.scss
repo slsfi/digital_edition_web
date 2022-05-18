@@ -43,13 +43,15 @@ media-collections {
 
   .filters {
     display: flex;
-    width: 60%;
+    width: 100%;
     padding-left: 1.5rem;
     margin-bottom: 1.5rem;
   }
 
   .filters ion-item {
+    max-width: 400px;
     margin-right: 2rem;
+    padding-left: 6px;
   }
 
   img {
@@ -66,18 +68,10 @@ media-collections {
     margin-left: 0.5rem !important;
   }
 
-  @media only screen and (max-width: 1024px) {
-    .filters {
-      width: 100%;
-    }
-  }
-
   @media only screen and (max-width: 800px) {
     .filters {
       display: flex;
       flex-direction: column;
-      width: 100%;
-
     }
 
     .filters ion-item {

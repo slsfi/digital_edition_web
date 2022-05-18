@@ -34,6 +34,9 @@ export class TopMenuComponent {
   public showTopMusicButton: boolean;
   public showColAmount: string;
   public showTopElasticButton: boolean;
+  public showTopSimpleSearchButton: boolean;
+  public showTopContentButton: boolean;
+  public showTopAboutButton: boolean;
 
   constructor(
     private events: Events,
@@ -71,6 +74,24 @@ export class TopMenuComponent {
       this.showTopElasticButton = this.config.getSettings('app.showTopElasticButton');
     } catch ( e ) {
       this.showTopElasticButton = true;
+    }
+
+    try {
+      this.showTopSimpleSearchButton = this.config.getSettings('app.showTopSimpleSearchButton');
+    } catch ( e ) {
+      this.showTopSimpleSearchButton = true;
+    }
+
+    try {
+      this.showTopContentButton = this.config.getSettings('app.showTopContentButton');
+    } catch ( e ) {
+      this.showTopContentButton = true;
+    }
+
+    try {
+      this.showTopAboutButton = this.config.getSettings('app.showTopAboutButton');
+    } catch ( e ) {
+      this.showTopAboutButton = true;
     }
 
     try {

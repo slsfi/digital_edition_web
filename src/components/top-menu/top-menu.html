@@ -13,20 +13,20 @@
                 <button ion-button class="top-menu-button" (click)="front()">
                   <ion-icon name="home"></ion-icon>
                 </button>
-                <button ion-button class="top-menu-button" (click)="content()">
+                <button *ngIf="showTopContentButton" ion-button class="top-menu-button" (click)="content()">
                   {{'TopMenu.Read' | translate }}
                 </button>
-                <button ion-button class="top-menu-button" (click)="about()">
+                <button *ngIf="showTopAboutButton" ion-button class="top-menu-button" (click)="about()">
                   {{'TopMenu.Info' | translate }}
                 </button>
                 <button *ngIf="showTopMusicButton" ion-button class="top-menu-button" (click)="music()">
                   {{'TopMenu.Music' | translate }}
                 </button>
-                <button ion-button class="top-menu-button" (click)="searchApp()" id="searchIcon">
+                <button *ngIf="showTopSimpleSearchButton" ion-button class="top-menu-button simple-search-button" (click)="searchApp()" id="searchIcon">
                   <ion-icon name="search"></ion-icon>
                   <span class="side-title">{{'TopMenu.SimpleSearch' | translate }}</span>
                 </button>
-                <button *ngIf="showTopElasticButton" ion-button class="top-menu-button" (click)="elasticSearch()" id="searchIcon">
+                <button *ngIf="showTopElasticButton" ion-button class="top-menu-button elastic-search-button" (click)="elasticSearch()" id="searchIcon">
                   <ion-icon name="search"></ion-icon>
                   <span class="side-title">{{'TopMenu.AdvancedSearch' | translate }}
                     <strong>(BETA)</strong></span>
@@ -43,14 +43,13 @@
                 </button>
               </ion-buttons>
             </ion-col>
-            <ion-col *ngIf="userSettingsService.isMobile() && !userSettingsService.isDesktop() && !userSettingsService.isTablet()"
-              class="mobile_row">
+            <ion-col *ngIf="userSettingsService.isMobile() && !userSettingsService.isDesktop() && !userSettingsService.isTablet()" class="mobile_row">
               <ion-buttons start>
                 <button ion-button icon-only (click)="toggleSplitPane()" class="enable top-menu-button" isActive="false" id="menuToggle">
                   <ion-icon *ngIf="!splitPaneOpen" name="menu"></ion-icon>
                   <ion-icon *ngIf="splitPaneOpen" name="close"></ion-icon>
                 </button>
-                <button ion-button (click)="searchApp()" class="searchButton" id="searchIcon">
+                <button *ngIf="showTopSimpleSearchButton || showTopElasticButton" ion-button (click)="searchApp()" class="searchButton simple-search-button" id="searchIcon">
                   <ion-icon name="search"></ion-icon>
                 </button>
                 <button *ngIf="showTopURNButton" ion-button (click)="showReference($event)">
@@ -79,19 +78,19 @@
                 <button ion-button class="top-menu-button" (click)="front()">
                   <ion-icon name="home"></ion-icon>
                 </button>
-                <button ion-button class="top-menu-button" (click)="content()">
+                <button *ngIf="showTopContentButton" ion-button class="top-menu-button" (click)="content()">
                   {{'TopMenu.Read' | translate }}
                 </button>
-                <button ion-button class="top-menu-button" (click)="about()">
+                <button *ngIf="showTopAboutButton" ion-button class="top-menu-button" (click)="about()">
                   {{'TopMenu.Info' | translate }}
                 </button>
                 <button *ngIf="showTopMusicButton" ion-button class="top-menu-button" (click)="music()">
                   {{'TopMenu.Music' | translate }}
                 </button>
-                <button ion-button class="top-menu-button" (click)="elasticSearch()" id="searchIcon">
+                <button *ngIf="showTopSimpleSearchButton" ion-button class="top-menu-button simple-search-button" (click)="searchApp()" id="searchIcon">
                   <ion-icon name="search"></ion-icon>
                 </button>
-                <button ion-button class="top-menu-button" (click)="elasticSearch()" id="searchIcon">
+                <button *ngIf="showTopElasticButton" ion-button class="top-menu-button elastic-search-button" (click)="elasticSearch()" id="searchIcon">
                   <ion-icon name="search"></ion-icon>
                   <span class="side-title">{{'TopMenu.AdvancedSearch' | translate }}
                     <strong>(BETA)</strong></span>
@@ -114,7 +113,7 @@
                   <ion-icon *ngIf="!splitPaneOpen" name="menu"></ion-icon>
                   <ion-icon *ngIf="splitPaneOpen" name="close"></ion-icon>
                 </button>
-                <button ion-button (click)="searchApp()" id="searchIcon" end>
+                <button *ngIf="showTopSimpleSearchButton || showTopElasticButton" ion-button (click)="searchApp()" id="searchIcon" class="searchButton simple-search-button" end>
                   <ion-icon name="search"></ion-icon>
                 </button>
                 <button *ngIf="showTopURNButton" ion-button (click)="showReference($event)">

@@ -107,8 +107,7 @@ export class ReadPage /*implements OnDestroy*/ {
   illustrationsViewShown: Boolean = false;
   simpleWorkMetadata: Boolean;
   showURNButton: Boolean;
-
-  maxSingleWindowWidth: Number;
+  backdropWidth: number;
 
   prevItem: any;
   nextItem: any;
@@ -142,14 +141,6 @@ export class ReadPage /*implements OnDestroy*/ {
   songDatafile = '';
 
   views = [];
-  viewsConfig = {
-    slideMaxWidth: 600,
-    slideMinWidth: 450,
-    slidesPerView: 1.2,
-    spaceBetween: 20,
-    centeredSlides: false,
-    pager: false
-  };
 
   show = 'established'; // Mobile tabs
 
@@ -241,6 +232,8 @@ export class ReadPage /*implements OnDestroy*/ {
     };
     this.intervalTimerId = 0;
 
+    this.backdropWidth = 0;
+
     try {
       this.appUsesAccordionToc = this.config.getSettings('AccordionTOC');
     } catch (e) {
@@ -300,8 +293,6 @@ export class ReadPage /*implements OnDestroy*/ {
       }
 
       let link = null;
-
-      this.maxSingleWindowWidth = 95;
 
       this.matches = [];
       this.availableViewModes = [];
@@ -440,7 +431,6 @@ export class ReadPage /*implements OnDestroy*/ {
     } else {
       this.viewCtrl.showBackButton(false);
     }
-
     if (this.params.get('publicationID') === 'first') {
       this.showFirstText();
     } else {
@@ -487,6 +477,7 @@ export class ReadPage /*implements OnDestroy*/ {
         }
       }.bind(this), 1000);
     });
+    this.setFabBackdropWidth();
   }
 
   ngOnDestroy() {
@@ -1296,8 +1287,9 @@ export class ReadPage /*implements OnDestroy*/ {
                 if (containerElem === null) {
                   // Check if a footnotereference link in infoOverlay. This method is used to find the container element if in mobile mode.
                   if (anchorElem.parentElement !== null
-                  && anchorElem.parentElement.hasAttribute('class')
-                  && anchorElem.parentElement.classList.contains('infoOverlayContent')) {
+                  && anchorElem.parentElement.parentElement !== null
+                  && anchorElem.parentElement.parentElement.hasAttribute('class')
+                  && anchorElem.parentElement.parentElement.classList.contains('infoOverlayContent')) {
                     containerElem = document.querySelector('.mobile-mode-read-content > .scroll-content > ion-scroll > .scroll-content');
                   }
                 }
@@ -1633,6 +1625,11 @@ export class ReadPage /*implements OnDestroy*/ {
     this.textType = TextType.ReadText;
   }
 
+  /**
+   * TODO: This function doesn't seem to work as intended. It probably fails because it uses
+   * TODO: legacyId, which should be legacy_id if you look at what the API returns. Most projects
+   * TODO: don't use legacy_id.
+   */
   private showFirstText() {
     this.textType = TextType.ReadText;
     const cache_id = 'col_' + this.params.get('collectionID') + 'first_pub';
@@ -2914,7 +2911,6 @@ export class ReadPage /*implements OnDestroy*/ {
   removeSlide(i) {
     this.removeVariationSortOrderFromService(i);
     this.views.splice(i, 1);
-    this.adjustSlidesSize();
     this.updateURL();
     this.updateCachedViewModes();
   }
@@ -2964,27 +2960,6 @@ export class ReadPage /*implements OnDestroy*/ {
       reorderedArray.splice(toIndex, 0, reorderedArray.splice(fromIndex, 1)[0]);
     }
     return reorderedArray;
-  }
-
-  adjustSlidesSize() {
-
-    let width = this.platform.width();
-    const splitpane = document.querySelector('ion-split-pane');
-    const splitPaneIsVisible = (splitpane.className.indexOf('split-pane-visible') >= 0);
-
-    if (splitPaneIsVisible) {
-      const splitPane = document.querySelector('ion-split-pane ion-menu.split-pane-side.menu-enabled');
-      const dimensions = splitPane.getBoundingClientRect();
-      width = width - dimensions.width;
-    }
-
-    if (width / this.viewsConfig.slideMinWidth < (this.views.length + 1)) {
-      this.viewsConfig.slidesPerView = width / this.viewsConfig.slideMinWidth;
-      this.viewsConfig.centeredSlides = true;
-    } else {
-      this.viewsConfig.slidesPerView = this.views.length + 1;
-      this.viewsConfig.centeredSlides = false;
-    }
   }
 
   swipePrevNext(myEvent) {
@@ -3544,4 +3519,12 @@ export class ReadPage /*implements OnDestroy*/ {
     }
     return varIndex;
   }
+
+  setFabBackdropWidth() {
+    const pageReadElem = document.querySelector('page-read > ion-content > div.scroll-content');
+    if (pageReadElem) {
+      this.backdropWidth = pageReadElem.scrollWidth;
+    }
+  }
+
 }

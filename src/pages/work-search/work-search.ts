@@ -101,6 +101,11 @@ export class WorkSearchPage {
   }
   ionViewWillEnter() {
     this.events.publish('ionViewWillEnter', this.constructor.name);
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'work-search'});
+    this.events.publish('SelectedItemInMenu', {
+      menuID: 'workSearch',
+      component: 'work-search'
+    });
     // Try to remove META-Tags
     this.metadataService.clearHead();
     // Add the new META-Tags

@@ -198,6 +198,12 @@ export class DigitalEditionsApp {
   galleryInReadMenu = true;
   splitReadCollections: any[];
 
+  tocPersonSearchSelected = false;
+  tocPlaceSearchSelected = false;
+  tocTagSearchSelected = false;
+  tocWorkSearchSelected = false;
+  tocHomeSelected = false;
+
   constructor(
     private platform: Platform,
     public translate: TranslateService,
@@ -318,6 +324,7 @@ export class DigitalEditionsApp {
       this.availableEpubs = [];
       this.epubNames = [];
     }
+    this.unSelectAllEpubsInToc();
 
     try {
       this.defaultSelectedItem = this.config.getSettings('defaultSelectedItem');
@@ -699,6 +706,7 @@ export class DigitalEditionsApp {
         if (this.aboutMenuMarkdownAccordion !== undefined) {
           this.aboutMenuMarkdownAccordion.ngOnChanges(aboutMarkdownMenu.children);
         }
+        this.events.publish('aboutMarkdownTOC:loaded', this.aboutOptionsMarkdown.toc);
         this.cdRef.detectChanges();
       }).bind(this)();
     }
@@ -816,7 +824,7 @@ export class DigitalEditionsApp {
     this.events.subscribe('exitActiveCollection', () => {
       this.enableContentMenu();
       // Try to close all the expanded Collections
-      try{
+      try {
         // Check if we have many Read Collections, if so, minimize all
         if ( this.splitReadCollections.length > 1 ) {
           for ( let i = 0; i < this.splitReadCollections.length; i++ ) {
@@ -824,16 +832,45 @@ export class DigitalEditionsApp {
           }
           this.cdRef.detectChanges();
         }
-      } catch ( e ){
-
+      } catch ( e ) {
       }
     });
 
     // Unselect accordion items that doesn't belong to current menu
     this.events.subscribe('SelectedItemInMenu', (menu) => {
+      // console.log('subscription to selected toc item in app.component activated', menu);
       if (menu.component === 'table-of-contents-accordion-component' || this.currentAccordionMenu !== menu.menuID) {
         this.unSelectAllMusicAccordionItems();
         this.unSelectCollectionWithChildrenPdf();
+        this.tocHomeSelected = false;
+        this.tocPersonSearchSelected = false;
+        this.tocPlaceSearchSelected = false;
+        this.tocTagSearchSelected = false;
+        this.tocWorkSearchSelected = false;
+        this.unSelectAllMediaCollectionsInToc();
+        this.unSelectAllEpubsInToc();
+      }
+      if (menu && menu.component && menu.menuID) {
+        if (menu.component === 'home') {
+          this.tocHomeSelected = true;
+        } else if (menu.component === 'person-search') {
+          this.tocPersonSearchSelected = true;
+        } else if (menu.component === 'place-search') {
+          this.tocPlaceSearchSelected = true;
+        } else if (menu.component === 'tag-search') {
+          this.tocTagSearchSelected = true;
+        } else if (menu.component === 'work-search') {
+          this.tocWorkSearchSelected = true;
+        } else if (menu.component === 'media-collections') {
+          this.selectMediaCollectionInToc('all');
+          this.simpleAccordionsExpanded.galleryAccordion = true;
+        } else if (menu.component === 'media-collection') {
+          this.selectMediaCollectionInToc(menu.menuID);
+          this.simpleAccordionsExpanded.galleryAccordion = true;
+        } else if (menu.component === 'page-epub') {
+          this.selectEpubInToc(menu.menuID);
+          this.simpleAccordionsExpanded.epubs = true;
+        }
       }
     });
     this.events.subscribe('musicAccordion:SetSelected', (data) => {
@@ -925,12 +962,21 @@ export class DigitalEditionsApp {
               data.itemId = String(data.collectionID) + '_' + String(data.publicationID);
             }
 
+            let dataPublicationID = data.publicationID;
+            if (dataPublicationID) {
+              dataPublicationID = Number(dataPublicationID);
+            }
+            let dataCollectionID = data.collectionID;
+            if (dataCollectionID) {
+              dataCollectionID = Number(dataCollectionID);
+            }
+
             collection.accordionToc = {
               toc: data.tocItems.children,
               searchTocItem: true,
               searchItemId: data.itemId,
-              searchPublicationId: Number(data.publicationID),
-              searchCollectionId: Number(data.collectionID),
+              searchPublicationId: dataPublicationID,
+              searchCollectionId: dataCollectionID,
               searchTitle:  null
             }
             collection.accordionToc.toc = data.tocItems.children;
@@ -1006,6 +1052,10 @@ export class DigitalEditionsApp {
           let firstAboutPageID = this.aboutOptionsMarkdown.toc[0].id;
           if ( this.config.getSettings('StaticPagesMenus')[0]['initialAboutPage'] !== undefined ) {
             firstAboutPageID = this.language + '-' + this.config.getSettings('StaticPagesMenus')[0]['initialAboutPage'];
+          } else {
+            if (this.aboutOptionsMarkdown.toc[0].type === 'folder') {
+              firstAboutPageID = this.aboutOptionsMarkdown.toc[0].children[0].id;
+            }
           }
           this.openStaticPage(firstAboutPageID);
         } else {
@@ -1039,10 +1089,24 @@ export class DigitalEditionsApp {
         component: 'app-component'
       });
 
+      this.enableContentMenu();
+      // Try to close all the expanded accordions in toc
+      try {
+        for ( let i = 0; i < this.splitReadCollections.length; i++ ) {
+          this.simpleAccordionsExpanded.collectionsAccordion[i] = false;
+        }
+        this.simpleAccordionsExpanded.aboutMenuAccordion = false;
+        this.simpleAccordionsExpanded.epubs = false;
+        this.simpleAccordionsExpanded.galleryAccordion = false;
+        this.simpleAccordionsExpanded.musicAccordion = false;
+        this.simpleAccordionsExpanded.pdfAccordion = false;
+        this.simpleAccordionsExpanded.songTypesAccordion = false;
+        this.cdRef.detectChanges();
+      } catch ( e ) {
+      }
       const params = {};
       const nav = this.app.getActiveNavs();
       nav[0].setRoot('HomePage', params, { animate: false });
-      nav[0].goToRoot({animate: false});
     });
 
     this.events.subscribe('DigitalEditionList:recieveData', (data) => {
@@ -1396,11 +1460,59 @@ export class DigitalEditionsApp {
 
   openFirstPage(collection: DigitalEdition) {
     const params = { tocItem: null, fetch: false, collection: { title: collection.title } };
-    params['collectionID'] = collection.id
+    params['collectionID'] = collection.id;
+
+/*
     try {
       params['publicationID'] = String(this.tocItems['children'][0]['itemId']).split('_')[1];
     } catch (e) {
       params['publicationID'] = '1';
+    }
+    */
+
+    // Search the toc for the first item with itemId. This method is not perfect:
+    // it's depth first and changes the top level branch every time a sub branch reaches
+    // its end without finding an itemId. But it should be sufficient in practice.
+    const tocLength = this.tocItems['children'].length;
+    let currentTocTier = 0;
+    let currentTocItem = this.tocItems['children'][0];
+    let tocItemId = this.tocItems['children'][0]['itemId'];
+    while (tocItemId === undefined) {
+      if (currentTocItem['children'] !== undefined) {
+        currentTocItem = currentTocItem['children'][0];
+        if (currentTocItem !== undefined) {
+          tocItemId = currentTocItem['itemId'];
+        } else {
+          tocItemId = undefined;
+        }
+      } else if ( (currentTocItem['children'] === undefined && currentTocTier < tocLength - 1)
+      || (currentTocItem === undefined && currentTocTier < tocLength - 1) ) {
+        currentTocTier = currentTocTier + 1;
+        currentTocItem = this.tocItems['children'][currentTocTier];
+        if (currentTocItem !== undefined) {
+          tocItemId = currentTocItem['itemId'];
+        } else {
+          tocItemId = undefined;
+        }
+      } else if ( (currentTocItem === undefined && currentTocTier >= tocLength)
+      || (currentTocItem['children'] === undefined && currentTocTier >= tocLength) ) {
+        break;
+      }
+    }
+
+    if (tocItemId !== undefined) {
+      const itemIdparts = String(tocItemId).split('_');
+      if (itemIdparts.length > 2) {
+        params['publicationID'] = itemIdparts[1];
+        params['chapterID'] = itemIdparts[2];
+      } else if (itemIdparts.length > 1) {
+        params['publicationID'] = itemIdparts[1];
+        params['chapterID'] = 'nochapter';
+      } else {
+        params['publicationID'] = 'first';
+      }
+    } else {
+      params['publicationID'] = 'first';
     }
 
     const nav = this.app.getActiveNavs();
@@ -1486,13 +1598,7 @@ export class DigitalEditionsApp {
   }
 
   openMediaCollections() {
-    this.mediaCollectionOptions['accordionToc']['toc'].forEach(element => {
-      if (element.id === 'all') {
-        element.highlight = true;
-      } else {
-        element.highlight = false;
-      }
-    });
+    this.selectMediaCollectionInToc('all');
     const params = {};
     const nav = this.app.getActiveNavs();
     nav[0].setRoot('media-collections', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
@@ -1509,6 +1615,48 @@ export class DigitalEditionsApp {
     const nav = this.app.getActiveNavs();
     const params = { mediaCollectionId: gallery.id, mediaTitle: this.makeTitle(gallery.image_path), fetch: false };
     nav[0].push('media-collection', params, { animate: true, direction: 'forward', animation: 'ios-transition' });
+  }
+
+  selectMediaCollectionInToc(id: string) {
+    if (id && this.mediaCollectionOptions
+    && this.mediaCollectionOptions['accordionToc'] && this.mediaCollectionOptions['accordionToc']['toc']) {
+      this.mediaCollectionOptions['accordionToc']['toc'].forEach(element => {
+        if (id === element.id) {
+          element.highlight = true;
+        } else {
+          element.highlight = false;
+        }
+      });
+    }
+  }
+
+  unSelectAllMediaCollectionsInToc() {
+    if (this.mediaCollectionOptions
+    && this.mediaCollectionOptions['accordionToc'] && this.mediaCollectionOptions['accordionToc']['toc']) {
+      this.mediaCollectionOptions['accordionToc']['toc'].forEach(element => {
+        element.highlight = false;
+      });
+    }
+  }
+
+  selectEpubInToc(filename: string) {
+    if (filename && this.epubNames.length) {
+      this.epubNames.forEach(name => {
+        if (this.availableEpubs[name]['filename'] === filename) {
+          this.availableEpubs[name]['highlight'] = true;
+        } else {
+          this.availableEpubs[name]['highlight'] = false;
+        }
+      });
+    }
+  }
+
+  unSelectAllEpubsInToc() {
+    if (this.epubNames.length) {
+      this.epubNames.forEach(name => {
+        this.availableEpubs[name]['highlight'] = false;
+      });
+    }
   }
 
   public front() {

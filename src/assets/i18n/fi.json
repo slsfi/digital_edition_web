@@ -134,7 +134,8 @@
         "Title": "Kansi"
       },
       "ShowAll": "Näytä kaikki",
-      "ShowSearchResults": "Esiintymät"
+      "ShowSearchResults": "Esiintymät",
+      "AddColumn": "Lisää sarake"
   },
   "About": {
       "Title": "Topeliuksesta ja editiosta",

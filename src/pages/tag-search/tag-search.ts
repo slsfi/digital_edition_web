@@ -211,7 +211,11 @@ export class TagSearchPage {
     this.metadataService.addKeywords();
 
     this.events.publish('ionViewWillEnter', this.constructor.name);
-    this.events.publish('tableOfContents:unSelectSelectedTocItem', true);
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'tag-search'});
+    this.events.publish('SelectedItemInMenu', {
+      menuID: 'tagSearch',
+      component: 'tag-search'
+    });
     this.selectMusicAccordionItem();
   }
 
