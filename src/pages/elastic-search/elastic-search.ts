@@ -488,14 +488,14 @@ export class ElasticSearchPage {
    * Current workaround for this is to increate hitsPerPage to 20.
    */
   loadMore(e) {
-    this.infiniteLoading = true
-    this.from += this.hitsPerPage
+    this.infiniteLoading = true;
+    this.from += this.hitsPerPage;
 
     // Search and let ion-infinite-scroll know that it can re-enable itself.
     this.search({
       done: () => {
-        this.infiniteLoading = false
-        e.complete()
+        this.infiniteLoading = false;
+        // e.complete()
       },
     })
   }

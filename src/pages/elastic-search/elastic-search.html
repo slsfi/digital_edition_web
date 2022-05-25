@@ -45,7 +45,7 @@
 
         <!-- Add search field -->
         <ion-row class="add-search-bar-wrapper">
-          <button (click)="addSearchField()" ion-button icon-start>
+          <button (click)="addSearchField()" ion-button>
             {{'ElasticSearch.SearchField' | translate}}
           </button>
         </ion-row>
@@ -200,10 +200,18 @@
               </ion-list>
             </ion-row>
             <!-- Infinite scroll detector and spinner -->
+            <!--
             <ion-row class="infinite-scroll-wrapper">
               <ion-infinite-scroll *ngIf="canShowHits() && hasMore()" (ionInfinite)="loadMore($event)" threshold="300px">
                 <ion-infinite-scroll-content loadingSpinner="crescent"></ion-infinite-scroll-content>
               </ion-infinite-scroll>
+            </ion-row>
+            -->
+            <ion-row class="load-more-hits-wrapper" *ngIf="canShowHits() && hasMore()">
+              <ion-spinner *ngIf="infiniteLoading" class="loading" name="crescent"></ion-spinner>
+              <div *ngIf="!infiniteLoading">
+                <button ion-button (click)="loadMore($event)">{{"ElasticSearch.LoadMoreHits" | translate}}</button>
+              </div>
             </ion-row>
           </ion-col>
         </ion-row>
