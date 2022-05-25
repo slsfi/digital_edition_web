@@ -8,6 +8,7 @@ page-elastic-search {
     width: 100%;
     max-width: 400px;
     min-width: 300px;
+    margin-right: 12px;
   }
 
   ion-col.search-result-column {
@@ -90,12 +91,12 @@ page-elastic-search {
     align-content: center;
 
     button.button {
-      font-size: 0.8125rem;
-      height: 1.875rem !important;
+      font-size: 0.875rem;
+      height: 2rem !important;
     }
 
     ion-spinner.loading {
-      margin-bottom: 2rem;
+      padding: 1rem 0;
     }
   }
 
@@ -281,9 +282,9 @@ page-elastic-search {
   }
 
   .hits-heading {
-    padding-left: 32px;
-    font-size: 2rem;
-    margin-top: 0.2rem !important;
+    padding-left: 1rem;
+    font-size: 1.75rem;
+    margin-top: 0.375rem !important;
   }
 
   .searchbar-wrapper {
@@ -301,7 +302,8 @@ page-elastic-search {
     }
 
     .removableSearchInput {
-      width: calc(100% - 25px);
+      width: 100%;
+      text-indent: 0;
     }
 
     ion-icon {
@@ -314,12 +316,25 @@ page-elastic-search {
       left: 0;
       background-color: #fff;
       padding: 4px 8px 3px 10px;
+    }
   }
 
+  .additional-searchbar {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+
+    ion-label.and-search-input-label {
+      margin: 0 8px 0 0;
+      width: fit-content;
+      max-width: fit-content;
+    }
+
     ion-icon.removeIcon {
+      position: static;
       cursor: pointer;
-      top: 4px;
-      right: 0;
+      margin-left: 8px;
       font-size: 1.375rem !important;
     }
   }
