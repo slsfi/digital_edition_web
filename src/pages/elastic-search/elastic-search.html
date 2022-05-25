@@ -149,65 +149,62 @@
         <!-- Hits column -->
         <ion-row class="hits-column">
           <ion-col>
-            <ion-content scrollY="true" class="hits-scroll-content">
-              <!-- Selected facets row -->
-              <ion-row class="selectedFacetGroups">
-                <div *ngFor="let groupKey of objectKeys(selectedFacetGroups)">
-                  <ion-toolbar *ngIf="hasSelectedFacetsByGroup(groupKey)">
-                    <ion-title>{{groupKey | translate}}</ion-title>
-                    <button
-                      *ngFor="let facet of objectValues(selectedFacetGroups[groupKey])"
-                      (click)="unselectFacet(groupKey, facet)"
-                      class="selectedFacetButton"
-                      ion-button icon-end small
-                    >
-                      {{getEllipsisString(facet.key | translate)}}
-                      <ion-icon name="close"></ion-icon>
-                    </button>
-                  </ion-toolbar>
-                </div>
-              </ion-row>
+            <!-- Selected facets row -->
+            <ion-row class="selectedFacetGroups">
+              <ng-container *ngFor="let groupKey of objectKeys(selectedFacetGroups)">
+                <ion-toolbar *ngIf="hasSelectedFacetsByGroup(groupKey)">
+                  <ion-title>{{groupKey | translate}}</ion-title>
+                  <button
+                    *ngFor="let facet of objectValues(selectedFacetGroups[groupKey])"
+                    (click)="unselectFacet(groupKey, facet)"
+                    class="selectedFacetButton"
+                    ion-button icon-end small>
+                    {{getEllipsisString(facet.key | translate)}}
+                    <ion-icon name="close"></ion-icon>
+                  </button>
+                </ion-toolbar>
+              </ng-container>
+            </ion-row>
 
-              <!-- Search status row -->
-              <ion-row class="searchStatus">
-                <!-- Search status -->
-                <div *ngIf="loading">
-                  <ion-spinner class="loading" name="crescent"></ion-spinner>
-                </div>
-              </ion-row>
+            <!-- Search status row -->
+            <ion-row class="searchStatus">
+              <!-- Search status -->
+              <div *ngIf="loading">
+                <ion-spinner class="loading" name="crescent"></ion-spinner>
+              </div>
+            </ion-row>
 
-              <!-- Hits row -->
-              <ion-row>
-                <ion-list *ngIf="canShowHits() && total > 0">
-                  <ng-container *ngFor="let hit of hits">
-                    <ion-item (click)="open(hit)" class="hitItem">
-                      <ion-label>
-                        <div class="word_count" *ngIf="cleanQueries.length > 0">
-                          <label>{{'ElasticSearch.WordCount' | translate}}</label>
-                          <span *ngFor="let query of cleanQueries">
-                            <p *ngIf="hit.count && hit.count[query] && hit.count[query][0]">
-                              {{query}}: {{hit.count[query][0][hit.id]['term_freq']}}
-                            </p>
-                            <p *ngIf="!hit.count || !hit.count[query] || !hit.count[query][0]">
-                              {{query}}: {{'ElasticSearch.NoWordHits' | translate}}
-                            </p>
-                          </span>
-                        </div>
-                        <p class="itemHeading">{{getHeading(hit.source)}}</p>
-                        <p>{{hit.type | translate}}, {{getSubHeading(hit.source)}}</p>
-                        <p *ngFor="let highlight of hit.highlight?.textDataIndexed" [innerHTML]="'...' + highlight + '...'" class="highlight"></p>
-                      </ion-label>
-                    </ion-item>
-                  </ng-container>
-                </ion-list>
-              </ion-row>
-              <!-- Infinite scroll detector and spinner -->
-              <ion-row class="infinite-scroll-wrapper">
-                <ion-infinite-scroll *ngIf="canShowHits() && hasMore()" (ionInfinite)="loadMore($event)" threshold="300px">
-                  <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
-                </ion-infinite-scroll>
-              </ion-row>
-            </ion-content>
+            <!-- Hits row -->
+            <ion-row>
+              <ion-list *ngIf="canShowHits() && total > 0">
+                <ng-container *ngFor="let hit of hits">
+                  <ion-item (click)="open(hit)" class="hitItem">
+                    <ion-label>
+                      <div class="word_count" *ngIf="cleanQueries.length > 0">
+                        <label>{{'ElasticSearch.WordCount' | translate}}</label>
+                        <span *ngFor="let query of cleanQueries">
+                          <p *ngIf="hit.count && hit.count[query] && hit.count[query][0]">
+                            {{query}}: {{hit.count[query][0][hit.id]['term_freq']}}
+                          </p>
+                          <p *ngIf="!hit.count || !hit.count[query] || !hit.count[query][0]">
+                            {{query}}: {{'ElasticSearch.NoWordHits' | translate}}
+                          </p>
+                        </span>
+                      </div>
+                      <p class="itemHeading">{{getHeading(hit.source)}}</p>
+                      <p>{{hit.type | translate}}, {{getSubHeading(hit.source)}}</p>
+                      <p *ngFor="let highlight of hit.highlight?.textDataIndexed" [innerHTML]="'...' + highlight + '...'" class="highlight"></p>
+                    </ion-label>
+                  </ion-item>
+                </ng-container>
+              </ion-list>
+            </ion-row>
+            <!-- Infinite scroll detector and spinner -->
+            <ion-row class="infinite-scroll-wrapper">
+              <ion-infinite-scroll *ngIf="canShowHits() && hasMore()" (ionInfinite)="loadMore($event)" threshold="300px">
+                <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+              </ion-infinite-scroll>
+            </ion-row>
           </ion-col>
         </ion-row>
       </ion-col>
