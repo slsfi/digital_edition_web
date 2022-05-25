@@ -175,8 +175,8 @@
             </ion-row>
 
             <!-- Hits row -->
-            <ion-row>
-              <ion-list *ngIf="canShowHits() && total > 0">
+            <ion-row class="searchHits">
+              <ion-list class="hits-list-wrapper" *ngIf="canShowHits() && total > 0">
                 <ng-container *ngFor="let hit of hits">
                   <ion-item (click)="open(hit)" class="hitItem">
                     <ion-label>
@@ -207,11 +207,11 @@
               </ion-infinite-scroll>
             </ion-row>
             -->
-            <ion-row class="load-more-hits-wrapper" *ngIf="canShowHits() && hasMore()">
+            <ion-row class="load-more-hits-wrapper" *ngIf="canShowHits() && hasMore() && total > 0">
               <ion-spinner *ngIf="infiniteLoading" class="loading" name="crescent"></ion-spinner>
-              <div *ngIf="!infiniteLoading">
-                <button ion-button (click)="loadMore($event)">{{"ElasticSearch.LoadMoreHits" | translate}}</button>
-              </div>
+              <ng-container *ngIf="!infiniteLoading">
+                <button ion-button (click)="loadMore($event)">{{"ElasticSearch.ShowMoreHits" | translate}}</button>
+              </ng-container>
             </ion-row>
           </ion-col>
         </ion-row>

@@ -486,6 +486,7 @@ export class ElasticSearchPage {
   /**
    * TODO: Make infinite scroll should work with the super long facets column.
    * Current workaround for this is to increate hitsPerPage to 20.
+   * ! Infinite-scroll commented out, using button for loading more matches for now.
    */
   loadMore(e) {
     this.infiniteLoading = true;
@@ -495,7 +496,7 @@ export class ElasticSearchPage {
     this.search({
       done: () => {
         this.infiniteLoading = false;
-        // e.complete()
+        // e.complete() // uncomment this line if using infine-scroll to load more search matches
       },
     })
   }

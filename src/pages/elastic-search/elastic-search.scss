@@ -12,6 +12,7 @@ page-elastic-search {
 
   ion-col.search-result-column {
     width: 100%;
+    max-width: 1000px;
   }
   
   ion-icon.settings-icon.icon {
@@ -44,6 +45,10 @@ page-elastic-search {
     height: 100%;
   }
 
+  .hits-column ion-list.hits-list-wrapper {
+    width: 100%;
+  }
+
   .hits-column ion-item.hitItem {
     background-color: transparent;
   }
@@ -54,6 +59,10 @@ page-elastic-search {
 
   .hits-column ion-item.hitItem:hover {
     background-color: rgba(var(--elastic-search-hititem-hover-background-color-rgb), var(--elastic-search-hititem-hover-background-color-alpha)) !important;
+  }
+
+  .hits-column ion-row.searchHits {
+    margin-bottom: 1rem;
   }
 
   .infinite-scroll-wrapper {
@@ -79,6 +88,15 @@ page-elastic-search {
     justify-content: center;
     align-items: center;
     align-content: center;
+
+    button.button {
+      font-size: 0.8125rem;
+      height: 1.875rem !important;
+    }
+
+    ion-spinner.loading {
+      margin-bottom: 2rem;
+    }
   }
 
   .date-histogram-wrapper {

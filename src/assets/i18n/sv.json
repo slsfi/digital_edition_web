@@ -282,7 +282,8 @@
     "WordCount": "Antal träffar (estimat)",
     "NoWordHits": "inga träffar",
     "NoFacetOptions": "Inga sökord",
-    "Suggestions": "Förslag på filtrering"
+    "Suggestions": "Förslag på filtrering",
+    "ShowMoreHits": "Visa fler sökträffar"
   },
   "Filter":{
     "personTypes": "Personkategori",

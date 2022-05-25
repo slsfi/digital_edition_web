@@ -234,7 +234,8 @@
     "WordCount": "Matches (estimate)",
     "NoWordHits": "no matches",
     "NoFacetOptions": "No options",
-    "Suggestions": "Filter suggestions"
+    "Suggestions": "Filter suggestions",
+    "ShowMoreHits": "Show more search matches"
   },
   "MediaCollections": {
     "MediaCollections": "Faksimilsamlingar",
