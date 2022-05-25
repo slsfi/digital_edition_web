@@ -58,7 +58,10 @@ page-elastic-search {
 
   .infinite-scroll-wrapper {
     width: 100%;
-    height: 100%;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
 
     ion-infinite-scroll-content {
       align-items: center;
@@ -66,7 +69,7 @@ page-elastic-search {
     }
 
     .infinite-loading {
-      margin-top: 12px;
+      margin: auto;
     }
   }
 
