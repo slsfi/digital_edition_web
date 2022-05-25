@@ -3,30 +3,28 @@
         <div middle class="facsimile_button_group">
             <div class="buttons">
                 <div class="action_buttons">
-                    <button *ngIf="images.length > 1" ion-fab color="primary" mini (click)="previous()">
+                    <button *ngIf="images.length > 1" ion-fab mini (click)="previous()">
                         <ion-icon name="arrow-back"></ion-icon>
                     </button>
-                    <button *ngIf="backsides.length>1" ion-fab color="primary" mini
-                        (click)="backside = !backside">
+                    <button *ngIf="backsides.length>1" ion-fab mini (click)="backside = !backside">
                         <ion-icon name="repeat"></ion-icon>
                     </button>
-                    <button *ngIf="images.length > 1" ion-fab color="primary" mini (click)="next()">
+                    <button *ngIf="images.length > 1" ion-fab mini (click)="next()">
                         <ion-icon name="arrow-forward"></ion-icon>
                     </button>
                     <button ion-fab mini (click)="rotate()">
                       <ion-icon name="refresh"></ion-icon>
                     </button>
-                    <button *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()" ion-fab color="primary" mini (click)="zoomIn()">
+                    <button *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()" ion-fab mini (click)="zoomIn()">
                         <ion-icon name="add"></ion-icon>
                     </button>
-                    <button *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()" ion-fab color="primary" mini (click)="zoomOut()">
+                    <button *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()" ion-fab mini (click)="zoomOut()">
                         <ion-icon name="remove"></ion-icon>
                     </button>
                     <button ion-fab mini (click)="resetFacsimile()">
                         <ion-icon name="undo"></ion-icon>
                     </button>
-                    <button *ngIf="(descriptions && descriptions[activeImage]) || (imageTitles && imageTitles[activeImage])" ion-fab
-                        color="primary" mini (click)="showAbout()">
+                    <button *ngIf="(descriptions && descriptions[activeImage]) || (imageTitles && imageTitles[activeImage])" ion-fab mini (click)="showAbout()">
                         <ion-icon name="information"></ion-icon>
                     </button>
                     <button ion-fab mini (click)="cancel()">

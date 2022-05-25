@@ -65,8 +65,8 @@ page-read {
   }
 
   .segment-activated {
-    background-color: color($colors, primary) !important;
-    color: $white-color !important;
+    background-color: var(--segment-activated-background-color) !important;
+    color: var(--segment-activated-text-color) !important;
   }
 
   .readpage-occurrences-mobile {
@@ -117,12 +117,12 @@ page-read {
       min-width: 500px;
 
       ion-card {
-        background-color: var(--read-columns-background-color);
+        background-color: var(--page-read-columns-background-color);
         margin-bottom: 0;
 
         /*the bar with a heading for the column*/
         .read-columns__title {
-          background: var(--secondary-color);
+          background: var(--page-read-columns-header-background-color);
           font-size: 0.75rem;
           font-weight: bold;
           padding: 16px 22px;
@@ -154,9 +154,14 @@ page-read {
       top:-5px;
     }
 
+    ion-fab-list button.fab.fab-in-list {
+      background-color: #f4f4f4;
+      color: #000;
+    }
+
     .add-column {
-      background: var(--add-read-column-background-color);
-      color: var(--add-read-column-text-color);
+      background: var(--page-read-add-column-background-color);
+      color: var(--page-read-add-column-text-color);
       margin: 10px 25px 0 25px;
       width: 30px;
       display: flex;
@@ -342,7 +347,7 @@ page-read .mobile-mode-read-content .scroll-zoom-wrapper {
 /* Adjust padding and background color of text and facsimile columns in mobile mode. */
 page-read div.mobile-mode-established {
   padding: 12px;
-  background-color: var(--read-columns-background-color);
+  background-color: var(--page-read-columns-background-color);
 }
 page-read div.mobile-mode-facsimiles {
 
@@ -351,7 +356,7 @@ page-read div.mobile-mode-facsimiles {
     padding-bottom: 0 !important;
   }
   ion-scroll.external_urls_wrapper {
-    background-color: var(--read-columns-background-color);
+    background-color: var(--page-read-columns-background-color);
     height: 100vh !important;
     max-height: calc(100vh - 280px) !important;
 

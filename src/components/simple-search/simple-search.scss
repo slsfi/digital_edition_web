@@ -1,7 +1,9 @@
 simple-search {
     em{
         font-style: normal;
-        background-color: $search-match-color;
+        background-color: var(--simple-search-search-match-highlight-background-color);
+        color: var(--simple-search-search-match-highlight-text-color);
+        padding: 1px 3px;
     }
 
     h2{
@@ -17,10 +19,11 @@ simple-search {
         display: block;
         white-space: normal;
         clear: both;
+        line-height: 1.5;
     }
 
     .searchItem:hover {
-        background-color: color($colors, secondary);
+        background-color: rgba(var(--simple-search-hititem-hover-background-color-rgb), var(--simple-search-hititem-hover-background-color-alpha));
         cursor: pointer;
     }
 
@@ -154,7 +157,7 @@ simple-search {
             }
 
             &.selected-suggestion {
-                background-color: color($colors, secondary) !important;
+                background-color: var(--simple-search-selected-search-suggestion-background-color) !important;
             }
         }
 
@@ -190,6 +193,7 @@ simple-search {
 
         ion-item.item {
             padding-left: 8px;
+            background-color: var(--simple-search-hititem-background-color);
         }
         .searchItem ion-label.label {
             margin-right: 0;

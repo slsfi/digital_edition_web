@@ -270,7 +270,8 @@
     "SearchField": "Lägg till sökfält",
     "From": "Från",
     "To": "Till",
-    "Search": "Sök",
+    "Search": "Söktext",
+    "ANDSearch": "och söktext",
     "Years": "År",
     "ShowMore": "Visa mera",
     "ShowLess": "Visa mindre",
@@ -279,7 +280,8 @@
     "OldestFirst": "Äldst först",
     "NewestFirst": "Nyast först",
     "WordCount": "Antal träffar (estimat)",
-    "NoWordHits": "inga träffar"
+    "NoWordHits": "inga träffar",
+    "NoFacetOptions": "Inga sökord"
   },
   "Filter":{
     "personTypes": "Personkategori",

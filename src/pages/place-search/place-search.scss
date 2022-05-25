@@ -4,6 +4,21 @@ page-place-search {
         margin-top: 50px;
     }
 
+    ion-content.content ion-list.list {
+        ion-item.item {
+            background-color: var(--index-list-item-background-color);
+
+            ion-item-divider.item-divider {
+                background-color: var(--index-list-divider-background-color);
+                border-bottom: 0;
+
+                .item-inner {
+                    border-bottom: 0;
+                }
+            }
+        }
+    }
+
     ion-icon.settings-icon.icon {
 		font-size: 1.8em;
     }
@@ -68,6 +83,7 @@ page-place-search {
 
     .searchbar {
         color: white;
+        max-width: 650px;
     }
 
 }

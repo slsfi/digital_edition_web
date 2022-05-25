@@ -217,19 +217,23 @@
     "workOccurrencesDisabled": "Occurrences for works are disabled."
   },
   "ElasticSearch": {
-    "NoHits": "No matches",
-    "Found": "Found",
+    "NoHits": "No search matches",
+    "Found": "Matches:",
     "SearchField": "Add search field",
     "From": "From",
     "To": "To",
-    "Search": "Search",
+    "Search": "Search text",
+    "ANDSearch": "and search text",
     "Years": "Year",
     "ShowMore": "Show more",
     "ShowLess": "Show less",
     "SortBy": "Sort by",
     "Relevance": "Relevans",
     "OldestFirst": "Oldest first",
-    "NewestFirst": "Newest first"
+    "NewestFirst": "Newest first",
+    "WordCount": "Matches (estimate)",
+    "NoWordHits": "no matches",
+    "NoFacetOptions": "No options"
   },
   "MediaCollections": {
     "MediaCollections": "Faksimilsamlingar",

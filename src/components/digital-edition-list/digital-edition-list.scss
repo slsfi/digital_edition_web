@@ -52,7 +52,7 @@ digital-editions-list {
 
     .download_link {
       border-bottom: 1px solid;
-      border-bottom-color: color($colors, primary) !important;
+      border-bottom-color: var(--primary-color) !important;
     }
 
     .download_link p {

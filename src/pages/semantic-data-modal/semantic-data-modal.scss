@@ -9,7 +9,7 @@ page-semantic-data-modal {
 	}
 
 	ion-item:hover{
-		background-color: color($colors, secondary);
+		background-color: var(--secondary-color);
 	}
 
 	.close-button {
@@ -31,11 +31,11 @@ page-semantic-data-modal {
         border-radius: 0px !important;
 	}
 
-	.segment-activated{
-		background-color: color($colors, primary) !important;
-		color: $white-color !important;
+	.segment-activated {
+		background-color: var(--segment-activated-background-color) !important;
+        color: var(--segment-activated-text-color) !important;
 	}
 	.header{
-		border-bottom: 1px solid color($colors, primary);
+		border-bottom: 1px solid var(--primary-color);
 	}
 }

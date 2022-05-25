@@ -16,6 +16,7 @@ import { UserSettingsService } from '../../app/services/settings/user-settings.s
 import { ElasticSearchService } from '../../app/services/elastic-search/elastic-search.service'
 import { noUndefined } from '@angular/compiler/src/util'
 import { AnalyticsService } from '../../app/services/analytics/analytics.service'
+import { TranslateService } from '@ngx-translate/core';
 
 /*
 
@@ -105,7 +106,9 @@ export class ElasticSearchPage {
 
   groupsOpenByDefault: any;
 
-  debouncedSearch = debounce(this.search, 500)
+  debouncedSearch = debounce(this.search, 500);
+
+  sortSelectOptions: Record<string, any> = {};
 
   constructor(
     public navCtrl: NavController,
@@ -117,6 +120,7 @@ export class ElasticSearchPage {
     private app: App,
     private platform: Platform,
     protected textService: TextService,
+    public translate: TranslateService,
     public loadingCtrl: LoadingController,
     public elastic: ElasticSearchService,
     protected storage: Storage,
@@ -138,6 +142,15 @@ export class ElasticSearchPage {
     } catch (e) {
       console.error('Failed to load set facet groups open by default. Configuration error.', e)
     }
+
+    this.translate.get('ElasticSearch.SortBy').subscribe(
+      translation => {
+        this.sortSelectOptions = {
+          title: translation,
+          cssClass: 'custom-select-alert'
+        };
+      }, error => { }
+    );
   }
 
   private getParamsData() {

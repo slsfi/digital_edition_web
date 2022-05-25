@@ -2,13 +2,13 @@
 <ion-grid>
   <ion-row align-items-end>
     <ion-col>
-      <ion-item>
+      <ion-item class="year-input">
         <ion-label floating>{{'ElasticSearch.From' | translate}}</ion-label>
         <ion-input type="number" [(ngModel)]="from" (keydown.enter)="onChange()"></ion-input>
       </ion-item>
     </ion-col>
     <ion-col>
-      <ion-item>
+      <ion-item class="year-input">
         <ion-label floating>{{'ElasticSearch.To' | translate}}</ion-label>
         <ion-input type="number" [(ngModel)]="to" (keydown.enter)="onChange()"></ion-input>
       </ion-item>

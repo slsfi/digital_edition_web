@@ -3,6 +3,16 @@ page-elastic-search {
   .scroll-content {
     margin-top: 50px;
   }
+
+  ion-col.search-and-facet-column {
+    width: 100%;
+    max-width: 400px;
+    min-width: 300px;
+  }
+
+  ion-col.search-result-column {
+    width: 100%;
+  }
   
   ion-icon.settings-icon.icon {
     font-size: 1.8em;
@@ -11,10 +21,6 @@ page-elastic-search {
   .word_count span{
     display: inline-block;
     padding-left: 1rem;
-  }
-
-  ion-item.hitItem:hover{
-    background-color: rgba(color($colors, primary), 0.3) !important;
   }
 
   ul {
@@ -30,17 +36,29 @@ page-elastic-search {
   }
 
   .info-toolbar {
-    width: calc(100% - 27%);
+    width: 100%;
     position: absolute;
     right: 0;
   }
 
   .hits-column {
-    width: calc(100% - 27%);
+    width: 100%;
     height: 100%;
     position: absolute;
     right: 0;
     top: 75px;
+  }
+
+  .hits-column ion-item.hitItem {
+    background-color: transparent;
+  }
+
+  .hits-column ion-item.hitItem + ion-item.hitItem {
+    border-top: 1px solid var(--elastic-search-hititem-divider-color);
+  }
+
+  .hits-column ion-item.hitItem:hover {
+    background-color: rgba(var(--elastic-search-hititem-hover-background-color-rgb), var(--elastic-search-hititem-hover-background-color-alpha)) !important;
   }
 
   .infinite-scroll-wrapper {
@@ -51,9 +69,9 @@ page-elastic-search {
   }
 
   .date-histogram-wrapper {
-    border: 0.5px solid rgba(190, 183, 155, 0.4);
+    border: 1px solid var(--elastic-search-facet-border-color);
     border-radius: 3px;
-    margin: 20px 0;
+    margin: 20px 0 0 0;
     padding: 10px;
 
     .years-heading {
@@ -63,16 +81,34 @@ page-elastic-search {
 
   .sort-by-wrapper {
 
+    ion-item.item {
+      background-color: transparent;
+    }
+
     .input-wrapper {
       justify-content: flex-end;
     }
 
     .sort-by-label {
       flex: 0;
+      margin: 0;
+      padding: 13px 8px 13px 13px;
+      border-top-left-radius: 3px;
+      border-bottom-left-radius: 3px;
+      border: 1px solid var(--elastic-search-facet-border-color);
+      border-right: 0;
+      background-color: var(--elastic-search-facet-background-color);
+      color: #6e6e6e;
     }
 
     .sort-by-select {
-      width: 300px;
+      max-width: 300px;
+      padding: 13px;
+      border-top-right-radius: 3px;
+      border-bottom-right-radius: 3px;
+      border: 1px solid var(--elastic-search-facet-border-color);
+      border-left: 0;
+      background-color: var(--elastic-search-facet-background-color);
     }
   }
 
@@ -108,8 +144,8 @@ page-elastic-search {
       color: $blackish-color;
 
       em {
-        background-color: color($colors, primary);
-        color: white;
+        background-color: var(--elastic-search-search-match-highlight-background-color);
+        color: var(--elastic-search-search-match-highlight-text-color);
         padding: 0.2rem 6px;
         line-height: 2.4rem;
         font-style: normal;
@@ -163,26 +199,25 @@ page-elastic-search {
     }
 
     .selectedFacetButton {
-      font-size: 0.9rem !important;
-      height: 28px !important;
+      height: 1.875rem !important;
+      font-size: 0.8125rem;
 
       ion-icon {
-        font-size: 1.5em !important;
+        font-size: 1.375rem;
       }
     }
   }
 
   .facet-group-wrapper {
+    ion-item.item {
+      background-color: var(--elastic-search-facet-background-color);
+    }
+
     .facet-item {
       margin: 5px 0;
       padding-bottom: 1rem;
-
-      &.Type,
-      &.Genre,
-      &.Collection {
-        border: 0.5px solid rgba(190, 183, 155, 0.4);
-        border-radius: 3px;
-      }
+      border: 1px solid var(--elastic-search-facet-border-color);
+      border-radius: 3px;
     }
 
     .accordion-item {
@@ -205,15 +240,16 @@ page-elastic-search {
       }
 
       .show-more-button {
-        font-size: .8rem !important;
-        height: 2rem !important;
-        letter-spacing: 1px;
+        height: 1.875rem !important;
+        font-size: 0.8125rem;
       }
     }
   }
 
   .hits-heading {
     padding-left: 32px;
+    font-size: 2rem;
+    margin-top: 0.4rem;
   }
 
   .hits-scroll-content {
@@ -236,9 +272,7 @@ page-elastic-search {
 
     .searchInput {
       resize: none;
-      height: 32px;
-      text-indent: 25px;
-      line-height: 1.3rem;
+      text-indent: 26px;
       width: 100%;
       border-radius: 2px;
       padding: 6px 8px;
@@ -255,26 +289,26 @@ page-elastic-search {
     }
 
     ion-icon.searchIcon {
-      font-size: 1.2rem !important;
-      top: 7px;
-      left: 14px;
-    }
+      font-size: 1.25rem !important;
+      top: 0;
+      left: 0;
+      background-color: #fff;
+      padding: 4px 8px 3px 10px;
+  }
 
     ion-icon.removeIcon {
       cursor: pointer;
-      top: 6px;
+      top: 4px;
       right: 0;
-      font-size: 1.4rem !important;
+      font-size: 1.375rem !important;
     }
   }
 
   .add-search-bar-wrapper {
-    button {
-      height: 32px !important;
-      padding: 0 16px;
+    button.button {
+      height: 1.875rem !important;
       margin: auto 0;
-      font-size: .8rem !important;
-      letter-spacing: 1px;
+      font-size: 0.8125rem;
     }
   }
 }
