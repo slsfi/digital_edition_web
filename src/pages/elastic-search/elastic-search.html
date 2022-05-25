@@ -53,7 +53,7 @@
         <!-- Suggested facets -->
         <ion-row *ngIf="hasSuggestedFacets()" class="selectedFacetGroups">
           <ion-col>
-            <p class="itemHeading">{{'Suggestions' | translate}}</p>
+            <p class="suggested-facets-heading">{{'ElasticSearch.Suggestions' | translate}}</p>
             <div *ngFor="let groupKey of objectKeys(suggestedFacetGroups)">
               <ion-toolbar *ngIf="hasSuggestedFacetsByGroup(groupKey)">
                 <ion-title>{{groupKey | translate}}</ion-title>
@@ -202,7 +202,7 @@
             <!-- Infinite scroll detector and spinner -->
             <ion-row class="infinite-scroll-wrapper">
               <ion-infinite-scroll *ngIf="canShowHits() && hasMore()" (ionInfinite)="loadMore($event)" threshold="300px">
-                <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+                <ion-infinite-scroll-content loadingSpinner="crescent"></ion-infinite-scroll-content>
               </ion-infinite-scroll>
             </ion-row>
           </ion-col>

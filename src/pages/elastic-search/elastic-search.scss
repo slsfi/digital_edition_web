@@ -37,16 +37,11 @@ page-elastic-search {
 
   .info-toolbar {
     width: 100%;
-    position: absolute;
-    right: 0;
   }
 
   .hits-column {
     width: 100%;
     height: 100%;
-    position: absolute;
-    right: 0;
-    top: 75px;
   }
 
   .hits-column ion-item.hitItem {
@@ -62,10 +57,17 @@ page-elastic-search {
   }
 
   .infinite-scroll-wrapper {
-    width: calc(100% - 27%);
-    position: absolute;
-    right: 0;
-    bottom: 0;
+    width: 100%;
+    height: 100%;
+
+    ion-infinite-scroll-content {
+      align-items: center;
+      align-content: center;
+    }
+
+    .infinite-loading {
+      margin-top: 12px;
+    }
   }
 
   .date-histogram-wrapper {
@@ -119,6 +121,7 @@ page-elastic-search {
 
   .searchStatus {
     color: $grey-color;
+    justify-content: center;
   }
 
   ion-item.item.item-block.item-md {
@@ -194,6 +197,12 @@ page-elastic-search {
       color: #000;
     }
 
+    .suggested-facets-heading {
+      font-size: 1.375rem;
+      line-height: 1;
+      margin-bottom: 0.75rem;
+    }
+
     .selectedFacetButton {
       height: 1.875rem !important;
       font-size: 0.8125rem;
@@ -246,20 +255,6 @@ page-elastic-search {
     padding-left: 32px;
     font-size: 2rem;
     margin-top: 0.2rem !important;
-  }
-
-  .hits-scroll-content {
-    overflow: auto;
-    margin-top: 0;
-    height: 100% !important;
-
-    .scroll-content::-webkit-scrollbar {
-      display: none !important;
-    }
-
-    .scroll-content {
-      margin-top: 0 !important;
-    }
   }
 
   .searchbar-wrapper {

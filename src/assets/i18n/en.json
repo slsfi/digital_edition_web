@@ -233,7 +233,8 @@
     "NewestFirst": "Newest first",
     "WordCount": "Matches (estimate)",
     "NoWordHits": "no matches",
-    "NoFacetOptions": "No options"
+    "NoFacetOptions": "No options",
+    "Suggestions": "Filter suggestions"
   },
   "MediaCollections": {
     "MediaCollections": "Faksimilsamlingar",

@@ -266,7 +266,7 @@
   },
   "ElasticSearch": {
     "NoHits": "Din sökning matchade inga dokument",
-    "Found": "Hittades",
+    "Found": "Sökträffar:",
     "SearchField": "Lägg till sökfält",
     "From": "Från",
     "To": "Till",
@@ -281,7 +281,8 @@
     "NewestFirst": "Nyast först",
     "WordCount": "Antal träffar (estimat)",
     "NoWordHits": "inga träffar",
-    "NoFacetOptions": "Inga sökord"
+    "NoFacetOptions": "Inga sökord",
+    "Suggestions": "Förslag på filtrering"
   },
   "Filter":{
     "personTypes": "Personkategori",

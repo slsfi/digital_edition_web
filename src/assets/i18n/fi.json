@@ -288,7 +288,8 @@
     "NewestFirst": "Uusimmat ensin",
     "WordCount": "Osumia (arvio)",
     "NoWordHits": "ei osumia",
-    "NoFacetOptions": "Ei hakusanoja"
+    "NoFacetOptions": "Ei hakusanoja",
+    "Suggestions": "Suodatusehdotuksia"
   },
   "Type": "Tekstityyppi",
   "Genre": "Tekstilaji",
