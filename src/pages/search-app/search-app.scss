@@ -33,6 +33,7 @@ page-search-app {
 
 	.segment-activated {
 		background-color: var(--segment-activated-background-color) !important;
+        border-color: var(--segment-activated-background-color) !important;
         color: var(--segment-activated-text-color) !important;
 	}
 
