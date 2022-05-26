@@ -1,21 +1,21 @@
-import { Component, ViewChild, ChangeDetectorRef } from '@angular/core'
+import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import { IonicPage, NavController, NavParams, ModalController, App, Platform,
-  LoadingController, ToastController, Content, Events, ViewController } from 'ionic-angular'
-import get from 'lodash/get'
-import debounce from 'lodash/debounce'
-import size from 'lodash/size'
+  LoadingController, ToastController, Content, Events, ViewController } from 'ionic-angular';
+import get from 'lodash/get';
+import debounce from 'lodash/debounce';
+import size from 'lodash/size';
 
-import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service'
-import { LanguageService } from '../../app/services/languages/language.service'
-import { ConfigService } from '@ngx-config/core'
-import { TextService } from '../../app/services/texts/text.service'
-import { SingleOccurrence } from '../../app/models/single-occurrence.model'
-import { Storage } from '@ionic/storage'
-import { UserSettingsService } from '../../app/services/settings/user-settings.service'
-import { ElasticSearchService } from '../../app/services/elastic-search/elastic-search.service'
-import { noUndefined } from '@angular/compiler/src/util'
-import { AnalyticsService } from '../../app/services/analytics/analytics.service'
+import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
+import { LanguageService } from '../../app/services/languages/language.service';
+import { ConfigService } from '@ngx-config/core';
+import { TextService } from '../../app/services/texts/text.service';
+import { SingleOccurrence } from '../../app/models/single-occurrence.model';
+import { Storage } from '@ionic/storage';
+import { UserSettingsService } from '../../app/services/settings/user-settings.service';
+import { ElasticSearchService } from '../../app/services/elastic-search/elastic-search.service';
+import { noUndefined } from '@angular/compiler/src/util';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { TranslateService } from '@ngx-translate/core';
 
 /*
@@ -56,8 +56,8 @@ results according to their different categorization, so it’s important to alwa
 */
 
 interface SearchOptions {
-  done?: Function
-  initialSearch?: boolean
+  done?: Function;
+  initialSearch?: boolean;
 }
 
 /**
@@ -74,35 +74,35 @@ interface SearchOptions {
 })
 export class ElasticSearchPage {
 
-  @ViewChild(Content) content: Content
+  @ViewChild(Content) content: Content;
   @ViewChild('myInput') myInput;
 
   // Helper to loop objects
-  objectKeys = Object.keys
-  objectValues = Object.values
+  objectKeys = Object.keys;
+  objectValues = Object.values;
 
-  loading = false
-  infiniteLoading = false
-  showFilter = true
-  queries: string[] = ['']
-  cleanQueries: string[] = ['']
-  hits: object[] = []
+  loading = false;
+  infiniteLoading = false;
+  showFilter = true;
+  queries: string[] = [''];
+  cleanQueries: string[] = [''];
+  hits: object[] = [];
   termData: object[] = [];
-  hitsPerPage = 20
-  aggregations: object = {}
-  facetGroups: FacetGroups = {}
-  selectedFacetGroups: FacetGroups = {}
-  suggestedFacetGroups: FacetGroups = {}
+  hitsPerPage = 20;
+  aggregations: object = {};
+  facetGroups: FacetGroups = {};
+  selectedFacetGroups: FacetGroups = {};
+  suggestedFacetGroups: FacetGroups = {};
 
   showAllFacets = false;
   showAllFor = {};
 
   // -1 when there a search hasn't returned anything yet.
-  total = -1
-  from = 0
-  sort = ''
+  total = -1;
+  from = 0;
+  sort = '';
 
-  range: TimeRange
+  range: TimeRange;
 
   groupsOpenByDefault: any;
 
@@ -133,14 +133,14 @@ export class ElasticSearchPage {
     console.log('constructing elastic search');
 
     try {
-      this.hitsPerPage = this.config.getSettings('ElasticSearch.hitsPerPage')
+      this.hitsPerPage = this.config.getSettings('ElasticSearch.hitsPerPage');
     } catch (e) {
-      console.error('Failed to load Elastic Search Page. Configuration error.', e)
+      console.error('Failed to load Elastic Search Page. Configuration error.', e);
     }
     try {
-      this.groupsOpenByDefault = this.config.getSettings('ElasticSearch.groupOpenByDefault')
+      this.groupsOpenByDefault = this.config.getSettings('ElasticSearch.groupOpenByDefault');
     } catch (e) {
-      console.error('Failed to load set facet groups open by default. Configuration error.', e)
+      console.error('Failed to load set facet groups open by default. Configuration error.', e);
     }
 
     this.translate.get('ElasticSearch.SortBy').subscribe(
@@ -155,9 +155,9 @@ export class ElasticSearchPage {
 
   private getParamsData() {
     try {
-      const query = this.navParams.get('query')
+      const query = this.navParams.get('query');
       if (query !== ':query') {
-        this.queries[0] = query
+        this.queries[0] = query;
       }
     } catch (e) {
       console.log('Problems parsing query parameters...');
@@ -165,7 +165,7 @@ export class ElasticSearchPage {
   }
 
   ionViewDidLoad() {
-    this.search({initialSearch: true})
+    this.search({initialSearch: true});
     // Open type by default
     setTimeout(() => {
       const facetGroups = Object.keys(this.facetGroups);
@@ -227,7 +227,7 @@ export class ElasticSearchPage {
   }
 
   ionViewWillLeave() {
-    this.events.publish('ionViewWillLeave', this.constructor.name)
+    this.events.publish('ionViewWillLeave', this.constructor.name);
   }
 
   ionViewWillEnter() {
@@ -242,7 +242,7 @@ export class ElasticSearchPage {
   }
 
   open(hit) {
-    this.events.publish('searchHitOpened', hit)
+    this.events.publish('searchHitOpened', hit);
     const params = { tocItem: null, fetch: true, collection: { title: hit.source.TitleIndexed } };
     const path = hit.source.path;
     const filename = path.split('/').pop();
@@ -269,77 +269,74 @@ export class ElasticSearchPage {
     switch (hit.source.xml_type) {
       case 'est': {
         params['urlviews'] = 'established';
-        params['views'].push({type: 'established'})
+        params['views'].push({type: 'established'});
         break;
       }
       case 'ms': {
         params['urlviews'] = 'manuscripts';
         params['views'].push({type: 'manuscripts', id: var_ms_id});
-         break;
+        break;
       }
       case 'com': {
         params['urlviews'] = 'comments';
-        params['views'].push({type: 'comments'})
-         break;
+        params['views'].push({type: 'comments'});
+        break;
       }
       case 'var': {
         params['urlviews'] = 'variations';
         params['views'].push({type: 'variations', id: var_ms_id});
-
         break;
       }
       case 'inl': {
         params['urlviews'] = 'introduction';
         params['views'].push({type: 'introduction', id: var_ms_id});
-
         break;
       }
       case 'tit': {
         params['urlviews'] = 'title';
         params['views'].push({type: 'title', id: var_ms_id});
-
         break;
       }
       default: {
         params['urlviews'] = 'established';
-        params['views'].push({type: 'established'})
+        params['views'].push({type: 'established'});
          // statements;
-         break;
+        break;
       }
-   }
-   if (hit.source.xml_type !== 'tit') {
-    params['selectedItemInAccordion'] = false;
-    this.app.getRootNav().push('read', params);
-   } else {
-    this.app.getRootNav().push('title-page', params);
-   }
+    }
+    if (hit.source.xml_type !== 'tit') {
+      params['selectedItemInAccordion'] = false;
+      this.app.getRootNav().push('read', params);
+    } else {
+      this.app.getRootNav().push('title-page', params);
+    }
   }
 
   /**
    * https://stackoverflow.com/questions/46991497/how-properly-bind-an-array-with-ngmodel-in-angular-4
    */
   trackByIdx(index: number): number {
-    return index
+    return index;
   }
 
   /**
    * Triggers a new search and clears selected facets.
    */
   onQueryChange() {
-    this.autoExpandSearchfields()
-    this.reset()
-    this.loading = true
-    this.debouncedSearch()
-    this.cf.detectChanges()
+    this.autoExpandSearchfields();
+    this.reset();
+    this.loading = true;
+    this.debouncedSearch();
+    this.cf.detectChanges();
   }
 
   /**
    * Triggers a new search with selected facets.
    */
   onFacetsChanged() {
-    this.cf.detectChanges()
-    this.reset()
-    this.search()
+    this.cf.detectChanges();
+    this.reset();
+    this.search();
   }
 
   /**
@@ -348,18 +345,18 @@ export class ElasticSearchPage {
   onRangeChange(from: number, to: number) {
     if (from && to) {
       // Certain date range
-      this.range = {from, to}
+      this.range = {from, to};
 
-      this.cf.detectChanges()
-      this.reset()
-      this.search()
+      this.cf.detectChanges();
+      this.reset();
+      this.search();
 
     } else if (!from && !to) {
       // All time
-      this.range = null
-      this.cf.detectChanges()
-      this.reset()
-      this.search()
+      this.range = null;
+      this.cf.detectChanges();
+      this.reset();
+      this.search();
 
     } else {
       // Only one year selected, so do nothing
@@ -371,18 +368,18 @@ export class ElasticSearchPage {
    * Sorting changed so trigger new query.
    */
   onSortByChanged() {
-    this.reset()
-    this.search()
+    this.reset();
+    this.search();
   }
 
   /**
    * Resets search results.
    */
   reset() {
-    this.hits = []
-    this.from = 0
-    this.total = -1
-    this.suggestedFacetGroups = {}
+    this.hits = [];
+    this.from = 0;
+    this.total = -1;
+    this.suggestedFacetGroups = {};
   }
 
   /**
@@ -390,9 +387,9 @@ export class ElasticSearchPage {
    * Use debouncedSearch to wait for additional key presses when use types.
    */
   private search({ done, initialSearch }: SearchOptions = {}) {
-    console.log(`search from ${this.from} to ${this.from + this.hitsPerPage}`)
+    console.log(`search from ${this.from} to ${this.from + this.hitsPerPage}`);
 
-    this.loading = true
+    this.loading = true;
 
     // Fetch hits
     this.elastic.executeSearchQuery({
@@ -409,8 +406,8 @@ export class ElasticSearchPage {
       sort: this.parseSortForQuery(),
     })
     .subscribe((data: any) => {
-      this.loading = false
-      this.total = data.hits.total.value
+      this.loading = false;
+      this.total = data.hits.total.value;
 
       // Append new hits to this.hits array.
       Array.prototype.push.apply(this.hits, data.hits.hits.map((hit: any) => ({
@@ -418,7 +415,7 @@ export class ElasticSearchPage {
         source: hit._source,
         highlight: hit.highlight,
         id: hit._id
-      })))
+      })));
 
       this.cleanQueries = [];
       if (this.queries.length > 0 && this.queries[0] !== undefined && this.queries[0].length > 0 ) {
@@ -430,16 +427,16 @@ export class ElasticSearchPage {
           this.elastic.executeTermQuery(this.cleanQueries, [data.hits.hits[item]['_id']])
           .subscribe((termData: any) => {
             this.termData = termData;
-            const elementsIndex = this.hits.findIndex(element => element['id'] === data.hits.hits[item]['_id'] )
-            this.hits[elementsIndex] = {...this.hits[elementsIndex], count: termData}
+            const elementsIndex = this.hits.findIndex(element => element['id'] === data.hits.hits[item]['_id'] );
+            this.hits[elementsIndex] = {...this.hits[elementsIndex], count: termData};
           })
         }
       }
 
       if (done) {
-        done()
+        done();
       }
-    })
+    });
 
     // Fetch aggregation data for facets.
     this.elastic.executeAggregationQuery({
@@ -448,10 +445,10 @@ export class ElasticSearchPage {
       range: this.range,
     })
     .subscribe((data: any) => {
-      console.log('aggregation data', data)
+      console.log('aggregation data', data);
 
-      this.populateFacets(data.aggregations)
-    })
+      this.populateFacets(data.aggregations);
+    });
 
     // Fetch suggestions
     // TODO: Currently only works with the first search field.
@@ -460,23 +457,23 @@ export class ElasticSearchPage {
         query: this.queries[0],
       })
       .subscribe((data: any) => {
-        console.log('suggestions data', data)
-        this.populateSuggestions(data.aggregations)
-      })
+        console.log('suggestions data', data);
+        this.populateSuggestions(data.aggregations);
+      });
     }
   }
 
   private parseSortForQuery() {
     if (!this.sort) {
-      return
+      return;
     }
 
-    const [key, direction] = this.sort.split('.')
-    return [{ [key]: direction }]
+    const [key, direction] = this.sort.split('.');
+    return [{ [key]: direction }];
   }
 
   hasMore() {
-    return this.total > this.from + this.hitsPerPage
+    return this.total > this.from + this.hitsPerPage;
   }
 
   analyticsEvent(type, term) {
@@ -498,42 +495,42 @@ export class ElasticSearchPage {
         this.infiniteLoading = false;
         // e.complete() // uncomment this line if using infine-scroll to load more search matches
       },
-    })
+    });
   }
 
   canShowHits() {
-    return (!this.loading || this.infiniteLoading) && (this.queries[0] || this.range || this.hasSelectedFacets())
+    return (!this.loading || this.infiniteLoading) && (this.queries[0] || this.range || this.hasSelectedFacets());
   }
 
   hasSelectedFacets() {
-    return Object.values(this.facetGroups).some(facets => Object.values(facets).some(facet => facet.selected))
+    return Object.values(this.facetGroups).some(facets => Object.values(facets).some(facet => facet.selected));
   }
 
   hasSelectedFacetsByGroup(groupKey: string) {
-    return size(this.selectedFacetGroups[groupKey]) > 0
+    return size(this.selectedFacetGroups[groupKey]) > 0;
   }
 
   hasSelectedNormalFacets() {
     return Object.keys(this.facetGroups).some(facetGroupKey =>
       facetGroupKey !== 'Type' && facetGroupKey !== 'Years' && Object.values(this.facetGroups[facetGroupKey]).some(facet => facet.selected)
-    )
+    );
   }
 
   hasFacets(facetGroupKey: string) {
-    return size(this.facetGroups[facetGroupKey]) > 0
+    return size(this.facetGroups[facetGroupKey]) > 0;
   }
 
   hasSuggestedFacetsByGroup(groupKey: string) {
-    return size(this.suggestedFacetGroups[groupKey]) > 0
+    return size(this.suggestedFacetGroups[groupKey]) > 0;
   }
 
   hasSuggestedFacets() {
-    return Object.values(this.suggestedFacetGroups).some(facets => size(facets) > 0)
+    return Object.values(this.suggestedFacetGroups).some(facets => size(facets) > 0);
   }
 
   getFacets(facetGroupKey: string): Facet[] {
-    const facets = this.facetGroups[facetGroupKey]
-    return facets ? Object.values(facets) : []
+    const facets = this.facetGroups[facetGroupKey];
+    return facets ? Object.values(facets) : [];
   }
 
   /**
@@ -541,44 +538,44 @@ export class ElasticSearchPage {
    * so it should not be modified here.
    */
   updateFacet(facetGroupKey: string, facet: Facet) {
-    const facets = this.facetGroups[facetGroupKey] || {}
-    facets[facet.key] = facet
-    this.facetGroups[facetGroupKey] = facets
+    const facets = this.facetGroups[facetGroupKey] || {};
+    facets[facet.key] = facet;
+    this.facetGroups[facetGroupKey] = facets;
 
-    this.updateSelectedFacets(facetGroupKey, facet)
+    this.updateSelectedFacets(facetGroupKey, facet);
 
-    this.onFacetsChanged()
+    this.onFacetsChanged();
     this.analyticsEvent('facet', String(facet.key));
   }
 
   selectSuggestedFacet(facetGroupKey: string, facet: Facet) {
-    this.suggestedFacetGroups = {}
-    this.queries = ['']
+    this.suggestedFacetGroups = {};
+    this.queries = [''];
 
-    facet.selected = true
-    this.updateFacet(facetGroupKey, facet)
+    facet.selected = true;
+    this.updateFacet(facetGroupKey, facet);
   }
 
   unselectFacet(facetGroupKey: string, facet: Facet) {
-    facet.selected = false
-    this.updateFacet(facetGroupKey, facet)
+    facet.selected = false;
+    this.updateFacet(facetGroupKey, facet);
   }
 
   private updateSelectedFacets(facetGroupKey: string, facet: Facet) {
-    const facetGroup = this.selectedFacetGroups[facetGroupKey] || {}
+    const facetGroup = this.selectedFacetGroups[facetGroupKey] || {};
 
     // Set or delete facet from selected facets
     if (facet.selected) {
-      facetGroup[facet.key] = facet
+      facetGroup[facet.key] = facet;
     } else {
-      delete facetGroup[facet.key]
+      delete facetGroup[facet.key];
     }
 
     // Set or delete facet group from selected facet groups
     if (size(facetGroup) === 0) {
-      delete this.selectedFacetGroups[facetGroupKey]
+      delete this.selectedFacetGroups[facetGroupKey];
     } else {
-      this.selectedFacetGroups[facetGroupKey] = facetGroup
+      this.selectedFacetGroups[facetGroupKey] = facetGroup;
     }
   }
 
@@ -588,19 +585,19 @@ export class ElasticSearchPage {
   private populateFacets(aggregations: AggregationsData) {
     // Get aggregation keys that are ordered in config.json.
     this.elastic.getAggregationKeys().forEach(facetGroupKey => {
-      const newFacets = this.convertAggregationsToFacets(aggregations[facetGroupKey])
+      const newFacets = this.convertAggregationsToFacets(aggregations[facetGroupKey]);
       if (this.facetGroups[facetGroupKey]) {
         Object.entries(this.facetGroups[facetGroupKey]).forEach(([facetKey, existingFacet]: [string, any]) => {
-          const newFacet = newFacets[facetKey]
+          const newFacet = newFacets[facetKey];
           if (newFacet) {
-            existingFacet.doc_count = newFacet.doc_count
+            existingFacet.doc_count = newFacet.doc_count;
           } else if (this.hasSelectedFacetsByGroup(facetGroupKey)) {
             // Unselected facets aren't updating because the terms bool.filter in the query
             // prevents unselected aggregations from appearing in the results.
             // TODO: Fix this by separating search and aggregation query.
           } else {
             delete this.facetGroups[facetGroupKey][facetKey];
-           // existingFacet.doc_count = 0
+           // existingFacet.doc_count = 0;
           }
         })
         Object.entries(newFacets).forEach(([facetKey, existingFacet]: [string, any]) => {
@@ -609,9 +606,9 @@ export class ElasticSearchPage {
           }
         });
       } else {
-        this.facetGroups[facetGroupKey] = newFacets
+        this.facetGroups[facetGroupKey] = newFacets;
       }
-    })
+    });
   }
 
   /**
@@ -619,55 +616,55 @@ export class ElasticSearchPage {
    */
   private populateSuggestions(aggregations: AggregationsData) {
     Object.entries(aggregations).forEach(([aggregationKey, value]: [string, any]) => {
-      this.suggestedFacetGroups[aggregationKey] = this.convertAggregationsToFacets(value)
-    })
+      this.suggestedFacetGroups[aggregationKey] = this.convertAggregationsToFacets(value);
+    });
   }
 
   /**
    * Convert aggregation data to facets data.
    */
   private convertAggregationsToFacets(aggregation: AggregationData): Facets {
-    const facets = {}
+    const facets = {};
     // Get buckets from either unfiltered or filtered aggregation.
-    const buckets = aggregation.buckets || aggregation.filtered.buckets
+    const buckets = aggregation.buckets || aggregation.filtered.buckets;
 
     buckets.forEach((facet: Facet) => {
-      facets[facet.key] = facet
-    })
-    return facets
+      facets[facet.key] = facet;
+    });
+    return facets;
   }
 
   getPublicationName(source: any) {
-    return get(source, 'publication_data[0].pubname')
+    return get(source, 'publication_data[0].pubname');
   }
 
   getTitle(source: any) {
-    return (source.TitleIndexed || source.name || '').trim()
+    return (source.TitleIndexed || source.name || '').trim();
   }
 
   getGenre(source: any) {
-    return get(source, 'publication_data[0].genre', source.collection_name)
+    return get(source, 'publication_data[0].genre', source.collection_name);
   }
 
   private formatISO8601DateToLocale(date: string) {
-    return date && new Date(date).toLocaleDateString('fi-FI')
+    return date && new Date(date).toLocaleDateString('fi-FI');
   }
 
   private getDate(source: any) {
-    return get(source, 'publication_data[0].original_publication_date', this.formatISO8601DateToLocale(source.orig_date_certain))
+    return get(source, 'publication_data[0].original_publication_date', this.formatISO8601DateToLocale(source.orig_date_certain));
   }
 
   private filterEmpty(array: any[]) {
-    return array.filter(str => str).join(', ')
+    return array.filter(str => str).join(', ');
   }
 
   getHeading(source: any) {
     switch (source.type) {
       case 'brev':
-        return this.filterEmpty([this.getTitle(source), this.getPublicationName(source)])
+        return this.filterEmpty([this.getTitle(source), this.getPublicationName(source)]);
 
       default:
-        return this.filterEmpty([this.getTitle(source), this.getPublicationName(source)])
+        return this.filterEmpty([this.getTitle(source), this.getPublicationName(source)]);
     }
   }
 
@@ -675,14 +672,14 @@ export class ElasticSearchPage {
     return this.filterEmpty([
       this.getGenre(source),
       source.type !== 'brev' && this.getDate(source)
-    ])
+    ]);
   }
 
   getEllipsisString(str: string, max = 15) {
     if (!str || str.length <= max) {
-      return str
+      return str;
     } else {
-      return str.substr(0, max) + '...'
+      return str.substring(0, max) + '...';
     }
   }
 
@@ -705,29 +702,29 @@ export class ElasticSearchPage {
   }
 
   addSearchField() {
-    this.queries.push('')
+    this.queries.push('');
   }
 
   removeSearchField(i) {
-    this.queries.splice(i, 1)
+    this.queries.splice(i, 1);
   }
 
   autoExpandSearchfields() {
-    const inputs: NodeListOf<HTMLElement> = document.querySelectorAll('.searchInput')
+    const inputs: NodeListOf<HTMLElement> = document.querySelectorAll('.searchInput');
 
     for (let i = 0; i < inputs.length; i++) {
-      const borderTop = measure(inputs[i], 'border-top-width')
-      const borderBottom = measure(inputs[i], 'border-bottom-width')
+      const borderTop = measure(inputs[i], 'border-top-width');
+      const borderBottom = measure(inputs[i], 'border-bottom-width');
 
-      inputs[i].style.height = ''
-      inputs[i].style.height = borderTop + inputs[i].scrollHeight + borderBottom + 'px'
+      inputs[i].style.height = '';
+      inputs[i].style.height = borderTop + inputs[i].scrollHeight + borderBottom + 'px';
     }
 
     function measure(elem: Element, property) {
       return parseInt(
         window.getComputedStyle(elem, null)
           .getPropertyValue(property)
-          .replace(/px$/, ''))
+          .replace(/px$/, ''));
     }
   }
 }
