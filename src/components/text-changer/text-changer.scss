@@ -4,6 +4,11 @@ text-changer {
   white-space: nowrap;
   margin: 0 1.5rem;
   width: 100%;
+  color: var(--text-color-on-secondary-color-background);
+
+  button {
+    color: var(--text-color-on-secondary-color-background);
+  }
 
   .forwardBackward {
     display: flex;
@@ -133,12 +138,17 @@ text-changer.text-changer-mobile-view {
     max-width: 100vw;
     width: 100%;
     z-index: 1000;
-    background-color: rgba(99,99,99, 0.4);
+    background-color: var(--text-changer-background-color-mobile-mode);
+    color: var(--text-changer-text-color-mobile-mode);
     bottom: 0;
     left: 0;
     padding: 10px 1em;
     transform: none;
     height: 50px;
+
+    button {
+      color: var(--text-changer-text-color-mobile-mode);
+    }
 
     .forwardButtonDiv,
     .backwardButtonDiv {

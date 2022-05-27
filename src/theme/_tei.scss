@@ -13,7 +13,7 @@ manuscripts > div.teiContainer {
 }
 
 div.teiContainer {
-    font-family: var(--tei-font-stack);
+    font-family: var(--font-stack-tei);
     font-size: $text-fontsize-small;
     line-height: 1.6em;
     white-space: normal;
@@ -440,7 +440,7 @@ div.tei {
     }
     .stamp, 
     .print {
-        font-family: var(--tei-print-stamp-font-stack);
+        font-family: var(--font-stack-tei-print-stamp);
         letter-spacing: 1px;
     }
     .left {
@@ -507,7 +507,7 @@ div.tei {
     p.milestonePart,
     span.milestoneWhen, 
     span.milestonePart {
-        font-family: var(--app-base-font-stack);
+        font-family: var(--font-stack-app-base);
         font-size: 0.8824em !important;
         color: #4e4e4e;
         background-color: #ececec;
@@ -1079,12 +1079,12 @@ div.tei {
     }
     .tei_note_editorial {
         color: #a66e37 !important;
-        font-family: var(--tei-editorial-note-font-stack);
+        font-family: var(--font-stack-tei-editorial-note);
         font-size: 0.9em;
     }
     .tei_note_editorial_margin {
         color: #a66e37 !important;
-        font-family: var(--tei-editorial-note-font-stack);
+        font-family: var(--font-stack-tei-editorial-note);
         font-size: 0.9em;
         padding-left: 15px;
         padding-right: 15px;
@@ -1630,7 +1630,7 @@ div.tei {
         font-size: 0.88235em;
     }
     .blackletter {
-        font-family: var(--tei-blackletter-font-stack) !important;
+        font-family: var(--font-stack-tei-blackletter) !important;
     }
     p.paragraphDiary {
         margin-top: 0.5em !important;
@@ -1957,7 +1957,7 @@ div.tei {
     line-height: 1.4em;
     text-align: left;
     transform-origin: left top; /* This is necessary for the scaling to work properly if the tooltip wouldn't fit in view otherwise. */
-    font-family: var(--app-base-font-stack);
+    font-family: var(--font-stack-app-base);
 
     /* Styles for (foot)notes in tooltips */
     a.footnoteReference {
@@ -2036,7 +2036,7 @@ page-introduction div.tei figure {
     line-height: 1.4em;
     overflow: auto;
     border-radius: $corner-roundness $corner-roundness 0 0;
-    font-family: var(--app-base-font-stack);
+    font-family: var(--font-stack-app-base);
 
     .infoOverlayHeader {
         display: inline-block;
@@ -2070,7 +2070,7 @@ page-introduction div.tei figure {
         padding: 0 24px 24px 16px;
 
         a {
-            filter: brightness(150%);
+            color: var(--info-overlay-link-to-reference-color);
         }
 
         .footnoteWrapper {
@@ -2180,7 +2180,7 @@ div.tei .tooltip { display: none; }
     margin-left: -35px;
     text-align: left;
     width: 30px;
-    font-family: var(--app-base-font-stack);
+    font-family: var(--font-stack-app-base);
     font-size: 0.6875rem;
 	text-indent: 0;
     font-style: normal !important;
@@ -2226,7 +2226,7 @@ page-read .mobile-mode-established .tei.show_pageNumbering {
 div.tei.show_pageBreakOriginal .pb_orig,
 div.tei.show_pageBreakEdition .pb_zts,
 div.tei.show_pageBreakEdition .pb_edition {
-    font-family: var(--app-base-font-stack);
+    font-family: var(--font-stack-app-base);
     line-height: 1;
     display: inline;
 }
@@ -2296,7 +2296,7 @@ manuscripts div.tei {
 
 /* Introduction specific */
 page-introduction div.tei span.footnoteindicator {
-    color: color($colors, primary);
+    color: var(--default-link-color);
 }
 page-introduction div.tei .est_figure_graphic {
     padding-right: 0;

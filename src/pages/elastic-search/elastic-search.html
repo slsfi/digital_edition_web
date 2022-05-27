@@ -1,215 +1,200 @@
-<!--
-  Generated template for the PersonSearchPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<ion-header>
-  <ion-toolbar color="secondary" class="secondary">
-    <ion-title>
-      <div class="page-title"></div>
-      <div class="page-subtitle"></div>
-    </ion-title>
-    <!--
-    <ion-buttons end>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <div name="download" (click)="download()" id="downloadPerson">
-              <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
-              <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
-            </div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-buttons>
-    -->
-  </ion-toolbar>
-</ion-header>
-
-<ion-content padding class="tei">
-  <ion-grid>
-    <!--  Search fields -->
-    <ion-col col-3>
-      <ion-row *ngFor="let query of queries; let i = index; trackBy:trackByIdx" class="searchbar-wrapper">
-        <textarea
-          placeholder="{{i > 0 ? 'AND search' : 'ElasticSearch.Search' | translate}}"
-          class="searchInput {{i > 0 ? 'removableSearchInput' : ''}}"
-          [(ngModel)]="queries[i]"
-          (keyup)="onQueryChange()"
-        ></textarea>
-        <ion-icon class="searchIcon" name="search"></ion-icon>
-        <ion-icon *ngIf="i > 0" (click)="removeSearchField(i)" class="removeIcon" name="remove-circle"></ion-icon>
-      </ion-row>
-
-      <!-- Add search field -->
-      <ion-row class="add-search-bar-wrapper">
-        <button (click)="addSearchField()" ion-button icon-start>
-          <ion-icon name="add-circle"></ion-icon>
-          {{'ElasticSearch.SearchField' | translate}}
-        </button>
-      </ion-row>
-    </ion-col>
-
-    <!-- Facets column -->
-    <ion-col col-3>
-      <!-- Suggested facets -->
-      <ion-row *ngIf="hasSuggestedFacets()" class="selectedFacetGroups">
-        <ion-col>
-          <p class="itemHeading">{{'Suggestions' | translate}}</p>
-          <div *ngFor="let groupKey of objectKeys(suggestedFacetGroups)">
-            <ion-toolbar *ngIf="hasSuggestedFacetsByGroup(groupKey)">
-              <ion-title>{{groupKey | translate}}</ion-title>
-              <button *ngFor="let facet of objectValues(suggestedFacetGroups[groupKey])"
-                (click)="selectSuggestedFacet(groupKey, facet)" class="selectedFacetButton" small ion-button icon-end>
-                {{getEllipsisString(facet.key | translate)}}
-                <ion-icon name="add-circle"></ion-icon>
-              </button>
-            </ion-toolbar>
-          </div>
-        </ion-col>
-      </ion-row>
-
-      <!-- List of facet groups -->
-      <ion-list class="facet-group-wrapper">
-
-        <!-- Special facet for date histogram aggregation -->
-        <ion-item class="date-histogram-wrapper" *ngIf="elastic.isDateHistogramAggregation('Years')">
-          <ion-label>
-            <p class="itemHeading years-heading">{{'ElasticSearch.Years' | translate}}</p>
-            <date-histogram [years]="getFacets('Years')" [change]="onRangeChange.bind(this)"></date-histogram>
-          </ion-label>
-        </ion-item>
-
-        <div *ngFor="let facetGroupKey of objectKeys(facetGroups) let i = index">
-          <!-- Other facets -->
-          <ion-item [ngClass]="facetGroupKey" class="facet-item" *ngIf="elastic.isTermsAggregation(facetGroupKey)">
-            <ion-label class="accordion-item">
-              <ion-item (click)="openAccordion($event, i)">
-                <ion-label>{{facetGroupKey | translate}}</ion-label>
-                <ion-icon class="accordion-arrow" id="arrow-{{i}}" name="ios-arrow-forward" item-right small></ion-icon>
-              </ion-item>
-              <ion-list id="facetList-{{i}}" class="facets facetList-{{facetGroupKey}}">
-                <ng-container *ngIf="hasFacets(facetGroupKey); then facets else nofacet"></ng-container>
-                <ng-template #facets>
-                  <ng-container *ngFor="let facet of getFacets(facetGroupKey); let j = index;">
-                    <ion-item id="facet-{{facetGroupKey}}" *ngIf="showAllFor[facetGroupKey] || j < 10" class="facet">
-                        <ion-label text-wrap *ngIf="facetGroupKey === 'Type'">
-                          {{facet.key | translate}} ({{facet.doc_count}})
-                        </ion-label>
-                        <ion-label text-wrap *ngIf="facetGroupKey !== 'Type'">
-                          {{facet.key_as_string || facet.key}}
-                          ({{facet.doc_count}})
-                        </ion-label>
-                        <ion-checkbox [(ngModel)]="facet.selected" (click)="updateFacet(facetGroupKey, facet)" [disabled]="facet.doc_count === 0 && facetGroupKey !== 'Type'"></ion-checkbox>
-                    </ion-item>
-                  </ng-container>
-                  <button class="show-more-button" small ion-button *ngIf="getFacets(facetGroupKey).length > 10" (click)="showAllFor[facetGroupKey] = !showAllFor[facetGroupKey]">
-                      <span *ngIf="!showAllFor[facetGroupKey]">{{'ElasticSearch.ShowMore' | translate}}</span>
-                      <span *ngIf="showAllFor[facetGroupKey]">{{'ElasticSearch.ShowLess' | translate}}</span>
-                  </button>
-                </ng-template>
-
-                <ng-template #nofacet>
-                  <ion-item>
-                    <p>No results</p>
-                  </ion-item>
-                </ng-template>
-              </ion-list>
-            </ion-label>
-          </ion-item>
-        </div>
-      </ion-list>
-    </ion-col>
-
-    <ion-row class="info-toolbar">
-      <!-- Show search results  -->
-      <ion-col *ngIf="canShowHits() && total > 0" push-col-3>
-        <h2 class="hits-heading">
-          {{'ElasticSearch.Found' | translate}} {{total}}
-        </h2>
-      </ion-col>
-      <ion-col *ngIf="canShowHits() && total === 0" col-auto>
-        <h2 class="hits-heading">
-          {{'ElasticSearch.NoHits' | translate}}
-        </h2>
-      </ion-col>
-
-      <!-- Sort by -->
-      <ion-col class="sort-by-wrapper" *ngIf="canShowHits() && total > 0" col-auto>
-        <ion-item>
-          <ion-label class="sort-by-label">{{'ElasticSearch.SortBy' | translate}}</ion-label>
-          <ion-select class="sort-by-select" [(ngModel)]="sort" (ionChange)="onSortByChanged($event)">
-            <ion-option value="">{{'ElasticSearch.Relevance' | translate}}</ion-option>
-            <ion-option value="orig_date_certain.asc">{{'ElasticSearch.OldestFirst' | translate}}</ion-option>
-            <ion-option value="orig_date_certain.desc">{{'ElasticSearch.NewestFirst' | translate}}</ion-option>
-          </ion-select>
-        </ion-item>
-      </ion-col>
+<ion-content padding>
+  <ion-grid class="search-grid">
+    <ion-row class="page-info-row">
+      <h1 class="page-title">{{ 'ElasticSearch.PageTitle' | translate }}</h1>
+      <div class="info markdown" *ngIf="mdContent">
+        <markdown [data]="mdContent"></markdown>
+      </div>
     </ion-row>
+    <ion-row class="search-area-row">
+      <!--  Search fields -->
+      <ion-col class="search-and-facet-column">
+        <ion-row *ngFor="let query of queries; let i = index; trackBy:trackByIdx" [ngClass]="i > 0 ? 'searchbar-wrapper additional-searchbar' : 'searchbar-wrapper'">
+          <ion-label *ngIf="i > 0" class="and-search-input-label">
+            {{ 'ElasticSearch.AND' | translate }}
+          </ion-label>
+          <input type="text"
+            placeholder="{{i > 0 ? ('ElasticSearch.ANDSearch' | translate) : ('ElasticSearch.Search' | translate)}}"
+            class="searchInput {{i > 0 ? 'removableSearchInput' : ''}}"
+            [(ngModel)]="queries[i]"
+            (keyup)="onQueryChange()"
+          />
+          <ion-icon *ngIf="i < 1" class="searchIcon" name="search"></ion-icon>
+          <ion-icon *ngIf="i > 0" (click)="removeSearchField(i)" class="removeIcon" name="remove-circle"></ion-icon>
+        </ion-row>
 
-    <!-- Hits column -->
-    <ion-row class="hits-column">
-      <ion-col>
-        <ion-content scrollY="true" class="hits-scroll-content">
-          <!-- Selected facets row -->
-          <ion-row class="selectedFacetGroups">
-            <div *ngFor="let groupKey of objectKeys(selectedFacetGroups)">
-              <ion-toolbar *ngIf="hasSelectedFacetsByGroup(groupKey)">
+        <!-- Add search field -->
+        <ion-row class="add-search-bar-wrapper">
+          <button (click)="addSearchField()" ion-button>
+            {{'ElasticSearch.SearchField' | translate}}
+          </button>
+        </ion-row>
+
+        <!-- Suggested facets -->
+        <ion-row *ngIf="hasSuggestedFacets()" class="selectedFacetGroups">
+          <ion-col>
+            <p class="suggested-facets-heading">{{'ElasticSearch.Suggestions' | translate}}</p>
+            <div *ngFor="let groupKey of objectKeys(suggestedFacetGroups)">
+              <ion-toolbar *ngIf="hasSuggestedFacetsByGroup(groupKey)">
                 <ion-title>{{groupKey | translate}}</ion-title>
-                <button
-                  *ngFor="let facet of objectValues(selectedFacetGroups[groupKey])"
-                  (click)="unselectFacet(groupKey, facet)"
-                  class="selectedFacetButton"
-                  ion-button icon-end small
-                >
+                <button *ngFor="let facet of objectValues(suggestedFacetGroups[groupKey])"
+                  (click)="selectSuggestedFacet(groupKey, facet)" class="selectedFacetButton" small ion-button icon-end>
                   {{getEllipsisString(facet.key | translate)}}
-                  <ion-icon name="close"></ion-icon>
+                  <ion-icon name="add-circle"></ion-icon>
                 </button>
               </ion-toolbar>
             </div>
-          </ion-row>
+          </ion-col>
+        </ion-row>
 
-          <!-- Search status row -->
-          <ion-row class="searchStatus">
-            <!-- Search status -->
-            <div *ngIf="loading">
-              <ion-spinner class="loading" name="crescent"></ion-spinner>
-            </div>
-          </ion-row>
+        <!-- List of facet groups -->
+        <ion-list class="facet-group-wrapper">
 
-          <!-- Hits row -->
-          <ion-row>
-            <ion-list *ngIf="canShowHits() && total > 0">
-              <div *ngFor="let hit of hits">
-                <ion-item (click)="open(hit)" class="hitItem">
-                  <ion-label>
-                    <div class="word_count" *ngIf="cleanQueries.length > 0">
-                      <label>{{'ElasticSearch.WordCount' | translate}}</label>
-                      <span *ngFor="let query of cleanQueries">
-                        <p *ngIf="hit.count && hit.count[query] && hit.count[query][0]">
-                          {{query}}: {{hit.count[query][0][hit.id]['term_freq']}}
-                        </p>
-                        <p *ngIf="!hit.count || !hit.count[query] || !hit.count[query][0]">
-                          {{query}}: {{'ElasticSearch.NoWordHits' | translate}}
-                        </p>
-                      </span>
-                    </div>
-                    <p class="itemHeading">{{getHeading(hit.source)}}</p>
-                    <p>{{hit.type | translate}}, {{getSubHeading(hit.source)}}</p>
-                    <p *ngFor="let highlight of hit.highlight?.textDataIndexed" [innerHTML]="'...' + highlight + '...'" class="highlight"></p>
-                  </ion-label>
+          <!-- Special facet for date histogram aggregation -->
+          <ion-item class="date-histogram-wrapper" *ngIf="elastic.isDateHistogramAggregation('Years')">
+            <ion-label>
+              <p class="itemHeading years-heading">{{'ElasticSearch.Years' | translate}}</p>
+              <date-histogram [years]="getFacets('Years')" [change]="onRangeChange.bind(this)"></date-histogram>
+            </ion-label>
+          </ion-item>
+
+          <div *ngFor="let facetGroupKey of objectKeys(facetGroups) let i = index">
+            <!-- Other facets -->
+            <ion-item [ngClass]="facetGroupKey" class="facet-item" *ngIf="elastic.isTermsAggregation(facetGroupKey)">
+              <ion-label class="accordion-item">
+                <ion-item (click)="openAccordion($event, i)">
+                  <ion-label>{{facetGroupKey | translate}}</ion-label>
+                  <ion-icon class="accordion-arrow" id="arrow-{{i}}" name="ios-arrow-forward" item-right small></ion-icon>
                 </ion-item>
+                <ion-list id="facetList-{{i}}" class="facets facetList-{{facetGroupKey}}">
+                  <ng-container *ngIf="hasFacets(facetGroupKey); then facets else nofacet"></ng-container>
+                  <ng-template #facets>
+                    <ng-container *ngFor="let facet of getFacets(facetGroupKey); let j = index;">
+                      <ion-item id="facet-{{facetGroupKey}}" *ngIf="showAllFor[facetGroupKey] || j < 10" class="facet">
+                          <ion-label text-wrap *ngIf="facetGroupKey === 'Type'">
+                            {{facet.key | translate}} ({{facet.doc_count}})
+                          </ion-label>
+                          <ion-label text-wrap *ngIf="facetGroupKey !== 'Type'">
+                            {{facet.key_as_string || facet.key}}
+                            ({{facet.doc_count}})
+                          </ion-label>
+                          <ion-checkbox [(ngModel)]="facet.selected" (click)="updateFacet(facetGroupKey, facet)" [disabled]="facet.doc_count === 0 && facetGroupKey !== 'Type'"></ion-checkbox>
+                      </ion-item>
+                    </ng-container>
+                    <button class="show-more-button" small ion-button *ngIf="getFacets(facetGroupKey).length > 10" (click)="showAllFor[facetGroupKey] = !showAllFor[facetGroupKey]">
+                        <span *ngIf="!showAllFor[facetGroupKey]">{{'ElasticSearch.ShowMore' | translate}}</span>
+                        <span *ngIf="showAllFor[facetGroupKey]">{{'ElasticSearch.ShowLess' | translate}}</span>
+                    </button>
+                  </ng-template>
+
+                  <ng-template #nofacet>
+                    <ion-item>
+                      <p>{{'ElasticSearch.NoFacetOptions' | translate}}</p>
+                    </ion-item>
+                  </ng-template>
+                </ion-list>
+              </ion-label>
+            </ion-item>
+          </div>
+        </ion-list>
+      </ion-col>
+
+      <ion-col class="search-result-column">
+        <ion-row class="info-toolbar">
+          <!-- Show search results  -->
+          <ion-col *ngIf="canShowHits() && total > 0" push-col-3>
+            <h2 class="hits-heading">
+              {{'ElasticSearch.Found' | translate}} {{total}}
+            </h2>
+          </ion-col>
+          <ion-col *ngIf="canShowHits() && total === 0" col-auto>
+            <h2 class="hits-heading">
+              {{'ElasticSearch.NoHits' | translate}}
+            </h2>
+          </ion-col>
+
+          <!-- Sort by -->
+          <ion-col class="sort-by-wrapper" *ngIf="canShowHits() && total > 0" col-auto>
+            <ion-item>
+              <ion-label class="sort-by-label">{{'ElasticSearch.SortBy' | translate}}</ion-label>
+              <ion-select class="sort-by-select" [(ngModel)]="sort" (ionChange)="onSortByChanged($event)" [selectOptions]="sortSelectOptions" [cancelText]="'BasicActions.Cancel' | translate" [okText]="'BasicActions.Ok' | translate">
+                <ion-option value="">{{'ElasticSearch.Relevance' | translate}}</ion-option>
+                <ion-option value="orig_date_certain.asc">{{'ElasticSearch.OldestFirst' | translate}}</ion-option>
+                <ion-option value="orig_date_certain.desc">{{'ElasticSearch.NewestFirst' | translate}}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <!-- Hits column -->
+        <ion-row class="hits-column">
+          <ion-col>
+            <!-- Selected facets row -->
+            <ion-row class="selectedFacetGroups">
+              <ng-container *ngFor="let groupKey of objectKeys(selectedFacetGroups)">
+                <ion-toolbar *ngIf="hasSelectedFacetsByGroup(groupKey)">
+                  <ion-title>{{groupKey | translate}}</ion-title>
+                  <button
+                    *ngFor="let facet of objectValues(selectedFacetGroups[groupKey])"
+                    (click)="unselectFacet(groupKey, facet)"
+                    class="selectedFacetButton"
+                    ion-button icon-end small>
+                    {{getEllipsisString(facet.key | translate)}}
+                    <ion-icon name="close"></ion-icon>
+                  </button>
+                </ion-toolbar>
+              </ng-container>
+            </ion-row>
+
+            <!-- Search status row -->
+            <ion-row class="searchStatus">
+              <!-- Search status -->
+              <div *ngIf="loading">
+                <ion-spinner class="loading" name="crescent"></ion-spinner>
               </div>
-            </ion-list>
-          </ion-row>
-          <!-- Infinite scroll detector and spinner -->
-          <ion-row class="infinite-scroll-wrapper">
-            <ion-infinite-scroll *ngIf="canShowHits() && hasMore()" (ionInfinite)="loadMore($event)" threshold="300px">
-              <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
-            </ion-infinite-scroll>
-          </ion-row>
-        </ion-content>
+            </ion-row>
+
+            <!-- Hits row -->
+            <ion-row class="searchHits">
+              <ion-list class="hits-list-wrapper" *ngIf="canShowHits() && total > 0">
+                <ng-container *ngFor="let hit of hits">
+                  <ion-item (click)="open(hit)" class="hitItem">
+                    <ion-label>
+                      <div class="word_count" *ngIf="cleanQueries.length > 0">
+                        <label>{{'ElasticSearch.WordCount' | translate}}</label>
+                        <span *ngFor="let query of cleanQueries">
+                          <p *ngIf="hit.count && hit.count[query] && hit.count[query][0]">
+                            {{query}}: {{hit.count[query][0][hit.id]['term_freq']}}
+                          </p>
+                          <p *ngIf="!hit.count || !hit.count[query] || !hit.count[query][0]">
+                            {{query}}: {{'ElasticSearch.NoWordHits' | translate}}
+                          </p>
+                        </span>
+                      </div>
+                      <p class="itemHeading">{{getHeading(hit.source)}}</p>
+                      <p>{{hit.type | translate}}, {{getSubHeading(hit.source)}}</p>
+                      <p *ngFor="let highlight of hit.highlight?.textDataIndexed" [innerHTML]="'...' + highlight + '...'" class="highlight"></p>
+                    </ion-label>
+                  </ion-item>
+                </ng-container>
+              </ion-list>
+            </ion-row>
+            <!-- Infinite scroll detector and spinner -->
+            <!--
+            <ion-row class="infinite-scroll-wrapper">
+              <ion-infinite-scroll *ngIf="canShowHits() && hasMore()" (ionInfinite)="loadMore($event)" threshold="300px">
+                <ion-infinite-scroll-content loadingSpinner="crescent"></ion-infinite-scroll-content>
+              </ion-infinite-scroll>
+            </ion-row>
+            -->
+            <ion-row class="load-more-hits-wrapper" *ngIf="canShowHits() && hasMore() && total > 0">
+              <ion-spinner *ngIf="infiniteLoading" class="loading" name="crescent"></ion-spinner>
+              <ng-container *ngIf="!infiniteLoading">
+                <button ion-button (click)="loadMore($event)">{{"ElasticSearch.ShowMoreHits" | translate}}</button>
+              </ng-container>
+            </ion-row>
+          </ion-col>
+        </ion-row>
       </ion-col>
     </ion-row>
   </ion-grid>

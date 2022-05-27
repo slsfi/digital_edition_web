@@ -56,12 +56,22 @@ $opacity-hover-transition: opacity 0.2s;
 // CSS CUSTOM PROPERTIES
 // --------------------------------------------------
 :root {
-  // Colors
-  // Create css custom properties from the scss map $colours defined in variables.scss
+// Base colors
+  // Create css custom properties from the scss map $colours defined in variables.scss. Produces:
+  // --primary-color: #538494;
+  // --secondary-color: #e6e1d8;
+  // --dark-color: #222;
+  // --light-color: #f4f4f4;
   @each $key_name, $value in $colors {
     --#{$key_name}-color: #{$value};
   }
-  --main-background-color:         #ecebe4;
+  --primary-color-rgb: 83, 132, 148; // RGB-version of --primary-color, used when an alpha channel needs to be added to the color
+  --text-color-on-primary-color-background:   #fff;
+  --text-color-on-secondary-color-background: #000;
+  --default-link-color:                       #538494;
+  --main-background-color:                    #ecebe4;
+
+  // Semantic code colors
   --persName-color:                #f9e0bf;
   --persName-color-rgb:              249, 224, 191;
   --placeName-color:               #dee8ca;
@@ -76,32 +86,135 @@ $opacity-hover-transition: opacity 0.2s;
   --abbreviations-color-rgb:         255, 226, 250;
   --pageBreakOriginal-color:       #c34be1;
   --pageBreakEdition-color:        #d58205;
+
+  // TOC, i.e. the left navigation
+  --toc-text-color:                           var(--dark-color);
+  --toc-background-color:                     var(--main-background-color);
+  --toc-border-right-color:                 #dedede;
+  --toc-arrow-color:                          var(--toc-text-color);
+  --toc-divider-color:                      #dedede;
+  --toc-hover-color:                          var(--primary-color);
+  --toc-description-text-color:             #515151;
+  --toc-collection-title-text-color:          var(--toc-text-color);
+  --toc-collection-title-background-color:    var(--secondary-color);
+  --toc-back-button-text-color:               var(--dark-color);
+  --toc-back-button-arrow-color:              var(--toc-back-button-text-color);
+  --toc-back-button-background-color:       #e8e4df;
+  --toc-selected-item-text-color:             var(--dark-color);
+  --toc-selected-item-font-weight:            bold;
+  --toc-selected-item-arrow-color:            var(--toc-selected-item-text-color);
+  --toc-selected-item-background-color:       transparent;
+  --toc-selected-item-border-color:           transparent;
+  --toc-selected-item-divider-color:          var(--toc-divider-color);
+  --toc-selected-item-description-text-color: var(--toc-description-text-color);
+
+  // Home-page
+  --page-home-portrait-mode-background-color-below-image:   transparent;
+
+  // Introduction-page
+  --page-introduction-separate-toc-background-color:        var(--secondary-color);
+  --page-introduction-separate-toc-text-color:              var(--dark-color);
+
+  // Read-page
+  --page-read-columns-header-background-color:              var(--secondary-color);
+  --page-read-columns-background-color:                   #fafafa;
+  --page-read-add-column-text-color:                        var(--dark-color);
+  --page-read-add-column-background-color:                  var(--secondary-color);
+
+  // Top-menu
+  --top-menu-toolbar-bottom-border:                         0;
+  --top-menu-button-filter:                                 drop-shadow(0 1px 3px rgba(35, 35, 35, .3));
+
+  // Text-changer in read-page
+  --text-changer-background-color-mobile-mode:            #adadad;
+  --text-changer-text-color-mobile-mode:                  #000;
+
+  // Facsimile column in read-page
+  --facsimile-column-page-number-wrapper-background-color:  var(--main-background-color);
+
+  // Elastic search
+  --elastic-search-facet-background-color:                  #fbfbfb;
+  --elastic-search-facet-border-color:                      #adadad;
+  --elastic-search-hititem-divider-color:                   #ccc;
+  --elastic-search-hititem-hover-background-color-rgb:        var(--primary-color-rgb);
+  --elastic-search-hititem-hover-background-color-alpha:      0.2;
+  --elastic-search-search-match-highlight-background-color:   var(--primary-color);
+  --elastic-search-search-match-highlight-text-color:         var(--text-color-on-primary-color-background);
+  --elastic-search-date-histogram-year-bar-color:             var(--primary-color);
+  --elastic-search-date-histogram-year-hover-color:           var(--secondary-color);
+  --elastic-search-date-histogram-year-in-range-color:      #751e22;
+
+  // Simple search
+  --simple-search-search-match-highlight-background-color:      var(--primary-color);
+  --simple-search-search-match-highlight-text-color:            var(--text-color-on-primary-color-background);
+  --simple-search-hititem-hover-background-color-rgb:           var(--primary-color-rgb);
+  --simple-search-hititem-hover-background-color-alpha:         0.2;
+  --simple-search-hititem-background-color:                     var(--main-background-color);
+  --simple-search-selected-search-suggestion-background-color:  var(--secondary-color);
+
+  // Media-collections
+  --media-collection-card-content-background-color:     var(--secondary-color);
+  --media-collection-card-content-border-top-color:     var(--primary-color);
+  --media-collection-filter-select-background-color:  #dad6cd;
+
+  // Indices, i.e. person-search, place-search, tag-search and work-search
+  --index-list-item-background-color:     var(--main-background-color);
+  --index-list-divider-background-color:  var(--secondary-color);
+
+  // Tutorial
+  --tutorial-tooltip-background-color:      #4F7B8C;
+  --tutorial-tooltip-text-color:            #fff;
+  --tutorial-tooltip-font-size:               1.0625rem;
+
+  // Info overlay
 	--infoOverlay-background-color:          #333;
-	--infoOverlay-text-color:        #e3e3e3;
-  --toc-hover-color:            var(--primary-color);
-  --read-columns-background-color: #fafafa;
-  --toc-back-button-background-color:  #e8e4df; // Ideally something between secondary color & $background-color
-  --toc-back-button-text-color:          var(--dark-color);
-  --tooltip-background-color:          #fafafa;
-  --add-read-column-text-color:          var(--dark-color);
-  --add-read-column-background-color:    var(--secondary-color);
+	--infoOverlay-text-color:                #e3e3e3;
+  --info-overlay-link-to-reference-color:  #7cc6de;
+
+  // Tooltips
+  --tooltip-background-color:              #fafafa;
+
+  // Ion-modal
+  --ion-modal-content-background-color:       var(--main-background-color);
+  --ion-modal-item-background-color:          var(--main-background-color);
+  --ion-modal-item-divider-border-bottom-color: #dedede;
+
+  // Ion-popover
+  --ion-popover-content-background-color:     var(--main-background-color);
+  --ion-popover-item-border-bottom-color:         #dedede;
+  --ion-popover-list-header-background-color: var(--secondary-color);
+
+  // Ion-segment
+  --segment-activated-background-color:       var(--primary-color);
+  --segment-activated-text-color:             var(--text-color-on-primary-color-background);
+
+  // Buttons
+  --button-background-color:                  var(--primary-color);
+  --button-background-color-rgb:              var(--primary-color-rgb);
+  --button-hover-background-color:            var(--button-background-color);
+  --button-text-color:                        var(--text-color-on-primary-color-background);
+  --button-clear-text-color:                  var(--primary-color);
+  --fab-button-primary-background-color:      var(--primary-color);
+  --fab-button-primary-icon-color:            var(--text-color-on-primary-color-background);
+  --fab-button-secondary-background-color:  #e9e9e9;
+  --fab-button-secondary-icon-color:        #000;
 
   // Font stacks
-  --system-font-stack:               -apple-system, BlinkMacSystemFont, "Segoe UI",
+  --font-stack-system:               -apple-system, BlinkMacSystemFont, "Segoe UI",
                                      Roboto, Oxygen-Sans, Ubuntu, Cantarell,
                                      "Helvetica Neue", sans-serif;
-  --app-base-font-stack:             "Roboto", var(--system-font-stack);
-  --home-banner-font-stack:          var(--app-base-font-stack);
-  --top-menu-font-stack:             var(--app-base-font-stack);
-  --tei-font-stack:                  "SourceSerif", Constantia, "Lucida Bright",
+  --font-stack-app-base:             "Roboto", var(--font-stack-system);
+  --font-stack-home-banner:          var(--font-stack-app-base);
+  --font-stack-top-menu:             var(--font-stack-app-base);
+  --font-stack-tei:                  "SourceSerif", Constantia, "Lucida Bright",
                                      Lucidabright, "Lucida Serif", Lucida,
                                      "DejaVu Serif", "Bitstream Vera Serif",
                                      "Liberation Serif", Georgia, serif;
-  --tei-blackletter-font-stack:      "Inter", var(--system-font-stack);
-  --tei-print-stamp-font-stack:      Cambria, "Hoefler Text", Utopia,
+  --font-stack-tei-blackletter:      "Inter", var(--font-stack-system);
+  --font-stack-tei-print-stamp:      Cambria, "Hoefler Text", Utopia,
                                      "Liberation Serif", "Nimbus Roman No9 L Regular",
                                      Times, "Times New Roman", serif;
-  --tei-editorial-note-font-stack:   "Helvetica Neue", "Arial Nova", Helvetica,
+  --font-stack-tei-editorial-note:   "Helvetica Neue", "Arial Nova", Helvetica,
                                      Arial, sans-serif;
 }
 

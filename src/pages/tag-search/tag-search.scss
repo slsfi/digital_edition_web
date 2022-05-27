@@ -1,7 +1,22 @@
 page-tag-search {
-    .fixed-content,
-    .scroll-content {
-        margin-top: 50px;
+    /* This hides the vertical scrollbar on the right edge of the viewport area when it is not necessary to show it. Observe that there are two elements with class scroll-content, which is why this needs to be this specific. */
+    ion-content > .scroll-content {
+        overflow: auto;
+    }
+
+    ion-content.content ion-list.list {
+        ion-item.item {
+            background-color: var(--index-list-item-background-color);
+
+            ion-item-divider.item-divider {
+                background-color: var(--index-list-divider-background-color);
+                border-bottom: 0;
+
+                .item-inner {
+                    border-bottom: 0;
+                }
+            }
+        }
     }
 
     ion-icon.settings-icon.icon {
@@ -68,6 +83,7 @@ page-tag-search {
 
     .searchbar {
         color: white;
+        max-width: 650px;
     }
 
 }

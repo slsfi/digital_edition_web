@@ -2,7 +2,7 @@ page-introduction {
 
   ion-card {
     max-width: 710px;
-    background-color: var(--read-columns-background-color) !important;
+    background-color: var(--page-read-columns-background-color) !important;
   }
 
   /* denna default är för mobilvyn, gör rum för menyikonen ovanför innehållet. ändras till padding-top 0 för desktop (över 1000px skärmbredd) längre ner*/
@@ -109,7 +109,7 @@ page-introduction {
   /* navigeringsbalken för inledningar */
   #toc_text,
   .menuOpenIcon {
-    background-color: color($colors, secondary);
+    background-color: var(--page-introduction-separate-toc-background-color);
   }
 
   #toc_text {
@@ -132,7 +132,7 @@ page-introduction {
   /* menylänkarna */
   #TOC a {
     text-decoration: none;
-    color: color($colors, dark);
+    color: var(--page-introduction-separate-toc-text-color);
     transition: 0.3s;
   }
 

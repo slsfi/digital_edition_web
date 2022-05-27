@@ -265,12 +265,15 @@
       "workOccurrencesDisabled": "Förekomster för verk är inte tillgängliga."
   },
   "ElasticSearch": {
+    "PageTitle": "Sök",
     "NoHits": "Din sökning matchade inga dokument",
-    "Found": "Hittades",
+    "Found": "Sökträffar:",
     "SearchField": "Lägg till sökfält",
     "From": "Från",
     "To": "Till",
-    "Search": "Sök",
+    "Search": "Söktext",
+    "ANDSearch": "söktext",
+    "AND": "och",
     "Years": "År",
     "ShowMore": "Visa mera",
     "ShowLess": "Visa mindre",
@@ -279,7 +282,10 @@
     "OldestFirst": "Äldst först",
     "NewestFirst": "Nyast först",
     "WordCount": "Antal träffar (estimat)",
-    "NoWordHits": "inga träffar"
+    "NoWordHits": "inga träffar",
+    "NoFacetOptions": "Inga sökord",
+    "Suggestions": "Förslag på filtrering",
+    "ShowMoreHits": "Visa fler sökträffar"
   },
   "Filter":{
     "personTypes": "Personkategori",

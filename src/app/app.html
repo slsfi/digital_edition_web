@@ -4,14 +4,14 @@
 
     <!-- Logged out menu -->
     <ion-menu [content]="content" id="contentMenu">
-        <ion-content class="outer-content list-item-spacing">
+        <ion-content class="toc-menu-content list-item-spacing">
             <ion-list *ngIf="!readMenuOpen && !galleryMenuOpen && !menuConditionals.songTypesMenuOpen">
 
                 <!-- Home button -->
                 <ion-item *ngIf="genericSettingsService.show('TOC.Home')" menuClose (click)="front()" class="mainMenuItem" [ngClass]="tocHomeSelected?'selected-toc-item':''">
-                    <ion-label>
+                    <p>
                         {{"TOC.Home" | translate }}
-                    </ion-label>
+                    </p>
                     <ion-icon name="home" item-right small></ion-icon>
                 </ion-item>
 
@@ -277,9 +277,9 @@
     <!-- Separate Static Pages Menus. (Aboutmenu etc) -->
     <ng-container *ngIf="staticPagesMenus?.length > 0">
         <ng-container *ngFor="let sp of staticPagesMenus">
-            <ion-menu [content]="content" id="{{sp.menuID}}">
-                <ion-content class="list-item-spacing">
-                    <ion-list class="outer-content">
+            <ion-menu [content]="content" id="{{sp.menuID}}" class="static-pages-menu">
+                <ion-content class="toc-menu-content list-item-spacing">
+                    <ion-list>
                         <static-pages-toc-drilldown-menu [jsonObjectID]="language + '-' + sp.idNumber">
                         </static-pages-toc-drilldown-menu>
                     </ion-list>
@@ -292,7 +292,7 @@
 
     <!-- TOC Menu -->
     <ion-menu [content]="content" id="tableOfContentsMenu">
-        <ion-content class="outer-content list-item-spacing">
+        <ion-content class="toc-menu-content list-item-spacing">
             <!-- TOC Type:  Drilldown -->
             <table-of-contents-drilldown-menu *ngIf="!accordionTOC"></table-of-contents-drilldown-menu>
 

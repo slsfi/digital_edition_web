@@ -32,7 +32,7 @@ facsimiles {
         padding: 0 !important;
     }
     .external_urls_wrapper div.tei {
-        font-family: var(--app-base-font-stack);
+        font-family: var(--font-stack-app-base);
         padding-bottom: 100px;
     }
     .external_urls_wrapper ul {
@@ -54,12 +54,12 @@ facsimiles {
     }
 
     ion-item.item.page-number-wrapper {
-        background-color: #f0eeea;
+        background-color: var(--facsimile-column-page-number-wrapper-background-color);
         padding-left: 0;
 
         div.item-inner {
             padding: 8px 0;
-            box-shadow: inset 0 -1px 0 0 #969696 !important;
+            box-shadow: inset 0 -1px 0 0 var(--fab-button-primary-background-color) !important;
             border-bottom: 0;
 
             div.input-wrapper {
@@ -85,7 +85,8 @@ facsimiles {
                         background-color: #fafafa;
                     }
                     input:focus {
-                        border-color: var(--primary-color);
+                        border-color: var(--fab-button-primary-background-color);
+                        filter: brightness(110%);
                     }
                 }
             }

@@ -3,6 +3,21 @@ page-media-collection {
     font-size: 1.8rem;
   }
 
+  ion-navbar.secondary.toolbar button.back-button.bar-button {
+    color: var(--text-color-on-secondary-color-background);
+    transition: $opacity-hover-transition;
+  }
+
+  ion-navbar.secondary.toolbar button.back-button.bar-button:hover:not(.disable-hover) {
+    color: var(--text-color-on-secondary-color-background);
+    background-color: transparent !important;
+    opacity: $opacity-hover;
+  }
+
+  ion-navbar.secondary.toolbar button.back-button.bar-button:hover:active {
+    opacity: 1;
+  }
+
   .img-desc {
     font-size: 12px;
   }
@@ -27,8 +42,8 @@ page-media-collection {
     box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
   }
   .card-content{
-    background-color: color($colors, secondary);
-    border-top: 2px solid color($colors, primary);
+    background-color: var(--media-collection-card-content-background-color);
+    border-top: 2px solid var(--media-collection-card-content-border-top-color);
   }
   h1 {
     font-size: 1.8rem;
@@ -38,7 +53,11 @@ page-media-collection {
   .locationSelect,
   .subjectSelect{
     box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-    background-color: var(--secondary-color);
+    background-color: var(--media-collection-filter-select-background-color);
+
+    &.item > .item-inner {
+      border-bottom: 0;
+    }
   }
 
   .filters{
@@ -64,9 +83,6 @@ page-media-collection {
     padding-left: 6px;
   }
 
-  ion-item button{
-    background-color: rgba(0, 0, 0, 0.05) !important;
-  }
   ion-item ion-label{
     color: #000 !important;
     font-size: 1rem !important;
@@ -103,9 +119,6 @@ page-media-collection {
     font-weight: 700;
   }
 
-  .sec-menu-button {
-    color: #000 !important;
-  }
   .sec-menu-button .side-title {
     padding: 0 10px 0 8px;
   }

@@ -18,7 +18,7 @@ top-menu {
   }
 
   span {
-    font-family: var(--top-menu-font-stack);
+    font-family: var(--font-stack-top-menu);
     font-size: 1rem;
   }
 
@@ -40,7 +40,7 @@ top-menu {
       /*flex-grow: 1;*/
     }
     button.button-default {
-      filter: drop-shadow(0 1px 3px rgba(35, 35, 35, .3));
+      filter: var(--top-menu-button-filter);
     }
   }
   ion-buttons {
@@ -50,7 +50,7 @@ top-menu {
     button.bar-button-default {
       padding-left: 20px;
       padding-right: 20px !important;
-      filter: drop-shadow(0 1px 3px rgba(35, 35, 35, .3));
+      filter: var(--top-menu-button-filter);
       transition: $opacity-hover-transition;
     }
     button.bar-button-default:hover:not(.disable-hover) {

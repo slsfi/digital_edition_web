@@ -310,7 +310,7 @@
 
 
 // START OF ORIGINAL VARIABLES.SCSS RULES
-.searchbar-search-icon{
+.searchbar-search-icon {
 	left: 1rem !important;
 	top: 0.4375rem !important;
 	width: 2rem !important;
@@ -321,7 +321,7 @@
 	font-size: 2rem !important;
 }
 
-.button-md{
+.button-md {
 	height: 2.3rem !important;
 }
 
@@ -334,24 +334,17 @@
     text-transform: none;
 }
 
-.tei.places{
+.tei.places {
     font-size: 1.0rem;
     color: #78756f;
 }
 
-.tei.collections{
+.tei.collections {
     font-size: 1rem;
     color: #78756f;
 }
 
-/*
-.tei h2{
-    padding-top: 1em;
-    font-size: 1em !important;
-}
-*/
-
-.tei.place_name,.onki_province,.collection{
+.tei.place_name,.onki_province,.collection {
     color: #78756f;
 }
 
@@ -374,7 +367,7 @@ img[src*="#fsfd_bild_md_right"] {
     margin-left: 10px;
 }
 
-blockquote{
+blockquote {
     font-style: italic;
 }
 
@@ -428,7 +421,7 @@ ion-label {
 .selectable { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
 
 ion-app, ion-app.md {
-  font-family: var(--app-base-font-stack);
+  font-family: var(--font-stack-app-base);
   font-size: 1.4rem;
   background-color: #fff;
 }
@@ -457,6 +450,10 @@ h1, h2, h3, h4, h5, h6 {
 
 p, blockquote {
   line-height: 2.2rem;
+}
+
+a {
+  color: var(--default-link-color);
 }
 
 .ion-page {
@@ -518,18 +515,20 @@ p, blockquote {
     color: var(--toc-back-button-text-color);
     font-size: 1rem;
   }
-  ion-icon,
   ion-label {
     color: var(--toc-back-button-text-color);
+  }
+  ion-icon.icon {
+    color: var(--toc-back-button-arrow-color);
   }
   &.item-md ion-icon[item-left] + .item-inner {
     margin-left: 0;
   }
-  p{
+  p {
     color: var(--toc-back-button-text-color) !important;
     font-size: 1rem !important;
   }
-  .label{
+  .label {
     margin-top:0px;
     margin-bottom:0px;
   }
@@ -551,15 +550,6 @@ p, blockquote {
         padding: 16px;
         background: rgba(0,0,0,0.5);
     }
-
-  /*.banner-title {
-      @extend h1;
-      font-family: var(--home-banner-font-stack);
-      margin-top: 0;
-  }
-  .banner-subtitle {
-      font-weight: bold;
-  }*/
 }
 
 /** Logo and two rows in title */
@@ -591,10 +581,7 @@ ion-title {
       margin-top: 0px;
   }
 }
-/** Toolbar */
-.toolbar{
 
-}
 .header-md::after {
   display: none;
 }
@@ -642,33 +629,89 @@ ion-row.secondary-toolbar-icons-wrapper {
   }
 }
 
-ion-label{
+ion-label {
   font-size: 1rem;
 }
 
-ion-select{
-  .select-text{
+ion-select {
+  .select-text {
     font-size: 1rem;
   }
 }
 
-ion-list{
-  ion-label{
+ion-list {
+  ion-label {
     font-size: 1rem !important;
   }
 }
 
-ion-toolbar{
-  ion-icon{
+ion-toolbar {
+  ion-icon {
     font-size: 2rem;
   }
 }
 
-ion-fab{
-  ion-icon{
+ion-fab {
+  ion-icon {
     font-size: 1.5rem !important;
   }
 }
+
+// Ordinary buttons
+button.button {
+  background-color: var(--button-background-color);
+  color: var(--button-text-color);
+}
+button.button-outline {
+  background-color: transparent;
+  border-color: var(--button-background-color);
+  color: var(--button-background-color);
+}
+button.button-clear:not(.searchbar-md-cancel) {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--button-clear-text-color);
+}
+button.button:hover:not(.disable-hover):not(.button-outline):not(.button-clear) {
+  background-color: var(--button-hover-background-color);
+}
+
+// Fab buttons
+button.fab {
+  background-color: var(--fab-button-primary-background-color);
+  color: var(--fab-button-primary-icon-color);
+}
+ion-fab-list button.fab.fab-in-list,
+button.fab.fab-md-secondary {
+  background-color: var(--fab-button-secondary-background-color);
+  color: var(--fab-button-secondary-icon-color);
+}
+
+// Toggle buttons
+ion-toggle.toggle.toggle-checked .toggle-icon {
+	background-color: rgba(var(--button-background-color-rgb), 0.2);
+}
+ion-toggle.toggle.toggle-checked .toggle-inner {
+	background-color: var(--button-background-color);
+}
+
+// Radio buttons
+ion-radio.radio .radio-checked {
+  border-color: var(--button-background-color);
+}
+ion-radio.radio .radio-checked .radio-inner {
+  background-color: var(--button-background-color);
+}
+ion-item.item-radio.item-radio-checked ion-label.label {
+  color: var(--button-background-color);
+}
+
+// Checkboxes
+ion-checkbox.checkbox .checkbox-checked {
+  border-color: var(--button-background-color);
+  background-color: var(--button-background-color);
+}
+
 
 /* These two rules fix the vertical alignment of icons in fab-buttons. */
 .fab[mini],
@@ -679,11 +722,11 @@ ion-fab{
   line-height: 1.75;
 }
 
-.item-block{
+.item-block {
   min-height: 2.2rem;
 }
 
-input{
+input {
   font-size: 1rem !important;
   line-height: 0rem !important;
 }
@@ -700,41 +743,6 @@ input{
     border-bottom: none !important;
   }
 }
-
-/* These rules are only used in digital-edition-list so moved there
-.item-white {
-  background-color: white;
-
-  ion-item {
-    background-color: inherit;
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-
-  .item-block .item-inner {
-    border-bottom: 1px solid #e3dbc9;
-  }
-
-  ion-item.item.item-block {
-    padding: 0;
-    margin: 0;
-  }
-
-  ion-thumbnail {
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  h2 {
-    margin-left: 15px;
-    white-space: normal;
-  }
-
-  p {
-    margin-left: 15px;
-  }
-}
-*/
 
 .green-box {
   background-color: #d3de9c;
@@ -780,14 +788,92 @@ input{
   background-color: rgba(0,0,0,0.0);
 }
 
-#tableOfContentsMenu {
-  .scroll-content {
-    background-color: $background-color;
-  }
+// Ion-content styles
+ion-content.content {
+	background-color: var(--main-background-color);
 }
 
-.outer-content ion-item.item.selected-toc-item {
-  font-weight: bold;
+// Primary and secondary toolbar styles
+ion-toolbar.toolbar .toolbar-background {
+	background: var(--primary-color);
+}
+ion-toolbar.toolbar.secondary .toolbar-background,
+ion-navbar.toolbar.secondary .toolbar-background {
+	background: var(--secondary-color);
+}
+top-menu ion-toolbar.toolbar .toolbar-background {
+	border-bottom: var(--top-menu-toolbar-bottom-border);
+}
+ion-toolbar.toolbar:not(.secondary) .toolbar-content button,
+ion-toolbar.toolbar:not(.secondary) .toolbar-content button:hover:not(.disable-hover) {
+	color: var(--text-color-on-primary-color-background);
+}
+ion-navbar.secondary.toolbar .toolbar-content .toolbar-title {
+  color: var(--text-color-on-secondary-color-background);
+}
+
+// Ion-modal styles
+ion-modal ion-content.content {
+  background-color: var(--ion-modal-content-background-color);
+}
+ion-modal .toolbar-background {
+	background: var(--primary-color);
+}
+ion-modal ion-header .toolbar .toolbar-title,
+ion-modal ion-header button.bar-button,
+ion-modal ion-header button.bar-button:hover:not(.disable-hover) {
+	color: var(--text-color-on-primary-color-background);
+}
+ion-modal ion-item.item {
+  background-color: var(--ion-modal-item-background-color);
+}
+ion-modal ion-item-divider.item-divider {
+  background-color: transparent;
+  border-bottom-color: var(--ion-modal-item-divider-border-bottom-color);
+}
+
+// Ion-popover styles
+ion-popover div.popover-content,
+ion-popover div.popover-content ion-item.item {
+  background-color: var(--ion-popover-content-background-color);
+}
+ion-popover div.popover-content ion-item.item .item-inner {
+  border-bottom-color: var(--ion-popover-item-border-bottom-color);
+}
+ion-popover div.popover-content ion-list-header.list-header {
+  background-color: var(--ion-popover-list-header-background-color);
+}
+
+// Table of contents (left navigation) styles
+ion-menu ion-content.toc-menu-content {
+  background-color: var(--toc-background-color);
+  border-right: 1px solid var(--toc-border-right-color);
+}
+ion-menu ion-content.toc-menu-content ion-item.item,
+ion-menu ion-content.toc-menu-content ion-item.item p {
+  color: var(--toc-text-color);
+}
+ion-menu ion-content.toc-menu-content ion-item.item ion-icon.icon {
+  color: var(--toc-arrow-color);
+}
+ion-menu ion-content.toc-menu-content ion-item.item .item-inner,
+ion-menu ion-content.toc-menu-content .list-md > .item-block:last-child .item-inner {
+  border-bottom: 1px solid var(--toc-divider-color);
+}
+
+ion-menu#contentMenu ion-item.item.selected-toc-item {
+  font-weight: var(--toc-selected-item-font-weight);
+  background-color: var(--toc-selected-item-background-color);
+	border-color: var(--toc-selected-item-border-color);
+}
+ion-menu#contentMenu ion-item.item.selected-toc-item p {
+  color: var(--toc-selected-item-text-color);
+}
+ion-menu#contentMenu ion-item.item.selected-toc-item div.item-inner {
+  border-color: var(--toc-selected-item-divider-color) !important;
+}
+ion-menu#contentMenu ion-item.item.selected-toc-item ion-icon {
+  color: var(--toc-selected-item-arrow-color) !important;
 }
 
 /* Table of content styles for simple accordion lists, including nested lists*/
@@ -801,7 +887,7 @@ ion-menu {
   }
   &#contentMenu ion-item.mainMenuItem:hover,
   &#contentMenu ion-list.accordion-menu ion-item.item:hover {
-    border-left-color: var(--toc-hover-color);
+    border-left-color: var(--toc-hover-color) !important;
   }
   &#contentMenu .simple-accordion-options ion-list.accordion-menu > ion-item.item,
   &#contentMenu .simple-accordion-options ion-list ion-item.item,
@@ -845,7 +931,7 @@ ion-item.mainMenuItem {
 }
 
 ion-list.accordion-menu > ion-item.item-block:last-child .item-inner {
-  border-bottom: $item-md-divider-border-bottom;
+  border-bottom: 1px solid var(--toc-divider-color);
 }
 
 ion-list.accordion-menu div.options {
@@ -954,19 +1040,24 @@ ion-backdrop {
 }
 
 /* Buttons in the secondary toolbar. */
-.sec-menu-button {
-  color: #000;
+button.sec-menu-button.button,
+button.sec-menu-button.bar-button {
+  color: var(--text-color-on-secondary-color-background);
   padding: 0;
   transition: $opacity-hover-transition;
 }
-.sec-menu-button:hover:not(.disable-hover) {
+button.sec-menu-button.button:hover:not(.disable-hover),
+button.sec-menu-button.bar-button:hover:not(.disable-hover) {
+  color: var(--text-color-on-secondary-color-background);
   background-color: transparent !important;
   opacity: $opacity-hover;
 }
-.sec-menu-button:active {
+button.sec-menu-button.button:active,
+button.sec-menu-button.bar-button:active {
   opacity: 1;
 }
-.sec-menu-button .side-title {
+button.sec-menu-button.button .side-title,
+button.sec-menu-button.bar-button .side-title {
   font-size: 10px;
 }
 
@@ -990,6 +1081,22 @@ ion-alert.custom-select-alert .alert-wrapper {
     .alert-radio-label {
       white-space: normal;
     }
+
+    &[aria-checked="true"] {
+      .alert-radio-icon {
+        border-color: var(--button-background-color);
+      }
+      .alert-radio-inner {
+        background-color: var(--button-background-color);
+      }
+      .alert-radio-label {
+        color: var(--button-background-color);
+      }
+    }
+  }
+
+  .alert-button-group button.alert-button {
+    color: var(--button-background-color);
   }
 }
 
@@ -999,7 +1106,7 @@ ion-alert.custom-select-alert .alert-wrapper {
   padding: 0 0 1rem 0;
   margin: 0 0 1.5rem 0;
   border-bottom: 1px solid #666;
-  background-color: var(--read-columns-background-color);
+  background-color: var(--page-read-columns-background-color);
   width: 100%;
 
   h3 {
@@ -1017,7 +1124,7 @@ ion-alert.custom-select-alert .alert-wrapper {
   }
 
   .flex-buttons button.button {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     height: 1.875rem !important;
   }
 
@@ -1575,7 +1682,7 @@ tr.introjs-showElement > th {
 }
 
 
-/* Intro.js Modern theme */
+/* Intro.js Modern theme (the tutorial) */
 
 
 .introjs-tooltip {
@@ -1593,7 +1700,6 @@ tr.introjs-showElement > th {
   border: 1px solid transparent;
   border-radius: 50px;
   box-shadow: none;
-  border-shadow: none;
   text-shadow: none;
 }
 
@@ -1610,12 +1716,12 @@ tr.introjs-showElement > th {
   border: 10px solid #fff;
 }
 .introjs-arrow.top, .introjs-arrow.top-middle, .introjs-arrow.top-right {
-  border-color: transparent transparent rgba(000, 0, 0, 0.5);
+  border-color: transparent transparent var(--tutorial-tooltip-background-color);
   top: -20px;
   left: 20px;
 }
 .introjs-arrow.bottom, .introjs-arrow.bottom-middle, .introjs-arrow.bottom-right {
-  border-color: rgba(000, 0, 0, 0.5) transparent transparent;
+  border-color: var(--tutorial-tooltip-background-color) transparent transparent;
   bottom: -20px;
   left: 20px;
 }
@@ -1628,34 +1734,27 @@ tr.introjs-showElement > th {
 
 .introjs-arrow.left, .introjs-arrow.left-bottom {
   left: -20px;
-  border-color: transparent rgba(000, 0, 0, 0.5) transparent transparent;
+  border-color: transparent var(--tutorial-tooltip-background-color) transparent transparent;
 }
 .introjs-arrow.right, .introjs-arrow.right-bottom {
   right: -20px;
-  border-color: transparent transparent transparent rgba(000, 0, 0, 0.5);
+  border-color: transparent transparent transparent var(--tutorial-tooltip-background-color);
 }
 
 
 /** Introjs custom override */
 .introjs-tooltip {
-  font-family: var(--app-base-font-stack);
-  background: color($colors, primary);
-  .introjs-tooltiptext {
-    font-size: 14px !important;
-  }
+  font-family: var(--font-stack-app-base);
+  background: var(--tutorial-tooltip-background-color);
+  color: var(--tutorial-tooltip-text-color);
+  font-size: var(--tutorial-tooltip-font-size);
+  max-width: 400px;
 }
-/*.menuResizer {
-  height: 100%;
-  width: 5px;
-
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-
-  background: #e2e2e2;
-
-  z-index: 99;
-
-  cursor: col-resize;
-}*/
+.introjs-tooltiptext {
+  text-align: center;
+  padding: 5px 5px 0 5px;
+}
+.introjs-button {
+  font-family: var(--font-stack-app-base);
+  font-size: 0.83333em;
+}

@@ -25,8 +25,8 @@ media-collections {
   }
 
   .card-content {
-    background-color: color($colors, secondary);
-    border-top: 2px solid color($colors, primary);
+    background-color: var(--media-collection-card-content-background-color);
+    border-top: 2px solid var(--media-collection-card-content-border-top-color);
   }
 
   h1 {
@@ -38,7 +38,11 @@ media-collections {
   .locationSelect,
   .subjectSelect{
     box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-    background-color: var(--secondary-color);
+    background-color: var(--media-collection-filter-select-background-color);
+
+    &.item > .item-inner {
+      border-bottom: 0;
+    }
   }
 
   .filters {
@@ -56,10 +60,6 @@ media-collections {
 
   img {
     cursor: pointer;
-  }
-
-  ion-item button {
-    background-color: rgba(0, 0, 0, 0.05) !important;
   }
 
   ion-item ion-label {

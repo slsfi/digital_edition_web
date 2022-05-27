@@ -1,4 +1,13 @@
 date-histogram {
+  ion-item.year-input.item.input-has-focus:last-child,
+  ion-item.year-input.item.item-input.input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child {
+    border-bottom-color: var(--elastic-search-date-histogram-year-bar-color);
+    box-shadow: inset 0 -1px 0 0 var(--elastic-search-date-histogram-year-bar-color);
+  }
+  ion-item.year-input.input-has-focus .label-md[floating] {
+    color: var(--elastic-search-date-histogram-year-bar-color);
+  }
+
   .reset-buttons {
     height: 32px;
     ion-icon {
@@ -24,7 +33,7 @@ date-histogram {
     position: relative;
     height: 100%;
     width: 0;
-    background-color: #538393;
+    background-color: var(--elastic-search-date-histogram-year-bar-color);
   }
   .yearDetails {
     display: none;
@@ -33,15 +42,15 @@ date-histogram {
     top: -20px;
     padding: 2px;
     font-size: 12px !important;
-    color: $grey-color;
-    background-color: rgba(255,255,255,0.5);
+    color: #555;
+    background-color: rgba(255,255,255,0.8);
   }
 
   .year:hover {
-    background-color: color($colors, secondary);
+    background-color: var(--elastic-search-date-histogram-year-hover-color);
   }
   .year:hover > .yearBar, .yearBarInRange {
-    background-color: var(--placeName-color);
+    background-color: var(--elastic-search-date-histogram-year-in-range-color);
   }
   .year:hover .yearDetails {
     display: block;
@@ -58,12 +67,12 @@ date-histogram {
     top: -7px;
     width: 50px;
     font-size: 12px !important;
-    color: $grey-color;
+    color: #555;
     text-align: right;
   }
 
-}
-.list-md .item-input:last-child {
-  border-bottom: 1px solid #538292 !important;
-  box-shadow: inset 0 -1px 0 0 #538292 !important;
+  .list-md .item-input:last-child {
+    border-bottom: 1px solid var(--elastic-search-date-histogram-year-bar-color) !important;
+    box-shadow: inset 0 -1px 0 0 var(--elastic-search-date-histogram-year-bar-color) !important;
+  }
 }

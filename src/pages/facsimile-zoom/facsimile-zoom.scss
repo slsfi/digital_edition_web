@@ -124,7 +124,7 @@ page-facsimile-zoom {
   }
 
   ion-item.facsimile-zoom-page-numbering {
-    background-color: #ecebe4;
+    background-color: var(--main-background-color);
     padding-left: 0;
     margin-left: 8px;
     width: auto;
@@ -161,7 +161,8 @@ page-facsimile-zoom {
                   background-color: #fafafa;
               }
               input:focus {
-                  border-color: #538494;
+                  border-color: var(--fab-button-primary-background-color);
+                  filter: brightness(110%);
               }
           }
       }
@@ -176,7 +177,7 @@ page-facsimile-zoom {
     display: block;
     width: 100%;
     text-align: center;
-    background-color: #ecebe4;
+    background-color: var(--main-background-color);
     padding: 10px;
     margin: 0;
     white-space: normal;
