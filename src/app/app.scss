@@ -856,7 +856,8 @@ ion-menu ion-content.toc-menu-content ion-item.item p {
 ion-menu ion-content.toc-menu-content ion-item.item ion-icon.icon {
   color: var(--toc-arrow-color);
 }
-ion-menu ion-content.toc-menu-content ion-item.item .item-inner {
+ion-menu ion-content.toc-menu-content ion-item.item .item-inner,
+ion-menu ion-content.toc-menu-content .list-md > .item-block:last-child .item-inner {
   border-bottom: 1px solid var(--toc-divider-color);
 }
 
