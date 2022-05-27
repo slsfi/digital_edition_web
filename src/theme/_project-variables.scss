@@ -191,6 +191,7 @@ $opacity-hover-transition: opacity 0.2s;
   // Buttons
   --button-background-color:                  var(--primary-color);
   --button-background-color-rgb:              var(--primary-color-rgb);
+  --button-hover-background-color:            var(--button-background-color);
   --button-text-color:                        var(--text-color-on-primary-color-background);
   --button-clear-text-color:                  var(--primary-color);
   --fab-button-primary-background-color:      var(--primary-color);

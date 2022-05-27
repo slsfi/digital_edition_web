@@ -1,5 +1,9 @@
 date-histogram {
-  .year-input .input-has-focus .label-md[floating] {
+  ion-item.year-input.item.input-has-focus:last-child {
+    border-bottom-color: var(--elastic-search-date-histogram-year-bar-color);
+    box-shadow: inset 0 -1px 0 0 var(--elastic-search-date-histogram-year-bar-color);
+  }
+  .year-input.input-has-focus .label-md[floating] {
     color: var(--elastic-search-date-histogram-year-bar-color);
   }
 

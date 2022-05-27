@@ -672,6 +672,9 @@ button.button-clear:not(.searchbar-md-cancel) {
   border-color: transparent;
   color: var(--button-clear-text-color);
 }
+button.button:hover:not(.disable-hover):not(.button-outline):not(.button-clear) {
+  background-color: var(--button-hover-background-color);
+}
 
 // Fab buttons
 button.fab {
@@ -785,6 +788,11 @@ input {
   background-color: rgba(0,0,0,0.0);
 }
 
+// Ion-content styles
+ion-content.content {
+	background-color: var(--main-background-color);
+}
+
 // Primary and secondary toolbar styles
 ion-toolbar.toolbar .toolbar-background {
 	background: var(--primary-color);
@@ -847,6 +855,9 @@ ion-menu ion-content.toc-menu-content ion-item.item p {
 }
 ion-menu ion-content.toc-menu-content ion-item.item ion-icon.icon {
   color: var(--toc-arrow-color);
+}
+ion-menu ion-content.toc-menu-content ion-item.item .item-inner {
+  border-bottom: 1px solid var(--toc-divider-color);
 }
 
 ion-menu#contentMenu ion-item.item.selected-toc-item {
