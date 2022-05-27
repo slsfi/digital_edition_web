@@ -44,6 +44,20 @@ page-content {
         margin-top: 0.8rem;
     }
 
+    img[src$="#align-left"] {
+        float: left;
+        margin: 0 1rem 1rem 0;
+    }
+
+    img[src$="#align-right"] {
+        float: right;
+        margin: 0 0 1rem 1rem;
+    }
+    img[src$="#align-center"] {
+        display: block;
+        margin: 1rem auto;
+    }
+
     .content-md hr{
         background-color: rgba(0,0,0,0.1);
     }
