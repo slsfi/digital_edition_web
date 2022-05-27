@@ -265,6 +265,7 @@
       "workOccurrencesDisabled": "Förekomster för verk är inte tillgängliga."
   },
   "ElasticSearch": {
+    "PageTitle": "Sök",
     "NoHits": "Din sökning matchade inga dokument",
     "Found": "Sökträffar:",
     "SearchField": "Lägg till sökfält",

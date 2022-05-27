@@ -217,6 +217,7 @@
     "workOccurrencesDisabled": "Occurrences for works are disabled."
   },
   "ElasticSearch": {
+    "PageTitle": "Search",
     "NoHits": "No search matches",
     "Found": "Matches:",
     "SearchField": "Add search field",

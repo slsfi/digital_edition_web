@@ -17,6 +17,8 @@ import { ElasticSearchService } from '../../app/services/elastic-search/elastic-
 import { noUndefined } from '@angular/compiler/src/util';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { TranslateService } from '@ngx-translate/core';
+import { MdContentService } from '../../app/services/md/md-content.service';
+import { MdContent } from '../../app/models/md-content.model';
 
 /*
 
@@ -110,6 +112,9 @@ export class ElasticSearchPage {
 
   sortSelectOptions: Record<string, any> = {};
 
+  mdContent: MdContent;
+  language = 'sv';
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -121,6 +126,8 @@ export class ElasticSearchPage {
     private platform: Platform,
     protected textService: TextService,
     public translate: TranslateService,
+    public languageService: LanguageService,
+    private mdContentService: MdContentService,
     public loadingCtrl: LoadingController,
     public elastic: ElasticSearchService,
     protected storage: Storage,
@@ -151,6 +158,17 @@ export class ElasticSearchPage {
         };
       }, error => { }
     );
+
+    let fileID = '12-01';
+    this.mdContent = new MdContent({id: fileID, title: '...', content: null, filename: null});
+
+    this.language = this.config.getSettings('i18n.locale');
+    this.languageService.getLanguage().subscribe((lang: string) => {
+      this.language = lang;
+      fileID = lang + '-' + fileID;
+      this.mdContent.id = fileID;
+      this.getMdContent(fileID);
+    });
   }
 
   private getParamsData() {
@@ -726,5 +744,15 @@ export class ElasticSearchPage {
           .getPropertyValue(property)
           .replace(/px$/, ''));
     }
+  }
+
+  getMdContent(fileID: string) {
+    this.mdContentService.getMdContent(fileID)
+      .subscribe(
+        text => {
+          this.mdContent.content = text.content;
+        },
+        error =>  {}
+      );
   }
 }

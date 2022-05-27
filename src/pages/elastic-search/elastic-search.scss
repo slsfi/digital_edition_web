@@ -4,11 +4,38 @@ page-elastic-search {
     overflow: auto;
   }
 
+  ion-grid.search-grid {
+    padding: 0 1.5rem;
+  }
+
+  ion-row.page-info-row {
+    width: 100%;
+    max-width: 1400px;
+    flex-direction: column;
+
+    h1.page-title {
+      font-size: 1.8rem;
+      text-transform: none !important;
+      margin: 1rem 0 1.5rem 0;
+    }
+
+    .info.markdown {
+      max-width: 800px;
+      width: 100%;
+      margin-bottom: 1.5rem;
+  
+      p {
+        line-height: 1.5;
+      }
+    }
+  }
+
   ion-col.search-and-facet-column {
     width: 100%;
     max-width: 400px;
     min-width: 300px;
     margin-right: 12px;
+    padding-left: 0;
   }
 
   ion-col.search-result-column {

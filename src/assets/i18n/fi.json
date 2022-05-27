@@ -272,6 +272,7 @@
       "workOccurrencesDisabled": "Teosten esiintymät eivät ole saatavilla."
   },
   "ElasticSearch": {
+    "PageTitle": "Haku",
     "NoHits": "Haku ei vastannut yhtään asiakirjaa",
     "Found": "Löydettiin",
     "SearchField": "Lisää hakukenttä",

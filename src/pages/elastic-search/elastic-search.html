@@ -5,7 +5,13 @@
   Ionic pages and navigation.
 -->
 <ion-content padding class="tei">
-  <ion-grid>
+  <ion-grid class="search-grid">
+    <ion-row class="page-info-row">
+      <h1 class="page-title">{{ 'ElasticSearch.PageTitle' | translate }}</h1>
+      <div class="info markdown" *ngIf="mdContent.content">
+        <markdown [data]="mdContent.content"></markdown>
+      </div>
+    </ion-row>
     <ion-row>
       <!--  Search fields -->
       <ion-col class="search-and-facet-column">
