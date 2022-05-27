@@ -18,7 +18,6 @@ import { noUndefined } from '@angular/compiler/src/util';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MdContentService } from '../../app/services/md/md-content.service';
-import { MdContent } from '../../app/models/md-content.model';
 
 /*
 
@@ -112,14 +111,13 @@ export class ElasticSearchPage {
 
   sortSelectOptions: Record<string, any> = {};
 
-  mdContent: MdContent;
+  mdContent: string;
   language = 'sv';
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public semanticDataService: SemanticDataService,
-    protected langService: LanguageService,
     protected config: ConfigService,
     public modalCtrl: ModalController,
     private app: App,
@@ -150,6 +148,13 @@ export class ElasticSearchPage {
       console.error('Failed to load set facet groups open by default. Configuration error.', e);
     }
 
+    this.language = this.config.getSettings('i18n.locale');
+
+    this.languageService.getLanguage().subscribe((lang: string) => {
+      this.language = lang;
+      this.getMdContent(lang + '-12-01');
+    });
+
     this.translate.get('ElasticSearch.SortBy').subscribe(
       translation => {
         this.sortSelectOptions = {
@@ -158,17 +163,6 @@ export class ElasticSearchPage {
         };
       }, error => { }
     );
-
-    let fileID = '12-01';
-    this.mdContent = new MdContent({id: fileID, title: '...', content: null, filename: null});
-
-    this.language = this.config.getSettings('i18n.locale');
-    this.languageService.getLanguage().subscribe((lang: string) => {
-      this.language = lang;
-      fileID = lang + '-' + fileID;
-      this.mdContent.id = fileID;
-      this.getMdContent(fileID);
-    });
   }
 
   private getParamsData() {
@@ -238,6 +232,13 @@ export class ElasticSearchPage {
         }
       })
     }, 300);
+
+    this.events.subscribe('language:change', () => {
+      this.languageService.getLanguage().subscribe((lang) => {
+        this.language = lang;
+        this.getMdContent(lang + '-12-01');
+      });
+    });
   }
 
   ionViewDidEnter() {
@@ -257,6 +258,10 @@ export class ElasticSearchPage {
       component: 'elastic-search'
     });
     this.getParamsData();
+  }
+
+  ngOnDestroy() {
+    this.events.unsubscribe('language:change');
   }
 
   open(hit) {
@@ -749,10 +754,8 @@ export class ElasticSearchPage {
   getMdContent(fileID: string) {
     this.mdContentService.getMdContent(fileID)
       .subscribe(
-        text => {
-          this.mdContent.content = text.content;
-        },
-        error =>  {}
+        text => { this.mdContent = text.content; },
+        error => { this.mdContent = ''; }
       );
   }
 }

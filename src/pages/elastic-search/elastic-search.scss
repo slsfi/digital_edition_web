@@ -16,13 +16,21 @@ page-elastic-search {
     h1.page-title {
       font-size: 1.8rem;
       text-transform: none !important;
-      margin: 1rem 0 1.5rem 0;
+      margin: 1rem 0;
     }
 
     .info.markdown {
-      max-width: 800px;
+      max-width: 1000px;
       width: 100%;
       margin-bottom: 1.5rem;
+
+      markdown > p:first-child {
+        margin-top: 0;
+      }
+
+      markdown > p:last-child {
+        margin-bottom: 0;
+      }
   
       p {
         line-height: 1.5;
@@ -243,12 +251,17 @@ page-elastic-search {
   }
 
   .selectedFacetGroups {
+    ion-toolbar.toolbar {
+      max-height: unset !important;
+      min-height: unset !important;
+    }
+
     .toolbar-background {
-      background-color: transparent;
+      background-color: transparent !important;
     }
 
     .toolbar-content {
-      margin: 25px 0;
+      margin: 0.75rem 0;
     }
 
     .toolbar-title {
