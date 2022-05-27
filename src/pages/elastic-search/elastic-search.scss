@@ -16,7 +16,7 @@ page-elastic-search {
     h1.page-title {
       font-size: 1.8rem;
       text-transform: none !important;
-      margin: 1rem 0;
+      margin: 1rem 0 1.5rem 0;
     }
 
     .info.markdown {
@@ -36,6 +36,11 @@ page-elastic-search {
         line-height: 1.5;
       }
     }
+  }
+
+  ion-row.search-area-row {
+    padding-top: 1rem;
+    padding-bottom: 2rem;
   }
 
   ion-col.search-and-facet-column {

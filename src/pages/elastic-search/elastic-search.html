@@ -6,7 +6,7 @@
         <markdown [data]="mdContent"></markdown>
       </div>
     </ion-row>
-    <ion-row>
+    <ion-row class="search-area-row">
       <!--  Search fields -->
       <ion-col class="search-and-facet-column">
         <ion-row *ngFor="let query of queries; let i = index; trackBy:trackByIdx" [ngClass]="i > 0 ? 'searchbar-wrapper additional-searchbar' : 'searchbar-wrapper'">
