@@ -1011,6 +1011,7 @@ ion-nav{
 .popover_settings .popover-content {
   width: min-content !important;
   min-width: 300px;
+  background-color: var(--ion-popover-content-background-color);
 }
 /* on very small screens, place popovers further right */
 @media screen and (max-width: 360px) {
