@@ -117,7 +117,7 @@ export class HomePage {
         this.appName = this.config.getSettings('app.name.' + lang);
         const subTitle = this.config.getSettings('app.subTitle1.' + lang);
         if ( subTitle !== '' ) {
-          this.appSubtitle = '- ' + this.config.getSettings('app.subTitle1.' + lang) + ' -';
+          this.appSubtitle = this.config.getSettings('app.subTitle1.' + lang);
         } else {
           this.appSubtitle = '';
         }
@@ -148,7 +148,7 @@ export class HomePage {
       this.appName = this.config.getSettings('app.name.' + lang);
       const subTitle = this.config.getSettings('app.subTitle1.' + lang);
       if ( subTitle !== '' ) {
-        this.appSubtitle = '- ' + this.config.getSettings('app.subTitle1.' + lang) + ' -';
+        this.appSubtitle = this.config.getSettings('app.subTitle1.' + lang);
       } else {
         this.appSubtitle = '';
       }
