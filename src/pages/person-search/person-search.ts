@@ -16,6 +16,7 @@ import { OccurrencesPage } from '../occurrences/occurrences';
 import { TranslateService } from '@ngx-translate/core';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { MetadataService } from '../../app/services/metadata/metadata.service';
+import { MdContentService } from '../../app/services/md/md-content.service';
 
 /**
  * Generated class for the PersonSearchPage page.
@@ -64,6 +65,8 @@ export class PersonSearchPage {
   filters: any[] = [];
 
   objectType = 'subject';
+  pageTitle: string;
+  mdContent: string;
 
   // tslint:disable-next-line:max-line-length
   alphabet: string[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Å', 'Ä', 'Ö'];
@@ -78,6 +81,7 @@ export class PersonSearchPage {
               public navParams: NavParams,
               public semanticDataService: SemanticDataService,
               protected langService: LanguageService,
+              private mdContentService: MdContentService,
               protected config: ConfigService,
               public modalCtrl: ModalController,
               private app: App,
@@ -113,6 +117,7 @@ export class PersonSearchPage {
       } catch (e) {
         this.infiniteScrollNumber = 800;
       }
+      this.getMdContent(lang + '-12-02');
     });
   }
 
@@ -122,10 +127,19 @@ export class PersonSearchPage {
 
     if ( String(this.subType).includes('subtype') ) {
       this.subType = null;
+      this.translate.get('TOC.PersonSearch').subscribe(
+        translation => {
+          this.pageTitle = translation;
+        }, error => { this.pageTitle = null; }
+      );
     }
 
     if (this.subType) {
       this.personsKey += `-${this.subType}`;
+      /**
+       * TODO: Get correct page title if subtype person search
+       */
+      this.pageTitle = null;
     }
   }
 
@@ -164,6 +178,18 @@ export class PersonSearchPage {
 
   ionViewDidEnter() {
     this.analyticsService.doPageView('Subjects');
+  }
+
+  ionViewDidLoad() {
+    this.events.subscribe('language:change', () => {
+      this.langService.getLanguage().subscribe((lang) => {
+        this.getMdContent(lang + '-12-02');
+      });
+    });
+  }
+
+  ngOnDestroy() {
+    this.events.unsubscribe('language:change');
   }
 
   ionViewWillLeave() {
@@ -613,6 +639,14 @@ export class PersonSearchPage {
     this.persons = [];
     this.getPersons();
     this.content.scrollToTop(400);
+  }
+
+  getMdContent(fileID: string) {
+    this.mdContentService.getMdContent(fileID)
+      .subscribe(
+        text => { this.mdContent = text.content; },
+        error => { this.mdContent = ''; }
+      );
   }
 
 }
