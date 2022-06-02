@@ -675,11 +675,17 @@ button.button-clear:not(.searchbar-md-cancel) {
 button.button:hover:not(.disable-hover):not(.button-outline):not(.button-clear) {
   background-color: var(--button-hover-background-color);
 }
+button.button.activated:not(.button-outline):not(.button-clear) {
+  background-color: var(--button-background-color);
+}
 
 // Fab buttons
 button.fab {
   background-color: var(--fab-button-primary-background-color);
   color: var(--fab-button-primary-icon-color);
+}
+button.fab.activated {
+  background-color: var(--fab-button-primary-background-color);
 }
 ion-fab-list button.fab.fab-in-list,
 button.fab.fab-md-secondary {
