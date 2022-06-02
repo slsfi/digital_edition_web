@@ -49,6 +49,9 @@
                   <ion-icon *ngIf="!splitPaneOpen" name="menu"></ion-icon>
                   <ion-icon *ngIf="splitPaneOpen" name="close"></ion-icon>
                 </button>
+                <button ion-button class="top-menu-button" (click)="front()">
+                  <ion-icon name="home"></ion-icon>
+                </button>
                 <button *ngIf="showTopSimpleSearchButton || showTopElasticButton" ion-button (click)="searchApp()" class="searchButton simple-search-button" id="searchIcon">
                   <ion-icon name="search"></ion-icon>
                 </button>
@@ -112,6 +115,9 @@
                 <button ion-button icon-only (click)="toggleSplitPane()" class="enable top-menu-button" isActive="false" id="menuToggle">
                   <ion-icon *ngIf="!splitPaneOpen" name="menu"></ion-icon>
                   <ion-icon *ngIf="splitPaneOpen" name="close"></ion-icon>
+                </button>
+                <button ion-button class="top-menu-button" (click)="front()">
+                  <ion-icon name="home"></ion-icon>
                 </button>
                 <button *ngIf="showTopSimpleSearchButton || showTopElasticButton" ion-button (click)="searchApp()" id="searchIcon" class="searchButton simple-search-button" end>
                   <ion-icon name="search"></ion-icon>
