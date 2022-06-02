@@ -54,6 +54,7 @@ class InnerMenuOptionModel {
   search_children_id?: any;
   important?: boolean;
   description: any;
+  text_two: any;
   collapsed: boolean;
 
   public static fromMenuOptionModel(
@@ -82,6 +83,10 @@ class InnerMenuOptionModel {
       innerMenuOptionModel.description = option.description;
     } else if (option.title) {
       innerMenuOptionModel.text = option.title;
+    }
+
+    if (option.text_two) {
+      innerMenuOptionModel.text_two = option.text_two;
     }
 
     innerMenuOptionModel.publication_id = option.publication_id || null;
