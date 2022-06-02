@@ -241,13 +241,13 @@ home-page {
 		}
 
 		.portrait-mode .text-content .site-title {
-			font-size: 2.45rem;
+			font-size: 2.25rem;
 			margin-top: 0.5rem;
 			text-align: center;
 		}
 
 		.portrait-mode .text-content .site-subtitle {
-			font-size: 1.89rem;
+			font-size: 1.625rem;
 			text-align: center;
 		}
 
@@ -257,8 +257,8 @@ home-page {
 	}
 
 	@media only screen and (max-width: 680px) {
-		.text-content {
-			margin: 1.5rem 1.5rem 0 1.5rem;
+		.text-content.text-content {
+			margin: 1.5rem 1rem 0 1rem;
 		}
 	}
 

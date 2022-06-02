@@ -32,6 +32,16 @@ page-content {
             margin-left: 0.5rem;
         }
     }
+    @media(max-width: 600px) {
+        .md_content {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        
+        list-of-songs{
+            margin-left: 0;
+        }
+    }
     
     h1, h2, h3, h4 {
         margin-bottom: 0.5rem;

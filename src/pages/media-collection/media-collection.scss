@@ -118,6 +118,12 @@ page-media-collection {
       padding: 0 0.5rem;
     }
   }
+  @media only screen and (max-width: 600px) {
+    .filters,
+    .info {
+      padding: 0;
+    }
+  }
 
   .img-desc.title {
     font-style: italic;
