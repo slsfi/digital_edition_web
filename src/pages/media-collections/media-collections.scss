@@ -29,8 +29,12 @@ media-collections {
     border-top: 2px solid var(--media-collection-card-content-border-top-color);
   }
 
+  ion-grid.grid {
+    padding: 0;
+  }
+
   h1 {
-    font-size: 1.8rem;
+    font-size: 1.8125rem;
     text-transform: none !important;
   }
 
@@ -48,7 +52,7 @@ media-collections {
   .filters {
     display: flex;
     width: 100%;
-    padding-left: 1.5rem;
+    padding: 0 1rem;
     margin-bottom: 1.5rem;
   }
 
@@ -68,19 +72,8 @@ media-collections {
     margin-left: 0.5rem !important;
   }
 
-  @media only screen and (max-width: 800px) {
-    .filters {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .filters ion-item {
-      margin-bottom: 1rem;
-    }
-  }
-
   .info {
-    padding-left: 1.5rem;
+    padding: 0 1rem;
     margin-bottom: 1.5rem;
 
     h1 {
@@ -101,6 +94,22 @@ media-collections {
 
   .info:not(.markdown) + .filters {
     margin-top: 2rem;
+  }
+
+  @media only screen and (max-width: 800px) {
+    .filters {
+      display: flex;
+      flex-direction: column;
+      padding: 0 0.5rem;
+    }
+
+    .filters ion-item {
+      margin-bottom: 1rem;
+    }
+
+    .info {
+      padding: 0 0.5rem;
+    }
   }
 
 }
