@@ -14,6 +14,7 @@ import { OccurrencesPage } from '../occurrences/occurrences';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { MetadataService } from '../../app/services/metadata/metadata.service';
+import { MdContentService } from '../../app/services/md/md-content.service';
 
 /**
  * Generated class for the PlaceSearchPage page.
@@ -53,6 +54,7 @@ export class PlaceSearchPage {
   cacheItem = false;
   showLoading = false;
   showFilter = true;
+  mdContent: string;
 
   from = 0;
   infiniteScrollNumber = 30;
@@ -69,6 +71,7 @@ export class PlaceSearchPage {
               public navParams: NavParams,
               public semanticDataService: SemanticDataService,
               protected langService: LanguageService,
+              private mdContentService: MdContentService,
               protected config: ConfigService,
               private app: App,
               private platform: Platform,
@@ -91,6 +94,7 @@ export class PlaceSearchPage {
       } catch (e) {
         this.showFilter = true;
       }
+      this.getMdContent(lang + '-12-03');
     });
     this.setData();
   }
@@ -108,6 +112,14 @@ export class PlaceSearchPage {
 
   ionViewDidEnter() {
     this.analyticsService.doPageView('Places');
+  }
+
+  ionViewDidLoad() {
+    this.events.subscribe('language:change', () => {
+      this.langService.getLanguage().subscribe((lang) => {
+        this.getMdContent(lang + '-12-03');
+      });
+    });
   }
 
   async getPlaces() {
@@ -205,6 +217,10 @@ export class PlaceSearchPage {
       component: 'place-search'
     });
     this.selectMusicAccordionItem();
+  }
+
+  ngOnDestroy() {
+    this.events.unsubscribe('language:change');
   }
 
   appHasMusicAccordionConfig() {
@@ -521,6 +537,14 @@ export class PlaceSearchPage {
         }
       }
     }
+  }
+
+  getMdContent(fileID: string) {
+    this.mdContentService.getMdContent(fileID)
+      .subscribe(
+        text => { this.mdContent = text.content; },
+        error => { this.mdContent = ''; }
+      );
   }
 
 }

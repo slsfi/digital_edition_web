@@ -4,6 +4,19 @@ page-place-search {
         overflow: auto;
     }
 
+    @media(max-width: 800px) {
+        ion-content.content[padding] > .scroll-content {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+    }
+    @media(max-width: 600px) {
+        ion-content.content[padding] > .scroll-content {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+
     ion-content.content ion-list.list {
         ion-item.item {
             background-color: var(--index-list-item-background-color);
@@ -17,6 +30,48 @@ page-place-search {
                 }
             }
         }
+    }
+
+    ion-grid.grid {
+        padding: 0;
+    }
+
+    ion-row.page-info-row {
+        width: 100%;
+        max-width: 1400px;
+        flex-direction: column;
+        font-size: 1.125rem;
+        padding: 0 1rem;
+    
+        h1.page-title {
+          font-size: 1.8125rem;
+          text-transform: none !important;
+          margin: 1rem 0 0 0;
+        }
+    
+        .info.markdown {
+          max-width: 800px;
+          width: 100%;
+          margin-top: 1.5rem;
+          margin-bottom: 1rem;
+    
+          markdown > p:first-child {
+            margin-top: 0;
+          }
+    
+          markdown > p:last-child {
+            margin-bottom: 0;
+          }
+      
+          p {
+            line-height: 1.5;
+          }
+        }
+    }
+
+    ion-row.search-area-row {
+        padding-top: 1rem;
+        padding-bottom: 2rem;
     }
 
     ion-icon.settings-icon.icon {

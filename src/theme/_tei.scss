@@ -332,6 +332,13 @@ div.tei {
         margin: 0;
     }
 
+    blockquote {
+        font-style: normal;
+        font-size: 1em;
+        line-height: 1.6em;
+        margin: 1em 2.25em;
+    }
+
     /* CONTAINERS FOR COLUMNS */
     .padded p {
         padding-left: 100px;
@@ -531,6 +538,23 @@ div.tei {
     hr.milestoneSmallBar {
         width: 2.25em;
     }
+    hr.asterisk {
+        height: auto;
+        border: none;
+        background-color: transparent;
+        text-align: center;
+        margin: 1.75em auto 1.25em auto;
+    }
+    hr.asterisk::after {
+        color: #000;
+        content: "*";
+    }
+    hr.blank {
+        height: 0;
+        border: none;
+        background-color: transparent;
+        margin: 1.5em 0 0 0;
+    }
     p.strofe + hr.milestoneBar,
     p.strofe + hr.milestoneSmallBar {
         margin-top: 0.5em;
@@ -544,6 +568,13 @@ div.tei {
     }
     .noIndent {
         text-indent: 0 !important;
+    }
+    p.subtitle {
+        text-align: center;
+        font-style: italic;
+        font-size: 1.1176em;
+        margin: 0 0 2.25em 0;
+        text-indent: 0;
     }
     /*
     .parIndent {
@@ -2302,7 +2333,8 @@ page-introduction div.tei .est_figure_graphic {
     padding-right: 0;
     float: none;
 }
-page-introduction div.tei .parIndent {
+page-introduction div.tei .parIndent,
+page-introduction div.tei blockquote {
     font-size: 0.9412em;
 }
 

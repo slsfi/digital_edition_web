@@ -4,6 +4,12 @@ page-reference-data-modal {
 		overflow: auto;
 		padding: 16px 24px 24px 24px;
 	}
+	
+	@media(max-width: 480px) {
+        ion-content.content[padding] > .scroll-content {
+            padding: 0;
+        }
+    }
 
 	ion-title {
 		margin-left: 12px;

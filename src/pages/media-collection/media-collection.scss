@@ -45,8 +45,11 @@ page-media-collection {
     background-color: var(--media-collection-card-content-background-color);
     border-top: 2px solid var(--media-collection-card-content-border-top-color);
   }
+  ion-grid.grid {
+    padding: 0;
+  }
   h1 {
-    font-size: 1.8rem;
+    font-size: 1.8125rem;
     text-transform: none !important;
   }
   .tagSelect,
@@ -63,20 +66,10 @@ page-media-collection {
   .filters{
     display: flex;
     width: 100%;
-    padding: 0 1.5rem;
+    padding: 0 1rem;
     margin-bottom: 1.5rem;
   }
 
-
-  @media only screen and (max-width: 800px) {
-    .filters{
-        display: flex;
-        flex-direction: column;
-    }
-    .filters ion-item{
-      margin-bottom: 1rem;
-    }
-  }
   .filters ion-item {
     max-width: 400px;
     margin-right: 2rem;
@@ -92,7 +85,7 @@ page-media-collection {
       cursor: pointer;
   }
   .info{
-    padding-left: 1.5rem;
+    padding: 0 1rem;
     margin-bottom: 1.5rem;
 
     h1 {
@@ -104,14 +97,33 @@ page-media-collection {
     max-width: 800px;
     width: 100%;
     margin-bottom: 2.5rem;
+    font-size: 1.125rem;
 
     p {
       line-height: 1.5;
     }
   }
-
   .info:not(.markdown) + .filters {
     margin-top: 2rem;
+  }
+  @media only screen and (max-width: 800px) {
+    .filters {
+        display: flex;
+        flex-direction: column;
+        padding: 0 0.5rem;
+    }
+    .filters ion-item {
+      margin-bottom: 1rem;
+    }
+    .info {
+      padding: 0 0.5rem;
+    }
+  }
+  @media only screen and (max-width: 600px) {
+    .filters,
+    .info {
+      padding: 0;
+    }
   }
 
   .img-desc.title {

@@ -14,6 +14,7 @@ import { OccurrencesPage } from '../occurrences/occurrences';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { MetadataService } from '../../app/services/metadata/metadata.service';
+import { MdContentService } from '../../app/services/md/md-content.service';
 
 /**
  * Generated class for the tagsearchPage page.
@@ -56,6 +57,7 @@ export class TagSearchPage {
   from = 0;
   infiniteScrollNumber = 30;
   filters: any[] = [];
+  mdContent: string;
 
   selectedLinkID: string;
 
@@ -69,6 +71,7 @@ export class TagSearchPage {
               public navParams: NavParams,
               public semanticDataService: SemanticDataService,
               protected langService: LanguageService,
+              private mdContentService: MdContentService,
               protected config: ConfigService,
               private app: App,
               private platform: Platform,
@@ -91,6 +94,7 @@ export class TagSearchPage {
       } catch (e) {
         this.showFilter = true;
       }
+      this.getMdContent(lang + '-12-04');
     });
     this.setData();
   }
@@ -242,7 +246,15 @@ export class TagSearchPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad tagsearchPage');
+    this.events.subscribe('language:change', () => {
+      this.langService.getLanguage().subscribe((lang) => {
+        this.getMdContent(lang + '-12-04');
+      });
+    });
+  }
+
+  ngOnDestroy() {
+    this.events.unsubscribe('language:change');
   }
 
   filter(terms) {
@@ -524,6 +536,14 @@ export class TagSearchPage {
         }
       }
     }
+  }
+
+  getMdContent(fileID: string) {
+    this.mdContentService.getMdContent(fileID)
+      .subscribe(
+        text => { this.mdContent = text.content; },
+        error => { this.mdContent = ''; }
+      );
   }
 
 }

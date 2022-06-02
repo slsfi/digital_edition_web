@@ -3,6 +3,12 @@ page-occurrences {
         overflow: auto;
     }
 
+    @media(max-width: 480px) {
+        ion-content.content[padding] > .scroll-content {
+            padding: 0;
+        }
+    }
+
     ion-title {
         margin-left: 12px;
     }
@@ -152,7 +158,7 @@ page-occurrences {
       color: $text-color;
     }
     .list_of_occurrences_item ion-label.label {
-        padding-left: 1rem;
+        padding: 0.5rem 0 0.5rem 1rem;
     }
     ion-item-divider.occurrences_title {
         border-top: 1px solid #dedede;
