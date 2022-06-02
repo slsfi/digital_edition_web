@@ -188,10 +188,6 @@ export class PersonSearchPage {
     });
   }
 
-  ngOnDestroy() {
-    this.events.unsubscribe('language:change');
-  }
-
   ionViewWillLeave() {
     // Try to remove META-Tags
     this.metadataService.clearHead();
@@ -211,6 +207,10 @@ export class PersonSearchPage {
     this.getParamsData();
     this.selectMusicAccordionItem();
     this.setData();
+  }
+
+  ngOnDestroy() {
+    this.events.unsubscribe('language:change');
   }
 
   sortByLetter(letter) {
