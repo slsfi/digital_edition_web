@@ -60,12 +60,12 @@ epub {
     text-overflow: ellipsis;
   }
 
-  .navigation-buttons {
-    color: #000;
+  button.button-clear.navigation-buttons {
+    color: var(--text-color-on-secondary-color-background);
   }
 
-  .navigation-buttons.disabled-nav-button {
-    color: #9c9c9c;
+  button.button-clear.navigation-buttons.disabled-nav-button {
+    opacity: 0.25;
   }
 
   #toc_text {
@@ -209,6 +209,10 @@ epub {
     flex-grow: 3;
   }
 
+  #search_menu button.button-clear.navigation-buttons {
+    color: #000;
+  }
+
   #search_menu .search-count {
     margin: 0 5px;
     width: 100%;
@@ -284,11 +288,15 @@ epub {
 
   .text-changer-mobile-view .forwardBackward .navigation-buttons {
     margin: 0;
-    height: 40px;
+    height: 36px !important;
+  }
+
+  .text-changer-mobile-view .forwardBackward button.button-clear.navigation-buttons {
+    color: #000;
   }
 
   .text-changer-mobile-view .forwardBackward.grid {
-    background-color: rgba(99, 99, 99, 0.4);
+    background-color: #cacaca;
   }
 
   .current-position-container {
