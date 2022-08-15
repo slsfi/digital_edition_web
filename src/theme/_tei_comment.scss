@@ -82,8 +82,17 @@ div.tei {
     cursor: pointer;
 }
 
-/* Style for reference after the comment note. Used in vonwright.sls.fi */
-comments div.tei p.note + p:not([class]) > span:not([class]) {
+/* Style for references after comment notes. Used in vonwright.sls.fi */
+div.tei .teiComment.noteReference {
+    display: block;
+    font-size: 0.85em;
+    line-height: 1.55;
+    margin-top: 0.5em;
+}
+
+/* Legacy style for references after comment notes. Previously used in vonwright.sls.fi */
+comments div.tei p.note + p:not([class]) > span:not([class]),
+comments div.tei p.note + p:not([class]) ~ p:not([class]) > span:not([class]) {
     font-size: 0.85em;
     line-height: 1.55;
     text-indent: 0;

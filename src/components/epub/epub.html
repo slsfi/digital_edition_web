@@ -8,7 +8,7 @@
         <ion-grid>
             <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center justify-content-end>
               <ion-col class="navigation-buttons-col" *ngIf="(userSettingsService.isMobile() === false && userSettingsService.isTablet() === false)">
-                <button ion-button clear class="navigation-buttons" [ngClass]="atStart ? 'disabled-nav-button' : ''" title="prev button" id="epub-arrow-prev" (click)="prev()" *ngIf="!loading">
+                <button ion-button clear class="navigation-buttons" [ngClass]="atStart ? 'disabled-nav-button' : ''" id="epub-arrow-prev" (click)="prev()" *ngIf="!loading">
                   <ion-icon name="arrow-back"></ion-icon>
                 </button>
               </ion-col>
@@ -18,7 +18,7 @@
                 </div>
               </ion-col>
               <ion-col class="navigation-buttons-col" *ngIf="(userSettingsService.isMobile() === false && userSettingsService.isTablet() === false)">
-                <button ion-button clear class="navigation-buttons" [ngClass]="atEnd ? 'disabled-nav-button' : ''" title="next button" id="epub-arrow-next" (click)="next()" *ngIf="!loading">
+                <button ion-button clear class="navigation-buttons" [ngClass]="atEnd ? 'disabled-nav-button' : ''" id="epub-arrow-next" (click)="next()" *ngIf="!loading">
                   <ion-icon name="arrow-forward"></ion-icon>
                 </button>
               </ion-col>
@@ -61,7 +61,7 @@
     </ion-row>
     <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
       <ion-col class="navigation-buttons-col search-nav-button">
-        <button *ngIf="!loading" ion-button clear class="navigation-buttons" title="prev button" (click)="prevSearch()">
+        <button *ngIf="!loading" ion-button clear class="navigation-buttons" (click)="prevSearch()">
           <ion-icon name="arrow-back"></ion-icon>
         </button>
       </ion-col>
@@ -72,7 +72,7 @@
           </div>
       </ion-col>
       <ion-col class="navigation-buttons-col search-nav-button">
-        <button *ngIf="!loading" ion-button clear class="navigation-buttons" title="next button" (click)="nextSearch()">
+        <button *ngIf="!loading" ion-button clear class="navigation-buttons" (click)="nextSearch()">
           <ion-icon name="arrow-forward"></ion-icon>
         </button>
       </ion-col>
@@ -94,7 +94,7 @@
   <ion-grid class="forwardBackward">
       <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
         <ion-col class="navigation-buttons-col">
-          <button ion-button clear class="navigation-buttons" [ngClass]="atStart ? 'disabled-nav-button' : ''" title="prev button" id="epub-arrow-prev" (click)="prev()" *ngIf="!loading">
+          <button ion-button clear class="navigation-buttons" [ngClass]="atStart ? 'disabled-nav-button' : ''" id="epub-arrow-prev" (click)="prev()" *ngIf="!loading">
             <ion-icon name="arrow-back"></ion-icon>
           </button>
         </ion-col>
@@ -104,7 +104,7 @@
           </div>
         </ion-col>
         <ion-col class="navigation-buttons-col">
-          <button ion-button clear class="navigation-buttons" [ngClass]="atEnd ? 'disabled-nav-button' : ''" title="next button" id="epub-arrow-next" (click)="next()" *ngIf="!loading">
+          <button ion-button clear class="navigation-buttons" [ngClass]="atEnd ? 'disabled-nav-button' : ''" id="epub-arrow-next" (click)="next()" *ngIf="!loading">
             <ion-icon name="arrow-forward"></ion-icon>
           </button>
         </ion-col>

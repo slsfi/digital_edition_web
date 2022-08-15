@@ -5,47 +5,54 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <!--<ion-navbar>
-    <ion-title>Filters</ion-title>
-  </ion-navbar>-->
-  <ion-toolbar>
-      <ion-buttons>
-        <button class="apply-button" (click)="apply()" ion-button>{{"Filter.apply" | translate}}</button>
-      </ion-buttons>
-      <ion-buttons end>
-        <button (click)="cancel()" ion-button>
-          <ion-icon class="close-button" ios="ios-close" md="md-close"></ion-icon>
-        </button>
-      </ion-buttons>
-    </ion-toolbar>
-
+  <ion-navbar>
+    <ion-title>{{'Filter.title' | translate }}</ion-title>
+    <ion-buttons end>
+      <button class="close-button" ion-button (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+    <ng-container *ngIf="showLoading">
+      <ion-spinner class="loading" name="crescent"></ion-spinner>
+    </ng-container>
+
+    <ng-container *ngIf="!showLoading">
       <span *ngIf="shouldFilterYear" class="year_label label">{{"Filter.year" | translate}}</span>
       <ion-item *ngIf="shouldFilterYear">
         <ion-input type="number" class="fromYear" [(ngModel)]="filterYearMin"></ion-input>
         <ion-input type="number" class="toYear" [(ngModel)]="filterYearMax"></ion-input>
       </ion-item>
       <ion-item-divider *ngIf="shouldFilterYear" style="background: transparent;"></ion-item-divider>
-    <ion-list *ngIf="filterCategoryTypes">
-      <ion-list-header>
-        {{"Filter.tagTypes" | translate}}
-      </ion-list-header>
-      <ion-item *ngFor="let filterC of filterCategoryTypes">
-          <ion-label>{{filterC.name}}</ion-label>
-          <ion-toggle [(ngModel)]="filterC.selected"></ion-toggle>
-        </ion-item>
-    </ion-list>
 
-    <ion-list *ngIf="filterPersonTypes">
-      <ion-list-header>
-        {{"Filter.personTypes" | translate}}
-      </ion-list-header>
-      <ion-item *ngFor="let filterPT of filterPersonTypes">
-          <ion-label>{{filterPT.name}}</ion-label>
-          <ion-toggle [(ngModel)]="filterPT.selected"></ion-toggle>
-        </ion-item>
-    </ion-list>
+      <ion-list *ngIf="filterCategoryTypes">
+        <ion-list-header>
+          {{"Filter.tagTypes" | translate}}
+        </ion-list-header>
+        <ion-item *ngFor="let filterC of filterCategoryTypes">
+            <ion-label>{{filterC.name}}</ion-label>
+            <ion-toggle [(ngModel)]="filterC.selected"></ion-toggle>
+          </ion-item>
+      </ion-list>
+
+      <ion-list *ngIf="filterPersonTypes">
+        <ion-list-header>
+          {{"Filter.personTypes" | translate}}
+        </ion-list-header>
+        <ion-item *ngFor="let filterPT of filterPersonTypes">
+            <ion-label>{{filterPT.name}}</ion-label>
+            <ion-toggle [(ngModel)]="filterPT.selected"></ion-toggle>
+          </ion-item>
+      </ion-list>
+    </ng-container>
+
+    <hr/>
+
+    <ion-buttons end>
+      <button ion-button outline (click)="cancel()">{{"BasicActions.Cancel" | translate}}</button>
+      <button *ngIf="!showLoading" ion-button (click)="apply()">{{"Filter.apply" | translate}}</button>
+    </ion-buttons>
 </ion-content>

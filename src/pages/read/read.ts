@@ -1366,13 +1366,35 @@ export class ReadPage /*implements OnDestroy*/ {
             if (anchorElem.classList.contains('ref_readingtext') || anchorElem.classList.contains('ref_comment')) {
               // Link to reading text or comment.
 
-              publicationId = hrefTargetItems[0];
-              textId = hrefTargetItems[1];
+              let comparePageId = '';
 
-              let comparePageId = publicationId + '_' + textId;
-              if (hrefTargetItems.length > 2 && !hrefTargetItems[2].startsWith('#')) {
-                chapterId = hrefTargetItems[2];
-                comparePageId += '_' + chapterId;
+              if (hrefTargetItems.length === 1 && hrefTargetItems[0].startsWith('#')) {
+                // If only a position starting with a hash, assume it's in the same publication, text and chapter.
+                publicationId = this.establishedText.link.split(';').shift().split('_')[0];
+                textId = this.establishedText.link.split(';').shift().split('_')[1];
+                chapterId = this.params.get('chapterID');
+                if (chapterId !== undefined
+                  && chapterId !== null
+                  && !chapterId.startsWith('nochapter')
+                  && chapterId !== ':chapterID'
+                  && chapterId !== 'chapterID') {
+                    chapterId = chapterId.split(';').shift();
+                } else {
+                  chapterId = '';
+                }
+                if (chapterId !== '') {
+                  comparePageId = publicationId + '_' + textId + '_' + chapterId;
+                } else {
+                  comparePageId = publicationId + '_' + textId;
+                }
+              } else if (hrefTargetItems.length > 1) {
+                publicationId = hrefTargetItems[0];
+                textId = hrefTargetItems[1];
+                comparePageId = publicationId + '_' + textId;
+                if (hrefTargetItems.length > 2 && !hrefTargetItems[2].startsWith('#')) {
+                  chapterId = hrefTargetItems[2];
+                  comparePageId += '_' + chapterId;
+                }
               }
 
               let legacyPageId = this.collectionAndPublicationLegacyId;

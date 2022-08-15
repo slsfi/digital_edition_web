@@ -336,7 +336,7 @@ div.tei {
         font-style: normal;
         font-size: 1em;
         line-height: 1.6em;
-        margin: 1em 2.25em;
+        margin: 1em 30px;
     }
 
     /* CONTAINERS FOR COLUMNS */
@@ -2219,7 +2219,8 @@ div.tei .tooltip { display: none; }
 }
 .tei.show_pageNumbering span.lNumber,
 .tei.show_pageNumbering p.parIndent span.paragraph_number,
-.tei.show_pageNumbering p.hangingIndent span.paragraph_number {
+.tei.show_pageNumbering p.hangingIndent span.paragraph_number,
+.tei.show_pageNumbering blockquote span.paragraph_number {
     margin-left: -65px;
 }
 
