@@ -21,7 +21,7 @@
       <li *ngIf="letter['material_source']">{{ "Read.Comments.Manuscript.Status" | translate }}: {{letter['material_source']}}</li>
       <li *ngIf="letter['material_format']">{{ "Read.Comments.Manuscript.Format" | translate }}: {{letter['material_format']}}</li>
       <li *ngIf="letter['leaf_count']">{{ "Read.Comments.Manuscript.Leafs" | translate }}: {{letter['leaf_count']}}</li>
-      <li *ngIf="letter['material_state']">{{ "Read.Comments.Manuscript.Sheets" | translate }}: {{letter['sheet_count']}}</li>
+      <li *ngIf="letter['sheet_count']">{{ "Read.Comments.Manuscript.Sheets" | translate }}: {{letter['sheet_count']}}</li>
       <li *ngIf="letter['page_count']">{{ "Read.Comments.Manuscript.Pages" | translate }}: {{letter['page_count']}}</li>
       <li *ngIf="letter['material_color']">{{ "Read.Comments.Manuscript.Color" | translate }}: {{letter['material_color']}}</li>
       <li *ngIf="letter['material_quality']">{{ "Read.Comments.Manuscript.Quality" | translate }}: {{letter['material_quality']}}</li>
@@ -32,4 +32,3 @@
     </ul>
   </div>
 </div>
-
