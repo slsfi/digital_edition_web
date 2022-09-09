@@ -11,11 +11,15 @@
 
 // CUSTOM FONT SIZE VARIABLES
 // --------------------------------------------------
+$text-fontsize-mini:            12px; // 0.75rem;   => Only for print
+$text-fontsize-tiny:            13px; // 0.8125rem; => Only for print
+$text-fontsize-xxxsmall:        14px; // 0.875rem;  => Only for print
+$text-fontsize-xxsmall:         15px; // 0.9375rem; => Only for print
 $text-fontsize-xsmall:          16px; // 1rem;
 $text-fontsize-small:           17px; // 1.0625rem;
 $text-fontsize-medium:          18px; // 1.125rem;
-$text-fontsize-large:           19px; // 1.1875rem;
-$text-fontsize-xlarge:          21px; // 1.3125rem;
+$text-fontsize-large:           19px; // 1.1875rem; => Not for print
+$text-fontsize-xlarge:          21px; // 1.3125rem; => Not for print
 
 
 

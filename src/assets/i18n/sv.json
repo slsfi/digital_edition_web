@@ -397,5 +397,21 @@
     "Search": "Sök",
     "SearchPhrase": "Söktext",
     "Contents": "Innehåll"
+  },
+  "DownloadTexts": {
+    "Download": "Ladda ner",
+    "Title": "Ladda ner och skriv ut",
+    "Instructions": "Här kan du ladda ner texterna i olika format. Du kan också öppna texterna i utskriftsvänligt format. Den valda texten öppnas då i ett nytt fönster.",
+    "InstructionsIntroduction": "Här kan du ladda ner inledningen eller öppna den i utskriftsvänligt format. Den öppnas då i ett nytt fönster.",
+    "CopyrightNotice": "Licens: CC BY-NC-ND 4.0",
+    "CopyrightNoticeIntroduction": "Licens: CC BY-NC-ND 4.0",
+    "Print": "Skriv ut",
+    "Textsize": "Textstorlek",
+    "TextLoadingError": "Ett fel har uppstått. Texten kunde inte laddas.",
+    "Format": {
+        "XML": "XML",
+        "TXT": "TXT",
+        "Print": "Utskrift"
+    }
   }
 }

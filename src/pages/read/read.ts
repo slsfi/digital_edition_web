@@ -33,6 +33,7 @@ import { TableOfContentsList } from '../../app/table-of-contents/table-of-conten
 
 import { Content } from 'ionic-angular';
 import { ReferenceDataModalPage } from '../reference-data-modal/reference-data-modal';
+import { DownloadTextsModalPage } from '../download-texts-modal/download-texts-modal';
 import { OccurrencesPage } from '../occurrences/occurrences';
 import { OccurrenceResult } from '../../app/models/occurrence.model';
 import { SearchAppPage } from '../search-app/search-app';
@@ -107,6 +108,8 @@ export class ReadPage /*implements OnDestroy*/ {
   illustrationsViewShown: Boolean = false;
   simpleWorkMetadata: Boolean;
   showURNButton: Boolean;
+  showTextDownloadButton: Boolean = false;
+  usePrintNotDownloadIcon: Boolean = false;
   backdropWidth: number;
 
   prevItem: any;
@@ -267,6 +270,37 @@ export class ReadPage /*implements OnDestroy*/ {
       this.showURNButton = this.config.getSettings('showURNButton.pageRead');
     } catch (e) {
       this.showURNButton = true;
+    }
+
+    try {
+      const textDownloadOptions = this.config.getSettings('textDownloadOptions');
+      if (textDownloadOptions.enabledEstablishedFormats !== undefined &&
+        textDownloadOptions.enabledEstablishedFormats !== null &&
+        Object.keys(textDownloadOptions.enabledEstablishedFormats).length !== 0) {
+          for (const [key, value] of Object.entries(textDownloadOptions.enabledEstablishedFormats)) {
+            if (`${value}`) {
+              this.showTextDownloadButton = true;
+              break;
+            }
+          }
+      }
+      if (!this.showTextDownloadButton) {
+        if (textDownloadOptions.enabledCommentsFormats !== undefined &&
+          textDownloadOptions.enabledCommentsFormats !== null &&
+          Object.keys(textDownloadOptions.enabledCommentsFormats).length !== 0) {
+            for (const [key, value] of Object.entries(textDownloadOptions.enabledCommentsFormats)) {
+              if (`${value}`) {
+                this.showTextDownloadButton = true;
+                break;
+              }
+            }
+        }
+      }
+      if (textDownloadOptions.usePrintNotDownloadIcon !== undefined) {
+        this.usePrintNotDownloadIcon = textDownloadOptions.usePrintNotDownloadIcon;
+      }
+    } catch (e) {
+      this.showTextDownloadButton = false;
     }
 
     // Hide some or all of the display toggles (variations, facsimiles, established etc.)
@@ -2820,6 +2854,14 @@ export class ReadPage /*implements OnDestroy*/ {
   private showReference() {
     // Get URL of Page and then the URI
     const modal = this.modalCtrl.create(ReferenceDataModalPage, {id: document.URL, type: 'reference', origin: 'page-read'});
+    modal.present();
+    modal.onDidDismiss(data => {
+      // console.log('dismissed', data);
+    });
+  }
+
+  private showDownloadModal() {
+    const modal = this.modalCtrl.create(DownloadTextsModalPage, {textId: this.establishedText.link, origin: 'page-read'});
     modal.present();
     modal.onDidDismiss(data => {
       // console.log('dismissed', data);

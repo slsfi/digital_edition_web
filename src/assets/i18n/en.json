@@ -328,5 +328,21 @@
     "Search": "Search",
     "SearchPhrase": "Search phrase",
     "Contents": "Contents"
+  },
+  "DownloadTexts": {
+    "Download": "Download",
+    "Title": "Download and print",
+    "Instructions": "Here you can download the texts in different formats. You can also open the texts in print-friendly format. The selected text will then open in a new window.",
+    "InstructionsIntroduction": "Here you can download the introduction or open it in print-friendly format in a new window.",
+    "CopyrightNotice": "Licence: CC BY-NC-ND 4.0",
+    "CopyrightNoticeIntroduction": "Licence: CC BY-NC-ND 4.0",
+    "Print": "Print",
+    "Textsize": "Text size",
+    "TextLoadingError": "An error has occurred. Unable to load text.",
+    "Format": {
+        "XML": "XML",
+        "TXT": "TXT",
+        "Print": "Print"
+    }
   }
 }

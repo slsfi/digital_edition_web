@@ -15,6 +15,7 @@ import { TableOfContentsService } from '../../app/services/toc/table-of-contents
 import { Storage } from '@ionic/storage';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
 import { ReferenceDataModalPage } from '../../pages/reference-data-modal/reference-data-modal';
+import { DownloadTextsModalPage } from '../download-texts-modal/download-texts-modal';
 import { OccurrencesPage } from '../occurrences/occurrences';
 import { IllustrationPage } from '../illustration/illustration';
 
@@ -73,6 +74,8 @@ export class IntroductionPage {
   userIsTouching: Boolean = false;
   collectionLegacyId: string;
   simpleWorkMetadata: Boolean;
+  showTextDownloadButton: Boolean = false;
+  usePrintNotDownloadIcon: Boolean = false;
   private unlistenClickEvents: () => void;
   private unlistenMouseoverEvents: () => void;
   private unlistenMouseoutEvents: () => void;
@@ -163,6 +166,25 @@ export class IntroductionPage {
       this.showURNButton = true;
     }
 
+    try {
+      const textDownloadOptions = this.config.getSettings('textDownloadOptions');
+      if (textDownloadOptions.enabledIntroductionFormats !== undefined &&
+        textDownloadOptions.enabledIntroductionFormats !== null &&
+        Object.keys(textDownloadOptions.enabledIntroductionFormats).length !== 0) {
+          for (const [key, value] of Object.entries(textDownloadOptions.enabledIntroductionFormats)) {
+            if (`${value}`) {
+              this.showTextDownloadButton = true;
+              break;
+            }
+          }
+      }
+      if (textDownloadOptions.usePrintNotDownloadIcon !== undefined) {
+        this.usePrintNotDownloadIcon = textDownloadOptions.usePrintNotDownloadIcon;
+      }
+    } catch (e) {
+      this.showTextDownloadButton = false;
+    }
+
     // Check if we have a pos parmeter in the URL, if we have one we can use it for scrolling the text on the page to that position.
     // The pos parameter must come after the publication id followed by /#, e.g. /publication-introduction/203/#pos1
     const currentURL: string = String(window.location.href);
@@ -195,7 +217,6 @@ export class IntroductionPage {
     this.langService.getLanguage().subscribe(lang => {
       this.textService.getIntroduction(this.id, lang).subscribe(
         res => {
-
             try {
               this.hasSeparateIntroToc = this.config.getSettings('separeateIntroductionToc');
             } catch (error) {
@@ -1386,6 +1407,14 @@ export class IntroductionPage {
   private showReference() {
     // Get URL of Page and then the URI
     const modal = this.modalController.create(ReferenceDataModalPage, {id: document.URL, type: 'reference', origin: 'page-introduction'});
+    modal.present();
+    modal.onDidDismiss(data => {
+      // console.log('dismissed', data);
+    });
+  }
+
+  private showDownloadModal() {
+    const modal = this.modalController.create(DownloadTextsModalPage, {textId: this.id, origin: 'page-introduction'});
     modal.present();
     modal.onDidDismiss(data => {
       // console.log('dismissed', data);

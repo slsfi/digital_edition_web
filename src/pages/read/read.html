@@ -6,6 +6,13 @@
     <ion-buttons>
         <ion-grid>
             <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
+              <ion-col *ngIf="showTextDownloadButton">
+                <button ion-button clear (click)="showDownloadModal()" class="sec-menu-button">
+                  <ion-icon *ngIf="!usePrintNotDownloadIcon" class="download-icon" name="download"></ion-icon>
+                  <ion-icon *ngIf="usePrintNotDownloadIcon" class="print-icon" name="print"></ion-icon>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'DownloadTexts.Download' | translate }}</span>
+                </button>
+              </ion-col>
               <ion-col *ngIf="showURNButton">
                 <button ion-button clear (click)="showReference()" class="sec-menu-button">
                   <ion-icon class="urn-icon" name="share-alt"></ion-icon>

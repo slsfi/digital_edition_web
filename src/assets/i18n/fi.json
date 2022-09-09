@@ -398,5 +398,21 @@
     "Search": "Haku",
     "SearchPhrase": "Hakulause",
     "Contents": "Sisältö"
+  },
+  "DownloadTexts": {
+    "Download": "Lataa",
+    "Title": "Lataa ja tulosta",
+    "Instructions": "Tästä voit ladata tekstit eri tiedostomuodoissa. Voit myös avata tekstit uuteen ikkunaan tulostusta varten.",
+    "InstructionsIntroduction": "Tästä voit ladata johdannon tai avata sen uuteen ikkunaan tulostusta varten.",
+    "CopyrightNotice": "Lisenssi: CC BY-NC-ND 4.0",
+    "CopyrightNoticeIntroduction": "Lisenssi: CC BY-NC-ND 4.0",
+    "Print": "Tulosta",
+    "Textsize": "Tekstin koko",
+    "TextLoadingError": "On syntynyt virhe. Tekstin lataus epäonnistui.",
+    "Format": {
+        "XML": "XML",
+        "TXT": "TXT",
+        "Print": "Tulosta"
+    }
   }
 }

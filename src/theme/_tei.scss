@@ -21,6 +21,18 @@ div.teiContainer {
 }
 
 /* Textstorlekar. */
+div.tei.miniFontSize {
+    font-size: $text-fontsize-mini;
+}
+div.tei.tinyFontSize {
+    font-size: $text-fontsize-tiny;
+}
+div.tei.xxxsmallFontSize {
+    font-size: $text-fontsize-xxxsmall;
+}
+div.tei.xxsmallFontSize {
+    font-size: $text-fontsize-xxsmall;
+}
 div.tei.xsmallFontSize {
     font-size: $text-fontsize-xsmall;
 }
@@ -42,6 +54,22 @@ div.tei.xlargeFontSize {
    de ska påverkas av den valda textstorleken men inte storleken på det text-
    element som de ingår i. Kommentarasteriskerna ska t.ex. inte vara större i 
    rubriker. */
+div.tei.miniFontSize img.comment {
+    width:  ceil(0.75 * $text-fontsize-mini) !important;
+    height: ceil(0.75 * $text-fontsize-mini) !important;
+}
+div.tei.tinyFontSize img.comment {
+    width:  ceil(0.75 * $text-fontsize-tiny) !important;
+    height: ceil(0.75 * $text-fontsize-tiny) !important;
+}
+div.tei.xxxsmallFontSize img.comment {
+    width:  ceil(0.75 * $text-fontsize-xxxsmall) !important;
+    height: ceil(0.75 * $text-fontsize-xxxsmall) !important;
+}
+div.tei.xxsmallFontSize img.comment {
+    width:  ceil(0.75 * $text-fontsize-xxsmall) !important;
+    height: ceil(0.75 * $text-fontsize-xxsmall) !important;
+}
 div.tei.xsmallFontSize img.comment {
     width:  ceil(0.75 * $text-fontsize-xsmall) !important;
     height: ceil(0.75 * $text-fontsize-xsmall) !important;
@@ -64,6 +92,38 @@ div.tei.xlargeFontSize img.comment {
 }
 
 /* Sidnumreringarnas storlekar vid olika textstorlekar */
+div.tei.miniFontSize.show_pageBreakOriginal,
+div.tei.miniFontSize.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: ceil(0.875 * $text-fontsize-mini);
+    }
+}
+div.tei.tinyFontSize.show_pageBreakOriginal,
+div.tei.tinyFontSize.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: ceil(0.875 * $text-fontsize-tiny);
+    }
+}
+div.tei.xxxsmallFontSize.show_pageBreakOriginal,
+div.tei.xxxsmallFontSize.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: ceil(0.875 * $text-fontsize-xxxsmall);
+    }
+}
+div.tei.xxsmallFontSize.show_pageBreakOriginal,
+div.tei.xxsmallFontSize.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: ceil(0.875 * $text-fontsize-xxsmall);
+    }
+}
 div.tei.xsmallFontSize.show_pageBreakOriginal,
 div.tei.xsmallFontSize.show_pageBreakEdition {
     .pb_orig,
@@ -112,6 +172,24 @@ div.tei span.seg img {
     display: inline-block;
     width:   0.625em; /* Default om textstorleken inte fungerar. */
     height:  0.625em;
+}
+div.tei.miniFontSize.show_normalisations span.reg_hide img,
+div.tei.miniFontSize.show_changes span.corr_hide img,
+div.tei.miniFontSize span.seg img {
+    width:  ceil(0.585 * $text-fontsize-mini);
+    height: ceil(0.585 * $text-fontsize-mini);
+}
+div.tei.tinyFontSize.show_normalisations span.reg_hide img,
+div.tei.tinyFontSize.show_changes span.corr_hide img,
+div.tei.tinyFontSize span.seg img {
+    width:  ceil(0.585 * $text-fontsize-tiny);
+    height: ceil(0.585 * $text-fontsize-tiny);
+}
+div.tei.xxsmallFontSize.show_normalisations span.reg_hide img,
+div.tei.xxsmallFontSize.show_changes span.corr_hide img,
+div.tei.xxsmallFontSize span.seg img {
+    width:  ceil(0.585 * $text-fontsize-xxsmall);
+    height: ceil(0.585 * $text-fontsize-xxsmall);
 }
 div.tei.xsmallFontSize.show_normalisations span.reg_hide img,
 div.tei.xsmallFontSize.show_changes span.corr_hide img,
@@ -163,6 +241,46 @@ div.tei span.anchorScrollTarget.highlight img,
 div.tei a.ref_variant.tooltiptrigger.highlight img,
 div.tei span.extVariantsTrigger.highlight img {
     animation: filter-animation-brightness 1.5s infinite;
+}
+div.tei.miniFontSize span.anchor_lemma img,
+div.tei.miniFontSize img.inl_ms_arrow,
+div.tei.miniFontSize span.add_margin img,
+div.tei.miniFontSize img.doodle,
+div.tei.miniFontSize span.anchorScrollTarget img,
+div.tei.miniFontSize a.ref_variant img,
+div.tei.miniFontSize span.extVariantsTrigger img {
+    width:  ceil(0.75 * $text-fontsize-mini);
+    height: ceil(0.75 * $text-fontsize-mini);
+}
+div.tei.tinyFontSize span.anchor_lemma img,
+div.tei.tinyFontSize img.inl_ms_arrow,
+div.tei.tinyFontSize span.add_margin img,
+div.tei.tinyFontSize img.doodle,
+div.tei.tinyFontSize span.anchorScrollTarget img,
+div.tei.tinyFontSize a.ref_variant img,
+div.tei.tinyFontSize span.extVariantsTrigger img {
+    width:  ceil(0.75 * $text-fontsize-tiny);
+    height: ceil(0.75 * $text-fontsize-tiny);
+}
+div.tei.xxxsmallFontSize span.anchor_lemma img,
+div.tei.xxxsmallFontSize img.inl_ms_arrow,
+div.tei.xxxsmallFontSize span.add_margin img,
+div.tei.xxxsmallFontSize img.doodle,
+div.tei.xxxsmallFontSize span.anchorScrollTarget img,
+div.tei.xxxsmallFontSize a.ref_variant img,
+div.tei.xxxsmallFontSize span.extVariantsTrigger img {
+    width:  ceil(0.75 * $text-fontsize-xxxsmall);
+    height: ceil(0.75 * $text-fontsize-xxxsmall);
+}
+div.tei.xxsmallFontSize span.anchor_lemma img,
+div.tei.xxsmallFontSize img.inl_ms_arrow,
+div.tei.xxsmallFontSize span.add_margin img,
+div.tei.xxsmallFontSize img.doodle,
+div.tei.xxsmallFontSize span.anchorScrollTarget img,
+div.tei.xxsmallFontSize a.ref_variant img,
+div.tei.xxsmallFontSize span.extVariantsTrigger img {
+    width:  ceil(0.75 * $text-fontsize-xxsmall);
+    height: ceil(0.75 * $text-fontsize-xxsmall);
 }
 div.tei.xsmallFontSize span.anchor_lemma img,
 div.tei.xsmallFontSize img.inl_ms_arrow,
@@ -221,6 +339,22 @@ div.tei .teiManuscript.immediate_symbol img {
     width:   0.9em; /* Default om textstorleken inte fungerar. */
     height:  auto;
 }
+div.tei.miniFontSize .teiManuscript.immediate_symbol img {
+    width:  ceil(0.9 * $text-fontsize-mini);
+    height: ceil(0.9 * $text-fontsize-mini);
+}
+div.tei.tinyFontSize .teiManuscript.immediate_symbol img {
+    width:  ceil(0.9 * $text-fontsize-tiny);
+    height: ceil(0.9 * $text-fontsize-tiny);
+}
+div.tei.xxxsmallFontSize .teiManuscript.immediate_symbol img {
+    width:  ceil(0.9 * $text-fontsize-xxxsmall);
+    height: ceil(0.9 * $text-fontsize-xxxsmall);
+}
+div.tei.xxsmallFontSize .teiManuscript.immediate_symbol img {
+    width:  ceil(0.9 * $text-fontsize-xxsmall);
+    height: ceil(0.9 * $text-fontsize-xxsmall);
+}
 div.tei.xsmallFontSize .teiManuscript.immediate_symbol img {
     width:  ceil(0.9 * $text-fontsize-xsmall);
     height: ceil(0.9 * $text-fontsize-xsmall);
@@ -248,6 +382,26 @@ div.tei img.symbol {
     width:   1.17em; /* Default om textstorleken inte fungerar. */
     height:  auto;
     vertical-align: text-bottom;
+}
+div.tei.miniFontSize img.symbol {
+    width:  ceil(1.17 * $text-fontsize-mini);
+    height: ceil(1.17 * $text-fontsize-mini);
+    vertical-align: floor(-0.2 * $text-fontsize-mini);
+}
+div.tei.tinyFontSize img.symbol {
+    width:  ceil(1.17 * $text-fontsize-tiny);
+    height: ceil(1.17 * $text-fontsize-tiny);
+    vertical-align: floor(-0.2 * $text-fontsize-tiny);
+}
+div.tei.xxxsmallFontSize img.symbol {
+    width:  ceil(1.17 * $text-fontsize-xxxsmall);
+    height: ceil(1.17 * $text-fontsize-xxxsmall);
+    vertical-align: floor(-0.2 * $text-fontsize-xxxsmall);
+}
+div.tei.xxsmallFontSize img.symbol {
+    width:  ceil(1.17 * $text-fontsize-xxsmall);
+    height: ceil(1.17 * $text-fontsize-xxsmall);
+    vertical-align: floor(-0.2 * $text-fontsize-xxsmall);
 }
 div.tei.xsmallFontSize img.symbol {
     width:  ceil(1.17 * $text-fontsize-xsmall);
@@ -281,6 +435,22 @@ div.tei img.teiManuscript.handSymbol {
     width:   1em; /* Default om textstorleken inte fungerar. */
     height:  auto;
     top: 0;
+}
+div.tei.miniFontSize img.teiManuscript.handSymbol {
+    width:  ceil(1 * $text-fontsize-mini);
+    height: ceil(1 * $text-fontsize-mini);
+}
+div.tei.tinyFontSize img.teiManuscript.handSymbol {
+    width:  ceil(1 * $text-fontsize-tiny);
+    height: ceil(1 * $text-fontsize-tiny);
+}
+div.tei.xxxsmallFontSize img.teiManuscript.handSymbol {
+    width:  ceil(1 * $text-fontsize-xxxsmall);
+    height: ceil(1 * $text-fontsize-xxxsmall);
+}
+div.tei.xxsmallFontSize img.teiManuscript.handSymbol {
+    width:  ceil(1 * $text-fontsize-xxsmall);
+    height: ceil(1 * $text-fontsize-xxsmall);
 }
 div.tei.xsmallFontSize img.teiManuscript.handSymbol {
     width:  ceil(1 * $text-fontsize-xsmall);
@@ -1493,6 +1663,13 @@ div.tei {
         margin: 1em 0 !important;
         font-size: 1.3529em;
     }
+    h1.tei.desc {
+        font-size: 1.1765em;
+        font-weight: normal;
+        font-style: italic;
+        text-align: center;
+        margin: 0 0 2em 0;
+    }
     h2.tei.zts {
         font-variant: small-caps;
         font-size: 1.3em !important;
@@ -1938,7 +2115,7 @@ div.tei {
     .revision {
         border-radius: 5px;
         border: 2px solid #000;
-        padding: 2px;
+        padding: 0.11em;
     }
     .figure-caption {
         text-align: left;

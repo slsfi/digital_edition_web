@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ 'DownloadTexts.Title' | translate }}</ion-title>
+    <ion-buttons end>
+      <button class="close-button" ion-button (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-col>
+    <ion-card>
+      <ion-spinner *ngIf="loading" class="loading" name="crescent"></ion-spinner>
+      <ng-container *ngIf="!loading">
+        <ion-card-header>
+          <label class="header" [ngClass]="introductionMode ? 'introductionMode' : 'readTextsMode'">
+            <span class="header-pub-title" [innerHTML]="publicationTitle"></span>
+            <span class="header-coll-title" [innerHTML]="collectionTitle"></span>
+          </label>
+          <p *ngIf="showErrorMessage" class="errorMessage">{{ 'DownloadTexts.TextLoadingError' | translate }}</p>
+        </ion-card-header>
+        <ion-card-content>
+          <ng-container *ngIf="introductionMode">
+            <ion-item>
+              <label>{{ 'introduction' | translate }}</label>
+              <ion-buttons class="download-buttons">
+                <button *ngIf="downloadFormatsIntro.xml" ion-button (click)="initiateDownload('intro', 'xml')">{{ 'DownloadTexts.Format.XML' | translate }}</button>
+                <button *ngIf="downloadFormatsIntro.txt" ion-button (click)="initiateDownload('intro', 'txt')">{{ 'DownloadTexts.Format.TXT' | translate }}</button>
+                <button *ngIf="downloadFormatsIntro.print" ion-button outline (click)="openPrintFriendlyText('intro')">{{ 'DownloadTexts.Format.Print' | translate }}</button>
+              </ion-buttons>
+            </ion-item>
+          </ng-container>
+          <ng-container *ngIf="readTextsMode">
+            <ion-item *ngIf="downloadFormatsEst.xml || downloadFormatsEst.txt || downloadFormatsEst.print">
+              <label>{{ 'Read.Established.Title' | translate }}</label>
+              <ion-buttons class="download-buttons">
+                <button *ngIf="downloadFormatsEst.xml" ion-button (click)="initiateDownload('est', 'xml')">{{ 'DownloadTexts.Format.XML' | translate }}</button>
+                <button *ngIf="downloadFormatsEst.txt" ion-button (click)="initiateDownload('est', 'txt')">{{ 'DownloadTexts.Format.TXT' | translate }}</button>
+                <button *ngIf="downloadFormatsEst.print" ion-button outline (click)="openPrintFriendlyText('est')">{{ 'DownloadTexts.Format.Print' | translate }}</button>
+              </ion-buttons>
+            </ion-item>
+            <ion-item *ngIf="downloadFormatsCom.xml || downloadFormatsCom.txt || downloadFormatsCom.print">
+              <label>{{ 'Read.Comments.Title' | translate }}</label>
+              <ion-buttons *ngIf="downloadFormatsCom.xml" class="download-buttons">
+                <button ion-button (click)="initiateDownload('com', 'xml')">{{ 'DownloadTexts.Format.XML' | translate }}</button>
+                <button *ngIf="downloadFormatsCom.print" ion-button outline (click)="openPrintFriendlyText('com')">{{ 'DownloadTexts.Format.Print' | translate }}</button>
+              </ion-buttons>
+            </ion-item>
+          </ng-container>
+          <ion-item *ngIf="showInstructions || showCopyright">
+            <p *ngIf="showInstructions" class="download-instructions" [innerHTML]="instructionsText"></p>
+            <p *ngIf="showCopyright" class="copyright-notice" [innerHTML]="copyrightText"></p>
+          </ion-item>
+        </ion-card-content>
+      </ng-container>
+    </ion-card>
+  </ion-col>
+</ion-content>
