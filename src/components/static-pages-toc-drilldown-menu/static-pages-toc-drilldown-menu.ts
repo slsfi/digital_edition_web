@@ -107,7 +107,7 @@ export class StaticPagesTocDrilldownMenuComponent {
   }
 
   ngOnDestroy() {
-    this.events.unsubscribe('language:change');
+    this.events.unsubscribe('language-static:change');
   }
 
   /**

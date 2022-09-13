@@ -11,6 +11,7 @@ import { MdContentService } from '../../app/services/md/md-content.service';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { ReadPopoverPage } from '../read-popover/read-popover';
 import { ReferenceDataModalPage } from '../../pages/reference-data-modal/reference-data-modal';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
  * Generated class for the TitlePage page.
@@ -32,7 +33,6 @@ export class TitlePage {
 
   errorMessage: any;
   mdContent: string;
-  lang = 'sv';
   hasMDTitle = '';
   hasDigitalEditionListChildren = false;
   childrenPdfs = [];
@@ -42,6 +42,7 @@ export class TitlePage {
   titleSelected: boolean;
   collectionID: any;
   showURNButton: boolean;
+  languageSubscription: Subscription;
 
   constructor(
     public navCtrl: NavController,
@@ -83,39 +84,24 @@ export class TitlePage {
       this.showURNButton = false;
     }
 
-    this.lang = this.config.getSettings('i18n.locale');
-    this.events.subscribe('language:change', () => {
-      this.langService.getLanguage().subscribe((lang) => {
-        this.lang = lang;
-        this.ionViewDidLoad();
-      });
-    });
+    this.languageSubscription = null;
 
-    this.langService.getLanguage().subscribe((lang) => {
-      // Check if not a Number
-      let idNaN = isNaN(Number(this.id));
-      if ( this.id === null || this.id === 'null' ) {
-        idNaN = true;
-      }
+    // Check if id not a Number
+    let idNaN = isNaN(Number(this.id));
+    if ( this.id === null || this.id === 'null' ) {
+      idNaN = true;
+    }
 
-      // idNaN === false, id is a number
-      if ( idNaN === false ) {
-        this.checkIfCollectionHasChildrenPdfs();
-      }
-
-      // idNaN === false, id is a number
-      if ( idNaN === false ) {
-        if (this.hasMDTitle !== '') {
-          this.getMdContent(`${lang}-${this.hasMDTitle}-${this.id}`);
-        }
-      } else {
-        this.getMdContent(`${lang}-gallery-intro`);
-      }
-    });
+    // idNaN === false, id is a number
+    if ( idNaN === false ) {
+      this.checkIfCollectionHasChildrenPdfs();
+    }
   }
 
   ngOnDestroy() {
-    this.events.unsubscribe('language:change');
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
   }
 
   checkIfCollectionHasChildrenPdfs() {
@@ -170,51 +156,56 @@ export class TitlePage {
   }
 
   ionViewDidLoad() {
+    this.languageSubscription = this.langService.languageSubjectChange().subscribe(lang => {
+      if (lang) {
+        this.loadTitle(lang);
+      } else {
+        this.langService.getLanguage().subscribe(language => {
+          this.loadTitle(language);
+        });
+      }
+    });
+  }
+
+  loadTitle(lang: string) {
     this.getTocRoot(this.params.get('collectionID'));
     const isIdText = isNaN(Number(this.id));
     if (this.hasMDTitle === '') {
       if (isIdText === false) {
-        this.langService.getLanguage().subscribe(lang => {
-          this.textService.getTitlePage(this.id, lang).subscribe(
-            res => {
-              // in order to get id attributes for tooltips
-              this.text = this.sanitizer.bypassSecurityTrustHtml(
-                res.content.replace(/images\//g, 'assets/images/')
-                  .replace(/\.png/g, '.svg')
-              );
-            },
-            error => {
-              this.errorMessage = <any>error;
-            }
-          );
-        });
+        this.textService.getTitlePage(this.id, lang).subscribe(
+          res => {
+            // in order to get id attributes for tooltips
+            this.text = this.sanitizer.bypassSecurityTrustHtml(
+              res.content.replace(/images\//g, 'assets/images/')
+                .replace(/\.png/g, '.svg')
+            );
+          },
+          error => {
+            this.errorMessage = <any>error;
+          }
+        );
       }
     } else {
       if (isIdText === false) {
-        this.langService.getLanguage().subscribe(lang => {
-          const fileID = `${lang}-${this.hasMDTitle}-${this.id}`;
-          this.mdService.getMdContent(fileID).subscribe(
-            res => {
-              // in order to get id attributes for tooltips
-              this.mdContent = res.content;
-            },
-            error => {
-              this.errorMessage = <any>error;
-            }
-          );
-        });
+        const fileID = `${lang}-${this.hasMDTitle}-${this.id}`;
+        this.mdService.getMdContent(fileID).subscribe(
+          res => {
+            // in order to get id attributes for tooltips
+            this.mdContent = res.content;
+          },
+          error => {
+            this.errorMessage = <any>error;
+          }
+        );
       } else {
-        this.langService.getLanguage().subscribe(lang => {
-          this.mdContentService.getMdContent(`${lang}-gallery-intro`)
-          .subscribe(
-              text => {
-                 this.mdContent = text.content;
-              },
-              error =>  {
-                this.errorMessage = <any>error
-              }
-          );
-        });
+        this.mdContentService.getMdContent(`${lang}-gallery-intro`).subscribe(
+          text => {
+              this.mdContent = text.content;
+          },
+          error =>  {
+            this.errorMessage = <any>error
+          }
+        );
       }
     }
     this.events.publish('pageLoaded:title');

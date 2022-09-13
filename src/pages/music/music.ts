@@ -6,6 +6,7 @@ import { LanguageService } from '../../app/services/languages/language.service';
 import { MdContentService } from '../../app/services/md/md-content.service';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
  * Generated class for the MusicPage page.
@@ -24,13 +25,12 @@ import { AnalyticsService } from '../../app/services/analytics/analytics.service
 })
 export class MusicPage {
 
-  appName: string;
-  appSubtitle: string;
   appMachineName: string;
   homeContent: string;
   homeFooterContent: string;
   errorMessage: string;
   initLanguage: string;
+  languageSubscription: Subscription;
 
   collectionsToShow = [];
 
@@ -48,21 +48,6 @@ export class MusicPage {
     this.appMachineName = this.config.getSettings('app.machineName');
     this.userSettingsService.temporarilyHideSplitPane();
 
-    this.events.subscribe('language:change', () => {
-      this.languageService.getLanguage().subscribe((lang) => {
-        this.getMdContent(lang + '-09'); // @TODO remove hardcoded thins
-        this.getFooterMdContent(lang + '-06'); // @TODO remove hardcoded thins
-      });
-    });
-
-    this.collectionsToShowConfig();
-  }
-
-  ngOnDestroy() {
-    this.events.unsubscribe('language:change');
-  }
-
-  collectionsToShowConfig() {
     try {
       this.collectionsToShow = this.config.getSettings('MusicPage.collectionsToShow');
     } catch (e) {
@@ -70,28 +55,41 @@ export class MusicPage {
     }
   }
 
+  ionViewWillEnter() {
+    this.events.publish('ionViewWillEnter', this.constructor.name);
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', true);
+  }
+
   ionViewDidEnter() {
     this.analyticsService.doPageView('music');
+  }
+
+  ionViewDidLoad() {
+    this.languageSubscription = this.languageService.languageSubjectChange().subscribe(lang => {
+      if (lang) {
+        this.loadContent(lang);
+      } else {
+        this.languageService.getLanguage().subscribe(language => {
+          this.loadContent(language);
+        });
+      }
+    });
   }
 
   ionViewWillLeave() {
     this.events.publish('ionViewWillLeave', this.constructor.name);
   }
-  ionViewWillEnter() {
-    this.events.publish('ionViewWillEnter', this.constructor.name);
-    this.events.publish('tableOfContents:unSelectSelectedTocItem', true);
-    this.languageService.getLanguage().subscribe((lang: string) => {
-      this.getMdContent(lang + '-09'); // @TODO remove hardcoded thins
-      this.getFooterMdContent(lang + '-06'); // @TODO remove hardcoded thins
-      this.appName = this.config.getSettings('app.name.' + lang);
-      const subTitle = this.config.getSettings('app.subTitle1.' + lang);
-      if ( subTitle !== '' ) {
-        this.appSubtitle = '- ' + this.config.getSettings('app.subTitle1.' + lang) + ' -';
-      } else {
-        this.appSubtitle = '';
-      }
-      this.events.publish('title-logo:setTitle', this.config.getSettings('app.page-title.' + lang));
-    });
+
+  ngOnDestroy() {
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
+  }
+
+  loadContent(lang: string) {
+    this.getMdContent(lang + '-09'); // @TODO remove hardcoded thins
+    this.getFooterMdContent(lang + '-06'); // @TODO remove hardcoded thins
+    this.events.publish('title-logo:setTitle', this.config.getSettings('app.page-title.' + lang));
   }
 
   getMdContent(fileID: string) {

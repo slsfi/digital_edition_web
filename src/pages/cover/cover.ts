@@ -9,6 +9,7 @@ import { TableOfContentsService } from '../../app/services/toc/table-of-contents
 import { ConfigService } from '@ngx-config/core';
 import { MdContentService } from '../../app/services/md/md-content.service';
 import { MetadataService } from '../../app/services/metadata/metadata.service';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
  * Generated class for the CoverPage page.
@@ -29,7 +30,6 @@ import { MetadataService } from '../../app/services/metadata/metadata.service';
 export class CoverPage {
 
   errorMessage: any;
-  mdContent: string;
   image_alt = '';
   image_src = '';
   lang = 'sv';
@@ -41,13 +41,13 @@ export class CoverPage {
   protected collection: any;
   coverSelected: boolean;
   collectionID: any;
+  languageSubscription: Subscription;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private langService: LanguageService,
     private textService: TextService,
-    private mdService: MdContentService,
     protected sanitizer: DomSanitizer,
     protected params: NavParams,
     protected events: Events,
@@ -55,45 +55,64 @@ export class CoverPage {
     private userSettingsService: UserSettingsService,
     protected tableOfContentsService: TableOfContentsService,
     public config: ConfigService,
-    public mdContentService: MdContentService,
+    private mdContentService: MdContentService,
     private metadataService: MetadataService
   ) {
     this.coverSelected = true;
     this.id = this.params.get('collectionID');
-    console.log(`Coverpage id is ${this.id}`);
-    this.lang = this.config.getSettings('i18n.locale');
-    this.collection = this.params.get('collection');
+    // console.log(`Coverpage id is ${this.id}`);
     if ( this.params.get('publicationID') === undefined ) {
       this.coverSelected = true;
     } else {
       this.coverSelected = false;
     }
-    this.mdContent = '';
     try {
       this.hasMDCover = this.config.getSettings('ProjectStaticMarkdownCoversFolder');
     } catch (e) {
       this.hasMDCover = false;
     }
 
-    this.events.subscribe('language:change', () => {
-      this.langService.getLanguage().subscribe((lang) => {
-        this.lang = lang;
-        this.ionViewDidLoad();
-      });
-    });
-
     this.checkIfCollectionHasChildrenPdfs();
+  }
 
-    if (!isNaN(Number(this.id))) {
-      if (this.hasMDCover) {
-        const folder = this.hasMDCover;
-        this.getMdContent(`${this.lang}-${folder}-${this.id}`);
+  ionViewWillEnter() {
+    this.events.publish('ionViewWillEnter', this.constructor.name);
+
+    // Try to remove META-Tags
+    this.metadataService.clearHead();
+    // Add the new META-Tags
+    this.metadataService.addDescription(this.constructor.name);
+    this.metadataService.addKeywords();
+
+    this.events.publish('musicAccordion:reset', true);
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'cover'});
+
+    this.events.publish('SelectedItemInMenu', {
+      menuID: this.params.get('collectionID'),
+      component: 'cover-page'
+    });
+  }
+
+  ionViewDidLoad() {
+    this.languageSubscription = this.langService.languageSubjectChange().subscribe(lang => {
+      if (lang) {
+        this.loadCover(lang);
+      } else {
+        this.langService.getLanguage().subscribe(language => {
+          this.loadCover(language);
+        });
       }
-    }
+    });
+  }
+
+  ionViewWillLeave() {
+    this.events.publish('ionViewWillLeave', this.constructor.name);
   }
 
   ngOnDestroy() {
-    this.events.unsubscribe('language:change');
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
   }
 
   checkIfCollectionHasChildrenPdfs() {
@@ -111,98 +130,61 @@ export class CoverPage {
     }
   }
 
-  ionViewWillLeave() {
-    this.events.publish('ionViewWillLeave', this.constructor.name);
-  }
-  ionViewWillEnter() {
-    this.events.publish('ionViewWillEnter', this.constructor.name);
-
-    // Try to remove META-Tags
-    this.metadataService.clearHead();
-    // Add the new META-Tags
-    this.metadataService.addDescription(this.constructor.name);
-    this.metadataService.addKeywords();
-
-    this.events.publish('musicAccordion:reset', true);
-    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'cover'});
-
-    this.events.publish('SelectedItemInMenu', {
-      menuID: this.params.get('collectionID'),
-      component: 'cover-page'
-    });
-
-  }
-
-  getMdContent(fileID: string) {
-    this.mdContentService.getMdContent(fileID)
-        .subscribe(
-            text => {
-              this.mdContent = text.content;
-              /* Extract image url and alt-text from markdown content. */
-              this.image_alt = this.mdContent.match(/!\[(.*?)\]\(.*?\)/)[1];
-              if (this.image_alt === null) {
-                this.image_alt = 'Cover image';
-              }
-              this.image_src = this.mdContent.match(/!\[.*?\]\((.*?)\)/)[1];
-              if (this.image_src === null) {
-                this.image_src = '';
-              }
-            },
-            error =>  {this.errorMessage = <any>error}
+  loadCover(lang: string) {
+    this.getTocRoot(this.params.get('collectionID'));
+    this.events.publish('pageLoaded:cover');
+    if (!isNaN(Number(this.id))) {
+      if (!this.hasMDCover) {
+        /**
+         * ! The necessary API endpoint for getting the cover page via textService has not been
+         * ! implemented, so getting the cover this way does not work. It has to be given in a
+         * ! markdown file.
+         */
+        this.textService.getCoverPage(this.id, lang).subscribe(
+          res => {
+            // in order to get id attributes for tooltips
+            this.text = this.sanitizer.bypassSecurityTrustHtml(
+              res.content.replace(/images\//g, 'assets/images/')
+                .replace(/\.png/g, '.svg')
+            );
+          },
+          error => { this.errorMessage = <any>error; }
         );
+      } else {
+        this.getCoverImageFromMdContent(`${lang}-${this.hasMDCover}-${this.id}`);
+      }
+    }
+  }
+
+  getCoverImageFromMdContent(fileID: string) {
+    this.mdContentService.getMdContent(fileID).subscribe(
+      text => {
+        /* Extract image url and alt-text from markdown content. */
+        this.image_alt = text.content.match(/!\[(.*?)\]\(.*?\)/)[1];
+        if (this.image_alt === null) {
+          this.image_alt = 'Cover image';
+        }
+        this.image_src = text.content.match(/!\[.*?\]\((.*?)\)/)[1];
+        if (this.image_src === null) {
+          this.image_src = '';
+        }
+      },
+      error =>  {this.errorMessage = <any>error}
+    );
   }
 
   getTocRoot(id: string) {
     if ( id === 'mediaCollections' || id === undefined ) {
       return [{}];
     }
-    this.tableOfContentsService.getTableOfContents(id)
-    .subscribe(
-        tocItems => {
-          tocItems.coverSelected = this.coverSelected;
-          this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId, 'caller':  'cover'});
-          this.storage.set('toc_' + id, tocItems);
-        },
-      error =>  {this.errorMessage = <any>error});
+    this.tableOfContentsService.getTableOfContents(id).subscribe(
+      tocItems => {
+        tocItems.coverSelected = this.coverSelected;
+        this.events.publish('tableOfContents:loaded', {tocItems: tocItems, searchTocItem: true, collectionID: tocItems.collectionId, 'caller':  'cover'});
+        this.storage.set('toc_' + id, tocItems);
+      },
+      error =>  {this.errorMessage = <any>error}
+    );
   }
 
-  ionViewDidLoad() {
-    this.getTocRoot(this.params.get('collectionID'));
-    this.events.publish('pageLoaded:cover');
-    if (!isNaN(Number(this.id))) {
-      if (!this.hasMDCover) {
-        this.langService.getLanguage().subscribe(lang => {
-          this.textService.getCoverPage(this.id, lang).subscribe(
-            res => {
-              // in order to get id attributes for tooltips
-              this.text = this.sanitizer.bypassSecurityTrustHtml(
-                res.content.replace(/images\//g, 'assets/images/')
-                  .replace(/\.png/g, '.svg')
-              );
-            },
-            error => {
-              this.errorMessage = <any>error;
-            }
-          );
-        });
-      } else {
-        /* Why is this here? The if below is never true since checking for !isNaN above. */
-        if (isNaN(Number(this.id))) {
-          this.langService.getLanguage().subscribe(lang => {
-            const fileID = lang + '-08';
-            this.hasMDCover = true;
-            this.mdService.getMdContent(fileID).subscribe(
-              res => {
-                // in order to get id attributes for tooltips
-                this.mdContent = res.content;
-              },
-              error => {
-                this.errorMessage = <any>error;
-              }
-            );
-          });
-        }
-      }
-    }
-  }
 }

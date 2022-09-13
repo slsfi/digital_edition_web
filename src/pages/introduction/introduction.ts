@@ -18,6 +18,7 @@ import { ReferenceDataModalPage } from '../../pages/reference-data-modal/referen
 import { DownloadTextsModalPage } from '../download-texts-modal/download-texts-modal';
 import { OccurrencesPage } from '../occurrences/occurrences';
 import { IllustrationPage } from '../illustration/illustration';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
  * Generated class for the IntroductionPage page.
@@ -76,6 +77,7 @@ export class IntroductionPage {
   simpleWorkMetadata: Boolean;
   showTextDownloadButton: Boolean = false;
   usePrintNotDownloadIcon: Boolean = false;
+  languageSubscription: Subscription;
   private unlistenClickEvents: () => void;
   private unlistenMouseoverEvents: () => void;
   private unlistenMouseoutEvents: () => void;
@@ -84,7 +86,7 @@ export class IntroductionPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private langService: LanguageService,
+    public langService: LanguageService,
     private textService: TextService,
     protected sanitizer: DomSanitizer,
     protected params: NavParams,
@@ -123,6 +125,7 @@ export class IntroductionPage {
       left: -1500 + 'px'
     };
     this.intervalTimerId = 0;
+    this.languageSubscription = null;
 
     try {
       this.toolTipsSettings = this.config.getSettings('settings.toolTips');
@@ -194,12 +197,6 @@ export class IntroductionPage {
       this.pos = null;
     }
 
-    // Reload the content if language changes
-    this.events.subscribe('language:change', () => {
-      this.langService.getLanguage().subscribe((lang) => {
-        this.ionViewDidLoad();
-      });
-    });
   }
 
   ionViewWillEnter() {
@@ -214,56 +211,69 @@ export class IntroductionPage {
   }
 
   ionViewDidLoad() {
-    this.langService.getLanguage().subscribe(lang => {
-      this.textService.getIntroduction(this.id, lang).subscribe(
-        res => {
-            try {
-              this.hasSeparateIntroToc = this.config.getSettings('separeateIntroductionToc');
-            } catch (error) {
-              this.hasSeparateIntroToc = false;
-            }
-            if ( this.id !== undefined ) {
-              this.getTocRoot(this.id);
-            }
+    this.languageSubscription = this.langService.languageSubjectChange().subscribe(lang => {
+      if (lang) {
+        this.loadIntroduction(lang);
+      } else {
+        this.langService.getLanguage().subscribe(language => {
+          this.loadIntroduction(language);
+        });
+      }
+    });
+  }
 
-            this.textLoading = false;
-            // in order to get id attributes for tooltips
-            this.text = this.sanitizer.bypassSecurityTrustHtml(
-              res.content.replace(/images\//g, 'assets/images/')
-                  .replace(/\.png/g, '.svg')
-            );
-            const pattern = /<div data-id="content">(.*?)<\/div>/;
-            const matches = String(this.text).match(pattern);
-            if ( matches !== null ) {
-              const the_string = matches[0];
-              this.textMenu = the_string;
-              if (!this.platform.is('mobile')) {
-                if (!this.tocMenuOpen) {
-                  this.tocMenuOpen = true;
-                }
-              }
-            } else {
-              this.hasSeparateIntroToc = false;
-            }
+  loadIntroduction(lang: string) {
+    this.text = '';
+    this.hasSeparateIntroToc = false;
+    this.textLoading = true;
+    this.textService.getIntroduction(this.id, lang).subscribe(
+      res => {
+          try {
+            this.hasSeparateIntroToc = this.config.getSettings('separeateIntroductionToc');
+          } catch (error) {
+            this.hasSeparateIntroToc = false;
+          }
+          if ( this.id !== undefined ) {
+            this.getTocRoot(this.id);
+          }
+
+          this.textLoading = false;
+          // in order to get id attributes for tooltips
+          this.text = this.sanitizer.bypassSecurityTrustHtml(
+            res.content.replace(/images\//g, 'assets/images/')
+                .replace(/\.png/g, '.svg')
+          );
+          const pattern = /<div data-id="content">(.*?)<\/div>/;
+          const matches = String(this.text).match(pattern);
+          if ( matches !== null ) {
+            const the_string = matches[0];
+            this.textMenu = the_string;
             if (!this.platform.is('mobile')) {
               if (!this.tocMenuOpen) {
                 this.tocMenuOpen = true;
               }
             }
-            // Try to scroll to an element in the text, checks if "pos" given
-            this.scrollToPos();
-          },
-        error =>  {
-          this.errorMessage = <any>error;
-          this.textLoading = false;
-          this.text = 'Could not load introduction.';
-          this.hasSeparateIntroToc = false;
-        }
-      );
-      const selectedStatic = [];
-      selectedStatic['isIntroduction'] = true;
-      this.events.publish('setSelectedStatic:true', selectedStatic);
-    });
+          } else {
+            this.hasSeparateIntroToc = false;
+          }
+          if (!this.platform.is('mobile')) {
+            if (!this.tocMenuOpen) {
+              this.tocMenuOpen = true;
+            }
+          }
+          // Try to scroll to an element in the text, checks if "pos" given
+          this.scrollToPos();
+        },
+      error =>  {
+        this.errorMessage = <any>error;
+        this.textLoading = false;
+        this.text = 'Could not load introduction.';
+        this.hasSeparateIntroToc = false;
+      }
+    );
+    const selectedStatic = [];
+    selectedStatic['isIntroduction'] = true;
+    this.events.publish('setSelectedStatic:true', selectedStatic);
   }
 
   ionViewWillLeave() {
@@ -272,6 +282,12 @@ export class IntroductionPage {
     this.unlistenMouseoutEvents();
     this.unlistenFirstTouchStartEvent();
     this.events.publish('ionViewWillLeave', this.constructor.name);
+  }
+
+  ngOnDestroy() {
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
   }
 
   /** Try to scroll to an element in the text, checks if "pos" given.

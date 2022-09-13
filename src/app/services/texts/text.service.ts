@@ -183,6 +183,9 @@ export class TextService {
     const c_id = data[0];
     const pub_id = (data.length > 1) ? data[1] : 1;
 
+    /**
+     * ! The API endpoint below has not been implemented.
+     */
     return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
         this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/cover/' + lang)
         .map(res => {
