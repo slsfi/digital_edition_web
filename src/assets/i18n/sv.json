@@ -413,5 +413,8 @@
         "TXT": "TXT",
         "Print": "Utskrift"
     }
+  },
+  "IntroductionPage": {
+    "Contents": "Innehåll"
   }
 }

@@ -63,6 +63,7 @@
     <nav id="TOC" *ngIf="hasSeparateIntroToc" [ngClass]="tocMenuOpen ? 'menuOpenTOC' : 'menuClosedTOC'">
         <div id="toc_menu" (click)="toggleTocMenu()" [ngClass]="tocMenuOpen ? 'menuOpenIcon' : 'menuClosedIcon'">
             <ion-icon name="menu" class="intro-toc-button" *ngIf="!tocMenuOpen"></ion-icon>
+            <span *ngIf="!tocMenuOpen" class="side-title">{{'IntroductionPage.Contents' | translate }}</span>
             <ion-icon name="close" class="intro-toc-button" *ngIf="tocMenuOpen"></ion-icon>
         </div>
         <div id="toc_text" [innerHTML]="textMenu" [ngClass]="tocMenuOpen ? 'menuOpen' : 'menuClosed'">

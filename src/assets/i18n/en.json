@@ -344,5 +344,8 @@
         "TXT": "TXT",
         "Print": "Print"
     }
+  },
+  "IntroductionPage": {
+    "Contents": "Contents"
   }
 }

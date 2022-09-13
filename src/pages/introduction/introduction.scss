@@ -87,6 +87,14 @@ page-introduction {
 
   .menuClosedIcon {
     background-color: transparent;
+    display: flex;
+    align-items: center;
+  }
+
+  .menuClosedIcon .side-title {
+    text-transform: uppercase;
+    font-size: 0.75em;
+    cursor: pointer;
   }
 
   .intro-toc-button {
@@ -103,6 +111,7 @@ page-introduction {
 
   #TOC.menuClosedTOC {
     width: auto;
+    min-width: fit-content;
     height: auto;
   }
 

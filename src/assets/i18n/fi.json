@@ -414,5 +414,8 @@
         "TXT": "TXT",
         "Print": "Tulosta"
     }
+  },
+  "IntroductionPage": {
+    "Contents": "Sisältö"
   }
 }
