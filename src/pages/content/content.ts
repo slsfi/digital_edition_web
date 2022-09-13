@@ -44,7 +44,6 @@ export class ContentPage /*implements OnDestroy*/ {
     public songService: SongService,
     private analyticsService: AnalyticsService
   ) {
-    const data = this.config.getSettings('staticPages.about');
     this.fileID = this.params.get('id');
     this.mdContent = new MdContent({id: this.fileID, title: '...', content: null, filename: null});
     this.languageSubscription = null;
@@ -63,7 +62,6 @@ export class ContentPage /*implements OnDestroy*/ {
   ionViewWillEnter() {
     this.events.publish('ionViewWillEnter', this.constructor.name);
     this.events.publish('pageLoaded:content', {'title': this.mdContent.title});
-    this.getMdContent(this.mdContent.id);
     this.events.publish('title-logo:setTitle', this.config.getSettings('app.page-title.' + this.lang));
   }
 
