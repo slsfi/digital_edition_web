@@ -47,7 +47,7 @@ export class ReferenceDataModalPage {
     // Check if these label translations exist
     this.translate.get('Reference.thisPage').subscribe(
       translation => {
-        if (translation) {
+        if (translation && translation !== 'Reference.thisPage') {
           this.thisPageTranslation = true;
         } else {
           this.thisPageTranslation = false;
@@ -56,7 +56,7 @@ export class ReferenceDataModalPage {
     );
     this.translate.get('Reference.permaLink').subscribe(
       translation => {
-        if (translation) {
+        if (translation && translation !== 'Reference.permaLink') {
           this.permaLinkTranslation = true;
         } else {
           this.permaLinkTranslation = false;
