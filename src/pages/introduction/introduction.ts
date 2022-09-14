@@ -78,7 +78,7 @@ export class IntroductionPage {
   showTextDownloadButton: Boolean = false;
   usePrintNotDownloadIcon: Boolean = false;
   languageSubscription: Subscription;
-  hasTOCLabelTranslation: Boolean = false; 
+  hasTOCLabelTranslation: Boolean = false;
   private unlistenClickEvents: () => void;
   private unlistenMouseoverEvents: () => void;
   private unlistenMouseoutEvents: () => void;
