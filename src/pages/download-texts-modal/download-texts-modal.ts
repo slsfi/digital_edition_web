@@ -229,7 +229,7 @@ export class DownloadTextsModalPage {
     if (this.readTextsMode) {
       this.translate.get('Read.Comments.Title').subscribe(
         translation => {
-          if (translation) {
+          if (translation && translation !== 'Read.Comments.Title') {
             this.commentTitle = translation;
           } else {
             this.commentTitle = '';
