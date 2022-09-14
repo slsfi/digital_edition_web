@@ -78,6 +78,7 @@ export class IntroductionPage {
   showTextDownloadButton: Boolean = false;
   usePrintNotDownloadIcon: Boolean = false;
   languageSubscription: Subscription;
+  hasTOCLabelTranslation: Boolean = false; 
   private unlistenClickEvents: () => void;
   private unlistenMouseoverEvents: () => void;
   private unlistenMouseoutEvents: () => void;
@@ -168,6 +169,16 @@ export class IntroductionPage {
     } catch (e) {
       this.showURNButton = true;
     }
+
+    this.translate.get('IntroductionPage.Contents').subscribe(
+      translation => {
+        if (translation && translation !== 'IntroductionPage.Contents') {
+          this.hasTOCLabelTranslation = true;
+        } else {
+          this.hasTOCLabelTranslation = false;
+        }
+      }, error => { this.hasTOCLabelTranslation = false; }
+    );
 
     try {
       const textDownloadOptions = this.config.getSettings('textDownloadOptions');
