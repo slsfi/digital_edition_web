@@ -238,7 +238,7 @@ export class DownloadTextsModalPage {
 
     // Get translation for introduction title
     if (this.introductionMode) {
-      this.translate.get('introduction').subscribe(
+      this.translate.get('Read.Introduction.Title').subscribe(
         translation => {
           if (translation) {
             this.introductionTitle = translation;
