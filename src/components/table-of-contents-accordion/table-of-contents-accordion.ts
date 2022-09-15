@@ -791,10 +791,10 @@ export class TableOfContentsAccordionComponent {
     this.events.unsubscribe('tableOfContents:unSelectSelectedTocItem');
   }
 
-    /**
-     * Send the selected option to the caller component
-     */
-    public select(item: InnerMenuOptionModel): void {
+  /**
+   * Send the selected option to the caller component
+   */
+  public select(item: InnerMenuOptionModel): void {
     // console.log('selecting toc item:', item);
 
     if (this.currentOption) {
