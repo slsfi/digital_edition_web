@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController, ViewController, NavParams, Events } from 'ionic-angular';
-import { DomSanitizer } from '@angular/platform-browser';
 import { ConfigService } from '@ngx-config/core';
 import { TextService } from '../../app/services/texts/text.service';
 import { CommentService } from '../../app/services/comments/comment.service';
@@ -45,7 +44,6 @@ export class DownloadTextsModalPage {
   constructor(  public navCtrl: NavController,
                 public viewCtrl: ViewController,
                 params: NavParams,
-                private sanitizer: DomSanitizer,
                 private config: ConfigService,
                 private textService: TextService,
                 private commentService: CommentService,
