@@ -336,6 +336,7 @@ ion-fab .fab-list-active .fab-backdrop {
   z-index: -1;
 }
 
+/* Make room for the text-changer at the bottom in mobile mode. */
 page-read .mobile-mode-read-content > .scroll-content {
   padding: 50px 0 50px 0 !important;
 }

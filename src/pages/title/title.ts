@@ -238,4 +238,12 @@ export class TitlePage {
       // console.log('dismissed', data);
     });
   }
+
+  printMainContentClasses() {
+    if (this.userSettingsService.isMobile()) {
+      return 'mobile-mode-title-content';
+    } else {
+      return '';
+    }
+  }
 }

@@ -1455,4 +1455,12 @@ export class IntroductionPage {
       this.tocMenuOpen = true;
     }
   }
+
+  printMainContentClasses() {
+    if (this.userSettingsService.isMobile()) {
+      return 'mobile-mode-intro-content';
+    } else {
+      return '';
+    }
+  }
 }

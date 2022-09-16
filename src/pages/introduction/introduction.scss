@@ -5,7 +5,7 @@ page-introduction {
     background-color: var(--page-read-columns-background-color) !important;
   }
 
-  /* denna default är för mobilvyn, gör rum för menyikonen ovanför innehållet. ändras till padding-top 0 för desktop (över 1000px skärmbredd) längre ner*/
+  /* Default for mobile, makes room for the menu icon above the text. Overridden by padding-top 0 for desktop (screen width over 1000px) below. */
   .card-content {
     height: 100%;
     padding: 46px 0 0 0;
@@ -42,15 +42,7 @@ page-introduction {
     }
   }
 
-  /* knappens position i desktop-vy -- ANVÄNDS DENNA ALLS? */
-  @media (min-width: 650px) {
-    #navbtn {
-      margin-top: 1.5rem;
-      margin-right: -2.5rem;
-    }
-  }
-
-  /* sidenav för mobil */
+  /* Side-nav for mobile */
   #TOC {
     margin: 10px;
     height: calc(100% - 102px);
@@ -107,7 +99,7 @@ page-introduction {
     height: auto;
   }
 
-  /* navigeringsbalken för inledningar */
+  /* Intro-toc */
   #toc_text,
   .menuOpenIcon {
     background-color: var(--page-introduction-separate-toc-background-color);
@@ -130,7 +122,7 @@ page-introduction {
     margin-top: 0.1rem;
   }
 
-  /* menylänkarna */
+  /* Links in the intro-toc. */
   #TOC a {
     text-decoration: none;
     color: var(--page-introduction-separate-toc-text-color);
@@ -159,7 +151,7 @@ page-introduction {
     line-height: 1;
   }
 
-  /* visning för bred skärm: toc flyter till höger om artikeln */
+  /* On large screens: the intro-toc floats to the right of the text. */
   @media (min-width: 1000px) {
     nav#TOC {
       position: -webkit-sticky;
@@ -196,7 +188,7 @@ page-introduction {
   }
 
   div[data-id="cont_introduction"] h3.italics {
-    /* text-align, font-style och font-weight torde vara överflödiga här*/
+    /* text-align, font-style and font-weight are most likely unnecessary here. */
     text-align: left !important;
     font-style: italic;
     font-weight: normal !important;
@@ -226,22 +218,40 @@ page-introduction {
       }
     }
 
-    /* Minska padding på små skärmar. Top ska fortfarande vara 50px eftersom det ersätter inline style margin-top:50px (se högre upp) */
+    /* Reduce padding om small screens. Top still needs to be 50px since it overrides inline style margin-top:50px (see comment above). */
     ion-content > .scroll-content {
       padding: 50px 0 0 0 !important;
     }
     ion-scroll > .scroll-content {
       padding: 6px !important;
     }
+
+    #TOC {
+      height: calc(100% - 70px);
+    }
   }
 
   @media screen and (max-width: 450px) {
-    /* Gör innehållsförteckningen lite smalare på mycket små skärmar */
+    /* Make the intro-toc narrower on very small screens. */
     #TOC {
       width: 75%;
-      opacity: 97%;
-      height: calc(100% - 70px);
+      /* opacity: 97%; */
+      /* height: calc(100% - 110px); */
     }
+  }
+
+  /* Make room for the text-changer at the bottom in mobile mode. */
+  .mobile-mode-intro-content > .scroll-content {
+    padding: 50px 0 50px 0 !important;
+    /* justify-content: center; */
+  }
+
+  .mobile-mode-intro-content ion-card.card {
+    margin-bottom: 0;
+  }
+
+  .mobile-mode-intro-content #TOC {
+    height: calc(100% - 110px);
   }
 
 }

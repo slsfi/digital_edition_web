@@ -1,5 +1,8 @@
 <ion-header no-border>
   <ion-toolbar color="secondary" class="secondary">
+
+    <text-changer *ngIf="!(userSettingsService.isMobile())" [legacyId]="id" [parentPageType]="'page-introduction'" class="text-changer-desktop-view"></text-changer>
+
     <ion-buttons>
         <ion-grid>
             <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
@@ -36,7 +39,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding [ngClass]="printMainContentClasses()">
     <ion-card>
         <ion-card-content>
             <div [ngClass]="'toolTip tei teiContainer ' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')" [ngStyle]="{'position': toolTipPosType, 'top': toolTipPosition.top, 'left': toolTipPosition.left, 'max-width': toolTipMaxWidth, 'transform': 'scale(' + toolTipScaleValue + ')'}" [innerHTML]="toolTipText"></div>
@@ -72,3 +75,5 @@
         </div>
     </nav>
 </ion-content>
+
+<text-changer *ngIf="(userSettingsService.isMobile())" [legacyId]="id" [parentPageType]="'page-introduction'" class="text-changer-mobile-view"></text-changer>

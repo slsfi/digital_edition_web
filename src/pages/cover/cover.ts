@@ -187,4 +187,12 @@ export class CoverPage {
     );
   }
 
+  printMainContentClasses() {
+    if (this.userSettingsService.isMobile()) {
+      return 'mobile-mode-cover-content';
+    } else {
+      return '';
+    }
+  }
+
 }
