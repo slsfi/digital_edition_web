@@ -601,12 +601,14 @@ export class TableOfContentsAccordionComponent {
     });
 
     this.events.subscribe('SelectedItemInMenu', (menu) => {
+      // console.log('this.collectionId', this.collectionId);
+      // console.log('menu.menuID', menu.menuID);
       if ( this.collectionId === undefined || this.collectionId === null ) {
         this.collectionId = menu.menuID;
       }
       // console.log('selectedItemInMenu', menu);
       // console.log('this.currentOption', this.currentOption);
-      if (this.collectionId !== menu.menuID && this.currentOption) {
+      if (this.collectionId !== menu.menuID && this.currentOption && this.collectionId !== 'mediaCollections') {
         this.currentOption.selected = false;
         this.currentOption = null;
       } else {
@@ -624,6 +626,16 @@ export class TableOfContentsAccordionComponent {
             this.titleSelected = false;
             this.introductionSelected = false;
             this.coverSelected = true;
+          } else if (menu.component === 'media-collections' || menu.component === 'media-collection') {
+            this.titleSelected = false;
+            this.introductionSelected = false;
+            this.coverSelected = false;
+            this.collapsableItems.forEach(element => {
+              if (element.targetOption.id === menu.menuID) {
+                element.targetOption.selected = true;
+                element.selected = true;
+              }
+            });
           }
         }
       }
