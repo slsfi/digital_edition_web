@@ -35,7 +35,7 @@
               </ion-col>
               <ion-col>
                 <button ion-button clear class="sec-menu-button" [ngClass]="tocMenuOpen ? 'menuOpenTOC' : 'menuClosedTOC'"  (click)="toggleTocMenu()">
-                  <ion-icon name="menu" *ngIf="!tocMenuOpen"></ion-icon>
+                  <ion-icon name="list" *ngIf="!tocMenuOpen"></ion-icon>
                   <ion-icon name="close" *ngIf="tocMenuOpen"></ion-icon>
                   <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Introduction.Contents' | translate }}</span>
                 </button>
