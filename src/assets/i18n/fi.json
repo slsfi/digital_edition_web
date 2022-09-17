@@ -122,7 +122,8 @@
       },
       "Introduction": {
           "Title": "Johdanto",
-          "AddButtonText": "Johdanto"
+          "AddButtonText": "Johdanto",
+          "Contents": "Sisältö"
       },
       "Illustrations": {
         "AddButtonText": "Kuvat",
@@ -414,8 +415,5 @@
         "TXT": "TXT",
         "Print": "Tulosta"
     }
-  },
-  "IntroductionPage": {
-    "Contents": "Sisältö"
   }
 }

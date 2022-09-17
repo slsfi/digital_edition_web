@@ -46,6 +46,7 @@ page-title {
     /* Reduce padding om small screens. Top still needs to be 50px since it overrides inline style margin-top:50px (see comment above). */
     ion-content > .scroll-content {
       padding: 50px 0 0 0 !important;
+      justify-content: center;
     }
     ion-scroll > .scroll-content {
       padding: 6px !important;
@@ -72,7 +73,7 @@ page-title {
   /* Make room for the text-changer at the bottom in mobile mode. */
   .mobile-mode-title-content > .scroll-content {
     padding: 50px 0 50px 0 !important;
-    /* justify-content: center; */
+    justify-content: center;
   }
 
   .mobile-mode-title-content ion-card.card {

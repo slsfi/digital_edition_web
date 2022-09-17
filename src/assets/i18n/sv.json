@@ -124,7 +124,8 @@
       },
       "Introduction": {
           "Title": "Inledning",
-          "AddButtonText": "Inledning"
+          "AddButtonText": "Inledning",
+          "Contents": "Innehåll"
       },
       "Illustrations": {
         "AddButtonText": "Illustrationer",
@@ -413,8 +414,5 @@
         "TXT": "TXT",
         "Print": "Utskrift"
     }
-  },
-  "IntroductionPage": {
-    "Contents": "Innehåll"
   }
 }

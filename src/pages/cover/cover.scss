@@ -34,6 +34,7 @@ page-cover {
     max-width: 100%;
     max-height: 100%;
     border: 16px solid #fff;
+    display: block;
   }
 
   @media only screen and (max-width: 800px) {
@@ -44,10 +45,18 @@ page-cover {
     div.cover-image-wrapper > img.cover-image {
         border-width: 12px;
     }
+
+    div.cover-image-wrapper > img.cover-image {
+      margin: 0 auto;
+    }
   }
 
   div.cover-image-wrapper.mobile-mode-cover-content {
     padding: 10px 10px 60px 10px;
+  }
+
+  div.cover-image-wrapper.mobile-mode-cover-content > img.cover-image {
+    margin: 0 auto;
   }
 
 }

@@ -5,10 +5,9 @@ page-introduction {
     background-color: var(--page-read-columns-background-color) !important;
   }
 
-  /* Default for mobile, makes room for the menu icon above the text. Overridden by padding-top 0 for desktop (screen width over 1000px) below. */
   .card-content {
     height: 100%;
-    padding: 46px 0 0 0;
+    padding: 0;
   }
 
   .card-content > ion-scroll {
@@ -42,8 +41,13 @@ page-introduction {
     }
   }
 
-  /* Side-nav for mobile */
+  .menuOpenTOC .ion-md-close {
+    margin: 0 0.146875rem;
+  }
+
   #TOC {
+    background-color: var(--page-introduction-separate-toc-background-color);
+    padding: 10px 20px 70px 20px;
     margin: 10px;
     height: calc(100% - 102px);
     width: 85%;
@@ -53,63 +57,19 @@ page-introduction {
     overflow-x: hidden;
     transition: 0.25s;
     font-size: 1rem;
+    right: 16px;
   }
 
-  #toc_menu {
-    float: left;
-    width: 100%;
+  #TOC #toc-close-button {
+    
   }
-
-  #toc_menu.menuOpenIcon {
-    margin-bottom: 12px;
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-    z-index: 99;
+  #TOC #toc-close-button button.button {
+    margin-bottom: 0;
+    margin-left: auto;
+    margin-right: 0;
+    display: block;
   }
-
-  #toc_menu ion-icon {
-    margin: 6px 12px;
-    cursor: pointer;
-  }
-
-  .menuClosed {
-    display: none;
-  }
-
-  .menuClosedIcon {
-    background-color: transparent;
-  }
-
-  .intro-toc-button {
-    transition: $opacity-hover-transition;
-  }
-
-  .intro-toc-button:hover {
-    opacity: $opacity-hover;
-  }
-
-  .intro-toc-button:active {
-    opacity: 1;
-  }
-
-  #TOC.menuClosedTOC {
-    width: auto;
-    min-width: fit-content;
-    height: auto;
-  }
-
-  /* Intro-toc */
-  #toc_text,
-  .menuOpenIcon {
-    background-color: var(--page-introduction-separate-toc-background-color);
-  }
-
-  #toc_text {
-    margin-top: 2.5rem;
-    position: sticky;
-    padding: 0 20px 70px 20px;
-  }
+  
 
   #TOC h2 {
     font-size: 1.1rem;
@@ -151,24 +111,19 @@ page-introduction {
     line-height: 1;
   }
 
+  #TOC #toc_text > div > :first-child {
+    margin-top: 0.125rem;
+  }
+
   /* On large screens: the intro-toc floats to the right of the text. */
   @media (min-width: 1000px) {
     nav#TOC {
-      position: -webkit-sticky;
       position: sticky;
-      float: right;
       height: auto;
       transition: none;
       z-index: 1;
       width: 50vw;
-    }
-
-    .card-content {
-      padding-top: 0;
-    }
-
-    .menuClosedIcon {
-      background-color: transparent;
+      right: unset;
     }
   }
 
@@ -221,6 +176,7 @@ page-introduction {
     /* Reduce padding om small screens. Top still needs to be 50px since it overrides inline style margin-top:50px (see comment above). */
     ion-content > .scroll-content {
       padding: 50px 0 0 0 !important;
+      justify-content: center;
     }
     ion-scroll > .scroll-content {
       padding: 6px !important;
@@ -228,6 +184,7 @@ page-introduction {
 
     #TOC {
       height: calc(100% - 70px);
+      right: 0;
     }
   }
 
@@ -235,15 +192,13 @@ page-introduction {
     /* Make the intro-toc narrower on very small screens. */
     #TOC {
       width: 75%;
-      /* opacity: 97%; */
-      /* height: calc(100% - 110px); */
     }
   }
 
   /* Make room for the text-changer at the bottom in mobile mode. */
   .mobile-mode-intro-content > .scroll-content {
     padding: 50px 0 50px 0 !important;
-    /* justify-content: center; */
+    justify-content: center;
   }
 
   .mobile-mode-intro-content ion-card.card {
@@ -251,7 +206,15 @@ page-introduction {
   }
 
   .mobile-mode-intro-content #TOC {
-    height: calc(100% - 110px);
+    height: calc(100% - 10px);
+    margin-bottom: 0;
+    right: 0;
+  }
+
+  @media screen and (max-width: 1000px) {
+    .mobile-mode-intro-content #TOC {
+      height: calc(100% - 110px);
+    }
   }
 
 }

@@ -33,6 +33,13 @@
                   <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Popover.Options' | translate }}</span>
                 </button>
               </ion-col>
+              <ion-col>
+                <button ion-button clear class="sec-menu-button" [ngClass]="tocMenuOpen ? 'menuOpenTOC' : 'menuClosedTOC'"  (click)="toggleTocMenu()">
+                  <ion-icon name="menu" *ngIf="!tocMenuOpen"></ion-icon>
+                  <ion-icon name="close" *ngIf="tocMenuOpen"></ion-icon>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Introduction.Contents' | translate }}</span>
+                </button>
+              </ion-col>
             </ion-row>
         </ion-grid>
     </ion-buttons>
@@ -63,16 +70,13 @@
             </ion-scroll>
         </ion-card-content>
     </ion-card>
-    <nav id="TOC" *ngIf="hasSeparateIntroToc" [ngClass]="tocMenuOpen ? 'menuOpenTOC' : 'menuClosedTOC'">
-        <div id="toc_menu" (click)="toggleTocMenu()" [ngClass]="tocMenuOpen ? 'menuOpenIcon' : 'menuClosedIcon'">
-          <button ion-button clear class="sec-menu-button">
-            <ion-icon name="menu" class="intro-toc-button" *ngIf="!tocMenuOpen"></ion-icon>
-            <span *ngIf="hasTOCLabelTranslation && !tocMenuOpen" class="side-title">{{'IntroductionPage.Contents' | translate }}</span>
-            <ion-icon name="close" class="intro-toc-button" *ngIf="tocMenuOpen"></ion-icon>
-          </button>
-        </div>
-        <div id="toc_text" [innerHTML]="textMenu" [ngClass]="tocMenuOpen ? 'menuOpen' : 'menuClosed'">
-        </div>
+    <nav id="TOC" *ngIf="hasSeparateIntroToc && tocMenuOpen">
+      <div id="toc-close-button" (click)="toggleTocMenu()">
+        <button ion-button clear class="sec-menu-button">
+          <ion-icon name="close" class="intro-toc-button"></ion-icon>
+        </button>
+      </div>
+      <div id="toc_text" [innerHTML]="textMenu"></div>
     </nav>
 </ion-content>
 

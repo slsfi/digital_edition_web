@@ -98,7 +98,8 @@
       },
       "Introduction": {
           "Title": "",
-          "AddButtonText": ""
+          "AddButtonText": "",
+          "Contents": "Innehåll"
       },
       "ShowAll": "Visa alla",
       "ShowSearchResults": "Förekomster",
@@ -347,8 +348,5 @@
         "TXT": "TXT",
         "Print": "Utskrift"
     }
-  },
-  "IntroductionPage": {
-    "Contents": "Innehåll"
   }
 }

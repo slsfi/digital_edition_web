@@ -92,10 +92,12 @@
           "SelectFacsDialogSubtitle": "The facsimile will be shown in the column where you clicked."
       },
       "TitlePage": {
-          "Title": "Titel page"
+          "Title": "Title page"
       },
       "Introduction": {
-          "Title": ""
+          "Title": "Introduction",
+          "AddButtonText": "Introduction",
+          "Contents": "Contents"
       },
       "CoverPage": {
         "Title": "Cover"
@@ -344,8 +346,5 @@
         "TXT": "TXT",
         "Print": "Print"
     }
-  },
-  "IntroductionPage": {
-    "Contents": "Contents"
   }
 }

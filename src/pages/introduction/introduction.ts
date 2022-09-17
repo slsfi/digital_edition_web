@@ -170,9 +170,9 @@ export class IntroductionPage {
       this.showURNButton = true;
     }
 
-    this.translate.get('IntroductionPage.Contents').subscribe(
+    this.translate.get('Read.Introduction.Contents').subscribe(
       translation => {
-        if (translation && translation !== 'IntroductionPage.Contents') {
+        if (translation && translation !== 'Read.Introduction.Contents') {
           this.hasTOCLabelTranslation = true;
         } else {
           this.hasTOCLabelTranslation = false;
@@ -1212,7 +1212,7 @@ export class IntroductionPage {
       }
 
       let bottomPos = vh - horizontalScrollbarOffsetHeight - containerElemRect.bottom;
-      if (vw <= bottomPosBreakpointWidth) {
+      if (vw <= bottomPosBreakpointWidth && !(this.userSettingsService.isMobile())) {
         bottomPos = 0;
       }
 
