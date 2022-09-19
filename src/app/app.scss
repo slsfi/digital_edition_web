@@ -1068,6 +1068,13 @@ button.sec-menu-button.bar-button .side-title {
   font-size: 10px;
 }
 
+@media only screen and (max-width: 820px) {
+  button.sec-menu-button.button .side-title,
+  button.sec-menu-button.bar-button .side-title {
+    display: none;
+  }
+}
+
 /* Style for alert where a different variant, manuscript or facsimile text can be selected. */
 ion-alert.select-text-alert .alert-wrapper,
 ion-alert.custom-select-alert .alert-wrapper {
