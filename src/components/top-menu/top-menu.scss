@@ -56,7 +56,7 @@ top-menu {
       display: none;
     }
     .side-title.side-title.beta-label.beta-label {
-      // Classnames repeated in order to increase css specificity
+      // Classnames repeated in order to increase selector specificity
       margin-left: 8px;
     }
   }
