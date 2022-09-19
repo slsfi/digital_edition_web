@@ -420,27 +420,33 @@ export class TextChangerComponent {
       prevId = currentId - 1;
     }
 
-    if (nextId !== null) {
-      this.lastItem = false;
-      this.nextItem = this.flattened[nextId];
-      if (this.nextItem !== undefined && this.nextItem.text !== undefined) {
-        this.nextItemTitle = String(this.nextItem.text);
+    // Set the new next, previous and current items only if on page-read in order to prevent these
+    // from flashing before the new page is loaded.
+    if (this.parentPageType === 'page-read') {
+      if (nextId !== null) {
+        this.lastItem = false;
+        this.nextItem = this.flattened[nextId];
+        if (this.nextItem !== undefined && this.nextItem.text !== undefined) {
+          this.nextItemTitle = String(this.nextItem.text);
+        } else {
+          this.nextItemTitle = '';
+        }
       } else {
+        this.lastItem = true;
+        this.nextItem = null;
         this.nextItemTitle = '';
       }
-    } else {
-      this.lastItem = true;
-      this.nextItem = null;
-      this.nextItemTitle = '';
     }
 
     if (prevId !== null) {
-      this.firstItem = false;
-      this.prevItem = this.flattened[prevId];
-      if (this.prevItem !== undefined && this.prevItem.text !== undefined) {
-        this.prevItemTitle = String(this.prevItem.text);
-      } else {
-        this.prevItemTitle = '';
+      if (this.parentPageType === 'page-read') {
+        this.firstItem = false;
+        this.prevItem = this.flattened[prevId];
+        if (this.prevItem !== undefined && this.prevItem.text !== undefined) {
+          this.prevItemTitle = String(this.prevItem.text);
+        } else {
+          this.prevItemTitle = '';
+        }
       }
     } else {
       if (this.collectionHasIntro) {
@@ -459,13 +465,14 @@ export class TextChangerComponent {
       }
     }
 
-    if (this.flattened[currentId] !== undefined) {
-      this.currentItemTitle = String(this.flattened[currentId].text);
-    } else {
-      this.currentItemTitle = '';
+    if (this.parentPageType === 'page-read') {
+      if (this.flattened[currentId] !== undefined) {
+        this.currentItemTitle = String(this.flattened[currentId].text);
+      } else {
+        this.currentItemTitle = '';
+      }
+      this.storage.set('currentTOCItemTitle', this.currentItemTitle);
     }
-
-    this.storage.set('currentTOCItemTitle', this.currentItemTitle);
   }
 
   flatten(toc) {
@@ -516,11 +523,6 @@ export class TextChangerComponent {
         const params = {};
         nav[0].setRoot('media-collections', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
       }
-      this.prevItem = null;
-      this.nextItem = null;
-      this.prevItemTitle = '';
-      this.nextItemTitle = '';
-      this.currentItemTitle = '';
     } else {
       // Open text in page-read
       item.selected = true;
@@ -543,14 +545,6 @@ export class TextChangerComponent {
       console.log('Opening read from TextChanged.open()');
       // console.log(params);
       nav[0].setRoot('read', params);
-
-      if (this.parentPageType !== 'page-read') {
-        this.prevItem = null;
-        this.nextItem = null;
-        this.prevItemTitle = '';
-        this.nextItemTitle = '';
-        this.currentItemTitle = '';
-      }
     }
 
   }
