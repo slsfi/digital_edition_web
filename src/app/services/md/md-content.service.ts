@@ -10,8 +10,18 @@ export class MdContentService {
 
   private mdUrl = '/md/';
   private staticPagesURL = '/static-pages-toc/'
+  private apiEndpoint: string
 
   constructor(private http: Http, private config: ConfigService) {
+    this.apiEndpoint = this.config.getSettings('app.apiEndpoint');
+    try {
+      const simpleApi = this.config.getSettings('app.simpleApi');
+      if (simpleApi) {
+        this.apiEndpoint = simpleApi;
+      }
+    } catch (e) {
+
+    }
   }
 
   getMdContent (fileID: string): Observable<any> {
@@ -25,7 +35,7 @@ export class MdContentService {
       fileID = id_parts.join('-');
     }
 
-    const url = this.config.getSettings('app.apiEndpoint') + '/' + this.config.getSettings('app.machineName') + this.mdUrl + fileID;
+    const url = this.apiEndpoint + '/' + this.config.getSettings('app.machineName') + this.mdUrl + fileID;
     console.log(url)
     return this.http.get(url)
                     .map(this.extractData)
@@ -33,7 +43,7 @@ export class MdContentService {
   }
 
   getStaticPagesToc(language: string): Observable<any> {
-    const url = this.config.getSettings('app.apiEndpoint') + '/' +
+    const url = this.apiEndpoint + '/' +
       this.config.getSettings('app.machineName') + this.staticPagesURL + language;
     return this.http.get(url)
                     .map(this.extractData)
@@ -42,7 +52,7 @@ export class MdContentService {
 
   async getStaticPagesTocPromise(language: string): Promise<any> {
     try {
-      const url = this.config.getSettings('app.apiEndpoint') + '/' +
+      const url = this.apiEndpoint + '/' +
       this.config.getSettings('app.machineName') + this.staticPagesURL + language;
       const response = await this.http.get(url).toPromise();
       return response.json();

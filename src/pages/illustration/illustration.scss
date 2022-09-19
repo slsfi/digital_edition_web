@@ -16,10 +16,6 @@ page-illustration {
         background-color: #fff !important;
     }
 
-    .illustration-box > ion-card-content {
-        padding-top: 0;
-    }
-
     ion-scroll.illustration-box img {
         cursor: move;
         // https://github.com/hammerjs/hammer.js/issues/1050#issuecomment-267595556
@@ -40,12 +36,17 @@ page-illustration {
 		opacity: 1;
 	}
 
-    p {
-      line-height: 1rem;
-    }
-
     a {
         cursor: pointer;
+    }
+
+    .media-metadata p {
+        font-size: 1.0625rem;
+        line-height: 1.5;
+    }
+
+    .media-metadata .media-collection-link ion-icon {
+        vertical-align: middle;
     }
 
     ion-fab[right] {
@@ -55,5 +56,9 @@ page-illustration {
 
     ion-fab[right].expand-button {
         right: 12px;
+    }
+
+    img.illustration-img-thumb + div {
+        padding-top: 1rem;
     }
 }

@@ -67,14 +67,13 @@
         "@ionic/app-scripts": "^3.2.4",
         "@types/node": "^12.11.1",
         "gulp-sass": "^4.0.1",
-        "node-sass": "git+https://github.com/sass/node-sass.git#v4.7.0",
+        "node-sass": "github:sass/node-sass#v4.7.0",
         "typescript": "2.6.2"
     },
     "description": "Generic Platform for Digital Editions",
     "config": {
         "ionic_bundler": "webpack",
-        "ionic_generate_source_map": "true",
-        "ionic_webpack": "./config/webpack.config.js"
+        "ionic_generate_source_map": "true"
     },
     "cordova": {
         "plugins": {

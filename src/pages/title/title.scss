@@ -2,7 +2,7 @@ page-title {
 
   ion-card {
     max-width: 710px;
-    background-color: var(--read-columns-background-color) !important;
+    background-color: var(--page-read-columns-background-color) !important;
   }
 
   .card-content {
@@ -17,6 +17,9 @@ page-title {
   /* This hides the vertical scrollbar on the right edge of the viewport area when it is not necessary to show it. Observe that there are two elements with class scroll-content, which is why this needs to be this specific. */
   ion-content > .scroll-content {
     overflow: auto;
+    /* These margin and padding declarations fix the issue in Chrome where tooltips are incorrectly positioned vertically. .scroll-content has an inline style margin-top:50px which needs to be replaced with padding (The top padding is 16px by default, hence 66px). */
+    margin-top: 0 !important;
+    padding-top: 66px !important;
   }
 
   .scroll-content {
@@ -28,11 +31,21 @@ page-title {
     padding: 6px;
   }
 
-  @media screen and (max-width: 450px) {
+  .toolbar-content {
+    display: flex;
+    justify-content: flex-end;
+    grid-template-columns: auto max-content;
+
+    ion-buttons {
+      order: 0;
+    }
+  }
+
+  @media screen and (max-width: 800px) {
  
-    /* Minska padding på mycket små skärmar. */
+    /* Minska padding på små skärmar. Top ska fortfarande vara 50px eftersom det ersätter inline style margin-top:50px (se högre upp) */
     ion-content > .scroll-content {
-      padding: 0 !important;
+      padding: 50px 0 0 0 !important;
     }
     ion-scroll > .scroll-content {
       padding: 6px !important;

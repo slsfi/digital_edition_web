@@ -16,6 +16,7 @@ import { Storage } from '@ionic/storage';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
 import { ReferenceDataModalPage } from '../../pages/reference-data-modal/reference-data-modal';
 import { OccurrencesPage } from '../occurrences/occurrences';
+import { IllustrationPage } from '../illustration/illustration';
 
 /**
  * Generated class for the IntroductionPage page.
@@ -44,6 +45,7 @@ export class IntroductionPage {
   protected pos: any;
   public tocMenuOpen: boolean;
   public hasSeparateIntroToc: boolean;
+  public showURNButton: boolean;
   readPopoverTogglesIntro: Record<string, any> = {};
   toolTipsSettings: Record<string, any> = {};
   toolTipPosType: string;
@@ -70,6 +72,7 @@ export class IntroductionPage {
   intervalTimerId: number;
   userIsTouching: Boolean = false;
   collectionLegacyId: string;
+  simpleWorkMetadata: Boolean;
   private unlistenClickEvents: () => void;
   private unlistenMouseoverEvents: () => void;
   private unlistenMouseoutEvents: () => void;
@@ -119,28 +122,17 @@ export class IntroductionPage {
     this.intervalTimerId = 0;
 
     try {
-      this.hasSeparateIntroToc = this.config.getSettings('separeateIntroductionToc');
-    } catch (error) {
-      this.hasSeparateIntroToc = false;
-    }
-    if ( this.id !== undefined ) {
-      this.getTocRoot(this.id);
-    }
-
-    try {
       this.toolTipsSettings = this.config.getSettings('settings.toolTips');
     } catch (e) {
       this.toolTipsSettings = undefined;
-      console.log('Undefined toolTipsSettings');
-      console.error(e);
+      console.log('Can\'t get settings.toolTips from config. Tooltips not available.');
     }
 
     try {
       this.readPopoverTogglesIntro = this.config.getSettings('settings.introToggles');
     } catch (e) {
       this.readPopoverTogglesIntro = undefined;
-      console.log('Undefined readPopoverTogglesIntro');
-      console.error(e);
+      console.log('Can\'t get settings.readPopoverTogglesIntro from config. Using default values.');
     }
     if (this.readPopoverTogglesIntro === undefined ||
      this.readPopoverTogglesIntro === null ||
@@ -165,6 +157,12 @@ export class IntroductionPage {
       this.readPopoverTogglesIntro.pageBreakOriginal = false;
     }
 
+    try {
+      this.showURNButton = this.config.getSettings('showURNButton.pageIntroduction');
+    } catch (e) {
+      this.showURNButton = true;
+    }
+
     // Check if we have a pos parmeter in the URL, if we have one we can use it for scrolling the text on the page to that position.
     // The pos parameter must come after the publication id followed by /#, e.g. /publication-introduction/203/#pos1
     const currentURL: string = String(window.location.href);
@@ -184,6 +182,11 @@ export class IntroductionPage {
 
   ionViewWillEnter() {
     this.events.publish('ionViewWillEnter', this.constructor.name);
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'introduction'});
+    this.events.publish('SelectedItemInMenu', {
+      menuID: this.params.get('collectionID'),
+      component: 'introduction'
+    });
     this.setUpTextListeners();
     this.setCollectionLegacyId();
   }
@@ -192,6 +195,16 @@ export class IntroductionPage {
     this.langService.getLanguage().subscribe(lang => {
       this.textService.getIntroduction(this.id, lang).subscribe(
         res => {
+
+            try {
+              this.hasSeparateIntroToc = this.config.getSettings('separeateIntroductionToc');
+            } catch (error) {
+              this.hasSeparateIntroToc = false;
+            }
+            if ( this.id !== undefined ) {
+              this.getTocRoot(this.id);
+            }
+
             this.textLoading = false;
             // in order to get id attributes for tooltips
             this.text = this.sanitizer.bypassSecurityTrustHtml(
@@ -246,7 +259,7 @@ export class IntroductionPage {
     this.ngZone.runOutsideAngular(() => {
       let interationsLeft = 10;
       clearInterval(this.intervalTimerId);
-      this.intervalTimerId = setInterval(function() {
+      this.intervalTimerId = window.setInterval(function() {
         if (interationsLeft < 1) {
           clearInterval(this.intervalTimerId);
         } else {
@@ -399,7 +412,13 @@ export class IntroductionPage {
 
             } else if (anchorElem.classList.contains('ref_introduction')) {
               // Link to introduction.
-              publicationId = hrefTargetItems[0];
+              if (hrefTargetItems.length === 1 && hrefTargetItems[0].startsWith('#')) {
+                // If only a position starting with a hash, assume it's in the same publication.
+                publicationId = this.id;
+                positionId = hrefTargetItems[0];
+              } else {
+                publicationId = hrefTargetItems[0];
+              }
               if (hrefTargetItems.length > 1 && hrefTargetItems[hrefTargetItems.length - 1].startsWith('#')) {
                 positionId = hrefTargetItems[hrefTargetItems.length - 1];
               }
@@ -450,6 +469,11 @@ export class IntroductionPage {
                 });
               }
             }
+          } else if (anchorElem.classList.contains('ref_illustration')) {
+            const imageNumber = anchorElem.hash.split('#')[1];
+            this.ngZone.run(() => {
+              this.showIllustrationModal(imageNumber);
+            });
           } else {
             // Link in the introduction's TOC or link to (foot)note reference
             let targetId = '';
@@ -522,32 +546,62 @@ export class IntroductionPage {
     this.tooltipService.getPersonTooltip(id).subscribe(
       tooltip => {
         let text = '';
+        let uncertainPretext = '';
+        let fictionalPretext = '';
+        if (targetElem.classList.contains('uncertain')) {
+          this.translate.get('uncertainPersonCorresp').subscribe(
+            translation => {
+              if (translation !== 'uncertainPersonCorresp') {
+                uncertainPretext = translation + ' ';
+              }
+            }, error => { }
+          );
+        }
+        if (targetElem.classList.contains('fictional')) {
+          this.translate.get('fictionalPersonCorresp').subscribe(
+            translation => {
+              if (translation !== 'fictionalPersonCorresp') {
+                fictionalPretext = translation + ':<br/>';
+              }
+            }, error => { }
+          );
+        }
         if ( tooltip.date_born !== null || tooltip.date_deceased !== null ) {
-          const date_born = String(tooltip.date_born).split('-')[0].replace(/^0+/, '');
-          const date_deceased = String(tooltip.date_deceased).split('-')[0].replace(/^0+/, '');
+          // Get the born and deceased years without leading zeros and possible 'BC' indicators
+          const year_born = String(tooltip.date_born).split('-')[0].replace(/^0+/, '').split(' ')[0];
+          const year_deceased = String(tooltip.date_deceased).split('-')[0].replace(/^0+/, '').split(' ')[0];
+          // Get translation for 'BC'
           let bcTranslation = 'BC';
           this.translate.get('BC').subscribe(
             translation => {
               bcTranslation = translation;
             }, error => { }
           );
-          const bcIndicator = (String(tooltip.date_deceased).includes('BC')) ? ' ' + bcTranslation : '';
+          const bcIndicatorDeceased = (String(tooltip.date_deceased).includes('BC')) ? ' ' + bcTranslation : '';
+          let bcIndicatorBorn = (String(tooltip.date_born).includes('BC')) ? ' ' + bcTranslation : '';
+          if (String(tooltip.date_born).includes('BC') && bcIndicatorDeceased === bcIndicatorBorn) {
+            // Born and deceased BC, don't add indicator to year born
+            bcIndicatorBorn = '';
+          }
           text = '<b>' + tooltip.name + '</b> (';
-          if (date_born !== null && date_deceased !== null && date_born !== 'null' && date_born !== 'null') {
-            text += date_born + '–' + date_deceased + '' + bcIndicator;
-          } else if (date_born !== null && date_born !== 'null') {
-            text += '* ' + date_born + bcIndicator;
-          } else if (date_deceased !== null && date_deceased !== 'null') {
-            text += '&#8224; ' + date_deceased + bcIndicator;
+          if (year_born !== null && year_deceased !== null && year_born !== 'null' && year_born !== 'null') {
+            text += year_born + bcIndicatorBorn + '–' + year_deceased + bcIndicatorDeceased;
+          } else if (year_born !== null && year_born !== 'null') {
+            text += '* ' + year_born + bcIndicatorBorn;
+          } else if (year_deceased !== null && year_deceased !== 'null') {
+            text += '&#8224; ' + year_deceased + bcIndicatorDeceased;
           }
           text += ')';
         } else {
           text = '<b>' + tooltip.name + '</b>';
         }
 
-        if ( tooltip.description !== null ) {
+        if (tooltip.description !== null) {
           text += ', ' + tooltip.description
         }
+
+        text = uncertainPretext + text;
+        text = fictionalPretext + text;
 
         this.setToolTipPosition(targetElem, text);
         this.setToolTipText(text);
@@ -598,9 +652,36 @@ export class IntroductionPage {
       this.setToolTipText(this.tooltips.works[id]);
       return;
     }
-    this.semanticDataService.getSingleObjectElastic('work', id).subscribe(
-      tooltip => {
-        if ( tooltip.hits.hits[0] === undefined || tooltip.hits.hits[0]['_source'] === undefined ) {
+
+    if (this.simpleWorkMetadata === undefined) {
+      try {
+        this.simpleWorkMetadata = this.config.getSettings('useSimpleWorkMetadata');
+      } catch (e) {
+        this.simpleWorkMetadata = false;
+      }
+    }
+
+    if (this.simpleWorkMetadata === false || this.simpleWorkMetadata === undefined) {
+      this.semanticDataService.getSingleObjectElastic('work', id).subscribe(
+        tooltip => {
+          if ( tooltip.hits.hits[0] === undefined || tooltip.hits.hits[0]['_source'] === undefined ) {
+            let noInfoFound = 'Could not get work information';
+            this.translate.get('Occurrences.NoInfoFound').subscribe(
+              translation => {
+                noInfoFound = translation;
+              }, err => { }
+            );
+            this.setToolTipPosition(targetElem, noInfoFound);
+            this.setToolTipText(noInfoFound);
+            return;
+          }
+          tooltip = tooltip.hits.hits[0]['_source'];
+          const description = '<span class="work_title">' + tooltip.title  + '</span><br/>' + tooltip.reference;
+          this.setToolTipPosition(targetElem, description);
+          this.setToolTipText(description);
+          this.tooltips.works[id] = description;
+        },
+        error => {
           let noInfoFound = 'Could not get work information';
           this.translate.get('Occurrences.NoInfoFound').subscribe(
             translation => {
@@ -609,25 +690,27 @@ export class IntroductionPage {
           );
           this.setToolTipPosition(targetElem, noInfoFound);
           this.setToolTipText(noInfoFound);
-          return;
         }
-        tooltip = tooltip.hits.hits[0]['_source'];
-        const description = '<span class="work_title">' + tooltip.title  + '</span><br/>' + tooltip.reference;
-        this.setToolTipPosition(targetElem, description);
-        this.setToolTipText(description);
-        this.tooltips.works[id] = description;
-      },
-      error => {
-        let noInfoFound = 'Could not get work information';
-        this.translate.get('Occurrences.NoInfoFound').subscribe(
-          translation => {
-            noInfoFound = translation;
-          }, err => { }
-        );
-        this.setToolTipPosition(targetElem, noInfoFound);
-        this.setToolTipText(noInfoFound);
-      }
-    );
+      );
+    } else {
+      this.tooltipService.getWorkTooltip(id).subscribe(
+        tooltip => {
+          this.setToolTipPosition(targetElem, tooltip.description);
+          this.setToolTipText(tooltip.description);
+          this.tooltips.works[id] = tooltip.description;
+        },
+        error => {
+          let noInfoFound = 'Could not get work information';
+          this.translate.get('Occurrences.NoInfoFound').subscribe(
+            translation => {
+              noInfoFound = translation;
+            }, err => { }
+          );
+          this.setToolTipPosition(targetElem, noInfoFound);
+          this.setToolTipText(noInfoFound);
+        }
+      );
+    }
   }
 
   showFootnoteTooltip(id: string, targetElem: HTMLElement, origin: any) {
@@ -1275,6 +1358,16 @@ export class IntroductionPage {
     modal.present();
   }
 
+  showIllustrationModal(imageNumber: string) {
+    const modal = this.modalController.create(IllustrationPage,
+      { 'imageNumber': imageNumber },
+      { cssClass: 'foo' }
+    );
+    modal.present();
+    modal.onDidDismiss(data => {
+    });
+  }
+
   showPopover(myEvent) {
     const toggles = this.readPopoverTogglesIntro;
     const popover = this.popoverCtrl.create(ReadPopoverPage, {toggles}, { cssClass: 'popover_settings' });
@@ -1292,7 +1385,7 @@ export class IntroductionPage {
 
   private showReference() {
     // Get URL of Page and then the URI
-    const modal = this.modalController.create(ReferenceDataModalPage, {id: document.URL, type: 'reference'});
+    const modal = this.modalController.create(ReferenceDataModalPage, {id: document.URL, type: 'reference', origin: 'page-introduction'});
     modal.present();
     modal.onDidDismiss(data => {
       // console.log('dismissed', data);

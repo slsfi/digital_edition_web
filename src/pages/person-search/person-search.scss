@@ -1,16 +1,86 @@
 page-person-search {
-        .alphabet > .scroll-content {
-        position: relative !important;
+    /* This hides the vertical scrollbar on the right edge of the viewport area when it is not necessary to show it. Observe that there are two elements with class scroll-content, which is why this needs to be this specific. */
+    ion-content > .scroll-content {
+        overflow: auto;
     }
 
-    .fixed-content,
-    .scroll-content {
-        margin-top: 40px !important;
+    @media(max-width: 800px) {
+        ion-content.content[padding] > .scroll-content {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+    }
+    @media(max-width: 600px) {
+        ion-content.content[padding] > .scroll-content {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+
+    ion-content.content ion-list.list {
+        ion-item.item {
+            background-color: var(--index-list-item-background-color);
+
+            ion-item-divider.item-divider {
+                background-color: var(--index-list-divider-background-color);
+                border-bottom: 0;
+
+                .item-inner {
+                    border-bottom: 0;
+                }
+            }
+        }
+    }
+
+    ion-grid.grid {
+        padding: 0;
+    }
+
+    ion-row.page-info-row {
+        width: 100%;
+        max-width: 1400px;
+        flex-direction: column;
+        font-size: 1.125rem;
+        padding: 0 1rem;
+    
+        h1.page-title {
+          font-size: 1.8125rem;
+          text-transform: none !important;
+          margin: 1rem 0 0 0;
+        }
+    
+        .info.markdown {
+          max-width: 800px;
+          width: 100%;
+          margin-top: 1.5rem;
+          margin-bottom: 1rem;
+    
+          markdown > p:first-child {
+            margin-top: 0;
+          }
+    
+          markdown > p:last-child {
+            margin-bottom: 0;
+          }
+      
+          p {
+            line-height: 1.5;
+          }
+        }
+    }
+
+    ion-row.search-area-row {
+        padding-top: 1rem;
+        padding-bottom: 2rem;
     }
 
     ion-icon.settings-icon.icon {
 		font-size: 1.8em;
 	}
+
+    ion-list > div {
+        cursor: pointer;
+    }
 
     .occurence {
         background-color: white;
@@ -20,33 +90,17 @@ page-person-search {
         list-style-type: none;
     }
 
-    .filter-button {
-        font-size: 2.8rem;
-    }
-
-    .searchbar {
-        color: white;
-    }
-
     .alphabet {
-        .scroll-content {
-            margin-top: 0 !important;
-        }
-
         button {
             margin: 0 !important;
         }
-        ion-scroll {
-            height: 100%;
-            width: 80px;
+        button ion-icon.icon {
+            font-size: 32px;
         }
     }
 
-    ion-list > div{
-        cursor: pointer;
-    }
-
     .alphabet-list {
+        position: fixed;
         top: 60px;
         right: 0;
         background: #eaeaea;
@@ -78,19 +132,13 @@ page-person-search {
         }
     }
 
-    .searchContainer{
-        display: flex;
-        align-items: stretch;
-    }
-    .alphabetContainer{
-        flex: 1;
-        min-height: fit-content;
+    .filter-button {
+        font-size: 2.8rem;
     }
 
-    .alphabet ion-scroll {
-      height: 100%;
-      width: 80px;
-      position: inherit;
-  }
+    .searchbar {
+        color: white;
+        max-width: 650px;
+    }
 
 }

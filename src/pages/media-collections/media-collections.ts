@@ -83,6 +83,18 @@ export class MediaCollectionsPage {
     (async () => {
       this.galleries = await this.galleryService.getGalleries(this.language);
       this.allGalleries = this.galleries;
+      this.allGalleries.sort(function(a, b) {
+        const titleA = a.title.toLowerCase(); // ignore upper and lowercase
+        const titleB = b.title.toLowerCase(); // ignore upper and lowercase
+        if (titleA < titleB) {
+          return -1;
+        }
+        if (titleA > titleB) {
+          return 1;
+        }
+        return 0;
+      });
+      this.galleries = this.allGalleries;
       this.cdRef.detectChanges();
     }).bind(this)();
   }
@@ -95,11 +107,24 @@ export class MediaCollectionsPage {
       const addedTags: Array<any> = [];
       tags.forEach(element => {
         if (addedTags.indexOf(element['id']) === -1) {
-          this.galleryTags.push({ 'name': String(element['name']).toLowerCase(), id: element['id'], 'media_collection_id': element['media_collection_id'] });
+          this.galleryTags.push({
+            'name': String(element['name']),
+            id: element['id'],
+            'media_collection_id': element['media_collection_id'] });
           addedTags.push(element['id']);
         }
       });
-      this.galleryTags.sort((a, b) => (a.name > b.name) ? 1 : -1)
+      this.galleryTags.sort(function(a, b) {
+        const nameA = a.name.toLowerCase(); // ignore upper and lowercase
+        const nameB = b.name.toLowerCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+      });
       this.cdRef.detectChanges();
     }).bind(this)();
   }
@@ -132,11 +157,24 @@ export class MediaCollectionsPage {
       const addedLocations: Array<any> = [];
       locations.forEach(element => {
         if (addedLocations.indexOf(element['id']) === -1) {
-          this.galleryLocations.push({ 'name': String(element['name']).toLowerCase(), id: element['id'], 'media_collection_id': element['media_collection_id'] });
+          this.galleryLocations.push({
+            'name': String(element['name']),
+            id: element['id'],
+            'media_collection_id': element['media_collection_id'] });
           addedLocations.push(element['id']);
         }
       });
-      this.galleryLocations.sort((a, b) => (a.name > b.name) ? 1 : -1)
+      this.galleryLocations.sort(function(a, b) {
+        const nameA = a.name.toLowerCase(); // ignore upper and lowercase
+        const nameB = b.name.toLowerCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+      });
       this.cdRef.detectChanges();
     }).bind(this)();
   }
@@ -149,11 +187,25 @@ export class MediaCollectionsPage {
       const addedSubjects: Array<any> = [];
       subjects.forEach(element => {
         if (addedSubjects.indexOf(element['id']) === -1 && String(element['name']).trim() !== '') {
-          this.gallerySubjects.push({ 'name': String(element['name']).toLowerCase(), id: element['id'], 'media_collection_id': element['media_collection_id'] });
+          this.gallerySubjects.push({
+            'name': String(element['name']),
+            id: element['id'],
+            'media_collection_id': element['media_collection_id']
+          });
           addedSubjects.push(element['id']);
         }
       });
-      this.gallerySubjects.sort((a, b) => (a.name > b.name) ? 1 : -1)
+      this.gallerySubjects.sort(function(a, b) {
+        const nameA = a.name.toLowerCase(); // ignore upper and lowercase
+        const nameB = b.name.toLowerCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+      });
     }).bind(this)();
   }
 
@@ -279,10 +331,10 @@ export class MediaCollectionsPage {
     this.metadataService.addKeywords();
 
     this.events.publish('ionViewWillEnter', this.constructor.name);
-    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'title'});
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'media-collections'});
     this.events.publish('SelectedItemInMenu', {
       menuID: 'mediaCollections',
-      component: 'title-page'
+      component: 'media-collections'
     });
   }
 

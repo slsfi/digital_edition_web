@@ -3,12 +3,12 @@
 <div *ngIf="!textLoading && variations.length>0" class="text-select-wrapper">
   <h3 [innerHTML]="selectedVariationName"></h3>
   <div class="flex-buttons">
-    <button ion-button (click)="selectVariation()">{{'Read.Variations.ChangeVariation' | translate}}</button>
+    <button ion-button (click)="selectVariation($event)">{{'Read.Variations.ChangeVariation' | translate}}</button>
     <button ion-button outline (click)="selectVariationForNewView()">{{'Read.Variations.OpenNewVariation' | translate}}</button>
   </div>
 </div>
 
-<div class="tei" [innerHTML]="text"
+<div class="tei teiContainer teiVariant" [innerHTML]="text"
 [class.show_pageNumbering]="readPopoverService.show.pageNumbering"
 [class.show_pageBreakOriginal]="readPopoverService.show.pageBreakOriginal"
 [ngClass]="(readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize'"

@@ -1,5 +1,5 @@
 <ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
-<div class="tei" [MathJax]="text" [innerHTML]="text"
+<div id="est" class="tei teiContainer" [MathJax]="text" [innerHTML]="text"
   [class.show_comments]="readPopoverService.show.comments"
   [class.show_personInfo]="readPopoverService.show.personInfo"
   [class.show_placeInfo]="readPopoverService.show.placeInfo"
@@ -10,6 +10,7 @@
   [class.show_pageNumbering]="readPopoverService.show.pageNumbering"
   [class.show_pageBreakOriginal]="readPopoverService.show.pageBreakOriginal"
   [class.show_pageBreakEdition]="readPopoverService.show.pageBreakEdition"
+  [class.clickable-illustrations]="illustrationsVisibleInReadtext && illustrationsViewAvailable && !userSettingsService.isMobile()"
   [ngClass]="(readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize'"
 >
 </div>

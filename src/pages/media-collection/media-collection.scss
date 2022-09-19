@@ -1,4 +1,23 @@
 page-media-collection {
+  ion-navbar.secondary.toolbar button.back-button ion-icon.back-button-icon {
+    font-size: 1.8rem;
+  }
+
+  ion-navbar.secondary.toolbar button.back-button.bar-button {
+    color: var(--text-color-on-secondary-color-background);
+    transition: $opacity-hover-transition;
+  }
+
+  ion-navbar.secondary.toolbar button.back-button.bar-button:hover:not(.disable-hover) {
+    color: var(--text-color-on-secondary-color-background);
+    background-color: transparent !important;
+    opacity: $opacity-hover;
+  }
+
+  ion-navbar.secondary.toolbar button.back-button.bar-button:hover:active {
+    opacity: 1;
+  }
+
   .img-desc {
     font-size: 12px;
   }
@@ -23,52 +42,40 @@ page-media-collection {
     box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
   }
   .card-content{
-    background-color: color($colors, secondary);
-    border-top: 2px solid color($colors, primary);
+    background-color: var(--media-collection-card-content-background-color);
+    border-top: 2px solid var(--media-collection-card-content-border-top-color);
+  }
+  ion-grid.grid {
+    padding: 0;
   }
   h1 {
-    font-size: 1.8rem;
+    font-size: 1.8125rem;
     text-transform: none !important;
   }
   .tagSelect,
   .locationSelect,
   .subjectSelect{
     box-shadow: 4px 4px 4px -1px rgba(0,0,0,0.42) !important;
-    background-color: var(--secondary-color);
+    background-color: var(--media-collection-filter-select-background-color);
+
+    &.item > .item-inner {
+      border-bottom: 0;
+    }
   }
 
   .filters{
     display: flex;
-    width: 60%;
-    padding: 0 1.5rem;
+    width: 100%;
+    padding: 0 1rem;
     margin-bottom: 1.5rem;
   }
 
-  @media only screen and (max-width: 1024px) {
-    .filters{
-      width: 100%;
-    }
+  .filters ion-item {
+    max-width: 400px;
+    margin-right: 2rem;
+    padding-left: 6px;
   }
 
-  @media only screen and (max-width: 800px) {
-    .filters{
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-
-    }
-    .filters ion-item{
-      margin-bottom: 1rem;
-    }
-  }
-  .filters ion-item{
-      margin-right: 2rem;
-      padding: 0px;
-  }
-
-  ion-item button{
-    background-color: rgba(0, 0, 0, 0.05) !important;
-  }
   ion-item ion-label{
     color: #000 !important;
     font-size: 1rem !important;
@@ -78,7 +85,7 @@ page-media-collection {
       cursor: pointer;
   }
   .info{
-    padding-left: 1.5rem;
+    padding: 0 1rem;
     margin-bottom: 1.5rem;
 
     h1 {
@@ -90,14 +97,33 @@ page-media-collection {
     max-width: 800px;
     width: 100%;
     margin-bottom: 2.5rem;
+    font-size: 1.125rem;
 
     p {
       line-height: 1.5;
     }
   }
-
   .info:not(.markdown) + .filters {
     margin-top: 2rem;
+  }
+  @media only screen and (max-width: 800px) {
+    .filters {
+        display: flex;
+        flex-direction: column;
+        padding: 0 0.5rem;
+    }
+    .filters ion-item {
+      margin-bottom: 1rem;
+    }
+    .info {
+      padding: 0 0.5rem;
+    }
+  }
+  @media only screen and (max-width: 600px) {
+    .filters,
+    .info {
+      padding: 0;
+    }
   }
 
   .img-desc.title {
@@ -105,9 +131,6 @@ page-media-collection {
     font-weight: 700;
   }
 
-  .sec-menu-button {
-    color: #000 !important;
-  }
   .sec-menu-button .side-title {
     padding: 0 10px 0 8px;
   }

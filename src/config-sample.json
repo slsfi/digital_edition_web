@@ -33,6 +33,17 @@
         },
         "CollectionSortOrder": {}
     },
+    "frontpageConfig": {
+        "imageOrientationIsPortrait": false,
+        "imageOnRightIfPortrait": false,
+        "siteTitleOnTopOfImageInMobileModeIfPortrait": false,
+        "imageUrl": "assets/images/frontpage-image-landscape.jpg",
+        "portraitImageUrlInMobileMode": "assets/images/frontpage-image-square.jpg",
+        "portraitImageAltText": "",
+        "showSimpleSearch": false,
+        "showEditionList": false,
+        "showFooter": false
+    },
     "showTutorial": false,
     "TutorialSteps": [{
             "id": "welcome",
@@ -119,15 +130,18 @@
         "getFacsimilePagesInfinite": false,
         "showReadTextIllustrations": [],
         "galleryCollectionMapping": {"214": 44},
-        "facsimileDefaultZoomLevel": 3
+        "facsimileDefaultZoomLevel": 3,
+        "facsimileZoomPageLevel": 1
     },
     "i18n": {
         "languages": [
-            "sv",
-            "en"
+			"sv", "fi"
         ],
         "locale": "sv",
-        "enableLanguageChanges": true
+        "enableLanguageChanges": false,
+        "multilingualTOC": false,
+        "multilingualEST": false,
+        "estLanguages": []
     },
     "collectionDownloads": {
         "isDownloadOnly": false,
@@ -295,7 +309,8 @@
             "WorkSearch": true,
             "SongTypes": false,
             "Books": false,
-            "splitReadCollections":[]
+            "splitReadCollections":[],
+            "EPUB": false
         }
     },
     "defaults": {
@@ -316,7 +331,8 @@
     },
     "PersonSearch": {
         "ShowFilter": true,
-        "ShowPublishedStatus": 2
+        "ShowPublishedStatus": 2,
+        "InitialLoadNumber": 800
     },
     "LocationSearch": {
         "ShowFilter": true,
@@ -514,6 +530,12 @@
         "@type": "Organization",
         "url":"https://www.sls.fi",
         "logo":"https://granska-topelius.sls.fi/assets/images/logo.svg"
+      }
+    },
+    "AvailableEpubs": {
+      "Dagböcker": {
+        "filename": "NY_soderholm_dagbocker.epub",
+        "download": "https://www.sls.fi/sv/utgivning/kerstin-soderholms-dagbocker"
       }
     }
 }

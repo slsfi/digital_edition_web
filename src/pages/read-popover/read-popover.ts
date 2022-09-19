@@ -60,7 +60,7 @@ export class ReadPopoverPage {
     const toggles = this.params.get('toggles');
     this.readToggles = this.config.getSettings('settings.readToggles');
 
-    if ( toggles !== undefined ) {
+    if ( toggles !== undefined && toggles !== null && Object.keys(toggles).length !== 0 ) {
       this.readToggles = toggles;
     }
 
@@ -80,6 +80,7 @@ export class ReadPopoverPage {
   ionViewWillLeave() {
     this.events.publish('ionViewWillLeave', this.constructor.name);
   }
+
   ionViewWillEnter() {
     this.events.publish('ionViewWillEnter', this.constructor.name);
   }
@@ -198,6 +199,7 @@ export class ReadPopoverPage {
     if (size in Fontsize) {
       this.fontsize = size;
       this.readPopoverService.fontsize = this.fontsize;
+      this.readPopoverService.sendFontsizeToSubscribers(this.fontsize);
       this.doAnalytics('setFontSize - ' + Fontsize[size]);
     }
   }

@@ -52,6 +52,7 @@ export class FacsimilesComponent {
   selectedFacsimileIsExternal = false;
 
   facsUrl = '';
+  facsBase = null;
   externalURLs = [];
   facsimilePagesInfinite = false;
   // If defined, this size will be appended to the image url.
@@ -60,6 +61,7 @@ export class FacsimilesComponent {
   facsPage: any;
   facsNumber = 0;
   facsimileDefaultZoomLevel = 1;
+  facsimileZoomPageLevel = 1;
   numberOfPages: number;
   chapter: string;
 
@@ -78,6 +80,7 @@ export class FacsimilesComponent {
     public songService: SongService,
     private analyticsService: AnalyticsService
   ) {
+
     this.deRegisterEventListeners();
     this.registerEventListeners();
     this.manualPageNumber = 1;
@@ -103,6 +106,19 @@ export class FacsimilesComponent {
     } catch (e) {
       this.facsimileDefaultZoomLevel = 1;
     }
+
+    try {
+      this.facsimileZoomPageLevel = this.config.getSettings('settings.facsimileZoomPageLevel');
+    } catch (e) {
+      this.facsimileZoomPageLevel = 1;
+    }
+
+    try {
+      this.facsBase = this.config.getSettings('app.facsimileBase');
+    } catch (e) {
+    }
+
+
   }
 
   openNewFacs(event: Event, id: any) {
@@ -125,12 +141,12 @@ export class FacsimilesComponent {
   }
 
   ngOnInit() {
+
     if (!this.selectedFacsimile) {
       let getFacsimilePagesInfinite = false;
       try {
         getFacsimilePagesInfinite = this.config.getSettings('settings.getFacsimilePagesInfinite')
       } catch (e) {
-
       }
 
       if (getFacsimilePagesInfinite) {
@@ -185,7 +201,7 @@ export class FacsimilesComponent {
             this.facsPage = facs[0];
           }
 
-          if (this.facsPage['external_url'] !== null) {
+          if (this.facsPage['external_url'] !== null && this.facsPage['external_url'] !== '' && this.facsPage['folder_path'] == null) {
             this.selectedFacsimileIsExternal = true;
           }
 
@@ -202,28 +218,46 @@ export class FacsimilesComponent {
           this.selectedFacsimile.title = this.facsPage['title'];
           this.selectedFacsimileName = this.selectedFacsimile.title;
 
+          let sectionId = '';
+          if ( String(this.itemId).indexOf('ch') > 0 ) {
+            sectionId = String((String(String(this.itemId).split(';')[0]).split('_')[2]).replace('ch', ''));
+          }
+
           // add all
           for (const f of facs) {
             const facsimile = new Facsimile(f);
             facsimile.itemId = this.itemId;
             facsimile.manuscript_id = f.publication_manuscript_id;
-            if ( f['external_url'] === null ) {
+            if ( f['external_url'] === null || f['external_url'] === '' ) {
               facsimile.title = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(f['title']));
             }
-            if ( f['external_url'] !== null ) {
+            if ( f['external_url'] !== null && f['external_url'] !== '' ) {
               this.externalFacsimilesExist = true;
               this.externalURLs.push({'title': f['title'], 'url': f['external_url']});
             } else {
-              this.facsimiles.push(facsimile);
+              if ( sectionId !== '' ) {
+                if ( String(f['section_id']) === sectionId ) {
+                  this.facsimiles.push(facsimile);
+                }
+              } else {
+                this.facsimiles.push(facsimile);
+              }
             }
           }
 
-          if ( this.facsPage['external_url'] === undefined || this.facsPage['external_url'] === null ) {
-            this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
-            this.config.getSettings('app.machineName') +
-            `/facsimiles/${this.facsPage['publication_facsimile_collection_id']}/`;
+          /**
+           * * The following code block has been restored to its state before 29.12.2021 because the
+           * * modifications then broke the facsimiles for all SLS projects.
+           * * this.facsPage['folder_path'] can't be a condition for setting this.facsUrl, since folder_path
+           * * is not used for any facsimile_collection in any SLS project. // SK
+           */
+          if (this.facsPage['external_url'] === undefined || this.facsPage['external_url'] === null
+            || this.facsPage['external_url'] === '') {
             this.externalFacsimilesExist = false;
             this.selectedFacsimileIsExternal = false;
+            this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
+              this.config.getSettings('app.machineName') +
+              `/facsimiles/${this.facsPage['publication_facsimile_collection_id']}/`;
           }
 
           if (this.facsimiles.length > 0) {
@@ -266,7 +300,7 @@ export class FacsimilesComponent {
             }
             const f_url = this.facsimileService.getFacsimileImage(f.publication_facsimile_collection_id, i, this.facsimileDefaultZoomLevel);
             facsimile.images.push(f_url);
-            const zf_url = this.facsimileService.getFacsimileImage(f.publication_facsimile_collection_id, i, 1);
+            const zf_url = this.facsimileService.getFacsimileImage(f.publication_facsimile_collection_id, i, this.facsimileZoomPageLevel);
             facsimile.zoomedImages.push(zf_url);
           }
           facsimile.itemId = this.itemId;
@@ -323,6 +357,7 @@ export class FacsimilesComponent {
     if (facs === 'external') {
       this.selectedFacsimileIsExternal = true;
     } else if (facs) {
+
       this.selectedFacsimileIsExternal = false;
       this.selectedFacsimile = facs;
       this.selectedFacsimileName = this.selectedFacsimile.title;
@@ -396,6 +431,9 @@ export class FacsimilesComponent {
     alert.addButton({
       text: buttonTranslations.Ok,
       handler: (index: string) => {
+
+        console.log('changing facsimile, ', index);
+
         if (parseInt(index) < 0) {
           // External facsimiles selected
           this.changeFacsimile('external');

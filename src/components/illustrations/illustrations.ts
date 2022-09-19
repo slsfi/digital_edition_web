@@ -19,13 +19,18 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class IllustrationsComponent {
   @Input() itemId: string;
+  @Input() initialImage: Record<string, any> = {};
   illustrationsPath = 'assets/images/illustrations/2/';
   imgPath: any;
   images: Array<Object> = [];
+  imageCountTotal = 0;
+  imagesCache: Array<Object> = [];
   selectedImage: Array<string> = [];
-  viewAll = false;
+  viewAll = true;
   showOne = false;
+  textLoading: Boolean = true;
   apiEndPoint: string;
+  appMachineName: string;
   projectMachineName: string;
   constructor(
     public navParams: NavParams,
@@ -36,66 +41,48 @@ export class IllustrationsComponent {
     private events: Events,
     public translate: TranslateService,
     private analyticsService: AnalyticsService
-  ) { }
+  ) {
+    this.registerEventListeners();
+  }
   ngOnInit() {
     this.getIllustrationImages();
+    this.appMachineName = this.config.getSettings('app.machineName');
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.projectMachineName = this.config.getSettings('app.machineName');
     this.doAnalytics();
   }
 
   ngOnDestroy() {
-    this.events.unsubscribe('give:illustration');
+    this.deRegisterEventListeners();
   }
 
   ngAfterViewInit() {
-    document.body.addEventListener('click', (event: any) => {
-      if (event.target.previousElementSibling || event.target.classList.contains('est_figure_graphic')) {
-        try {
-          if (this.config.getSettings('settings.showReadTextIllustrations')) {
-            const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
+  }
 
-            if ( showIllustration.includes(this.itemId.split('_')[1])) {
-              if (event.target.classList.contains('est_figure_graphic') || event.target.classList.contains('doodle')) {
-                this.events.subscribe('give:illustration', (image) => {
-                  if (image) {
-                    this.showOne = true;
-                    this.viewAll = false;
-                    this.images = [image];
-                  } else {
-                    this.showOne = false;
-                  }
-                });
-              }
-            } else {
-              if (event.target.previousElementSibling.classList.contains('est_figure_graphic') ||
-              event.target.classList.contains('doodle')) {
-                this.events.subscribe('give:illustration', (image) => {
-                  if (image) {
-                    this.showOne = true;
-                    this.viewAll = false;
-                    this.images = [image];
-                  } else {
-                    this.showOne = false;
-                  }
-                });
-              }
-            }
-          }
-        } catch (e) {
-          console.error(e)
-        }
-      }
+  registerEventListeners() {
+    this.events.subscribe('give:illustration', (image) => {
+      this.showSingleImage(image);
     });
   }
 
-  toggleViewAll() {
-    this.viewAll = !this.viewAll;
-    this.showOne = false;
+  deRegisterEventListeners() {
+    this.events.unsubscribe('give:illustration');
+  }
 
-    if (this.viewAll) {
-      this.getIllustrationImages();
+  showSingleImage(image) {
+    if (image) {
+      this.showOne = true;
+      this.viewAll = false;
+      this.images = [image];
+    } else {
+      this.showOne = false;
     }
+  }
+
+  viewAllIllustrations() {
+    this.viewAll = true;
+    this.showOne = false;
+    this.images = this.imagesCache;
   }
 
   zoomImage(image) {
@@ -109,31 +96,146 @@ export class IllustrationsComponent {
   }
 
   scrollToPositionInText(image) {
-    image = image.replace('http:', '');
-    const target = document.querySelector(`[src="${image}"]`);
-    target.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
+    const imageSrc = image.src;
+    let imageFilename = '';
+    if (imageSrc) {
+      imageFilename = imageSrc.substring(imageSrc.lastIndexOf('/') + 1);
+      let target = null as HTMLElement;
+      const readtextElem = document.querySelector('read-text');
+      try {
+        if (image.class === 'doodle') {
+          // Get the image filename without format and prepend tag_ to it
+          let imageDataId = 'tag_' + imageFilename.substring(0, imageFilename.lastIndexOf('.'));
+          target = readtextElem.querySelector(`img.doodle[data-id="${imageDataId}"]`) as HTMLElement;
+          if (target === null) {
+            // Try dropping the prefix 'tag_' from image data-id as unknown pictograms don't have this
+            imageDataId = imageDataId.replace('tag_', '');
+            target = readtextElem.querySelector(`img.doodle[data-id="${imageDataId}"]`) as HTMLElement;
+          }
+          if (target !== null) {
+            if (target.previousElementSibling !== null && target.previousElementSibling !== undefined) {
+              if (target.previousElementSibling.previousElementSibling !== null
+                && target.previousElementSibling.previousElementSibling !== undefined
+                && target.previousElementSibling.previousElementSibling.classList.contains('ttNormalisations')) {
+                // Change the scroll target from the doodle icon itself to the preceding word which the icon represents.
+                target = target.previousElementSibling.previousElementSibling as HTMLElement;
+              }
+            } else if (target.parentElement !== null && target.parentElement !== undefined) {
+              if (target.parentElement.classList.contains('ttNormalisations')) {
+                target = target.parentElement as HTMLElement;
+              }
+            }
+          }
+        } else {
+          // Get the image element with src-attribute value ending in image filename
+          const imageSrcFilename = '/' + imageFilename;
+          target = readtextElem.querySelector(`[src$="${imageSrcFilename}"]`) as HTMLElement;
+        }
+
+        if (target !== null && target.parentElement !== null && target.parentElement !== undefined) {
+          if (image.class !== 'visible-illustration') {
+            // Prepend arrow to the image/icon in the reading text and scroll into view
+            const tmpImage: HTMLImageElement = new Image();
+            tmpImage.src = 'assets/images/ms_arrow_right.svg';
+            tmpImage.alt = 'ms arrow right image';
+            tmpImage.classList.add('inl_ms_arrow');
+            target.parentElement.insertBefore(tmpImage, target);
+            this.scrollElementIntoView(tmpImage);
+            setTimeout(function() {
+              target.parentElement.removeChild(tmpImage);
+            }, 5000);
+          } else {
+            this.scrollElementIntoView(target, 'top', 75);
+          }
+        } else {
+          console.log('Unable to find target when scrolling to image position in text, imageSrc:', imageSrc);
+        }
+      } catch (e) {
+        console.log('Error scrolling to image position in text.');
+      }
+    } else {
+      console.log('Empty src-attribute for image, unable to scroll to position in text.');
+    }
   }
 
   private getIllustrationImages() {
     this.images = [];
-    this.textService.getEstablishedText(this.itemId).subscribe(text => {
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(text, 'text/html');
-      const images: any = xmlDoc.querySelectorAll('img.est_figure_graphic');
-      const doodles: any = xmlDoc.querySelectorAll('img.doodle');
-      for (let i = 0; i < images.length ; i++) {
-        const image = {src: images[i].src, class: 'illustration'};
-        this.images.push(image);
-      }
-      for (let i = 0; i < doodles.length ; i++) {
-        const image = {src: '/assets/images/verk/' + String(doodles[i].dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
-        console.log(image);
-        this.images.push(image);
-      }
-    });
+    this.textService.getEstablishedText(this.itemId).subscribe(
+      text => {
+        const c_id = String(this.itemId).split('_')[0];
+        let galleryId = 44;
+        try {
+          galleryId = this.config.getSettings('settings.galleryCollectionMapping')[c_id];
+        } catch ( err ) {
+        }
+        if ( String(text).includes('/images/verk/http') ) {
+          text = text.replace(/images\/verk\//g, '');
+        } else {
+          text = text.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/${galleryId}/`);
+        }
+
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(text, 'text/html');
+        const images: any = xmlDoc.querySelectorAll('img.est_figure_graphic');
+        const doodles: any = xmlDoc.querySelectorAll('img.doodle');
+        for (let i = 0; i < images.length ; i++) {
+          let illustrationClass = 'illustration';
+          if (!images[i].classList.contains('hide-illustration')) {
+            illustrationClass = 'visible-illustration';
+          }
+          const image = {src: images[i].src, class: illustrationClass};
+          this.images.push(image);
+        }
+        for (let i = 0; i < doodles.length ; i++) {
+          const image = {src: '/assets/images/verk/' + String(doodles[i].dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
+          this.images.push(image);
+        }
+        this.imageCountTotal = this.images.length;
+        this.imagesCache = this.images;
+        if (typeof this.initialImage !== 'undefined' && this.initialImage) {
+          this.images = [];
+          this.images.push(this.initialImage);
+          this.viewAll = false;
+          this.showOne = true;
+        }
+        this.textLoading = false;
+      },
+      error => { this.textLoading = false; }
+    );
   }
 
   doAnalytics() {
     this.analyticsService.doAnalyticsEvent('Illustration', 'Illustration', String(this.itemId));
+  }
+
+  /** This function can be used to scroll a container so that the element which it
+   *  contains is placed either at the top edge of the container or in the center
+   *  of the container. This function can be called multiple times simultaneously
+   *  on elements in different containers, unlike the native scrollIntoView function
+   *  which cannot be called multiple times simultaneously in Chrome due to a bug.
+   *  Valid values for yPosition are 'top' and 'center'. */
+   private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0) {
+    if (element === undefined || element === null || (yPosition !== 'center' && yPosition !== 'top')) {
+      return;
+    }
+    // Find the scrollable container of the element which is to be scrolled into view
+    let container = element.parentElement;
+    while (container !== null && container.parentElement !== null &&
+     !container.classList.contains('scroll-content')) {
+      container = container.parentElement;
+    }
+    if (container === null || container.parentElement === null) {
+      return;
+    }
+
+    const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
+    let baseOffset = 10;
+    if (yPosition === 'center') {
+      baseOffset = Math.floor(container.offsetHeight / 2);
+      if (baseOffset > 45) {
+        baseOffset = baseOffset - 45;
+      }
+    }
+    container.scrollTo({top: y - baseOffset - offset, behavior: 'smooth'});
   }
 }

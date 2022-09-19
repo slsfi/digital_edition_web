@@ -1,3 +1,4 @@
+
 <div *ngIf="externalFacsimilesExist || facsimiles.length>0" class="text-select-wrapper facsimile-header" [ngClass]="selectedFacsimileIsExternal?'external-urls-header':''">
   <h3 *ngIf="!selectedFacsimileIsExternal" [innerHTML]="selectedFacsimileName"></h3>
   <h3 *ngIf="selectedFacsimileIsExternal">{{"Read.Facsimiles.ExternalHeading" | translate}}</h3>
@@ -7,7 +8,7 @@
 </div>
 
 <ion-scroll *ngIf="selectedFacsimileIsExternal" scrollY="true" class="external_urls_wrapper" [ngStyle]="{'height': '100%', 'max-height': 'calc(100% - 60px)'}">
-  <div [ngClass]="(readPopoverService.fontsize==0)?'tei xsmallFontSize':(readPopoverService.fontsize==1)?'tei smallFontSize':(readPopoverService.fontsize==2)?'tei mediumFontSize':(readPopoverService.fontsize==3)?'tei largeFontSize':'tei xlargeFontSize'">
+  <div [ngClass]="(readPopoverService.fontsize==0)?'tei teiContainer xsmallFontSize':(readPopoverService.fontsize==1)?'tei teiContainer smallFontSize':(readPopoverService.fontsize==2)?'tei teiContainer mediumFontSize':(readPopoverService.fontsize==3)?'tei teiContainer largeFontSize':'tei teiContainer xlargeFontSize'">
     <ul>
       <li *ngFor="let ext of externalURLs"><a target="_blank" href="{{ext.url}}" [innerHTML]="ext.title"></a></li>
     </ul>
@@ -34,7 +35,7 @@
 
 <div id="facsimilies-image" *ngIf="facsimilePagesInfinite && facsNumber && !selectedFacsimileIsExternal">
   <img
-    [src]="facsUrl + facsNumber + (facsSize ? '/' + facsSize : '')"
+    [src]="facsBase ? facsBase +'/'+ facsPage['publication_facsimile_collection_id'] +'/'+ facsSize + '/' + facsNumber + '.jpg' : facsUrl + facsNumber + (facsSize ? '/' + facsSize : '')"
     [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
     (wheel)="onMouseWheel($event)"
     (pan)="handleSwipeEvent($event)"
@@ -72,6 +73,6 @@
   </ion-fab>
 </ng-container>
 
-<div class="tei" [innerHTML]="text"
+<div class="tei teiContainer" [innerHTML]="text"
   [ngClass]="(readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize'">
 </div>

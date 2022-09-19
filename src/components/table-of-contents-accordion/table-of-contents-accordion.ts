@@ -69,7 +69,7 @@ class InnerMenuOptionModel {
     innerMenuOptionModel.targetOption = option;
     innerMenuOptionModel.parent = parent || null;
     innerMenuOptionModel.type = option.type;
-    innerMenuOptionModel.selected = option.selected;
+    innerMenuOptionModel.selected = option.selected || false;
 
     innerMenuOptionModel.important = option.important ? option.important : false;
 
@@ -121,16 +121,19 @@ class InnerMenuOptionModel {
 
     if (option.collapsed === false) {
       innerMenuOptionModel.collapsed = false;
+      innerMenuOptionModel.expanded = true;
+      innerMenuOptionModel.important = true; // SK 18.5.2022 added
     } else {
       innerMenuOptionModel.collapsed = true;
+      innerMenuOptionModel.expanded = false;
     }
 
     if (option.children) {
-      innerMenuOptionModel.expanded = false;
+      // innerMenuOptionModel.expanded = false;
       let storeChildren = false;
 
       if (option.openByDefault) {
-        // innerMenuOptionModel.expanded = true;
+      // innerMenuOptionModel.expanded = true;
       }
 
       innerMenuOptionModel.childrenCount = option.children.length;
@@ -149,27 +152,27 @@ class InnerMenuOptionModel {
       }
 
       option.children.forEach(subItem => {
-
-      const innerSubItem = InnerMenuOptionModel.fromMenuOptionModel(subItem, innerMenuOptionModel, true, searchingTocItem);
-      innerSubItem.collapsed = subItem.collapsed;
-      if (innerSubItem.text) {
-        if (storeChildren) {
-          if ( childrenToc[innerMenuOptionModel.children_id].indexOf(innerSubItem) === -1 ) {
-            childrenToc[innerMenuOptionModel.children_id].push(innerSubItem);
-          }
-        } else {
-          if ( innerMenuOptionModel.subOptions.indexOf(innerSubItem) === -1 ) {
-            innerMenuOptionModel.subOptions.push(innerSubItem);
+        const innerSubItem = InnerMenuOptionModel.fromMenuOptionModel(subItem, innerMenuOptionModel, true, searchingTocItem);
+        // innerSubItem.collapsed = subItem.collapsed;
+        if (innerSubItem.text) {
+          if (storeChildren) {
+            if ( childrenToc[innerMenuOptionModel.children_id].indexOf(innerSubItem) === -1 ) {
+              childrenToc[innerMenuOptionModel.children_id].push(innerSubItem);
+            }
+          } else {
+            if ( innerMenuOptionModel.subOptions.indexOf(innerSubItem) === -1 ) {
+              innerMenuOptionModel.subOptions.push(innerSubItem);
+            }
           }
         }
-      }
 
-      // Select the parent if any
-      // child option is selected
-      if (subItem.selected) {
-        innerSubItem.parent.selected = true;
-        innerSubItem.parent.expanded = true;
-      }
+        // Expand the parent if any
+        // child option is selected
+        if (subItem.selected) {
+          // innerSubItem.parent.selected = true;
+          innerSubItem.parent.expanded = true;
+          innerSubItem.parent.collapsed = false;
+        }
       });
     }
     return innerMenuOptionModel;
@@ -198,6 +201,7 @@ export class TableOfContentsAccordionComponent {
     searchItemId?: String,
     searchTitle?: String
   }) {
+    // console.log('toc accordion options:', value);
     if (value && value.toc && value.toc.length > 0) {
       if (value.searchTocItem !== undefined && value.searchTocItem === true) {
         this.searchingForTocItem = true;
@@ -209,13 +213,14 @@ export class TableOfContentsAccordionComponent {
       // Map the options to our internal models
       this.menuOptions.forEach(option => {
         const innerMenuOption = InnerMenuOptionModel.fromMenuOptionModel(option, null, false, value.searchTocItem);
-        if ( this.collapsableItems.indexOf(innerMenuOption) === -1 && innerMenuOption.type !== 'folder' ) {
+        if ( this.collapsableItems.indexOf(innerMenuOption) === -1 ) {
           this.collapsableItems.push(innerMenuOption);
         }
 
         // Check if there's any option marked as selected
         if (option.selected) {
           this.selectedOption = innerMenuOption;
+          foundSelected = true;
         } else if (innerMenuOption.childrenCount) {
           innerMenuOption.subOptions.forEach(subItem => {
             if (subItem.selected) {
@@ -228,7 +233,7 @@ export class TableOfContentsAccordionComponent {
 
       if ( !foundSelected ) {
       } else {
-        console.log('found menu item');
+        console.log('accordion toc options input: found menu item');
       }
 
       if (value.searchTocItem !== undefined && value.searchTocItem) {
@@ -237,9 +242,13 @@ export class TableOfContentsAccordionComponent {
           value.searchItemId = String(value.searchItemId).replace('_nochapter', '').replace(':chapterID', '');
           if ( String(value.searchItemId).indexOf(';pos') !== -1 ) {
             // Remove the position anchor from search if defined
-            value.searchItemId = String(value.searchItemId).split(';pos')[0];
+            // value.searchItemId = String(value.searchItemId).split(';pos')[0];
           }
-          this.findTocByPubOnly(this.collapsableItems, value.searchItemId);
+          // Try to find the correct position in the TOC. If not found, try to find the nearest.
+          if ( this.findTocByPubOnly(this.collapsableItems, value.searchItemId) === false ) {
+            value.searchItemId = String(value.searchItemId).split(';pos')[0];
+            this.findTocByPubOnly(this.collapsableItems, value.searchItemId);
+          }
           this.events.publish('typesAccordion:change', {
             expand: true
           });
@@ -249,6 +258,12 @@ export class TableOfContentsAccordionComponent {
             expand: true
           });
         }
+
+        /**
+         * ! SK 18.5.2022 I'm disabling this emptying of children in other branches for now since
+         * ! it causes several problems that I haven't found workarounds for yet. Rendering doesn't
+         * ! seem to be slower, so I'm not sure this is even necessary.
+         */
 
         if (this.foundTocItem) {
           // Empty children in all other branches in this toc tree for faster rendering
@@ -260,6 +275,7 @@ export class TableOfContentsAccordionComponent {
             }
           }
         }
+
       }
       this.searchingForTocItem = false;
     }
@@ -338,7 +354,7 @@ export class TableOfContentsAccordionComponent {
     const list = this.flattenList(data.tocItems);
 
     for (const child of list) {
-        if (child.type !== 'section_title') {
+        if (child.type !== 'section_title' && child.type !== 'subtitle') {
             this.alphabeticalactiveMenuTree.push(child);
         }
     }
@@ -352,14 +368,14 @@ export class TableOfContentsAccordionComponent {
       this.storage.set('toc_alfabetical_' + data['collectionID'], this.alphabeticalactiveMenuTree);
   }
 
-  constructChronologialTOC(data) {
+  constructChronologicalTOC(data) {
     this.chronologicalactiveMenuTree = [];
     this.chronologicalTitleStack = [];
 
     const list = this.flattenList(data.tocItems);
 
     for (const child of list) {
-        if (child.date && child.type !== 'section_title') {
+        if (child.date && child.type !== 'section_title' && child.type !== 'subtitle') {
             this.chronologicalactiveMenuTree.push(child);
         }
     }
@@ -410,25 +426,6 @@ export class TableOfContentsAccordionComponent {
     return list;
   }
 
-  registerEventListeners() {
-    this.events.subscribe('tableOfContents:loaded', (data) => {
-      this.storage.get('toc_alfabetical_' + data['collectionID']).then((toc) => {
-        if ( toc === null  || data['collectionID'] !== toc['collectionID'] ) {
-          this.constructAlphabeticalTOC(data);
-        } else {
-          this.alphabeticalactiveMenuTree = toc;
-        }
-      });
-      this.storage.get('toc_chronologial_' + data['collectionID']).then((toc) => {
-        if (  toc === null  || data['collectionID'] !== toc['collectionID'] ) {
-          this.constructChronologialTOC(data);
-        } else {
-          this.chronologicalactiveMenuTree = toc;
-        }
-      });
-    });
-  }
-
   setActiveSortingType(type) {
     if (type === 'thematic') {
         this.alphabethicOrderActive = false;
@@ -450,21 +447,14 @@ export class TableOfContentsAccordionComponent {
 
   ngOnChanges(about) {
     if ( Array.isArray(about) ) {
+      // console.log('toc-accordion ngOnChanges initialized', about);
       this.menuOptions = about;
       this.collapsableItems = new Array<InnerMenuOptionModel>();
       this.activeMenuTree = [];
 
-      let foundSelected = false;
       // Map the options to our internal models
       this.menuOptions.forEach(option => {
-        const innerMenuOption = InnerMenuOptionModel.fromMenuOptionModel(option, null, false, false);
-        if ( this.collapsableItems.indexOf(innerMenuOption) === -1 ) {
-          this.collapsableItems.push(innerMenuOption);
-        }
-        if ( this.activeMenuTree.indexOf(innerMenuOption) === -1 ) {
-          this.activeMenuTree.push(innerMenuOption);
-        }
-
+        let innerMenuOption = InnerMenuOptionModel.fromMenuOptionModel(option, null, false, false);
         // Check if there's any option marked as selected
         if (option.selected !== undefined && option.selected === true) {
           this.selectedOption = innerMenuOption;
@@ -472,11 +462,31 @@ export class TableOfContentsAccordionComponent {
           innerMenuOption.subOptions.forEach(subItem => {
             if (subItem.selected) {
               this.selectedOption = subItem;
-              foundSelected = true;
             }
           });
         }
+        // In some cases, like when opening a markdown page from the home page, the selected page is not
+        // marked as selected and it's parents are collapsed since ngOnChanges refreshes the toc with
+        // default values. That's why we have to run this recursive search for selected markdown menu options
+        if (this.currentOption && this.currentOption.markdownID) {
+          innerMenuOption = this.searchInnerMenuForSelectedMarkdownOption(innerMenuOption);
+        }
+
+        if ( this.collapsableItems.indexOf(innerMenuOption) === -1 ) {
+          this.collapsableItems.push(innerMenuOption);
+        }
       });
+
+      /*
+      if (this.alphabethicOrderActive) {
+        this.activeMenuTree = this.alphabeticalactiveMenuTree;
+      } else if (this.chronologicalOrderActive) {
+        this.activeMenuTree = this.chronologicalactiveMenuTree;
+      } else {
+        this.activeMenuTree = this.collapsableItems;
+      }
+      */
+      this.activeMenuTree = this.collapsableItems;
       this.cdRef.detectChanges();
     }
 
@@ -489,31 +499,19 @@ export class TableOfContentsAccordionComponent {
         this.introductionSelected = true;
       }
     }
+    // console.log('ngOnChanges this.activeMenuTree', this.activeMenuTree);
   }
 
   ngOnInit() {
+    // console.log('toc-accordion ngOnInit initialized');
+
     let language = 'sv';
     this.languageService.getLanguage().subscribe((lang: string) => {
       language = lang;
     });
-
     this.playmanTraditionPageID = `${language}-${this.playmanTraditionPageID}`;
 
-    this.collectionId = this.collectionId;
-    this.collectionName = this.collectionName;
-
-    this.registerEventListeners();
     this.setConfigs();
-    // Handle the redirect event
-    this.events.subscribe(SideMenuRedirectEvent, (data: SideMenuRedirectEventData) => {
-      this.updateSelectedOption(data);
-    });
-
-    try {
-      this.sortableLetters = this.config.getSettings('settings.sortableLetters');
-    } catch (e) {
-      this.sortableLetters = [];
-    }
 
     this.translate.get('TOC.SortOptions.SortTOC').subscribe(
       translation => {
@@ -524,28 +522,41 @@ export class TableOfContentsAccordionComponent {
       }, error => { }
     );
 
-    this.events.subscribe('SelectedItemInMenu', (menu) => {
-      if ( this.collectionId === undefined || this.collectionId === null ) {
-        this.collectionId = menu.menuID;
-      }
-      if (this.collectionId !== menu.menuID && this.currentOption) {
-        this.currentOption.selected = false;
-        this.currentOption = null;
-        this.cdRef.detectChanges();
-      } else {
-        console.log('this.collectionId', this.collectionId);
-      }
-    });
-
-    this.events.subscribe('selectOneItem', (itemId) => {
-      this.unSelectAllItems(this.collapsableItems);
-      this.selectOneItem(itemId);
-      this.cdRef.detectChanges();
-    });
-
     this.titleSelected = false;
     this.introductionSelected = false;
     this.coverSelected = false;
+
+    const currentPage = String(window.location.href);
+    if ( this.hasCover && currentPage.includes('/publication-cover/') ) {
+      this.coverSelected = true;
+    } else if ( this.hasTitle && currentPage.includes('/publication-title/') ) {
+      this.titleSelected = true;
+    } else if ( this.hasIntro && currentPage.includes('/publication-introduction/') ) {
+      this.introductionSelected = true;
+    }
+
+    this.registerEventListeners();
+    this.cdRef.detectChanges();
+  }
+
+  setConfigs() {
+    try {
+      this.searchTocItemInAccordionByTitle = this.config.getSettings('SearchTocItemInAccordionByTitle');
+    } catch (e) {
+      this.searchTocItemInAccordionByTitle = false;
+    }
+
+    try {
+      this.playmanTraditionPageInMusicAccordion = this.config.getSettings('MusicAccordionShow.PlaymanTraditionPage');
+    } catch (e) {
+      this.playmanTraditionPageInMusicAccordion = false;
+    }
+
+    try {
+      this.sortableLetters = this.config.getSettings('settings.sortableLetters');
+    } catch (e) {
+      this.sortableLetters = [];
+    }
 
     try {
       this.hasTitle = this.config.getSettings('HasTitle');
@@ -564,15 +575,81 @@ export class TableOfContentsAccordionComponent {
     } catch (e) {
       this.hasCover = false;
     }
+  }
 
-    const currentPage = String(window.location.href);
-    if ( this.hasCover && currentPage.includes('cover') ) {
-      this.coverSelected = true;
-    } else if ( this.hasTitle && currentPage.includes('title') ) {
-      this.titleSelected = true;
-    } else if ( this.hasIntro && currentPage.includes('introduction') ) {
-      this.introductionSelected = true;
-    }
+  registerEventListeners() {
+    this.events.subscribe('tableOfContents:loaded', (data) => {
+      this.storage.get('toc_alfabetical_' + data['collectionID']).then((toc) => {
+        if ( toc === null || data['collectionID'] !== toc['collectionID'] ) {
+          this.constructAlphabeticalTOC(data);
+        } else {
+          this.alphabeticalactiveMenuTree = toc;
+        }
+      });
+      this.storage.get('toc_chronological_' + data['collectionID']).then((toc) => {
+        if ( toc === null || data['collectionID'] !== toc['collectionID'] ) {
+          this.constructChronologicalTOC(data);
+        } else {
+          this.chronologicalactiveMenuTree = toc;
+        }
+      });
+    });
+
+    this.events.subscribe(SideMenuRedirectEvent, (data: SideMenuRedirectEventData) => {
+      // console.log('toc: updating selected option');
+      this.updateSelectedOption(data);
+    });
+
+    this.events.subscribe('SelectedItemInMenu', (menu) => {
+      if ( this.collectionId === undefined || this.collectionId === null ) {
+        this.collectionId = menu.menuID;
+      }
+      // console.log('selectedItemInMenu', menu);
+      // console.log('this.currentOption', this.currentOption);
+      if (this.collectionId !== menu.menuID && this.currentOption) {
+        this.currentOption.selected = false;
+        this.currentOption = null;
+      } else {
+        // console.log('event: SelectedItemInMenu; this.collectionId', this.collectionId);
+        if (menu && menu.component) {
+          if (menu.component === 'title-page') {
+            this.titleSelected = true;
+            this.introductionSelected = false;
+            this.coverSelected = false;
+          } else if (menu.component === 'introduction') {
+            this.titleSelected = false;
+            this.introductionSelected = true;
+            this.coverSelected = false;
+          } else if (menu.component === 'cover-page') {
+            this.titleSelected = false;
+            this.introductionSelected = false;
+            this.coverSelected = true;
+          }
+        }
+      }
+      this.cdRef.detectChanges();
+    });
+
+    this.events.subscribe('selectOneItem', (itemId) => {
+      if (this.currentOption) {
+        this.currentOption.selected = false;
+      }
+
+      this.coverSelected = false;
+      this.titleSelected = false;
+      this.introductionSelected = false;
+      if (this.alphabethicOrderActive) {
+        this.unSelectAllItems(this.alphabeticalactiveMenuTree);
+        this.selectOneItem(itemId, this.alphabeticalactiveMenuTree);
+      } else if (this.chronologicalOrderActive) {
+        this.unSelectAllItems(this.chronologicalactiveMenuTree);
+        this.selectOneItem(itemId, this.chronologicalactiveMenuTree);
+      } else {
+        this.unSelectAllItems(this.collapsableItems);
+        this.selectOneItem(itemId, this.collapsableItems);
+      }
+      this.cdRef.detectChanges();
+    });
 
     this.events.subscribe('tableOfContents:findMarkdownTocItem', (data) => {
       if (data && data.markdownID) {
@@ -587,7 +664,7 @@ export class TableOfContentsAccordionComponent {
           });
         }
 
-        language = this.config.getSettings('i18n.locale');
+        let language = this.config.getSettings('i18n.locale');
         this.languageService.getLanguage().subscribe((lang: string) => {
           language = lang;
         });
@@ -601,30 +678,9 @@ export class TableOfContentsAccordionComponent {
         }
       }
     });
-    this.cdRef.detectChanges();
-    this.unSelectSelectedTocItemEventListener();
-  }
 
-  setConfigs() {
-    try {
-      this.searchTocItemInAccordionByTitle = this.config.getSettings('SearchTocItemInAccordionByTitle');
-    } catch (e) {
-      console.log(e);
-    }
-
-    let playManTraditionPageInMusicAccordion = false;
-
-    try {
-      playManTraditionPageInMusicAccordion = this.config.getSettings('MusicAccordionShow.PlaymanTraditionPage');
-    } catch (e) {
-      playManTraditionPageInMusicAccordion = false;
-    }
-
-    this.playmanTraditionPageInMusicAccordion = playManTraditionPageInMusicAccordion;
-  }
-
-  unSelectSelectedTocItemEventListener() {
     this.events.subscribe('tableOfContents:unSelectSelectedTocItem', (data) => {
+      // console.log('subscribe to tableOfContents:unSelectSelectedTocItem activated', data);
       if (!data) {
         return;
       }
@@ -643,6 +699,7 @@ export class TableOfContentsAccordionComponent {
       if (tocItem.parent) {
         tocItem.important = true;
         tocItem.parent.expanded = true;
+        tocItem.parent.collapsed = false;
 
         for (const child of tocItem.parent.subOptions) {
           if (child.subOptions && child.subOptions.length && !child.important) {
@@ -653,8 +710,13 @@ export class TableOfContentsAccordionComponent {
           }
         }
         tocItem.parent.important = true;
-        tocItem.parent.selected = true;
+        tocItem.parent.selected = false;
         this.openTocItemParentAccordions(tocItem.parent);
+      } else {
+        tocItem.expanded = true;
+        tocItem.collapsed = false;
+        tocItem.important = true;
+
       }
     } catch (e) {console.log(e)}
   }
@@ -663,6 +725,7 @@ export class TableOfContentsAccordionComponent {
     try {
       if (tocItem.parent) {
         tocItem.parent.expanded = true;
+        tocItem.parent.collapsed = false;
         this.cdRef.detectChanges();
         this.openMarkdownTocItemParentAccordions(tocItem.parent);
       }
@@ -706,17 +769,18 @@ export class TableOfContentsAccordionComponent {
 
   findTocByPubOnly(list, publicationID) {
     for (const item of list) {
-      if (item.subOptions && item.subOptions.length) {
-        this.findTocByPubOnly(item.subOptions, publicationID);
-      } else if ((String(item.itemId) === String(publicationID) || Number(item.publication_id) === Number(publicationID))
+      if ((String(item.itemId) === String(publicationID) || Number(item.publication_id) === Number(publicationID))
       ) {
         item.selected = true;
         this.currentOption = item;
         this.openTocItemParentAccordions(item);
         this.foundTocItem = true;
-        break;
+        return this.foundTocItem;
+      } else if (item.subOptions && item.subOptions.length) {
+        this.findTocByPubOnly(item.subOptions, publicationID);
       }
     }
+    return this.foundTocItem;
   }
 
   ngOnDestroy() {
@@ -727,22 +791,28 @@ export class TableOfContentsAccordionComponent {
     this.events.unsubscribe('tableOfContents:unSelectSelectedTocItem');
   }
 
-  // Send the selected option to the caller component
-  public select(item: InnerMenuOptionModel): void {
+    /**
+     * Send the selected option to the caller component
+     */
+    public select(item: InnerMenuOptionModel): void {
+    // console.log('selecting toc item:', item);
 
     if (this.currentOption) {
       this.currentOption.selected = false;
     }
 
-    this.currentOption = item;
     item.selected = true;
+    this.currentOption = item;
+
+    this.unSelectOptions(this.collapsableItems);
+    this.coverSelected = false;
+    this.titleSelected = false;
+    this.introductionSelected = false;
 
     this.events.publish('SelectedItemInMenu', {
       menuID: this.collectionId,
       component: 'table-of-contents-accordion-component'
     });
-
-    this.unSelectOptions(this.collapsableItems);
 
     // Try to remove META-Tags
     this.metadataService.clearHead();
@@ -751,6 +821,9 @@ export class TableOfContentsAccordionComponent {
     this.metadataService.addKeywords();
 
     if (this.isMarkdown) {
+      this.titleSelected = false;
+      this.introductionSelected = false;
+      this.coverSelected = false;
       this.selectMarkdown(item);
     } else if (item.is_gallery) {
       this.titleSelected = false;
@@ -920,58 +993,37 @@ export class TableOfContentsAccordionComponent {
       if (item.subOptions && item.subOptions.length) {
         this.unSelectOptions(item.subOptions);
       } else {
-        if (item.publication_id && item.publication_id !== this.currentOption.publication_id) {
+        if (item.publication_id && this.currentOption && item.publication_id !== this.currentOption.publication_id) {
           item.selected = false;
         }
       }
     }
   }
 
-  selectOneItem(itemId, list?, parent?) {
-    if ( list ) {
-      list.forEach(option => {
-        if (option.text === itemId) {
-          option.selected = true;
-          parent['expanded'] = true;
-          parent['collapsed'] = false;
-          option.parent = parent;
-        } else if (option.childrenCount) {
-          if ( option.subOptions.length > 0 ) {
-            this.selectOneItem(itemId, option.subOptions, option.subOptions);
-          } else if ( option.targetOption ) {
-            if (option.targetOption.itemId === itemId) {
-              option.selected = true;
-              parent.expanded = true;
-            } else if ( option.targetOption.children.length > 0 ) {
-              this.selectOneItem(itemId, option.targetOption.children, option.targetOption);
-            }
+  /**
+   * This function is used to find and select a toc-item when the text-changer has been used to
+   * select a text. The function repopulates this.collapsableItems with subOptions which are normally
+   * stripped for faster rendering.
+   */
+  selectOneItem(itemId, list, parent?) {
+    list.forEach(option => {
+      if (option.itemId === itemId) {
+        option.selected = true;
+        this.currentOption = option;
+        this.openTocItemParentAccordions(option);
+      } else if (option.childrenCount) {
+        if (option.subOptions.length) {
+          this.selectOneItem(itemId, option.subOptions, option.subOptions);
+        } else if (!option.subOptions.length) {
+          if (option.children_id) {
+            option.subOptions = childrenToc[option.children_id];
+          } else if (option.search_children_id) {
+            option.subOptions = searchChildrenToc[option.search_children_id];
           }
+          this.selectOneItem(itemId, option.subOptions, option.subOptions);
         }
-      });
-    } else {
-      this.collapsableItems.forEach(option => {
-        if (option.text === itemId) {
-          option.selected = true;
-        } else if (option.childrenCount) {
-          if ( option.subOptions.length > 0 ) {
-            this.selectOneItem(itemId, option.subOptions, option.subOptions);
-          } else if ( option.targetOption ) {
-            if (option.targetOption.itemId === itemId) {
-              option.selected = true;
-            } else if ( option.targetOption.children.length > 0 ) {
-              this.selectOneItem(itemId, option.targetOption.children, option.targetOption);
-            }
-          }
-        }
-      });
-    }
-
-    /*for (const item of this.collapsableItems) {
-      if ( item.itemId !== undefined && item.itemId === itemId ) {
-        item.selected = true;
-        return true;
       }
-     }*/
+    });
   }
 
   unSelectAllItems(list) {
@@ -985,12 +1037,13 @@ export class TableOfContentsAccordionComponent {
   }
 
   exit() {
-    this.events.publish('exitActiveCollection');
-    const nav = this.app.getActiveNavs();
-    nav[0].goToRoot({animate: false});
     this.alphabethicOrderActive = false;
     this.chronologicalOrderActive = false;
     this.thematicOrderActive = false;
+    this.events.publish('exitActiveCollection');
+    const params = {};
+    const nav = this.app.getActiveNavs();
+    nav[0].setRoot('HomePage', params, { animate: false });
   }
 
   /**
@@ -998,7 +1051,6 @@ export class TableOfContentsAccordionComponent {
    * Toggle the sub options of the selected item.
    */
   public toggleItemOptions(targetOption: InnerMenuOptionModel): void {
-
     if (!targetOption) { return; }
 
     // Fetch suboptions if item doesn't have them already
@@ -1009,20 +1061,47 @@ export class TableOfContentsAccordionComponent {
         targetOption.subOptions = searchChildrenToc[targetOption.search_children_id];
       }
     }
-
     if ( targetOption.collapsed === undefined || String(targetOption.collapsed) === '' ) {
       // collapsed is inverted expanded
       targetOption.collapsed = targetOption.expanded;
-      targetOption.expanded = !targetOption.expanded;
+      targetOption.expanded = !targetOption.collapsed;
     } else {
       // Toggle the selected option
       targetOption.expanded = targetOption.collapsed;
       targetOption.collapsed = !targetOption.expanded;
     }
-
+    // console.log('targetOption.itemId', targetOption.itemId);
     if ( targetOption.itemId !== undefined ) {
       this.select(targetOption);
     }
+    // console.log('toggleItemOptions, targetOption:', targetOption);
+  }
+
+  // Recursive function for finding selected markdown page in toc, marking it selected and expanding all collapsible parents
+  private searchInnerMenuForSelectedMarkdownOption(innerMenuOption: InnerMenuOptionModel, parentInnerMenuOption?: InnerMenuOptionModel) {
+    if (this.currentOption && this.currentOption.markdownID && innerMenuOption && innerMenuOption.markdownID
+      && this.currentOption.markdownID === innerMenuOption.markdownID) {
+        innerMenuOption.selected = true;
+        this.selectedOption = innerMenuOption;
+        this.currentOption = innerMenuOption;
+        if (parentInnerMenuOption) {
+          parentInnerMenuOption.collapsed = false;
+          parentInnerMenuOption.expanded = true;
+          innerMenuOption.parent = parentInnerMenuOption;
+          let parentOption = parentInnerMenuOption;
+          while (parentOption.parent) {
+            parentOption.parent.collapsed = false;
+            parentOption.parent.expanded = true;
+            parentOption = parentOption.parent;
+          }
+        }
+    }
+    if (innerMenuOption.childrenCount) {
+      innerMenuOption.subOptions.forEach(subItem => {
+        subItem = this.searchInnerMenuForSelectedMarkdownOption(subItem, innerMenuOption);
+      });
+    }
+    return innerMenuOption;
   }
 
   // Reset the entire menu
@@ -1039,6 +1118,7 @@ export class TableOfContentsAccordionComponent {
             // Expand the parent if any of
             // its childs is selected
             subItem.parent.expanded = true;
+            subItem.parent.collapsed = false;
           }
         });
       }
@@ -1065,7 +1145,10 @@ export class TableOfContentsAccordionComponent {
 
   // Method that set the selected option and its parent
   public setSelectedOption(option: InnerMenuOptionModel) {
-    if (!option.targetOption.component) { return; }
+    if (!option.targetOption.component) {
+      console.log('Cannot set selected option');
+      return;
+    }
 
     // Clean the current selected option if any
     if (this.selectedOption) {

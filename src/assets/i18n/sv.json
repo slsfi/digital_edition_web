@@ -133,7 +133,8 @@
         "Showall": "Visa alla"
       },
       "ShowAll": "Visa alla",
-      "ShowSearchResults": "Förekomster"
+      "ShowSearchResults": "Förekomster",
+      "AddColumn": "Ny kolumn"
   },
   "About": {
       "Title": "Om",
@@ -186,7 +187,8 @@
         "Thematic": "Standard",
         "Chronological": "Kronologisk",
         "Alphabetical": "Alfabetisk"
-      }
+      },
+      "EPUBS": "Epub"
   },
   "GalleryPages": {
       "0": "Finland framställdt i teckningar",
@@ -259,15 +261,19 @@
       "journal": "Journal",
       "isbn": "ISBN",
       "published_year": "Utgivningsår",
-      "authors": "Författare"
+      "authors": "Författare",
+      "workOccurrencesDisabled": "Förekomster för verk är inte tillgängliga."
   },
   "ElasticSearch": {
+    "PageTitle": "Sök",
     "NoHits": "Din sökning matchade inga dokument",
-    "Found": "Hittades",
+    "Found": "Sökträffar:",
     "SearchField": "Lägg till sökfält",
     "From": "Från",
     "To": "Till",
-    "Search": "Sök",
+    "Search": "Söktext",
+    "ANDSearch": "söktext",
+    "AND": "och",
     "Years": "År",
     "ShowMore": "Visa mera",
     "ShowLess": "Visa mindre",
@@ -276,7 +282,10 @@
     "OldestFirst": "Äldst först",
     "NewestFirst": "Nyast först",
     "WordCount": "Antal träffar (estimat)",
-    "NoWordHits": "inga träffar"
+    "NoWordHits": "inga träffar",
+    "NoFacetOptions": "Inga sökord",
+    "Suggestions": "Förslag på filtrering",
+    "ShowMoreHits": "Visa fler sökträffar"
   },
   "Filter":{
     "personTypes": "Personkategori",
@@ -307,6 +316,8 @@
   "tag": "Ämnesord",
   "subjects": "Personer",
   "subject": "Person",
+  "uncertainPersonCorresp": "ev.",
+  "fictionalPersonCorresp": "historisk förebild",
   "collections": "Samlingar",
   "works": "Verk",
   "photos": "foton",
@@ -321,6 +332,7 @@
   "abbreviation": "Förkortning",
   "revisionNote": "Repetitionsanteckning",
   "criticalNote": "Utgivarens anmärkning",
+  "download": "Ladda ner",
   "Reference": {
       "title": "Källhänvisning",
       "refer": "Hänvisa",
@@ -328,9 +340,14 @@
       "share": "Dela",
       "mail": "E-post",
       "thisPage": "Hänvisa till denna sida",
+      "permaLink": "Beständig webbadress",
+      "topMenu": "Hänvisa till denna webbutgåva",
       "established": "Hänvisa till denna lästext",
-      "intro": "Hänvisa till denna inledning",
-      "missing": "Sidan saknar URN"
+      "intro": "Hänvisa till delutgåvans inledning",
+      "pageTitle": "Hänvisa till denna delutgåva",
+      "pageEpub": "Hänvisa till denna text",
+      "mediaCollection": "Hänvisa till denna bildsamling",
+      "missing": "Sidan saknar beständig webbadress"
   },
   "Song": {
       "Playman": "Spelman",
@@ -373,5 +390,12 @@
   "BasicActions": {
     "Ok": "Ok",
     "Cancel": "Avbryt"
+  },
+  "Epub": {
+    "DisplayOptions": "Textstorlek",
+    "Download": "Ladda ner",
+    "Search": "Sök",
+    "SearchPhrase": "Söktext",
+    "Contents": "Innehåll"
   }
 }

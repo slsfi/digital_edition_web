@@ -100,7 +100,8 @@
       "CoverPage": {
         "Title": "Cover"
       },
-      "ShowAll": "Show all"
+      "ShowAll": "Show all",
+      "AddColumn": "Add column"
   },
   "About": {
       "Title": "About the Edition",
@@ -138,7 +139,8 @@
         "Thematic": "Default",
         "Chronological": "Chronological",
         "Alphabetical": "Alphabetical"
-      }
+      },
+      "EPUBS": "Epub"
   },
   "GalleryPages": {
       "0": "Headline 1",
@@ -211,22 +213,31 @@
     "journal": "Journal",
     "isbn": "ISBN",
     "published_year": "Year of publication",
-    "authors": "Authors"
+    "authors": "Authors",
+    "workOccurrencesDisabled": "Occurrences for works are disabled."
   },
   "ElasticSearch": {
-    "NoHits": "No matches",
-    "Found": "Found",
+    "PageTitle": "Search",
+    "NoHits": "No search matches",
+    "Found": "Matches:",
     "SearchField": "Add search field",
     "From": "From",
     "To": "To",
-    "Search": "Search",
+    "Search": "Search text",
+    "ANDSearch": "search text",
+    "AND": "and",
     "Years": "Year",
     "ShowMore": "Show more",
     "ShowLess": "Show less",
     "SortBy": "Sort by",
     "Relevance": "Relevans",
     "OldestFirst": "Oldest first",
-    "NewestFirst": "Newest first"
+    "NewestFirst": "Newest first",
+    "WordCount": "Matches (estimate)",
+    "NoWordHits": "no matches",
+    "NoFacetOptions": "No options",
+    "Suggestions": "Filter suggestions",
+    "ShowMoreHits": "Show more search matches"
   },
   "MediaCollections": {
     "MediaCollections": "Faksimilsamlingar",
@@ -264,6 +275,8 @@
   "tag": "Tags",
   "subjects": "Subjects",
   "subject": "Subject",
+  "uncertainPersonCorresp": "ev.",
+  "fictionalPersonCorresp": "historisk förebild",
   "collections": "Collections",
   "works": "Works",
   "BC": "f.Kr.",
@@ -273,6 +286,7 @@
   "abbreviation": "Abbreviation",
   "revisionNote": "Revision note",
   "criticalNote": "Critical remark",
+  "download": "Download",
   "Reference": {
       "title": "Reference",
       "refer": "Refer",
@@ -280,9 +294,14 @@
       "share": "Share",
       "mail": "Mail",
       "thisPage": "Refer to this page",
+      "permaLink": "Permalink",
+      "topMenu": "Refer to this digital edition",
       "established": "Refer to this text",
-      "intro": "Refer to this introduction",
-      "missing": "This page does not have a URN"
+      "intro": "Refer to the introduction of this edition",
+      "pageTitle": "Refer to this edition",
+      "pageEpub": "Refer to this text",
+      "mediaCollection": "Refer to this media collection",
+      "missing": "This page does not have a persistent identifier"
   },
   "established": "Readtext",
   "comments": "Commentary",
@@ -302,5 +321,12 @@
   "BasicActions": {
     "Ok": "Ok",
     "Cancel": "Cancel"
+  },
+  "Epub": {
+    "DisplayOptions": "Text size",
+    "Download": "Download",
+    "Search": "Search",
+    "SearchPhrase": "Search phrase",
+    "Contents": "Contents"
   }
 }

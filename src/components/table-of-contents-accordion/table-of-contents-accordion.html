@@ -1,11 +1,16 @@
+<!-- Collection title at top -->
 <ion-item *ngIf="showBackButton" class="collection-name-top" no-lines>
     <ion-label>{{ ('TOC-translation.' + collectionName | translate) !== 'TOC-translation.' + collectionName  ?  ('TOC-translation.' + collectionName | translate) : collectionName }}</ion-label>
 </ion-item>
+<!-- Back button -->
 <ion-item *ngIf="showBackButton" (click)="exit()" class="back-to-list-button collections" no-lines>
     <ion-icon name="ios-arrow-back" item-left small></ion-icon>
     <ion-label>{{ "BackButton.default" | translate }}</ion-label>
 </ion-item>
+
 <div *ngIf="open" class="{{collectionId}}">
+
+    <!-- Sort options for toc -->
     <ng-container *ngIf="sortableLetters.includes(collectionId)">
         <ion-item class="collection-filters-select">
             <ion-label>{{ "TOC.SortOptions.Sort" | translate }}</ion-label>
@@ -16,15 +21,23 @@
             </ion-select>
         </ion-item>
     </ng-container>
+
+    <!-- Cover page -->
     <ion-item *ngIf="hasCover && collectionName != 'About'" [ngClass]="coverSelected?'selected-toc-item':''">
         <p class="justLevel" (click)="openCoverPage(collectionId)">{{ "Read.CoverPage.Title" | translate }}</p>
     </ion-item>
+
+    <!-- Title page -->
     <ion-item *ngIf="hasTitle && collectionName != 'About'" [ngClass]="titleSelected?'selected-toc-item':''">
         <p class="justLevel" (click)="openTitlePage(collectionId)">{{ "Read.TitlePage.Title" | translate }}</p>
     </ion-item>
+
+    <!-- Introduction page -->
     <ion-item *ngIf="hasIntro && collectionName != 'About' && collectionId != 'mediaCollections'" [ngClass]="introductionSelected?'selected-toc-item':''">
         <p class="justLevel" (click)="openIntroduction(collectionId)">{{ "Read.Introduction.Title" | translate }}</p>
     </ion-item>
+
+    <!-- Publications, not songtypes -->
     <ion-list *ngIf="collectionId !== 'songtypes'" no-margin>
         <ng-template #recursiveList let-list>
             <ng-template ngFor let-menuItem [ngForOf]="list" let-i="index">
@@ -60,6 +73,8 @@
             <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: activeMenuTree }"></ng-container>
         </ng-container>
     </ion-list>
+
+    <!-- Songtypes -->
     <ng-container *ngIf="collectionId == 'songtypes'">
         <ng-template #recursiveList let-list>
             <ng-template ngFor let-option [ngForOf]="list" let-i="index">
@@ -90,4 +105,5 @@
             <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: collapsableItems }"></ng-container>
         </ng-container>
     </ng-container>
+
 </div>

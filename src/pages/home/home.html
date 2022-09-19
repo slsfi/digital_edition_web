@@ -1,93 +1,32 @@
-<ion-content *ngIf="appMachineName == 'topelius'">
-  <div class="banner" style="background-image: url('assets/images/frontpage-image-landscape.jpg');">
-    <div style="color: white; position: relative; float: left; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-      <h1 class="text-center banner-title">{{appName}}</h1>
-      <h3 class="text-center banner-subtitle">{{appSubtitle}}</h3>
+<ion-content [class.portrait-mode]="imageOrientationPortrait" [class.title-on-image]="titleOnImage">
+  <div class="banner" [class.image-on-right]="imageOnRight" [style.background-image]="imageUrlStyle">
+    <div *ngIf="!imageOrientationPortrait || titleOnImage" class="title-wrapper">
+      <h1 class="banner-title">{{appName}}</h1>
+      <p *ngIf="appSubtitle" role="doc-subtitle" class="banner-subtitle">{{appSubtitle}}</p>
     </div>
+    <img *ngIf="imageOrientationPortrait" [src]="imageUrl" [alt]="portraitImageAltText">
   </div>
-  <div style="text-align: center;" padding>
-      <ion-grid>
-          <ion-row>
-            <ion-col class="person-text" style="max-width: 1000px; margin-left: auto; margin-right: auto;">
-              <markdown [data]="homeContent"></markdown>
-            </ion-col>
-          </ion-row>
-      </ion-grid>
-  </div>
-</ion-content>
 
-
-<ion-content *ngIf="appMachineName != 'granqvist' && appMachineName != 'fsfd' && appMachineName != 'topelius'">
-  <div class="banner" style="background-image: url('assets/images/frontpage-image-landscape.jpg');">
-    <div style="color: white; position: relative; float: left; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-      <h1 class="text-center banner-title">{{appName}}</h1>
-      <h3 class="text-center banner-subtitle">{{appSubtitle}}</h3>
+  <div class="text-content">
+    <div *ngIf="imageOrientationPortrait" class="title-wrapper">
+      <h1 class="site-title">{{appName}}</h1>
+      <p *ngIf="appSubtitle" role="doc-subtitle" class="site-subtitle">{{appSubtitle}}</p>
     </div>
-  </div>
-  <div>
-    <ion-grid>
-      <ion-row>
-        <ion-col class="front-page-simple-search" col-lg-6 col-md-10 col-sm-12 style="max-width: 800px; margin-left: auto; margin-right: auto;">
-          <simple-search [scrollableSimpleSearch]="true"></simple-search>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
-  <div style="text-align: center;" padding>
-      <ion-grid>
-          <ion-row>
-            <ion-col class="person-text" style="max-width: 1000px; margin-left: auto; margin-right: auto;">
-              <markdown [data]="homeContent"></markdown>
-            </ion-col>
-          </ion-row>
-      </ion-grid>
-  </div>
-  <footer class="footer">
+
+    <div *ngIf="showSimpleSearch" class="front-page-simple-search">
+      <simple-search [scrollableSimpleSearch]="true"></simple-search>
+    </div>
+
+    <div class="site-presentation">
+      <markdown [data]="homeContent"></markdown>
+    </div>
+
+    <div *ngIf="showEditionList" class="front-page-edition-list">
+      <digital-editions-list class="edition_boxes" [layoutType]="'auto'"></digital-editions-list>
+    </div>
+
+    <footer *ngIf="showFooter" class="footer">
       <markdown [data]="homeFooterContent"></markdown>
-  </footer>
-</ion-content>
-
-
-<ion-content *ngIf="appMachineName == 'granqvist'">
-  <div class="banner" style="background-image: url('assets/images/frontpage-image-landscape.jpg');">
-    <div style="color: white; position: relative; float: left; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-      <h2 class="text-center banner-title">{{appName}}</h2>
-      <h3 class="text-center banner-subtitle">{{appSubtitle}}</h3>
-    </div>
+    </footer>
   </div>
-  <div style="text-align: center;" padding>
-      <ion-grid>
-          <ion-row>
-            <ion-col class="person-text" style="max-width: 1000px; margin-left: auto; margin-right: auto;">
-              <markdown [data]="homeContent"></markdown>
-            </ion-col>
-          </ion-row>
-      </ion-grid>
-  </div>
-  <digital-editions-list class="edition_boxes" [layoutType]="'auto'"></digital-editions-list>
-  <footer class="footer">
-      <markdown [data]="homeFooterContent"></markdown>
-  </footer>
-</ion-content>
-
-<ion-content *ngIf="appMachineName == 'fsfd'">
-  <div class="banner" style="background-image: url('assets/images/frontpage-image-landscape.jpg');">
-    <div style="color: white; position: relative; float: left; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-      <h2 class="text-center banner-title">{{appName}}</h2>
-      <h3 class="text-center banner-subtitle">{{appSubtitle}}</h3>
-    </div>
-  </div>
-  <div style="text-align: center;" padding>
-      <ion-grid>
-          <ion-row>
-            <ion-col class="person-text" style="max-width: 1000px; margin-left: auto; margin-right: auto;">
-              <markdown [data]="homeContent"></markdown>
-            </ion-col>
-          </ion-row>
-      </ion-grid>
-  </div>
-  <digital-editions-list class="edition_boxes" [layoutType]="'auto'"></digital-editions-list>
-  <footer class="footer">
-      <markdown [data]="homeFooterContent"></markdown>
-  </footer>
 </ion-content>

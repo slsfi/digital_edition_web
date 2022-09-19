@@ -29,6 +29,7 @@ export class FilterPage {
   shouldFilterYear = false;
   isEmpty = false;
   activeFilters: any[];
+  showLoading = false;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -84,6 +85,7 @@ export class FilterPage {
   }
 
   getFilterPersonTypes() {
+    this.showLoading = true;
     this.semanticDataService.getFilterPersonTypes().subscribe(
       filterPersonTypes => {
         this.filterPersonTypes = filterPersonTypes['aggregations']['types']['buckets'];
@@ -91,6 +93,7 @@ export class FilterPage {
           cat.selected = false;
           cat.name = cat.key;
         });
+        this.showLoading = false;
       },
       error =>  {this.errorMessage = <any>error},
       () => {
@@ -100,12 +103,14 @@ export class FilterPage {
           } else {
             console.log('filters in cache empty');
           }
+          this.showLoading = false;
         });
       }
     );
   }
 
   getFilterCategoryTypes() {
+    this.showLoading = true;
     this.semanticDataService.getFilterCategoryTypes().subscribe(
       filterCategoryTypes => {
         this.filterCategoryTypes = filterCategoryTypes['aggregations']['types']['buckets'];
@@ -113,6 +118,7 @@ export class FilterPage {
           cat.selected = false;
           cat.name = cat.key;
         });
+        this.showLoading = false;
       },
       error =>  {this.errorMessage = <any>error},
       () => {
@@ -124,6 +130,7 @@ export class FilterPage {
             } else {
               console.log('filters in cache empty');
             }
+            this.showLoading = false;
           });
         }
       }

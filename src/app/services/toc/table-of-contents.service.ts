@@ -4,14 +4,41 @@ import { Observable } from 'rxjs/Observable';
 
 import { ConfigService } from '@ngx-config/core';
 import { TableOfContentsCategory, GeneralTocItem } from '../../models/table-of-contents.model';
+import { LanguageService } from '../languages/language.service';
 
 @Injectable()
 export class TableOfContentsService {
 
   private tableOfContentsUrl = '/toc/';  // plus an id...
   private prevNextUrl = '/table-of-contents/';  // plus an id...
+  private lang = 'sv';
+  private multilingualTOC = false;
+  apiEndpoint: string;
 
-  constructor(private http: Http, private config: ConfigService) {
+  constructor(private http: Http, private config: ConfigService, private languageService: LanguageService) {
+    this.apiEndpoint = this.config.getSettings('app.apiEndpoint');
+    try {
+      const simpleApi = this.config.getSettings('app.simpleApi');
+      if (simpleApi) {
+        this.apiEndpoint = simpleApi;
+      }
+    } catch (e) {
+
+    }
+
+    try {
+      const multilingualTOC = this.config.getSettings('i18n.multilingualTOC');
+      if (multilingualTOC) {
+        this.multilingualTOC = multilingualTOC;
+
+        this.languageService.getLanguage().subscribe(lang => {
+          this.lang = lang;
+        });
+      }
+    } catch (e) {
+
+    }
+
   }
 
   getToc(): Observable<any> {
@@ -21,18 +48,32 @@ export class TableOfContentsService {
   }
 
   getTableOfContents (id: string) {
-    return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
-                           this.config.getSettings('app.machineName') +
-                           this.tableOfContentsUrl + id)
+    let url = this.apiEndpoint + '/' +
+    this.config.getSettings('app.machineName') +
+    this.tableOfContentsUrl + id;
+
+    if (this.multilingualTOC) {
+      url += '/' + this.lang;
+    } else {
+      console.log('not multilingual toc');
+    }
+
+    return this.http.get(url)
                     .map(this.extractData)
                     .catch(this.handleError);
   }
 
   async getTableOfContentsPromise (id: string): Promise<any> {
     try {
-      const response =  await this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
-                        this.config.getSettings('app.machineName') +
-                        this.tableOfContentsUrl + id)
+
+      let url = this.apiEndpoint + '/' +
+      this.config.getSettings('app.machineName') + id;
+
+      if (this.multilingualTOC) {
+        url += '/' + this.lang;
+      }
+
+      const response =  await this.http.get( url )
                         .toPromise();
       return response.json();
     } catch (e) {
@@ -45,6 +86,7 @@ export class TableOfContentsService {
   }
 
   getTableOfContentsGroup (id: string, group_id: string): Observable<GeneralTocItem[]> {
+    // @TODO add multilingual support to this as well...
     return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
                            this.config.getSettings('app.machineName') +
                            this.tableOfContentsUrl + id + '/group/' + group_id)
@@ -52,8 +94,9 @@ export class TableOfContentsService {
                     .catch(this.handleError);
   }
 
-
   getPrevNext (id: string): Observable<TableOfContentsCategory[]> {
+    // @TODO add multilingual support to this as well...
+
     const arr = id.split('_');
     const ed_id = arr[0];
     const item_id = arr[1];
@@ -64,8 +107,9 @@ export class TableOfContentsService {
                     .catch(this.handleError);
   }
 
-
   getFirst (collectionID: string): Observable<any[]> {
+        // @TODO add multilingual support to this as well...
+
         return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
                                this.config.getSettings('app.machineName') +
                                this.tableOfContentsUrl + collectionID + '/first')

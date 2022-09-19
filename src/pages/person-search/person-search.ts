@@ -16,6 +16,7 @@ import { OccurrencesPage } from '../occurrences/occurrences';
 import { TranslateService } from '@ngx-translate/core';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { MetadataService } from '../../app/services/metadata/metadata.service';
+import { MdContentService } from '../../app/services/md/md-content.service';
 
 /**
  * Generated class for the PersonSearchPage page.
@@ -51,7 +52,7 @@ export class PersonSearchPage {
   personsCopy: any[] = [];
   searchText: string;
   texts: SingleOccurrence[] = [];
-  infiniteScrollNumber = 200;
+  infiniteScrollNumber = 800;
 
   personTitle: string;
   selectedLinkID: string;
@@ -64,6 +65,8 @@ export class PersonSearchPage {
   filters: any[] = [];
 
   objectType = 'subject';
+  pageTitle: string;
+  mdContent: string;
 
   // tslint:disable-next-line:max-line-length
   alphabet: string[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Å', 'Ä', 'Ö'];
@@ -78,6 +81,7 @@ export class PersonSearchPage {
               public navParams: NavParams,
               public semanticDataService: SemanticDataService,
               protected langService: LanguageService,
+              private mdContentService: MdContentService,
               protected config: ConfigService,
               public modalCtrl: ModalController,
               private app: App,
@@ -108,6 +112,12 @@ export class PersonSearchPage {
       } catch (e) {
         this.personSearchTypes = [];
       }
+      try {
+        this.infiniteScrollNumber = this.config.getSettings('PersonSearch.InitialLoadNumber');
+      } catch (e) {
+        this.infiniteScrollNumber = 800;
+      }
+      this.getMdContent(lang + '-12-02');
     });
   }
 
@@ -117,10 +127,19 @@ export class PersonSearchPage {
 
     if ( String(this.subType).includes('subtype') ) {
       this.subType = null;
+      this.translate.get('TOC.PersonSearch').subscribe(
+        translation => {
+          this.pageTitle = translation;
+        }, error => { this.pageTitle = null; }
+      );
     }
 
     if (this.subType) {
       this.personsKey += `-${this.subType}`;
+      /**
+       * TODO: Get correct page title if subtype person search
+       */
+      this.pageTitle = null;
     }
   }
 
@@ -161,6 +180,14 @@ export class PersonSearchPage {
     this.analyticsService.doPageView('Subjects');
   }
 
+  ionViewDidLoad() {
+    this.events.subscribe('language:change', () => {
+      this.langService.getLanguage().subscribe((lang) => {
+        this.getMdContent(lang + '-12-02');
+      });
+    });
+  }
+
   ionViewWillLeave() {
     // Try to remove META-Tags
     this.metadataService.clearHead();
@@ -172,10 +199,18 @@ export class PersonSearchPage {
 
   ionViewWillEnter() {
     this.events.publish('ionViewWillEnter', this.constructor.name);
-    this.events.publish('tableOfContents:unSelectSelectedTocItem', true);
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'person-search'});
+    this.events.publish('SelectedItemInMenu', {
+      menuID: 'personSearch',
+      component: 'person-search'
+    });
     this.getParamsData();
     this.selectMusicAccordionItem();
     this.setData();
+  }
+
+  ngOnDestroy() {
+    this.events.unsubscribe('language:change');
   }
 
   sortByLetter(letter) {
@@ -183,6 +218,7 @@ export class PersonSearchPage {
     this.persons = [];
     this.cf.detectChanges();
     this.getPersons();
+    this.content.scrollToTop(400);
   }
 
   setData() {
@@ -198,7 +234,14 @@ export class PersonSearchPage {
 
   getPersons() {
     this.showLoading = true;
-    this.semanticDataService.getSubjectsElastic(this.from, this.searchText, this.filters).subscribe(
+    // Get translation for 'BC'
+    let bcTranslation = 'BC';
+    this.translate.get('BC').subscribe(
+      translation => {
+        bcTranslation = translation;
+      }, error => { }
+    );
+    this.semanticDataService.getSubjectsElastic(this.from, this.searchText, this.filters, this.infiniteScrollNumber).subscribe(
       persons => {
         const personsTmp = [];
         persons = persons.hits.hits;
@@ -210,13 +253,37 @@ export class PersonSearchPage {
           sortByName = sortByName.replace('von ', '');
           sortByName = sortByName.replace('van ', '');
           sortByName = sortByName.replace('af ', '');
+          sortByName = sortByName.replace('d’ ', '');
+          sortByName = sortByName.replace('d’', '');
+          sortByName = sortByName.replace('di ', '');
           sortByName = sortByName.trim();
-          if ( element['date_deceased'] !== null ) {
-            element['date_deceased'] = String(element['date_deceased']).replace(/^0+/, '');
+
+          // Construct possible BC indicator for year born and year deceased
+          const bcIndicatorDeceased = (String(element['date_deceased']).includes('BC')) ? ' ' + bcTranslation : '';
+          let bcIndicatorBorn = (String(element['date_born']).includes('BC')) ? ' ' + bcTranslation : '';
+          if (String(element['date_born']).includes('BC') && bcIndicatorDeceased === bcIndicatorBorn) {
+            // Born and deceased are both BC --> don't add indicator to year born
+            bcIndicatorBorn = '';
           }
-          if ( element['date_born'] !== null ) {
-            element['date_born'] = String(element['date_born']).replace(/^0+/, '');
+
+          // Get the born and deceased years without leading zeros and possible 'BC' indicators
+          const year_born_numeric = (element['date_born'] !== undefined && element['date_born'] !== null) ?
+            String(element['date_born']).split('-')[0].replace(/^0+/, '').split(' ')[0] : null;
+          const year_deceased_numeric = (element['date_deceased'] !== undefined && element['date_deceased'] !== null) ?
+            String(element['date_deceased']).split('-')[0].replace(/^0+/, '').split(' ')[0] : null;
+
+          // Construct string with year born and year deceased for output
+          element['year_born_deceased'] = '';
+          if (year_born_numeric !== null && year_deceased_numeric !== null
+          && year_born_numeric !== 'null' && year_deceased_numeric !== 'null') {
+            element['year_born_deceased'] += '(' + year_born_numeric + bcIndicatorBorn + '–'
+            + year_deceased_numeric + bcIndicatorDeceased + ')';
+          } else if (year_born_numeric !== null && year_born_numeric !== 'null') {
+            element['year_born_deceased'] += '(* ' + year_born_numeric + bcIndicatorBorn + ')';
+          } else if (year_deceased_numeric !== null && year_deceased_numeric !== 'null') {
+            element['year_born_deceased'] += '(&#8224; ' + year_deceased_numeric + bcIndicatorDeceased + ')';
           }
+
           sortBy.push(sortByName);
           element['sortBy'] = sortBy.join();
           const ltr = element['sortBy'].charAt(0);
@@ -558,12 +625,28 @@ export class PersonSearchPage {
   }
 
   showAll() {
+    /*
     this.persons = [];
     this.allData = [];
     this.count = 0;
     this.allData = this.cacheData;
     this.loadMorePersons();
+    */
+    this.count = 0;
+    this.from = 0;
+    this.searchText = '';
+    this.filters = [];
+    this.persons = [];
+    this.getPersons();
     this.content.scrollToTop(400);
+  }
+
+  getMdContent(fileID: string) {
+    this.mdContentService.getMdContent(fileID)
+      .subscribe(
+        text => { this.mdContent = text.content; },
+        error => { this.mdContent = ''; }
+      );
   }
 
 }

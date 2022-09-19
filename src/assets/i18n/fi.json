@@ -134,7 +134,8 @@
         "Title": "Kansi"
       },
       "ShowAll": "Näytä kaikki",
-      "ShowSearchResults": "Esiintymät"
+      "ShowSearchResults": "Esiintymät",
+      "AddColumn": "Lisää sarake"
   },
   "About": {
       "Title": "Topeliuksesta ja editiosta",
@@ -187,7 +188,8 @@
         "Thematic": "Oletus",
         "Chronological": "Kronologinen",
         "Alphabetical": "Aakkosellinen"
-      }
+      },
+      "EPUBS": "Epub"
   },
   "GalleryPages": {
       "0": "Finland framställdt i teckningar",
@@ -266,22 +268,31 @@
       "journal": "Journal",
       "isbn": "ISBN",
       "published_year": "Julkaisuvuosi",
-      "authors": "Kirjoittaja"
+      "authors": "Kirjoittaja",
+      "workOccurrencesDisabled": "Teosten esiintymät eivät ole saatavilla."
   },
   "ElasticSearch": {
+    "PageTitle": "Haku",
     "NoHits": "Haku ei vastannut yhtään asiakirjaa",
     "Found": "Löydettiin",
     "SearchField": "Lisää hakukenttä",
     "From": "Vuodesta",
     "To": "Vuoteen",
-    "Search": "Hae",
+    "Search": "Hakusana",
+    "ANDSearch": "hakusana",
+    "AND": "ja",
     "Years": "Vuodet",
     "ShowMore": "Näytä enemmän",
     "ShowLess": "Näytä vähemmän",
     "SortBy": "Lajittele",
     "Relevance": "Relevanssi",
     "OldestFirst": "Vanhimmat ensin",
-    "NewestFirst": "Uusimmat ensin"
+    "NewestFirst": "Uusimmat ensin",
+    "WordCount": "Osumia (arvio)",
+    "NoWordHits": "ei osumia",
+    "NoFacetOptions": "Ei hakusanoja",
+    "Suggestions": "Suodatusehdotuksia",
+    "ShowMoreHits": "Näytä lisää hakutuloksia"
   },
   "Type": "Tekstityyppi",
   "Genre": "Tekstilaji",
@@ -306,6 +317,8 @@
   "tag": "Aihesana",
   "subjects": "Henkilöt",
   "subject": "Henkilö",
+  "uncertainPersonCorresp": "ev.",
+  "fictionalPersonCorresp": "historisk förebild",
   "collections": "Samlingar",
   "works": "Verk",
   "photos": "foton",
@@ -320,6 +333,7 @@
   "abbreviation": "Lyhenne",
   "revisionNote": "Kertausmuistiinpano",
   "criticalNote": "Toimittajan huomautus",
+  "download": "Lataa",
   "Reference": {
       "title": "Viittausohje",
       "refer": "Viittaa",
@@ -327,9 +341,14 @@
       "share": "Jaa",
       "mail": "Sähköposti",
       "thisPage": "Lähdevittaus",
+      "permaLink": "Pysyvä osoite",
+      "topMenu": "Lähdeviittaus tähän digitaaliseen editioon",
       "established": "Lähdevittaus tähän lukutekstiin",
       "intro": "Lähdevittaus tähän johdantoon",
-      "missing": "Sivulta puuttuu URN"
+      "pageTitle": "Lähdeviittaus editioon",
+      "pageEpub": "Lähdeviittaus tähän tekstiin",
+      "mediaCollection": "Lähdeviittaus tähän kuvakokoelmaan",
+      "missing": "Sivulla ei ole pysyvää osoitetta"
   },
   "Song": {
       "Playman": "Spelman",
@@ -372,5 +391,12 @@
   "BasicActions": {
     "Ok": "Ok",
     "Cancel": "Peruuta"
+  },
+  "Epub": {
+    "DisplayOptions": "Tekstikoko",
+    "Download": "Lataa",
+    "Search": "Haku",
+    "SearchPhrase": "Hakulause",
+    "Contents": "Sisältö"
   }
 }

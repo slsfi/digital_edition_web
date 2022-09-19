@@ -22,6 +22,7 @@ import { GenericSettingsService } from '../../app/services/settings/generic-sett
 export class TopMenuComponent {
   @Input() splitPaneMobile?: boolean;
   @Input() splitPanePossible?: boolean;
+  @Input() splitPaneOpen?: boolean;
   @Output() hamburgerMenuClick = new EventEmitter();
 
   public title: string;
@@ -33,6 +34,9 @@ export class TopMenuComponent {
   public showTopMusicButton: boolean;
   public showColAmount: string;
   public showTopElasticButton: boolean;
+  public showTopSimpleSearchButton: boolean;
+  public showTopContentButton: boolean;
+  public showTopAboutButton: boolean;
 
   constructor(
     private events: Events,
@@ -57,15 +61,37 @@ export class TopMenuComponent {
       this.showViewToggle = true;
     }
     try {
-      this.showTopURNButton = this.config.getSettings('app.showTopURNButton');
+      this.showTopURNButton = this.config.getSettings('showURNButton.topMenu');
     } catch ( e ) {
-      this.showTopURNButton = true;
+      try {
+        this.showTopURNButton = this.config.getSettings('app.showTopURNButton');
+      } catch ( e ) {
+        this.showTopURNButton = true;
+      }
     }
 
     try {
       this.showTopElasticButton = this.config.getSettings('app.showTopElasticButton');
     } catch ( e ) {
       this.showTopElasticButton = true;
+    }
+
+    try {
+      this.showTopSimpleSearchButton = this.config.getSettings('app.showTopSimpleSearchButton');
+    } catch ( e ) {
+      this.showTopSimpleSearchButton = true;
+    }
+
+    try {
+      this.showTopContentButton = this.config.getSettings('app.showTopContentButton');
+    } catch ( e ) {
+      this.showTopContentButton = true;
+    }
+
+    try {
+      this.showTopAboutButton = this.config.getSettings('app.showTopAboutButton');
+    } catch ( e ) {
+      this.showTopAboutButton = true;
     }
 
     try {
@@ -152,7 +178,7 @@ export class TopMenuComponent {
   }
   private showReference(event) {
     // Get URL of Page and then the URI
-    const modal = this.modalController.create(ReferenceDataModalPage, {id: document.URL, type: 'reference'});
+    const modal = this.modalController.create(ReferenceDataModalPage, {id: document.URL, type: 'reference', origin: 'top-menu'});
     modal.present();
     modal.onDidDismiss(data => {
       console.log('dismissed', data);

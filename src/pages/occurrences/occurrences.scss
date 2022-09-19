@@ -3,6 +3,12 @@ page-occurrences {
         overflow: auto;
     }
 
+    @media(max-width: 480px) {
+        ion-content.content[padding] > .scroll-content {
+            padding: 0;
+        }
+    }
+
     ion-title {
         margin-left: 12px;
     }
@@ -22,7 +28,7 @@ page-occurrences {
 
     .col {
         white-space: normal !important;
-        padding: 0 0 4px 0;
+        padding: 2px 0 2px 0;
     }
 
     .custom-card {
@@ -44,14 +50,15 @@ page-occurrences {
 
     .info h3 {
         font-size: 2rem;
+        line-height: 1.05;
     }
 
     .info {
         .occupation {
-            font-size: 1.375rem;
+            font-size: 1.3125rem;
         }
         .title {
-            font-size: 1.375rem;
+            font-size: 1.3125rem;
         }
     }
 
@@ -131,6 +138,7 @@ page-occurrences {
     }
     .collection_name_label {
       background-color: $background-color;
+      cursor: pointer;
     }
     .collection_name_label ion-label {
       white-space: normal;
@@ -150,6 +158,12 @@ page-occurrences {
       color: $text-color;
     }
     .list_of_occurrences_item ion-label.label {
-        padding-left: 1rem;
+        padding: 0.5rem 0 0.5rem 1rem;
+    }
+    ion-item-divider.occurrences_title {
+        border-top: 1px solid #dedede;
+    }
+    ion-item + ion-item-divider.occurrences_title {
+        border-top: 0;
     }
   }

@@ -1,46 +1,12 @@
-<!--
-  Generated template for the PersonSearchPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<ion-header>
-    <ion-toolbar color="secondary" class="secondary"  *ngIf="userSettingsService.isDesktop()">
-     <ion-title>
-        <div class="page-title"></div>
-        <div class="page-subtitle"></div>
-      </ion-title>
-      <ion-buttons end>
-          <ion-grid>
-              <ion-row>
-                <ion-col>
-                  <div name="download" (click)="download()" id="downloadPerson">
-                    <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
-                    <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-      </ion-buttons>
-    </ion-toolbar>
-</ion-header>
-
-
 <ion-content padding>
-    <ion-fab bottom left *ngIf="userSettingsService.isMobile()">
-      <ion-grid>
-          <ion-row>
-            <ion-col>
-                <button ion-fab name="download" (click)="download()" id="downloadPerson">
-                    <ion-icon class="settings-icon" *ngIf="!cacheItem" name="ios-cloud-download-outline"></ion-icon>
-                    <ion-icon class="settings-icon" *ngIf="cacheItem" name="ios-cloud-done"></ion-icon>
-                </button>
-            </ion-col>
-          </ion-row>
-      </ion-grid>
-    </ion-fab>
   <ion-grid>
-      <ion-row>
+      <ion-row class="page-info-row">
+        <h1 *ngIf="pageTitle" class="page-title">{{ pageTitle }}</h1>
+        <div class="info markdown" *ngIf="mdContent">
+          <markdown [data]="mdContent"></markdown>
+        </div>
+      </ion-row>
+      <ion-row class="search-area-row">
           <ion-col col-10>
             <ion-row *ngIf="('SearchApp.infotext' | translate) !== 'SearchApp.infotext' && ('SearchApp.infotext' | translate).length>0">
                 <ion-col col-12>
@@ -56,10 +22,7 @@
                 </ion-col>
             </ion-row>
             <ion-row class="loadingRow" *ngIf="showLoading">
-                <ion-col col-6></ion-col>
-                <ion-col col-6>
-                    <ion-spinner class="loading" name="dots"></ion-spinner>
-                </ion-col>
+              <ion-spinner class="loading" name="crescent"></ion-spinner>
             </ion-row>
 
             <ion-list>
@@ -68,7 +31,7 @@
                     <ion-item-divider color="light">{{p.firstOfItsKind.toLocaleUpperCase()}}</ion-item-divider>
                   </ion-item>
                   <ion-item *ngIf="p?.sortBy.length > 1" (click)="openPerson(p)">
-                    <p>{{p.full_name}} <span *ngIf="p.date_born || p.date_deceased">({{(p.date_born)?p.date_born.split('-')[0]:p.date_born}}–{{(p.date_deceased)?p.date_deceased.split('-')[0]:p.date_deceased}}{{(p.date_born !== null && p.date_born.includes('BC'))?(' '+('BC'|translate)):''}})</span></p>
+                    <p>{{p.full_name}} <span *ngIf="p.date_born || p.date_deceased" [innerHTML]="p.year_born_deceased"></span></p>
                   </ion-item>
                 </div>
             </ion-list>
@@ -78,14 +41,10 @@
               </ion-infinite-scroll>
           </ion-col>
           <ion-col col-2 class="alphabet">
-            <ion-scroll scrollY="true">
-              <button ion-fab mini (click)="showAll()"><ion-icon name="refresh"></ion-icon></button>
-              <button ion-fab mini *ngFor="let letter of alphabet" class="letter" (click)="sortByLetter(letter)">{{letter}}</button>
-              <button ion-fab mini (click)="showAll()"><ion-icon name="refresh"></ion-icon></button>
-            </ion-scroll>
+            <button ion-fab mini (click)="showAll()"><ion-icon name="refresh"></ion-icon></button>
+            <button ion-fab mini *ngFor="let letter of alphabet" class="letter" (click)="sortByLetter(letter)">{{letter}}</button>
+            <button ion-fab mini (click)="showAll()"><ion-icon name="refresh"></ion-icon></button>
           </ion-col>
-        </ion-row>
+      </ion-row>
   </ion-grid>
-
-
 </ion-content>

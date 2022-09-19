@@ -8,6 +8,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 import { ComponentsModule } from '../../components/components.module';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
+import { MarkdownModule } from 'angular2-markdown';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -28,7 +29,8 @@ export function createTranslateLoader(http: HttpClient) {
           deps: [HttpClient]
         }
       }),
-      ComponentsModule
+      ComponentsModule,
+      MarkdownModule
   ],
   providers: [
     SemanticDataService

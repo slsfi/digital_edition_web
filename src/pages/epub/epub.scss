@@ -1,0 +1,11 @@
+page-epub > ion-content > .scroll-content {
+  display: flex;
+  align-items: center;
+  padding: 56px 6px 6px 6px !important; /* The 50px height of the epub navigation header has to be added to top padding. */
+  overflow-y: hidden;
+}
+
+page-epub > ion-content > .scroll-content {
+  align-items: stretch;
+  justify-content: center;
+}

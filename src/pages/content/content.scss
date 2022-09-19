@@ -1,64 +1,107 @@
 page-content {
+    font-size: 1.125rem;
+
+    /* This hides the vertical scrollbar on the right edge of the viewport area when it is not necessary to show it. Observe that there are two elements with class scroll-content, which is why this needs to be this specific. */
+    ion-content > .scroll-content {
+        overflow: auto;
+    }
+
     .tooltiptrigger{
         display:inline-block;
         width:20px;
     }
-    .md_content{
-        max-width: 780px;
-        margin-left: 1.8rem;
+
+    .md_content {
+        width: 100%;
+        max-width: 800px;
+        padding: 1rem 1rem 4rem 1rem;
     }
 
     list-of-songs{
-        margin-left: 1.8rem;
+        margin-left: 1rem;
         display: block;
     }
+
+    @media(max-width: 800px) {
+        .md_content {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+        
+        list-of-songs{
+            margin-left: 0.5rem;
+        }
+    }
+    @media(max-width: 600px) {
+        .md_content {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        
+        list-of-songs{
+            margin-left: 0;
+        }
+    }
     
-    h1, h2, h3, h4{
-        margin-top: 0;
+    h1, h2, h3, h4 {
         margin-bottom: 0.5rem;
     }
 
-    h1{
-        margin-top: 2rem !important;
-        font-size: 1.8rem;
+    h1 {
+        font-size: 1.625rem;
+        margin-top: 2rem;
         margin-bottom: 1.5rem;
     }
 
-    h2{
-        font-size: 1.4rem;
+    .md_content h1:first-child {
+        margin-top: 0;
+    }
+
+    h2 {
+        font-size: 1.4375rem;
         margin-top: 1.8rem;
     }
     
-    h3{
-        font-size: 1.2rem;
+    h3 {
+        font-size: 1.25rem;
         margin-top: 1.5rem;
     }
 
-    h2+h3{
+    h2+h3 {
         margin-top: 1rem;
     }
 
-    p{
+    h4 {
+        font-size: 1.125rem;
+        font-weight: normal;
+        font-style: italic;
+        margin-top: 1.25rem;
+    }
+
+    p {
         line-height: 1.6rem;
         margin-bottom: 0.8rem;
         margin-top: 0.8rem;
+    }
+
+    img[src$="#align-left"] {
+        float: left;
+        margin: 0 1rem 1rem 0;
+    }
+
+    img[src$="#align-right"] {
+        float: right;
+        margin: 0 0 1rem 1rem;
+    }
+    img[src$="#align-center"] {
+        display: block;
+        margin: 1rem auto;
     }
 
     .content-md hr{
         background-color: rgba(0,0,0,0.1);
     }
 
-    ion-content{
-        padding-left: 0;
-    }
-    .scroll-content{
-        padding-left: 0 !important;
-    }
-
-    /* This hides the vertical scrollbar on the right edge of the viewport area when it is not necessary to show it. Observe that there are two elements with class scroll-content, which is why this needs to be this specific. */
-    ion-content > .scroll-content {
-        overflow: auto;
-    }
 }
 
 

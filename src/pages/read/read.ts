@@ -73,6 +73,9 @@ export class ReadPage /*implements OnDestroy*/ {
   textType: TextType = TextType.ReadText;
 
   id: string;
+  multilingualEST: false;
+  estLanguages = [];
+  estLang: 'none';
   establishedText: EstablishedText;
   errorMessage: string;
   appName: string;
@@ -101,8 +104,10 @@ export class ReadPage /*implements OnDestroy*/ {
   nochapterPos: string;
   userIsTouching: Boolean = false;
   collectionAndPublicationLegacyId: string;
-
-  maxSingleWindowWidth: Number;
+  illustrationsViewShown: Boolean = false;
+  simpleWorkMetadata: Boolean;
+  showURNButton: Boolean;
+  backdropWidth: number;
 
   prevItem: any;
   nextItem: any;
@@ -136,14 +141,6 @@ export class ReadPage /*implements OnDestroy*/ {
   songDatafile = '';
 
   views = [];
-  viewsConfig = {
-    slideMaxWidth: 600,
-    slideMinWidth: 450,
-    slidesPerView: 1.2,
-    spaceBetween: 20,
-    centeredSlides: false,
-    pager: false
-  };
 
   show = 'established'; // Mobile tabs
 
@@ -235,152 +232,194 @@ export class ReadPage /*implements OnDestroy*/ {
     };
     this.intervalTimerId = 0;
 
+    this.backdropWidth = 0;
+
     try {
       this.appUsesAccordionToc = this.config.getSettings('AccordionTOC');
     } catch (e) {
       console.log(e);
     }
 
-    if (this.params.get('collectionID') !== 'songtypes') {
-      this.setCollectionTitle();
+    try {
+      const i18n = this.config.getSettings('i18n');
+      console.log('i18n: ', i18n);
+
+      if (i18n.multilingualEST !== undefined) {
+        this.multilingualEST = i18n.multilingualEST;
+      } else {
+        this.multilingualEST = false;
+      }
+      if (i18n.estLanguages !== undefined) {
+        this.estLanguages = i18n.estLanguages;
+        this.estLang = i18n.estLanguages[0];
+      } else {
+        this.estLanguages = [];
+        this.estLang = 'none';
+      }
+    } catch (e) {
+      this.multilingualEST = false;
+      this.estLanguages = [];
+      this.estLang = 'none';
+      console.error(e);
     }
 
-
-    if (this.userSettingsService.isMobile()) {
-      // this.navBar.backButtonClick
+    try {
+      this.showURNButton = this.config.getSettings('showURNButton.pageRead');
+    } catch (e) {
+      this.showURNButton = true;
     }
-
-    let link = null;
-
-    this.maxSingleWindowWidth = 95;
-
-    this.matches = [];
-    this.availableViewModes = [];
 
     // Hide some or all of the display toggles (variations, facsimiles, established etc.)
     this.displayToggles = this.config.getSettings('settings.displayTypesToggles');
-    let foundTrueCount = 0;
-    for (const toggle in this.displayToggles) {
-      if (this.displayToggles[toggle] && toggle !== 'introduction') {
-        this.availableViewModes.push(toggle);
-        foundTrueCount++;
-      }
-    }
-    if (foundTrueCount <= 1) {
-      this.displayToggle = false;
-    }
 
     try {
       this.toolTipsSettings = this.config.getSettings('settings.toolTips');
     } catch (e) {
       this.toolTipsSettings = undefined;
-      console.log('Undefined toolTipsSettings');
-      console.error(e);
-    }
-
-    if (this.params.get('tocItem') !== undefined && this.params.get('tocItem') !== null) {
-      // @TODO: fix this. it is unmaintainable
-      this.id = this.params.get('tocItem').itemId;
-      const collectionIsUndefined = (this.params.get('tocItem').collection_id !== undefined);
-      const linkIdIsNotUndefined = (this.params.get('tocItem').link_id !== undefined);
-      const collectionID = this.params.get('tocItem').collection_id;
-
-      link = (collectionIsUndefined ? collectionID : this.params.get('tocItem').toc_ed_id) + '_'
-        + (this.params.get('tocItem').link_id || this.params.get('tocItem').toc_linkID);
-
-    } else if (this.params.get('collectionID') !== undefined && this.params.get('id') === 'introduction') {
-
-    } else if (this.params.get('collectionID') !== undefined && this.params.get('id') !== undefined) {
-      this.id = this.params.get('id');
-      link = this.params.get('collectionID') + '_' + this.id;
     }
 
     this.show = this.config.getSettings('defaults.ReadModeView');
+  }
 
-    this.setDefaultViews();
-
-    const title = global.getSubtitle();
-    this.tocRoot = this.params.get('root');
-
-    this.establishedText = new EstablishedText({ link: link, id: this.id, title: title, text: '' });
-
-    if (this.params.get('legacyId') !== undefined) {
-      this.legacyId = this.params.get('legacyId');
-      this.establishedText.link = this.params.get('legacyId');
-    } else {
-
-      this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID');
-      this.establishedText.link = this.params.get('collectionID') + '_' + this.params.get('publicationID');
-
-      if (this.params.get('chapterID') !== undefined && !this.params.get('chapterID').startsWith('nochapter') &&
-       this.params.get('chapterID') !== ':chapterID' && this.params.get('chapterID') !== 'chapterID') {
-        this.establishedText.link += '_' + this.params.get('chapterID');
+  ionViewDidLoad() {
+    this.langService.getLanguage().subscribe(lang => {
+      if (this.params.get('collectionID') !== 'songtypes') {
+        this.setCollectionTitle();
       }
 
-      if (this.params.get('chapterID') !== undefined && this.params.get('chapterID').startsWith('nochapter;')) {
-        this.nochapterPos = this.params.get('chapterID').replace('nochapter;', '');
-      } else {
-        this.nochapterPos = null;
+
+      if (this.userSettingsService.isMobile()) {
+        // this.navBar.backButtonClick
       }
 
-      this.viewCtrl.setBackButtonText('');
+      let link = null;
 
-      if (!this.params.get('selectedItemInAccordion')) {
-        const searchTocItem = true;
-        this.getTocRoot(this.params.get('collectionID'), searchTocItem);
-      }
-
-      if (this.params.get('collectionID') !== 'songtypes' && !this.appUsesAccordionToc) {
-        this.events.publish('pageLoaded:single-edition', { 'title': title });
-      }
-    }
-    console.log('Established text link: ' + this.establishedText.link);
-
-    if (this.params.get('matches') !== undefined) {
-      this.matches = this.params.get('matches');
-    }
-
-    this.setTocCache();
-
-    this.updateTexts()
-    translate.onLangChange.subscribe((event: LangChangeEvent) => {
-      this.updateTexts();
-    });
+      this.matches = [];
+      this.availableViewModes = [];
 
 
-    /*if (this.params.get('url') !== undefined && this.params.get('url').indexOf('=') !== -1) {
-      this.songID = this.params.get('url').split('=')[1];
-    }*/
-
-    if (this.params.get('song_datafile') !== undefined && this.params.get('song_datafile').indexOf('.json') !== -1) {
-      //
-    }
-
-    if (this.params.get('searchResult') !== undefined) {
-      this.searchResult = this.params.get('searchResult');
-    }
-
-    if (this.params.get('occurrenceResult') !== undefined && this.params.get('showOccurrencesModalOnRead')) {
-      this.hasOccurrenceResults = true;
-      this.showOccurrencesModal = true;
-      this.occurrenceResult = this.params.get('occurrenceResult');
-      this.storage.set('readpage_searchresults', this.params.get('occurrenceResult'));
-    } else {
-      this.storage.get('readpage_searchresults').then((occurrResult) => {
-        if (occurrResult) {
-          this.hasOccurrenceResults = true;
-          this.occurrenceResult = occurrResult;
+      let foundTrueCount = 0;
+      for (const toggle in this.displayToggles) {
+        if (this.displayToggles[toggle] && toggle !== 'introduction') {
+          this.availableViewModes.push(toggle);
+          foundTrueCount++;
         }
+      }
+      if (foundTrueCount <= 1) {
+        this.displayToggle = false;
+      }
+
+
+
+      if (this.params.get('tocItem') !== undefined && this.params.get('tocItem') !== null) {
+        // @TODO: fix this. it is unmaintainable
+        this.id = this.params.get('tocItem').itemId;
+        const collectionIsUndefined = (this.params.get('tocItem').collection_id !== undefined);
+        const linkIdIsNotUndefined = (this.params.get('tocItem').link_id !== undefined);
+        const collectionID = this.params.get('tocItem').collection_id;
+
+        link = (collectionIsUndefined ? collectionID : this.params.get('tocItem').toc_ed_id) + '_'
+          + (this.params.get('tocItem').link_id || this.params.get('tocItem').toc_linkID);
+
+      } else if (this.params.get('collectionID') !== undefined && this.params.get('id') === 'introduction') {
+
+      } else if (this.params.get('collectionID') !== undefined && this.params.get('id') !== undefined) {
+        this.id = this.params.get('id');
+        link = this.params.get('collectionID') + '_' + this.id;
+      }
+
+
+
+      const title = global.getSubtitle();
+      this.tocRoot = this.params.get('root');
+      this.establishedText = new EstablishedText({ link: link, id: this.id, title: title, text: '' });
+
+      if (this.params.get('legacyId') !== undefined) {
+        this.legacyId = this.params.get('legacyId');
+        this.establishedText.link = this.params.get('legacyId');
+      } else {
+
+        this.legacyId = this.params.get('collectionID') + '_' + this.params.get('publicationID');
+        this.establishedText.link = this.params.get('collectionID') + '_' + this.params.get('publicationID');
+
+        if (this.params.get('chapterID') !== undefined && !this.params.get('chapterID').startsWith('nochapter') &&
+        this.params.get('chapterID') !== ':chapterID' && this.params.get('chapterID') !== 'chapterID') {
+          this.establishedText.link += '_' + this.params.get('chapterID');
+        }
+
+        if (this.params.get('chapterID') !== undefined && this.params.get('chapterID').startsWith('nochapter;')) {
+          this.nochapterPos = this.params.get('chapterID').replace('nochapter;', '');
+        } else {
+          this.nochapterPos = null;
+        }
+
+        this.viewCtrl.setBackButtonText('');
+
+        if (!this.params.get('selectedItemInAccordion')) {
+          const searchTocItem = true;
+          this.getTocRoot(this.params.get('collectionID'), searchTocItem);
+        }
+
+        if (this.params.get('collectionID') !== 'songtypes' && !this.appUsesAccordionToc) {
+          this.events.publish('pageLoaded:single-edition', { 'title': title });
+        }
+      }
+
+      // Save the id of the previous and current read view text in textService.
+      if (this.establishedText && this.establishedText.link) {
+        this.textService.previousReadViewTextId = this.textService.readViewTextId;
+        this.textService.readViewTextId = this.establishedText.link;
+      }
+
+      if (this.params.get('matches') !== undefined) {
+        this.matches = this.params.get('matches');
+      }
+
+      this.setDefaultViews();
+
+      this.setTocCache();
+
+      this.updateTexts();
+
+      this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+        this.updateTexts();
       });
-    }
 
-    this.events.subscribe('show:view', (view, id, chapter) => {
-      // user and time are the same arguments passed in `events.publish(user, time)`
-      console.log('Welcome', view, 'at', id, 'chapter', chapter);
-      this.openNewExternalView(view, id);
+
+      /*if (this.params.get('url') !== undefined && this.params.get('url').indexOf('=') !== -1) {
+        this.songID = this.params.get('url').split('=')[1];
+      }*/
+
+      if (this.params.get('song_datafile') !== undefined && this.params.get('song_datafile').indexOf('.json') !== -1) {
+        //
+      }
+
+      if (this.params.get('searchResult') !== undefined) {
+        this.searchResult = this.params.get('searchResult');
+      }
+
+      if (this.params.get('occurrenceResult') !== undefined && this.params.get('showOccurrencesModalOnRead')) {
+        this.hasOccurrenceResults = true;
+        this.showOccurrencesModal = true;
+        this.occurrenceResult = this.params.get('occurrenceResult');
+        this.storage.set('readpage_searchresults', this.params.get('occurrenceResult'));
+      } else {
+        this.storage.get('readpage_searchresults').then((occurrResult) => {
+          if (occurrResult) {
+            this.hasOccurrenceResults = true;
+            this.occurrenceResult = occurrResult;
+          }
+        });
+      }
+
+      this.events.subscribe('show:view', (view, id, chapter) => {
+        // user and time are the same arguments passed in `events.publish(user, time)`
+        console.log('Welcome', view, 'at', id, 'chapter', chapter);
+        this.openNewExternalView(view, id);
+      });
+
+      this.getAdditionalParams();
     });
-
-    this.getAdditionalParams();
   }
 
   ionViewWillEnter() {
@@ -392,13 +431,14 @@ export class ReadPage /*implements OnDestroy*/ {
     } else {
       this.viewCtrl.showBackButton(false);
     }
-
     if (this.params.get('publicationID') === 'first') {
       this.showFirstText();
     } else {
       this.showText();
     }
-    this.events.publish('pageLoaded:read', { 'title': this.establishedText.title });
+    if ( this.establishedText !== undefined && this.establishedText.title !== undefined ) {
+      this.events.publish('pageLoaded:read', { 'title': this.establishedText.title });
+    }
 
     this.setUpTextListeners();
     this.setCollectionAndPublicationLegacyId();
@@ -437,6 +477,7 @@ export class ReadPage /*implements OnDestroy*/ {
         }
       }.bind(this), 1000);
     });
+    this.setFabBackdropWidth();
   }
 
   ngOnDestroy() {
@@ -510,7 +551,6 @@ export class ReadPage /*implements OnDestroy*/ {
     this.tocService.getTableOfContents(id)
       .subscribe(
         tocItems => {
-          console.log('get toc root... --- --- in read');
           tocItems.selectedCollId = null;
           tocItems.selectedPubId = null;
           if (this.params.get('collectionID') && this.params.get('publicationID')) {
@@ -533,7 +573,6 @@ export class ReadPage /*implements OnDestroy*/ {
           && chIDFromParams !== ':chapterID'
           && chIDFromParams !== 'chapterID') {
             tocItems.selectedChapterId = chIDFromParams;
-            console.log('toc chapterId: ' + tocItems.selectedChapterId);
           } else {
             tocItems.selectedChapterId = '';
           }
@@ -589,10 +628,42 @@ export class ReadPage /*implements OnDestroy*/ {
       viewmodes[0] = this.show;
     }
 
+    let variationsViewOrderNumber = 0;
+    let sameCollection = false;
+    // Check if the same collection as the previous time page-read was loaded.
+    if (this.textService.readViewTextId.split('_')[0] === this.textService.previousReadViewTextId.split('_')[0]) {
+      sameCollection = true;
+    } else {
+      // A different collection than last time page-read was loaded --> clear read-texts and variations
+      // stored in storage and variationsOrder array in textService.
+      console.log('Clearing cached read-texts and variations from storage');
+      this.clearReadtextsFromStorage();
+      this.textService.variationsOrder = [];
+      this.clearVariationsFromStorage();
+    }
+
     viewmodes.forEach(function (viewmode) {
       // set the first viewmode as default
       this.show = viewmodes[0];
-      this.addView(viewmode);
+
+      // check if it is similar to established_sv
+      const parts = viewmode.split('_');
+      if (parts.length > 1) {
+        this.addView(parts[0], null, null, null, null, parts[1]);
+      } else {
+        if (viewmode === 'variations') {
+          // this.addView(viewmode, null, null, null, null, null, variationsViewOrderNumber);
+          if (sameCollection && this.textService.variationsOrder.length > 0) {
+            this.addView(viewmode, null, null, null, null, null, this.textService.variationsOrder[variationsViewOrderNumber]);
+          } else {
+            this.addView(viewmode, null, null, null, null, null, variationsViewOrderNumber);
+            this.textService.variationsOrder.push(variationsViewOrderNumber);
+          }
+          variationsViewOrderNumber++;
+        } else {
+          this.addView(viewmode);
+        }
+      }
     }.bind(this));
   }
 
@@ -731,8 +802,13 @@ export class ReadPage /*implements OnDestroy*/ {
     const defaultReadModes: any = this.config.getSettings('defaults.ReadModeView');
     if (defaultReadModes !== undefined && defaultReadModes.length > 0) {
       if (defaultReadModes instanceof Array) {
+        let defaultReadModeForMobileSelected = false;
         defaultReadModes.forEach(function (val) {
-          this.show = val;
+          if (!defaultReadModeForMobileSelected && this.displayToggles[val]) {
+            /* Sets the default view on mobile to the first default read mode view which is available. */
+            this.show = val;
+            defaultReadModeForMobileSelected = true;
+          }
           this.addView(val);
         }.bind(this));
       } else {
@@ -740,6 +816,7 @@ export class ReadPage /*implements OnDestroy*/ {
         this.addView(defaultReadModes);
       }
     } else {
+      this.show = 'established';
       this.addView('established');
     }
   }
@@ -790,6 +867,12 @@ export class ReadPage /*implements OnDestroy*/ {
     const url = `#/publication/${colID}/text/${pubID}/${chapter_id}/${facs_id}/${facs_nr}/${song_id}/${search_title}/`;
 
     const viewModes = this.getViewTypesShown();
+
+    if (viewModes.includes('illustrations')) {
+      this.illustrationsViewShown = true;
+    } else {
+      this.illustrationsViewShown = false;
+    }
 
     // this causes problems with back, thus this check.
     if (!this.navCtrl.canGoBack() ) {
@@ -932,25 +1015,47 @@ export class ReadPage /*implements OnDestroy*/ {
     if (event.target.hasAttribute('data-id')) {
       return event.target;
     }
-
-    if (event.target !== undefined && event.target['classList'] !== undefined
-    && event.target['classList'].contains('tooltiptrigger')) {
-      eventTarget = event.target;
-    } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'] !== undefined
-    && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
-      eventTarget = event['target']['parentNode'];
-    } else if (event['target']['parentNode']['parentNode'] !== undefined && event['target']['parentNode']['classList'] !== undefined &&
-     event['target']['parentNode']['parentNode']['classList'].contains('tooltiptrigger')) {
-      eventTarget = event['target']['parentNode']['parentNode'];
-    } else if (event.target !== undefined && event['target']['classList'] !== undefined &&
-    event['target']['classList'].contains('anchor')) {
-      eventTarget = event.target;
-    } else if (event.target !== undefined && event['target']['classList'] !== undefined &&
-    event['target']['classList'].contains('variantScrollTarget')) {
-      eventTarget = event.target;
-    } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode']['classList'] !== undefined &&
-    event['target']['parentNode']['classList'].contains('variantScrollTarget')) {
-      eventTarget = event['target']['parentNode'];
+    try {
+      if (event.target !== undefined && event.target !== null) {
+        if (event.target['classList'] !== undefined && event.target['classList'].contains('tooltiptrigger')) {
+          eventTarget = event.target;
+        } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null
+        && event['target']['parentNode']['classList'] !== undefined
+        && event['target']['parentNode']['classList'].contains('tooltiptrigger')) {
+          eventTarget = event['target']['parentNode'];
+        } else if (event['target']['parentNode']['parentNode'] !== undefined && event['target']['parentNode']['parentNode'] !== null
+        && event['target']['parentNode']['classList'] !== undefined
+        && event['target']['parentNode']['parentNode']['classList'].contains('tooltiptrigger')) {
+          eventTarget = event['target']['parentNode']['parentNode'];
+        } else if (event['target']['classList'] !== undefined && event['target']['classList'].contains('anchor')) {
+          eventTarget = event.target;
+        } else if (event['target']['classList'] !== undefined && event['target']['classList'].contains('variantScrollTarget')) {
+          eventTarget = event.target;
+        } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null
+        && event['target']['parentNode']['classList'] !== undefined
+        && event['target']['parentNode']['classList'].contains('variantScrollTarget')) {
+          eventTarget = event['target']['parentNode'];
+        } else if (event['target']['parentNode']['parentNode'] !== undefined && event['target']['parentNode']['parentNode'] !== null
+        && event['target']['parentNode']['parentNode']['classList'] !== undefined
+        && event['target']['parentNode']['parentNode']['classList'].contains('variantScrollTarget')) {
+          eventTarget = event['target']['parentNode']['parentNode'];
+        } else if (event['target']['classList'] !== undefined && event['target']['classList'].contains('anchorScrollTarget')) {
+          eventTarget = event.target;
+        } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null
+        && event['target']['parentNode']['classList'] !== undefined
+        && event['target']['parentNode']['classList'].contains('anchorScrollTarget')) {
+          eventTarget = event['target']['parentNode'];
+        } else if (event['target']['classList'] !== undefined && event['target']['classList'].contains('extVariantsTrigger')) {
+          eventTarget = event.target;
+        } else if (event['target']['parentNode'] !== undefined && event['target']['parentNode'] !== null
+        && event['target']['parentNode']['classList'] !== undefined
+        && event['target']['parentNode']['classList'].contains('extVariantsTrigger')) {
+          eventTarget = event['target']['parentNode'];
+        }
+      }
+    } catch (e) {
+      console.log('Error resolving event target in getEventTarget() in read.ts');
+      console.error(e);
     }
     return eventTarget;
   }
@@ -1054,9 +1159,9 @@ export class ReadPage /*implements OnDestroy*/ {
             modalShown = true;
           } else if (eventTarget['classList'].contains('ttMs')
           || eventTarget['classList'].contains('tooltipMs')) {
-            if (eventTarget['classList'].contains('unclear')) {
-              /** Editorial note about unclear text, should be clickable only in
-               *  the reading text column. */
+            if (eventTarget['classList'].contains('unclear') || eventTarget['classList'].contains('gap')) {
+              /* Editorial note about unclear text, should be clickable only in
+                 the reading text column. */
               let parentElem: HTMLElement = eventTarget as HTMLElement;
               parentElem = parentElem.parentElement;
               while (parentElem !== null && parentElem.tagName !== 'READ-TEXT') {
@@ -1084,25 +1189,31 @@ export class ReadPage /*implements OnDestroy*/ {
               this.showInfoOverlayFromInlineHtml(eventTarget);
             });
             modalShown = true;
+          } else if (eventTarget['classList'].contains('ttComment')) {
+            console.log('comment');
+            this.ngZone.run(() => {
+              this.showInfoOverlayFromInlineHtml(eventTarget);
+            });
+            modalShown = true;
           }
 
-          /** Get the parent node of the event target for the next iteration
-           *  if a modal or infoOverlay hasn't been shown already. This is
-           *  for finding nested tooltiptriggers, i.e. a person can be a
-           *  child of a change. */
+          /* Get the parent node of the event target for the next iteration
+             if a modal or infoOverlay hasn't been shown already. This is
+             for finding nested tooltiptriggers, i.e. a person can be a
+             child of a change. */
           if (!modalShown) {
             eventTarget = eventTarget['parentNode'];
             if (!eventTarget['classList'].contains('tooltiptrigger')
             && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
-              /** The parent isn't a tooltiptrigger, but the parent of the parent
-               *  is, use it for the next iteration. */
+              /* The parent isn't a tooltiptrigger, but the parent of the parent
+                 is, use it for the next iteration. */
               eventTarget = eventTarget['parentNode'];
             }
           }
         }
 
         eventTarget = this.getEventTarget(event);
-        if (eventTarget['classList'].contains('variantScrollTarget')) {
+        if (eventTarget['classList'].contains('variantScrollTarget') || eventTarget['classList'].contains('anchorScrollTarget')) {
           // Click on variant lemma --> highlight and scroll all variant columns.
 
           eventTarget.classList.add('highlight');
@@ -1112,6 +1223,17 @@ export class ReadPage /*implements OnDestroy*/ {
           window.setTimeout(function(elem) {
             elem.classList.remove('highlight');
           }.bind(null, eventTarget), 5000);
+        } else if (eventTarget['classList'].contains('extVariantsTrigger')) {
+          // Click on trigger for showing links to external variants
+          if (eventTarget.nextElementSibling !== null && eventTarget.nextElementSibling !== undefined) {
+            if (eventTarget.nextElementSibling.classList.contains('extVariants')
+            && !eventTarget.nextElementSibling.classList.contains('show-extVariants')) {
+              eventTarget.nextElementSibling.classList.add('show-extVariants');
+            } else if (eventTarget.nextElementSibling.classList.contains('extVariants')
+            && eventTarget.nextElementSibling.classList.contains('show-extVariants')) {
+              eventTarget.nextElementSibling.classList.remove('show-extVariants');
+            }
+          }
         }
 
         // Possibly click on link.
@@ -1165,8 +1287,9 @@ export class ReadPage /*implements OnDestroy*/ {
                 if (containerElem === null) {
                   // Check if a footnotereference link in infoOverlay. This method is used to find the container element if in mobile mode.
                   if (anchorElem.parentElement !== null
-                  && anchorElem.parentElement.hasAttribute('class')
-                  && anchorElem.parentElement.classList.contains('infoOverlayContent')) {
+                  && anchorElem.parentElement.parentElement !== null
+                  && anchorElem.parentElement.parentElement.hasAttribute('class')
+                  && anchorElem.parentElement.parentElement.classList.contains('infoOverlayContent')) {
                     containerElem = document.querySelector('.mobile-mode-read-content > .scroll-content > ion-scroll > .scroll-content');
                   }
                 }
@@ -1184,6 +1307,46 @@ export class ReadPage /*implements OnDestroy*/ {
                 }
               }
             }
+          } else if (anchorElem.classList.contains('ref_variant')) {
+            // Click on link to another variant text
+            const sid = 'sid-' + anchorElem.href.split(';sid-')[1];
+            const varTargets = Array.from(document.querySelectorAll('#' + sid));
+
+            if (varTargets.length > 0) {
+              this.scrollElementIntoView(anchorElem);
+              anchorElem.classList.add('highlight');
+              window.setTimeout(function(elem) {
+                elem.classList.remove('highlight');
+              }.bind(null, anchorElem), 5000);
+
+              varTargets.forEach(function(varTarget: HTMLElement) {
+                this.scrollElementIntoView(varTarget);
+                if (varTarget.firstElementChild !== null
+                  && varTarget.firstElementChild !== undefined) {
+                  if (varTarget.firstElementChild.classList.contains('var_margin')) {
+                    const marginElem = varTarget.firstElementChild;
+
+                    // Highlight all children of the margin element that have the ref_variant class
+                    const refVariants = Array.from(marginElem.querySelectorAll('.ref_variant'));
+                    refVariants.forEach(function(refVariant: HTMLElement) {
+                      refVariant.classList.add('highlight');
+                      window.setTimeout(function(elem) {
+                        elem.classList.remove('highlight');
+                      }.bind(null, refVariant), 5000);
+                    });
+
+                    if (marginElem.firstElementChild !== null && marginElem.firstElementChild !== undefined
+                      && marginElem.firstElementChild.classList.contains('extVariantsTrigger')) {
+                        marginElem.firstElementChild.classList.add('highlight');
+                        window.setTimeout(function(elem) {
+                          elem.classList.remove('highlight');
+                        }.bind(null, marginElem.firstElementChild), 5000);
+                    }
+                  }
+                }
+              }.bind(this));
+            }
+
           } else if (anchorElem.classList.contains('ref_external')) {
             // Link to external web page, open in new window/tab.
             if (anchorElem.hasAttribute('href')) {
@@ -1203,13 +1366,35 @@ export class ReadPage /*implements OnDestroy*/ {
             if (anchorElem.classList.contains('ref_readingtext') || anchorElem.classList.contains('ref_comment')) {
               // Link to reading text or comment.
 
-              publicationId = hrefTargetItems[0];
-              textId = hrefTargetItems[1];
+              let comparePageId = '';
 
-              let comparePageId = publicationId + '_' + textId;
-              if (hrefTargetItems.length > 2 && !hrefTargetItems[2].startsWith('#')) {
-                chapterId = hrefTargetItems[2];
-                comparePageId += '_' + chapterId;
+              if (hrefTargetItems.length === 1 && hrefTargetItems[0].startsWith('#')) {
+                // If only a position starting with a hash, assume it's in the same publication, text and chapter.
+                publicationId = this.establishedText.link.split(';').shift().split('_')[0];
+                textId = this.establishedText.link.split(';').shift().split('_')[1];
+                chapterId = this.params.get('chapterID');
+                if (chapterId !== undefined
+                  && chapterId !== null
+                  && !chapterId.startsWith('nochapter')
+                  && chapterId !== ':chapterID'
+                  && chapterId !== 'chapterID') {
+                    chapterId = chapterId.split(';').shift();
+                } else {
+                  chapterId = '';
+                }
+                if (chapterId !== '') {
+                  comparePageId = publicationId + '_' + textId + '_' + chapterId;
+                } else {
+                  comparePageId = publicationId + '_' + textId;
+                }
+              } else if (hrefTargetItems.length > 1) {
+                publicationId = hrefTargetItems[0];
+                textId = hrefTargetItems[1];
+                comparePageId = publicationId + '_' + textId;
+                if (hrefTargetItems.length > 2 && !hrefTargetItems[2].startsWith('#')) {
+                  chapterId = hrefTargetItems[2];
+                  comparePageId += '_' + chapterId;
+                }
               }
 
               let legacyPageId = this.collectionAndPublicationLegacyId;
@@ -1367,8 +1552,8 @@ export class ReadPage /*implements OnDestroy*/ {
             } else if (eventTarget['classList'].contains('ttMs')) {
               // Check if the tooltip trigger element is in a manuscripts column
               // since ttMs should generally only be triggered there.
-              if (eventTarget['classList'].contains('unclear')) {
-                // Tooltips for text with class unclear should be shown in other columns too.
+              if (eventTarget['classList'].contains('unclear') || eventTarget['classList'].contains('gap')) {
+                // Tooltips for text with class unclear or gap should be shown in other columns too.
                 this.ngZone.run(() => {
                   this.showTooltipFromInlineHtml(eventTarget);
                 });
@@ -1395,6 +1580,12 @@ export class ReadPage /*implements OnDestroy*/ {
               this.ngZone.run(() => {
                 this.showTooltipFromInlineHtml(eventTarget);
               });
+            } else if (eventTarget['classList'].contains('ttComment')
+            && !eventTarget.hasAttribute('id')
+            && !eventTarget.hasAttribute('data-id')) {
+              this.ngZone.run(() => {
+                this.showTooltipFromInlineHtml(eventTarget);
+              });
             }
 
             /* Get the parent node of the event target for the next iteration if a tooltip hasn't been shown already.
@@ -1406,6 +1597,19 @@ export class ReadPage /*implements OnDestroy*/ {
                 /* The parent isn't a tooltiptrigger, but the parent of the parent is, use it for the next iteration. */
                 eventTarget = eventTarget['parentNode'];
               }
+            }
+          }
+
+          /* Check if mouse over doodle image which has a parent tooltiptrigger */
+          if (eventTarget.hasAttribute('data-id')
+          && eventTarget['classList'].contains('doodle')
+          && eventTarget['classList'].contains('unknown')) {
+            if (eventTarget['parentNode'] !== undefined && eventTarget['parentNode'] !== null
+            && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
+              eventTarget = eventTarget['parentNode'];
+              this.ngZone.run(() => {
+                this.showTooltipFromInlineHtml(eventTarget);
+              });
             }
           }
         }
@@ -1443,6 +1647,11 @@ export class ReadPage /*implements OnDestroy*/ {
     this.textType = TextType.ReadText;
   }
 
+  /**
+   * TODO: This function doesn't seem to work as intended. It probably fails because it uses
+   * TODO: legacyId, which should be legacy_id if you look at what the API returns. Most projects
+   * TODO: don't use legacy_id.
+   */
   private showFirstText() {
     this.textType = TextType.ReadText;
     const cache_id = 'col_' + this.params.get('collectionID') + 'first_pub';
@@ -1534,32 +1743,62 @@ export class ReadPage /*implements OnDestroy*/ {
     this.tooltipService.getPersonTooltip(id).subscribe(
       tooltip => {
         let text = '';
+        let uncertainPretext = '';
+        let fictionalPretext = '';
+        if (targetElem.classList.contains('uncertain')) {
+          this.translate.get('uncertainPersonCorresp').subscribe(
+            translation => {
+              if (translation !== 'uncertainPersonCorresp') {
+                uncertainPretext = translation + ' ';
+              }
+            }, error => { }
+          );
+        }
+        if (targetElem.classList.contains('fictional')) {
+          this.translate.get('fictionalPersonCorresp').subscribe(
+            translation => {
+              if (translation !== 'fictionalPersonCorresp') {
+                fictionalPretext = translation + ':<br/>';
+              }
+            }, error => { }
+          );
+        }
         if ( tooltip.date_born !== null || tooltip.date_deceased !== null ) {
-          const date_born = String(tooltip.date_born).split('-')[0].replace(/^0+/, '');
-          const date_deceased = String(tooltip.date_deceased).split('-')[0].replace(/^0+/, '');
+          // Get the born and deceased years without leading zeros and possible 'BC' indicators
+          const year_born = String(tooltip.date_born).split('-')[0].replace(/^0+/, '').split(' ')[0];
+          const year_deceased = String(tooltip.date_deceased).split('-')[0].replace(/^0+/, '').split(' ')[0];
+          // Get translation for 'BC'
           let bcTranslation = 'BC';
           this.translate.get('BC').subscribe(
             translation => {
               bcTranslation = translation;
             }, error => { }
           );
-          const bcIndicator = (String(tooltip.date_deceased).includes('BC')) ? ' ' + bcTranslation : '';
-          text = '<b>' + tooltip.name + '</b> (';
-          if (date_born !== null && date_deceased !== null && date_born !== 'null' && date_born !== 'null') {
-            text += date_born + '–' + date_deceased + '' + bcIndicator;
-          } else if (date_born !== null && date_born !== 'null') {
-            text += '* ' + date_born + bcIndicator;
-          } else if (date_deceased !== null && date_deceased !== 'null') {
-            text += '&#8224; ' + date_deceased + bcIndicator;
+          const bcIndicatorDeceased = (String(tooltip.date_deceased).includes('BC')) ? ' ' + bcTranslation : '';
+          let bcIndicatorBorn = (String(tooltip.date_born).includes('BC')) ? ' ' + bcTranslation : '';
+          if (String(tooltip.date_born).includes('BC') && bcIndicatorDeceased === bcIndicatorBorn) {
+            // Born and deceased BC, don't add indicator to year born
+            bcIndicatorBorn = '';
+          }
+          text = '<b>' + tooltip.name.trim() + '</b> (';
+          if (year_born !== null && year_deceased !== null && year_born !== 'null' && year_deceased !== 'null') {
+            text += year_born + bcIndicatorBorn + '–' + year_deceased + bcIndicatorDeceased;
+          } else if (year_born !== null && year_born !== 'null') {
+            text += '* ' + year_born + bcIndicatorBorn;
+          } else if (year_deceased !== null && year_deceased !== 'null') {
+            text += '&#8224; ' + year_deceased + bcIndicatorDeceased;
           }
           text += ')';
         } else {
-          text = '<b>' + tooltip.name + '</b>';
+          text = '<b>' + tooltip.name.trim() + '</b>';
         }
 
-        if ( tooltip.description !== null ) {
+        if (tooltip.description !== null) {
           text += ', ' + tooltip.description
         }
+
+        text = uncertainPretext + text;
+        text = fictionalPretext + text;
 
         this.setToolTipPosition(targetElem, text);
         this.setToolTipText(text);
@@ -1610,9 +1849,36 @@ export class ReadPage /*implements OnDestroy*/ {
       this.setToolTipText(this.tooltips.works[id]);
       return;
     }
-    this.semanticDataService.getSingleObjectElastic('work', id).subscribe(
-      tooltip => {
-        if ( tooltip.hits.hits[0] === undefined || tooltip.hits.hits[0]['_source'] === undefined ) {
+
+    if (this.simpleWorkMetadata === undefined) {
+      try {
+        this.simpleWorkMetadata = this.config.getSettings('useSimpleWorkMetadata');
+      } catch (e) {
+        this.simpleWorkMetadata = false;
+      }
+    }
+
+    if (this.simpleWorkMetadata === false || this.simpleWorkMetadata === undefined) {
+      this.semanticDataService.getSingleObjectElastic('work', id).subscribe(
+        tooltip => {
+          if ( tooltip.hits.hits[0] === undefined || tooltip.hits.hits[0]['_source'] === undefined ) {
+            let noInfoFound = 'Could not get work information';
+            this.translate.get('Occurrences.NoInfoFound').subscribe(
+              translation => {
+                noInfoFound = translation;
+              }, err => { }
+            );
+            this.setToolTipPosition(targetElem, noInfoFound);
+            this.setToolTipText(noInfoFound);
+            return;
+          }
+          tooltip = tooltip.hits.hits[0]['_source'];
+          const description = '<span class="work_title">' + tooltip.title  + '</span><br/>' + tooltip.reference;
+          this.setToolTipPosition(targetElem, description);
+          this.setToolTipText(description);
+          this.tooltips.works[id] = description;
+        },
+        error => {
           let noInfoFound = 'Could not get work information';
           this.translate.get('Occurrences.NoInfoFound').subscribe(
             translation => {
@@ -1621,25 +1887,27 @@ export class ReadPage /*implements OnDestroy*/ {
           );
           this.setToolTipPosition(targetElem, noInfoFound);
           this.setToolTipText(noInfoFound);
-          return;
         }
-        tooltip = tooltip.hits.hits[0]['_source'];
-        const description = '<span class="work_title">' + tooltip.title  + '</span><br/>' + tooltip.reference;
-        this.setToolTipPosition(targetElem, description);
-        this.setToolTipText(description);
-        this.tooltips.works[id] = description;
-      },
-      error => {
-        let noInfoFound = 'Could not get work information';
-        this.translate.get('Occurrences.NoInfoFound').subscribe(
-          translation => {
-            noInfoFound = translation;
-          }, err => { }
-        );
-        this.setToolTipPosition(targetElem, noInfoFound);
-        this.setToolTipText(noInfoFound);
-      }
-    );
+      );
+    } else {
+      this.tooltipService.getWorkTooltip(id).subscribe(
+        tooltip => {
+          this.setToolTipPosition(targetElem, tooltip.description);
+          this.setToolTipText(tooltip.description);
+          this.tooltips.works[id] = tooltip.description;
+        },
+        error => {
+          let noInfoFound = 'Could not get work information';
+          this.translate.get('Occurrences.NoInfoFound').subscribe(
+            translation => {
+              noInfoFound = translation;
+            }, err => { }
+          );
+          this.setToolTipPosition(targetElem, noInfoFound);
+          this.setToolTipText(noInfoFound);
+        }
+      );
+    }
   }
 
   showFootnoteTooltip(id: string, targetElem: HTMLElement) {
@@ -2003,6 +2271,16 @@ export class ReadPage /*implements OnDestroy*/ {
         title = 'abbreviation';
         if (targetElem.firstElementChild !== null
         && targetElem.firstElementChild.classList.contains('abbr')) {
+          text = '<p class="infoOverlayText"><span class="ioLemma">'
+          + targetElem.firstElementChild.innerHTML
+          + '</span><span class="ioDescription">'
+          + targetElem.nextElementSibling.innerHTML + '</span></p>';
+        }
+      } else if (targetElem.nextElementSibling.classList.contains('ttComment')) {
+        // Abbreviation.
+        title = 'comments';
+        if (targetElem.firstElementChild !== null
+        && targetElem.firstElementChild.classList.contains('noteText')) {
           text = '<p class="infoOverlayText"><span class="ioLemma">'
           + targetElem.firstElementChild.innerHTML
           + '</span><span class="ioDescription">'
@@ -2433,8 +2711,9 @@ export class ReadPage /*implements OnDestroy*/ {
     return dimensions;
   }
 
-  /** Set position and width of infoOverlay element. This function is not exactly
-   *  the same as in introduction.ts due to different page structure on read page.
+  /**
+   * Set position and width of infoOverlay element. This function is not exactly
+   * the same as in introduction.ts due to different page structure on read page.
    */
   private setInfoOverlayPositionAndWidth(triggerElement: HTMLElement, defaultMargins = 20, maxWidth = 600) {
     let margins = defaultMargins;
@@ -2540,7 +2819,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
   private showReference() {
     // Get URL of Page and then the URI
-    const modal = this.modalCtrl.create(ReferenceDataModalPage, {id: document.URL, type: 'reference'});
+    const modal = this.modalCtrl.create(ReferenceDataModalPage, {id: document.URL, type: 'reference', origin: 'page-read'});
     modal.present();
     modal.onDidDismiss(data => {
       // console.log('dismissed', data);
@@ -2586,33 +2865,50 @@ export class ReadPage /*implements OnDestroy*/ {
       this.addView('facsimiles', event.id);
     } else if (event.viewType === 'facsimileManuscript') {
       this.addView('manuscripts', event.id);
+    } else if (event.viewType === 'illustrations') {
+      this.addView(event.viewType, event.id, undefined, undefined, event);
     } else {
       this.addView(event.viewType, event.id);
     }
   }
 
-  addView(type: string, id?: string, fab?: FabContainer, external?: boolean) {
+  addView(type: string, id?: string, fab?: FabContainer, external?: boolean, image?: any, language?: string, variationSortOrder?: number) {
     if (fab !== undefined) {
-      fab.close();
+      try {
+        fab.close();
+      } catch (e) {
+
+      }
     }
     if (external === true) {
       this.external = id;
     } else {
       this.external = null;
     }
+
     if (this.availableViewModes.indexOf(type) !== -1) {
-      this.views.push({
+      const view = {
         content: `This is an upcoming ${type} view`,
         type,
-        established: { show: (type === 'established'), id: id },
+        established: { show: (type === 'established' && !this.multilingualEST), id: id },
         comments: { show: (type === 'comments'), id: id },
         facsimiles: { show: (type === 'facsimiles'), id: id },
         manuscripts: { show: (type === 'manuscripts'), id: id },
-        variations: { show: (type === 'variations'), id: id },
+        variations: { show: (type === 'variations'), id: id, variationSortOrder: variationSortOrder },
         introduction: { show: (type === 'introduction'), id: id },
         songexample: { show: (type === 'songexample'), id: id },
-        illustrations: { show: (type === 'illustrations'), id: id }
-      });
+        illustrations: { show: (type === 'illustrations'), image: image }
+      }
+      if (this.multilingualEST) {
+        for (const lang of this.estLanguages) {
+          view['established_' + lang] = { show: (type === 'established' && language === lang), id: id }
+        }
+        if (type === 'established' && language) {
+          view['type'] = 'established_' + language;
+        }
+      }
+
+      this.views.push(view);
 
       this.updateURL();
       this.updateCachedViewModes();
@@ -2635,40 +2931,57 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   removeSlide(i) {
+    this.removeVariationSortOrderFromService(i);
     this.views.splice(i, 1);
-    this.adjustSlidesSize();
     this.updateURL();
     this.updateCachedViewModes();
   }
 
-  swipeTabs(prefix: string, id: number) {
-    const elem1: HTMLElement = document.getElementById(prefix + id.toString());
-    if (elem1.nextSibling !== null && elem1.nodeType === elem1.nextSibling.nodeType) {
-      elem1.parentElement.insertBefore(elem1.nextSibling, elem1);
-    } else if (elem1.previousSibling !== null && elem1.previousSibling.nodeType === elem1.nodeType) {
-      elem1.parentElement.insertBefore(elem1, elem1.previousSibling);
+  /**
+   * Moves the view with index id one step to the right, i.e. exchange
+   * positions with the view on the right. If a FabContainer is passed
+   * it is closed.
+   */
+  moveViewRight(id: number, fab?: FabContainer) {
+    if (id > -1 && id < this.views.length - 1) {
+      this.views = this.moveArrayItem(this.views, id, id + 1);
+      this.updateURL();
+      this.updateCachedViewModes();
+      this.switchVariationSortOrdersInService(id, id + 1);
+      if (fab !== undefined) {
+        fab.close();
+      }
     }
   }
 
-  adjustSlidesSize() {
-
-    let width = this.platform.width();
-    const splitpane = document.querySelector('ion-split-pane');
-    const splitPaneIsVisible = (splitpane.className.indexOf('split-pane-visible') >= 0);
-
-    if (splitPaneIsVisible) {
-      const splitPane = document.querySelector('ion-split-pane ion-menu.split-pane-side.menu-enabled');
-      const dimensions = splitPane.getBoundingClientRect();
-      width = width - dimensions.width;
+  /**
+   * Moves the view with index id one step to the left, i.e. exchange
+   * positions with the view on the left. If a FabContainer is passed
+   * it is closed.
+   */
+  moveViewLeft(id: number, fab?: FabContainer) {
+    if (id > 0 && id < this.views.length) {
+      this.views = this.moveArrayItem(this.views, id, id - 1);
+      this.updateURL();
+      this.updateCachedViewModes();
+      this.switchVariationSortOrdersInService(id, id - 1);
+      if (fab !== undefined) {
+        fab.close();
+      }
     }
+  }
 
-    if (width / this.viewsConfig.slideMinWidth < (this.views.length + 1)) {
-      this.viewsConfig.slidesPerView = width / this.viewsConfig.slideMinWidth;
-      this.viewsConfig.centeredSlides = true;
-    } else {
-      this.viewsConfig.slidesPerView = this.views.length + 1;
-      this.viewsConfig.centeredSlides = false;
+  /**
+   * Reorders the given array by moving the item at position 'fromIndex'
+   * to the position 'toIndex'. Returns the reordered array.
+   */
+  moveArrayItem(array: any[], fromIndex: number, toIndex: number) {
+    const reorderedArray = array;
+    if (fromIndex > -1 && toIndex > -1 && fromIndex < array.length
+      && toIndex < array.length && fromIndex !== toIndex) {
+      reorderedArray.splice(toIndex, 0, reorderedArray.splice(fromIndex, 1)[0]);
     }
+    return reorderedArray;
   }
 
   swipePrevNext(myEvent) {
@@ -2813,23 +3126,65 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   private scrollToVariant(element: HTMLElement) {
-    this.scrollElementIntoView(element);
     this.hideToolTip();
     try {
-      const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span.teiVariant');
-      for (let i = 0; i < elems.length; i++) {
-        if (elems[i].id === element.id) {
-          elems[i].style.fontWeight = 'bold';
-          this.scrollElementIntoView(elems[i]);
-          setTimeout(function () {
-            if (elems[i] !== undefined) {
-              elems[i].style.fontWeight = null;
+      if (element['classList'].contains('variantScrollTarget')) {
+        const variantContElems: NodeListOf<HTMLElement> = document.querySelectorAll('variations');
+        for (let v = 0; v < variantContElems.length; v++) {
+          const elems: NodeListOf<HTMLElement> = variantContElems[v].querySelectorAll('.teiVariant');
+          let variantNotScrolled = true;
+          for (let i = 0; i < elems.length; i++) {
+            if (elems[i].id === element.id) {
+              if (!elems[i].classList.contains('highlight')) {
+                elems[i].classList.add('highlight');
+              }
+              if (variantNotScrolled) {
+                variantNotScrolled = false;
+                this.scrollElementIntoView(elems[i]);
+              }
+              setTimeout(function () {
+                if (elems[i] !== undefined) {
+                  elems[i].classList.remove('highlight');
+                }
+              }, 5000);
             }
-          }, 5000);
+          }
+        }
+      } else if (element['classList'].contains('anchorScrollTarget')) {
+        const elems: NodeListOf<HTMLElement> = document.querySelectorAll('.teiVariant.anchorScrollTarget');
+        const elementClassList = element.className.split(' ');
+        let targetClassName = '';
+        let targetCompClassName = '';
+        for (let x = 0; x < elementClassList.length; x++) {
+          if (elementClassList[x].startsWith('struct')) {
+            targetClassName = elementClassList[x];
+            break;
+          }
+        }
+        if (targetClassName.endsWith('a')) {
+          targetCompClassName = targetClassName.substring(0, targetClassName.length - 1) + 'b';
+        } else {
+          targetCompClassName = targetClassName.substring(0, targetClassName.length - 1) + 'a';
+        }
+        let iClassList = [];
+        for (let i = 0; i < elems.length; i++) {
+          iClassList = elems[i].className.split(' ');
+          for (let y = 0; y < iClassList.length; y++) {
+            if (iClassList[y] === targetClassName || iClassList[y] === targetCompClassName) {
+              elems[i].classList.add('highlight');
+              setTimeout(function () {
+                if (elems[i] !== undefined) {
+                  elems[i].classList.remove('highlight');
+                }
+              }, 5000);
+              if (iClassList[y] === targetClassName) {
+                this.scrollElementIntoView(elems[i]);
+              }
+            }
+          }
         }
       }
     } catch (e) {
-
     }
   }
 
@@ -2861,7 +3216,8 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 
-  /* Use this function to scroll to the comment with the specified numeric id
+  /**
+   * Use this function to scroll to the comment with the specified numeric id
    * (excluding prefixes like 'end') in the first comments view on the page.
    * Alternatively, the comment element can be passed as an optional parameter.
    */
@@ -2996,12 +3352,14 @@ export class ReadPage /*implements OnDestroy*/ {
     }
   }
 
-  /** This function can be used to scroll a container so that the element which it
-   *  contains is placed either at the top edge of the container or in the center
-   *  of the container. This function can be called multiple times simultaneously
-   *  on elements in different containers, unlike the native scrollIntoView function
-   *  which cannot be called multiple times simultaneously in Chrome due to a bug.
-   *  Valid values for yPosition are 'top' and 'center'. */
+  /**
+   * This function can be used to scroll a container so that the element which it
+   * contains is placed either at the top edge of the container or in the center
+   * of the container. This function can be called multiple times simultaneously
+   * on elements in different containers, unlike the native scrollIntoView function
+   * which cannot be called multiple times simultaneously in Chrome due to a bug.
+   * Valid values for yPosition are 'top' and 'center'.
+   */
   private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0) {
     if (element === undefined || element === null || (yPosition !== 'center' && yPosition !== 'top')) {
       return;
@@ -3027,13 +3385,15 @@ export class ReadPage /*implements OnDestroy*/ {
     container.scrollTo({top: y - baseOffset - offset, behavior: 'smooth'});
   }
 
-  /* This function scrolls the read-view horisontally to the last read column.
-   * It's called after adding new views. */
+  /**
+   * This function scrolls the read-view horisontally to the last read column.
+   * It's called after adding new views.
+   * */
   scrollLastViewIntoView() {
     this.ngZone.runOutsideAngular(() => {
       let interationsLeft = 10;
       clearInterval(this.intervalTimerId);
-      this.intervalTimerId = setInterval(function() {
+      this.intervalTimerId = window.setInterval(function() {
         if (interationsLeft < 1) {
           clearInterval(this.intervalTimerId);
         } else {
@@ -3076,4 +3436,117 @@ export class ReadPage /*implements OnDestroy*/ {
       }
     );
   }
+
+/**
+   * Removes all read-texts that are stored in storage based on the ids in the readtextIdsInStorage
+   * array in textService, and empties the array.
+   */
+  clearReadtextsFromStorage() {
+    if (this.textService.readtextIdsInStorage.length > 0) {
+      this.textService.readtextIdsInStorage.forEach((readtextId) => {
+        this.storage.remove(readtextId);
+      });
+      this.textService.readtextIdsInStorage = [];
+    }
+  }
+
+  /**
+   * Removes all variations that are stored in storage based on the ids in the varIdsInStorage
+   * array in textService, and empties the array.
+   */
+  clearVariationsFromStorage() {
+    if (this.textService.varIdsInStorage.length > 0) {
+      this.textService.varIdsInStorage.forEach((varId) => {
+        this.storage.remove(varId);
+      });
+      this.textService.varIdsInStorage = [];
+    }
+  }
+
+  /**
+   * Adds the sort order of a variation to the variationsOrder array in textService.
+   */
+  addVariationSortOrderToService(sortOrder: number) {
+    if (sortOrder !== null && sortOrder !== undefined) {
+      this.textService.variationsOrder.push(sortOrder);
+    }
+  }
+
+  /**
+   * Removes the sort order of the variations column with the given index from the variationsOrder
+   * array in textService.
+   */
+  removeVariationSortOrderFromService(columnIndex: number) {
+    const columnElem = document.querySelector('div#read_div_' + columnIndex);
+    if (columnElem) {
+      const currentVarElem = columnElem.querySelector('variations');
+      if (currentVarElem) {
+        /* Find the index of the current variations column among just the variations columns */
+        const key = this.findVariationsColumnIndex(columnIndex);
+        /* Remove the sort order of the removed variations column from textService */
+        if (key !== undefined) {
+          if (this.textService.variationsOrder[key] !== undefined) {
+            this.textService.variationsOrder.splice(key, 1);
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Switches the positions of two variations columns' sort orders in the variationsOrder array
+   * in textService.
+   */
+  switchVariationSortOrdersInService(currentColumnIndex: number, otherColumnIndex: number) {
+    /* Check if either the current column or the one it is changing places with is a variations column */
+    const currentColumnElem = document.querySelector('div#read_div_' + currentColumnIndex);
+    const otherColumnElem = document.querySelector('div#read_div_' + otherColumnIndex);
+    if (currentColumnElem && otherColumnElem) {
+      const currentVarElem = currentColumnElem.querySelector('variations');
+      const otherVarElem = otherColumnElem.querySelector('variations');
+      if (currentVarElem && otherVarElem) {
+        /* Find the indices of the two variations column among just the variations columns */
+        const currentVarIndex = this.findVariationsColumnIndex(currentColumnIndex);
+        let otherVarIndex = currentVarIndex + 1;
+        if (otherColumnIndex < currentColumnIndex) {
+          otherVarIndex = currentVarIndex - 1;
+        }
+        this.textService.variationsOrder = this.moveArrayItem(this.textService.variationsOrder, currentVarIndex, otherVarIndex);
+      }
+    }
+
+  }
+
+  /**
+   * Given the read column index of a variations column, this function returns the index of the
+   * column among just the variations columns in the read view. So, for instance, if there are
+   * 3 read columns in total, 2 of which are variations columns, this function can tell if the
+   * variations column with index columnIndex is the first or second variations column.
+   */
+  findVariationsColumnIndex(columnIndex: number) {
+    const columnElems = Array.from(document.querySelectorAll('div.read-column'));
+    const varColIds = [];
+    columnElems.forEach(function(column) {
+      const varElem = column.querySelector('variations');
+      if (varElem) {
+        varColIds.push(column.id);
+      }
+    });
+    let varIndex = undefined;
+    for (let i = 0; i < varColIds.length; i++) {
+      if (varColIds[i] === 'read_div_' + columnIndex) {
+        varIndex = i;
+        break;
+      }
+    }
+    return varIndex;
+  }
+
+  setFabBackdropWidth() {
+    const pageReadElem = document.querySelector('page-read > ion-content > div.scroll-content');
+    if (pageReadElem) {
+      this.backdropWidth = pageReadElem.scrollWidth;
+    }
+  }
+
 }

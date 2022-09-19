@@ -1,35 +1,64 @@
-.teiVariant {
+div.tei.teiVariant {
 
-    span.anchorScrollTarget {
-        cursor: pointer;
-    }
-    span.anchorScrollTarget img{
-        display: inline;
-        width: 0.9rem;
-    }
-
+    /* This rule doesn't seem to have any effect in variants and is anyway really badly formed. */
+    /*
     p[class*="p"]{
         text-indent: 30px !important;
-    }    
+    }
+    */
     
-    h4{
+    h4 {
         margin: 1em 0 .5em !important;
-        font-size: 1.1em !important;
+        font-size: 1.0589em;
     }
     
-    h3{
+    h3 {
         margin: 1.1em 0 .6em !important;
-        font-size: 1.4em !important;
+        font-size: 1.1765em;
         font-variant: initial !important;
     }
 
-    &.variantScrollTarget {
+    h1.poemtitle {
+        font-variant: normal !important;
+        font-style: italic !important;
+        font-size: 1.3530em;
+    }
+
+    /*
+    img {
+        width: 0.9rem;
+        display: inline-block;
+    }
+    */
+
+    .variantScrollTarget {
         cursor: pointer;
     }
 
-    &.variantScrollTarget.highlight {
+    .variantScrollTarget.highlight,
+    .variantScrollTarget.highlight .teiVariant {
         font-weight: bold;
     }
+
+    .anchorScrollTarget {
+        cursor: pointer;
+    }
+
+    .var_margin {
+        position: absolute;
+        left: -1em;
+        text-indent: 1.25em !important;
+    }
+    .tit_figure_graphic {
+        width: auto;
+        max-width: 100%;
+        display: block;
+        margin: 0 auto;
+    }
+}
+
+.teiVariant.ref_variant + .teiVariant.ref_variant {
+    margin-left: -0.125em;
 }
 
 p.strofeSpacing {

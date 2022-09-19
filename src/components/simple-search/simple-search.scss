@@ -1,7 +1,9 @@
 simple-search {
     em{
         font-style: normal;
-        background-color: $search-match-color;
+        background-color: var(--simple-search-search-match-highlight-background-color);
+        color: var(--simple-search-search-match-highlight-text-color);
+        padding: 1px 3px;
     }
 
     h2{
@@ -17,11 +19,7 @@ simple-search {
         display: block;
         white-space: normal;
         clear: both;
-    }
-
-    .searchItem:hover {
-        background-color: color($colors, secondary);
-        cursor: pointer;
+        line-height: 1.5;
     }
 
     .matches{
@@ -141,6 +139,7 @@ simple-search {
         margin-bottom: 12px;
 
         .item {
+            cursor: pointer;
             .item-inner {
                 border: unset;
             }
@@ -154,7 +153,7 @@ simple-search {
             }
 
             &.selected-suggestion {
-                background-color: color($colors, secondary) !important;
+                background-color: var(--simple-search-selected-search-suggestion-background-color) !important;
             }
         }
 
@@ -185,23 +184,30 @@ simple-search {
         }
     }
 
-    .results{
+    .results {
         order: 0;
 
         ion-item.item {
             padding-left: 8px;
+            background-color: var(--simple-search-hititem-background-color);
         }
+
+        .searchItem:hover {
+            background-color: rgba(var(--simple-search-hititem-hover-background-color-rgb), var(--simple-search-hititem-hover-background-color-alpha));
+            cursor: pointer;
+        }
+
         .searchItem ion-label.label {
             margin-right: 0;
             max-width: 100%;
         }
     }
 
-    .results.dimmed{
+    .results.dimmed {
         opacity: 0.4;
     }
 
-    .facets{
+    .facets {
         order: 0;
         background-color: rgba(178, 178, 178, 1);
         min-width: 65%;
@@ -222,7 +228,7 @@ simple-search {
         padding-left: 0.4rem;
     }
 
-    .facetCategories ion-item{
+    .facetCategories ion-item {
         height: 2.2rem;
     }
 
@@ -236,31 +242,31 @@ simple-search {
         cursor: pointer;
     }
 
-    .count{
+    .count {
         float: right;
     }
 
-    .facets > ion-label{
+    .facets > ion-label {
         display: flex;
     }
 
-    .hideFacets{
+    .hideFacets {
         display: none;
     }
 
-    .toggleRow{
+    .toggleRow {
         display: flex;
         width: 100%;
         justify-content: space-between;
         padding: 6px 0;
     }
 
-    .toggleFacets{
+    .toggleFacets {
         padding-right: 1.2rem;
         cursor: pointer;
     }
 
-    .hitCount{
+    .hitCount {
         float: right;
         white-space: nowrap;
         font-size: 1rem;

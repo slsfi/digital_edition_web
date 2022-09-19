@@ -23,6 +23,7 @@ export class VariationsComponent {
   @Input() itemId: string;
   @Input() linkID?: string;
   @Input() matches?: Array<string>;
+  @Input() sortOrder?: number;
   @ViewChild('toolTip') toolTip: ElementRef;
   @Output() openNewVarView: EventEmitter<any> = new EventEmitter();
 
@@ -52,11 +53,12 @@ export class VariationsComponent {
     this.text = '';
     this.selectedVariationName = '';
     this.variations = [];
+    this.varID = '';
     this.intervalTimerId = 0;
   }
 
   ngOnInit() {
-    this.varID = this.itemId + '_var';
+    this.varID = this.itemId.split(';')[0] + '_var';
     this.setText();
   }
 
@@ -72,14 +74,23 @@ export class VariationsComponent {
   }
 
   setText() {
-    this.storage.get(this.varID).then((variations) => {
-      if (variations) {
-        this.getCacheText(this.varID);
-      } else {
-        this.getVariation();
-      }
-      this.doAnalytics();
-    });
+    if (this.textService.varIdsInStorage.includes(this.varID)) {
+      this.storage.get(this.varID).then((variations) => {
+        if (variations) {
+          this.textLoading = false;
+          this.variations = variations;
+          this.setVariation();
+          console.log('Retrieved variations from cache');
+        } else {
+          console.log('Failed to retrieve variations from cache');
+          this.textService.varIdsInStorage.splice(this.textService.varIdsInStorage.indexOf(this.varID), 1);
+          this.getVariation();
+        }
+      });
+    } else {
+      this.getVariation();
+    }
+    this.doAnalytics();
   }
 
   getVariation() {
@@ -90,6 +101,10 @@ export class VariationsComponent {
         this.variations = res.variations;
         if (this.variations.length > 0) {
           console.log('recieved variations ,..,');
+          if (!this.textService.varIdsInStorage.includes(this.varID)) {
+            this.textService.varIdsInStorage.push(this.varID);
+            this.storage.set(this.varID, this.variations);
+          }
           this.setVariation();
         } else {
           console.log('no variations');
@@ -120,18 +135,16 @@ export class VariationsComponent {
 
     if (this.linkID && this.linkID !== undefined && inputVariation !== undefined ) {
       this.selectedVariation = inputVariation;
+      this.sortOrder = inputVariation.sort_order - 1;
     } else {
-      this.selectedVariation = this.variations[0];
+      if (this.sortOrder && this.variations[this.sortOrder] !== undefined) {
+        this.selectedVariation = this.variations[this.sortOrder];
+      } else {
+        this.selectedVariation = this.variations[0];
+        this.sortOrder = 0;
+      }
     }
     this.changeVariation();
-  }
-
-  getCacheText(id: string) {
-    this.storage.get(id).then((variations) => {
-      this.textLoading = false;
-      this.variations = this.variations;
-      this.setVariation();
-    });
   }
 
   changeVariation( variation?: any ) {
@@ -142,12 +155,12 @@ export class VariationsComponent {
     if (this.selectedVariation && this.selectedVariation.content !== undefined) {
       this.text = this.sanitizer.bypassSecurityTrustHtml(
           this.selectedVariation.content.replace(/images\//g, 'assets/images/')
-            .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiVariant $1\"')
+            .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiVariant tei $1\"')
       );
     }
   }
 
-  selectVariation() {
+  selectVariation(event: any) {
     let varTranslations = null;
     this.translate.get('Read.Variations').subscribe(
       translation => {
@@ -188,6 +201,8 @@ export class VariationsComponent {
       text: buttonTranslations.Ok,
       handler: (index: any) => {
         this.changeVariation(this.variations[parseInt(index)]);
+        this.sortOrder = parseInt(index);
+        this.updateVariationSortOrderInService(event);
       }
     });
 
@@ -236,6 +251,7 @@ export class VariationsComponent {
 
   openVariationInNewView(variation?: any) {
     variation.viewType = 'variations';
+    this.textService.variationsOrder.push(variation.sort_order - 1);
     this.openNewVarView.emit(variation);
     this.scrollLastViewIntoView();
   }
@@ -249,13 +265,52 @@ export class VariationsComponent {
     });
   }
 
-  /* This function scrolls the read-view horisontally to the last read column.
-   * It's called after adding new views. */
+  /**
+   * Store the sort order of the selected variation in this variations column to textService.
+   * @param event Event triggered when pressing the change variation button in this variations column.
+   * */
+  updateVariationSortOrderInService(event: any) {
+    if (event.target) {
+      let currentVarElemContainer = event.target as HTMLElement;
+      while (currentVarElemContainer !== null
+        && !currentVarElemContainer.classList.contains('read-column')
+        && currentVarElemContainer.parentElement !== null) {
+          currentVarElemContainer = currentVarElemContainer.parentElement;
+      }
+      if (currentVarElemContainer !== null) {
+        const varElemColumnIds = [];
+        const columnElems = Array.from(document.querySelectorAll('div.read-column'));
+        if (columnElems) {
+          columnElems.forEach(function(columnElem) {
+            const varElem = columnElem.querySelector('variations');
+            if (varElem && columnElem.id) {
+              varElemColumnIds.push(columnElem.id);
+            }
+          });
+          let currentVarElemIndex = undefined;
+          for (let k = 0; k < varElemColumnIds.length; k++) {
+            if (varElemColumnIds[k] === currentVarElemContainer.id) {
+              currentVarElemIndex = k;
+              break;
+            }
+          }
+          if (currentVarElemIndex !== undefined) {
+            this.textService.variationsOrder[currentVarElemIndex] = this.sortOrder;
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * This function scrolls the read-view horisontally to the last read column.
+   * It's called after adding new views.
+   * */
   scrollLastViewIntoView() {
     this.ngZone.runOutsideAngular(() => {
       let interationsLeft = 10;
       clearInterval(this.intervalTimerId);
-      this.intervalTimerId = setInterval(function() {
+      this.intervalTimerId = window.setInterval(function() {
         if (interationsLeft < 1) {
           clearInterval(this.intervalTimerId);
         } else {

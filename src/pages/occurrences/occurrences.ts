@@ -44,8 +44,9 @@ export class OccurrencesPage {
   source: string = null;
   description: string = null;
   country: string = null;
-  date_born: string = null;
-  date_deceased: string = null;
+  year_born: string = null;
+  year_deceased: string = null;
+  year_born_deceased_string: string = null;
   publisher: string = null;
   published_year: string = null;
   journal: string = null;
@@ -59,6 +60,7 @@ export class OccurrencesPage {
   infoLoading: Boolean = true;
   showPublishedStatus: Number = 2;
   noData: Boolean = false;
+  simpleWorkMetadata: Boolean;
 
   objectType = '';
 
@@ -84,10 +86,21 @@ export class OccurrencesPage {
               private events: Events,
               private analyticsService: AnalyticsService
   ) {
+    if (this.simpleWorkMetadata === undefined) {
+      try {
+        this.simpleWorkMetadata = this.config.getSettings('useSimpleWorkMetadata');
+      } catch (e) {
+        this.simpleWorkMetadata = false;
+      }
+    }
+
     this.occurrenceResult = this.navParams.get('occurrenceResult');
     if ( this.occurrenceResult !== undefined ) {
+      // console.log('Getting occurrenceResult from navParams:');
+      // console.log(this.occurrenceResult);
       this.init();
     } else if ( this.navParams.get('type') && this.navParams.get('id') ) {
+      // console.log('occurrenceResult not in navParams, getting object data');
       this.occurrenceResult = new OccurrenceResult();
       this.getObjectData(this.navParams.get('type'), this.navParams.get('id'));
     }
@@ -117,19 +130,32 @@ export class OccurrencesPage {
       this.authors = [];
     }
 
-    this.date_born = (this.occurrenceResult.date_born !== undefined && this.occurrenceResult.date_born !== null) ?
-                              String(this.occurrenceResult.date_born).split('-')[0].replace(/^0+/, '') : null;
-    this.date_deceased = (this.occurrenceResult.date_deceased !== undefined && this.occurrenceResult.date_deceased !== null) ?
-                              String(this.occurrenceResult.date_deceased).split('-')[0].replace(/^0+/, '') : null;
-
+    // Get the born and deceased years without leading zeros and possible 'BC' indicators
+    this.year_born = (this.occurrenceResult.date_born !== undefined && this.occurrenceResult.date_born !== null) ?
+                              String(this.occurrenceResult.date_born).split('-')[0].replace(/^0+/, '').split(' ')[0] : null;
+    this.year_deceased = (this.occurrenceResult.date_deceased !== undefined && this.occurrenceResult.date_deceased !== null) ?
+                              String(this.occurrenceResult.date_deceased).split('-')[0].replace(/^0+/, '').split(' ')[0] : null;
+    // Get translation for 'BC'
     let bcTranslation = 'BC';
     this.translate.get('BC').subscribe(
       translation => {
         bcTranslation = translation;
       }, error => { }
     );
-    if ( this.date_deceased !== null ) {
-      this.date_deceased = this.date_deceased + '' + ((String(this.occurrenceResult.date_deceased).includes('BC')) ? ' ' + bcTranslation : '');
+    const bcIndicatorDeceased = (String(this.occurrenceResult.date_deceased).includes('BC')) ? ' ' + bcTranslation : '';
+    let bcIndicatorBorn = (String(this.occurrenceResult.date_born).includes('BC')) ? ' ' + bcTranslation : '';
+    if (String(this.occurrenceResult.date_born).includes('BC') && bcIndicatorDeceased === bcIndicatorBorn) {
+      // Born and deceased are both BC --> don't add indicator to year born
+      bcIndicatorBorn = '';
+    }
+    // Construct string with year born and year deceased for output
+    this.year_born_deceased_string = '';
+    if (this.year_born !== null && this.year_deceased !== null && this.year_born !== 'null' && this.year_deceased !== 'null') {
+      this.year_born_deceased_string += '(' + this.year_born + bcIndicatorBorn + '–' + this.year_deceased + bcIndicatorDeceased + ')';
+    } else if (this.year_born !== null && this.year_born !== 'null') {
+      this.year_born_deceased_string += '(* ' + this.year_born + bcIndicatorBorn + ')';
+    } else if (this.year_deceased !== null && this.year_deceased !== 'null') {
+      this.year_born_deceased_string += '(&#8224; ' + this.year_deceased + bcIndicatorDeceased + ')';
     }
 
     try {
@@ -173,25 +199,46 @@ export class OccurrencesPage {
 
   getObjectData(type, id) {
     this.infoLoading = true;
-    this.semanticDataService.getSingleObjectElastic(type, id).subscribe(
-      data => {
-        this.infoLoading = false;
-        this.objectType = type;
-        const personsTmp = [];
-        if ( data.hits.hits.length <= 0 ) {
-          this.noData = true;
-        } else {
-          this.occurrenceResult = data.hits.hits[0]['_source'];
-        }
-        if ( type === 'work' && this.noData !== true ) {
-          this.occurrenceResult.id = this.occurrenceResult['man_id'];
-          this.occurrenceResult.description = this.occurrenceResult['reference'];
-          this.occurrenceResult.name = this.occurrenceResult['title'];
-        }
-        this.init();
-      },
-      err => {console.error(err); this.infoLoading = false; }
-    );
+
+    if (this.simpleWorkMetadata !== undefined && this.simpleWorkMetadata === true && type === 'work') {
+      this.semanticDataService.getWork(id).subscribe(
+        data => {
+          this.infoLoading = false;
+          this.objectType = type;
+          if (data.title === undefined) {
+            this.noData = true;
+          } else {
+            this.occurrenceResult = data;
+            this.occurrenceResult.id = data.id;
+            this.occurrenceResult.description = null;
+            this.occurrenceResult.source = null;
+            this.occurrenceResult.name = data.title;
+          }
+          this.init();
+        },
+        err => {console.error(err); this.infoLoading = false; }
+      );
+    } else {
+      this.semanticDataService.getSingleObjectElastic(type, id).subscribe(
+        data => {
+          this.infoLoading = false;
+          this.objectType = type;
+          const personsTmp = [];
+          if ( data.hits.hits.length <= 0 ) {
+            this.noData = true;
+          } else {
+            this.occurrenceResult = data.hits.hits[0]['_source'];
+          }
+          if ( type === 'work' && this.noData !== true ) {
+            this.occurrenceResult.id = this.occurrenceResult['man_id'];
+            this.occurrenceResult.description = this.occurrenceResult['reference'];
+            this.occurrenceResult.name = this.occurrenceResult['title'];
+          }
+          this.init();
+        },
+        err => {console.error(err); this.infoLoading = false; }
+      );
+    }
   }
 
   getMediaData() {

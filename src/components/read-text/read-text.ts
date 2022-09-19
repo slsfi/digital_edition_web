@@ -1,5 +1,4 @@
-
-import { Component, Input, ElementRef, Renderer2, NgZone } from '@angular/core';
+import { Component, Input, ElementRef, EventEmitter, Output, Renderer2, NgZone } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { TextService } from '../../app/services/texts/text.service';
@@ -7,6 +6,8 @@ import { Storage } from '@ionic/storage';
 import { ToastController, Events, ModalController, App } from 'ionic-angular';
 import { IllustrationPage } from '../../pages/illustration/illustration';
 import { ConfigService } from '@ngx-config/core';
+import { UserSettingsService } from '../../app/services/settings/user-settings.service';
+import { TranslateService } from '@ngx-translate/core';
 import { TextCacheService } from '../../app/services/texts/text-cache.service';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 /**
@@ -25,13 +26,17 @@ export class ReadTextComponent {
   @Input() matches?: Array<string>;
   @Input() external?: string;
   @Input() nochapterPos?: string;
+  @Output() openNewIllustrView: EventEmitter<any> = new EventEmitter();
   public text: any;
   protected errorMessage: string;
   defaultView: string;
   apiEndPoint: string;
   appMachineName: string;
   textLoading: Boolean = true;
+  illustrationsVisibleInReadtext: Boolean = false;
+  illustrationsViewAvailable: Boolean = false;
   intervalTimerId: number;
+  estID: string;
   pos: string;
   private unlistenClickEvents: () => void;
 
@@ -47,6 +52,8 @@ export class ReadTextComponent {
     private ngZone: NgZone,
     private elementRef: ElementRef,
     private config: ConfigService,
+    public userSettingsService: UserSettingsService,
+    public translate: TranslateService,
     protected modalController: ModalController,
     private analyticsService: AnalyticsService
   ) {
@@ -54,6 +61,16 @@ export class ReadTextComponent {
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.defaultView = this.config.getSettings('defaults.ReadModeView');
     this.intervalTimerId = 0;
+    this.estID = '';
+
+    try {
+      const displayTypes = this.config.getSettings('settings.displayTypesToggles');
+      if (displayTypes.illustrations === true) {
+        this.illustrationsViewAvailable = true;
+      }
+    } catch (e) {
+      this.illustrationsViewAvailable = false;
+    }
   }
 
   ngOnInit() {
@@ -64,11 +81,14 @@ export class ReadTextComponent {
           this.link = data[0]['coll_id'] + '_' + data[0]['pub_id'];
         }
         this.setText();
+        this.setIllustrationsInReadtextStatus();
       });
     } else {
       this.setText();
+      this.setIllustrationsInReadtextStatus();
     }
     this.setUpTextListeners();
+
   }
 
   ngAfterViewInit() {
@@ -76,7 +96,7 @@ export class ReadTextComponent {
       // Scroll to link position if defined.
       let interationsLeft = 10;
       clearInterval(this.intervalTimerId);
-      this.intervalTimerId = setInterval(function() {
+      this.intervalTimerId = window.setInterval(function() {
         if (interationsLeft < 1) {
           clearInterval(this.intervalTimerId);
         } else {
@@ -118,6 +138,11 @@ export class ReadTextComponent {
     this.unlistenClickEvents();
   }
 
+  /**
+   * ! This method does not work when an open illustrations-view has been previously
+   * ! removed and then an attempt to reopen one from the read-text is made. New
+   * ! illustrations-views are opened with the openIllustrationInNewView method.
+   */
   openNewView( event, id: any, type: string ) {
     let openId = id;
     let chapter = null;
@@ -126,6 +151,14 @@ export class ReadTextComponent {
       chapter = 'ch' + String(String(id).split('ch')[1]).trim();
     }
     this.events.publish('show:view', type, openId, chapter);
+  }
+
+  /** Function for opening the passed image in a new illustrations-view. */
+  openIllustrationInNewView(image: any) {
+    image.viewType = 'illustrations';
+    image.id = null;
+    this.openNewIllustrView.emit(image);
+    this.scrollLastViewIntoView();
   }
 
   private setIllustrationImages() {
@@ -150,85 +183,129 @@ export class ReadTextComponent {
     });
   }
 
-  onClickFFiT(event) {
-  }
-
-  getCacheText(id: string) {
-    this.storage.get(id).then((content) => {
-      this.textLoading = false;
-      const c_id = String(this.link).split('_')[0];
-      let galleryId = 44;
-      try {
-        galleryId = this.config.getSettings('settings.galleryCollectionMapping')[c_id];
-      } catch ( err ) {
-
-      }
-      if ( String(content).includes('images/verk/http') ) {
-        content = content.replace(/images\/verk\//g, '');
-      } else {
-        content = content.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/${galleryId}/`);
-      }
-      content = content.replace(/\.png/g, '.svg');
-      content = content.replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"');
-      content = content.replace(/images\//g, 'assets/images/');
-      this.text = this.sanitizer.bypassSecurityTrustHtml(
-        content
-      );
-      this.matches.forEach(function (val) {
-        const re = new RegExp('(' + val + ')', 'g');
-        this.text = this.sanitizer.bypassSecurityTrustHtml(
-          content.replace(re, '<match>$1</match>')
-        );
-      }.bind(this));
-    });
-  }
-
   setText() {
-    this.storage.get(this.link + '_est').then((content) => {
-      if (content) {
-        this.getCacheText(this.link + '_est');
+    // Construct estID for storing read-text in storage
+    if (this.link.indexOf(';') < 0) {
+      // No pos in link
+      this.estID = this.link + '_est';
+    } else {
+      const posIndex = this.link.indexOf(';');
+      if (this.link.indexOf('_', posIndex) < 0) {
+        // Not a multilingual est link but has pos
+        this.estID = this.link.split(';')[0] + '_est';
       } else {
-        this.getEstText();
+        // Multilingual est link with pos, remove pos
+        this.estID = this.link.split(';')[0] + '_' + this.link.substring(this.link.lastIndexOf('_') + 1) + '_est';
       }
-      this.doAnalytics();
-    });
+    }
+    // console.log('this.estID:', this.estID);
+
+    if (this.textService.readtextIdsInStorage.includes(this.estID)) {
+      this.storage.get(this.estID).then((readtext) => {
+        if (readtext) {
+          this.textLoading = false;
+          readtext = this.insertSearchMatchTags(readtext);
+          this.text = this.sanitizer.bypassSecurityTrustHtml(readtext);
+          console.log('Retrieved read-text from cache');
+        } else {
+          console.log('Failed to retrieve read-text text from cache');
+          this.textService.readtextIdsInStorage.splice(this.textService.readtextIdsInStorage.indexOf(this.estID), 1);
+          this.getEstText();
+        }
+      });
+    } else {
+      this.getEstText();
+    }
+    this.doAnalytics();
   }
 
   getEstText() {
     this.textService.getEstablishedText(this.link).subscribe(
-      text => {
+      content => {
         this.textLoading = false;
-        const c_id = String(this.link).split('_')[0];
-        let galleryId = 44;
-        try {
-          galleryId = this.config.getSettings('settings.galleryCollectionMapping')[c_id];
-        } catch ( err ) {
-
-        }
-        if ( String(text).includes('/images/verk/http') ) {
-          text = text.replace(/images\/verk\//g, '');
+        if (content === '' || content === '<html xmlns="http://www.w3.org/1999/xhtml"><head></head><body>File not found</body></html>') {
+          console.log('no reading text');
+          this.translate.get('Read.Established.NoEstablished').subscribe(
+            translation => {
+              this.text = translation;
+            }, error => {
+              console.error(error);
+              this.text = 'Ingen lästext';
+            }
+          );
         } else {
-          text = text.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/${galleryId}/`);
-        }
-        text = text.replace(/\.png/g, '.svg');
-        text = text.replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"');
-        text = text.replace(/images\//g, 'assets/images/');
-        this.text = this.sanitizer.bypassSecurityTrustHtml(
-          text
-        );
-        if (this.matches instanceof Array && this.matches.length > 0) {
-          let tmpText: any = '';
-          this.matches.forEach(function (val) {
-            const re = new RegExp('(' + val + ')', 'ig');
-            tmpText = this.sanitizer.bypassSecurityTrustHtml(
-              text.replace(re, '<match>$1</match>')
-            );
-          }.bind(this));
-          this.text = tmpText;
+          let processedText = this.postprocessReadtext(content);
+
+          if (!this.textService.readtextIdsInStorage.includes(this.estID)) {
+            this.textService.readtextIdsInStorage.push(this.estID);
+            this.storage.set(this.estID, processedText);
+          }
+
+          processedText = this.insertSearchMatchTags(processedText);
+          this.text = this.sanitizer.bypassSecurityTrustHtml(processedText);
         }
       },
-      error => { this.errorMessage = <any>error; this.textLoading = false; }
+      error => { this.errorMessage = <any>error; this.textLoading = false; this.text = 'Lästexten kunde inte hämtas.'; }
     );
+  }
+
+  private postprocessReadtext(text: string) {
+    const c_id = String(this.link).split('_')[0];
+    let galleryId = 44;
+
+    try {
+      galleryId = this.config.getSettings('settings.galleryCollectionMapping')[c_id];
+    } catch ( err ) {
+    }
+
+    if ( String(text).includes('images/verk/http') ) {
+      text = text.replace(/images\/verk\//g, '');
+    } else {
+      text = text.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/${galleryId}/`);
+    }
+
+    text = text.replace(/\.png/g, '.svg');
+    text = text.replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"');
+    text = text.replace(/images\//g, 'assets/images/');
+
+    return text;
+  }
+
+  /**
+   * TODO: The regex doesn't work if the match string in the text is interspersed with tags.
+   * For instance, in the text the match could have a span indicating page break:
+   * Tavast<span class="tei pb_zts">|87|</span>länningar. This occurrence will not be marked
+   * with <match> tags in a search for "Tavastlänningar". However, these kind of matches are
+   * found on the elastic-search page.
+   */
+  private insertSearchMatchTags(text: string) {
+    if (this.matches instanceof Array && this.matches.length > 0) {
+      console.log('search matches:', this.matches);
+      this.matches.forEach((val) => {
+        const re = new RegExp('(' + val + ')', 'ig');
+        text = text.replace(re, '<match>$1</match>');
+      });
+    }
+    return text;
+  }
+
+  /**
+   * Checks config settings if the current reading text has illustrations that are
+   * shown inline in the reading text view (based on matching publication id or collection id).
+   * Sets this.illustrationsVisibleInReadtext either true or false.
+   */
+  private setIllustrationsInReadtextStatus() {
+    let showIllustrations = [];
+    try {
+      showIllustrations = this.config.getSettings('settings.showReadTextIllustrations');
+    } catch (e) {
+      showIllustrations = [];
+    }
+    if (showIllustrations.includes(this.link.split('_')[0]) || showIllustrations.includes(this.link.split('_')[1])) {
+        this.illustrationsVisibleInReadtext = true;
+    } else {
+      this.illustrationsVisibleInReadtext = false;
+    }
   }
 
   private setUpTextListeners() {
@@ -238,40 +315,44 @@ export class ReadTextComponent {
 
       /* CLICK EVENTS */
       this.unlistenClickEvents = this.renderer2.listen(nElement, 'click', (event) => {
-        event.preventDefault();
         try {
-          if (this.config.getSettings('settings.showReadTextIllustrations')) {
-            const showIllustration = this.config.getSettings('settings.showReadTextIllustrations');
-            const eventTarget = event.target as HTMLElement;
-            if (eventTarget.classList.contains('doodle')) {
-              const image = {src: '/assets/images/verk/' + String(eventTarget.dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
-              this.ngZone.run(() => {
-                this.events.publish('give:illustration', image);
-              });
-            }
-            if ( showIllustration.includes(this.link.split('_')[1])) {
-              if (eventTarget.classList.contains('est_figure_graphic')) {
-                // Check if we have the "illustrations" tab open, if not, open
-                if ( document.querySelector('illustrations') === null ) {
-                  this.ngZone.run(() => {
-                    this.openNewView(event, null, 'illustrations');
-                  });
-                }
-                const image = {src: event.target.src, class: 'illustration'};
-                this.ngZone.run(() => {
-                  this.events.publish('give:illustration', image);
-                });
+          const eventTarget = event.target as HTMLElement;
+
+          // Some of the texts e.g. ordsprak.sls.fi links to external sites
+          if ( eventTarget.hasAttribute('href') === true && eventTarget.getAttribute('href').includes('http') === false ) {
+            event.preventDefault();
+          }
+
+          if (!this.userSettingsService.isMobile()) {
+            let image = null;
+
+            // Check if click on an illustration or icon representing an illustration
+            if (eventTarget.classList.contains('doodle') && eventTarget.hasAttribute('src')) {
+              // Click on a pictogram ("doodle")
+              image = {src: '/assets/images/verk/' + String(eventTarget.dataset.id).replace('tag_', '') + '.jpg', class: 'doodle'};
+            } else if (this.illustrationsVisibleInReadtext) {
+              // There are possibly visible illustrations in the read text. Check if click on such an image.
+              if (eventTarget.classList.contains('est_figure_graphic') && eventTarget.hasAttribute('src')) {
+                image = {src: event.target.src, class: 'visible-illustration'};
               }
             } else {
-              if (eventTarget.previousElementSibling !== null &&
-                eventTarget.previousElementSibling.classList.contains('est_figure_graphic')) {
-                // Check if we have the "illustrations" tab open, if not, open
-                if ( document.querySelector('illustrations') === null ) {
-                  this.ngZone.run(() => {
-                    this.openNewView(event, null, 'illustrations');
-                  });
-                }
-                const image = {src: event.target.previousElementSibling.src, class: 'illustration'};
+              // Check if click on an icon representing an image which is NOT visible in the reading text
+              if (eventTarget.previousElementSibling !== null
+              && eventTarget.previousElementSibling.classList.contains('est_figure_graphic')
+              && eventTarget.previousElementSibling.hasAttribute('src')) {
+                image = {src: event.target.previousElementSibling.src, class: 'illustration'};
+              }
+            }
+
+            // Check if we have an image to show in the illustrations-view
+            if (image !== null) {
+              // Check if we have an illustrations-view open, if not, open and display the clicked image there
+              if (document.querySelector('illustrations') === null) {
+                this.ngZone.run(() => {
+                  this.openIllustrationInNewView(image);
+                });
+              } else {
+                // Display image in an illustrations-view which is already open
                 this.ngZone.run(() => {
                   this.events.publish('give:illustration', image);
                 });
@@ -282,6 +363,7 @@ export class ReadTextComponent {
           console.error(e);
         }
 
+        // Check if click on an icon which links to an illustration that should be opened in a modal
         if (event.target.parentNode.classList.contains('ref_illustration')) {
           const hashNumber = event.target.parentNode.hash;
           const imageNumber = hashNumber.split('#')[1];
@@ -331,12 +413,14 @@ export class ReadTextComponent {
     }
   }
 
-  /** This function can be used to scroll a container so that the element which it
-   *  contains is placed either at the top edge of the container or in the center
-   *  of the container. This function can be called multiple times simultaneously
-   *  on elements in different containers, unlike the native scrollIntoView function
-   *  which cannot be called multiple times simultaneously in Chrome due to a bug.
-   *  Valid values for yPosition are 'top' and 'center'. */
+  /**
+   * This function can be used to scroll a container so that the element which it
+   * contains is placed either at the top edge of the container or in the center
+   * of the container. This function can be called multiple times simultaneously
+   * on elements in different containers, unlike the native scrollIntoView function
+   * which cannot be called multiple times simultaneously in Chrome due to a bug.
+   * Valid values for yPosition are 'top' and 'center'.
+   */
   private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0) {
     if (element === undefined || element === null || (yPosition !== 'center' && yPosition !== 'top')) {
       return;
@@ -364,5 +448,34 @@ export class ReadTextComponent {
 
   doAnalytics() {
     this.analyticsService.doAnalyticsEvent('Established', 'Established', String(this.link));
+  }
+
+  /**
+   * This function scrolls the read-view horisontally to the last read column.
+   * It's called after adding new views.
+   */
+  scrollLastViewIntoView() {
+    this.ngZone.runOutsideAngular(() => {
+      let interationsLeft = 10;
+      clearInterval(this.intervalTimerId);
+      this.intervalTimerId = window.setInterval(function() {
+        if (interationsLeft < 1) {
+          clearInterval(this.intervalTimerId);
+        } else {
+          interationsLeft -= 1;
+          const viewElements = document.getElementsByClassName('read-column');
+          if (viewElements[0] !== undefined) {
+            const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
+            const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
+            if (scrollingContainer !== null) {
+              const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
+              scrollingContainer.getBoundingClientRect().left;
+              scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
+              clearInterval(this.intervalTimerId);
+            }
+          }
+        }
+      }.bind(this), 500);
+    });
   }
 }

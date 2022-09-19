@@ -14,6 +14,7 @@ import { OccurrencesPage } from '../occurrences/occurrences';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { MetadataService } from '../../app/services/metadata/metadata.service';
+import { MdContentService } from '../../app/services/md/md-content.service';
 
 /**
  * Generated class for the worksearchPage page.
@@ -54,6 +55,7 @@ export class WorkSearchPage {
   showLoading = false;
   showFilter = true;
   objectType = 'work';
+  mdContent: string;
 
   selectedLinkID: string;
 
@@ -66,6 +68,7 @@ export class WorkSearchPage {
               public navParams: NavParams,
               public semanticDataService: SemanticDataService,
               protected langService: LanguageService,
+              private mdContentService: MdContentService,
               protected config: ConfigService,
               private app: App,
               private platform: Platform,
@@ -83,13 +86,26 @@ export class WorkSearchPage {
   ) {
     this.langService.getLanguage().subscribe((lang) => {
       this.appName = this.config.getSettings('app.name.' + lang);
-      this.showFilter = this.config.getSettings('PersonSearch.ShowFilter');
+      try {
+        this.showFilter = this.config.getSettings('PersonSearch.ShowFilter');
+      } catch (e) {
+        this.showFilter = true;
+      }
+      this.getMdContent(lang + '-12-05');
     });
     this.setData();
   }
 
   ionViewDidEnter() {
     this.analyticsService.doPageView('Works');
+  }
+
+  ionViewDidLoad() {
+    this.events.subscribe('language:change', () => {
+      this.langService.getLanguage().subscribe((lang) => {
+        this.getMdContent(lang + '-12-05');
+      });
+    });
   }
 
   ionViewDidLeave() {
@@ -101,11 +117,20 @@ export class WorkSearchPage {
   }
   ionViewWillEnter() {
     this.events.publish('ionViewWillEnter', this.constructor.name);
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'work-search'});
+    this.events.publish('SelectedItemInMenu', {
+      menuID: 'workSearch',
+      component: 'work-search'
+    });
     // Try to remove META-Tags
     this.metadataService.clearHead();
     // Add the new META-Tags
     this.metadataService.addDescription(this.constructor.name);
     this.metadataService.addKeywords();
+  }
+
+  ngOnDestroy() {
+    this.events.unsubscribe('language:change');
   }
 
   setData() {
@@ -190,11 +215,18 @@ export class WorkSearchPage {
   }
 
   showAll() {
+    /*
     this.works = [];
     this.allData = [];
     this.count = 0;
     this.allData = this.cacheData;
     this.loadMoreworks();
+    */
+    this.count = 0;
+    this.from = 0;
+    this.searchText = '';
+    this.works = [];
+    this.getworks();
     this.content.scrollToTop(400);
   }
 
@@ -208,10 +240,7 @@ export class WorkSearchPage {
     }
 
     this.works = list;
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad worksearchPage');
+    this.content.scrollToTop(400);
   }
 
   filter(terms) {
@@ -476,6 +505,14 @@ export class WorkSearchPage {
         }
       }
     }
+  }
+
+  getMdContent(fileID: string) {
+    this.mdContentService.getMdContent(fileID)
+      .subscribe(
+        text => { this.mdContent = text.content; },
+        error => { this.mdContent = ''; }
+      );
   }
 
 }

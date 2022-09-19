@@ -186,11 +186,15 @@ export class SemanticDataService {
       .catch(this.handleError);
   }
 
-  getSubjectsElastic(from, searchText?, filters?) {
+  getSubjectsElastic(from, searchText?, filters?, max?) {
     let showPublishedStatus = 2;
     if ( filters === null ) {
       filters = {};
     }
+    if ( max === undefined || max === null ) {
+      max = 800;
+    }
+
     try {
       showPublishedStatus = this.config.getSettings('PersonSearch.ShowPublishedStatus');
     } catch (e) {
@@ -198,7 +202,7 @@ export class SemanticDataService {
     }
     const payload: any = {
       from: from,
-      size: 200,
+      size: max,
       sort: [
         { 'full_name.keyword' : {'order' : 'asc'} }
       ],

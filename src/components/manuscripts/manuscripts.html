@@ -1,6 +1,6 @@
 <ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
 
-<div *ngIf="!textLoading && manuscripts.length>0" class="text-select-wrapper">
+<div id="ms" *ngIf="!textLoading && manuscripts.length>0" class="text-select-wrapper">
   <h3 [innerHTML]="selectedManuscriptName"></h3>
   <div class="flex-buttons">
     <button *ngIf="manuscripts.length>1" ion-button (click)="selectManuscript()">{{"Read.Manuscripts.ChangeManuscript" | translate}}</button>
@@ -8,13 +8,13 @@
     <button ion-button outline (click)="openFacsimileMan($event, selectedManuscript)">{{"Read.Manuscripts.OpenFacsimile" | translate}}</button>
     -->
   </div>
-  <ion-item>
+  <ion-item class="show-normalized-toggle">
     <ion-label>{{"Read.Manuscripts.ShowNormalized" | translate}}</ion-label>
     <ion-toggle [(ngModel)]="normalized" (ionChange)="changeManuscript()"></ion-toggle>
   </ion-item>
 </div>
 
-<div class="tei" [innerHTML]="text"
+<div class="tei teiContainer teiManuscript" [innerHTML]="text"
   [class.show_personInfo]="readPopoverService.show.personInfo"
   [class.show_placeInfo]="readPopoverService.show.placeInfo"
   [class.show_workInfo]="readPopoverService.show.workInfo"
@@ -22,4 +22,3 @@
   [class.show_pageBreakOriginal]="readPopoverService.show.pageBreakOriginal"
   [ngClass]="(readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize'">
 </div>
-

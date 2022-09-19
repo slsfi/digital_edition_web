@@ -65,16 +65,12 @@ page-read {
   }
 
   .segment-activated {
-    background-color: color($colors, primary) !important;
-    color: $white-color !important;
+    background-color: var(--segment-activated-background-color) !important;
+    color: var(--segment-activated-text-color) !important;
   }
 
   .readpage-occurrences-mobile {
     width: 100%;
-  }
-
-  .column-container {
-    text-align: center;
   }
 
   .column-container .card {
@@ -111,33 +107,26 @@ page-read {
     /*overflow-x: auto;
     overflow-y: hidden;  overflow is now set on the parent element div.scroll-content */
     white-space: nowrap;
-
-    /*the bar with a heading for the column*/
-    &__title {
-      background: color($colors, secondary);
-      font-size: 0.75rem;
-      font-weight: bold;
-      padding: 16px 22px;
-    }
-
-    &.single-column .read-column {
-      max-width: initial !important;
-      margin-left: auto;
-      margin-right: auto;
-      display: block;
-    }
-
-    &.multiple-columns .read-column {
-      display: inline-block;
-    }
+    display: flex;
+    align-content: center;
 
     .read-column {
-      display: inline-block;
-      width: 97%;
+      position: relative;
+      flex: 1 1 auto;
+      max-width: 730px;
+      min-width: 500px;
 
       ion-card {
-        background-color: var(--read-columns-background-color);
+        background-color: var(--page-read-columns-background-color);
         margin-bottom: 0;
+
+        /*the bar with a heading for the column*/
+        .read-columns__title {
+          background: var(--page-read-columns-header-background-color);
+          font-size: 0.75rem;
+          font-weight: bold;
+          padding: 16px 22px;
+        }
 
         .card-content {
           padding: 0;
@@ -148,6 +137,51 @@ page-read {
         }
       }
     }
+
+    .read-column.column_type_facsimiles {
+      max-width: 100%;
+    }
+  }
+
+  .add-view-column {
+    position: relative;
+    flex: 0 0 auto;
+    width: 80px;
+    display: flex;
+    visibility: hidden; /* Hides the column by default, set to visible below when preceded by a read-column in the DOM. This prevents the column from flashing to the left in page-read when read-columns have not been loaded yet. */
+
+    ion-fab {
+      top:-5px;
+    }
+
+    ion-fab-list button.fab.fab-in-list {
+      background-color: #f4f4f4;
+      color: #000;
+    }
+
+    .add-column {
+      background: var(--page-read-add-column-background-color);
+      color: var(--page-read-add-column-text-color);
+      margin: 10px 25px 0 25px;
+      width: 30px;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .add-column p {
+      transform: rotate(90deg) translateX(100%);
+      text-transform: uppercase;
+      font-size: 0.8125rem;
+      font-weight: bold;
+      line-height: 1;
+      margin: 0;
+    }
+  }
+  .read-column + .add-view-column {
+    visibility: visible;
   }
 
   .swipeCenter {
@@ -160,13 +194,6 @@ page-read {
     font-size: 2em;
     color: #676767;
     transform: translateY(-50%);
-  }
-
-  .forwardBackward {
-    height: 100%;
-    align-items: center;
-    padding-left: 1em;
-    padding-right: 1em;
   }
 
   .tei {
@@ -201,7 +228,7 @@ page-read {
       color: #f1f1f1;
       line-height: 24px;
       transition: right 0.5s;
-      font-weight: bold;
+      font-weight: 600;
     }
 
     &:hover ion-label {
@@ -215,12 +242,12 @@ page-read {
     z-index: 10;
   }
 
-  .close-button-many {
+  .column-options-many {
     right: -10px !important;
     top: -5px;
   }
 
-  .close-button-one {
+  .column-options-one {
     right: -10px !important;
     top: -15px;
   }
@@ -247,8 +274,8 @@ page-read {
     color: #78756f;
   }
 
-  h1 {
-    font-size: 1.3rem !important;
+  .content h1 {
+    font-size: 1.3rem;
     text-transform: none;
   }
 
@@ -276,17 +303,6 @@ page-read {
     }
     .scroll-zoom-wrapper {
       padding: 16px 12px;
-    }
-    .text-changer-desktop-view {
-      max-width: 80%;
-    }
-
-    .forwardBackward__previouspage-name {
-      display: none;
-    }
-
-    .forwardBackward__nextpage-name {
-      display: none;
     }
   }
 
@@ -316,23 +332,43 @@ ion-fab .fab-list-active .fab-backdrop {
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.60);
+  background: rgba(0, 0, 0, 0.65);
   z-index: -1;
 }
 
 page-read .mobile-mode-read-content > .scroll-content {
-  padding: 50px 0 0 0 !important;
+  padding: 50px 0 50px 0 !important;
 }
 
 page-read .mobile-mode-read-content .scroll-zoom-wrapper {
   padding: 10px;
 }
 
-/* Adjust padding and background color of text column in mobile mode. */
+/* Adjust padding and background color of text and facsimile columns in mobile mode. */
 page-read div.mobile-mode-established {
   padding: 12px;
-  background-color: var(--read-columns-background-color);
+  background-color: var(--page-read-columns-background-color);
 }
+page-read div.mobile-mode-facsimiles {
+
+  div.external-urls-header {
+    padding-left: 0.75rem !important;
+    padding-bottom: 0 !important;
+  }
+  ion-scroll.external_urls_wrapper {
+    background-color: var(--page-read-columns-background-color);
+    height: 100vh !important;
+    max-height: calc(100vh - 280px) !important;
+
+    ul {
+      margin-left: 10px !important;
+    }
+  }
+}
+page-read div.mobile-mode-facsimiles > facsimiles > div.tei {
+  padding: 10px;
+}
+
 
 @media(max-width: 800px) {
   ion-backdrop {
@@ -342,5 +378,8 @@ page-read div.mobile-mode-established {
 
   page-read .scroll-content {
     padding: 0 !important;
+  }
+  ion-scroll {
+    overflow-y: auto;
   }
 }

@@ -1,15 +1,18 @@
 manuscripts {
-    .XMLcomment {
-        display: none;
-    }
+  .XMLcomment {
+      display: none;
+  }
 
-    img.teiManuscript.symbol {
-      width: 0.7rem;
-      display: inline;
-    }
+  .tei img {
+    width: 0.9rem;
+    display: inline;
+  }
 
-    .tei img {
-      width: 0.9rem;
-      display: inline;
-    }
+  ion-item.item.show-normalized-toggle {
+    background-color: var(--main-background-color);
+  }
+
+}
+.mobile-mode-manuscripts manuscripts .text-select-wrapper {
+  display: none !important;
 }

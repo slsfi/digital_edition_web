@@ -56,7 +56,7 @@ export class ManuscriptsComponent {
   }
 
   ngOnInit() {
-    const parts = String(this.itemId).split('_')
+    const parts = String(this.itemId).split('_');
     this.chapter = null;
     if ( parts[2] !== undefined ) {
       this.chapter = parts[2];
@@ -149,12 +149,12 @@ export class ManuscriptsComponent {
       if (this.normalized) {
         this.text = this.sanitizer.bypassSecurityTrustHtml(
           this.selectedManuscript.manuscript_normalized.replace(/images\//g, 'assets/images/')
-            .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiManuscript $1\"')
+            .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiManuscript tei $1\"')
         );
       } else {
         this.text = this.sanitizer.bypassSecurityTrustHtml(
           this.selectedManuscript.manuscript_changes.replace(/images\//g, 'assets/images/')
-            .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiManuscript $1\"')
+            .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiManuscript tei $1\"')
         );
       }
     }
@@ -221,7 +221,7 @@ export class ManuscriptsComponent {
     this.ngZone.runOutsideAngular(() => {
       let interationsLeft = 10;
       clearInterval(this.intervalTimerId);
-      this.intervalTimerId = setInterval(function() {
+      this.intervalTimerId = window.setInterval(function() {
         if (interationsLeft < 1) {
           clearInterval(this.intervalTimerId);
         } else {

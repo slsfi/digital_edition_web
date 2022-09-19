@@ -1,4 +1,294 @@
-// http://ionicframework.com/docs/v2/theming/
+/* ADD CUSTOM FONTS */
+/* Roboto fonts */
+@font-face {
+  font-family: "Roboto";
+  src:  url('../assets/fonts/Roboto/woff2/Roboto-Regular-webfont.woff2') format('woff2'),
+        url('../assets/fonts/Roboto/woff/Roboto-Regular-webfont.woff') format('woff'),
+        url('../assets/fonts/Roboto/ttf/Roboto-Regular-webfont.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Roboto";
+  src:  url('../assets/fonts/Roboto/woff2/Roboto-Italic-webfont.woff2') format('woff2'),
+        url('../assets/fonts/Roboto/woff/Roboto-Italic-webfont.woff') format('woff'),
+        url('../assets/fonts/Roboto/ttf/Roboto-Italic-webfont.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Roboto";
+  src:  url('../assets/fonts/Roboto/woff2/Roboto-Bold-webfont.woff2') format('woff2'),
+        url('../assets/fonts/Roboto/woff/Roboto-Bold-webfont.woff') format('woff'),
+        url('../assets/fonts/Roboto/ttf/Roboto-Bold-webfont.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Roboto";
+  src:  url('../assets/fonts/Roboto/woff2/Roboto-BoldItalic-webfont.woff2') format('woff2'),
+        url('../assets/fonts/Roboto/woff/Roboto-BoldItalic-webfont.woff') format('woff'),
+        url('../assets/fonts/Roboto/ttf/Roboto-BoldItalic-webfont.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Roboto";
+  src:  url('../assets/fonts/Roboto/woff2/Roboto-Medium-webfont.woff2') format('woff2'),
+        url('../assets/fonts/Roboto/woff/Roboto-Medium-webfont.woff') format('woff'),
+        url('../assets/fonts/Roboto/ttf/Roboto-Medium-webfont.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Roboto";
+  src:  url('../assets/fonts/Roboto/woff2/Roboto-MediumItalic-webfont.woff2') format('woff2'),
+        url('../assets/fonts/Roboto/woff/Roboto-MediumItalic-webfont.woff') format('woff'),
+        url('../assets/fonts/Roboto/ttf/Roboto-MediumItalic-webfont.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Roboto";
+  src:  url('../assets/fonts/Roboto/woff2/Roboto-Light-webfont.woff2') format('woff2'),
+        url('../assets/fonts/Roboto/woff/Roboto-Light-webfont.woff') format('woff'),
+        url('../assets/fonts/Roboto/ttf/Roboto-Light-webfont.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Roboto";
+  src:  url('../assets/fonts/Roboto/woff2/Roboto-LightItalic-webfont.woff2') format('woff2'),
+        url('../assets/fonts/Roboto/woff/Roboto-LightItalic-webfont.woff') format('woff'),
+        url('../assets/fonts/Roboto/ttf/Roboto-LightItalic-webfont.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* Source Serif 4 fonts */
+@font-face {
+  font-family: "SourceSerif";
+  src:  url('../assets/fonts/SourceSerif/woff2/SourceSerif4-Regular.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSerif/woff/SourceSerif4-Regular.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSerif/ttf/SourceSerif4-Regular.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "SourceSerif";
+  src:  url('../assets/fonts/SourceSerif/woff2/SourceSerif4-It.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSerif/woff/SourceSerif4-It.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSerif/ttf/SourceSerif4-It.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "SourceSerif";
+  src:  url('../assets/fonts/SourceSerif/woff2/SourceSerif4-Bold.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSerif/woff/SourceSerif4-Bold.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSerif/ttf/SourceSerif4-Bold.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700;
+}
+@font-face {
+  font-family: "SourceSerif";
+  src:  url('../assets/fonts/SourceSerif/woff2/SourceSerif4-BoldIt.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSerif/woff/SourceSerif4-BoldIt.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSerif/ttf/SourceSerif4-BoldIt.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 700;
+}
+@font-face {
+  font-family: "SourceSerif";
+  src:  url('../assets/fonts/SourceSerif/woff2/SourceSerif4-Semibold.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSerif/woff/SourceSerif4-Semibold.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSerif/ttf/SourceSerif4-Semibold.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+}
+@font-face {
+  font-family: "SourceSerif";
+  src:  url('../assets/fonts/SourceSerif/woff2/SourceSerif4-SemiboldIt.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSerif/woff/SourceSerif4-SemiboldIt.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSerif/ttf/SourceSerif4-SemiboldIt.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 600;
+}
+@font-face {
+  font-family: "SourceSerif";
+  src:  url('../assets/fonts/SourceSerif/woff2/SourceSerif4-Light.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSerif/woff/SourceSerif4-Light.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSerif/ttf/SourceSerif4-Light.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 300;
+}
+@font-face {
+  font-family: "SourceSerif";
+  src:  url('../assets/fonts/SourceSerif/woff2/SourceSerif4-LightIt.otf.woff2') format('woff2'),
+        url('../assets/fonts/SourceSerif/woff/SourceSerif4-LightIt.otf.woff') format('woff'),
+        url('../assets/fonts/SourceSerif/ttf/SourceSerif4-LightIt.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* Mulish fonts */
+@font-face {
+  font-family: "Mulish";
+  src:  url('../assets/fonts/Mulish/woff2/Mulish-Regular.woff2') format('woff2'),
+        url('../assets/fonts/Mulish/ttf/Mulish-Regular.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Mulish";
+  src:  url('../assets/fonts/Mulish/woff2/Mulish-Italic.woff2') format('woff2'),
+        url('../assets/fonts/Mulish/ttf/Mulish-Italic.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Mulish";
+  src:  url('../assets/fonts/Mulish/woff2/Mulish-Bold.woff2') format('woff2'),
+        url('../assets/fonts/Mulish/ttf/Mulish-Bold.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Mulish";
+  src:  url('../assets/fonts/Mulish/woff2/Mulish-BoldItalic.woff2') format('woff2'),
+        url('../assets/fonts/Mulish/ttf/Mulish-BoldItalic.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Mulish";
+  src:  url('../assets/fonts/Mulish/woff2/Mulish-SemiBold.woff2') format('woff2'),
+        url('../assets/fonts/Mulish/ttf/Mulish-SemiBold.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Mulish";
+  src:  url('../assets/fonts/Mulish/woff2/Mulish-SemiBoldItalic.woff2') format('woff2'),
+        url('../assets/fonts/Mulish/ttf/Mulish-SemiBoldItalic.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Mulish";
+  src:  url('../assets/fonts/Mulish/woff2/Mulish-Light.woff2') format('woff2'),
+        url('../assets/fonts/Mulish/ttf/Mulish-Light.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Mulish";
+  src:  url('../assets/fonts/Mulish/woff2/Mulish-LightItalic.woff2') format('woff2'),
+        url('../assets/fonts/Mulish/ttf/Mulish-LightItalic.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* Inter fonts */
+@font-face {
+  font-family: "Inter";
+  src:  url('../assets/fonts/Inter/woff2/Inter-Regular.woff2') format('woff2'),
+        url('../assets/fonts/Inter/woff/Inter-Regular.woff') format('woff'),
+        url('../assets/fonts/Inter/ttf/Inter-Regular.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Inter";
+  src:  url('../assets/fonts/Inter/woff2/Inter-Italic.woff2') format('woff2'),
+        url('../assets/fonts/Inter/woff/Inter-Italic.woff') format('woff'),
+        url('../assets/fonts/Inter/ttf/Inter-Italic.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Inter";
+  src:  url('../assets/fonts/Inter/woff2/Inter-Bold.woff2') format('woff2'),
+        url('../assets/fonts/Inter/woff/Inter-Bold.woff') format('woff'),
+        url('../assets/fonts/Inter/ttf/Inter-Bold.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Inter";
+  src:  url('../assets/fonts/Inter/woff2/Inter-BoldItalic.woff2') format('woff2'),
+        url('../assets/fonts/Inter/woff/Inter-BoldItalic.woff') format('woff'),
+        url('../assets/fonts/Inter/ttf/Inter-BoldItalic.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Inter";
+  src:  url('../assets/fonts/Inter/woff2/Inter-SemiBold.woff2') format('woff2'),
+        url('../assets/fonts/Inter/woff/Inter-SemiBold.woff') format('woff'),
+        url('../assets/fonts/Inter/ttf/Inter-SemiBold.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Inter";
+  src:  url('../assets/fonts/Inter/woff2/Inter-SemiBoldItalic.woff2') format('woff2'),
+        url('../assets/fonts/Inter/woff/Inter-SemiBoldItalic.woff') format('woff'),
+        url('../assets/fonts/Inter/ttf/Inter-SemiBoldItalic.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Inter";
+  src:  url('../assets/fonts/Inter/woff2/Inter-Light.woff2') format('woff2'),
+        url('../assets/fonts/Inter/woff/Inter-Light.woff') format('woff'),
+        url('../assets/fonts/Inter/ttf/Inter-Light.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Inter";
+  src:  url('../assets/fonts/Inter/woff2/Inter-LightItalic.woff2') format('woff2'),
+        url('../assets/fonts/Inter/woff/Inter-LightItalic.woff') format('woff'),
+        url('../assets/fonts/Inter/ttf/Inter-LightItalic.ttf') format('truetype');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 300;
+}
+
+
+// http://ionicframework.com/docs/v3/theming/
 
 
 // App Global Sass
@@ -20,9 +310,9 @@
 
 
 // START OF ORIGINAL VARIABLES.SCSS RULES
-.searchbar-search-icon{
+.searchbar-search-icon {
 	left: 1rem !important;
-	top: 0.5rem !important;
+	top: 0.4375rem !important;
 	width: 2rem !important;
 	height: 2rem !important;
 }
@@ -31,8 +321,12 @@
 	font-size: 2rem !important;
 }
 
-.button-md{
+.button-md {
 	height: 2.3rem !important;
+}
+
+.button-md.searchbar-clear-icon {
+  height: 100% !important;
 }
 
 .tei.heading{
@@ -40,24 +334,17 @@
     text-transform: none;
 }
 
-.tei.places{
+.tei.places {
     font-size: 1.0rem;
     color: #78756f;
 }
 
-.tei.collections{
+.tei.collections {
     font-size: 1rem;
     color: #78756f;
 }
 
-/*
-.tei h2{
-    padding-top: 1em;
-    font-size: 1em !important;
-}
-*/
-
-.tei.place_name,.onki_province,.collection{
+.tei.place_name,.onki_province,.collection {
     color: #78756f;
 }
 
@@ -80,7 +367,7 @@ img[src*="#fsfd_bild_md_right"] {
     margin-left: 10px;
 }
 
-blockquote{
+blockquote {
     font-style: italic;
 }
 
@@ -113,6 +400,7 @@ body {
   -moz-user-select: text;
   -ms-user-select: text;
   user-select: text;
+  text-rendering: auto;
 }
 
 ion-split-pane {
@@ -133,7 +421,7 @@ ion-label {
 .selectable { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
 
 ion-app, ion-app.md {
-  font-family: $font-family-base;
+  font-family: var(--font-stack-app-base);
   font-size: 1.4rem;
   background-color: #fff;
 }
@@ -152,7 +440,6 @@ h1 {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: $font-family-header;
   font-weight: 700;
 }
 
@@ -162,8 +449,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 p, blockquote {
-  font-family: $font-family-base;
   line-height: 2.2rem;
+}
+
+a {
+  color: var(--default-link-color);
 }
 
 .ion-page {
@@ -219,24 +509,26 @@ p, blockquote {
 }
 
 .back-to-list-button {
-  background-color: var(--back-button-bg-color) !important;
+  background-color: var(--toc-back-button-background-color) !important;
 
   .back-button-text {
-    color: var(--back-button-text-color);
+    color: var(--toc-back-button-text-color);
     font-size: 1rem;
   }
-  ion-icon,
   ion-label {
-    color: var(--back-button-text-color);
+    color: var(--toc-back-button-text-color);
+  }
+  ion-icon.icon {
+    color: var(--toc-back-button-arrow-color);
   }
   &.item-md ion-icon[item-left] + .item-inner {
     margin-left: 0;
   }
-  p{
-    color: var(--back-button-text-color) !important;
+  p {
+    color: var(--toc-back-button-text-color) !important;
     font-size: 1rem !important;
   }
-  .label{
+  .label {
     margin-top:0px;
     margin-bottom:0px;
   }
@@ -258,15 +550,6 @@ p, blockquote {
         padding: 16px;
         background: rgba(0,0,0,0.5);
     }
-
-  /*.banner-title {
-      @extend h1;
-      font-family: $font-family-base;
-      margin-top: 0;
-  }
-  .banner-subtitle {
-      font-weight: bold;
-  }*/
 }
 
 /** Logo and two rows in title */
@@ -298,10 +581,7 @@ ion-title {
       margin-top: 0px;
   }
 }
-/** Toolbar */
-.toolbar{
 
-}
 .header-md::after {
   display: none;
 }
@@ -349,39 +629,110 @@ ion-row.secondary-toolbar-icons-wrapper {
   }
 }
 
-ion-label{
+ion-label {
   font-size: 1rem;
 }
 
-ion-select{
-  .select-text{
+ion-select {
+  .select-text {
     font-size: 1rem;
   }
 }
 
-ion-list{
-  ion-label{
+ion-list {
+  ion-label {
     font-size: 1rem !important;
   }
 }
 
-ion-toolbar{
-  ion-icon{
+ion-toolbar {
+  ion-icon {
     font-size: 2rem;
   }
 }
 
-ion-fab{
-  ion-icon{
+ion-fab {
+  ion-icon {
     font-size: 1.5rem !important;
   }
 }
 
-.item-block{
+// Ordinary buttons
+button.button {
+  background-color: var(--button-background-color);
+  color: var(--button-text-color);
+}
+button.button-outline {
+  background-color: transparent;
+  border-color: var(--button-background-color);
+  color: var(--button-background-color);
+}
+button.button-clear:not(.searchbar-md-cancel) {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--button-clear-text-color);
+}
+button.button:hover:not(.disable-hover):not(.button-outline):not(.button-clear) {
+  background-color: var(--button-hover-background-color);
+}
+button.button.activated:not(.button-outline):not(.button-clear) {
+  background-color: var(--button-background-color);
+}
+
+// Fab buttons
+button.fab {
+  background-color: var(--fab-button-primary-background-color);
+  color: var(--fab-button-primary-icon-color);
+}
+button.fab.activated {
+  background-color: var(--fab-button-primary-background-color);
+}
+ion-fab-list button.fab.fab-in-list,
+button.fab.fab-md-secondary {
+  background-color: var(--fab-button-secondary-background-color);
+  color: var(--fab-button-secondary-icon-color);
+}
+
+// Toggle buttons
+ion-toggle.toggle.toggle-checked .toggle-icon {
+	background-color: rgba(var(--button-background-color-rgb), 0.2);
+}
+ion-toggle.toggle.toggle-checked .toggle-inner {
+	background-color: var(--button-background-color);
+}
+
+// Radio buttons
+ion-radio.radio .radio-checked {
+  border-color: var(--button-background-color);
+}
+ion-radio.radio .radio-checked .radio-inner {
+  background-color: var(--button-background-color);
+}
+ion-item.item-radio.item-radio-checked ion-label.label {
+  color: var(--button-background-color);
+}
+
+// Checkboxes
+ion-checkbox.checkbox .checkbox-checked {
+  border-color: var(--button-background-color);
+  background-color: var(--button-background-color);
+}
+
+
+/* These two rules fix the vertical alignment of icons in fab-buttons. */
+.fab[mini],
+.fab-list-active .fab {
+  line-height: 1;
+}
+.fab[mini] .fab-close-icon {
+  line-height: 1.75;
+}
+
+.item-block {
   min-height: 2.2rem;
 }
 
-input{
+input {
   font-size: 1rem !important;
   line-height: 0rem !important;
 }
@@ -396,39 +747,6 @@ input{
   }
   .list-ios > .item-block:last-child {
     border-bottom: none !important;
-  }
-}
-
-.item-white {
-  background-color: white;
-
-  ion-item {
-    background-color: inherit;
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-
-  .item-block .item-inner {
-    border-bottom: 1px solid #e3dbc9;
-  }
-
-  ion-item.item.item-block {
-    padding: 0;
-    margin: 0;
-  }
-
-  ion-thumbnail {
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  h2 {
-    margin-left: 15px;
-    white-space: normal;
-  }
-
-  p {
-    margin-left: 15px;
   }
 }
 
@@ -476,10 +794,92 @@ input{
   background-color: rgba(0,0,0,0.0);
 }
 
-#tableOfContentsMenu {
-  .scroll-content {
-    background-color: $background-color;
-  }
+// Ion-content styles
+ion-content.content {
+	background-color: var(--main-background-color);
+}
+
+// Primary and secondary toolbar styles
+ion-toolbar.toolbar .toolbar-background {
+	background: var(--primary-color);
+}
+ion-toolbar.toolbar.secondary .toolbar-background,
+ion-navbar.toolbar.secondary .toolbar-background {
+	background: var(--secondary-color);
+}
+top-menu ion-toolbar.toolbar .toolbar-background {
+	border-bottom: var(--top-menu-toolbar-bottom-border);
+}
+ion-toolbar.toolbar:not(.secondary) .toolbar-content button,
+ion-toolbar.toolbar:not(.secondary) .toolbar-content button:hover:not(.disable-hover) {
+	color: var(--text-color-on-primary-color-background);
+}
+ion-navbar.secondary.toolbar .toolbar-content .toolbar-title {
+  color: var(--text-color-on-secondary-color-background);
+}
+
+// Ion-modal styles
+ion-modal ion-content.content {
+  background-color: var(--ion-modal-content-background-color);
+}
+ion-modal .toolbar-background {
+	background: var(--primary-color);
+}
+ion-modal ion-header .toolbar .toolbar-title,
+ion-modal ion-header button.bar-button,
+ion-modal ion-header button.bar-button:hover:not(.disable-hover) {
+	color: var(--text-color-on-primary-color-background);
+}
+ion-modal ion-item.item {
+  background-color: var(--ion-modal-item-background-color);
+}
+ion-modal ion-item-divider.item-divider {
+  background-color: transparent;
+  border-bottom-color: var(--ion-modal-item-divider-border-bottom-color);
+}
+
+// Ion-popover styles
+ion-popover div.popover-content,
+ion-popover div.popover-content ion-item.item {
+  background-color: var(--ion-popover-content-background-color);
+}
+ion-popover div.popover-content ion-item.item .item-inner {
+  border-bottom-color: var(--ion-popover-item-border-bottom-color);
+}
+ion-popover div.popover-content ion-list-header.list-header {
+  background-color: var(--ion-popover-list-header-background-color);
+}
+
+// Table of contents (left navigation) styles
+ion-menu ion-content.toc-menu-content {
+  background-color: var(--toc-background-color);
+  border-right: 1px solid var(--toc-border-right-color);
+}
+ion-menu ion-content.toc-menu-content ion-item.item,
+ion-menu ion-content.toc-menu-content ion-item.item p {
+  color: var(--toc-text-color);
+}
+ion-menu ion-content.toc-menu-content ion-item.item ion-icon.icon {
+  color: var(--toc-arrow-color);
+}
+ion-menu ion-content.toc-menu-content ion-item.item .item-inner,
+ion-menu ion-content.toc-menu-content .list-md > .item-block:last-child .item-inner {
+  border-bottom: 1px solid var(--toc-divider-color);
+}
+
+ion-menu#contentMenu ion-item.item.selected-toc-item {
+  font-weight: var(--toc-selected-item-font-weight);
+  background-color: var(--toc-selected-item-background-color);
+	border-color: var(--toc-selected-item-border-color);
+}
+ion-menu#contentMenu ion-item.item.selected-toc-item p {
+  color: var(--toc-selected-item-text-color);
+}
+ion-menu#contentMenu ion-item.item.selected-toc-item div.item-inner {
+  border-color: var(--toc-selected-item-divider-color) !important;
+}
+ion-menu#contentMenu ion-item.item.selected-toc-item ion-icon {
+  color: var(--toc-selected-item-arrow-color) !important;
 }
 
 /* Table of content styles for simple accordion lists, including nested lists*/
@@ -493,7 +893,7 @@ ion-menu {
   }
   &#contentMenu ion-item.mainMenuItem:hover,
   &#contentMenu ion-list.accordion-menu ion-item.item:hover {
-    border-left-color: var(--main-toc-hover-color);
+    border-left-color: var(--toc-hover-color) !important;
   }
   &#contentMenu .simple-accordion-options ion-list.accordion-menu > ion-item.item,
   &#contentMenu .simple-accordion-options ion-list ion-item.item,
@@ -537,7 +937,7 @@ ion-item.mainMenuItem {
 }
 
 ion-list.accordion-menu > ion-item.item-block:last-child .item-inner {
-  border-bottom: $item-md-divider-border-bottom;
+  border-bottom: 1px solid var(--toc-divider-color);
 }
 
 ion-list.accordion-menu div.options {
@@ -562,7 +962,16 @@ ion-icon.menu-download{
 }
 
 ion-list.accordion-menu{
-  margin: 0px !important;
+  margin: 0 !important;
+}
+
+ion-menu .item-md ion-label.label > p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+ion-menu .item-md ion-label.label {
+  margin: 11px 8px 11px 0;
 }
 
 .shadow{
@@ -608,6 +1017,7 @@ ion-nav{
 .popover_settings .popover-content {
   width: min-content !important;
   min-width: 300px;
+  background-color: var(--ion-popover-content-background-color);
 }
 /* on very small screens, place popovers further right */
 @media screen and (max-width: 360px) {
@@ -637,19 +1047,24 @@ ion-backdrop {
 }
 
 /* Buttons in the secondary toolbar. */
-.sec-menu-button {
-  color: #000;
+button.sec-menu-button.button,
+button.sec-menu-button.bar-button {
+  color: var(--text-color-on-secondary-color-background);
   padding: 0;
   transition: $opacity-hover-transition;
 }
-.sec-menu-button:hover:not(.disable-hover) {
+button.sec-menu-button.button:hover:not(.disable-hover),
+button.sec-menu-button.bar-button:hover:not(.disable-hover) {
+  color: var(--text-color-on-secondary-color-background);
   background-color: transparent !important;
   opacity: $opacity-hover;
 }
-.sec-menu-button:active {
+button.sec-menu-button.button:active,
+button.sec-menu-button.bar-button:active {
   opacity: 1;
 }
-.sec-menu-button .side-title {
+button.sec-menu-button.button .side-title,
+button.sec-menu-button.bar-button .side-title {
   font-size: 10px;
 }
 
@@ -668,25 +1083,41 @@ ion-alert.custom-select-alert .alert-wrapper {
   }
 
   button.alert-radio-button {
-    font-size: 1.125rem;
+    font-size: 1rem;
 
     .alert-radio-label {
       white-space: normal;
     }
+
+    &[aria-checked="true"] {
+      .alert-radio-icon {
+        border-color: var(--button-background-color);
+      }
+      .alert-radio-inner {
+        background-color: var(--button-background-color);
+      }
+      .alert-radio-label {
+        color: var(--button-background-color);
+      }
+    }
+  }
+
+  .alert-button-group button.alert-button {
+    color: var(--button-background-color);
   }
 }
 
-/* Style for the component i read columns where a different variant, manuscript or facsimile text can be selected. */
+/* Style for the component in read columns where a different variant,
+   manuscript or facsimile text can be selected. */
 .text-select-wrapper {
   padding: 0 0 1rem 0;
   margin: 0 0 1.5rem 0;
   border-bottom: 1px solid #666;
-  background-color: var(--read-columns-background-color);
-  display: inline-block;
+  background-color: var(--page-read-columns-background-color);
   width: 100%;
 
   h3 {
-    font-size: 1.125rem;
+    font-size: 1rem;
     font-weight: 600;
     word-wrap: break-word;
     white-space: normal;
@@ -700,7 +1131,7 @@ ion-alert.custom-select-alert .alert-wrapper {
   }
 
   .flex-buttons button.button {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     height: 1.875rem !important;
   }
 
@@ -731,6 +1162,15 @@ ion-alert.custom-select-alert .alert-wrapper {
   }
 }
 
+/* On small screens, make the left navigation menu into an overlay menu so the content doesn't reflow
+   when opening or closing the menu. */
+@media only screen and (max-width: 800px) {
+  ion-split-pane.split-pane-visible > .split-pane-side {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
 
 // Load TEI-stylesheets. Moved here from project-variables.scss
 @import '../theme/tei';
@@ -1249,7 +1689,7 @@ tr.introjs-showElement > th {
 }
 
 
-/* Intro.js Modern theme */
+/* Intro.js Modern theme (the tutorial) */
 
 
 .introjs-tooltip {
@@ -1267,7 +1707,6 @@ tr.introjs-showElement > th {
   border: 1px solid transparent;
   border-radius: 50px;
   box-shadow: none;
-  border-shadow: none;
   text-shadow: none;
 }
 
@@ -1284,12 +1723,12 @@ tr.introjs-showElement > th {
   border: 10px solid #fff;
 }
 .introjs-arrow.top, .introjs-arrow.top-middle, .introjs-arrow.top-right {
-  border-color: transparent transparent rgba(000, 0, 0, 0.5);
+  border-color: transparent transparent var(--tutorial-tooltip-background-color);
   top: -20px;
   left: 20px;
 }
 .introjs-arrow.bottom, .introjs-arrow.bottom-middle, .introjs-arrow.bottom-right {
-  border-color: rgba(000, 0, 0, 0.5) transparent transparent;
+  border-color: var(--tutorial-tooltip-background-color) transparent transparent;
   bottom: -20px;
   left: 20px;
 }
@@ -1302,34 +1741,27 @@ tr.introjs-showElement > th {
 
 .introjs-arrow.left, .introjs-arrow.left-bottom {
   left: -20px;
-  border-color: transparent rgba(000, 0, 0, 0.5) transparent transparent;
+  border-color: transparent var(--tutorial-tooltip-background-color) transparent transparent;
 }
 .introjs-arrow.right, .introjs-arrow.right-bottom {
   right: -20px;
-  border-color: transparent transparent transparent rgba(000, 0, 0, 0.5);
+  border-color: transparent transparent transparent var(--tutorial-tooltip-background-color);
 }
 
 
 /** Introjs custom override */
 .introjs-tooltip {
-  font-family: "Muli";
-  background: color($colors, primary);
-  .introjs-tooltiptext {
-    font-size: 14px !important;
-  }
+  font-family: var(--font-stack-app-base);
+  background: var(--tutorial-tooltip-background-color);
+  color: var(--tutorial-tooltip-text-color);
+  font-size: var(--tutorial-tooltip-font-size);
+  max-width: 400px;
 }
-/*.menuResizer {
-  height: 100%;
-  width: 5px;
-
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-
-  background: #e2e2e2;
-
-  z-index: 99;
-
-  cursor: col-resize;
-}*/
+.introjs-tooltiptext {
+  text-align: center;
+  padding: 5px 5px 0 5px;
+}
+.introjs-button {
+  font-family: var(--font-stack-app-base);
+  font-size: 0.83333em;
+}

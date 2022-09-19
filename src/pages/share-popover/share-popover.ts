@@ -65,7 +65,7 @@ export class SharePopoverPage {
 
   private showReference() {
     // Get URL of Page and then the URI
-    const modal = this.modalController.create(ReferenceDataModalPage, {id: document.URL, type: 'reference'});
+    const modal = this.modalController.create(ReferenceDataModalPage, {id: document.URL, type: 'reference', origin: 'share-popover'});
     modal.present();
     modal.onDidDismiss(data => {
       // console.log('dismissed', data);

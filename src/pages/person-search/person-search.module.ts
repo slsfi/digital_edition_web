@@ -13,6 +13,7 @@ import { PipesModule } from '../../pipes/pipes.module';
 import { FilterPage } from '../filter/filter';
 import { OccurrenceService } from '../../app/services/occurrence/occurence.service';
 import { OccurrencesPage } from '../occurrences/occurrences';
+import { MarkdownModule } from 'angular2-markdown';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -38,7 +39,8 @@ export function createTranslateLoader(http: HttpClient) {
       }),
       ComponentsModule,
       FilterPageModule,
-      OccurrencesPageModule
+      OccurrencesPageModule,
+      MarkdownModule
   ],
   providers: [
     SemanticDataService,

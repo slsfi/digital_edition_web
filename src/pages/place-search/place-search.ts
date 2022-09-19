@@ -14,6 +14,7 @@ import { OccurrencesPage } from '../occurrences/occurrences';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { MetadataService } from '../../app/services/metadata/metadata.service';
+import { MdContentService } from '../../app/services/md/md-content.service';
 
 /**
  * Generated class for the PlaceSearchPage page.
@@ -53,6 +54,7 @@ export class PlaceSearchPage {
   cacheItem = false;
   showLoading = false;
   showFilter = true;
+  mdContent: string;
 
   from = 0;
   infiniteScrollNumber = 30;
@@ -69,6 +71,7 @@ export class PlaceSearchPage {
               public navParams: NavParams,
               public semanticDataService: SemanticDataService,
               protected langService: LanguageService,
+              private mdContentService: MdContentService,
               protected config: ConfigService,
               private app: App,
               private platform: Platform,
@@ -91,6 +94,7 @@ export class PlaceSearchPage {
       } catch (e) {
         this.showFilter = true;
       }
+      this.getMdContent(lang + '-12-03');
     });
     this.setData();
   }
@@ -108,6 +112,14 @@ export class PlaceSearchPage {
 
   ionViewDidEnter() {
     this.analyticsService.doPageView('Places');
+  }
+
+  ionViewDidLoad() {
+    this.events.subscribe('language:change', () => {
+      this.langService.getLanguage().subscribe((lang) => {
+        this.getMdContent(lang + '-12-03');
+      });
+    });
   }
 
   async getPlaces() {
@@ -168,11 +180,18 @@ export class PlaceSearchPage {
   }
 
   showAll() {
+    /*
     this.places = [];
     this.allData = [];
     this.count = 0;
     this.allData = this.cacheData;
     this.loadMorePlaces();
+    */
+    this.count = 0;
+    this.from = 0;
+    this.searchText = '';
+    this.places = [];
+    this.getPlaces();
     this.content.scrollToTop(400);
   }
 
@@ -192,8 +211,16 @@ export class PlaceSearchPage {
     this.metadataService.addKeywords();
 
     this.events.publish('ionViewWillEnter', this.constructor.name);
-    this.events.publish('tableOfContents:unSelectSelectedTocItem', true);
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'place-search'});
+    this.events.publish('SelectedItemInMenu', {
+      menuID: 'placeSearch',
+      component: 'place-search'
+    });
     this.selectMusicAccordionItem();
+  }
+
+  ngOnDestroy() {
+    this.events.unsubscribe('language:change');
   }
 
   appHasMusicAccordionConfig() {
@@ -238,6 +265,7 @@ export class PlaceSearchPage {
       this.places = this.allData;
     }
     this.places = list;
+    this.content.scrollToTop(400);
   }
 
   filter(terms) {
@@ -509,6 +537,14 @@ export class PlaceSearchPage {
         }
       }
     }
+  }
+
+  getMdContent(fileID: string) {
+    this.mdContentService.getMdContent(fileID)
+      .subscribe(
+        text => { this.mdContent = text.content; },
+        error => { this.mdContent = ''; }
+      );
   }
 
 }

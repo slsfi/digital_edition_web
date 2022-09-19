@@ -47,9 +47,9 @@ page-music {
 	}
 
 	.banner-title {
-		font-family: $font-family-header;
+		font-family: var(--font-stack-home-banner);
 		font-size: 4rem;
-		font-weight: 500;
+		font-weight: 600;
 		line-height: 80px;
 		color: white;
 
@@ -59,7 +59,7 @@ page-music {
 	}
 
 	.banner-subtitle {
-		font-family: $font-family-header;
+		font-family: var(--font-stack-home-banner);
 		font-size: 28px;
 		font-weight: 300;
 		font-style: italic;
@@ -67,6 +67,11 @@ page-music {
 		@media only screen and (max-width: 650px) {
 			font-size: 22px;
 		}
+	}
+
+	.person-text {
+		font-family: var(--font-stack-home-banner);
+		font-weight: 300;
 	}
 
 	.fp_h1 {

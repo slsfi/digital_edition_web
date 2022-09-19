@@ -1,41 +1,57 @@
 text-changer {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  margin: 0 1.5rem;
+  width: 100%;
+  color: var(--text-color-on-secondary-color-background);
+
+  button {
+    color: var(--text-color-on-secondary-color-background);
+  }
+
+  .forwardBackward {
+    display: flex;
+    margin: auto;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    flex-grow: 2;
-    .goLeft{
-        left: 0;
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    align-items: center;
+    justify-content: space-between;
+
+    .forwardButtonDiv,
+    .backwardButtonDiv {
+      width: 30%;
     }
-    .forwardBackward {
+    .forwardButtonDiv {
       display: flex;
-      grid-template-columns: [first] 30% auto [last] 30%;
-      margin: auto;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
+      justify-content: flex-end;
+    }
     .forwardBackward__currentpage-name {
-      font-size: 15px!important;
-      margin: 0 auto;
+      font-size: 15px !important;
       font-weight: bold;
       text-align: center;
+      max-width: 40%;
+      padding: 0 3rem;
+      overflow: hidden;
+    }
+
+    .forwardBackward__currentpage-name p {
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
+      margin: 0;
+      font-size: 16px !important;
     }
 
-    .forwardBackward__currentpage-name p{
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
+    .forwardBackward__previouspage-name {
+      margin: 0 0 0 0.8em;
     }
-
-    .forwardBackward__previouspage-name,
     .forwardBackward__nextpage-name {
-      vertical-align: super;
-      margin: 0 0.5rem;
-      &:hover {
-        text-shadow: 1px 0 0 currentColor;
-      }
+      margin: 0 0.8em 0 0;
     }
     .forwardButton,
     .backwardButton {
@@ -44,9 +60,12 @@ text-changer {
       hyphens: auto;
       background: transparent;
       overflow: hidden;
-      &:hover .forwardBackward__previouspage-name,
-      &:hover .forwardBackward__nextpage-name  {
+      width: 100%;
+      padding: 0 6px;
+      &:hover .forwardBackward__nextpage-name,
+      &:hover .forwardBackward__previouspage-name {
         text-shadow: 1px 0 0 currentColor;
+        transition: text-shadow 0.2s;
       }
       .forwardBackward__nextpage-name,
       .forwardBackward__previouspage-name {
@@ -54,44 +73,97 @@ text-changer {
         overflow: hidden;
         white-space: nowrap;
       }
-      ion-icon,
-      .forwardBackward__currentpage-name,
       .forwardBackward__nextpage-name,
       .forwardBackward__previouspage-name {
-        font-size: 15px!important;
+        font-size: 15px !important;
+      }
+      ion-icon {
+        font-size: 1.75rem !important;
       }
     }
-    .forwardButtonDiv {
+    .forwardButton {
       justify-content: flex-end;
     }
-    .backwardButtonDiv {
-    }
-    }
-    @media screen and (max-width: 800px) {
-      .forwardBackward {
-        max-width: 100%;
-        padding: 0;
-        &__currentpage-name {
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          overflow: hidden;
-          max-width: 70%;
+  }
+
+  @media screen and (max-width: 950px) {
+    .forwardBackward {
+      max-width: 100%;
+
+      .forwardButtonDiv,
+      .backwardButtonDiv {
+        width: fit-content;
+      }
+
+      .forwardButton,
+      .backwardButton {
+        &:hover {
+          opacity: $opacity-hover;
+          transition: $opacity-hover-transition;
         }
       }
+
+      .forwardBackward__currentpage-name {
+        max-width: 100%;
+      }
+
+      .forwardBackward__previouspage-name {
+        display: none;
+      }
+  
+      .forwardBackward__nextpage-name {
+        display: none;
+      }
     }
+  }
 }
 
-.text-changer-mobile-view {
+text-changer.text-changer-desktop-view {
+  @media screen and (max-width: 600px) {
+    .forwardBackward {
+      justify-content: space-evenly;
+
+      .forwardBackward__currentpage-name {
+        display: none;
+      }
+    }
+  }
+}
+
+text-changer.text-changer-mobile-view {
+  margin: 0;
+
   .forwardBackward {
     position: fixed;
     max-width: 100vw;
     width: 100%;
-    z-index: 9999;
-    background-color: rgba(99,99,99, 0.9);
+    z-index: 1000;
+    background-color: var(--text-changer-background-color-mobile-mode);
+    color: var(--text-changer-text-color-mobile-mode);
     bottom: 0;
     left: 0;
     padding: 10px 1em;
     transform: none;
-    height: 64px;
+    height: 50px;
+
+    button {
+      color: var(--text-changer-text-color-mobile-mode);
+    }
+
+    .forwardButtonDiv,
+    .backwardButtonDiv {
+      width: fit-content;
+    }
+    .forwardBackward__currentpage-name {
+      max-width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 450px) {
+    .forwardBackward {
+      .forwardBackward__currentpage-name p {
+        font-size: 14px !important;
+      }
+    }
   }
 }
