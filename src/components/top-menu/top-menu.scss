@@ -1,6 +1,4 @@
 top-menu {
-  //position: absolute;
-  //left: $top-menu-left;
   top: 0;
   width: 100%;
   height: 30px;
@@ -12,10 +10,6 @@ top-menu {
   .button-inner {
     font-weight: 600;
   }
-  .col {
-    //padding: 0;
-
-  }
 
   span {
     font-family: var(--font-stack-top-menu);
@@ -26,18 +20,8 @@ top-menu {
     display: flex;
     justify-content: flex-start;
     .enable {
-      order: 0;
-      /*flex-grow: 1;*/
       padding-left: 0;
       margin-left: 0;
-    }
-    .homeButton {
-      order: 1;
-      /*flex-grow: 2;*/
-    }
-    .searchButton {
-      order: 2;
-      /*flex-grow: 1;*/
     }
     button.button-default {
       filter: var(--top-menu-button-filter);
@@ -68,6 +52,13 @@ top-menu {
         padding-right: 12px !important;
       }
     }
+    .side-title:not(.beta-label) {
+      display: none;
+    }
+    .side-title.side-title.beta-label.beta-label {
+      // Classnames repeated in order to increase css specificity
+      margin-left: 8px;
+    }
   }
 
   ion-toolbar ion-buttons {
@@ -88,14 +79,17 @@ top-menu {
     margin-left: 8px;
     font-weight: normal;
   }
+  .side-title + .side-title.beta-label {
+    margin-left: 0;
+  }
+  .side-title + .side-title.beta-label::before {
+    content: "\00a0"; // no-break space
+  }
 
 }
 
 .toolbar-ios ion-title {
   padding: 0;
-  .toolbar-title-ios {
-    // text-align: left;
-  }
 }
 
 .toolbar-md {
