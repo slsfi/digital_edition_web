@@ -60,16 +60,12 @@ page-introduction {
     right: 16px;
   }
 
-  #TOC #toc-close-button {
-    
-  }
   #TOC #toc-close-button button.button {
     margin-bottom: 0;
     margin-left: auto;
     margin-right: 0;
     display: block;
   }
-  
 
   #TOC h2 {
     font-size: 1.1rem;
@@ -163,7 +159,7 @@ page-introduction {
     display: none;
   }
 
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 820px) {
     .secondary .toolbar-content {
       display: flex;
       justify-content: flex-end;

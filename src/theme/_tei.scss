@@ -2414,7 +2414,7 @@ read-text .tei.show_pageNumbering,
 page-introduction .tei.show_pageNumbering {
     padding-left: 20px;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 820px) {
     /* Add margin on small screens when showing paragraph numbering */
     read-text .tei.show_pageNumbering,
     page-introduction .tei.show_pageNumbering {
