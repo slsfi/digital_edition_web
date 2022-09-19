@@ -42,6 +42,7 @@ export class TitlePage {
   titleSelected: boolean;
   collectionID: any;
   showURNButton: boolean;
+  showDisplayOptionsButton: Boolean = true;
   languageSubscription: Subscription;
 
   constructor(
@@ -82,6 +83,12 @@ export class TitlePage {
       this.showURNButton = this.config.getSettings('showURNButton.pageTitle');
     } catch (e) {
       this.showURNButton = false;
+    }
+
+    try {
+      this.showDisplayOptionsButton = this.config.getSettings('showDisplayOptionsButton.pageTitle');
+    } catch (e) {
+      this.showDisplayOptionsButton = true;
     }
 
     this.languageSubscription = null;

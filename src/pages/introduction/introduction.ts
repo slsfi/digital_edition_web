@@ -48,6 +48,7 @@ export class IntroductionPage {
   public tocMenuOpen: boolean;
   public hasSeparateIntroToc: boolean;
   public showURNButton: boolean;
+  showDisplayOptionsButton: Boolean = true;
   readPopoverTogglesIntro: Record<string, any> = {};
   toolTipsSettings: Record<string, any> = {};
   toolTipPosType: string;
@@ -168,6 +169,12 @@ export class IntroductionPage {
       this.showURNButton = this.config.getSettings('showURNButton.pageIntroduction');
     } catch (e) {
       this.showURNButton = true;
+    }
+
+    try {
+      this.showDisplayOptionsButton = this.config.getSettings('showDisplayOptionsButton.pageIntroduction');
+    } catch (e) {
+      this.showDisplayOptionsButton = true;
     }
 
     this.translate.get('Read.Introduction.Contents').subscribe(

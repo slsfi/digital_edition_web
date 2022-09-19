@@ -108,6 +108,7 @@ export class ReadPage /*implements OnDestroy*/ {
   illustrationsViewShown: Boolean = false;
   simpleWorkMetadata: Boolean;
   showURNButton: Boolean;
+  showDisplayOptionsButton: Boolean = true;
   showTextDownloadButton: Boolean = false;
   usePrintNotDownloadIcon: Boolean = false;
   backdropWidth: number;
@@ -270,6 +271,12 @@ export class ReadPage /*implements OnDestroy*/ {
       this.showURNButton = this.config.getSettings('showURNButton.pageRead');
     } catch (e) {
       this.showURNButton = true;
+    }
+
+    try {
+      this.showDisplayOptionsButton = this.config.getSettings('showDisplayOptionsButton.pageRead');
+    } catch (e) {
+      this.showDisplayOptionsButton = true;
     }
 
     try {
