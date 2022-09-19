@@ -94,8 +94,7 @@
                 </button>
                 <button *ngIf="showTopElasticButton" ion-button class="top-menu-button elastic-search-button" (click)="elasticSearch()" id="elasticSearchIcon">
                   <ion-icon name="search"></ion-icon>
-                  <span class="side-title">{{'TopMenu.AdvancedSearch' | translate }}
-                    <strong>(BETA)</strong></span>
+                  <span class="side-title">{{'TopMenu.AdvancedSearch' | translate }}</span><span class="side-title beta-label"><strong>(BETA)</strong></span>
                 </button>
                 <button *ngIf="showTopURNButton" ion-button class="top-menu-button" (click)="showReference($event)">
                   <ion-icon name="share-alt"></ion-icon>
