@@ -8,7 +8,8 @@ page-introduction ion-scroll div.teiContainer,
 read-text > div.teiContainer,
 comments > div.teiContainer,
 variations > div.teiContainer,
-manuscripts > div.teiContainer {
+manuscripts > div.teiContainer,
+legend > div.teiContainer {
     padding-bottom: 20vh;
 }
 
@@ -1341,49 +1342,49 @@ div.tei {
     }
     */
     .lemma {
-        background-color: #fff1b9 !important;
+        background-color: var(--lemma-identical-variant-background-color) !important;
     }
     div.lemma {
         display: inline-block;
     }
     .variant {
-        background-color: #C5C5C5 !important;
+        background-color: var(--variant-background-color) !important;
     }
     div.variant {
         display: inline-block;
     }
     .orthographic {
-        background-color:  #eee6ff !important;
+        background-color:  var(--orthographic-variant-background-color) !important;
     }
     div.orthographic {
         display: inline-block;
     }
     .substantial {
-        background-color: #fee0e2 !important;
+        background-color: var(--substantial-variant-background-color) !important;
     }
     div.substantial {
         display: inline-block;
     }
     .interpunction {
-        background-color: #dbf0ec !important;
+        background-color: var(--interpunction-variant-background-color) !important;
     }
     div.interpunction {
         display: inline-block;
     }
     .identical {
-        background-color: #fff1b9 !important;
+        background-color: var(--lemma-identical-variant-background-color) !important;
     }
     div.identical {
         display: inline-block;
     }
     .typographic {
-        background-color: #f6e65b !important;
+        background-color: var(--typographic-variant-background-color) !important;
     }
     div.typographic {
         display: inline-block;
     }
     .error {
-        background-color: #daecf1 !important;
+        background-color: var(--error-variant-background-color) !important;
     }
     div.error {
         display: inline-block;

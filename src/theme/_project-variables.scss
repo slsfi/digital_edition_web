@@ -91,6 +91,15 @@ $opacity-hover-transition: opacity 0.2s;
   --pageBreakOriginal-color:       #c34be1;
   --pageBreakEdition-color:        #d58205;
 
+  // Variant category colors
+  --lemma-identical-variant-background-color: #fff1b9;
+  --orthographic-variant-background-color:    #eee6ff;
+  --interpunction-variant-background-color:   #dbf0ec;
+  --substantial-variant-background-color:     #fee0e2;
+  --error-variant-background-color:           #bae1b7;
+  --typographic-variant-background-color:     #f6e65b;
+  --variant-background-color:                 #c5c5c5;
+
   // TOC, i.e. the left navigation
   --toc-text-color:                           var(--dark-color);
   --toc-background-color:                     var(--main-background-color);
