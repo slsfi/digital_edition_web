@@ -1075,6 +1075,16 @@ button.sec-menu-button.bar-button .side-title {
   }
 }
 
+/* Circular buttons with only an icon inside */
+button.circular-icon-button.button {
+  border-radius: 1.25rem;
+  padding: 0.5625rem;
+  height: 1.875rem !important;
+}
+button.circular-icon-button.button ion-icon {
+  font-size: 1.25rem;
+}
+
 /* Style for alert where a different variant, manuscript or facsimile text can be selected. */
 ion-alert.select-text-alert .alert-wrapper,
 ion-alert.custom-select-alert .alert-wrapper {
@@ -1144,6 +1154,10 @@ ion-alert.custom-select-alert .alert-wrapper {
 
   .flex-buttons + ion-item {
     margin-top: 0.5rem;
+  }
+
+  .flex-buttons > button.button.align-right {
+    margin-left: auto;
   }
 }
 .text-select-wrapper.facsimile-header {

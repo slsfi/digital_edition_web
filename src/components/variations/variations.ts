@@ -1,5 +1,6 @@
 import { TranslateService } from '@ngx-translate/core';
 import { Component, Input, ElementRef, ViewChild, Output, EventEmitter, NgZone } from '@angular/core';
+import { ConfigService } from '@ngx-config/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { TextService } from '../../app/services/texts/text.service';
@@ -26,6 +27,7 @@ export class VariationsComponent {
   @Input() sortOrder?: number;
   @ViewChild('toolTip') toolTip: ElementRef;
   @Output() openNewVarView: EventEmitter<any> = new EventEmitter();
+  @Output() openNewLegendView: EventEmitter<any> = new EventEmitter();
 
   text: any;
   selection: 0;
@@ -35,10 +37,13 @@ export class VariationsComponent {
   errorMessage: string;
   normalized = true;
   varID: string;
+  legendTitle: string;
   textLoading: Boolean = true;
   intervalTimerId: number;
+  showOpenLegendButton: Boolean = false;
 
   constructor(
+    private config: ConfigService,
     protected sanitizer: DomSanitizer,
     protected readPopoverService: ReadPopoverService,
     protected textService: TextService,
@@ -55,6 +60,21 @@ export class VariationsComponent {
     this.variations = [];
     this.varID = '';
     this.intervalTimerId = 0;
+
+    try {
+      this.showOpenLegendButton = this.config.getSettings('showOpenLegendButton.variations');
+    } catch (e) {
+      this.showOpenLegendButton = false;
+    }
+
+    this.translate.get('Read.Legend.Title').subscribe(
+      translation => {
+        this.legendTitle = translation;
+      },
+      translationError => {
+        this.legendTitle = '';
+      }
+    );
   }
 
   ngOnInit() {
@@ -263,6 +283,17 @@ export class VariationsComponent {
         this.openNewVarView.emit(variation);
       }
     });
+  }
+
+  openNewLegend(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const id = {
+      viewType: 'legend',
+      id: 'var-legend'
+    }
+    this.openNewLegendView.emit(id);
+    this.scrollLastViewIntoView();
   }
 
   /**

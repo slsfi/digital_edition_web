@@ -156,7 +156,8 @@ export class ReadPage /*implements OnDestroy*/ {
     'facsimiles',
     'introduction',
     'songexample',
-    'illustrations'
+    'illustrations',
+    'legend'
   ];
 
   appUsesAccordionToc = false;
@@ -735,6 +736,8 @@ export class ReadPage /*implements OnDestroy*/ {
       return false;
     } else if (viewmode === 'illustrations' && !this.displayToggles['illustrations']) {
       return false;
+    } else if (viewmode === 'legend' && !this.displayToggles['legend']) {
+      return false;
     }
 
     return true;
@@ -827,8 +830,6 @@ export class ReadPage /*implements OnDestroy*/ {
         this.show = 'facsimiles';
       } else if (v.type === 'song-example') {
         this.show = 'song-example';
-      } else if (v.type === 'introduction' || v.type === 'int') {
-        this.show = 'introduction';
       }
     }
   }
@@ -2946,7 +2947,8 @@ export class ReadPage /*implements OnDestroy*/ {
         variations: { show: (type === 'variations'), id: id, variationSortOrder: variationSortOrder },
         introduction: { show: (type === 'introduction'), id: id },
         songexample: { show: (type === 'songexample'), id: id },
-        illustrations: { show: (type === 'illustrations'), image: image }
+        illustrations: { show: (type === 'illustrations'), image: image },
+        legend: { show: (type === 'legend'), id: id }
       }
       if (this.multilingualEST) {
         for (const lang of this.estLanguages) {

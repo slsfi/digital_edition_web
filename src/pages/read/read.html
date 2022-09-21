@@ -108,6 +108,7 @@
                 <ion-icon *ngIf="view.songexample.show" name="menu"></ion-icon>
                 <ion-icon *ngIf="view.introduction.show" name="menu"></ion-icon>
                 <ion-icon *ngIf="view.illustrations.show" name="menu"></ion-icon>
+                <ion-icon *ngIf="view.legend.show" name="menu"></ion-icon>
               </button>
               <ion-fab-list *ngIf="views.length>1">
                 <button ion-fab *ngIf="displayToggle" (click)="removeSlide(i)">
@@ -147,11 +148,11 @@
               </div>
               <div *ngIf="view.manuscripts.show">
                 <manuscripts [linkID]="view.manuscripts.id" [itemId]="establishedText.link" [matches]="matches"
-                  (openNewManView)="openNewView($event)"></manuscripts>
+                  (openNewManView)="openNewView($event)" (openNewLegendView)="openNewView($event)"></manuscripts>
               </div>
               <div *ngIf="view.variations.show">
                 <variations [linkID]="view.variations.id" [itemId]="establishedText.link" [matches]="matches" [sortOrder]="view.variations.variationSortOrder"
-                  (openNewVarView)="openNewView($event)"></variations>
+                  (openNewVarView)="openNewView($event)" (openNewLegendView)="openNewView($event)"></variations>
               </div>
               <div *ngIf="view.introduction.show">
                 <introduction [linkID]="view.introduction.id" [itemId]="establishedText.link" [matches]="matches">
@@ -162,6 +163,9 @@
               </div>
               <div *ngIf="view.illustrations.show">
                 <illustrations [initialImage]="view.illustrations.image" [itemId]="establishedText.link"></illustrations>
+              </div>
+              <div *ngIf="view.legend.show">
+                <legend [itemId]="establishedText.link" [scrollToElementId]="view.legend.id"></legend>
               </div>
             </ion-scroll>
           </ion-card-content>
@@ -219,6 +223,10 @@
             <button ion-fab (click)="addView('illustrations', undefined, fabmenuadd); scrollLastViewIntoView()" *ngIf="displayToggles['illustrations']">
               <ion-icon name="images"></ion-icon>
               <ion-label>{{ "Read.Illustrations.AddButtonText" | translate }}</ion-label>
+            </button>
+            <button ion-fab (click)="addView('legend', undefined, fabmenuadd); scrollLastViewIntoView()" *ngIf="displayToggles['legend']">
+              <ion-icon name="information-circle"></ion-icon>
+              <ion-label>{{ "Read.Legend.AddButtonText" | translate }}</ion-label>
             </button>
           </ion-fab-list>
         </ion-fab>

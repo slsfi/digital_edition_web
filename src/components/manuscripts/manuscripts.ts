@@ -1,5 +1,6 @@
 import { TranslateService } from '@ngx-translate/core';
 import { Component, Input, ElementRef, EventEmitter, Output, NgZone } from '@angular/core';
+import { ConfigService } from '@ngx-config/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { TextService } from '../../app/services/texts/text.service';
@@ -22,6 +23,7 @@ export class ManuscriptsComponent {
   @Input() linkID?: string;
   @Input() matches?: Array<string>;
   @Output() openNewManView: EventEmitter<any> = new EventEmitter();
+  @Output() openNewLegendView: EventEmitter<any> = new EventEmitter();
 
   text: any;
   selection: 0;
@@ -32,10 +34,13 @@ export class ManuscriptsComponent {
   errorMessage: string;
   msID: string;
   chapter: string;
+  legendTitle: string;
   textLoading: Boolean = true;
   intervalTimerId: number;
+  showOpenLegendButton: Boolean = false;
 
   constructor(
+    private config: ConfigService,
     protected sanitizer: DomSanitizer,
     protected readPopoverService: ReadPopoverService,
     protected textService: TextService,
@@ -53,6 +58,21 @@ export class ManuscriptsComponent {
     this.selectedManuscriptName = '';
     this.manuscripts = [];
     this.intervalTimerId = 0;
+
+    try {
+      this.showOpenLegendButton = this.config.getSettings('showOpenLegendButton.manuscripts');
+    } catch (e) {
+      this.showOpenLegendButton = false;
+    }
+
+    this.translate.get('Read.Legend.Title').subscribe(
+      translation => {
+        this.legendTitle = translation;
+      },
+      translationError => {
+        this.legendTitle = '';
+      }
+    );
   }
 
   ngOnInit() {
@@ -92,6 +112,17 @@ export class ManuscriptsComponent {
     event.stopPropagation();
     id.viewType = 'manuscriptFacsimile';
     this.openNewManView.emit(id);
+    this.scrollLastViewIntoView();
+  }
+
+  openNewLegend(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const id = {
+      viewType: 'legend',
+      id: 'ms-legend'
+    }
+    this.openNewLegendView.emit(id);
     this.scrollLastViewIntoView();
   }
 
