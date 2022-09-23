@@ -2516,6 +2516,9 @@ page-introduction div.tei .parIndent,
 page-introduction div.tei blockquote {
     font-size: 0.9412em;
 }
+page-introduction div > .noIndent.parIndent:first-child {
+	text-indent: 0 !important;
+}
 
 /* Headings in introductions */
 page-introduction {
