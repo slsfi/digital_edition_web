@@ -1515,6 +1515,20 @@ div.tei {
         padding: 0.25em;
     }
 
+    /* Style for adding bottom borders to all rows in a table */
+    table.bottomBorderedRowsTable {
+        th, td {
+            border-bottom: 1px solid #5c5c5c;
+            padding: 0.25em;
+        }
+        th {
+            border-bottom-color: #000;
+        }
+        tr:last-child > td {
+            border-bottom: 0;
+        }
+    }
+
     /* Styles for tables with 2, 3 and 4 columns of equal width */
     table.equalWidthTable2 th,
     table.equalWidthTable2 td {
