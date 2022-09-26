@@ -75,6 +75,8 @@ page-download-texts-modal {
 	}
 
 	ion-spinner.loading.spinner-crescent {
-		margin: 50px auto;
+		margin: 0;
+		display: inline;
+		float: right;
 	}
 }

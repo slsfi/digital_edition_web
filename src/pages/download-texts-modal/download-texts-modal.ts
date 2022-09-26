@@ -37,7 +37,9 @@ export class DownloadTextsModalPage {
   copyrightText: string;
   printTranslation: string;
   textSizeTranslation: string;
-  loading: Boolean = false;
+  loadingIntro: Boolean = false;
+  loadingEst: Boolean = false;
+  loadingCom: Boolean = false;
   showErrorMessage: Boolean = false;
   objectURLs = [];
 
@@ -255,7 +257,6 @@ export class DownloadTextsModalPage {
   }
 
   private initiateDownload(textType: string, format: string) {
-    this.loading = true;
     this.showErrorMessage = false;
     let mimetype = 'application/xml';
     let fileExtension = 'xml';
@@ -264,6 +265,7 @@ export class DownloadTextsModalPage {
       fileExtension = 'txt';
     }
     if (textType === 'intro') {
+      this.loadingIntro = true;
       this.langService.getLanguage().subscribe(lang => {
         this.textService.getDownloadableIntroduction(this.textId, format, lang).subscribe(
           content => {
@@ -276,16 +278,17 @@ export class DownloadTextsModalPage {
             link.target = '_blank'
             link.click();
             link = null;
-            this.loading = false;
+            this.loadingIntro = false;
           },
           error => {
             console.log('error getting introduction in ' + format + ' format');
-            this.loading = false;
+            this.loadingIntro = false;
             this.showErrorMessage = true;
           }
         );
       });
     } else if (textType === 'est') {
+      this.loadingEst = true;
       this.textService.getDownloadableEstablishedText(this.textId, format).subscribe(
         content => {
           const blob = new Blob([String(content)], {type: mimetype});
@@ -297,15 +300,16 @@ export class DownloadTextsModalPage {
           link.target = '_blank'
           link.click();
           link = null;
-          this.loading = false;
+          this.loadingEst = false;
         },
         error => {
           console.log('error getting established text in ' + format + ' format');
-          this.loading = false;
+          this.loadingEst = false;
           this.showErrorMessage = true;
         }
       );
     } else if (textType === 'com') {
+      this.loadingCom = true;
       this.commentService.getDownloadableComments(this.textId, format).subscribe(
         content => {
           const blob = new Blob([String(content)], {type: mimetype});
@@ -317,11 +321,11 @@ export class DownloadTextsModalPage {
           link.target = '_blank'
           link.click();
           link = null;
-          this.loading = false;
+          this.loadingCom = false;
         },
         error =>  {
           console.log('error getting comments in ' + format + ' format');
-          this.loading = false;
+          this.loadingCom = false;
           this.showErrorMessage = true;
         }
       );
@@ -329,13 +333,15 @@ export class DownloadTextsModalPage {
   }
 
   private openPrintFriendlyText(textType: string) {
-    this.loading = true;
     this.showErrorMessage = false;
     if (textType === 'intro') {
+      this.loadingIntro = true;
       this.openIntroductionForPrint();
     } else if (textType === 'est') {
+      this.loadingEst = true;
       this.openEstablishedForPrint();
     } else if (textType === 'com') {
+      this.loadingCom = true;
       this.openCommentsForPrint();
     }
   }
@@ -360,11 +366,11 @@ export class DownloadTextsModalPage {
           newWindowRef.document.write(content);
           newWindowRef.document.close();
           newWindowRef.focus();
-          this.loading = false;
+          this.loadingIntro = false;
         },
         error => {
           console.log('error loading introduction');
-          this.loading = false;
+          this.loadingIntro = false;
           this.showErrorMessage = true;
         }
       );
@@ -389,11 +395,11 @@ export class DownloadTextsModalPage {
         newWindowRef.document.write(content);
         newWindowRef.document.close();
         newWindowRef.focus();
-        this.loading = false;
+        this.loadingEst = false;
       },
       error => {
         console.log('error loading established text');
-        this.loading = false;
+        this.loadingEst = false;
         this.showErrorMessage = true;
       }
     );
@@ -494,7 +500,7 @@ export class DownloadTextsModalPage {
                     newWindowRef.document.write(content);
                     newWindowRef.document.close();
                     newWindowRef.focus();
-                    this.loading = false;
+                    this.loadingCom = false;
                   }
                 );
               }
@@ -503,19 +509,19 @@ export class DownloadTextsModalPage {
               newWindowRef.document.write(content);
               newWindowRef.document.close();
               newWindowRef.focus();
-              this.loading = false;
+              this.loadingCom = false;
             }
           },
           metadataError => {
             console.log('error loading correspondence metadata');
-            this.loading = false;
+            this.loadingCom = false;
             this.showErrorMessage = true;
           }
         );
       },
       error => {
         console.log('error loading comments');
-        this.loading = false;
+        this.loadingCom = false;
         this.showErrorMessage = true;
       }
     );
