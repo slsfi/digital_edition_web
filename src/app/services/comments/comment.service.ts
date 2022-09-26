@@ -120,7 +120,7 @@ export class CommentService {
     }
 
     const commentId = collection_id + '_' + pub_id + (section_id === undefined && section_id !== '') ? '_' + section_id : '';
-    let url = '/text/' + format + '/' + collection_id + '/' + pub_id + '/com';
+    let url = '/text/downloadable/' + format + '/' + collection_id + '/' + pub_id + '/com';
 
     if ( section_id !== undefined && section_id !== '' ) {
       url = url + '/' + section_id;

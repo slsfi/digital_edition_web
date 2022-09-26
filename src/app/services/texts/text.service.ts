@@ -9,7 +9,7 @@ import { TextCacheService } from './text-cache.service';
 export class TextService {
 
   private introductionUrl = '/text/{c_id}/{p_id}/inl/{lang}';
-  private introductionUrlDownloadable = '/text/{format}/{c_id}/inl/{lang}';
+  private introductionUrlDownloadable = '/text/downloadable/{format}/{c_id}/inl/{lang}';
 
   textCache: any;
   apiEndPoint: string;
@@ -317,7 +317,7 @@ export class TextService {
     if ( this.useSimpleApi) {
       api = this.simpleApi;
     }
-    const url = `${api}/${this.appMachineName}/text/${format}/${c_id}/${pub_id}/est${((ch_id === null) ? '' : '/' + ch_id)}`;
+    const url = `${api}/${this.appMachineName}/text/downloadable/${format}/${c_id}/${pub_id}/est${((ch_id === null) ? '' : '/' + ch_id)}`;
 
     return this.http.get( url )
           .map(res => {
