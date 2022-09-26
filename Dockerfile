@@ -3,7 +3,7 @@ FROM node:10-alpine
 RUN apk update
 RUN apk add --no-cache g++ gcc libgcc libstdc++ linux-headers make python git
 
-RUN git clone --depth 1 -b develop https://github.com/slsfi/digital_edition_web.git
+RUN git clone --depth 1 https://github.com/slsfi/digital_edition_web.git
 
 WORKDIR /digital_edition_web
 
