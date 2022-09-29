@@ -40,7 +40,7 @@ table-of-contents-accordion {
         color: var(--toc-selected-item-arrow-color) !important;
     }
 
-    ion-item.item.collection-name-top {
+    ion-item.item.item.collection-name-top {
         color: var(--toc-collection-title-text-color);
         background-color: var(--toc-collection-title-background-color);
         padding-left: 16px;
@@ -52,6 +52,18 @@ table-of-contents-accordion {
         white-space: pre-wrap !important;
         cursor: auto;
         opacity: 1 !important;
+    }
+
+    .toc-stick-to-top-items {
+        position: -webkit-sticky; /* Safari */
+        position: sticky;
+        top: 0;
+        z-index: 999;
+
+        ion-item.item.back-to-list-button {
+            position: initial;
+            top: initial;
+        }
     }
 
     /* These are styles for the buttons for sorting the TOC. */

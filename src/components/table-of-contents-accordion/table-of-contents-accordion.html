@@ -1,12 +1,14 @@
-<!-- Collection title at top -->
-<ion-item *ngIf="showBackButton" class="collection-name-top" no-lines>
-    <ion-label>{{ ('TOC-translation.' + collectionName | translate) !== 'TOC-translation.' + collectionName  ?  ('TOC-translation.' + collectionName | translate) : collectionName }}</ion-label>
-</ion-item>
-<!-- Back button -->
-<ion-item *ngIf="showBackButton" (click)="exit()" class="back-to-list-button collections" no-lines>
-    <ion-icon name="ios-arrow-back" item-left small></ion-icon>
-    <ion-label>{{ "BackButton.default" | translate }}</ion-label>
-</ion-item>
+<div class="toc-stick-to-top-items">
+    <!-- Collection title at top -->
+    <ion-item *ngIf="showBackButton" class="collection-name-top" no-lines>
+        <ion-label>{{ ('TOC-translation.' + collectionName | translate) !== 'TOC-translation.' + collectionName  ?  ('TOC-translation.' + collectionName | translate) : collectionName }}</ion-label>
+    </ion-item>
+    <!-- Back button -->
+    <ion-item *ngIf="showBackButton" (click)="exit()" class="back-to-list-button collections" no-lines>
+        <ion-icon name="ios-arrow-back" item-left small></ion-icon>
+        <ion-label>{{ "BackButton.default" | translate }}</ion-label>
+    </ion-item>
+</div>
 
 <div *ngIf="open" class="{{collectionId}}">
 
