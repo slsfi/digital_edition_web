@@ -43,17 +43,18 @@ export class DownloadTextsModalPage {
   showErrorMessage: Boolean = false;
   objectURLs = [];
 
-  constructor(  public navCtrl: NavController,
-                public viewCtrl: ViewController,
-                params: NavParams,
-                private config: ConfigService,
-                private textService: TextService,
-                private commentService: CommentService,
-                private events: Events,
-                public translate: TranslateService,
-                public readPopoverService: ReadPopoverService,
-                private tocService: TableOfContentsService,
-                private langService: LanguageService
+  constructor(
+    public navCtrl: NavController,
+    public viewCtrl: ViewController,
+    params: NavParams,
+    private config: ConfigService,
+    private textService: TextService,
+    private commentService: CommentService,
+    private events: Events,
+    public translate: TranslateService,
+    public readPopoverService: ReadPopoverService,
+    private tocService: TableOfContentsService,
+    private langService: LanguageService
   ) {
     // Get configs
     this.appMachineName = this.config.getSettings('app.machineName');
@@ -777,20 +778,20 @@ export class DownloadTextsModalPage {
   * @returns A string with the names concatenated.
   */
   private concatenateNames(names: string[]) {
-   let names_str = '';
-   for (let i = 0; i < names.length; i++) {
-     names_str = names_str + names[i];
-     if (names.length > 2) {
-       if (i < names.length - 2) {
-         names_str = names_str + '; ';
-       } else if (i < names.length - 1) {
-         names_str = names_str + ' \u0026 ';
-       }
-     } else if (names.length === 2 && i < 1) {
-       names_str = names_str + ' \u0026 ';
-     }
-   }
-   return names_str;
- }
+    let names_str = '';
+    for (let i = 0; i < names.length; i++) {
+      names_str = names_str + names[i];
+      if (names.length > 2) {
+        if (i < names.length - 2) {
+          names_str = names_str + '; ';
+        } else if (i < names.length - 1) {
+          names_str = names_str + ' \u0026 ';
+        }
+      } else if (names.length === 2 && i < 1) {
+        names_str = names_str + ' \u0026 ';
+      }
+    }
+    return names_str;
+  }
 
 }
