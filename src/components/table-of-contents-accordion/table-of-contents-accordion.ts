@@ -305,12 +305,14 @@ export class TableOfContentsAccordionComponent {
   searchTocItemInAccordionByTitle = false;
   tocItemSearchChildrenCounter = 0;
   foundTocItem = false;
-  titleSelected: boolean;
-  introductionSelected: boolean;
   coverSelected: boolean;
+  titleSelected: boolean;
+  forewordSelected: boolean;
+  introductionSelected: boolean;
   root: any;
   hasCover: boolean;
   hasTitle: boolean;
+  hasForeword: boolean;
   hasIntro: boolean;
   playmanTraditionPageInMusicAccordion = false;
   playmanTraditionPageID = '03-03';
@@ -490,12 +492,15 @@ export class TableOfContentsAccordionComponent {
       this.cdRef.detectChanges();
     }
 
-    if ( this.titleSelected === false && this.coverSelected === false && this.introductionSelected === false ) {
+    if ( this.titleSelected === false && this.coverSelected === false
+    && this.introductionSelected === false && this.forewordSelected === false ) {
       if ( this.hasCover && this.defaultSelectedItem === 'cover' ) {
         this.coverSelected = true;
-      } else if ( this.hasTitle && this.defaultSelectedItem === 'title'  ) {
+      } else if ( this.hasTitle && this.defaultSelectedItem === 'title' ) {
         this.titleSelected = true;
-      } else if ( this.hasIntro && this.defaultSelectedItem === 'introduction'  ) {
+      } else if ( this.hasForeword && this.defaultSelectedItem === 'foreword' ) {
+        this.forewordSelected = true;
+      } else if ( this.hasIntro && this.defaultSelectedItem === 'introduction' ) {
         this.introductionSelected = true;
       }
     }
@@ -522,15 +527,18 @@ export class TableOfContentsAccordionComponent {
       }, error => { }
     );
 
-    this.titleSelected = false;
-    this.introductionSelected = false;
     this.coverSelected = false;
+    this.titleSelected = false;
+    this.forewordSelected = false;
+    this.introductionSelected = false;
 
     const currentPage = String(window.location.href);
     if ( this.hasCover && currentPage.includes('/publication-cover/') ) {
       this.coverSelected = true;
     } else if ( this.hasTitle && currentPage.includes('/publication-title/') ) {
       this.titleSelected = true;
+    } else if ( this.hasForeword && currentPage.includes('/publication-foreword/') ) {
+      this.forewordSelected = true;
     } else if ( this.hasIntro && currentPage.includes('/publication-introduction/') ) {
       this.introductionSelected = true;
     }
@@ -559,21 +567,27 @@ export class TableOfContentsAccordionComponent {
     }
 
     try {
+      this.hasCover = this.config.getSettings('HasCover');
+    } catch (e) {
+      this.hasCover = false;
+    }
+
+    try {
       this.hasTitle = this.config.getSettings('HasTitle');
     } catch (e) {
       this.hasTitle = false;
     }
 
     try {
-      this.hasIntro = this.config.getSettings('HasIntro');
+      this.hasForeword = this.config.getSettings('HasForeword');
     } catch (e) {
-      this.hasIntro = false;
+      this.hasForeword = false;
     }
 
     try {
-      this.hasCover = this.config.getSettings('HasCover');
+      this.hasIntro = this.config.getSettings('HasIntro');
     } catch (e) {
-      this.hasCover = false;
+      this.hasIntro = false;
     }
   }
 
@@ -614,22 +628,31 @@ export class TableOfContentsAccordionComponent {
       } else {
         // console.log('event: SelectedItemInMenu; this.collectionId', this.collectionId);
         if (menu && menu.component) {
-          if (menu.component === 'title-page') {
-            this.titleSelected = true;
-            this.introductionSelected = false;
-            this.coverSelected = false;
-          } else if (menu.component === 'introduction') {
-            this.titleSelected = false;
-            this.introductionSelected = true;
-            this.coverSelected = false;
-          } else if (menu.component === 'cover-page') {
-            this.titleSelected = false;
-            this.introductionSelected = false;
+          if (menu.component === 'cover-page') {
             this.coverSelected = true;
-          } else if (menu.component === 'media-collections' || menu.component === 'media-collection') {
             this.titleSelected = false;
+            this.forewordSelected = false;
             this.introductionSelected = false;
+          } else if (menu.component === 'title-page') {
             this.coverSelected = false;
+            this.titleSelected = true;
+            this.forewordSelected = false;
+            this.introductionSelected = false;
+          } else if (menu.component === 'foreword-page') {
+            this.coverSelected = false;
+            this.titleSelected = false;
+            this.forewordSelected = true;
+            this.introductionSelected = false;
+          } else if (menu.component === 'introduction') {
+            this.coverSelected = false;
+            this.titleSelected = false;
+            this.forewordSelected = false;
+            this.introductionSelected = true;
+          } else if (menu.component === 'media-collections' || menu.component === 'media-collection') {
+            this.coverSelected = false;
+            this.titleSelected = false;
+            this.forewordSelected = false;
+            this.introductionSelected = false;
             this.collapsableItems.forEach(element => {
               if (element.targetOption.id === menu.menuID) {
                 element.targetOption.selected = true;
@@ -649,6 +672,7 @@ export class TableOfContentsAccordionComponent {
 
       this.coverSelected = false;
       this.titleSelected = false;
+      this.forewordSelected = false;
       this.introductionSelected = false;
       if (this.alphabethicOrderActive) {
         this.unSelectAllItems(this.alphabeticalactiveMenuTree);
@@ -819,6 +843,7 @@ export class TableOfContentsAccordionComponent {
     this.unSelectOptions(this.collapsableItems);
     this.coverSelected = false;
     this.titleSelected = false;
+    this.forewordSelected = false;
     this.introductionSelected = false;
 
     this.events.publish('SelectedItemInMenu', {
@@ -833,14 +858,16 @@ export class TableOfContentsAccordionComponent {
     this.metadataService.addKeywords();
 
     if (this.isMarkdown) {
-      this.titleSelected = false;
-      this.introductionSelected = false;
       this.coverSelected = false;
+      this.titleSelected = false;
+      this.forewordSelected = false;
+      this.introductionSelected = false;
       this.selectMarkdown(item);
     } else if (item.is_gallery) {
-      this.titleSelected = false;
-      this.introductionSelected = false;
       this.coverSelected = false;
+      this.titleSelected = false;
+      this.forewordSelected = false;
+      this.introductionSelected = false;
       this.selectGallery(item);
     } else if ( item.itemId !== undefined ) {
 
@@ -848,9 +875,10 @@ export class TableOfContentsAccordionComponent {
       const params = {root: this.options, tocItem: item, collection: {title: item.text}};
       const nav = this.app.getActiveNavs();
 
-      this.titleSelected = false;
-      this.introductionSelected = false;
       this.coverSelected = false;
+      this.titleSelected = false;
+      this.forewordSelected = false;
+      this.introductionSelected = false;
 
       if (item.url) {
         params['url'] = item.url;
@@ -959,9 +987,10 @@ export class TableOfContentsAccordionComponent {
   openIntroduction(id) {
     const params = {root: this.root, tocItem: null, collection: {title: 'Introduction'}};
     params['collectionID'] = id;
-    this.introductionSelected = true;
-    this.titleSelected = false;
     this.coverSelected = false;
+    this.titleSelected = false;
+    this.forewordSelected = false;
+    this.introductionSelected = true;
     const nav = this.app.getActiveNavs();
     if (this.platform.is('mobile')) {
       nav[0].push('introduction', params);
@@ -970,12 +999,29 @@ export class TableOfContentsAccordionComponent {
     }
   }
 
+  openForewordPage(id) {
+    const params = {root: this.root, tocItem: null, collection: {title: 'Foreword Page'}};
+    params['collectionID'] = id;
+    params['firstItem'] = '1';
+    this.coverSelected = false;
+    this.titleSelected = false;
+    this.forewordSelected = true;
+    this.introductionSelected = false;
+    const nav = this.app.getActiveNavs();
+    if (this.platform.is('mobile')) {
+      nav[0].push('foreword-page', params);
+    } else {
+      nav[0].setRoot('foreword-page', params);
+    }
+  }
+
   openTitlePage(id) {
     const params = {root: this.root, tocItem: null, collection: {title: 'Title Page'}};
     params['collectionID'] = id;
     params['firstItem'] = '1';
-    this.titleSelected = true;
     this.coverSelected = false;
+    this.titleSelected = true;
+    this.forewordSelected = false;
     this.introductionSelected = false;
     const nav = this.app.getActiveNavs();
     if (this.platform.is('mobile')) {
@@ -989,8 +1035,9 @@ export class TableOfContentsAccordionComponent {
     const params = {root: this.root, tocItem: null, collection: {title: 'Cover Page'}};
     params['collectionID'] = id;
     params['firstItem'] = '1';
-    this.titleSelected = false;
     this.coverSelected = true;
+    this.titleSelected = false;
+    this.forewordSelected = false;
     this.introductionSelected = false;
     const nav = this.app.getActiveNavs();
     if (this.platform.is('mobile')) {
@@ -1136,8 +1183,7 @@ export class TableOfContentsAccordionComponent {
       }
     });
 
-    // Update the view since there wasn't
-    // any user interaction with it
+    // Update the view since there wasn't any user interaction with it
     this.cdRef.detectChanges();
   }
 

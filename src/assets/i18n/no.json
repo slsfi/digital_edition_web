@@ -96,6 +96,13 @@
         "TitlePage": {
             "Title": ""
         },
+        "ForewordPage": {
+            "Title": "",
+            "NoForeword": ""
+        },
+        "CoverPage": {
+            "Title": ""
+        },
         "Introduction": {
             "Title": "",
             "AddButtonText": "",
@@ -299,6 +306,7 @@
         "established": "Hänvisa till denna lästext",
         "intro": "Hänvisa till delutgåvans inledning",
         "pageTitle": "Hänvisa till denna delutgåva",
+        "pageForeword": "Hänvisa till detta förord",
         "pageEpub": "Hänvisa till denna text",
         "mediaCollection": "Hänvisa till denna bildsamling",
         "missing": "Sidan saknar beständig webbadress"

@@ -44,6 +44,21 @@
         "showEditionList": false,
         "showFooter": false
     },
+    "showURNButton": {
+        "topMenu": false,
+        "pageTitle": true,
+        "pageForeword": true,
+        "pageIntroduction": true,
+        "pageRead": true,
+        "pageEpub": false,
+        "mediaCollection": true
+    },
+    "urnResolverUrl": "https://urn.fi/",
+    "useSimpleWorkMetadata": false,
+    "showOpenLegendButton": {
+        "manuscripts": true,
+        "variations": true
+    },
     "showTutorial": false,
     "TutorialSteps": [{
             "id": "welcome",
@@ -379,8 +394,9 @@
     },
     "HasCover": true,
     "HasTitle": true,
+    "HasForeword": true,
     "HasIntro": true,
-    "defaultSelectedItem": "title",
+    "defaultSelectedItem": "cover",
     "SidemenuMobile": true,
     "OpenOccurrencesAndInfoOnNewPage": false,
     "SingleOccurrenceType": null,

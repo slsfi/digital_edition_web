@@ -43,6 +43,7 @@ export class TextChangerComponent {
 
   collectionHasCover: Boolean = false;
   collectionHasTitle: Boolean = false;
+  collectionHasForeword: Boolean = false;
   collectionHasIntro: Boolean = false;
 
   constructor(
@@ -59,17 +60,22 @@ export class TextChangerComponent {
     try {
       this.collectionHasCover = this.config.getSettings('HasCover');
     } catch (e) {
-      this.collectionHasCover = true;
+      this.collectionHasCover = false;
     }
     try {
       this.collectionHasTitle = this.config.getSettings('HasTitle');
     } catch (e) {
-      this.collectionHasTitle = true;
+      this.collectionHasTitle = false;
+    }
+    try {
+      this.collectionHasForeword = this.config.getSettings('HasForeword');
+    } catch (e) {
+      this.collectionHasForeword = false;
     }
     try {
       this.collectionHasIntro = this.config.getSettings('HasIntro');
     } catch (e) {
-      this.collectionHasIntro = true;
+      this.collectionHasIntro = false;
     }
     if (this.parentPageType === undefined) {
       this.parentPageType = 'page-read';
@@ -117,6 +123,8 @@ export class TextChangerComponent {
       this.lastItem = false;
       if (this.collectionHasTitle) {
         this.setPageTitleAsNext(this.collectionId);
+      } else if (this.collectionHasForeword) {
+        this.setPageForewordAsNext(this.collectionId);
       } else if (this.collectionHasIntro) {
         this.setPageIntroductionAsNext(this.collectionId);
       } else {
@@ -143,16 +151,18 @@ export class TextChangerComponent {
       if (this.collectionId === 'mediaCollections') {
         this.setMediaCollectionsAsNext();
       } else {
-        if (this.collectionHasIntro) {
+        if (this.collectionHasForeword) {
+          this.setPageForewordAsNext(this.collectionId);
+        } else if (this.collectionHasIntro) {
           this.setPageIntroductionAsNext(this.collectionId);
         } else {
           this.setFirstTocItemAsNext(this.collectionId);
         }
       }
 
-    } else if (this.parentPageType === 'page-introduction') {
-      // Initialised from page-introduction
-      this.translateService.get('Read.Introduction.Title').subscribe(
+    } else if (this.parentPageType === 'page-foreword') {
+      // Initialised from page-foreword
+      this.translateService.get('Read.ForewordPage.Title').subscribe(
         translation => {
           this.currentItemTitle = translation;
         },
@@ -167,6 +177,36 @@ export class TextChangerComponent {
       }
 
       if (this.collectionHasTitle) {
+        this.setPageTitleAsPrevious(this.collectionId);
+      } else if (this.collectionHasCover) {
+        this.setPageCoverAsPrevious(this.collectionId);
+      }
+
+      if (this.collectionHasIntro) {
+        this.setPageIntroductionAsNext(this.collectionId);
+      } else {
+        this.setFirstTocItemAsNext(this.collectionId);
+      }
+
+    } else if (this.parentPageType === 'page-introduction') {
+      // Initialised from page-introduction
+      this.translateService.get('Read.Introduction.Title').subscribe(
+        translation => {
+          this.currentItemTitle = translation;
+        },
+        error => { this.currentItemTitle = ''; }
+      );
+
+      this.lastItem = false;
+      if (this.collectionHasCover || this.collectionHasTitle || this.collectionHasForeword) {
+        this.firstItem = false;
+      } else {
+        this.firstItem = true;
+      }
+
+      if (this.collectionHasForeword) {
+        this.setPageForewordAsPrevious(this.collectionId);
+      } else if (this.collectionHasTitle) {
         this.setPageTitleAsPrevious(this.collectionId);
       } else if (this.collectionHasCover) {
         this.setPageCoverAsPrevious(this.collectionId);
@@ -258,6 +298,23 @@ export class TextChangerComponent {
     );
   }
 
+  setPageForewordAsNext(collectionId: string) {
+    this.translateService.get('Read.ForewordPage.Title').subscribe(
+      translation => {
+        this.nextItemTitle = translation;
+        this.nextItem = {
+          itemId: collectionId,
+          page: 'page-foreword'
+        };
+      },
+      error => {
+        this.nextItemTitle = '';
+        this.nextItem = null;
+        this.lastItem = true;
+      }
+    );
+  }
+
   setPageIntroductionAsNext(collectionId: string) {
     this.translateService.get('Read.Introduction.Title').subscribe(
       translation => {
@@ -307,6 +364,23 @@ export class TextChangerComponent {
         this.prevItem = {
           itemId: collectionId,
           page: 'page-title'
+        };
+      },
+      error => {
+        this.prevItemTitle = '';
+        this.prevItem = null;
+        this.firstItem = true;
+      }
+    );
+  }
+
+  setPageForewordAsPrevious(collectionId: string) {
+    this.translateService.get('Read.ForewordPage.Title').subscribe(
+      translation => {
+        this.prevItemTitle = translation;
+        this.prevItem = {
+          itemId: collectionId,
+          page: 'page-foreword'
         };
       },
       error => {
@@ -452,6 +526,9 @@ export class TextChangerComponent {
       if (this.collectionHasIntro) {
         this.firstItem = false;
         this.setPageIntroductionAsPrevious(this.collectionId);
+      } else if (this.collectionHasForeword) {
+        this.firstItem = false;
+        this.setPageForewordAsPrevious(this.collectionId);
       } else if (this.collectionHasTitle) {
         this.firstItem = false;
         this.setPageTitleAsPrevious(this.collectionId);
@@ -505,16 +582,21 @@ export class TextChangerComponent {
     const nav = this.app.getActiveNavs();
     if (item.page !== undefined) {
       // Open text in page-cover, page-title or page-introduction
-      if (item.page === 'page-title') {
-        const params = {root: null, tocItem: null, collection: {title: 'Title Page'}};
-        params['collectionID'] = item.itemId;
-        params['firstItem'] = '1';
-        nav[0].setRoot('title-page', params);
-      } else if (item.page === 'page-cover') {
+      if (item.page === 'page-cover') {
         const params = {root: null, tocItem: null, collection: {title: 'Cover Page'}};
         params['collectionID'] = item.itemId;
         params['firstItem'] = '1';
         nav[0].setRoot('cover-page', params);
+      } else if (item.page === 'page-title') {
+        const params = {root: null, tocItem: null, collection: {title: 'Title Page'}};
+        params['collectionID'] = item.itemId;
+        params['firstItem'] = '1';
+        nav[0].setRoot('title-page', params);
+      } else if (item.page === 'page-foreword') {
+        const params = {root: null, tocItem: null, collection: {title: 'Foreword Page'}};
+        params['collectionID'] = item.itemId;
+        params['firstItem'] = '1';
+        nav[0].setRoot('foreword-page', params);
       } else if (item.page === 'page-introduction') {
         const params = {root: null, tocItem: null, collection: {title: 'Introduction'}};
         params['collectionID'] = item.itemId;

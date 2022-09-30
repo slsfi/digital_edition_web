@@ -177,6 +177,17 @@ export class TextService {
         .catch(this.handleError);
   }
 
+  getForewordPage(id: string, lang: string): Observable<any> {
+    const data = `${id}`.split('_');
+    const c_id = data[0];
+
+    return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
+        this.config.getSettings('app.machineName') + '/text/' + c_id + '/fore/' + lang)
+        .map(res => {
+          return res.json();
+        })
+        .catch(this.handleError);
+  }
 
   getCoverPage(id: string, lang: string): Observable<any> {
     const data = `${id}`.split('_');

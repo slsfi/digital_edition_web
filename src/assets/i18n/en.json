@@ -96,7 +96,11 @@
             "AddButtonText": "Song example"
         },
         "TitlePage": {
-            "Title": "Title page & foreword"
+            "Title": "Title page"
+        },
+        "ForewordPage": {
+            "Title": "Foreword",
+            "NoForeword": "The foreword could not be loaded."
         },
         "CoverPage": {
             "Title": "Cover"
@@ -317,6 +321,7 @@
         "established": "Refer to this text",
         "intro": "Refer to the introduction of this edition",
         "pageTitle": "Refer to this edition",
+        "pageForeword": "Refer to this foreword",
         "pageEpub": "Refer to this text",
         "mediaCollection": "Refer to this media collection",
         "missing": "This page does not have a persistent identifier"

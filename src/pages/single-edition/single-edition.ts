@@ -55,8 +55,9 @@ export class SingleEditionPage {
   description: string;
   showPage = false;
   show: string;
-  hasTitle: boolean;
   hasCover: boolean;
+  hasTitle: boolean;
+  hasForeword: boolean;
   hasIntro: boolean;
   childrenPdfs = [];
   hasDigitalEditionListChildren = false;
@@ -93,21 +94,24 @@ export class SingleEditionPage {
     });
 
     try {
+      this.hasCover = this.config.getSettings('HasCover');
+    } catch (e) {
+      this.hasCover = false;
+    }
+    try {
       this.hasTitle = this.config.getSettings('HasTitle');
     } catch (e) {
       this.hasTitle = false;
     }
-
+    try {
+      this.hasForeword = this.config.getSettings('HasForeword');
+    } catch (e) {
+      this.hasForeword = false;
+    }
     try {
       this.hasIntro = this.config.getSettings('HasIntro');
     } catch (e) {
       this.hasIntro = false;
-    }
-
-    try {
-      this.hasCover = this.config.getSettings('HasCover');
-    } catch (e) {
-      this.hasCover = false;
     }
 
     try {
@@ -283,14 +287,18 @@ export class SingleEditionPage {
       const params = { collection: this.collection, fetch: true, collectionID: this.collection.id };
       if ( this.hasCover && this.defaultSelectedItem === 'cover' ) {
         nav[0].setRoot('cover-page', params);
-      } else if ( this.hasTitle && this.defaultSelectedItem === 'title'  ) {
+      } else if ( this.hasTitle && this.defaultSelectedItem === 'title' ) {
         nav[0].setRoot('title-page', params);
-      } else if ( this.hasIntro && this.defaultSelectedItem === 'introduction'  ) {
+      } else if ( this.hasForeword && this.defaultSelectedItem === 'foreword' ) {
+        nav[0].setRoot('foreword-page', params);
+      } else if ( this.hasIntro && this.defaultSelectedItem === 'introduction' ) {
         nav[0].setRoot('introduction', params);
       } else if ( this.hasCover ) {
         nav[0].setRoot('cover-page', params);
       } else if ( this.hasTitle ) {
         nav[0].setRoot('title-page', params);
+      } else if ( this.hasForeword ) {
+        nav[0].setRoot('foreword-page', params);
       } else if ( this.hasIntro ) {
         nav[0].setRoot('introduction', params);
       }

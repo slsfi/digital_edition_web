@@ -118,7 +118,11 @@
             "AddButtonText": "Sång exempel"
         },
         "TitlePage": {
-            "Title": "Nimiölehti & esipuhe"
+            "Title": "Nimiölehti"
+        },
+        "ForewordPage": {
+            "Title": "Esipuhe",
+            "NoForeword": "Esipuheen lataus epäonnistui."
         },
         "CoverPage": {
             "Title": "Kansikuva"
@@ -352,6 +356,7 @@
         "established": "Lähdevittaus tähän lukutekstiin",
         "intro": "Lähdevittaus tähän johdantoon",
         "pageTitle": "Lähdeviittaus editioon",
+        "pageForeword": "Lähdeviittaus tähän esipuheeseen",
         "pageEpub": "Lähdeviittaus tähän tekstiin",
         "mediaCollection": "Lähdeviittaus tähän kuvakokoelmaan",
         "missing": "Sivulla ei ole pysyvää osoitetta"

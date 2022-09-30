@@ -186,10 +186,11 @@ export class DigitalEditionsApp {
       selected: false
     }
   }
-  showBooks = false
-  hasIntro = true;
+  showBooks = false;
   hasCover = true;
   hasTitle = true;
+  hasForeword = true;
+  hasIntro = true;
   tocItems: GeneralTocItem[];
 
   availableEpubs: any[];
@@ -302,9 +303,9 @@ export class DigitalEditionsApp {
     }
 
     try {
-      this.hasIntro = this.config.getSettings('HasIntro');
+      this.hasCover = this.config.getSettings('HasCover');
     } catch (e) {
-      this.hasIntro = true;
+      this.hasCover = true;
     }
     try {
       this.hasTitle = this.config.getSettings('HasTitle');
@@ -312,9 +313,14 @@ export class DigitalEditionsApp {
       this.hasTitle = true;
     }
     try {
-      this.hasCover = this.config.getSettings('HasCover');
+      this.hasForeword = this.config.getSettings('HasForeword');
     } catch (e) {
-      this.hasCover = true;
+      this.hasForeword = true;
+    }
+    try {
+      this.hasIntro = this.config.getSettings('HasIntro');
+    } catch (e) {
+      this.hasIntro = true;
     }
 
     try {
@@ -1531,7 +1537,7 @@ export class DigitalEditionsApp {
   }
 
   openCollection(collection: any) {
-    if (this.hasIntro === false && this.hasTitle === false && this.hasCover === false ) {
+    if (this.hasIntro === false && this.hasTitle === false && this.hasCover === false && this.hasForeword === false ) {
       this.getTocRoot(collection);
     } else {
       const downloadOnly = this.config.getSettings('collectionDownloads.isDownloadOnly');
