@@ -345,12 +345,13 @@ export class DigitalEditionsApp {
     // If we have MediaCollections we need to add these first
     if (this.genericSettingsService.show('TOC.MediaCollections')) {
       this.getMediaCollections().then((mediaCollectionMenu) => {
-        mediaCollectionMenu.sort(function (a, b) {
-          if (a['title'] < b['title']) { return -1; }
-          if (a['title'] > b['title']) { return 1; }
-          return 0;
-        });
-        if (mediaCollectionMenu.length > 0) {
+        if (mediaCollectionMenu && mediaCollectionMenu.length > 0) {
+          mediaCollectionMenu.sort(function (a, b) {
+            if (a['title'] < b['title']) { return -1; }
+            if (a['title'] > b['title']) { return 1; }
+            return 0;
+          });
+
           let t_all = 'Alla';
           this.translate.get('TOC.All').subscribe(
             translation => {
@@ -947,6 +948,7 @@ export class DigitalEditionsApp {
       }
     });
     this.events.subscribe('tableOfContents:loaded', (data) => {
+      // console.log('subscribe to tableOfContents:loaded triggered in app.component.ts', data);
       this.tocData = data;
       this.tocLoaded = true;
 
