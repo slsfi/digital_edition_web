@@ -117,24 +117,32 @@ export class ForewordPage {
     this.getTocRoot(this.id);
     this.textService.getForewordPage(this.id, lang).subscribe(
       res => {
-        this.text = this.sanitizer.bypassSecurityTrustHtml(
-          res.content.replace(/images\//g, 'assets/images/')
-            .replace(/\.png/g, '.svg')
-        );
+        if (res.content !== 'File not found') {
+          this.text = this.sanitizer.bypassSecurityTrustHtml(
+            res.content.replace(/images\//g, 'assets/images/')
+              .replace(/\.png/g, '.svg')
+          );
+        } else {
+          this.setNoForewordText();
+        }
         this.textLoading = false;
       },
       error => {
         this.errorMessage = <any>error;
         this.textLoading = false;
-        this.translateService.get('Read.ForewordPage.NoForeword').subscribe(
-          translation => {
-            this.text = translation;
-          },
-          translationError => { this.text = ''; }
-        );
+        this.setNoForewordText();
       }
     );
     this.events.publish('pageLoaded:foreword');
+  }
+
+  setNoForewordText() {
+    this.translateService.get('Read.ForewordPage.NoForeword').subscribe(
+      translation => {
+        this.text = translation;
+      },
+      translationError => { this.text = ''; }
+    );
   }
 
   getTocRoot(id: string) {
