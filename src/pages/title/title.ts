@@ -43,6 +43,7 @@ export class TitlePage {
   collectionID: any;
   showURNButton: boolean;
   showDisplayOptionsButton: Boolean = true;
+  textLoading: Boolean = false;
   languageSubscription: Subscription;
 
   constructor(
@@ -175,20 +176,22 @@ export class TitlePage {
   }
 
   loadTitle(lang: string) {
+    this.textLoading = true;
     this.getTocRoot(this.params.get('collectionID'));
     const isIdText = isNaN(Number(this.id));
     if (this.hasMDTitle === '') {
       if (isIdText === false) {
         this.textService.getTitlePage(this.id, lang).subscribe(
           res => {
-            // in order to get id attributes for tooltips
             this.text = this.sanitizer.bypassSecurityTrustHtml(
               res.content.replace(/images\//g, 'assets/images/')
                 .replace(/\.png/g, '.svg')
             );
+            this.textLoading = false;
           },
           error => {
             this.errorMessage = <any>error;
+            this.textLoading = false;
           }
         );
       }
@@ -197,20 +200,23 @@ export class TitlePage {
         const fileID = `${lang}-${this.hasMDTitle}-${this.id}`;
         this.mdService.getMdContent(fileID).subscribe(
           res => {
-            // in order to get id attributes for tooltips
             this.mdContent = res.content;
+            this.textLoading = false;
           },
           error => {
             this.errorMessage = <any>error;
+            this.textLoading = false;
           }
         );
       } else {
         this.mdContentService.getMdContent(`${lang}-gallery-intro`).subscribe(
           text => {
-              this.mdContent = text.content;
+            this.mdContent = text.content;
+            this.textLoading = false;
           },
           error =>  {
-            this.errorMessage = <any>error
+            this.errorMessage = <any>error;
+            this.textLoading = false;
           }
         );
       }

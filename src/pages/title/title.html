@@ -39,6 +39,7 @@
   <ion-card *ngIf="!hasDigitalEditionListChildren">
     <ion-card-content>
       <ion-scroll scrollY="true" style="height:80vh;" class="card">
+        <ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
         <div *ngIf="hasMDTitle && mdContent && !hasDigitalEditionListChildren" class="tei teiContainer md_content" [ngClass]="((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')">
           <markdown [data]="mdContent"></markdown>
         </div>
