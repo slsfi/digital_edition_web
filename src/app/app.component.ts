@@ -948,9 +948,15 @@ export class DigitalEditionsApp {
       }
     });
     this.events.subscribe('tableOfContents:loaded', (data) => {
-      console.log('subscribe to tableOfContents:loaded triggered in app.component.ts', data);
+      if (data === undefined || data.tocItems === undefined) {
+        console.log('undefined toc-data in subscribe to tableOfContents:loaded in app.component.ts', data);
+      }
       this.tocData = data;
       this.tocLoaded = true;
+
+      if (this.collectionsListWithTOC === undefined || this.collectionsListWithTOC.length < 1) {
+        console.log('undefined or 0 length collectionsListWithTOC in subscribe to tableOfContents:loaded in app.component.ts');
+      }
 
       if (data.searchTocItem && this.collectionsListWithTOC !== undefined) {
         for (const collection of this.collectionsListWithTOC) {
