@@ -230,7 +230,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
     try {
       const i18n = this.config.getSettings('i18n');
-      console.log('i18n: ', i18n);
+      // console.log('i18n: ', i18n);
 
       if (i18n.multilingualEST !== undefined) {
         this.multilingualEST = i18n.multilingualEST;
