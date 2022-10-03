@@ -116,7 +116,7 @@ export class DigitalEditionsApp {
 
   pagesThatShallShow = {
     tocMenu: ['FeaturedFacsimilePage'],
-    tableOfContentsMenu: ['SingleEditionPage', 'CoverPage', 'TitlePage'],
+    tableOfContentsMenu: ['SingleEditionPage', 'CoverPage', 'TitlePage', 'ForewordPage', 'IntroductionPage'],
     aboutMenu: ['AboutPage'],
     contentMenu: ['HomePage', 'EditionsPage', 'ContentPage', 'MusicPage', 'FeaturedFacsimilePage', 'ElasticSearchPage']
   }
@@ -187,10 +187,10 @@ export class DigitalEditionsApp {
     }
   }
   showBooks = false;
-  hasCover = true;
-  hasTitle = true;
-  hasForeword = true;
-  hasIntro = true;
+  hasCover = false;
+  hasTitle = false;
+  hasForeword = false;
+  hasIntro = false;
   tocItems: GeneralTocItem[];
 
   availableEpubs: any[];
@@ -305,22 +305,22 @@ export class DigitalEditionsApp {
     try {
       this.hasCover = this.config.getSettings('HasCover');
     } catch (e) {
-      this.hasCover = true;
+      this.hasCover = false;
     }
     try {
       this.hasTitle = this.config.getSettings('HasTitle');
     } catch (e) {
-      this.hasTitle = true;
+      this.hasTitle = false;
     }
     try {
       this.hasForeword = this.config.getSettings('HasForeword');
     } catch (e) {
-      this.hasForeword = true;
+      this.hasForeword = false;
     }
     try {
       this.hasIntro = this.config.getSettings('HasIntro');
     } catch (e) {
-      this.hasIntro = true;
+      this.hasIntro = false;
     }
 
     try {
@@ -1201,7 +1201,7 @@ export class DigitalEditionsApp {
     });
 
     this.doFor(p, pagesWith.tableOfContentsMenu, () => {
-      console.log('Enabling TOC Menu', p, this.openCollectionFromToc, pagesWith.tableOfContentsMenu);
+      console.log('Enabling TOC Menu for', p, this.openCollectionFromToc);
       if (this.openCollectionFromToc) {
         this.enableTableOfContentsMenu();
       }
@@ -1468,7 +1468,7 @@ export class DigitalEditionsApp {
     const params = { tocItem: null, fetch: false, collection: { title: collection.title } };
     params['collectionID'] = collection.id;
 
-/*
+    /*
     try {
       params['publicationID'] = String(this.tocItems['children'][0]['itemId']).split('_')[1];
     } catch (e) {
@@ -1479,6 +1479,10 @@ export class DigitalEditionsApp {
     // Search the toc for the first item with itemId. This method is not perfect:
     // it's depth first and changes the top level branch every time a sub branch reaches
     // its end without finding an itemId. But it should be sufficient in practice.
+    /**
+     * ! Investigate if this is the reason why the previous sub-branch is sometimes missing
+     * ! from the toc when opening Read via direct url and the page is in a sub-branch.
+     */
     const tocLength = this.tocItems['children'].length;
     let currentTocTier = 0;
     let currentTocItem = this.tocItems['children'][0];
@@ -1537,7 +1541,7 @@ export class DigitalEditionsApp {
   }
 
   openCollection(collection: any) {
-    if (this.hasIntro === false && this.hasTitle === false && this.hasCover === false && this.hasForeword === false ) {
+    if (this.hasCover === false && this.hasTitle === false && this.hasForeword === false && this.hasIntro === false) {
       this.getTocRoot(collection);
     } else {
       const downloadOnly = this.config.getSettings('collectionDownloads.isDownloadOnly');
@@ -1558,9 +1562,15 @@ export class DigitalEditionsApp {
             collection = coll;
           }
         })
-        const params = { collection: collection, fetch: false, id: collection.id };
-        const nav = this.app.getActiveNavs();
-        nav[0].setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
+        if (collection.id && !collection.isDownloadOnly) {
+          // Open the collection from its initial page: cover, title, foreword, intro or first text
+          this.openCollectionInitialPage(collection);
+        } else {
+          // Open collection in single-edition page
+          const params = { collection: collection, fetch: false, id: collection.id };
+          const nav = this.app.getActiveNavs();
+          nav[0].setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
+        }
       }
       this.cdRef.detectChanges();
     }
@@ -1579,6 +1589,29 @@ export class DigitalEditionsApp {
       collection.title = 'media';
     }
     this.cdRef.detectChanges();
+  }
+
+  openCollectionInitialPage(collection: DigitalEdition) {
+    console.log('Opening collection from App.openCollectionInitialPage()');
+    const nav = this.app.getActiveNavs();
+    const params = { collection: collection, fetch: true, collectionID: collection.id };
+    if ( this.hasCover && this.defaultSelectedItem === 'cover' ) {
+      nav[0].setRoot('cover-page', params);
+    } else if ( this.hasTitle && this.defaultSelectedItem === 'title' ) {
+      nav[0].setRoot('title-page', params);
+    } else if ( this.hasForeword && this.defaultSelectedItem === 'foreword' ) {
+      nav[0].setRoot('foreword-page', params);
+    } else if ( this.hasIntro && this.defaultSelectedItem === 'introduction' ) {
+      nav[0].setRoot('introduction', params);
+    } else if ( this.hasCover ) {
+      nav[0].setRoot('cover-page', params);
+    } else if ( this.hasTitle ) {
+      nav[0].setRoot('title-page', params);
+    } else if ( this.hasForeword ) {
+      nav[0].setRoot('foreword-page', params);
+    } else if ( this.hasIntro ) {
+      nav[0].setRoot('introduction', params);
+    }
   }
 
   onShowAccordion(show: boolean) {
