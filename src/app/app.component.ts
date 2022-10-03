@@ -1479,10 +1479,6 @@ export class DigitalEditionsApp {
     // Search the toc for the first item with itemId. This method is not perfect:
     // it's depth first and changes the top level branch every time a sub branch reaches
     // its end without finding an itemId. But it should be sufficient in practice.
-    /**
-     * ! Investigate if this is the reason why the previous sub-branch is sometimes missing
-     * ! from the toc when opening Read via direct url and the page is in a sub-branch.
-     */
     const tocLength = this.tocItems['children'].length;
     let currentTocTier = 0;
     let currentTocItem = this.tocItems['children'][0];
