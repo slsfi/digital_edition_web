@@ -171,23 +171,6 @@ export class ReadPage /*implements OnDestroy*/ {
     'footnotes': {}
   };
 
-  nativeEmail() {
-    // Check if sharing via email is supported
-    this.socialSharing.canShareViaEmail().then(() => {
-      console.log('Sharing via email is possible');
-
-      // Share via email
-      this.socialSharing.shareViaEmail('Body', 'Subject', ['recipient@example.org']).then(() => {
-        // Success!
-      }).catch(() => {
-        // Error!
-        console.log('Email error')
-      });
-    }).catch(() => {
-      console.log('Sharing via email is not possible');
-    });
-  }
-
   constructor(private app: App,
     public viewCtrl: ViewController,
     public navCtrl: NavController,
@@ -3599,5 +3582,24 @@ export class ReadPage /*implements OnDestroy*/ {
       this.backdropWidth = pageReadElem.scrollWidth;
     }
   }
+
+  /*
+  nativeEmail() {
+    // Check if sharing via email is supported
+    this.socialSharing.canShareViaEmail().then(() => {
+      console.log('Sharing via email is possible');
+
+      // Share via email
+      this.socialSharing.shareViaEmail('Body', 'Subject', ['recipient@example.org']).then(() => {
+        // Success!
+      }).catch(() => {
+        // Error!
+        console.log('Email error')
+      });
+    }).catch(() => {
+      console.log('Sharing via email is not possible');
+    });
+  }
+  */
 
 }
