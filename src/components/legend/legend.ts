@@ -132,13 +132,13 @@ export class LegendComponent {
   scrollToInitialTextPosition() {
     if (this.scrollToElementId) {
       this.ngZone.runOutsideAngular(() => {
-        let interationsLeft = 10;
+        let iterationsLeft = 10;
         clearInterval(this.intervalTimerId);
         this.intervalTimerId = window.setInterval(function() {
-          if (interationsLeft < 1) {
+          if (iterationsLeft < 1) {
             clearInterval(this.intervalTimerId);
           } else {
-            interationsLeft -= 1;
+            iterationsLeft -= 1;
             const legendElements = document.querySelectorAll('legend');
             const element = legendElements[legendElements.length - 1].querySelector('[data-id="' + this.scrollToElementId + '"]');
             if (element) {

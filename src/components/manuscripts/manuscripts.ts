@@ -250,13 +250,13 @@ export class ManuscriptsComponent {
    * It's called after adding new views. */
   scrollLastViewIntoView() {
     this.ngZone.runOutsideAngular(() => {
-      let interationsLeft = 10;
+      let iterationsLeft = 10;
       clearInterval(this.intervalTimerId);
       this.intervalTimerId = window.setInterval(function() {
-        if (interationsLeft < 1) {
+        if (iterationsLeft < 1) {
           clearInterval(this.intervalTimerId);
         } else {
-          interationsLeft -= 1;
+          iterationsLeft -= 1;
           const viewElements = document.getElementsByClassName('read-column');
           if (viewElements[0] !== undefined) {
             const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;

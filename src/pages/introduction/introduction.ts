@@ -312,13 +312,13 @@ export class IntroductionPage {
    *  Timeout, to give text some time to load on the page. */
   private scrollToPos() {
     this.ngZone.runOutsideAngular(() => {
-      let interationsLeft = 10;
+      let iterationsLeft = 10;
       clearInterval(this.intervalTimerId);
       this.intervalTimerId = window.setInterval(function() {
-        if (interationsLeft < 1) {
+        if (iterationsLeft < 1) {
           clearInterval(this.intervalTimerId);
         } else {
-          interationsLeft -= 1;
+          iterationsLeft -= 1;
           if (this.pos !== null && this.pos !== undefined) {
             let positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
             if (positionElement !== null && positionElement !== undefined) {
