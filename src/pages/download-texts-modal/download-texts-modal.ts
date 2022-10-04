@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
 import { LanguageService } from '../../app/services/languages/language.service';
+import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 
 @Component({
   selector: 'page-download-texts-modal',
@@ -54,7 +55,8 @@ export class DownloadTextsModalPage {
     public translate: TranslateService,
     public readPopoverService: ReadPopoverService,
     private tocService: TableOfContentsService,
-    private langService: LanguageService
+    private langService: LanguageService,
+    private analyticsService: AnalyticsService
   ) {
     // Get configs
     this.appMachineName = this.config.getSettings('app.machineName');
@@ -257,6 +259,10 @@ export class DownloadTextsModalPage {
   ionViewDidLoad() {
   }
 
+  ionViewDidEnter() {
+    this.analyticsService.doPageView('Download texts modal');
+  }
+
   private initiateDownload(textType: string, format: string) {
     this.showErrorMessage = false;
     let mimetype = 'application/xml';
@@ -331,6 +337,7 @@ export class DownloadTextsModalPage {
         }
       );
     }
+    this.doAnalytics(textType + '_' + format);
   }
 
   private openPrintFriendlyText(textType: string) {
@@ -345,6 +352,7 @@ export class DownloadTextsModalPage {
       this.loadingCom = true;
       this.openCommentsForPrint();
     }
+    this.doAnalytics(textType + '_print');
   }
 
   dismiss() {
@@ -792,6 +800,10 @@ export class DownloadTextsModalPage {
       }
     }
     return names_str;
+  }
+
+  doAnalytics(textType: string) {
+    this.analyticsService.doAnalyticsEvent('Download texts modal', textType, String(this.textId));
   }
 
 }
