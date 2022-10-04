@@ -684,9 +684,13 @@ export class IntroductionPage {
 
     this.tooltipService.getPlaceTooltip(id).subscribe(
       tooltip => {
-        this.setToolTipPosition(targetElem, tooltip.description);
-        this.setToolTipText((tooltip.description) ? tooltip.description : tooltip.name);
-        this.tooltips.places[id] = tooltip.description;
+        let text = '<b>' + tooltip.name.trim() + '</b>';
+        if (tooltip.description) {
+          text = text + ', ' + tooltip.description.trim();
+        }
+        this.setToolTipPosition(targetElem, text);
+        this.setToolTipText(text);
+        this.tooltips.places[id] = text;
       },
       error => {
         let noInfoFound = 'Could not get place information';

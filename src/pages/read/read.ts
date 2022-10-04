@@ -1851,9 +1851,13 @@ export class ReadPage /*implements OnDestroy*/ {
 
     this.tooltipService.getPlaceTooltip(id).subscribe(
       tooltip => {
-        this.setToolTipPosition(targetElem, (tooltip.description) ?  tooltip.name + ', ' + tooltip.description : tooltip.name);
-        this.setToolTipText((tooltip.description) ?  tooltip.name + ', ' + tooltip.description : tooltip.name);
-        this.tooltips.places[id] = (tooltip.description) ?  tooltip.name + ', ' + tooltip.description : tooltip.name;
+        let text = '<b>' + tooltip.name.trim() + '</b>';
+        if (tooltip.description) {
+          text = text + ', ' + tooltip.description.trim();
+        }
+        this.setToolTipPosition(targetElem, text);
+        this.setToolTipText(text);
+        this.tooltips.places[id] = text;
       },
       error => {
         let noInfoFound = 'Could not get place information';
