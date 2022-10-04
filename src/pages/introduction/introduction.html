@@ -29,7 +29,7 @@
               -->
               <ion-col *ngIf="showDisplayOptionsButton">
                 <button ion-button clear #settingsIconElement (click)="showPopover($event)" class="sec-menu-button" id="settings-icon">
-                  <ion-icon class="settings-icon" name="eye"></ion-icon>
+                  <ion-icon class="settings-icon" name="settings"></ion-icon>
                   <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Popover.Options' | translate }}</span>
                 </button>
               </ion-col>
