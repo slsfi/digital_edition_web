@@ -238,10 +238,6 @@ export class IntroductionPage {
     this.languageSubscription = this.langService.languageSubjectChange().subscribe(lang => {
       if (lang) {
         this.loadIntroduction(lang);
-      } else {
-        this.langService.getLanguage().subscribe(language => {
-          this.loadIntroduction(language);
-        });
       }
     });
   }

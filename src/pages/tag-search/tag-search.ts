@@ -125,10 +125,6 @@ export class TagSearchPage {
       this.setData();
       if (lang) {
         this.getMdContent(lang + '-12-04');
-      } else {
-        this.langService.getLanguage().subscribe(language => {
-          this.getMdContent(language + '-12-04');
-        });
       }
     });
   }

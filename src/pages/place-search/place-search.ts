@@ -120,10 +120,6 @@ export class PlaceSearchPage {
       this.setData();
       if (lang) {
         this.getMdContent(lang + '-12-03');
-      } else {
-        this.langService.getLanguage().subscribe(language => {
-          this.getMdContent(language + '-12-03');
-        });
       }
     });
   }

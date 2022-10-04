@@ -85,10 +85,6 @@ export class ForewordPage {
     this.languageSubscription = this.langService.languageSubjectChange().subscribe(lang => {
       if (lang) {
         this.loadForeword(lang);
-      } else {
-        this.langService.getLanguage().subscribe(language => {
-          this.loadForeword(language);
-        });
       }
     });
   }

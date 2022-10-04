@@ -97,10 +97,6 @@ export class CoverPage {
     this.languageSubscription = this.langService.languageSubjectChange().subscribe(lang => {
       if (lang) {
         this.loadCover(lang);
-      } else {
-        this.langService.getLanguage().subscribe(language => {
-          this.loadCover(language);
-        });
       }
     });
   }
