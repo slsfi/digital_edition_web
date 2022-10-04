@@ -46,7 +46,7 @@ export class IntroductionPage {
   protected collection: any;
   protected pos: any;
   public tocMenuOpen: boolean;
-  public hasSeparateIntroToc: boolean;
+  public hasSeparateIntroToc: Boolean = false;
   public showURNButton: boolean;
   showDisplayOptionsButton: Boolean = true;
   readPopoverTogglesIntro: Record<string, any> = {};
@@ -177,6 +177,12 @@ export class IntroductionPage {
       this.showDisplayOptionsButton = true;
     }
 
+    try {
+      this.hasSeparateIntroToc = this.config.getSettings('separeateIntroductionToc');
+    } catch (e) {
+      this.hasSeparateIntroToc = false;
+    }
+
     this.translate.get('Read.Introduction.Contents').subscribe(
       translation => {
         if (translation && translation !== 'Read.Introduction.Contents') {
@@ -242,46 +248,40 @@ export class IntroductionPage {
 
   loadIntroduction(lang: string) {
     this.text = '';
-    this.hasSeparateIntroToc = false;
     this.textLoading = true;
     this.textService.getIntroduction(this.id, lang).subscribe(
       res => {
-          try {
-            this.hasSeparateIntroToc = this.config.getSettings('separeateIntroductionToc');
-          } catch (error) {
-            this.hasSeparateIntroToc = false;
-          }
-          if ( this.id !== undefined ) {
-            this.getTocRoot(this.id);
-          }
+        if ( this.id !== undefined ) {
+          this.getTocRoot(this.id);
+        }
 
-          this.textLoading = false;
-          // in order to get id attributes for tooltips
-          this.text = this.sanitizer.bypassSecurityTrustHtml(
-            res.content.replace(/images\//g, 'assets/images/')
-                .replace(/\.png/g, '.svg')
-          );
-          const pattern = /<div data-id="content">(.*?)<\/div>/;
-          const matches = String(this.text).match(pattern);
-          if ( matches !== null ) {
-            const the_string = matches[0];
-            this.textMenu = the_string;
-            if (!this.platform.is('mobile')) {
-              if (!this.tocMenuOpen) {
-                this.tocMenuOpen = true;
-              }
-            }
-          } else {
-            this.hasSeparateIntroToc = false;
-          }
+        this.textLoading = false;
+        // in order to get id attributes for tooltips
+        this.text = this.sanitizer.bypassSecurityTrustHtml(
+          res.content.replace(/images\//g, 'assets/images/')
+              .replace(/\.png/g, '.svg')
+        );
+        const pattern = /<div data-id="content">(.*?)<\/div>/;
+        const matches = String(this.text).match(pattern);
+        if ( matches !== null ) {
+          const the_string = matches[0];
+          this.textMenu = the_string;
           if (!this.platform.is('mobile')) {
             if (!this.tocMenuOpen) {
               this.tocMenuOpen = true;
             }
           }
-          // Try to scroll to an element in the text, checks if "pos" given
-          this.scrollToPos();
-        },
+        } else {
+          this.hasSeparateIntroToc = false;
+        }
+        if (!this.platform.is('mobile')) {
+          if (!this.tocMenuOpen) {
+            this.tocMenuOpen = true;
+          }
+        }
+        // Try to scroll to an element in the text, checks if "pos" given
+        this.scrollToPos();
+      },
       error =>  {
         this.errorMessage = <any>error;
         this.textLoading = false;

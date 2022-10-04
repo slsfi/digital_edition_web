@@ -33,7 +33,7 @@
                   <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Popover.Options' | translate }}</span>
                 </button>
               </ion-col>
-              <ion-col>
+              <ion-col *ngIf="hasSeparateIntroToc">
                 <button ion-button clear class="sec-menu-button" [ngClass]="tocMenuOpen ? 'menuOpenTOC' : 'menuClosedTOC'"  (click)="toggleTocMenu()">
                   <ion-icon name="list" *ngIf="!tocMenuOpen"></ion-icon>
                   <ion-icon name="close" *ngIf="tocMenuOpen"></ion-icon>
