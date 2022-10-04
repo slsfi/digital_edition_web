@@ -47,7 +47,7 @@ export class ReferenceDataModalPage {
     // Check if these label translations exist
     this.translate.get('Reference.thisPage').subscribe(
       translation => {
-        if (translation) {
+        if (translation && translation !== 'Reference.thisPage') {
           this.thisPageTranslation = true;
         } else {
           this.thisPageTranslation = false;
@@ -56,7 +56,7 @@ export class ReferenceDataModalPage {
     );
     this.translate.get('Reference.permaLink').subscribe(
       translation => {
-        if (translation) {
+        if (translation && translation !== 'Reference.permaLink') {
           this.permaLinkTranslation = true;
         } else {
           this.permaLinkTranslation = false;
@@ -88,47 +88,44 @@ export class ReferenceDataModalPage {
     this.getReferenceData(relevantParts);
   }
 
-
-
   ionViewDidLoad() {
-
   }
 
   getReferenceData(id: string) {
-      this.referenceData = 'Loading referenceData ..';
-      this.referenceDataService.getReferenceData(id).subscribe(
-          data => {
-              this.referenceData = data;
-              if ( String(data).length === 0 && id.includes('/') ) {
-                let newId = '';
-                if (id.slice(id.lastIndexOf('/')).includes(';')) {
-                  newId = id.slice(0, id.lastIndexOf(';'));
-                } else {
-                  newId = id.slice(0, id.lastIndexOf('/'));
-                }
-                if ( newId.length > 0 ) {
-                  this.getReferenceData(newId);
-                }
-              } else {
-                this.storage.get('currentTOCItemTitle').then((currentTOCItemTitle) => {
-                  if ( currentTOCItemTitle !== '' && currentTOCItemTitle !== undefined && this.referenceData['reference_text'] ) {
-                    this.referenceData['reference_text'] =
-                    String(this.referenceData['reference_text']).replace('[title]', currentTOCItemTitle)
-                  }
-                  if (this.referenceData['reference_text']) {
-                    this.referenceData['reference_text'] = String(this.referenceData['reference_text']).trim();
-                    if (this.referenceData['reference_text'].substring(this.referenceData['reference_text'].length - 1) !== ',') {
-                      this.referenceData['reference_text'] = this.referenceData['reference_text'] + ',';
-                    }
-                    this.referenceData['reference_text'] = this.referenceData['reference_text'] + ' ';
-                  }
-                });
-              }
-          },
-          error =>  {
-              this.referenceData = 'Unable to get referenceData';
+    this.referenceData = 'Loading referenceData ..';
+    this.referenceDataService.getReferenceData(id).subscribe(
+      data => {
+        this.referenceData = data;
+        if ( String(data).length === 0 && id.includes('/') ) {
+          let newId = '';
+          if (id.slice(id.lastIndexOf('/')).includes(';')) {
+            newId = id.slice(0, id.lastIndexOf(';'));
+          } else {
+            newId = id.slice(0, id.lastIndexOf('/'));
           }
-        );
+          if ( newId.length > 0 ) {
+            this.getReferenceData(newId);
+          }
+        } else {
+          this.storage.get('currentTOCItemTitle').then((currentTOCItemTitle) => {
+            if ( currentTOCItemTitle !== '' && currentTOCItemTitle !== undefined && this.referenceData['reference_text'] ) {
+              this.referenceData['reference_text'] =
+              String(this.referenceData['reference_text']).replace('[title]', currentTOCItemTitle)
+            }
+            if (this.referenceData['reference_text']) {
+              this.referenceData['reference_text'] = String(this.referenceData['reference_text']).trim();
+              if (this.referenceData['reference_text'].substring(this.referenceData['reference_text'].length - 1) !== ',') {
+                this.referenceData['reference_text'] = this.referenceData['reference_text'] + ',';
+              }
+              this.referenceData['reference_text'] = this.referenceData['reference_text'] + ' ';
+            }
+          });
+        }
+      },
+      error =>  {
+          this.referenceData = 'Unable to get referenceData';
+      }
+    );
   }
 
    dismiss() {

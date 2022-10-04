@@ -1,5 +1,8 @@
 <ion-header no-border>
   <ion-toolbar color="secondary" class="secondary">
+
+    <text-changer *ngIf="!(userSettingsService.isMobile())" [legacyId]="id" [parentPageType]="'page-title'" class="text-changer-desktop-view"></text-changer>
+
     <ion-buttons>
         <ion-grid>
             <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
@@ -17,7 +20,7 @@
                 </button>
               </ion-col>
               -->
-              <ion-col>
+              <ion-col *ngIf="showDisplayOptionsButton">
                 <button ion-button clear #settingsIconElement (click)="showReadSettingsPopover($event)" class="sec-menu-button" id="settings-icon">
                   <ion-icon class="settings-icon" name="settings"></ion-icon>
                   <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Popover.Options' | translate }}</span>
@@ -29,14 +32,15 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding [ngClass]="printMainContentClasses()">
   <div *ngIf="hasDigitalEditionListChildren" class="">
     <digital-edition-list-children [layoutType]="'auto'" [childrenPdfs]="childrenPdfs" [collectionID]="collectionID"></digital-edition-list-children>
   </div>
   <ion-card *ngIf="!hasDigitalEditionListChildren">
     <ion-card-content>
       <ion-scroll scrollY="true" style="height:80vh;" class="card">
-        <div *ngIf="hasMDTitle && mdContent && !hasDigitalEditionListChildren" class="tei teiContainer md_content">
+        <ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
+        <div *ngIf="hasMDTitle && mdContent && !hasDigitalEditionListChildren" class="tei teiContainer md_content" [ngClass]="((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')">
           <markdown [data]="mdContent"></markdown>
         </div>
         <div *ngIf="!hasMDTitle && !hasDigitalEditionListChildren" class="tei teiContainer"
@@ -45,3 +49,5 @@
     </ion-card-content>
   </ion-card>
 </ion-content>
+
+<text-changer *ngIf="(userSettingsService.isMobile())" [legacyId]="id" [parentPageType]="'page-title'" class="text-changer-mobile-view"></text-changer>

@@ -15,6 +15,7 @@ import { UserSettingsService } from '../../app/services/settings/user-settings.s
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { MetadataService } from '../../app/services/metadata/metadata.service';
 import { MdContentService } from '../../app/services/md/md-content.service';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
  * Generated class for the tagsearchPage page.
@@ -40,7 +41,6 @@ export class TagSearchPage {
   @ViewChild(Content) content: Content;
 
   tags: any[] = [];
-  appName: string;
   descending = false;
   order: number;
   column = 'name';
@@ -66,6 +66,7 @@ export class TagSearchPage {
   // tslint:disable-next-line:max-line-length
   alphabet: string[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Å', 'Ä', 'Ö'];
 
+  languageSubscription: Subscription;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -87,20 +88,63 @@ export class TagSearchPage {
               private analyticsService: AnalyticsService,
               private metadataService: MetadataService
   ) {
-    this.langService.getLanguage().subscribe((lang) => {
-      this.appName = this.config.getSettings('app.name.' + lang);
-      try {
-        this.showFilter = this.config.getSettings('TagSearch.ShowFilter');
-      } catch (e) {
-        this.showFilter = true;
-      }
-      this.getMdContent(lang + '-12-04');
+    try {
+      this.showFilter = this.config.getSettings('TagSearch.ShowFilter');
+    } catch (e) {
+      this.showFilter = true;
+    }
+    try {
+      this.infiniteScrollNumber = this.config.getSettings('TagSearch.InitialLoadNumber');
+    } catch (e) {
+      this.infiniteScrollNumber = 200;
+    }
+  }
+
+  ionViewWillEnter() {
+    // Try to remove META-Tags
+    this.metadataService.clearHead();
+    // Add the new META-Tags
+    this.metadataService.addDescription(this.constructor.name);
+    this.metadataService.addKeywords();
+
+    this.events.publish('ionViewWillEnter', this.constructor.name);
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'tag-search'});
+    this.events.publish('SelectedItemInMenu', {
+      menuID: 'tagSearch',
+      component: 'tag-search'
     });
-    this.setData();
   }
 
   ionViewDidEnter() {
     this.analyticsService.doPageView('Tags');
+  }
+
+  ionViewDidLoad() {
+    this.languageSubscription = this.langService.languageSubjectChange().subscribe(lang => {
+      this.selectMusicAccordionItem();
+      this.setData();
+      if (lang) {
+        this.getMdContent(lang + '-12-04');
+      } else {
+        this.langService.getLanguage().subscribe(language => {
+          this.getMdContent(language + '-12-04');
+        });
+      }
+    });
+  }
+
+  ionViewWillLeave() {
+    this.events.publish('ionViewWillLeave', this.constructor.name);
+  }
+
+  ionViewDidLeave() {
+    this.storage.remove('filterCollections');
+  }
+
+  ngOnDestroy() {
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
   }
 
   setData() {
@@ -199,30 +243,6 @@ export class TagSearchPage {
     this.content.scrollToTop(400);
   }
 
-  ionViewDidLeave() {
-    this.storage.remove('filterCollections');
-  }
-
-  ionViewWillLeave() {
-    this.events.publish('ionViewWillLeave', this.constructor.name);
-  }
-
-  ionViewWillEnter() {
-    // Try to remove META-Tags
-    this.metadataService.clearHead();
-    // Add the new META-Tags
-    this.metadataService.addDescription(this.constructor.name);
-    this.metadataService.addKeywords();
-
-    this.events.publish('ionViewWillEnter', this.constructor.name);
-    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'tag-search'});
-    this.events.publish('SelectedItemInMenu', {
-      menuID: 'tagSearch',
-      component: 'tag-search'
-    });
-    this.selectMusicAccordionItem();
-  }
-
   appHasMusicAccordionConfig() {
     let appHasMusicAccordion = false;
 
@@ -243,18 +263,6 @@ export class TagSearchPage {
     }
 
     this.events.publish('musicAccordion:SetSelected', {musicAccordionKey: 'tagSearch'});
-  }
-
-  ionViewDidLoad() {
-    this.events.subscribe('language:change', () => {
-      this.langService.getLanguage().subscribe((lang) => {
-        this.getMdContent(lang + '-12-04');
-      });
-    });
-  }
-
-  ngOnDestroy() {
-    this.events.unsubscribe('language:change');
   }
 
   filter(terms) {

@@ -33,6 +33,7 @@ import { TableOfContentsList } from '../../app/table-of-contents/table-of-conten
 
 import { Content } from 'ionic-angular';
 import { ReferenceDataModalPage } from '../reference-data-modal/reference-data-modal';
+import { DownloadTextsModalPage } from '../download-texts-modal/download-texts-modal';
 import { OccurrencesPage } from '../occurrences/occurrences';
 import { OccurrenceResult } from '../../app/models/occurrence.model';
 import { SearchAppPage } from '../search-app/search-app';
@@ -107,6 +108,9 @@ export class ReadPage /*implements OnDestroy*/ {
   illustrationsViewShown: Boolean = false;
   simpleWorkMetadata: Boolean;
   showURNButton: Boolean;
+  showDisplayOptionsButton: Boolean = true;
+  showTextDownloadButton: Boolean = false;
+  usePrintNotDownloadIcon: Boolean = false;
   backdropWidth: number;
 
   prevItem: any;
@@ -152,7 +156,8 @@ export class ReadPage /*implements OnDestroy*/ {
     'facsimiles',
     'introduction',
     'songexample',
-    'illustrations'
+    'illustrations',
+    'legend'
   ];
 
   appUsesAccordionToc = false;
@@ -165,23 +170,6 @@ export class ReadPage /*implements OnDestroy*/ {
     'abbreviations': {},
     'footnotes': {}
   };
-
-  nativeEmail() {
-    // Check if sharing via email is supported
-    this.socialSharing.canShareViaEmail().then(() => {
-      console.log('Sharing via email is possible');
-
-      // Share via email
-      this.socialSharing.shareViaEmail('Body', 'Subject', ['recipient@example.org']).then(() => {
-        // Success!
-      }).catch(() => {
-        // Error!
-        console.log('Email error')
-      });
-    }).catch(() => {
-      console.log('Sharing via email is not possible');
-    });
-  }
 
   constructor(private app: App,
     public viewCtrl: ViewController,
@@ -242,7 +230,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
     try {
       const i18n = this.config.getSettings('i18n');
-      console.log('i18n: ', i18n);
+      // console.log('i18n: ', i18n);
 
       if (i18n.multilingualEST !== undefined) {
         this.multilingualEST = i18n.multilingualEST;
@@ -267,6 +255,43 @@ export class ReadPage /*implements OnDestroy*/ {
       this.showURNButton = this.config.getSettings('showURNButton.pageRead');
     } catch (e) {
       this.showURNButton = true;
+    }
+
+    try {
+      this.showDisplayOptionsButton = this.config.getSettings('showDisplayOptionsButton.pageRead');
+    } catch (e) {
+      this.showDisplayOptionsButton = true;
+    }
+
+    try {
+      const textDownloadOptions = this.config.getSettings('textDownloadOptions');
+      if (textDownloadOptions.enabledEstablishedFormats !== undefined &&
+        textDownloadOptions.enabledEstablishedFormats !== null &&
+        Object.keys(textDownloadOptions.enabledEstablishedFormats).length !== 0) {
+          for (const [key, value] of Object.entries(textDownloadOptions.enabledEstablishedFormats)) {
+            if (`${value}`) {
+              this.showTextDownloadButton = true;
+              break;
+            }
+          }
+      }
+      if (!this.showTextDownloadButton) {
+        if (textDownloadOptions.enabledCommentsFormats !== undefined &&
+          textDownloadOptions.enabledCommentsFormats !== null &&
+          Object.keys(textDownloadOptions.enabledCommentsFormats).length !== 0) {
+            for (const [key, value] of Object.entries(textDownloadOptions.enabledCommentsFormats)) {
+              if (`${value}`) {
+                this.showTextDownloadButton = true;
+                break;
+              }
+            }
+        }
+      }
+      if (textDownloadOptions.usePrintNotDownloadIcon !== undefined) {
+        this.usePrintNotDownloadIcon = textDownloadOptions.usePrintNotDownloadIcon;
+      }
+    } catch (e) {
+      this.showTextDownloadButton = false;
     }
 
     // Hide some or all of the display toggles (variations, facsimiles, established etc.)
@@ -694,6 +719,8 @@ export class ReadPage /*implements OnDestroy*/ {
       return false;
     } else if (viewmode === 'illustrations' && !this.displayToggles['illustrations']) {
       return false;
+    } else if (viewmode === 'legend' && !this.displayToggles['legend']) {
+      return false;
     }
 
     return true;
@@ -786,8 +813,6 @@ export class ReadPage /*implements OnDestroy*/ {
         this.show = 'facsimiles';
       } else if (v.type === 'song-example') {
         this.show = 'song-example';
-      } else if (v.type === 'introduction' || v.type === 'int') {
-        this.show = 'introduction';
       }
     }
   }
@@ -1826,9 +1851,13 @@ export class ReadPage /*implements OnDestroy*/ {
 
     this.tooltipService.getPlaceTooltip(id).subscribe(
       tooltip => {
-        this.setToolTipPosition(targetElem, (tooltip.description) ?  tooltip.name + ', ' + tooltip.description : tooltip.name);
-        this.setToolTipText((tooltip.description) ?  tooltip.name + ', ' + tooltip.description : tooltip.name);
-        this.tooltips.places[id] = (tooltip.description) ?  tooltip.name + ', ' + tooltip.description : tooltip.name;
+        let text = '<b>' + tooltip.name.trim() + '</b>';
+        if (tooltip.description) {
+          text = text + ', ' + tooltip.description.trim();
+        }
+        this.setToolTipPosition(targetElem, text);
+        this.setToolTipText(text);
+        this.tooltips.places[id] = text;
       },
       error => {
         let noInfoFound = 'Could not get place information';
@@ -2826,6 +2855,14 @@ export class ReadPage /*implements OnDestroy*/ {
     });
   }
 
+  private showDownloadModal() {
+    const modal = this.modalCtrl.create(DownloadTextsModalPage, {textId: this.establishedText.link, origin: 'page-read'});
+    modal.present();
+    modal.onDidDismiss(data => {
+      // console.log('dismissed', data);
+    });
+  }
+
   presentDownloadActionSheet() {
     const actionSheet = this.actionSheetCtrl.create({
       title: 'Ladda ner digital version',
@@ -2897,7 +2934,8 @@ export class ReadPage /*implements OnDestroy*/ {
         variations: { show: (type === 'variations'), id: id, variationSortOrder: variationSortOrder },
         introduction: { show: (type === 'introduction'), id: id },
         songexample: { show: (type === 'songexample'), id: id },
-        illustrations: { show: (type === 'illustrations'), image: image }
+        illustrations: { show: (type === 'illustrations'), image: image },
+        legend: { show: (type === 'legend'), id: id }
       }
       if (this.multilingualEST) {
         for (const lang of this.estLanguages) {
@@ -3391,13 +3429,13 @@ export class ReadPage /*implements OnDestroy*/ {
    * */
   scrollLastViewIntoView() {
     this.ngZone.runOutsideAngular(() => {
-      let interationsLeft = 10;
+      let iterationsLeft = 10;
       clearInterval(this.intervalTimerId);
       this.intervalTimerId = window.setInterval(function() {
-        if (interationsLeft < 1) {
+        if (iterationsLeft < 1) {
           clearInterval(this.intervalTimerId);
         } else {
-          interationsLeft -= 1;
+          iterationsLeft -= 1;
           const viewElements = document.getElementsByClassName('read-column');
           if (viewElements[0] !== undefined) {
             const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
@@ -3548,5 +3586,24 @@ export class ReadPage /*implements OnDestroy*/ {
       this.backdropWidth = pageReadElem.scrollWidth;
     }
   }
+
+  /*
+  nativeEmail() {
+    // Check if sharing via email is supported
+    this.socialSharing.canShareViaEmail().then(() => {
+      console.log('Sharing via email is possible');
+
+      // Share via email
+      this.socialSharing.shareViaEmail('Body', 'Subject', ['recipient@example.org']).then(() => {
+        // Success!
+      }).catch(() => {
+        // Error!
+        console.log('Email error')
+      });
+    }).catch(() => {
+      console.log('Sharing via email is not possible');
+    });
+  }
+  */
 
 }

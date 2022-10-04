@@ -1,0 +1,39 @@
+<ion-header no-border>
+  <ion-toolbar color="secondary" class="secondary">
+
+    <text-changer *ngIf="!(userSettingsService.isMobile())" [legacyId]="id" [parentPageType]="'page-foreword'" class="text-changer-desktop-view"></text-changer>
+
+    <ion-buttons>
+        <ion-grid>
+            <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
+              <ion-col *ngIf="showURNButton">
+                <button ion-button clear (click)="showReference()" class="sec-menu-button">
+                  <ion-icon class="urn-icon" name="share-alt"></ion-icon>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.refer' | translate }}</span>
+                </button>
+              </ion-col>
+              <ion-col *ngIf="showDisplayOptionsButton">
+                <button ion-button clear #settingsIconElement (click)="showReadSettingsPopover($event)" class="sec-menu-button" id="settings-icon">
+                  <ion-icon class="settings-icon" name="settings"></ion-icon>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Popover.Options' | translate }}</span>
+                </button>
+              </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding [ngClass]="printMainContentClasses()">
+  <ion-card>
+    <ion-card-content>
+      <ion-scroll scrollY="true" style="height:80vh;" class="card">
+        <ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
+        <div class="tei teiContainer"
+        [innerHTML]="text" [ngClass]="((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')"></div>
+      </ion-scroll>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<text-changer *ngIf="(userSettingsService.isMobile())" [legacyId]="id" [parentPageType]="'page-foreword'" class="text-changer-mobile-view"></text-changer>

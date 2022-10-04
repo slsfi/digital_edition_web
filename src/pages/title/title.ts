@@ -11,6 +11,7 @@ import { MdContentService } from '../../app/services/md/md-content.service';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { ReadPopoverPage } from '../read-popover/read-popover';
 import { ReferenceDataModalPage } from '../../pages/reference-data-modal/reference-data-modal';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
  * Generated class for the TitlePage page.
@@ -32,7 +33,6 @@ export class TitlePage {
 
   errorMessage: any;
   mdContent: string;
-  lang = 'sv';
   hasMDTitle = '';
   hasDigitalEditionListChildren = false;
   childrenPdfs = [];
@@ -42,6 +42,9 @@ export class TitlePage {
   titleSelected: boolean;
   collectionID: any;
   showURNButton: boolean;
+  showDisplayOptionsButton: Boolean = true;
+  textLoading: Boolean = false;
+  languageSubscription: Subscription;
 
   constructor(
     public navCtrl: NavController,
@@ -83,39 +86,30 @@ export class TitlePage {
       this.showURNButton = false;
     }
 
-    this.lang = this.config.getSettings('i18n.locale');
-    this.events.subscribe('language:change', () => {
-      this.langService.getLanguage().subscribe((lang) => {
-        this.lang = lang;
-        this.ionViewDidLoad();
-      });
-    });
+    try {
+      this.showDisplayOptionsButton = this.config.getSettings('showDisplayOptionsButton.pageTitle');
+    } catch (e) {
+      this.showDisplayOptionsButton = true;
+    }
 
-    this.langService.getLanguage().subscribe((lang) => {
-      // Check if not a Number
-      let idNaN = isNaN(Number(this.id));
-      if ( this.id === null || this.id === 'null' ) {
-        idNaN = true;
-      }
+    this.languageSubscription = null;
 
-      // idNaN === false, id is a number
-      if ( idNaN === false ) {
-        this.checkIfCollectionHasChildrenPdfs();
-      }
+    // Check if id not a Number
+    let idNaN = isNaN(Number(this.id));
+    if ( this.id === null || this.id === 'null' ) {
+      idNaN = true;
+    }
 
-      // idNaN === false, id is a number
-      if ( idNaN === false ) {
-        if (this.hasMDTitle !== '') {
-          this.getMdContent(`${lang}-${this.hasMDTitle}-${this.id}`);
-        }
-      } else {
-        this.getMdContent(`${lang}-gallery-intro`);
-      }
-    });
+    // idNaN === false, id is a number
+    if ( idNaN === false ) {
+      this.checkIfCollectionHasChildrenPdfs();
+    }
   }
 
   ngOnDestroy() {
-    this.events.unsubscribe('language:change');
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
   }
 
   checkIfCollectionHasChildrenPdfs() {
@@ -170,51 +164,61 @@ export class TitlePage {
   }
 
   ionViewDidLoad() {
+    this.languageSubscription = this.langService.languageSubjectChange().subscribe(lang => {
+      if (lang) {
+        this.loadTitle(lang);
+      } else {
+        this.langService.getLanguage().subscribe(language => {
+          this.loadTitle(language);
+        });
+      }
+    });
+  }
+
+  loadTitle(lang: string) {
+    this.textLoading = true;
     this.getTocRoot(this.params.get('collectionID'));
     const isIdText = isNaN(Number(this.id));
     if (this.hasMDTitle === '') {
       if (isIdText === false) {
-        this.langService.getLanguage().subscribe(lang => {
-          this.textService.getTitlePage(this.id, lang).subscribe(
-            res => {
-              // in order to get id attributes for tooltips
-              this.text = this.sanitizer.bypassSecurityTrustHtml(
-                res.content.replace(/images\//g, 'assets/images/')
-                  .replace(/\.png/g, '.svg')
-              );
-            },
-            error => {
-              this.errorMessage = <any>error;
-            }
-          );
-        });
+        this.textService.getTitlePage(this.id, lang).subscribe(
+          res => {
+            this.text = this.sanitizer.bypassSecurityTrustHtml(
+              res.content.replace(/images\//g, 'assets/images/')
+                .replace(/\.png/g, '.svg')
+            );
+            this.textLoading = false;
+          },
+          error => {
+            this.errorMessage = <any>error;
+            this.textLoading = false;
+          }
+        );
       }
     } else {
       if (isIdText === false) {
-        this.langService.getLanguage().subscribe(lang => {
-          const fileID = `${lang}-${this.hasMDTitle}-${this.id}`;
-          this.mdService.getMdContent(fileID).subscribe(
-            res => {
-              // in order to get id attributes for tooltips
-              this.mdContent = res.content;
-            },
-            error => {
-              this.errorMessage = <any>error;
-            }
-          );
-        });
+        const fileID = `${lang}-${this.hasMDTitle}-${this.id}`;
+        this.mdService.getMdContent(fileID).subscribe(
+          res => {
+            this.mdContent = res.content;
+            this.textLoading = false;
+          },
+          error => {
+            this.errorMessage = <any>error;
+            this.textLoading = false;
+          }
+        );
       } else {
-        this.langService.getLanguage().subscribe(lang => {
-          this.mdContentService.getMdContent(`${lang}-gallery-intro`)
-          .subscribe(
-              text => {
-                 this.mdContent = text.content;
-              },
-              error =>  {
-                this.errorMessage = <any>error
-              }
-          );
-        });
+        this.mdContentService.getMdContent(`${lang}-gallery-intro`).subscribe(
+          text => {
+            this.mdContent = text.content;
+            this.textLoading = false;
+          },
+          error =>  {
+            this.errorMessage = <any>error;
+            this.textLoading = false;
+          }
+        );
       }
     }
     this.events.publish('pageLoaded:title');
@@ -246,5 +250,13 @@ export class TitlePage {
     modal.onDidDismiss(data => {
       // console.log('dismissed', data);
     });
+  }
+
+  printMainContentClasses() {
+    if (this.userSettingsService.isMobile()) {
+      return 'mobile-mode-title-content';
+    } else {
+      return '';
+    }
   }
 }

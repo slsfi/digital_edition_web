@@ -14,6 +14,7 @@ export class TitleLogoComponent {
   public title: string;
   public subtitle: string;
   public siteLogoURL: string;
+  public useMobileLogo: Boolean = false;
   constructor(
     private events: Events,
     private userSettingsService: UserSettingsService,
@@ -40,8 +41,13 @@ export class TitleLogoComponent {
     });
   }
 
-  home() {
-
+  ngOnInit() {
+    const viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+    if (viewportWidth <= 820) {
+      this.useMobileLogo = true;
+    } else {
+      this.useMobileLogo = false;
+    }
   }
 
   registerEventListeners() {

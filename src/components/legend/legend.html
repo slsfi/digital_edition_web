@@ -1,0 +1,4 @@
+<ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
+<div class="tei teiContainer" [ngClass]="(readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize'">
+  <markdown class="legend-markdown-content" [data]="text"></markdown>
+</div>

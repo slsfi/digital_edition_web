@@ -108,4 +108,31 @@ export class CommentService {
         .catch(this.handleError);
   }
 
+  getDownloadableComments(id: string, format: string): Observable<any> {
+    const id2 = id.replace('_com', '');
+    const parts = id2.split(';');
+    const collection_id = parts[0].split('_')[0];
+    const pub_id = parts[0].split('_')[1];
+    const section_id = parts[0].split('_')[2];
+
+    if (!parts[1]) {
+      parts[1] = '';
+    }
+
+    const commentId = collection_id + '_' + pub_id + (section_id === undefined && section_id !== '') ? '_' + section_id : '';
+    let url = '/text/downloadable/' + format + '/' + collection_id + '/' + pub_id + '/com';
+
+    if ( section_id !== undefined && section_id !== '' ) {
+      url = url + '/' + section_id;
+    }
+
+    return this.http.get(
+      this.config.getSettings('app.apiEndpoint') + '/' + this.config.getSettings('app.machineName') + url
+    )
+    .map(res => {
+      const body = res.json();
+      return body.content;
+    })
+    .catch(this.handleError);
+  }
 }

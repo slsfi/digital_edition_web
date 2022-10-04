@@ -1,12 +1,14 @@
-<!-- Collection title at top -->
-<ion-item *ngIf="showBackButton" class="collection-name-top" no-lines>
-    <ion-label>{{ ('TOC-translation.' + collectionName | translate) !== 'TOC-translation.' + collectionName  ?  ('TOC-translation.' + collectionName | translate) : collectionName }}</ion-label>
-</ion-item>
-<!-- Back button -->
-<ion-item *ngIf="showBackButton" (click)="exit()" class="back-to-list-button collections" no-lines>
-    <ion-icon name="ios-arrow-back" item-left small></ion-icon>
-    <ion-label>{{ "BackButton.default" | translate }}</ion-label>
-</ion-item>
+<div class="toc-stick-to-top-items">
+    <!-- Collection title at top -->
+    <ion-item *ngIf="showBackButton" class="collection-name-top" no-lines>
+        <ion-label>{{ ('TOC-translation.' + collectionName | translate) !== 'TOC-translation.' + collectionName  ?  ('TOC-translation.' + collectionName | translate) : collectionName }}</ion-label>
+    </ion-item>
+    <!-- Back button -->
+    <ion-item *ngIf="showBackButton" (click)="exit()" class="back-to-list-button collections" no-lines>
+        <ion-icon name="ios-arrow-back" item-left small></ion-icon>
+        <ion-label>{{ "BackButton.default" | translate }}</ion-label>
+    </ion-item>
+</div>
 
 <div *ngIf="open" class="{{collectionId}}">
 
@@ -32,6 +34,11 @@
         <p class="justLevel" (click)="openTitlePage(collectionId)">{{ "Read.TitlePage.Title" | translate }}</p>
     </ion-item>
 
+    <!-- Foreword page -->
+    <ion-item *ngIf="hasForeword && collectionName != 'About'" [ngClass]="forewordSelected?'selected-toc-item':''">
+        <p class="justLevel" (click)="openForewordPage(collectionId)">{{ "Read.ForewordPage.Title" | translate }}</p>
+    </ion-item>
+
     <!-- Introduction page -->
     <ion-item *ngIf="hasIntro && collectionName != 'About' && collectionId != 'mediaCollections'" [ngClass]="introductionSelected?'selected-toc-item':''">
         <p class="justLevel" (click)="openIntroduction(collectionId)">{{ "Read.Introduction.Title" | translate }}</p>
@@ -48,7 +55,7 @@
                         <span *ngIf="menuItem.description" class="description">{{ menuItem.description }}</span>
                     </ion-item>
                 </ng-template>
-                <ng-template [ngIf]="(menuItem.childrenCount && menuItem.subOptions.length) || menuItem.children_id || menuItem.search_children_id">
+                <ng-template [ngIf]="(menuItem.childrenCount && menuItem.subOptions.length) || menuItem.children_id > -1 || menuItem.search_children_id > -1">
                     <ion-list no-margin *ngIf="menuItem.type!='hidden'" class="accordion-menu" [style.marginLeft]="menuItem.is_child ? 20 + 'px' : '0px'">
                         <ion-item class="header type-{{menuItem.type}}" [ngClass]="menuSettings?.showSelectedOption && menuItem.selected ? menuSettings.selectedOptionClass : null" (tap)="toggleItemOptions(menuItem)" tappable>
                             <ion-icon [class.rotate]="(menuItem.expanded || menuItem.collapsed === false)" class="header-icon" [name]="'ios-arrow-forward'" small item-right></ion-icon>

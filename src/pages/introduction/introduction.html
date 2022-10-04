@@ -1,8 +1,18 @@
 <ion-header no-border>
   <ion-toolbar color="secondary" class="secondary">
+
+    <text-changer *ngIf="!(userSettingsService.isMobile())" [legacyId]="id" [parentPageType]="'page-introduction'" class="text-changer-desktop-view"></text-changer>
+
     <ion-buttons>
         <ion-grid>
             <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
+              <ion-col *ngIf="showTextDownloadButton">
+                <button ion-button clear (click)="showDownloadModal()" class="sec-menu-button">
+                  <ion-icon *ngIf="!usePrintNotDownloadIcon" class="download-icon" name="download"></ion-icon>
+                  <ion-icon *ngIf="usePrintNotDownloadIcon" class="print-icon" name="print"></ion-icon>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'DownloadTexts.Download' | translate }}</span>
+                </button>
+              </ion-col>
               <ion-col *ngIf="showURNButton">
                 <button ion-button clear (click)="showReference()" class="sec-menu-button">
                   <ion-icon class="urn-icon" name="share-alt"></ion-icon>
@@ -17,10 +27,17 @@
                 </button>
               </ion-col>
               -->
-              <ion-col>
+              <ion-col *ngIf="showDisplayOptionsButton">
                 <button ion-button clear #settingsIconElement (click)="showPopover($event)" class="sec-menu-button" id="settings-icon">
                   <ion-icon class="settings-icon" name="settings"></ion-icon>
                   <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Popover.Options' | translate }}</span>
+                </button>
+              </ion-col>
+              <ion-col>
+                <button ion-button clear class="sec-menu-button" [ngClass]="tocMenuOpen ? 'menuOpenTOC' : 'menuClosedTOC'"  (click)="toggleTocMenu()">
+                  <ion-icon name="list" *ngIf="!tocMenuOpen"></ion-icon>
+                  <ion-icon name="close" *ngIf="tocMenuOpen"></ion-icon>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Introduction.Contents' | translate }}</span>
                 </button>
               </ion-col>
             </ion-row>
@@ -29,7 +46,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding [ngClass]="printMainContentClasses()">
     <ion-card>
         <ion-card-content>
             <div [ngClass]="'toolTip tei teiContainer ' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')" [ngStyle]="{'position': toolTipPosType, 'top': toolTipPosition.top, 'left': toolTipPosition.left, 'max-width': toolTipMaxWidth, 'transform': 'scale(' + toolTipScaleValue + ')'}" [innerHTML]="toolTipText"></div>
@@ -53,12 +70,14 @@
             </ion-scroll>
         </ion-card-content>
     </ion-card>
-    <nav id="TOC" *ngIf="hasSeparateIntroToc" [ngClass]="tocMenuOpen ? 'menuOpenTOC' : 'menuClosedTOC'">
-        <div id="toc_menu" (click)="toggleTocMenu()" [ngClass]="tocMenuOpen ? 'menuOpenIcon' : 'menuClosedIcon'">
-            <ion-icon name="menu" class="intro-toc-button" *ngIf="!tocMenuOpen"></ion-icon>
-            <ion-icon name="close" class="intro-toc-button" *ngIf="tocMenuOpen"></ion-icon>
-        </div>
-        <div id="toc_text" [innerHTML]="textMenu" [ngClass]="tocMenuOpen ? 'menuOpen' : 'menuClosed'">
-        </div>
+    <nav id="TOC" *ngIf="hasSeparateIntroToc && tocMenuOpen">
+      <div id="toc-close-button" (click)="toggleTocMenu()">
+        <button ion-button clear class="sec-menu-button">
+          <ion-icon name="close" class="intro-toc-button"></ion-icon>
+        </button>
+      </div>
+      <div id="toc_text" [innerHTML]="textMenu"></div>
     </nav>
 </ion-content>
+
+<text-changer *ngIf="(userSettingsService.isMobile())" [legacyId]="id" [parentPageType]="'page-introduction'" class="text-changer-mobile-view"></text-changer>

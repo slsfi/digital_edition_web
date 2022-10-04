@@ -16,6 +16,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { PublicationCacheService } from '../../app/services/cache/publication-cache.service';
 import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
 import { IntroductionModule } from '../../components/introduction/introduction.module';
+import { LegendModule } from '../../components/legend/legend.module';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -43,7 +44,8 @@ export function createTranslateLoader(http: HttpClient) {
       VariationsModule,
       IntroductionModule,
       DragScrollModule,
-      MathJaxModule
+      MathJaxModule,
+      LegendModule
     ],
     entryComponents: [
       ReadPage,

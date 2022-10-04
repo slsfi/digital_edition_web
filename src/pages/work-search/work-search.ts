@@ -15,6 +15,7 @@ import { UserSettingsService } from '../../app/services/settings/user-settings.s
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { MetadataService } from '../../app/services/metadata/metadata.service';
 import { MdContentService } from '../../app/services/md/md-content.service';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
  * Generated class for the worksearchPage page.
@@ -40,7 +41,6 @@ export class WorkSearchPage {
   @ViewChild(Content) content: Content;
 
   works: any[] = [];
-  appName: string;
   descending = false;
   order: number;
   column = 'name';
@@ -64,6 +64,8 @@ export class WorkSearchPage {
   from = 0;
   infiniteScrollNumber = 200;
 
+  languageSubscription: Subscription;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public semanticDataService: SemanticDataService,
@@ -84,16 +86,31 @@ export class WorkSearchPage {
               private analyticsService: AnalyticsService,
               private metadataService: MetadataService
   ) {
-    this.langService.getLanguage().subscribe((lang) => {
-      this.appName = this.config.getSettings('app.name.' + lang);
-      try {
-        this.showFilter = this.config.getSettings('PersonSearch.ShowFilter');
-      } catch (e) {
-        this.showFilter = true;
-      }
-      this.getMdContent(lang + '-12-05');
+    try {
+      this.showFilter = this.config.getSettings('WorkSearch.ShowFilter');
+    } catch (e) {
+      this.showFilter = false;
+    }
+    try {
+      this.infiniteScrollNumber = this.config.getSettings('WorkSearch.InitialLoadNumber');
+    } catch (e) {
+      this.infiniteScrollNumber = 200;
+    }
+  }
+
+  ionViewWillEnter() {
+    // Try to remove META-Tags
+    this.metadataService.clearHead();
+    // Add the new META-Tags
+    this.metadataService.addDescription(this.constructor.name);
+    this.metadataService.addKeywords();
+
+    this.events.publish('ionViewWillEnter', this.constructor.name);
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'work-search'});
+    this.events.publish('SelectedItemInMenu', {
+      menuID: 'workSearch',
+      component: 'work-search'
     });
-    this.setData();
   }
 
   ionViewDidEnter() {
@@ -101,36 +118,30 @@ export class WorkSearchPage {
   }
 
   ionViewDidLoad() {
-    this.events.subscribe('language:change', () => {
-      this.langService.getLanguage().subscribe((lang) => {
+    this.languageSubscription = this.langService.languageSubjectChange().subscribe(lang => {
+      this.setData();
+      if (lang) {
         this.getMdContent(lang + '-12-05');
-      });
+      } else {
+        this.langService.getLanguage().subscribe(language => {
+          this.getMdContent(language + '-12-05');
+        });
+      }
     });
+  }
+
+  ionViewWillLeave() {
+    this.events.publish('ionViewWillLeave', this.constructor.name);
   }
 
   ionViewDidLeave() {
     this.storage.remove('filterCollections');
   }
 
-  ionViewWillLeave() {
-    this.events.publish('ionViewWillLeave', this.constructor.name);
-  }
-  ionViewWillEnter() {
-    this.events.publish('ionViewWillEnter', this.constructor.name);
-    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'work-search'});
-    this.events.publish('SelectedItemInMenu', {
-      menuID: 'workSearch',
-      component: 'work-search'
-    });
-    // Try to remove META-Tags
-    this.metadataService.clearHead();
-    // Add the new META-Tags
-    this.metadataService.addDescription(this.constructor.name);
-    this.metadataService.addKeywords();
-  }
-
   ngOnDestroy() {
-    this.events.unsubscribe('language:change');
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
   }
 
   setData() {

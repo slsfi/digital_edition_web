@@ -6,6 +6,13 @@
     <ion-buttons>
         <ion-grid>
             <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
+              <ion-col *ngIf="showTextDownloadButton">
+                <button ion-button clear (click)="showDownloadModal()" class="sec-menu-button">
+                  <ion-icon *ngIf="!usePrintNotDownloadIcon" class="download-icon" name="download"></ion-icon>
+                  <ion-icon *ngIf="usePrintNotDownloadIcon" class="print-icon" name="print"></ion-icon>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'DownloadTexts.Download' | translate }}</span>
+                </button>
+              </ion-col>
               <ion-col *ngIf="showURNButton">
                 <button ion-button clear (click)="showReference()" class="sec-menu-button">
                   <ion-icon class="urn-icon" name="share-alt"></ion-icon>
@@ -28,7 +35,7 @@
                   </div>
               </ion-col>
               -->
-              <ion-col>
+              <ion-col *ngIf="showDisplayOptionsButton">
                 <button ion-button clear #settingsIconElement (click)="showPopover($event)" class="sec-menu-button" id="settings-icon">
                   <ion-icon class="settings-icon" name="settings"></ion-icon>
                   <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Popover.Options' | translate }}</span>
@@ -93,14 +100,15 @@
           <ion-card-content>
             <ion-fab *ngIf="views.length>1" top left #fabmenu [ngClass]="(views.length>1)?'column-options-many':'column-options-one'">
               <button ion-fab mini>
-                <ion-icon *ngIf="view.established.show" name="menu"></ion-icon>
-                <ion-icon *ngIf="view.comments.show" name="menu"></ion-icon>
-                <ion-icon *ngIf="view.facsimiles.show" name="menu"></ion-icon>
-                <ion-icon *ngIf="view.manuscripts.show" name="menu"></ion-icon>
-                <ion-icon *ngIf="view.variations.show" name="menu"></ion-icon>
-                <ion-icon *ngIf="view.songexample.show" name="menu"></ion-icon>
-                <ion-icon *ngIf="view.introduction.show" name="menu"></ion-icon>
-                <ion-icon *ngIf="view.illustrations.show" name="menu"></ion-icon>
+                <ion-icon *ngIf="view.established.show" name="more"></ion-icon>
+                <ion-icon *ngIf="view.comments.show" name="more"></ion-icon>
+                <ion-icon *ngIf="view.facsimiles.show" name="more"></ion-icon>
+                <ion-icon *ngIf="view.manuscripts.show" name="more"></ion-icon>
+                <ion-icon *ngIf="view.variations.show" name="more"></ion-icon>
+                <ion-icon *ngIf="view.songexample.show" name="more"></ion-icon>
+                <ion-icon *ngIf="view.introduction.show" name="more"></ion-icon>
+                <ion-icon *ngIf="view.illustrations.show" name="more"></ion-icon>
+                <ion-icon *ngIf="view.legend.show" name="more"></ion-icon>
               </button>
               <ion-fab-list *ngIf="views.length>1">
                 <button ion-fab *ngIf="displayToggle" (click)="removeSlide(i)">
@@ -140,11 +148,11 @@
               </div>
               <div *ngIf="view.manuscripts.show">
                 <manuscripts [linkID]="view.manuscripts.id" [itemId]="establishedText.link" [matches]="matches"
-                  (openNewManView)="openNewView($event)"></manuscripts>
+                  (openNewManView)="openNewView($event)" (openNewLegendView)="openNewView($event)"></manuscripts>
               </div>
               <div *ngIf="view.variations.show">
                 <variations [linkID]="view.variations.id" [itemId]="establishedText.link" [matches]="matches" [sortOrder]="view.variations.variationSortOrder"
-                  (openNewVarView)="openNewView($event)"></variations>
+                  (openNewVarView)="openNewView($event)" (openNewLegendView)="openNewView($event)"></variations>
               </div>
               <div *ngIf="view.introduction.show">
                 <introduction [linkID]="view.introduction.id" [itemId]="establishedText.link" [matches]="matches">
@@ -155,6 +163,9 @@
               </div>
               <div *ngIf="view.illustrations.show">
                 <illustrations [initialImage]="view.illustrations.image" [itemId]="establishedText.link"></illustrations>
+              </div>
+              <div *ngIf="view.legend.show">
+                <legend [itemId]="establishedText.link" [scrollToElementId]="view.legend.id"></legend>
               </div>
             </ion-scroll>
           </ion-card-content>
@@ -191,6 +202,10 @@
               <ion-icon name="image"></ion-icon>
               <ion-label>{{ "Read.Facsimiles.AddButtonText" | translate }}</ion-label>
             </button>
+            <button ion-fab (click)="addView('illustrations', undefined, fabmenuadd); scrollLastViewIntoView()" *ngIf="displayToggles['illustrations']">
+              <ion-icon name="images"></ion-icon>
+              <ion-label>{{ "Read.Illustrations.AddButtonText" | translate }}</ion-label>
+            </button>
             <button ion-fab (click)="addView('manuscripts', undefined, fabmenuadd); scrollLastViewIntoView()" *ngIf="displayToggles['manuscripts']">
               <ion-icon name="clipboard"></ion-icon>
               <ion-label>{{ "Read.Manuscripts.AddButtonText" | translate }}</ion-label>
@@ -209,9 +224,9 @@
               <ion-label>{{ "Read.Introduction.AddButtonText" | translate }}</ion-label>
             </button>
             -->
-            <button ion-fab (click)="addView('illustrations', undefined, fabmenuadd); scrollLastViewIntoView()" *ngIf="displayToggles['illustrations']">
-              <ion-icon name="images"></ion-icon>
-              <ion-label>{{ "Read.Illustrations.AddButtonText" | translate }}</ion-label>
+            <button ion-fab (click)="addView('legend', undefined, fabmenuadd); scrollLastViewIntoView()" *ngIf="displayToggles['legend']">
+              <ion-icon name="bulb"></ion-icon>
+              <ion-label>{{ "Read.Legend.AddButtonText" | translate }}</ion-label>
             </button>
           </ion-fab-list>
         </ion-fab>
@@ -293,4 +308,5 @@
     </ion-scroll>
   </ng-container>
 </ion-content>
+
 <text-changer *ngIf="(userSettingsService.isMobile()) && (show=='established' || show=='manuscripts' || show=='facsimiles')" class="text-changer-mobile-view" [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>

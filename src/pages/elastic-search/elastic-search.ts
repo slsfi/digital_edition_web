@@ -18,6 +18,7 @@ import { noUndefined } from '@angular/compiler/src/util';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MdContentService } from '../../app/services/md/md-content.service';
+import { Subscription } from 'rxjs/Subscription';
 
 /*
 
@@ -104,15 +105,11 @@ export class ElasticSearchPage {
   sort = '';
 
   range: TimeRange;
-
   groupsOpenByDefault: any;
-
   debouncedSearch = debounce(this.search, 500);
-
   sortSelectOptions: Record<string, any> = {};
-
   mdContent: string;
-  language = 'sv';
+  languageSubscription: Subscription;
 
   constructor(
     public navCtrl: NavController,
@@ -148,13 +145,6 @@ export class ElasticSearchPage {
       console.error('Failed to load set facet groups open by default. Configuration error.', e);
     }
 
-    this.language = this.config.getSettings('i18n.locale');
-
-    this.languageService.getLanguage().subscribe((lang: string) => {
-      this.language = lang;
-      this.getMdContent(lang + '-12-01');
-    });
-
     this.translate.get('ElasticSearch.SortBy').subscribe(
       translation => {
         this.sortSelectOptions = {
@@ -163,6 +153,8 @@ export class ElasticSearchPage {
         };
       }, error => { }
     );
+
+    this.languageSubscription = null;
   }
 
   private getParamsData() {
@@ -233,11 +225,14 @@ export class ElasticSearchPage {
       })
     }, 300);
 
-    this.events.subscribe('language:change', () => {
-      this.languageService.getLanguage().subscribe((lang) => {
-        this.language = lang;
+    this.languageSubscription = this.languageService.languageSubjectChange().subscribe(lang => {
+      if (lang) {
         this.getMdContent(lang + '-12-01');
-      });
+      } else {
+        this.languageService.getLanguage().subscribe(language => {
+          this.getMdContent(language + '-12-01');
+        });
+      }
     });
   }
 
@@ -261,7 +256,9 @@ export class ElasticSearchPage {
   }
 
   ngOnDestroy() {
-    this.events.unsubscribe('language:change');
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
   }
 
   open(hit) {

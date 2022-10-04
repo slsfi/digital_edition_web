@@ -15,8 +15,10 @@ import { TableOfContentsService } from '../../app/services/toc/table-of-contents
 import { Storage } from '@ionic/storage';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
 import { ReferenceDataModalPage } from '../../pages/reference-data-modal/reference-data-modal';
+import { DownloadTextsModalPage } from '../download-texts-modal/download-texts-modal';
 import { OccurrencesPage } from '../occurrences/occurrences';
 import { IllustrationPage } from '../illustration/illustration';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
  * Generated class for the IntroductionPage page.
@@ -46,6 +48,7 @@ export class IntroductionPage {
   public tocMenuOpen: boolean;
   public hasSeparateIntroToc: boolean;
   public showURNButton: boolean;
+  showDisplayOptionsButton: Boolean = true;
   readPopoverTogglesIntro: Record<string, any> = {};
   toolTipsSettings: Record<string, any> = {};
   toolTipPosType: string;
@@ -73,6 +76,10 @@ export class IntroductionPage {
   userIsTouching: Boolean = false;
   collectionLegacyId: string;
   simpleWorkMetadata: Boolean;
+  showTextDownloadButton: Boolean = false;
+  usePrintNotDownloadIcon: Boolean = false;
+  languageSubscription: Subscription;
+  hasTOCLabelTranslation: Boolean = false;
   private unlistenClickEvents: () => void;
   private unlistenMouseoverEvents: () => void;
   private unlistenMouseoutEvents: () => void;
@@ -81,7 +88,7 @@ export class IntroductionPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private langService: LanguageService,
+    public langService: LanguageService,
     private textService: TextService,
     protected sanitizer: DomSanitizer,
     protected params: NavParams,
@@ -120,6 +127,7 @@ export class IntroductionPage {
       left: -1500 + 'px'
     };
     this.intervalTimerId = 0;
+    this.languageSubscription = null;
 
     try {
       this.toolTipsSettings = this.config.getSettings('settings.toolTips');
@@ -163,6 +171,41 @@ export class IntroductionPage {
       this.showURNButton = true;
     }
 
+    try {
+      this.showDisplayOptionsButton = this.config.getSettings('showDisplayOptionsButton.pageIntroduction');
+    } catch (e) {
+      this.showDisplayOptionsButton = true;
+    }
+
+    this.translate.get('Read.Introduction.Contents').subscribe(
+      translation => {
+        if (translation && translation !== 'Read.Introduction.Contents') {
+          this.hasTOCLabelTranslation = true;
+        } else {
+          this.hasTOCLabelTranslation = false;
+        }
+      }, error => { this.hasTOCLabelTranslation = false; }
+    );
+
+    try {
+      const textDownloadOptions = this.config.getSettings('textDownloadOptions');
+      if (textDownloadOptions.enabledIntroductionFormats !== undefined &&
+        textDownloadOptions.enabledIntroductionFormats !== null &&
+        Object.keys(textDownloadOptions.enabledIntroductionFormats).length !== 0) {
+          for (const [key, value] of Object.entries(textDownloadOptions.enabledIntroductionFormats)) {
+            if (`${value}`) {
+              this.showTextDownloadButton = true;
+              break;
+            }
+          }
+      }
+      if (textDownloadOptions.usePrintNotDownloadIcon !== undefined) {
+        this.usePrintNotDownloadIcon = textDownloadOptions.usePrintNotDownloadIcon;
+      }
+    } catch (e) {
+      this.showTextDownloadButton = false;
+    }
+
     // Check if we have a pos parmeter in the URL, if we have one we can use it for scrolling the text on the page to that position.
     // The pos parameter must come after the publication id followed by /#, e.g. /publication-introduction/203/#pos1
     const currentURL: string = String(window.location.href);
@@ -172,12 +215,6 @@ export class IntroductionPage {
       this.pos = null;
     }
 
-    // Reload the content if language changes
-    this.events.subscribe('language:change', () => {
-      this.langService.getLanguage().subscribe((lang) => {
-        this.ionViewDidLoad();
-      });
-    });
   }
 
   ionViewWillEnter() {
@@ -192,57 +229,69 @@ export class IntroductionPage {
   }
 
   ionViewDidLoad() {
-    this.langService.getLanguage().subscribe(lang => {
-      this.textService.getIntroduction(this.id, lang).subscribe(
-        res => {
+    this.languageSubscription = this.langService.languageSubjectChange().subscribe(lang => {
+      if (lang) {
+        this.loadIntroduction(lang);
+      } else {
+        this.langService.getLanguage().subscribe(language => {
+          this.loadIntroduction(language);
+        });
+      }
+    });
+  }
 
-            try {
-              this.hasSeparateIntroToc = this.config.getSettings('separeateIntroductionToc');
-            } catch (error) {
-              this.hasSeparateIntroToc = false;
-            }
-            if ( this.id !== undefined ) {
-              this.getTocRoot(this.id);
-            }
+  loadIntroduction(lang: string) {
+    this.text = '';
+    this.hasSeparateIntroToc = false;
+    this.textLoading = true;
+    this.textService.getIntroduction(this.id, lang).subscribe(
+      res => {
+          try {
+            this.hasSeparateIntroToc = this.config.getSettings('separeateIntroductionToc');
+          } catch (error) {
+            this.hasSeparateIntroToc = false;
+          }
+          if ( this.id !== undefined ) {
+            this.getTocRoot(this.id);
+          }
 
-            this.textLoading = false;
-            // in order to get id attributes for tooltips
-            this.text = this.sanitizer.bypassSecurityTrustHtml(
-              res.content.replace(/images\//g, 'assets/images/')
-                  .replace(/\.png/g, '.svg')
-            );
-            const pattern = /<div data-id="content">(.*?)<\/div>/;
-            const matches = String(this.text).match(pattern);
-            if ( matches !== null ) {
-              const the_string = matches[0];
-              this.textMenu = the_string;
-              if (!this.platform.is('mobile')) {
-                if (!this.tocMenuOpen) {
-                  this.tocMenuOpen = true;
-                }
-              }
-            } else {
-              this.hasSeparateIntroToc = false;
-            }
+          this.textLoading = false;
+          // in order to get id attributes for tooltips
+          this.text = this.sanitizer.bypassSecurityTrustHtml(
+            res.content.replace(/images\//g, 'assets/images/')
+                .replace(/\.png/g, '.svg')
+          );
+          const pattern = /<div data-id="content">(.*?)<\/div>/;
+          const matches = String(this.text).match(pattern);
+          if ( matches !== null ) {
+            const the_string = matches[0];
+            this.textMenu = the_string;
             if (!this.platform.is('mobile')) {
               if (!this.tocMenuOpen) {
                 this.tocMenuOpen = true;
               }
             }
-            // Try to scroll to an element in the text, checks if "pos" given
-            this.scrollToPos();
-          },
-        error =>  {
-          this.errorMessage = <any>error;
-          this.textLoading = false;
-          this.text = 'Could not load introduction.';
-          this.hasSeparateIntroToc = false;
-        }
-      );
-      const selectedStatic = [];
-      selectedStatic['isIntroduction'] = true;
-      this.events.publish('setSelectedStatic:true', selectedStatic);
-    });
+          } else {
+            this.hasSeparateIntroToc = false;
+          }
+          if (!this.platform.is('mobile')) {
+            if (!this.tocMenuOpen) {
+              this.tocMenuOpen = true;
+            }
+          }
+          // Try to scroll to an element in the text, checks if "pos" given
+          this.scrollToPos();
+        },
+      error =>  {
+        this.errorMessage = <any>error;
+        this.textLoading = false;
+        this.text = 'Could not load introduction.';
+        this.hasSeparateIntroToc = false;
+      }
+    );
+    const selectedStatic = [];
+    selectedStatic['isIntroduction'] = true;
+    this.events.publish('setSelectedStatic:true', selectedStatic);
   }
 
   ionViewWillLeave() {
@@ -253,17 +302,23 @@ export class IntroductionPage {
     this.events.publish('ionViewWillLeave', this.constructor.name);
   }
 
+  ngOnDestroy() {
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
+  }
+
   /** Try to scroll to an element in the text, checks if "pos" given.
    *  Timeout, to give text some time to load on the page. */
   private scrollToPos() {
     this.ngZone.runOutsideAngular(() => {
-      let interationsLeft = 10;
+      let iterationsLeft = 10;
       clearInterval(this.intervalTimerId);
       this.intervalTimerId = window.setInterval(function() {
-        if (interationsLeft < 1) {
+        if (iterationsLeft < 1) {
           clearInterval(this.intervalTimerId);
         } else {
-          interationsLeft -= 1;
+          iterationsLeft -= 1;
           if (this.pos !== null && this.pos !== undefined) {
             let positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
             if (positionElement !== null && positionElement !== undefined) {
@@ -629,9 +684,13 @@ export class IntroductionPage {
 
     this.tooltipService.getPlaceTooltip(id).subscribe(
       tooltip => {
-        this.setToolTipPosition(targetElem, tooltip.description);
-        this.setToolTipText((tooltip.description) ? tooltip.description : tooltip.name);
-        this.tooltips.places[id] = tooltip.description;
+        let text = '<b>' + tooltip.name.trim() + '</b>';
+        if (tooltip.description) {
+          text = text + ', ' + tooltip.description.trim();
+        }
+        this.setToolTipPosition(targetElem, text);
+        this.setToolTipText(text);
+        this.tooltips.places[id] = text;
       },
       error => {
         let noInfoFound = 'Could not get place information';
@@ -1164,7 +1223,7 @@ export class IntroductionPage {
       }
 
       let bottomPos = vh - horizontalScrollbarOffsetHeight - containerElemRect.bottom;
-      if (vw <= bottomPosBreakpointWidth) {
+      if (vw <= bottomPosBreakpointWidth && !(this.userSettingsService.isMobile())) {
         bottomPos = 0;
       }
 
@@ -1392,11 +1451,27 @@ export class IntroductionPage {
     });
   }
 
+  private showDownloadModal() {
+    const modal = this.modalController.create(DownloadTextsModalPage, {textId: this.id, origin: 'page-introduction'});
+    modal.present();
+    modal.onDidDismiss(data => {
+      // console.log('dismissed', data);
+    });
+  }
+
   toggleTocMenu() {
     if ( this.tocMenuOpen ) {
       this.tocMenuOpen = false;
     } else {
       this.tocMenuOpen = true;
+    }
+  }
+
+  printMainContentClasses() {
+    if (this.userSettingsService.isMobile()) {
+      return 'mobile-mode-intro-content';
+    } else {
+      return '';
     }
   }
 }

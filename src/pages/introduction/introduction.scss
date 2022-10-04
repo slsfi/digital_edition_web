@@ -5,10 +5,9 @@ page-introduction {
     background-color: var(--page-read-columns-background-color) !important;
   }
 
-  /* denna default är för mobilvyn, gör rum för menyikonen ovanför innehållet. ändras till padding-top 0 för desktop (över 1000px skärmbredd) längre ner*/
   .card-content {
     height: 100%;
-    padding: 46px 0 0 0;
+    padding: 0;
   }
 
   .card-content > ion-scroll {
@@ -42,16 +41,13 @@ page-introduction {
     }
   }
 
-  /* knappens position i desktop-vy -- ANVÄNDS DENNA ALLS? */
-  @media (min-width: 650px) {
-    #navbtn {
-      margin-top: 1.5rem;
-      margin-right: -2.5rem;
-    }
+  .menuOpenTOC .ion-md-close {
+    margin: 0 0 0 0.184375rem;
   }
 
-  /* sidenav för mobil */
   #TOC {
+    background-color: var(--page-introduction-separate-toc-background-color);
+    padding: 10px 20px 70px 20px;
     margin: 10px;
     height: calc(100% - 102px);
     width: 85%;
@@ -61,61 +57,14 @@ page-introduction {
     overflow-x: hidden;
     transition: 0.25s;
     font-size: 1rem;
+    right: 16px;
   }
 
-  #toc_menu {
-    float: left;
-    width: 100%;
-  }
-
-  #toc_menu.menuOpenIcon {
-    margin-bottom: 12px;
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-    z-index: 99;
-  }
-
-  #toc_menu ion-icon {
-    margin: 6px 12px;
-    cursor: pointer;
-  }
-
-  .menuClosed {
-    display: none;
-  }
-
-  .menuClosedIcon {
-    background-color: transparent;
-  }
-
-  .intro-toc-button {
-    transition: $opacity-hover-transition;
-  }
-
-  .intro-toc-button:hover {
-    opacity: $opacity-hover;
-  }
-
-  .intro-toc-button:active {
-    opacity: 1;
-  }
-
-  #TOC.menuClosedTOC {
-    width: auto;
-    height: auto;
-  }
-
-  /* navigeringsbalken för inledningar */
-  #toc_text,
-  .menuOpenIcon {
-    background-color: var(--page-introduction-separate-toc-background-color);
-  }
-
-  #toc_text {
-    margin-top: 2.5rem;
-    position: sticky;
-    padding: 0 20px 70px 20px;
+  #TOC #toc-close-button button.button {
+    margin-bottom: 0;
+    margin-left: auto;
+    margin-right: 0;
+    display: block;
   }
 
   #TOC h2 {
@@ -129,7 +78,7 @@ page-introduction {
     margin-top: 0.1rem;
   }
 
-  /* menylänkarna */
+  /* Links in the intro-toc. */
   #TOC a {
     text-decoration: none;
     color: var(--page-introduction-separate-toc-text-color);
@@ -158,24 +107,19 @@ page-introduction {
     line-height: 1;
   }
 
-  /* visning för bred skärm: toc flyter till höger om artikeln */
+  #TOC #toc_text > div > :first-child {
+    margin-top: 0.125rem;
+  }
+
+  /* On large screens: the intro-toc floats to the right of the text. */
   @media (min-width: 1000px) {
     nav#TOC {
-      position: -webkit-sticky;
       position: sticky;
-      float: right;
       height: auto;
       transition: none;
       z-index: 1;
       width: 50vw;
-    }
-
-    .card-content {
-      padding-top: 0;
-    }
-
-    .menuClosedIcon {
-      background-color: transparent;
+      right: unset;
     }
   }
 
@@ -195,7 +139,7 @@ page-introduction {
   }
 
   div[data-id="cont_introduction"] h3.italics {
-    /* text-align, font-style och font-weight torde vara överflödiga här*/
+    /* text-align, font-style and font-weight are most likely unnecessary here. */
     text-align: left !important;
     font-style: italic;
     font-weight: normal !important;
@@ -215,7 +159,7 @@ page-introduction {
     display: none;
   }
 
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 820px) {
     .secondary .toolbar-content {
       display: flex;
       justify-content: flex-end;
@@ -225,21 +169,47 @@ page-introduction {
       }
     }
 
-    /* Minska padding på små skärmar. Top ska fortfarande vara 50px eftersom det ersätter inline style margin-top:50px (se högre upp) */
+    /* Reduce padding om small screens. Top still needs to be 50px since it overrides inline style margin-top:50px (see comment above). */
     ion-content > .scroll-content {
       padding: 50px 0 0 0 !important;
+      justify-content: center;
     }
     ion-scroll > .scroll-content {
       padding: 6px !important;
     }
+
+    #TOC {
+      height: calc(100% - 70px);
+      right: 0;
+    }
   }
 
   @media screen and (max-width: 450px) {
-    /* Gör innehållsförteckningen lite smalare på mycket små skärmar */
+    /* Make the intro-toc narrower on very small screens. */
     #TOC {
       width: 75%;
-      opacity: 97%;
-      height: calc(100% - 70px);
+    }
+  }
+
+  /* Make room for the text-changer at the bottom in mobile mode. */
+  .mobile-mode-intro-content > .scroll-content {
+    padding: 50px 0 50px 0 !important;
+    justify-content: center;
+  }
+
+  .mobile-mode-intro-content ion-card.card {
+    margin-bottom: 0;
+  }
+
+  .mobile-mode-intro-content #TOC {
+    height: calc(100% - 10px);
+    margin-bottom: 0;
+    right: 0;
+  }
+
+  @media screen and (max-width: 1000px) {
+    .mobile-mode-intro-content #TOC {
+      height: calc(100% - 110px);
     }
   }
 

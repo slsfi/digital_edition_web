@@ -17,6 +17,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { MetadataService } from '../../app/services/metadata/metadata.service';
 import { MdContentService } from '../../app/services/md/md-content.service';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
  * Generated class for the PersonSearchPage page.
@@ -43,7 +44,6 @@ export class PersonSearchPage {
   @ViewChild(Content) content: Content;
 
   persons: any[] = [];
-  appName: string;
   descending = false;
   order: number;
   count = 0;
@@ -77,6 +77,8 @@ export class PersonSearchPage {
   personSearchTypes = [];
   filterYear: number;
 
+  languageSubscription: Subscription;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public semanticDataService: SemanticDataService,
@@ -100,25 +102,70 @@ export class PersonSearchPage {
   ) {
     const type = this.navParams.get('type') || null;
     this.filterYear = null;
-    this.langService.getLanguage().subscribe((lang) => {
-      this.appName = this.config.getSettings('app.name.' + lang);
-      try {
-        this.showFilter = this.config.getSettings('PersonSearch.ShowFilter');
-      } catch (e) {
-        this.showFilter = true;
-      }
-      try {
-        this.personSearchTypes = this.config.getSettings('PersonSearchTypes');
-      } catch (e) {
-        this.personSearchTypes = [];
-      }
-      try {
-        this.infiniteScrollNumber = this.config.getSettings('PersonSearch.InitialLoadNumber');
-      } catch (e) {
-        this.infiniteScrollNumber = 800;
-      }
-      this.getMdContent(lang + '-12-02');
+    try {
+      this.showFilter = this.config.getSettings('PersonSearch.ShowFilter');
+    } catch (e) {
+      this.showFilter = true;
+    }
+    try {
+      this.personSearchTypes = this.config.getSettings('PersonSearchTypes');
+    } catch (e) {
+      this.personSearchTypes = [];
+    }
+    try {
+      this.infiniteScrollNumber = this.config.getSettings('PersonSearch.InitialLoadNumber');
+    } catch (e) {
+      this.infiniteScrollNumber = 800;
+    }
+  }
+
+  ionViewWillEnter() {
+    // Try to remove META-Tags
+    this.metadataService.clearHead();
+    // Add the new META-Tags
+    this.metadataService.addDescription(this.constructor.name);
+    this.metadataService.addKeywords();
+
+    this.events.publish('ionViewWillEnter', this.constructor.name);
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'person-search'});
+    this.events.publish('SelectedItemInMenu', {
+      menuID: 'personSearch',
+      component: 'person-search'
     });
+  }
+
+  ionViewDidEnter() {
+    this.analyticsService.doPageView('Subjects');
+  }
+
+  ionViewDidLoad() {
+    this.languageSubscription = this.langService.languageSubjectChange().subscribe(lang => {
+      this.getParamsData();
+      this.selectMusicAccordionItem();
+      this.setData();
+      if (lang) {
+        this.getMdContent(lang + '-12-02');
+      } else {
+        this.langService.getLanguage().subscribe(language => {
+          this.getMdContent(language + '-12-02');
+        });
+      }
+    });
+  }
+
+  ionViewWillLeave() {
+    this.events.publish('ionViewWillLeave', this.constructor.name);
+  }
+
+  ionViewDidLeave() {
+    this.storage.remove('filterCollections');
+    this.storage.remove('filterPersonTypes');
+  }
+
+  ngOnDestroy() {
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
   }
 
   getParamsData() {
@@ -169,48 +216,6 @@ export class PersonSearchPage {
         }
       }
     }
-  }
-
-  ionViewDidLeave() {
-    this.storage.remove('filterCollections');
-    this.storage.remove('filterPersonTypes');
-  }
-
-  ionViewDidEnter() {
-    this.analyticsService.doPageView('Subjects');
-  }
-
-  ionViewDidLoad() {
-    this.events.subscribe('language:change', () => {
-      this.langService.getLanguage().subscribe((lang) => {
-        this.getMdContent(lang + '-12-02');
-      });
-    });
-  }
-
-  ionViewWillLeave() {
-    // Try to remove META-Tags
-    this.metadataService.clearHead();
-    // Add the new META-Tags
-    this.metadataService.addDescription(this.constructor.name);
-    this.metadataService.addKeywords();
-    this.events.publish('ionViewWillLeave', this.constructor.name);
-  }
-
-  ionViewWillEnter() {
-    this.events.publish('ionViewWillEnter', this.constructor.name);
-    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'person-search'});
-    this.events.publish('SelectedItemInMenu', {
-      menuID: 'personSearch',
-      component: 'person-search'
-    });
-    this.getParamsData();
-    this.selectMusicAccordionItem();
-    this.setData();
-  }
-
-  ngOnDestroy() {
-    this.events.unsubscribe('language:change');
   }
 
   sortByLetter(letter) {

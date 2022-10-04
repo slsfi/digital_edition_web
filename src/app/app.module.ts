@@ -16,6 +16,7 @@ import { CommentModalPage } from '../pages/comment-modal/comment-modal';
 import { SemanticDataModalPage } from '../pages/semantic-data-modal/semantic-data-modal';
 import { ReferenceDataModalPage } from '../pages/reference-data-modal/reference-data-modal';
 import { FacsimileZoomModalPage } from '../pages/facsimile-zoom/facsimile-zoom';
+import { DownloadTextsModalPage } from '../pages/download-texts-modal/download-texts-modal';
 
 import { ConfigLoader, ConfigModule } from '@ngx-config/core';
 import { ConfigHttpLoader } from '@ngx-config/http-loader';
@@ -87,7 +88,8 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
     DigitalEditionsApp,
     CommentModalPage,
     SemanticDataModalPage,
-    ReferenceDataModalPage
+    ReferenceDataModalPage,
+    DownloadTextsModalPage
   ],
   imports: [
   BrowserModule,
@@ -166,6 +168,7 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
     SemanticDataModalPage,
     ReferenceDataModalPage,
     FacsimileZoomModalPage,
+    DownloadTextsModalPage,
     IllustrationPage,
     SearchAppPage,
     SharePopoverPage

@@ -63,6 +63,7 @@ export class EpubComponent {
   public downloadURL: any;
 
   public showURNButton: boolean;
+  showDisplayOptionsButton: Boolean = true;
 
   private unlistenKeyDownEvents: () => void;
 
@@ -101,6 +102,12 @@ export class EpubComponent {
       this.showURNButton = this.config.getSettings('showURNButton.pageEpub');
     } catch (e) {
       this.showURNButton = false;
+    }
+
+    try {
+      this.showDisplayOptionsButton = this.config.getSettings('showDisplayOptionsButton.pageEpub');
+    } catch (e) {
+      this.showDisplayOptionsButton = true;
     }
   }
 
