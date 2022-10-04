@@ -1,5 +1,5 @@
 import { Component, ViewChild, Pipe, PipeTransform, ChangeDetectionStrategy,
-  ViewEncapsulation, ChangeDetectorRef, Renderer, Renderer2 } from '@angular/core';
+  ViewEncapsulation, ChangeDetectorRef, Renderer2, NgZone } from '@angular/core';
 import './rxjs-operators';
 import { Nav, Platform, MenuController, IonicPage, Events, App, NavParams, AlertController } from 'ionic-angular';
 import { LangChangeEvent, TranslateService/*, TranslatePipe*/ } from '@ngx-translate/core';
@@ -225,8 +225,8 @@ export class DigitalEditionsApp {
     private alertCtrl: AlertController,
     private tutorial: TutorialService,
     private galleryService: GalleryService,
-    private renderer: Renderer,
-    private metadataService: MetadataService
+    private metadataService: MetadataService,
+    private ngZone: NgZone
   ) {
 
     // Check for IE11
@@ -949,74 +949,36 @@ export class DigitalEditionsApp {
     });
     this.events.subscribe('tableOfContents:loaded', (data) => {
       if (data === undefined || data.tocItems === undefined) {
-        console.log('undefined toc-data in subscribe to tableOfContents:loaded in app.component.ts', data);
+        console.log('undefined toc-data listening to tableOfContents:loaded in app.component.ts', data);
       }
       this.tocData = data;
       this.tocLoaded = true;
 
       if (this.collectionsListWithTOC === undefined || this.collectionsListWithTOC.length < 1) {
-        console.log('undefined or 0 length collectionsListWithTOC in subscribe to tableOfContents:loaded in app.component.ts');
-      }
-
-      if (data.searchTocItem && this.collectionsListWithTOC !== undefined) {
-        for (const collection of this.collectionsListWithTOC) {
-
-          if ((data.collectionID !== undefined && String(collection.id) === String(data.collectionID.id))
-          || (data.collectionID !== undefined && Number(collection.id) === Number(data.collectionID))) {
-            collection.expanded = true;
-            for ( let i = 0; i < this.splitReadCollections.length; i++ ) {
-              this.simpleAccordionsExpanded.collectionsAccordion[i] = true;
+        console.log('undefined or 0 length collectionsListWithTOC listening to tableOfContents:loaded in app.component.ts. ');
+        // In the rare occasion that collections haven't had time to load we need to wait for them, otherwise the TOC will be empty
+        this.ngZone.runOutsideAngular(() => {
+          let iterationsLeft = 6;
+          const intervalTimerId = window.setInterval(function() {
+            if (iterationsLeft < 1) {
+              this.ngZone.run(() => {
+                this.setTocDataWhenSubscribingToTocLoadedEvent(data);
+              });
+              clearInterval(intervalTimerId);
+            } else {
+              iterationsLeft -= 1;
+              if (this.collectionsListWithTOC !== undefined && this.collectionsListWithTOC.length > 0) {
+                this.ngZone.run(() => {
+                  this.setTocDataWhenSubscribingToTocLoadedEvent(data);
+                });
+                clearInterval(intervalTimerId);
+              }
             }
-
-            if ( data.chapterID ) {
-              data.itemId = Number(data.collectionID) + '_' + Number(data.publicationID) + '_' + data.chapterID;
-            }
-
-            if ( data.itemId === undefined && data.collectionID !== undefined && data.publicationID !== undefined) {
-              data.itemId = String(data.collectionID) + '_' + String(data.publicationID);
-            }
-
-            let dataPublicationID = data.publicationID;
-            if (dataPublicationID) {
-              dataPublicationID = Number(dataPublicationID);
-            }
-            let dataCollectionID = data.collectionID;
-            if (dataCollectionID) {
-              dataCollectionID = Number(dataCollectionID);
-            }
-
-            collection.accordionToc = {
-              toc: data.tocItems.children,
-              searchTocItem: true,
-              searchItemId: data.itemId,
-              searchPublicationId: dataPublicationID,
-              searchCollectionId: dataCollectionID,
-              searchTitle:  null
-            }
-            collection.accordionToc.toc = data.tocItems.children;
-            this.currentCollection = collection;
-            break;
-          }
-        }
-      }
-      if ( data.tocItems.children !== undefined ) {
-        this.options = data.tocItems.children;
+          }.bind(this), 1000);
+        });
       } else {
-        this.options = data.tocItems;
+        this.setTocDataWhenSubscribingToTocLoadedEvent(data);
       }
-      if ( data.tocItems && data.tocItems.collectionId !== undefined ) {
-        this.currentCollectionId = data.tocItems.collectionId;
-      } else if ( data.collectionID !== undefined ) {
-        this.currentCollectionId = data.collectionID;
-      }
-      if ( data.tocItems.text === undefined ) {
-        this.currentCollectionName = 'media';
-        this.currentCollection.title = 'media';
-      } else {
-        this.currentCollectionName = data.tocItems.text;
-      }
-
-      this.enableTableOfContentsMenu();
     });
 
     this.events.subscribe('exitedTo', (page) => {
@@ -1155,6 +1117,68 @@ export class DigitalEditionsApp {
       // this.resetCurrentCollection();
       this.enableContentMenu();
     });
+  }
+
+  setTocDataWhenSubscribingToTocLoadedEvent(data) {
+    if (data.searchTocItem && this.collectionsListWithTOC !== undefined) {
+      for (const collection of this.collectionsListWithTOC) {
+
+        if ((data.collectionID !== undefined && String(collection.id) === String(data.collectionID.id))
+        || (data.collectionID !== undefined && Number(collection.id) === Number(data.collectionID))) {
+          collection.expanded = true;
+          for ( let i = 0; i < this.splitReadCollections.length; i++ ) {
+            this.simpleAccordionsExpanded.collectionsAccordion[i] = true;
+          }
+
+          if ( data.chapterID ) {
+            data.itemId = Number(data.collectionID) + '_' + Number(data.publicationID) + '_' + data.chapterID;
+          }
+
+          if ( data.itemId === undefined && data.collectionID !== undefined && data.publicationID !== undefined) {
+            data.itemId = String(data.collectionID) + '_' + String(data.publicationID);
+          }
+
+          let dataPublicationID = data.publicationID;
+          if (dataPublicationID) {
+            dataPublicationID = Number(dataPublicationID);
+          }
+          let dataCollectionID = data.collectionID;
+          if (dataCollectionID) {
+            dataCollectionID = Number(dataCollectionID);
+          }
+
+          collection.accordionToc = {
+            toc: data.tocItems.children,
+            searchTocItem: true,
+            searchItemId: data.itemId,
+            searchPublicationId: dataPublicationID,
+            searchCollectionId: dataCollectionID,
+            searchTitle:  null
+          }
+          collection.accordionToc.toc = data.tocItems.children;
+          this.currentCollection = collection;
+          break;
+        }
+      }
+    }
+    if ( data.tocItems.children !== undefined ) {
+      this.options = data.tocItems.children;
+    } else {
+      this.options = data.tocItems;
+    }
+    if ( data.tocItems && data.tocItems.collectionId !== undefined ) {
+      this.currentCollectionId = data.tocItems.collectionId;
+    } else if ( data.collectionID !== undefined ) {
+      this.currentCollectionId = data.collectionID;
+    }
+    if ( data.tocItems.text === undefined ) {
+      this.currentCollectionName = 'media';
+      this.currentCollection.title = 'media';
+    } else {
+      this.currentCollectionName = data.tocItems.text;
+    }
+
+    this.enableTableOfContentsMenu();
   }
 
   resetCurrentCollection() {
