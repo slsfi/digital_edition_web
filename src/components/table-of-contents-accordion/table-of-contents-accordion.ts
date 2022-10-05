@@ -290,7 +290,7 @@ export class TableOfContentsAccordionComponent {
   }
 
   ngOnChanges(about) {
-    if ( Array.isArray(about) && this.isMarkdown) {
+    if ( Array.isArray(about) && (this.isMarkdown || this.isGallery) ) {
       // console.log('toc-accordion ngOnChanges initialized', about);
       this.menuOptions = about;
       this.collapsableItems = new Array<InnerMenuOptionModel>();
@@ -941,10 +941,18 @@ export class TableOfContentsAccordionComponent {
     this.alphabethicOrderActive = false;
     this.chronologicalOrderActive = false;
     this.thematicOrderActive = false;
+    this.resetTocAccordionScroll();
     this.events.publish('exitActiveCollection');
     const params = {};
     const nav = this.app.getActiveNavs();
     nav[0].setRoot('HomePage', params, { animate: false });
+  }
+
+  resetTocAccordionScroll() {
+    const tocElem = document.querySelector('#tableOfContentsMenu ion-content.toc-menu-content > .scroll-content');
+    if (tocElem) {
+      tocElem.scrollTo(0, 0);
+    }
   }
 
   /**
