@@ -429,13 +429,15 @@ export class TextChangerComponent {
 
   async next(test?: boolean) {
     this.getTocItemId();
-    const c_id = this.legacyId.split('_')[0];
-    this.tocService.getTableOfContents(c_id)
-      .subscribe(
-        toc => {
-          this.findNext(toc);
-        }
-      );
+    if (this.legacyId !== 'mediaCollections') {
+      const c_id = this.legacyId.split('_')[0];
+      this.tocService.getTableOfContents(c_id)
+        .subscribe(
+          toc => {
+            this.findNext(toc);
+          }
+        );
+      }
     if (this.nextItem !== undefined && test !== true) {
       this.storage.set('currentTOCItem', this.nextItem);
       await this.open(this.nextItem);
