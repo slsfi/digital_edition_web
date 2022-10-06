@@ -1,5 +1,5 @@
 /*
-    This file contains style rules which are applied exclusively to the contents of the <div> elements with class "tei" on the title page, in the introduction and in the columns on the read page.
+    This file contains style rules which are applied exclusively to the contents of the <div> elements with class "tei" on the title page, cover page, in the introduction and in the columns on the read page.
 */
 
 /* Padding below the columns so their height won't end precisely after the texts */
@@ -21,7 +21,7 @@ div.teiContainer {
     max-width: 100%;
 }
 
-/* Textstorlekar. */
+/* Font sizes. */
 div.tei.miniFontSize {
     font-size: $text-fontsize-mini;
 }
@@ -50,11 +50,11 @@ div.tei.xlargeFontSize {
     font-size: $text-fontsize-xlarge;
 }
 
-/* Kommentarasteriskernas storlekar vid olika textstorlekar.
-   De här, sidnumreringarnas och squared times symbolens (normaliseringar) storlekar måste definieras såhär eftersom
-   de ska påverkas av den valda textstorleken men inte storleken på det text-
-   element som de ingår i. Kommentarasteriskerna ska t.ex. inte vara större i 
-   rubriker. */
+/* Size of comment asterisks at different font sizes.
+    The size of the asterisks, page numberings and "squared times" symbol (normalisations)
+    have to be defined this way as they should be affected by the chosen font size, but
+    not the size of the text-element they are included in. For instance, the asterisks
+    must not be larger inside headings. */
 div.tei.miniFontSize img.comment {
     width:  ceil(0.75 * $text-fontsize-mini) !important;
     height: ceil(0.75 * $text-fontsize-mini) !important;
@@ -92,7 +92,7 @@ div.tei.xlargeFontSize img.comment {
     height: ceil(0.75 * $text-fontsize-xlarge) !important;
 }
 
-/* Sidnumreringarnas storlekar vid olika textstorlekar */
+/* Size of page numberings at different font sizes. */
 div.tei.miniFontSize.show_pageBreakOriginal,
 div.tei.miniFontSize.show_pageBreakEdition {
     .pb_orig,
@@ -166,12 +166,13 @@ div.tei.xlargeFontSize.show_pageBreakEdition {
     }
 }
 
-/* Storlek på squared times symbolen som indikerar en normalisering där något tagits bort ur texten eller i varianter text som saknas. */
+/* Size of the "squared times" symbol at different font sizes (the symbol indicates a normalisation where something has
+    been removed from the text, or in variants, text that is missing. */
 div.tei.show_normalisations span.reg_hide img,
 div.tei.show_changes span.corr_hide img,
 div.tei span.seg img {
     display: inline-block;
-    width:   0.625em; /* Default om textstorleken inte fungerar. */
+    width:   0.625em; /* Default if the font size is not working. */
     height:  0.625em;
 }
 div.tei.miniFontSize.show_normalisations span.reg_hide img,
@@ -223,7 +224,7 @@ div.tei.xlargeFontSize span.seg img {
     height: ceil(0.585 * $text-fontsize-xlarge);
 }
 
-/* Storlek på röda triangeln som indikerar början på ett lemma, m.m. */
+/* Size of the red triangle that indicates the start of lemmas etc. */
 div.tei span.anchor_lemma img,
 div.tei img.inl_ms_arrow,
 div.tei span.add_margin img,
@@ -233,7 +234,7 @@ div.tei span.anchorScrollTarget.highlight img,
 div.tei a.ref_variant img,
 div.tei span.extVariantsTrigger img {
     display: inline-block;
-    width:   0.75em; /* Default om textstorleken inte fungerar. */
+    width:   0.75em; /* Default */
     height:  0.75em;
 }
 div.tei span.anchor_lemma img,
@@ -334,10 +335,10 @@ div.tei.xlargeFontSize span.extVariantsTrigger img {
     height: ceil(0.75 * $text-fontsize-xlarge);
 }
 
-/* Storlek på esh-symbolen i manuskript. */
+/* Size of the esh-symbol in manuscripts. */
 div.tei .teiManuscript.immediate_symbol img {
     display: inline-block;
-    width:   0.9em; /* Default om textstorleken inte fungerar. */
+    width:   0.9em; /* Default. */
     height:  auto;
 }
 div.tei.miniFontSize .teiManuscript.immediate_symbol img {
@@ -380,7 +381,7 @@ div.tei.xlargeFontSize .teiManuscript.immediate_symbol img {
 /* Symbol/icon representing a drawing etc. */
 div.tei img.symbol {
     display: inline-block;
-    width:   1.17em; /* Default om textstorleken inte fungerar. */
+    width:   1.17em; /* Default. */
     height:  auto;
     vertical-align: text-bottom;
 }
@@ -430,10 +431,10 @@ div.tei.xlargeFontSize img.symbol {
     vertical-align: floor(-0.2 * $text-fontsize-xlarge);
 }
 
-/* Storlek på hand-symbolen i manuskript. */
+/* Size of the hand-symbol in manuscripts. */
 div.tei img.teiManuscript.handSymbol {
     display: inline-block;
-    width:   1em; /* Default om textstorleken inte fungerar. */
+    width:   1em; /* Default. */
     height:  auto;
     top: 0;
 }
@@ -474,8 +475,7 @@ div.tei.xlargeFontSize img.teiManuscript.handSymbol {
     height: ceil(1 * $text-fontsize-xlarge);
 }
 
-
-/* Gör så att röda tringeln för början på lemman i lästexten blinkar ljusare. */
+/* Make the red triangle (indicates start of lemmas in read-texts) blink brighter. */
 @keyframes filter-animation-brightness {
     0% {
         filter: brightness(100%);
@@ -510,7 +510,6 @@ div.tei {
         margin: 1em 30px;
     }
 
-    /* CONTAINERS FOR COLUMNS */
     .padded p {
         padding-left: 100px;
     }
@@ -527,13 +526,15 @@ div.tei {
         margin-bottom: 1em !important;
         margin-top: 1em !important;
     }
-    /*strofer med en blankrad mellan sig ska inte ha två blankrader bara för att ett sidnr dyker upp*/
+
+    /* Stanzas with a blank line between them should not have two blank lines just because there's
+        a page number in between. */
     p.tei.invisiblelg + p.tei.invisiblelg {
         margin-bottom: 0;
     }
   
-    /*inget indrag i blankrader, för de kan innehålla pb-taggar som inte ska ha indrag före sig
-    och det ska inte bli dubbla blankrader ifall invisiblelg innehåller pb-tagg*/
+    /* No text-indent in blank lines, as they can contain <pb> that shouldn't have indentation,
+        and there shouldn't be double blank lines if invisiblelg contains <pb> */
     p.tei.invisiblelg {
         text-indent: 0 !important;
         margin-top: 0 !important;
@@ -553,11 +554,13 @@ div.tei {
     p.paragraphSpace {
         padding-bottom: 1.5em !important;
     }
-    /*p.letterStatus {
+    /*
+    p.letterStatus {
         position: absolute;
         top: 21px;
         text-indent: 0 !important;
-    }*/
+    }
+    */
     .topMargin {
         margin-top: 1em;
     }
@@ -585,18 +588,6 @@ div.tei {
     .true-underline {
         text-decoration: underline;
     }
-    /* .manuscriptText doesn't exist in html! */
-    /*
-    div.manuscriptText p.underline, 
-    div.manuscriptText h3.underline {
-        font-style: normal;
-        text-decoration: underline;
-    }
-    div.manuscriptText span.underline {
-        font-style: normal;
-        border-bottom: 1px solid black;
-    }
-    */
     .tei_hi_medium {
         text-decoration: none;
         color: #000;
@@ -675,7 +666,6 @@ div.tei {
         display: inline-block;
     }
     p.strofeSpacing  {
-        /*padding-bottom: 0;*/
         padding-bottom: 1em !important;
     }
     p.strofePadding {
@@ -747,14 +737,6 @@ div.tei {
         margin: 0 0 2.25em 0;
         text-indent: 0;
     }
-    /*
-    .parIndent {
-        text-indent: 0 !important;
-        padding-left: 30px;
-        padding-right: 30px;
-        margin-top: 1em !important;
-        padding-bottom: 1em !important;
-    }*/
     .parHalfIndent {
         text-indent: 0 !important;
         padding-left: 15px;
@@ -762,20 +744,6 @@ div.tei {
     .halfLinePadding {
         padding-bottom: 0.5em !important;
     }
-    /*
-    div.comment_background h3 {
-        color: #55524c;
-        font-size: 0.95em;
-    }
-    div.comment_background p {
-        color: #55524c;
-        font-size: 0.95em;
-    }
-    span.comment_background {
-        color: #55524c;
-        font-size: 0.95em;
-    }
-    */
 
     /* Old style for footnotes when they were <p> instead of <ol> */
     p.footnote {
@@ -815,29 +783,10 @@ div.tei {
     }
 
     /* COMMON SPANS */
-    /*
-    span.lNumber {
-        position: absolute;
-        width: 18px;
-        color: #a9a49a;
-
-        margin-left: -20px;
-    }
-    */
-
     .sub {
         vertical-align: sub;
         font-size: 0.8235em;
     }
-    /* Är den här rätt? Jfr ovan. Definierades urspr i project_variables såhär */
-    /*
-    .tei.sub {
-        vertical-align: sub;
-        font-size: 1.1em;
-        margin-top: 0.8rem;
-        margin-bottom: 0.5rem;
-    }*/
-
     .sup {
         vertical-align: super;
         font-size: 0.8235em;
@@ -847,17 +796,6 @@ div.tei {
         line-height: 0.5em;
         font-size: 0.8235em;
     }
-
-    /* These rules for raised and sup are unneeded, this is fixed by xsl in conjunction with the above css-rules. */
-    /* Maintext will show raised text differently */
-    /*.mainText .raised::before, .mainText .sup::before {
-        content: ":";
-    }
-    .mainText .raised, .mainText .sup {
-        vertical-align: baseline !important;
-        font-size: 1em !important;
-    }*/
-
     .uppercase {
         text-transform: uppercase;
     }
@@ -867,15 +805,7 @@ div.tei {
     .italicsTT {
         font-style: italic;
     }
-    /*
-    .small {
-        font-size: 0.9em !important;
-    }
-    */
-
     .expanded {
-        /* Changed this to italics
-        letter-spacing: 2px; */
         font-style: italic;
     }
     .expandedTT {
@@ -906,18 +836,6 @@ div.tei {
         font-style: normal;
         text-decoration: none;
     }
-    /*
-    .cont_manuscript span.underline2 {
-        border-bottom: 3px double black;
-        font-style: normal;
-        text-decoration: none;
-    }
-    .cont_manuscript p {
-        line-height: 180%;
-        position: relative;
-        text-indent: 30px;
-    }
-    */
     span.dashUnderline {
         border-bottom: 1px dashed black;
     }
@@ -936,25 +854,12 @@ div.tei {
     .encreasedSizeTT {
         font-size: 120%;
     }
-    /* Finns ingen .mainText på generiska, avser lästexten */
-    /*
-    .mainText .encreasedSize {
-        font-style: italic;
-        font-size: 100%;
-    }
-    */
-    .segment {
-    }
     .anchor_lemma {
         display: none;
     }
     a.textreference {
         color: #000 !important;
     }
-    /*.corr_hide {
-        display: none;
-    }*/
-
 
     /* MANUSCRIPT */
     .symbol_red {
@@ -964,7 +869,6 @@ div.tei {
         color: #990202;
     }
     .unclear {
-        /*font-style: italic;*/
         color: #808080;
     }
     .space {
@@ -982,22 +886,6 @@ div.tei {
     .tei_add_subst_zts {
         color: #0000a1;
     }
-    /*.tei_substitution_hps {
-        color: #0000a1;
-        position: relative;
-        width: 100%;
-    }*/
-    /*
-    .tei_subst_table {
-        display: inline-table;
-        position: relative;
-        padding: 0;
-        left: -60px;
-        font-style: inherit;
-        margin-right: -60px;
-        margin-bottom: -1em;
-    }
-    */
     .tei_subst_table {
         display: inline-table;
         position: relative;
@@ -1018,13 +906,6 @@ div.tei {
         display: table-cell;
         position: relative;
     }
-    /*
-    .tei_td_add {
-        display: table-cell;
-        position: relative;
-        top: -2.2em;
-    }
-    */
     .tei_td_add {
         display: table-cell;
         position: relative;
@@ -1140,12 +1021,6 @@ div.tei {
         text-decoration: line-through;
         color: #a66e37 !important;
     }
-    /*
-    .tei_deletion_medium_wrapper {
-        text-decoration: line-through;
-        color: #606b2f !important;
-    }
-    */
     .tei_deletion_medium_wrapper {
         text-decoration: line-through;
         color: #008100 !important;
@@ -1153,12 +1028,6 @@ div.tei {
     .tei_restore_editorial_wrapper {
         border-bottom: 1px dashed #a66e37;
     }
-    /*
-    .tei_deletion_editorial {
-        text-decoration: none;
-        color: color($colors, dark);
-    }
-    */
     .tei_deletion_editorial {
         text-decoration: none;
         color: #000;
@@ -1168,11 +1037,6 @@ div.tei {
         color: #0000a1;
     }
     .tei_add_margin {
-        /*position: absolute;
-        left: 0;
-        width: 95px;
-        margin: 0;
-        padding: 0;*/
         color: #0000a1;
         padding: 15px;
     }
@@ -1180,9 +1044,6 @@ div.tei {
         margin-right: 3px;
     }
     .tei_add_over_zts {
-        /*position: absolute;
-        top: -11pt;
-        left: 0;*/
         vertical-align: super;
         color: #0000a1;
     }
@@ -1240,15 +1101,13 @@ div.tei {
         display: inline-block;
         width: 33%;
     }
-    span.split_symbol
-    {
+    span.split_symbol {
         position: absolute;
         z-index: 1;
         top: 0.2em;
         left: -8px;
     }
-    span.join_symbol
-    {
+    span.join_symbol {
         position: absolute;
         z-index: 1;
         top: -4px;
@@ -1257,7 +1116,6 @@ div.tei {
     .medium {
         color: #008100 !important;
     }
-
     .restore {
         border-bottom: 1px dashed green;
     }
@@ -1274,7 +1132,6 @@ div.tei {
         bottom: -2px;
         display: inline-block;
     }
-/* MANUSCRIPT END? */
 
     .tei_editorial {
         color: #a66e37 !important;
@@ -1301,46 +1158,6 @@ div.tei {
     }
 
     /* VARIANTS */
-    /*
-    span.lemma
-    {
-        background-color: #c1bac1;
-    }
-    span.variant
-    {
-        background-color: #C5C5C5;
-    }
-    span.orthographic
-    {
-        background-color: #d6caf8;
-    }
-    span.substantial
-    {
-        background-color: #ebbfbe;
-    }
-    span.interpunction
-    {
-        background-color: #9dd5cc;
-    }
-    span.identical
-    {
-        background-color: #c1bac1;
-    }
-    .var_bold {
-        font-weight: bold;
-    }
-    span.extVariantsTrigger {
-        color: #990202;
-        cursor: pointer;
-    }
-    span.extVariants {
-        display: none;
-        padding: 3px;
-        border: 1px solid #990202;
-        border-radius: 3px;
-        background-color: #e6e6e0;
-    }
-    */
     .lemma {
         background-color: var(--lemma-identical-variant-background-color) !important;
     }
@@ -1460,22 +1277,17 @@ div.tei {
     .highlightWork {
       background-color: #cae4eb !important;
     }
-    /* Remove? */
     .highlightXMLcomment {
         background-color: #cae4eb !important;
     }
 
-    /*these will be svg --> vilka alla svg gäller detta? finns skilda stilar för kommentarasteriskerna img.comment som definierar deras storlekar. Ska vara i förhållande till den valda textstorleken. */
+    /* these will be svg --> unclear which images are affected by this, might not be used anymore */
     img.tooltiptrigger {
         height: 10px;
         width: 10px;
         position: relative;
         top: 4px;
         left: 0;
-        /*
-        margin-right: 3px;
-        margin-left: 3px;
-        */
         margin: 0 !important;
     }
 
@@ -1765,7 +1577,6 @@ div.tei {
         text-align: center;
         font-weight: normal !important;
         margin: 1em 0 !important;
-        /*font-size: 1.25em !important;*/
     }
     h4.tei.poemsub {
         font-style: italic;
@@ -1786,16 +1597,6 @@ div.tei {
         font-weight: normal !important;
         margin: 0.8em 0 1em 0 !important;
     }
-    /* .academicsub not used */
-    /*
-    h4.tei.academicsub {
-        font-style: italic;
-        text-align: center;
-        font-weight: normal !important;
-        margin: 1em 0 0.7em 0 !important;
-        font-size: 1.3em !important;
-    }
-    */
     h5.tei.motto {
         font-style: italic;
         text-align: right;
@@ -1964,7 +1765,7 @@ div.tei {
         margin-bottom: 1em !important;
         text-align: left;
     }
-    /* Figure caption in e.g. ZTS: Finland i 19de seklet*/
+    /* Figure caption in e.g. ZTS: Finland i 19de seklet */
     .figureP {
         color: #737373 !important;
         font-size: 0.95em !important;
@@ -2020,7 +1821,7 @@ div.tei {
     div.comment_background p:first-child {
         margin-top: 1.5em;
     }
-    /* Används denna? */
+    /* Unclear if this rule is in use anymore. */
     a.reference span.raised {
         vertical-align: super;
         line-height: 0.5em;
@@ -2029,19 +1830,6 @@ div.tei {
         font-style: normal !important;
         float: right !important;
     }
-
-    /* Det finns inten .mainText på generiska plattformen */
-    /*
-    .mainText span.uppercase {
-        font-variant: small-caps;
-    }
-    .mainText span.uppercaseDiary {
-        font-variant: small-caps;
-    }
-    .c_ms span.uppercase {
-        text-transform: uppercase;
-    }
-    */
     .smallcaps {
         font-variant: small-caps;
     }
@@ -2052,12 +1840,7 @@ div.tei {
         font-variant: small-caps;
         font-style: italic;
     }
-    /*
-    .italics {
-        font-style: italic;
-    }
-    */
-    /*Bl.a. dramatik, scen- och personanvisningar, också i andra utgåvor än Dramatik */
+    /* For instance drama, scene and person instructions, e.g. in Topelius: Dramatik, Noveller och kortprosa */
     span.smallFont {
         font-size: 0.9412em;
     }
@@ -2065,47 +1848,19 @@ div.tei {
         font-size: 0.9412em !important;
         color: gray;
     }
-    /*
-    .c_ms span.dashUnderline {
-        border-bottom: 1px dashed black;
-    }
-    */
-    /*Finns ingen .mainText på generiska plattformen --> lagt till read-text div.tei span.dashUnderline nedan */
-    /*
-    .mainText span.dashUnderline {
-        font-style: italic;
-    }
-    .c_ms .encircled {
-        border: 1px solid gray;
-    }
-    .mainText .encircled {
-        font-style: italic;
-    }
-    .c_ms .encreasedSize {
-        font-size: 120%;
-    }
-    */
     .footnotePoem {
         display: block;
         text-indent: 15px;
     }
     .add_margin {
-        /*position: absolute;
-        left: 0;
-        width: 95px;
-        margin: 0;
-        padding: 0;*/
         color: #0000a1;
     }
-    /*ms-tillägg från marginalen: symbolerna ska inte vara hela spaltens bredd eller block?*/
+    /* ms-addition from the margin: the symbols should not fill the column width --> block? Might not be in use anymore. */
     .add_margin img {
         display: inline;
         width: 3%;
     }
     .add_over {
-        /*position: absolute;
-        top: -11pt;
-        left: 0;*/
         vertical-align: super;
         color: #0000a1;
     }
@@ -2424,7 +2179,7 @@ div.tei .tooltip { display: none; }
     margin-left: -145px;
 }
 
-/* Vänster padding för lästext och inledning när styckenumreringen visas */
+/* Left padding for read-texts and introductions when the paragraph numbering is displayed */
 read-text .tei.show_pageNumbering,
 page-introduction .tei.show_pageNumbering {
     padding-left: 20px;
@@ -2468,7 +2223,7 @@ div.tei.show_pageBreakEdition .pb_edition {
     opacity: 1;
 }
 
-/*fotnotsmarkören*/
+/* The footnote indicator */
 span.footnoteindicator {
     font-size: 0.83em;
     line-height: 0.5em;
@@ -2497,6 +2252,7 @@ read-text div.tei {
     }
 }
 
+/* Overrides for manuscripts */
 manuscripts div.tei {
     span.uppercase {
         text-transform: uppercase;
@@ -2718,943 +2474,3 @@ page-title {
         }
     }
 }
-
-
-/*toc: textfärgen
-.item-md p {
-	color: #404040;
-}*/
-
-/*toc: beskrivning av lästextslänk
-span.description {
-	color: #666;
-}*/
-
-/*inledningens toc: rubrikerna
-  RADERA: definieras i introduction.scss
-page-introduction #TOC h2.contentSection.smallCaps {
-    font-size: 1.2em;
-    padding-left: 1em;
-	margin-bottom: .6em;
-	margin-top: 1.2em;
-	padding-top: .2em;
-	font-variant: small-caps;
-	font-weight: 600;
-	line-height: 1;
-}
-page-introduction #TOC h5.tei.contentSub2 {
-    font-size: 1em;
-    padding-left: 1.2em;
-	margin-bottom: .4em;
-	margin-top: .1em;
-	font-weight: 600;
-	line-height: 1;
-}
-page-introduction #TOC p {
-	line-height: .1em;
-}*/
-
-/* CONTAINERS FOR COLUMNS --> Already defined in .tei {} above
-.padded {
-}
-.padded p {
-	padding-left: 100px;
-}
-.padded h3 {
-	padding-left: 100px;
-}
-h3.tei.letterTitle {
-	font-variant: small-caps;
-	font-weight: normal !important;
-}
-p.authorHeader {
-	text-indent: 0 !important;
-	margin-bottom: 0.5em;
-}
-h3.tei.titleTopMargin {
-	margin-top: 2em !important;
-}
-h3.tei.titleBottomMargin {
-	margin-bottom: 2em !important;
-}
- */
-
-/* COMMON PARAGRAPHS */
-/* Defined above
-p.invisible {
-	height: 0 !important;
-	width: 0 !important;
-}*/
-/*p.invisiblelg {
-	margin-bottom: 1em !important;
-	margin-top: 1em !important;
-}*/
-/* Defined above
-p.personDesc, p.placeDesc, p.titleDesc {
-	text-indent: 0 !important;
-	margin-bottom: 1em !important;
-	padding-bottom: 0 !important;
-}
-p.paragraphSpace {
-	padding-bottom: 1.5em !important;
-}
-*/
-/* MOVED ABOVE INSIDE div.tei {}
-p.paragraphDiary {
-	margin-top: 0.5em !important;
-}
-p.frontmatter {
-	padding-top: 2em !important;
-	padding-bottom: 2em !important;
-	padding-right: 1.5em !important;
-	padding-left: 1.5em !important;
-	border-top: 2px solid black;
-	border-bottom: 2px solid black;
-	line-height: 1.5em;
-}
-p.frontmatterPrevious {
-	padding-top: 2em !important;
-	margin-bottom: 1.5em !important;
-	padding-right: 1.5em !important;
-	padding-left: 1.5em !important;
-	border-top: 2px solid black;
-	line-height: 1.5em;
-}
-p.frontmatterMiddle {
-	margin-top: 1.5em !important;
-	margin-bottom: 1.5em !important;
-	padding-right: 1.5em !important;
-	padding-left: 1.5em !important;
-	line-height: 1.5em;
-}
-p.frontmatterNext {
-	margin-top: 1.5em !important;
-	padding-bottom: 2em !important;
-	padding-right: 1.5em !important;
-	padding-left: 1.5em !important;
-	border-bottom: 2px solid black;
-	line-height: 1.5em;
-}*/
-/*
-.topMargin {
-	margin-top: 1em;
-}
-.bottomMargin {
-	margin-bottom: 1em;
-}
-p.dateline
-{
-	margin-top: 1.0em;
-	margin-bottom: 1.0em;
-}
-
-p.underline, h3.underline {
-	font-style: italic;
-}
-*/
-/* MOVED ABOVE INSIDE div.tei {}
-p.label_margin {
-    float: right;
-    text-indent: 0 !important;
-}
-p.label_above {
-    margin-left: 60px;
-    text-indent: 0 !important;
-    margin-top: 0.2em;
-    margin-bottom: 0.4em;
-}
-span.labelledLines_before {
-    margin-left: -80px !important;
-    text-indent: 0 !important;
-    position: absolute;
-}
-span.labelledLines_after {
-    float: right;
-    text-indent: 0 !important;
-}
-span.labelledLines_before_F {
-    margin-left: -200px !important;
-    text-indent: 0 !important;
-    position: absolute;
-}
-p.l.labelledLines_before {
-    position: relative;
-    margin-left: 110px !important;
-}
-p.l.labelledLines_before.lfinal {
-    position: relative;
-    margin-left: 120px !important;
-}*/
-/* Defined above
-span.writer {
-	font-size: 12px;
-	font-variant: normal;
-	font-weight: normal;
-}
-span.underline {
-	font-style: italic;
-}
-span.underline2 {
-	font-style: italic;
-}
-.true-underline {
-	text-decoration: underline;
-}
-div.manuscriptText p.underline, div.manuscriptText h3.underline {
-	font-style: normal;
-	text-decoration: underline;
-}
-div.manuscriptText span.underline {
-	font-style: normal;
-	border-bottom: 1px solid black;
-}
-.tei_hi_medium {
-    text-decoration: none;
-    color: #000000;
-}
-.tei_encircled_medium {
-    border: 1px solid #008100;
-}
-.tei_dashUnderline_medium {
-    border-bottom: 1px dashed #008100;
-}
-.tei_underline_medium {
-    text-decoration: underline;
-    color: #008100;
-}
-.tei_underline2_medium {
-    border-bottom: 3px double #008100;
-	font-style: normal;
-	text-decoration: none;
-}
-.stamp, .print {
-	font-family: "Times New Roman", serif;
-	letter-spacing: 1px;
-
-}
-.left {
-	text-align: left !important;
-	text-indent: 0 !important;
-}
-.center {
-	text-align: center;
-	text-indent: 0 !important;
-}
-.right {
-	text-align: right;
-	text-indent: 0 !important;
-}
-.dramaCenter {
-	text-align: center;
-	text-indent: 0 !important;
-	margin-top: 0.9em !important;
-	margin-bottom: 0.3em !important;
-}
-.img_left {
-	float: left;
-	padding-right: 8px;
-}
-.img_right {
-	float: right;
-	padding-left: 8px;
-}
-*/
-/*mindre strofmellanrum för ms*/
-/*
-.tei p.strofe {
-	text-indent: 0 !important;
-	margin-bottom: 1em !important;
-	margin-top: 1em !important;
-}
-p.l {
-	margin-left: 30px !important;
-	text-indent: -30px !important;
-}
-*/
-/* MOVED ABOVE INSIDE div.tei {}
-p.item {
-	text-indent: 0 !important;
-}
-p.item_indented {
-	margin-left: 40px !important;
-	text-indent: -15px !important;
-}
-p.lIndent {
-	text-indent: -9px !important;
-}
-p.lIndentDiary {
-	text-indent: -15px !important;
-}
-p.lcenter {
-	text-align: center !important;
-}
-p.lIndent.lcenter {
-	text-align: center !important;
-}
-p.lmedial {
-	text-indent: 30px !important;
-}
-p.lfinal {
-	text-indent: 80px !important;
-}
-p.lfinal2 {
-	text-indent: 95px !important;
-}*/
-/*
-p.strofeSpacing  {
-	padding-bottom: 1em !important;
-}
-p.strofePadding {
-	padding-left: 20px;
-}
-p.milestoneWhen, p.milestonePart {
-	font-size: 1em !important;
-	font-family: Georgia, serif;
-	color: gray;
-	background-color: #d2ccbf;
-	margin-top: 0.8em !important;
-	margin-bottom: 0.8em !important;
-	line-height: 1.5em !important;
-}
-span.milestoneWhen, span.milestonePart {
-	display: block;
-	font-size: 1em !important;
-	font-family: Georgia, serif;
-	color: gray;
-	background-color: #d2ccbf;
-	margin-top: 0.8em !important;
-	margin-bottom: 0.8em !important;
-	line-height: 1.5em !important;
-}
-p.teiOpener {
-	margin-bottom: 1.5em !important;
-}
-p.teiCloser {
-	margin-top: 1.5em !important;
-	margin-bottom: 1.5em !important;
-}
-.noIndent {
-	text-indent: 0 !important;
-}
-*/
-/* MOVED ABOVE INSIDE div.tei {}
-.hangingIndent {
-	padding-left: 30px !important;
-	text-indent: -30px !important;
-}
-.poemP, 
-.poemP.right, 
-.poemP.normalizedIndent, 
-.poemP.noIndent {
-	margin-left: 30px !important;
-	text-indent: -15px !important;
-	margin-bottom: 1em !important;
-	text-align: left;
-}
-.figureP {
-    color: gray !important;
-    background-color: white !important;
-    font-size: 0.95em !important;
-    font-family: "Fedra Serif A Book", verdana, arial, helvetica, sans-serif !important;
-    margin-top: 0.5em !important;
-    margin-bottom: 0.5em !important;
-}
-span.figure {
-    display: inline-block;
-    margin-top: 0.5em !important;
-    margin-bottom: 0.5em !important;
-    text-indent: 0 !important;
-}
-.parIndent {
-	text-indent: 30px !important;
-	padding-left: 30px;
-	padding-right: 30px;
-	padding-bottom: 0 !important;
-	margin-top: 0 !important;
-}
-:not(.parIndent) + .parIndent.noIndent {
-	text-indent: 0 !important;
-	padding-left: 30px;
-	padding-right: 30px;
-	margin-top: 1em !important;
-}
-:not(.parIndent) + .parIndent {
-	text-indent: 30px !important;
-	padding-left: 30px;
-	padding-right: 30px;
-	margin-top: 1em !important;
-}
-.parIndent + :not(.parIndent),
-.parIndent + span.pb_zts + :not(.parIndent),
-.parIndent + span.pb_edition + :not(.parIndent)
-.parIndent + span.pb_orig + :not(.parIndent) {
-	margin-top: 1em !important;
-}
-.frontmatterNext + span {
-	margin-top: 1em !important;
-}
-div.comment_background h3 {
-	color: #55524c;
-	font-size: 1.05em !important;
-}
-div.comment_background p {
-	color: #55524c;
-	font-size: 1.05em !important;
-}
-span.comment_background {
-	color: #55524c;
-	font-size: 1.05em !important;
-}
-div.comment_background p:first-child {
-    margin-top: 1.5em;
-}*/
-/*
-p.footnote {
-	text-indent: 0 !important;
-	padding-bottom: 0.5em !important;
-}
-*/
-
-/* COMMON SPANS
-span.lNumber {
-	position: absolute;
-	width: 18px;
-	color: #a9a49a;
-}
-
-span.personDesc, span.placeDesc {
-	cursor: pointer;
-}
-.sub {
-	vertical-align: sub;
-	font-size: 0.8em;
-}
-.sup {
-	vertical-align: super;
-	font-size: 0.8em;
-}
-.raised {
-	vertical-align: super;
-	line-height: 0.5em;
-	font-size: 0.8em;
-}
-*/
-
-/* Används denna? */
-/* MOVED INSIDE div.tei ABOVE
-a.reference span.raised {
-	vertical-align: super;
-	line-height: 0.5em;
-	font-size: 0.65em !important;
-	font-variant: normal !important;
-	font-style: normal !important;
-	float: right !important;
-}*/
-
-/* Det finns inten .mainText på generiska plattformen */
-/* MOVED ABOVE INSIDE div.tei
-.mainText span.uppercase {
-	font-variant: small-caps;
-}
-.mainText span.uppercaseDiary {
-	font-variant: small-caps;
-}
-.c_ms span.uppercase {
-	text-transform: uppercase;
-}
-.smallcaps {
-	font-variant: small-caps;
-}
-.abbr_noSmallcaps {
-	font-variant: normal;
-}
-.smallcapsItalics {
-	font-variant: small-caps;
-	font-style: italic;
-}*/
-/*
-.italics {
-	font-style: italic;
-}
-*/
-/*dramatik, scen- och personanvisningar*/
-/* MOVED INSIDE div.tei ABOVE
-span.smallFont {
-	font-size: 0.9em;
-}
-.small {
-	font-size: 0.9em !important;
-	color: gray;
-}*/
-/*
-.expanded {
-	font-style: italic;
-}
-.trueexpanded {
-	letter-spacing: 2px;
-}
-.expanded.italics {
-	letter-spacing: 2px;
-	font-style: italic;
-}
-.romanType {
-	font-style: italic;
-}
-.bold {
-	font-weight: bold;
-}
-.cont_manuscript span.underline2 {
-	border-bottom: 3px double black;
-	font-style: normal;
-	text-decoration: none;
-}
-*/
-/* MOVED INSIDE div.tei above
-.c_ms span.dashUnderline {
-	border-bottom: 1px dashed black;
-}*/
-/*Finns ingen .mainText på generiska plattformen */
-/* MOVED INSIDE div.tei above
-.mainText span.dashUnderline {
-	font-style: italic;
-}
-.c_ms .encircled {
-	border: 1px solid gray;
-}
-.mainText .encircled {
-	font-style: italic;
-}
-.c_ms .encreasedSize {
-	font-size: 120%;
-}*/
-/*
-.mainText .encreasedSize {
-	font-style: italic;
-	font-size: 100%;
-}
-.segment {
-}
-.anchor_lemma {
-	display: none;
-	font-weight: bold;
-}
-a.textreference {
-	color: black!important;
-}
-a.ref_variant img {
-	position: relative;
-	top: 3px;
-}
-*/
-/* MOVED INSIDE div.tei ABOVE
-.footnotePoem {
-	display: block;
-	text-indent: 15px;
-}*/
-
-/*.corr_hide {
-	display: none;
-}*/
-
-/* KOMMENTARER -- stilar definieras också i components/comments */
-/*
-.tei p.note {
-	cursor: pointer;
-	padding-left: 0 !important;
-}
-p.teiComment.noteLegend {
-	text-indent: 0 !important;
-	margin-bottom: 0.5em !important;
-	font-size: 0.95em !important;
-}
-.notePosition {
-	font-weight: bold;
-}
-.noteLemma {
-	font-style: italic;
-}
-.lemmaBreak {
-	font-style: normal !important;
-}
-.notePosition::after {
-	content: " ";
-}
-.noteLemma::after {
-	content: " \2013  ";
-}
-.noteText {
-
-}
-*/
-
-/* MANUSCRIPT
-.symbol_red {
-	color: #990202;
-}
-.gap {
-	color: #990202;
-}
-.unclear {
-	//font-style: italic;
-	color: #808080;
-}
-.space {
-	color: #990202;
-}
-.substitution {
-	color: #0000a1;
-}
-.alternative {
-	position: relative;
-}
-.tei_add_subst_zts {
-	color: #0000a1;
-}
-.tei_subst_table {
-    display: inline-table;
-    position: relative;
-    padding: 0;
-    left: -4.8em;
-    font-style: inherit;
-    margin-right: -4.8em;
-    margin-bottom: -1em;
-}
-.tei_subst_table_noIndent {
-    display: inline-table;
-    position: relative;
-    padding: 0;
-    font-style: inherit;
-    margin-bottom: -1em;
-}
-.tei_td_del {
-    display: table-cell;
-    position: relative;
-}
-.tei_td_add {
-    display: table-cell;
-    position: relative;
-    top: -1.9em;
-}
-.tei_td_add_sublinear {
-    display: table-cell;
-    position: relative;
-}
-.tei_tr {
-    display: table-row;
-}
-.tei_tr_add {
-    display: table-row;
-    line-height: 0;
-}
-.delSpan {
-	background-color: #a5a299;
-	display: inline-block;
-	left: -30px;
-	position: relative;
-}
-.delSpan_noIndent {
-	background-color: #a5a299;
-	display: inline-block;
-}
-.delSpan_medium {
-	background-color: #a3b550;
-	display: inline-block;
-	left: -30px;
-	position: relative;
-}
-.delSpan_noIndent_medium {
-	background-color: #a3b550;
-	display: inline-block;
-}
-.deletion {
-	text-decoration: line-through;
-}
-.deletion_strikethrough {
-	text-decoration: line-through;
-	background-color: #a5a299;
-}
-.deletion_subst {
-	text-decoration: line-through;
-}
-.tei_deletion_medium_wrapper {
-	text-decoration: line-through;
-	color: #008100 !important;
-}
-.tei_deletion_editorial {
-	text-decoration: none;
-	color: #000000;
-}
-.tei_deletion_add_editorial {
-	text-decoration: none;
-	color: #0000a1;
-}
-*/
-/* MOVED INSIDE div.tei above
-.add_margin { */
-	/*position: absolute;
-	left: 0;
-	width: 95px;
-	margin: 0;
-	padding: 0;*/
-/*	color: #0000a1;
-}*/
-/*ms-tillägg från marginalen: symbolerna ska inte vara hela spaltens bredd eller block?*/
-/*
-.add_margin img {
-    display: inline;
-    width: 3%;
-}
-.add_over {*/
-	/*position: absolute;
-	top: -11pt;
-	left: 0;*/
-/*	vertical-align: super;
-	color: #0000a1;
-}
-.add_sublinear {
-	vertical-align: -30%;
-	color: #0000a1;
-}
-.add_inline {
-	color: #6262e6 !important;
-}
-.add_subst {
-	color: #0000a1;
-}
-.add_choice {
-	position: absolute;
-	top: -1.2em;
-	left: 0;
-}
-.ttDel {
-    display: none;
-}*/
-/*
-.addSpan {
-	color: #0000a1;
-}
-.medium {
-	color: #008100 !important;
-}
-
-.restore {
-	border-bottom: 1px dashed green;
-}
-.switchpos_nonumber {
-	vertical-align: super;
-	color: #990202;
-}
-.switchpos_number {
-	vertical-align: super;
-	color: #0000a1;
-}
-.immediate_symbol {
-	position: relative;
-	bottom: -2px;
-}
-*/
-
-/* OTHER
-img.symbol {
-	position: relative;
-	bottom: -2px;
-}
- */
-
-/* VARIANTS
-.lemma {
-	background-color: #fff1b9 !important;
-}
-div.lemma {
-	display: inline-block;
-}
-.variant {
-	background-color: #C5C5C5 !important;
-}
-div.variant {
-	display: inline-block;
-}
-.orthographic {
-	background-color:  #eee6ff !important;
-}
-div.orthographic {
-	display: inline-block;
-}
-.substantial {
-	background-color: #fee0e2 !important;
-}
-div.substantial {
-	display: inline-block;
-}
-.interpunction {
-	background-color: #dbf0ec !important;
-}
-div.interpunction {
-	display: inline-block;
-}
-.identical {
-	background-color: #fff1b9 !important;
-}
-div.identical {
-	display: inline-block;
-}
-.typographic {
-	background-color: #f6e65b !important;
-}
-div.typographic {
-	display: inline-block;
-}
-.error {
-	background-color: #daecf1 !important;
-}
-div.error {
-	display: inline-block;
-}
-.var_bold {
-	font-weight: bold;
-}
-span.extVariantsTrigger {
-	color: #990202;
-	cursor: pointer;
-}
-span.extVariants {
-	display: none;
-	padding: 3px;
-	border: 1px solid #990202;
-	border-radius: 3px;
-	background-color: #E8E3D4;
-}
- */
-
-/* CALENDAR
-table.calendar {
-	margin-left: 10px;
-	margin-top: 0.7em;
-}
-table.calendar td {
-	font-size: 0.7em;
-	width: 23px;
-}
-a.calendarlink {
-	margin-left: 10px;
-}
-a.calendarlink img {
-	position: relative;
-	bottom: -2px;
-}
-.cal_days {
-	color: gray;
-}
-.cal_active {
-	color: #eb9414;
-	cursor: pointer;
-}
- */
-
-/* SEARCH RESULT
-.p_editor {
-	color: #990202;
-}
-span.note_editor {
-	color: #990202;
-	font-style: italic;
-}
-span.note_foot {
-	color: #78756f;
-	font-style: italic;
-}
-.highlightPerson {
-	background-color: #e5bb71 !important;
-}
-.highlightPlace {
-	background-color: #d1dfb6 !important;
-}
-.highlightForeign {
-	background-color: #cae4eb !important;
-}
-.highlightXMLcomment {
-	background-color: #cae4eb !important;
-}
- */
-
- /* MOVED TO div.tei ABOVE
-.revision {
-    border-radius: 5px;
-    border: 2px solid #000;
-    padding: 2px;
-}
-
-.est_figure_graphic {
-	max-width: 100%;
-	padding-right: 0.2rem;
-}
-
-.pdf_figure_graphic {
-	display: inline-block;
-	margin: 0 0.5em 0 0;
-}
-
-h1.tei.title {
-	font-variant: small-caps;
-	text-align: center;
-	font-weight: normal !important;
-	color: #111;
-	font-size: 1.5em !important;
-	margin: 1em 0 !important;
-}
-h1.tei.poemtitle {
-	font-variant: small-caps;
-	text-align: left;
-	font-weight: normal !important;
-	color: #111;
-	font-size: 1.5em !important;
-	margin: 1em 0 !important;
-}
-h1.tei.poemtitleFromMs, 
-h1.tei.poemtitleSuite {
-	font-style: italic;
-	text-align: left;
-	font-weight: normal !important;
-	color: #111;
-	font-size: 1.5em !important;
-	margin: 1em 0 !important;
-}
-h2.tei.zts {
-	font-variant: small-caps;
-	font-size: 1.3em !important;
-	text-align: center;
-	font-weight: normal !important;
-	color: gray;
-	margin: 1em 0 !important;
-}
-
-h2.tei.section {
-	text-align: center !important;
-	font-weight: normal !important;
-	margin: 1em 0 !important;
-}
-h2.tei.poemsection {
-	font-style: italic;
-	text-align: left;
-	font-weight: normal !important;
-	margin: 1em 0 !important;
-}
-h2.tei.section2 {
-	font-style: italic;
-	text-align: center;
-	font-weight: normal !important;
-	margin: 1em 0 !important;
-}
-h2.tei.poemsection2 {
-	font-style: italic;
-	text-align: left;
-	font-weight: normal !important;
-	margin: 1em 0 !important;
-}
-
-.inl_ms_arrow {
-    height: 0.75em;
-    width: 0.75em;
-    display: inline !important;
-}
-*/

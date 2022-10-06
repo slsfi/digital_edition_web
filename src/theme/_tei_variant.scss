@@ -1,12 +1,4 @@
 div.tei.teiVariant {
-
-    /* This rule doesn't seem to have any effect in variants and is anyway really badly formed. */
-    /*
-    p[class*="p"]{
-        text-indent: 30px !important;
-    }
-    */
-    
     h4 {
         margin: 1em 0 .5em !important;
         font-size: 1.0589em;
@@ -23,13 +15,6 @@ div.tei.teiVariant {
         font-style: italic !important;
         font-size: 1.3530em;
     }
-
-    /*
-    img {
-        width: 0.9rem;
-        display: inline-block;
-    }
-    */
 
     .variantScrollTarget {
         cursor: pointer;

@@ -382,17 +382,6 @@ blockquote {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 // START OF ORIGINAL APP.SCSS RULES
 
 body {
@@ -432,9 +421,6 @@ mark {
 }
 
 h1 {
- /* background-color: color($colors, light);
-  margin: 0 -16px;
-  padding: 30px 16px;*/
   margin-top: 1.2rem;
   text-transform: uppercase;
 }
@@ -445,7 +431,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .card-md p {
   font-size: 1.2rem;
-  /*font-weight: 100;*/
 }
 
 p, blockquote {
@@ -473,7 +458,6 @@ a {
   }
 
   .modal-wrapper {
-    // position: relative;
     top: 0;
     left: 0;
     display: block;
@@ -498,14 +482,6 @@ a {
       margin: auto;
     }
   }
-}
-
-/** List */
-
-.list-item-spacing .list .item-inner {
-  /*padding-top: 10px;
-  padding-bottom: 10px;
-  */
 }
 
 .back-to-list-button {
@@ -538,29 +514,26 @@ a {
 }
 
 /** Banner */
-
 .banner {
-    position: relative;
-    margin-top: 55px;
+  position: relative;
+  margin-top: 55px;
 
-    .foreground {
-        position: absolute;
-        bottom: 0;
-        color: white;
-        padding: 16px;
-        background: rgba(0,0,0,0.5);
-    }
+  .foreground {
+      position: absolute;
+      bottom: 0;
+      color: white;
+      padding: 16px;
+      background: rgba(0,0,0,0.5);
+  }
 }
 
 /** Logo and two rows in title */
-
 ion-title {
   .logo {
     display: block;
     height: 58px;
     margin: 0 auto;
     float: right;
-    // margin-left: 10px;
   }
 
   .toolbar-title{
@@ -568,17 +541,17 @@ ion-title {
   }
 
   .page-title {
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      margin-bottom:0;
-      font-weight: bold;
-      margin-left: 5px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    margin-bottom:0;
+    font-weight: bold;
+    margin-left: 5px;
   }
 
   .page-subtitle {
-      font-size: 0.9rem;
-      font-style: italic;
-      margin-top: 0px;
+    font-size: 0.9rem;
+    font-style: italic;
+    margin-top: 0px;
   }
 }
 
@@ -1204,7 +1177,7 @@ ion-alert.custom-select-alert .alert-wrapper {
 
 
 
-/* Intro.js core  */
+/* Intro.js core - these are styles for the tutorial popover  */
 .introjs-overlay {
   position: absolute;
   box-sizing: content-box;
