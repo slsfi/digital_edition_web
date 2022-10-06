@@ -5,28 +5,6 @@ div.tei.teiManuscript {
         cursor: help;
     } 
 
-    /*
-    // These rules are duplicates. They also exist in tei.scss under div.tei
-    .add_over{
-        vertical-align: super;
-        color: #0000a1;
-    }
-    .deletion {
-        text-decoration: line-through;
-    }
-
-    .deletion_subst{
-        text-decoration: line-through;
-    }
-    .add_subst {
-        color: #0000a1;
-    }
-    .add_sublinear{
-        vertical-align: -30%;
-        color: #0000a1;
-    }
-    */
-    
     span.underline {
         border-bottom: 1px solid black;
         font-style: normal;
@@ -36,7 +14,7 @@ div.tei.teiManuscript {
         font-style: normal;
         text-decoration: none;
     }
-    
+
     /* Is this used in ms? */
     span.lemma {
         background-color: #c1bac1;
@@ -48,12 +26,6 @@ div.tei.teiManuscript {
         text-indent: 1.7647em;
     }
 
-    /* This causes problems for <p> with .noIndent and is unnecessary.
-    p[class*="p"] {
-        text-indent: 30px !important;
-    }
-    */
-    
     h4 {
         margin: 1em 0 .5em !important;
     }

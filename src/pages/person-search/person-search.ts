@@ -145,10 +145,6 @@ export class PersonSearchPage {
       this.setData();
       if (lang) {
         this.getMdContent(lang + '-12-02');
-      } else {
-        this.langService.getLanguage().subscribe(language => {
-          this.getMdContent(language + '-12-02');
-        });
       }
     });
   }

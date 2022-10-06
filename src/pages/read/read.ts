@@ -465,6 +465,29 @@ export class ReadPage /*implements OnDestroy*/ {
       this.events.publish('pageLoaded:read', { 'title': this.establishedText.title });
     }
 
+    this.events.subscribe('UpdatePositionInPageRead', (params) => {
+      /* This is triggered when the publication chapter that should be opened in page-read
+         is the same as the previous, only with a different text position. Then page-read
+         is not reloaded, but the read-text is just scrolled to the correct position. */
+      console.log('Scrolling to new position in read text', params.tocLinkId);
+
+      const idParts = params.tocLinkId.split(';');
+      if (idParts.length > 1 && idParts[1]) {
+        this.textService.previousReadViewTextId = this.textService.readViewTextId;
+        this.textService.readViewTextId = params.tocLinkId;
+        this.establishedText.link = params.tocLinkId;
+        this.establishedText.id = params.tocLinkId;
+        this.updatePositionInURL(params.tocLinkId);
+
+        const posId = idParts[1];
+        this.scrollReadTextToAnchorPosition(posId);
+      } else {
+        // No position in params --> reload the view with the given params
+        const nav = this.app.getActiveNavs();
+        nav[0].setRoot('read', params);
+      }
+    });
+
     this.setUpTextListeners();
     this.setCollectionAndPublicationLegacyId();
   }
@@ -479,6 +502,7 @@ export class ReadPage /*implements OnDestroy*/ {
     this.unlistenMouseoverEvents();
     this.unlistenMouseoutEvents();
     this.unlistenFirstTouchStartEvent();
+    this.events.unsubscribe('UpdatePositionInPageRead');
     this.events.publish('ionViewWillLeave', this.constructor.name);
   }
 
@@ -902,6 +926,32 @@ export class ReadPage /*implements OnDestroy*/ {
     // this causes problems with back, thus this check.
     if (!this.navCtrl.canGoBack() ) {
       window.history.replaceState('', '', url.concat(viewModes.join('&')));
+    }
+  }
+
+  updatePositionInURL(textId: string) {
+    const currentPage = String(window.location.href);
+    let url = '#/' + currentPage.split('#/')[1];
+
+    const idParts = textId.split('_');
+    let chapter = '';
+    if (textId.indexOf(';') > -1) {
+      if (idParts.length > 2) {
+        chapter = idParts[2];
+      } else if (idParts.length > 1) {
+        chapter = 'nochapter;' + idParts[1].split(';')[1];
+      }
+    }
+    let pubId = url.slice(url.indexOf('/text/') + 6);
+    let endPart = pubId.slice(pubId.indexOf('/') + 1);
+    endPart = endPart.slice(endPart.indexOf('/'));
+    pubId = pubId.slice(0, pubId.indexOf('/'));
+
+    url = url.slice(0, url.indexOf('/text/') + 6) + pubId + '/' + chapter + endPart;
+    const viewModes = this.getViewTypesShown();
+    // this causes problems with back, thus this check.
+    if (!this.navCtrl.canGoBack() ) {
+      window.history.replaceState('', '', url);
     }
   }
 
@@ -3374,14 +3424,14 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   // Scrolls element into view and prepends arrow for the duration of timeOut.
-  private scrollToHTMLElement(element: HTMLElement, position = 'top', timeOut = 5000) {
+  private scrollToHTMLElement(element: HTMLElement, position = 'top', timeOut = 5000, scrollBehavior = 'smooth') {
     try {
       const tmpImage: HTMLImageElement = new Image();
       tmpImage.src = 'assets/images/ms_arrow_right.svg';
       tmpImage.alt = 'arrow image';
       tmpImage.classList.add('inl_ms_arrow');
       element.parentElement.insertBefore(tmpImage, element);
-      this.scrollElementIntoView(tmpImage, position);
+      this.scrollElementIntoView(tmpImage, position, 0, scrollBehavior);
       setTimeout(function() {
         element.parentElement.removeChild(tmpImage);
       }, timeOut);
@@ -3396,9 +3446,10 @@ export class ReadPage /*implements OnDestroy*/ {
    * of the container. This function can be called multiple times simultaneously
    * on elements in different containers, unlike the native scrollIntoView function
    * which cannot be called multiple times simultaneously in Chrome due to a bug.
-   * Valid values for yPosition are 'top' and 'center'.
+   * Valid values for yPosition are 'top' and 'center'. The scroll behavior can
+   * either be 'auto' or the default 'smooth'.
    */
-  private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0) {
+  private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0, scrollBehavior = 'smooth') {
     if (element === undefined || element === null || (yPosition !== 'center' && yPosition !== 'top')) {
       return;
     }
@@ -3420,7 +3471,23 @@ export class ReadPage /*implements OnDestroy*/ {
         baseOffset = baseOffset - 45;
       }
     }
-    container.scrollTo({top: y - baseOffset - offset, behavior: 'smooth'});
+    if (scrollBehavior === 'smooth') {
+      container.scrollTo({top: y - baseOffset - offset, behavior: 'smooth'});
+    } else {
+      container.scrollTo({top: y - baseOffset - offset, behavior: 'auto'});
+    }
+  }
+
+  private scrollColumnIntoView(columnElement: HTMLElement, offset = 26) {
+    if (columnElement === undefined || columnElement === null) {
+      return;
+    }
+    const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
+    if (scrollingContainer !== null) {
+      const x = columnElement.getBoundingClientRect().left + scrollingContainer.scrollLeft -
+      scrollingContainer.getBoundingClientRect().left - offset;
+      scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
+    }
   }
 
   /**
@@ -3584,6 +3651,33 @@ export class ReadPage /*implements OnDestroy*/ {
     const pageReadElem = document.querySelector('page-read > ion-content > div.scroll-content');
     if (pageReadElem) {
       this.backdropWidth = pageReadElem.scrollWidth;
+    }
+  }
+
+  scrollReadTextToAnchorPosition(posId: string) {
+    const container = document.querySelectorAll('read-text')[0];
+    if (container) {
+      const targets = container.querySelectorAll('a[name="' + posId + '"].anchor');
+      if (targets && targets.length > 0) {
+        let target = targets[0] as HTMLAnchorElement;
+        if ( target && ((target.parentElement && target.parentElement.classList.contains('ttFixed'))
+        || (target.parentElement.parentElement && target.parentElement.parentElement.classList.contains('ttFixed'))) ) {
+          // Position in footnote --> look for second target
+          if (targets.length > 1) {
+            target = targets[1] as HTMLAnchorElement;
+          }
+        }
+        if (target) {
+          if (!this.userSettingsService.isMobile()) {
+            let columnElement = container as HTMLElement;
+            while (columnElement.parentElement !== null && !columnElement.parentElement.classList.contains('read-column')) {
+              columnElement = columnElement.parentElement;
+            }
+            this.scrollColumnIntoView(columnElement);
+          }
+          this.scrollToHTMLElement(target);
+        }
+      }
     }
   }
 

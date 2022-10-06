@@ -73,10 +73,6 @@ export class ContentPage /*implements OnDestroy*/ {
     this.languageSubscription = this.langService.languageSubjectChange().subscribe(lang => {
       if (lang) {
         this.loadContent(lang);
-      } else {
-        this.langService.getLanguage().subscribe(language => {
-          this.loadContent(language);
-        });
       }
     });
   }

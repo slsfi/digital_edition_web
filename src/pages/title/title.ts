@@ -167,10 +167,6 @@ export class TitlePage {
     this.languageSubscription = this.langService.languageSubjectChange().subscribe(lang => {
       if (lang) {
         this.loadTitle(lang);
-      } else {
-        this.langService.getLanguage().subscribe(language => {
-          this.loadTitle(language);
-        });
       }
     });
   }

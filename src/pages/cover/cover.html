@@ -1,6 +1,6 @@
 <ion-header no-border *ngIf="!(userSettingsService.isMobile()) && !hasDigitalEditionListChildren">
   <ion-toolbar color="secondary" class="secondary">
-    <text-changer *ngIf="!(userSettingsService.isMobile())" [legacyId]="id" [parentPageType]="'page-cover'" class="text-changer-desktop-view"></text-changer>
+    <text-changer *ngIf="!(userSettingsService.isMobile())" [parentPageType]="'page-cover'" class="text-changer-desktop-view"></text-changer>
   </ion-toolbar>
 </ion-header>
 
@@ -24,4 +24,4 @@
   <img class="cover-image" [src]="image_src" [alt]="image_alt">
 </div>
 
-<text-changer *ngIf="(userSettingsService.isMobile()) && !hasDigitalEditionListChildren" [legacyId]="id" [parentPageType]="'page-cover'" class="text-changer-mobile-view"></text-changer>
+<text-changer *ngIf="(userSettingsService.isMobile()) && !hasDigitalEditionListChildren" [parentPageType]="'page-cover'" class="text-changer-mobile-view"></text-changer>

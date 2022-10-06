@@ -48,11 +48,6 @@ export class LegendComponent {
       if (lang) {
         this.language = lang;
         this.getMdContent(this.language + '-' + this.staticMdLegendFolderNumber + '-' + this.collectionId + '-' + this.publicationId);
-      } else {
-        this.langService.getLanguage().subscribe(language => {
-          this.language = language;
-          this.getMdContent(this.language + '-' + this.staticMdLegendFolderNumber + '-' + this.collectionId + '-' + this.publicationId);
-        });
       }
     });
 

@@ -122,10 +122,6 @@ export class WorkSearchPage {
       this.setData();
       if (lang) {
         this.getMdContent(lang + '-12-05');
-      } else {
-        this.langService.getLanguage().subscribe(language => {
-          this.getMdContent(language + '-12-05');
-        });
       }
     });
   }
