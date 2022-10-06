@@ -13,6 +13,7 @@ import { UserSettingsService } from '../../app/services/settings/user-settings.s
 import { ThrowStmt } from '@angular/compiler';
 import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MetadataService } from '../../app/services/metadata/metadata.service';
+import { TextService } from '../../app/services/texts/text.service';
 
 @Component({
   selector: 'table-of-contents-accordion',
@@ -188,7 +189,8 @@ export class TableOfContentsAccordionComponent {
     public languageService: LanguageService,
     public userSettingsService: UserSettingsService,
     public translate: TranslateService,
-    public metadataService: MetadataService
+    public metadataService: MetadataService,
+    protected textService: TextService
   ) {
   }
 
@@ -712,77 +714,90 @@ export class TableOfContentsAccordionComponent {
       this.introductionSelected = false;
       this.selectGallery(item);
     } else if ( item.itemId !== undefined ) {
-
-      this.storage.set('currentTOCItem', item);
-      const params = {root: this.options, tocItem: item, collection: {title: item.text}};
-      const nav = this.app.getActiveNavs();
-
       this.coverSelected = false;
       this.titleSelected = false;
       this.forewordSelected = false;
       this.introductionSelected = false;
 
-      if (item.url) {
-        params['url'] = item.url;
-      }
+      this.storage.set('currentTOCItem', item);
 
-      if (item.datafile) {
-        params['song_datafile'] = item.datafile;
-      }
+      const params = this.createReadPageParamsFromMenuItem(item);
 
-      if (item.itemId) {
-        params['tocLinkId'] = item.itemId;
-        const parts = item.itemId.split('_');
-        params['collectionID'] = parts[0];
-        params['publicationID'] = parts[1];
-        if ( parts.length > 2 ) {
-          params['chapterID'] = parts[2];
-        }
-      }
-
-      if (this.currentItem && this.currentItem['facsimilePage'] ) {
-        params['facsimilePage'] = this.currentItem['facsimilePage'];
-      }
-
-      params['facs_id'] = 'not';
-      params['facs_nr'] = 'infinite';
-      params['song_id'] = 'nosong';
-
-      params['selectedItemInAccordion'] = true;
-
-      params['search_title'] = 'searchtitle';
-
-      if (this.searchTocItemInAccordionByTitle && item.text) {
-        params['search_title'] = item.text;
-      }
-
-      if (item.type && item.type === 'facsimile') {
-        params['collectionID'] = this.collectionId;
-        params['publicationID'] = item.publication_id;
-        params['tocLinkId'] = `${this.collectionId}_${item.publication_id}`;
-
-        params['facs_id'] = item.facsimile_id;
-        params['facs_nr'] = item.facs_nr;
-      }
-
-      if (item.type && item.type === 'song-example') {
-        params['collectionID'] = this.collectionId;
-        params['publicationID'] = item.publication_id;
-        params['tocLinkId'] = `${this.collectionId}_${item.publication_id}`;
-        params['song_id'] = item.song_id;
-        params['facs_id'] = item.facsimile_id;
-        params['facs_nr'] = item.facs_nr;
-      }
-
-      if ( this.platform.is('core') ) {
-        this.events.publish('title-logo:show', true);
+      if (this.textService.readViewTextId && item.itemId.split('_').length > 1 && item.itemId.indexOf(';') > -1
+      && item.itemId.split(';')[0] === this.textService.readViewTextId.split(';')[0]) {
+        // The read page we are navigating to is just a different position in the text that is already open
+        // --> no need to reload page-read, just scroll to correct position
+        this.events.publish('UpdatePositionInPageRead', params);
+        this.events.publish('UpdatePositionInPageRead:TextChanger', item.itemId);
       } else {
-        this.events.publish('title-logo:show', false);
+        if ( this.platform.is('core') ) {
+          this.events.publish('title-logo:show', true);
+        } else {
+          this.events.publish('title-logo:show', false);
+        }
+        const nav = this.app.getActiveNavs();
+        nav[0].setRoot('read', params);
       }
-      nav[0].setRoot('read', params);
     } else {
       this.storage.set('currentTOCItem', item);
     }
+  }
+
+  createReadPageParamsFromMenuItem(item) {
+    const params = {root: this.options, tocItem: item, collection: {title: item.text}};
+
+    if (item.url) {
+      params['url'] = item.url;
+    }
+
+    if (item.datafile) {
+      params['song_datafile'] = item.datafile;
+    }
+
+    if (item.itemId) {
+      params['tocLinkId'] = item.itemId;
+      const parts = item.itemId.split('_');
+      params['collectionID'] = parts[0];
+      params['publicationID'] = parts[1];
+      if ( parts.length > 2 ) {
+        params['chapterID'] = parts[2];
+      }
+    }
+
+    if (this.currentItem && this.currentItem['facsimilePage'] ) {
+      params['facsimilePage'] = this.currentItem['facsimilePage'];
+    }
+
+    params['facs_id'] = 'not';
+    params['facs_nr'] = 'infinite';
+    params['song_id'] = 'nosong';
+
+    params['selectedItemInAccordion'] = true;
+
+    params['search_title'] = 'searchtitle';
+
+    if (this.searchTocItemInAccordionByTitle && item.text) {
+      params['search_title'] = item.text;
+    }
+
+    if (item.type && item.type === 'facsimile') {
+      params['collectionID'] = this.collectionId;
+      params['publicationID'] = item.publication_id;
+      params['tocLinkId'] = `${this.collectionId}_${item.publication_id}`;
+
+      params['facs_id'] = item.facsimile_id;
+      params['facs_nr'] = item.facs_nr;
+    }
+
+    if (item.type && item.type === 'song-example') {
+      params['collectionID'] = this.collectionId;
+      params['publicationID'] = item.publication_id;
+      params['tocLinkId'] = `${this.collectionId}_${item.publication_id}`;
+      params['song_id'] = item.song_id;
+      params['facs_id'] = item.facsimile_id;
+      params['facs_nr'] = item.facs_nr;
+    }
+    return params;
   }
 
   selectMarkdown(item) {

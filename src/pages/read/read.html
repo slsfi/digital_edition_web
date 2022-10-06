@@ -1,7 +1,7 @@
 <ion-header no-border>
   <ion-toolbar color="secondary" class="secondary">
 
-    <text-changer *ngIf="!(userSettingsService.isMobile())" [recentlyOpenViews]="views" [legacyId]="legacyId" class="text-changer-desktop-view"></text-changer>
+    <text-changer *ngIf="!(userSettingsService.isMobile())" [recentlyOpenViews]="views" class="text-changer-desktop-view"></text-changer>
 
     <ion-buttons>
         <ion-grid>
@@ -309,4 +309,4 @@
   </ng-container>
 </ion-content>
 
-<text-changer *ngIf="(userSettingsService.isMobile()) && (show=='established' || show=='manuscripts' || show=='facsimiles')" class="text-changer-mobile-view" [recentlyOpenViews]="views" [legacyId]="legacyId"></text-changer>
+<text-changer *ngIf="(userSettingsService.isMobile()) && (show=='established' || show=='manuscripts' || show=='facsimiles')" class="text-changer-mobile-view" [recentlyOpenViews]="views"></text-changer>
