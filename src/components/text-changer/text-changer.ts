@@ -584,7 +584,7 @@ export class TextChangerComponent {
     } else {
       // Open text in page-read
       item.selected = true;
-      const params = {tocItem: item, collection: {title: item.itemId}};
+      const params = {tocItem: item, collection: {title: item.text}};
 
       this.events.publish('selectOneItem', item.itemId);
 
