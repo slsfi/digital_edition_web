@@ -744,7 +744,26 @@ export class TableOfContentsAccordionComponent {
   }
 
   createReadPageParamsFromMenuItem(item) {
-    const params = {root: this.options, tocItem: item, collection: {title: item.text}};
+    /* We have to pass this object with the relevant item data in params instead of the entire
+       item object since that causes a "Couldn't convert value into a JSON string" error in Firefox.
+       Anyway, it's not necessary to pass the entire item to page-read. */
+    const relevantItemData = {
+      collapsed: item.collapsed,
+      description: item.description,
+      expanded: item.expanded,
+      facs_nr: item.facs_nr,
+      id: item.id,
+      important: item.important,
+      is_child: item.is_child,
+      is_gallery: item.is_gallery,
+      itemId: item.itemId,
+      page_nr: item.page_nr,
+      publication_id: item.publication_id,
+      selected: item.selected,
+      text: item.text,
+      type: item.type
+    };
+    const params = {root: this.options, tocItem: relevantItemData, collection: {title: item.text}};
 
     if (item.url) {
       params['url'] = item.url;
