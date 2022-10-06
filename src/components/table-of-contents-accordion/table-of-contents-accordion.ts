@@ -200,9 +200,9 @@ export class TableOfContentsAccordionComponent {
     const list = this.flattenList(data.tocItems);
 
     for (const child of list) {
-        if (child.type !== 'section_title' && child.type !== 'subtitle') {
-            this.alphabeticalactiveMenuTree.push(child);
-        }
+      if (child.type === 'est' && child.itemId) {
+        this.alphabeticalactiveMenuTree.push(child);
+      }
     }
 
     this.alphabeticalactiveMenuTree.sort(
@@ -210,8 +210,10 @@ export class TableOfContentsAccordionComponent {
         (a.text !== undefined && b.text !== undefined) ?
           ((String(a.text).toUpperCase() < String(b.text).toUpperCase()) ? -1 :
           (String(a.text).toUpperCase() > String(b.text).toUpperCase()) ? 1 : 0) : 0
-      );
+    );
+    if (data['collectionID']) {
       this.storage.set('toc_alfabetical_' + data['collectionID'], this.alphabeticalactiveMenuTree);
+    }
   }
 
   constructChronologicalTOC(data) {
@@ -221,9 +223,9 @@ export class TableOfContentsAccordionComponent {
     const list = this.flattenList(data.tocItems);
 
     for (const child of list) {
-        if (child.date && child.type !== 'section_title' && child.type !== 'subtitle') {
-            this.chronologicalactiveMenuTree.push(child);
-        }
+      if (child.date && child.type === 'est' && child.itemId) {
+        this.chronologicalactiveMenuTree.push(child);
+      }
     }
 
     this.chronologicalactiveMenuTree.sort((a, b) => (a.date < b.date) ? -1 : (a.date > b.date) ? 1 : 0);
@@ -257,7 +259,9 @@ export class TableOfContentsAccordionComponent {
       itemArray[0].childrenCount = true;
     }
     this.chronologicalactiveMenuTree = itemArray;
-    this.storage.set('toc_chronological_' + data['collectionID'], this.chronologicalactiveMenuTree);
+    if (data['collectionID']) {
+      this.storage.set('toc_chronological_' + data['collectionID'], this.chronologicalactiveMenuTree);
+    }
   }
 
   flattenList(data) {
@@ -438,14 +442,14 @@ export class TableOfContentsAccordionComponent {
   registerEventListeners() {
     this.events.subscribe('tableOfContents:loaded', (data) => {
       this.storage.get('toc_alfabetical_' + data['collectionID']).then((toc) => {
-        if ( toc === null || data['collectionID'] !== toc['collectionID'] ) {
+        if ( toc === null || toc === undefined ) {
           this.constructAlphabeticalTOC(data);
         } else {
           this.alphabeticalactiveMenuTree = toc;
         }
       });
       this.storage.get('toc_chronological_' + data['collectionID']).then((toc) => {
-        if ( toc === null || data['collectionID'] !== toc['collectionID'] ) {
+        if ( toc === null || toc === undefined ) {
           this.constructChronologicalTOC(data);
         } else {
           this.chronologicalactiveMenuTree = toc;
