@@ -148,6 +148,8 @@ export class TableOfContentsAccordionComponent {
   searchTocItemInAccordionByTitle = false;
   tocItemSearchChildrenCounter = 0;
   foundTocItem = false;
+  selectedTocItem: InnerMenuOptionModel;
+  foundSelectedTocItem = false;
   coverSelected: boolean;
   titleSelected: boolean;
   forewordSelected: boolean;
@@ -667,6 +669,19 @@ export class TableOfContentsAccordionComponent {
     return this.foundTocItem;
   }
 
+  getSelectedTocItemByItemId(list, tocItemId) {
+    for (const item of list) {
+      if (item.itemId && (String(item.itemId) === String(tocItemId) || Number(item.itemId) === Number(tocItemId))) {
+        this.selectedTocItem = item;
+        this.foundSelectedTocItem = true;
+        return this.selectedTocItem;
+      } else if (item.subOptions && item.subOptions.length) {
+        this.getSelectedTocItemByItemId(item.subOptions, tocItemId);
+      }
+    }
+    return this.selectedTocItem;
+  }
+
   ngOnDestroy() {
     this.events.unsubscribe(SideMenuRedirectEvent);
     this.events.unsubscribe('SelectedItemInMenu');
@@ -678,79 +693,87 @@ export class TableOfContentsAccordionComponent {
   /**
    * Send the selected option to the caller component
    */
-  public select(item: InnerMenuOptionModel): void {
-    // console.log('selecting toc item:', item);
-
-    if (this.currentOption) {
-      this.currentOption.selected = false;
+  public select(item, isInnerMenuOptionItem = true): void {
+    if (isInnerMenuOptionItem) {
+      this.foundSelectedTocItem = true;
+      this.selectedTocItem = item;
+      console.log('selecting toc item: ', item);
+    } else {
+      this.foundSelectedTocItem = false;
+      this.getSelectedTocItemByItemId(this.activeMenuTree, item);
+      console.log('selecting toc page-read item: ', item, this.selectedTocItem);
     }
 
-    item.selected = true;
-    this.currentOption = item;
-
-    this.unSelectOptions(this.collapsableItems);
-    this.coverSelected = false;
-    this.titleSelected = false;
-    this.forewordSelected = false;
-    this.introductionSelected = false;
-
-    this.events.publish('SelectedItemInMenu', {
-      menuID: this.collectionId,
-      component: 'table-of-contents-accordion-component'
-    });
-
-    // Try to remove META-Tags
-    this.metadataService.clearHead();
-    // Add the new META-Tags
-    this.metadataService.addDescription(this.collectionName + ' - ' + item.text);
-    this.metadataService.addKeywords();
-
-    if (this.isMarkdown) {
-      this.coverSelected = false;
-      this.titleSelected = false;
-      this.forewordSelected = false;
-      this.introductionSelected = false;
-      this.selectMarkdown(item);
-    } else if (item.is_gallery) {
-      this.coverSelected = false;
-      this.titleSelected = false;
-      this.forewordSelected = false;
-      this.introductionSelected = false;
-      this.selectGallery(item);
-    } else if ( item.itemId !== undefined ) {
-      this.coverSelected = false;
-      this.titleSelected = false;
-      this.forewordSelected = false;
-      this.introductionSelected = false;
-
-      this.storage.set('currentTOCItem', item);
-
-      const params = this.createReadPageParamsFromMenuItem(item);
-
-      if (this.textService.readViewTextId && item.itemId.split('_').length > 1 && item.itemId.indexOf(';') > -1
-      && item.itemId.split(';')[0] === this.textService.readViewTextId.split(';')[0]) {
-        // The read page we are navigating to is just a different position in the text that is already open
-        // --> no need to reload page-read, just scroll to correct position
-        this.events.publish('UpdatePositionInPageRead', params);
-        this.events.publish('UpdatePositionInPageRead:TextChanger', item.itemId);
-      } else {
-        if ( this.platform.is('core') ) {
-          this.events.publish('title-logo:show', true);
-        } else {
-          this.events.publish('title-logo:show', false);
-        }
-        const nav = this.app.getActiveNavs();
-        nav[0].setRoot('read', params);
+    if (this.foundSelectedTocItem && this.selectedTocItem) {
+      if (this.currentOption) {
+        this.currentOption.selected = false;
       }
-    } else {
-      this.storage.set('currentTOCItem', item);
+
+      this.selectedTocItem.selected = true;
+      this.currentOption = this.selectedTocItem;
+
+      this.unSelectOptions(this.collapsableItems);
+      this.coverSelected = false;
+      this.titleSelected = false;
+      this.forewordSelected = false;
+      this.introductionSelected = false;
+
+      this.events.publish('SelectedItemInMenu', {
+        menuID: this.collectionId,
+        component: 'table-of-contents-accordion-component'
+      });
+
+      // Try to remove META-Tags
+      this.metadataService.clearHead();
+      // Add the new META-Tags
+      this.metadataService.addDescription(this.collectionName + ' - ' + this.selectedTocItem.text);
+      this.metadataService.addKeywords();
+
+      if (this.isMarkdown) {
+        this.coverSelected = false;
+        this.titleSelected = false;
+        this.forewordSelected = false;
+        this.introductionSelected = false;
+        this.selectMarkdown(this.selectedTocItem);
+      } else if (this.selectedTocItem.is_gallery) {
+        this.coverSelected = false;
+        this.titleSelected = false;
+        this.forewordSelected = false;
+        this.introductionSelected = false;
+        this.selectGallery(this.selectedTocItem);
+      } else if (this.selectedTocItem.itemId !== undefined) {
+        this.coverSelected = false;
+        this.titleSelected = false;
+        this.forewordSelected = false;
+        this.introductionSelected = false;
+
+        this.storage.set('currentTOCItem', this.selectedTocItem);
+
+        const params = this.createReadPageParamsFromMenuItem(this.selectedTocItem);
+
+        if (this.textService.readViewTextId && this.selectedTocItem.itemId.split('_').length > 1
+        && this.selectedTocItem.itemId.indexOf(';') > -1
+        && this.selectedTocItem.itemId.split(';')[0] === this.textService.readViewTextId.split(';')[0]) {
+          // The read page we are navigating to is just a different position in the text that is already open
+          // --> no need to reload page-read, just scroll to correct position
+          this.events.publish('UpdatePositionInPageRead', params);
+          this.events.publish('UpdatePositionInPageRead:TextChanger', this.selectedTocItem.itemId);
+        } else {
+          if ( this.platform.is('core') ) {
+            this.events.publish('title-logo:show', true);
+          } else {
+            this.events.publish('title-logo:show', false);
+          }
+          const nav = this.app.getActiveNavs();
+          nav[0].setRoot('read', params);
+        }
+      } else {
+        this.storage.set('currentTOCItem', this.selectedTocItem);
+      }
     }
   }
 
   createReadPageParamsFromMenuItem(item) {
-    /* We have to pass this object with the relevant item data in params instead of the entire
-       item object since that causes a "Couldn't convert value into a JSON string" error in Firefox.
-       Anyway, it's not necessary to pass the entire item to page-read. */
     const relevantItemData = {
       collapsed: item.collapsed,
       description: item.description,
@@ -997,31 +1020,41 @@ export class TableOfContentsAccordionComponent {
    * Fetch suboptions from childrenToc.
    * Toggle the sub options of the selected item.
    */
-  public toggleItemOptions(targetOption: InnerMenuOptionModel): void {
-    if (!targetOption) { return; }
+  public toggleItemOptions(item, isInnerMenuOptionItem = true): void {
+    if (!item) { return; }
+
+    if (isInnerMenuOptionItem) {
+      this.foundSelectedTocItem = true;
+      this.selectedTocItem = item;
+      console.log('toggling toc item: ', item);
+    } else {
+      this.foundSelectedTocItem = false;
+      this.getSelectedTocItemByItemId(this.activeMenuTree, item);
+      console.log('toggling toc item: ', item, this.selectedTocItem);
+    }
 
     // Fetch suboptions if item doesn't have them already
-    if (!targetOption.subOptions.length) {
-      if (targetOption.search_children_id > -1) {
-        targetOption.subOptions = this.searchChildrenToc[targetOption.search_children_id];
-      } else if (targetOption.children_id > -1) {
-        targetOption.subOptions = this.childrenToc[targetOption.children_id];
+    if (!this.selectedTocItem.subOptions.length) {
+      if (this.selectedTocItem.search_children_id > -1) {
+        this.selectedTocItem.subOptions = this.searchChildrenToc[this.selectedTocItem.search_children_id];
+      } else if (this.selectedTocItem.children_id > -1) {
+        this.selectedTocItem.subOptions = this.childrenToc[this.selectedTocItem.children_id];
       }
     }
-    if ( targetOption.collapsed === undefined || String(targetOption.collapsed) === '' ) {
+    if ( this.selectedTocItem.collapsed === undefined || String(this.selectedTocItem.collapsed) === '' ) {
       // collapsed is inverted expanded
-      targetOption.collapsed = targetOption.expanded;
-      targetOption.expanded = !targetOption.collapsed;
+      this.selectedTocItem.collapsed = this.selectedTocItem.expanded;
+      this.selectedTocItem.expanded = !this.selectedTocItem.collapsed;
     } else {
       // Toggle the selected option
-      targetOption.expanded = targetOption.collapsed;
-      targetOption.collapsed = !targetOption.expanded;
+      this.selectedTocItem.expanded = this.selectedTocItem.collapsed;
+      this.selectedTocItem.collapsed = !this.selectedTocItem.expanded;
     }
-    // console.log('targetOption.itemId', targetOption.itemId);
-    if ( targetOption.itemId !== undefined ) {
-      this.select(targetOption);
+    // console.log('this.selectedTocItem.itemId', this.selectedTocItem.itemId);
+    if ( this.selectedTocItem.itemId !== undefined ) {
+      this.select(this.selectedTocItem, true);
     }
-    // console.log('toggleItemOptions, targetOption:', targetOption);
+    // console.log('toggleItemOptions, this.selectedTocItem:', this.selectedTocItem);
   }
 
   // Recursive function for finding selected markdown page in toc, marking it selected and expanding all collapsible parents
