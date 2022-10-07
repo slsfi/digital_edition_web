@@ -469,7 +469,7 @@ export class ReadPage /*implements OnDestroy*/ {
       /* This is triggered when the publication chapter that should be opened in page-read
          is the same as the previous, only with a different text position. Then page-read
          is not reloaded, but the read-text is just scrolled to the correct position. */
-      console.log('Scrolling to new position in read text', params.tocLinkId);
+      console.log('Scrolling to new position in read text');
 
       const idParts = params.tocLinkId.split(';');
       if (idParts.length > 1 && idParts[1]) {

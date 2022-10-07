@@ -697,11 +697,11 @@ export class TableOfContentsAccordionComponent {
     if (isInnerMenuOptionItem) {
       this.foundSelectedTocItem = true;
       this.selectedTocItem = item;
-      console.log('selecting toc item: ', item);
+      // console.log('selecting toc item: ', item);
     } else {
       this.foundSelectedTocItem = false;
       this.getSelectedTocItemByItemId(this.activeMenuTree, item);
-      console.log('selecting toc page-read item: ', item, this.selectedTocItem);
+      // console.log('selecting toc page-read item: ', item, this.selectedTocItem);
     }
 
     if (this.foundSelectedTocItem && this.selectedTocItem) {
@@ -1026,11 +1026,11 @@ export class TableOfContentsAccordionComponent {
     if (isInnerMenuOptionItem) {
       this.foundSelectedTocItem = true;
       this.selectedTocItem = item;
-      console.log('toggling toc item: ', item);
+      // console.log('toggling toc item: ', item);
     } else {
       this.foundSelectedTocItem = false;
       this.getSelectedTocItemByItemId(this.activeMenuTree, item);
-      console.log('toggling toc item: ', item, this.selectedTocItem);
+      // console.log('toggling toc item: ', item, this.selectedTocItem);
     }
 
     // Fetch suboptions if item doesn't have them already

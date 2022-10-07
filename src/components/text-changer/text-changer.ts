@@ -605,7 +605,7 @@ export class TextChangerComponent {
       && item.itemId.split(';')[0] === this.textService.readViewTextId.split(';')[0]) {
         // The read page we are navigating to is just a different position in the text that is already open
         // --> no need to reload page-read, just scroll to correct position
-        console.log('Text-changer setting new position in page-read', item.itemId);
+        console.log('Text-changer setting new position in page-read');
         this.setCurrentItem(item.itemId);
         this.events.publish('UpdatePositionInPageRead', params);
       } else {
