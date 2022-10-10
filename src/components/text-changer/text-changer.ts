@@ -442,15 +442,30 @@ export class TextChangerComponent {
     if ( this.flattened.length === 0 ) {
       this.flatten(toc);
     }
-    this.setCurrentPreviousAndNextItemsFromFlattenedToc();
+    let itemFound = this.setCurrentPreviousAndNextItemsFromFlattenedToc();
+    if (!itemFound) {
+      if (this.legacyId.indexOf(';') > -1) {
+        let searchTocId = this.legacyId.split(';')[0];
+        // The current toc item was not found with position in legacy id, so look for toc item without position
+        itemFound = this.setCurrentPreviousAndNextItemsFromFlattenedToc(searchTocId);
+        if (!itemFound && this.legacyId.split(';')[0].split('_').length > 2) {
+          // The current toc item was not found without position either, so look without chapter if any
+          const chapterStartPos = this.legacyId.split(';')[0].lastIndexOf('_');
+          searchTocId = this.legacyId.slice(0, chapterStartPos);
+          itemFound = this.setCurrentPreviousAndNextItemsFromFlattenedToc(searchTocId);
+        }
+      }
+    }
   }
 
-  setCurrentPreviousAndNextItemsFromFlattenedToc() {
-    // get the next id
+  setCurrentPreviousAndNextItemsFromFlattenedToc(currentTextId = this.legacyId) {
+    // get the id of the current toc item in the flattened toc array
     let currentId = 0;
+    let currentItemFound = false;
     for (let i = 0; i < this.flattened.length; i ++) {
-      if ( this.flattened[i].itemId === this.legacyId ) {
+      if ( this.flattened[i].itemId === currentTextId ) {
         currentId = i;
+        currentItemFound = true;
         break;
       }
     }
@@ -526,6 +541,7 @@ export class TextChangerComponent {
       }
       this.storage.set('currentTOCItemTitle', this.currentItemTitle);
     }
+    return currentItemFound;
   }
 
   flatten(toc) {

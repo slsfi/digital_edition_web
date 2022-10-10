@@ -607,14 +607,6 @@ export class ReadPage /*implements OnDestroy*/ {
             tocItems.selectedPubId = this.params.get('publicationID');
           }
 
-          /** @TODO If the chapterID contains a position which is not in the TOC
-           *  the search for correct toc item will fail. If there is a position,
-           *  and the search doesn't find matches, the chapterID should be stripped
-           *  of position and a new search for toc item be carried out.
-           *
-           *  Also, refreshing pages with nochapter doesn't select the correct toc
-           *  item.
-           */
           const chIDFromParams = this.params.get('chapterID');
           if (chIDFromParams !== undefined
           && chIDFromParams !== null

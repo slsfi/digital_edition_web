@@ -76,14 +76,16 @@ export class TableOfContentsAccordionComponent {
         // Find toc item and open its parents
         if (value.searchItemId) {
           value.searchItemId = String(value.searchItemId).replace('_nochapter', '').replace(':chapterID', '');
-          if ( String(value.searchItemId).indexOf(';pos') !== -1 ) {
-            // Remove the position anchor from search if defined
-            // value.searchItemId = String(value.searchItemId).split(';pos')[0];
-          }
           // Try to find the correct position in the TOC. If not found, try to find the nearest.
           if ( this.findTocByPubOnly(this.collapsableItems, value.searchItemId) === false ) {
-            value.searchItemId = String(value.searchItemId).split(';pos')[0];
-            this.findTocByPubOnly(this.collapsableItems, value.searchItemId);
+            // try to find without position
+            value.searchItemId = String(value.searchItemId).split(';')[0];
+            if (this.findTocByPubOnly(this.collapsableItems, value.searchItemId) === false
+            && value.searchItemId.split('_').length > 2) {
+              // try to find without chapter if any
+              value.searchItemId = String(value.searchItemId).slice(0, String(value.searchItemId).lastIndexOf('_'));
+              this.findTocByPubOnly(this.collapsableItems, value.searchItemId);
+            }
           }
           this.events.publish('typesAccordion:change', {
             expand: true
@@ -94,12 +96,6 @@ export class TableOfContentsAccordionComponent {
             expand: true
           });
         }
-
-        /**
-         * ! SK 18.5.2022 I'm disabling this emptying of children in other branches for now since
-         * ! it causes several problems that I haven't found workarounds for yet. Rendering doesn't
-         * ! seem to be slower, so I'm not sure this is even necessary.
-         */
 
         if (this.foundTocItem) {
           // Empty children in all other branches in this toc tree for faster rendering
