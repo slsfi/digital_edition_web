@@ -188,7 +188,7 @@ export class ReadPage /*implements OnDestroy*/ {
     public modalCtrl: ModalController,
     private sanitizer: DomSanitizer,
     private tooltipService: TooltipService,
-    private tocService: TableOfContentsService,
+    public tocService: TableOfContentsService,
     public translate: TranslateService,
     private langService: LanguageService,
     private events: Events,
@@ -480,7 +480,19 @@ export class ReadPage /*implements OnDestroy*/ {
         this.updatePositionInURL(params.tocLinkId);
 
         const posId = idParts[1];
-        this.scrollReadTextToAnchorPosition(posId);
+        this.ngZone.runOutsideAngular(() => {
+          try {
+            this.scrollReadTextToAnchorPosition(posId);
+            const itemId = 'toc_' + this.establishedText.link;
+            let foundElem = document.getElementById(itemId);
+            if (foundElem === null) {
+              // Scroll to toc item without position
+              foundElem = document.getElementById(itemId.split(';').shift());
+            }
+            this.scrollToTOC(foundElem);
+          } catch (e) {
+          }
+        });
       } else {
         // No position in params --> reload the view with the given params
         const nav = this.app.getActiveNavs();
