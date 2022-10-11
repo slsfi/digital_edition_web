@@ -53,7 +53,7 @@ export class TextChangerComponent {
     public app: App,
     public params: NavParams,
     private config: ConfigService,
-    private tocService: TableOfContentsService,
+    public tocService: TableOfContentsService,
     private userSettingsService: UserSettingsService,
     public translateService: TranslateService,
     private langService: LanguageService,
@@ -102,6 +102,12 @@ export class TextChangerComponent {
     this.events.unsubscribe('UpdatePositionInPageRead:TextChanger');
     this.events.subscribe('UpdatePositionInPageRead:TextChanger', (itemId) => {
       this.setCurrentItem(itemId);
+    });
+
+    this.events.unsubscribe('tocActiveSorting');
+    this.events.subscribe('tocActiveSorting', (sortType) => {
+      // console.log('toc sorting: ', sortType);
+      this.loadData();
     });
   }
 
@@ -238,9 +244,14 @@ export class TextChangerComponent {
         toc => {
           if (toc && toc.children && String(toc.collectionId) === collectionId) {
             this.flatten(toc);
+            if (this.textService.activeTocOrder === 'alphabetical') {
+              this.sortFlattenedTocAlphabetically();
+            } else if (this.textService.activeTocOrder === 'chronological') {
+              this.sortFlattenedTocChronologically();
+            }
             for (let i = 0; i < this.flattened.length; i++) {
-              if (this.flattened[i].itemId !== undefined && this.flattened[i].title !== 'subtitle'
-              && this.flattened[i].title !== 'section_title') {
+              if (this.flattened[i].itemId !== undefined && this.flattened[i].type !== 'subtitle'
+              && this.flattened[i].type !== 'section_title') {
                 this.nextItemTitle = this.flattened[i].text;
                 this.nextItem = this.flattened[i];
                 break;
@@ -439,8 +450,13 @@ export class TextChangerComponent {
 
   findNext(toc) {
     // flatten the toc structure
-    if ( this.flattened.length === 0 ) {
+    if ( this.flattened.length < 1 ) {
       this.flatten(toc);
+    }
+    if (this.textService.activeTocOrder === 'alphabetical') {
+      this.sortFlattenedTocAlphabetically();
+    } else if (this.textService.activeTocOrder === 'chronological') {
+      this.sortFlattenedTocChronologically();
     }
     let itemFound = this.setCurrentPreviousAndNextItemsFromFlattenedToc();
     if (!itemFound) {
@@ -557,13 +573,30 @@ export class TextChangerComponent {
     }
   }
 
+  sortFlattenedTocAlphabetically() {
+    if (this.flattened.length > 0) {
+      this.flattened.sort(
+        (a, b) =>
+          (a.text !== undefined && b.text !== undefined) ?
+            ((String(a.text).toUpperCase() < String(b.text).toUpperCase()) ? -1 :
+            (String(a.text).toUpperCase() > String(b.text).toUpperCase()) ? 1 : 0) : 0
+      );
+    }
+  }
+
+  sortFlattenedTocChronologically() {
+    if (this.flattened.length > 0) {
+      this.flattened.sort((a, b) => (a.date < b.date) ? -1 : (a.date > b.date) ? 1 : 0);
+    }
+  }
+
   findPrevTitle(toc, currentIndex, prevChild?) {
     if ( currentIndex === 0 ) {
       this.findPrevTitle(prevChild, prevChild.length);
     }
     for ( let i = currentIndex; i > 0; i-- ) {
       if ( toc[i - 1] !== undefined ) {
-        if ( toc[i - 1].title !== 'subtitle' &&  toc[i - 1].title !== 'section_title' ) {
+        if ( toc[i - 1].type !== 'subtitle' &&  toc[i - 1].type !== 'section_title' ) {
           return toc[i - 1];
         }
       }

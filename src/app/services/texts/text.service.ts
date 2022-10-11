@@ -25,6 +25,10 @@ export class TextService {
   varIdsInStorage: string[] = [];
   readtextIdsInStorage: string[] = [];
 
+  /* activeTocOrder variable should be in table-of-contents.service, but due to the way that service
+     is set up the variable doesn't become global and shared across components there. */
+  activeTocOrder: string;
+
   constructor(private http: Http, private config: ConfigService, private cache: TextCacheService) {
     this.appMachineName = this.config.getSettings('app.machineName');
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
@@ -43,6 +47,8 @@ export class TextService {
     this.variationsOrder = [];
     this.varIdsInStorage = [];
     this.readtextIdsInStorage = [];
+
+    this.activeTocOrder = 'thematic';
   }
 
   getEstablishedText(id: string): Observable<any> {
