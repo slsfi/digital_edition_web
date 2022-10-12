@@ -2342,13 +2342,13 @@ page-introduction {
     }
 
     /* Headings in intro text */
-    div.tei div[data-id="cont_introduction"] {   
+    div.tei.tei {   
         header {
             margin: 4em 0;
         }
         header p {
             text-align: center;
-            line-height: 1.2;
+            line-height: 1.35;
             text-indent: 0;
         }
         header p[role="doc-subtitle"] {
@@ -2379,7 +2379,7 @@ page-introduction {
             font-weight: normal;
             font-style: normal;
             text-align: left;
-            line-height: 1.2;
+            line-height: 1.35;
         }
         h1.title {
             font-size: 1.5883em;
@@ -2476,17 +2476,17 @@ page-title {
 }
 
 page-foreword {
-    div.tei {
+    div.tei.tei {
         header {
             margin: 4em 0;
         }
         header p {
             text-align: center;
-            line-height: 1.2;
+            line-height: 1.35;
             text-indent: 0;
         }
         header p[role="doc-subtitle"] {
-            font-size: 1.2942em;
+            font-size: 1.2353em;
             margin: 0.75em 0;
         }
         header p.writer {
@@ -2507,11 +2507,12 @@ page-foreword {
             font-size: 1.5883em;
             font-weight: normal;
             font-style: normal;
-            text-transform: uppercase;
+            text-transform: none;
+            font-variant: normal;
             text-align: center;
             margin: 0;
             letter-spacing: 0.02em;
-            line-height: 1.2;
+            line-height: 1.35;
         }
     }
 }
