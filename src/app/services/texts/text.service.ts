@@ -9,6 +9,7 @@ import { TextCacheService } from './text-cache.service';
 export class TextService {
 
   private introductionUrl = '/text/{c_id}/{p_id}/inl/{lang}';
+  private introductionUrlDownloadable = '/text/downloadable/{format}/{c_id}/inl/{lang}';
 
   textCache: any;
   apiEndPoint: string;
@@ -23,6 +24,10 @@ export class TextService {
   variationsOrder: number[] = [];
   varIdsInStorage: string[] = [];
   readtextIdsInStorage: string[] = [];
+
+  /* activeTocOrder variable should be in table-of-contents.service, but due to the way that service
+     is set up the variable doesn't become global and shared across components there. */
+  activeTocOrder: string;
 
   constructor(private http: Http, private config: ConfigService, private cache: TextCacheService) {
     this.appMachineName = this.config.getSettings('app.machineName');
@@ -42,6 +47,8 @@ export class TextService {
     this.variationsOrder = [];
     this.varIdsInStorage = [];
     this.readtextIdsInStorage = [];
+
+    this.activeTocOrder = 'thematic';
   }
 
   getEstablishedText(id: string): Observable<any> {
@@ -176,12 +183,26 @@ export class TextService {
         .catch(this.handleError);
   }
 
+  getForewordPage(id: string, lang: string): Observable<any> {
+    const data = `${id}`.split('_');
+    const c_id = data[0];
+
+    return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
+        this.config.getSettings('app.machineName') + '/text/' + c_id + '/fore/' + lang)
+        .map(res => {
+          return res.json();
+        })
+        .catch(this.handleError);
+  }
 
   getCoverPage(id: string, lang: string): Observable<any> {
     const data = `${id}`.split('_');
     const c_id = data[0];
     const pub_id = (data.length > 1) ? data[1] : 1;
 
+    /**
+     * ! The API endpoint below has not been implemented.
+     */
     return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
         this.config.getSettings('app.machineName') + '/text/' + c_id + '/' + pub_id + '/cover/' + lang)
         .map(res => {
@@ -280,6 +301,47 @@ export class TextService {
           return res.json();
         })
         .catch(this.handleError);
+  }
+
+  getDownloadableIntroduction(id: string, format: string, lang: string): Observable<any> {
+    const path = this.introductionUrlDownloadable
+                  .replace('{format}', format)
+                  .replace('{c_id}', id)
+                  .replace('{lang}', lang);
+
+    return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
+        this.config.getSettings('app.machineName') + path)
+        .map(res => {
+          const body = res.json();
+          return body.content;
+        })
+        .catch(this.handleError);
+  }
+
+  getDownloadableEstablishedText(id: string, format: string): Observable<any> {
+    const c_id = `${id}`.split('_')[0];
+    const pub_id = `${id}`.split('_')[1];
+    let ch_id = null;
+    if ( `${id}`.split('_')[2] !== undefined ) {
+      ch_id = String(`${id}`.split('_')[2]).split(';')[0];
+    }
+
+    if ( ch_id === '' || ch_id === 'nochapter' ) {
+      ch_id = null;
+    }
+
+    let api = this.apiEndPoint
+    if ( this.useSimpleApi) {
+      api = this.simpleApi;
+    }
+    const url = `${api}/${this.appMachineName}/text/downloadable/${format}/${c_id}/${pub_id}/est${((ch_id === null) ? '' : '/' + ch_id)}`;
+
+    return this.http.get( url )
+          .map(res => {
+            const body = res.json();
+            return body.content;
+          })
+          .catch(this.handleError);
   }
 
   private handleError (error: Response | any) {

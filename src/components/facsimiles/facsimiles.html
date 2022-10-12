@@ -51,7 +51,7 @@
       <ion-icon name="arrow-back"></ion-icon>
     </button>
   </ion-fab>
-  <ion-fab middle right *ngIf="!selectedFacsimileIsExternal">
+  <ion-fab middle right *ngIf="!selectedFacsimileIsExternal" class="rightFacsimileArrowAndControls">
     <button *ngIf="numberOfPages > 1" ion-fab color="primary" mini (click)="next()">
       <ion-icon name="arrow-forward"></ion-icon>
     </button>

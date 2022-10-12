@@ -1,8 +1,9 @@
 text-changer {
+  display: block;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  margin: 0 1.5rem;
+  padding: 0 1.5rem;
   width: 100%;
   color: var(--text-color-on-secondary-color-background);
 
@@ -25,6 +26,7 @@ text-changer {
     .forwardButtonDiv,
     .backwardButtonDiv {
       width: 30%;
+      min-width: 2rem;
     }
     .forwardButtonDiv {
       display: flex;

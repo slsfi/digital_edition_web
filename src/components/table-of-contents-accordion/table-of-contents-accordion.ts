@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectorRef, ChangeDetectionStrategy, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectorRef, ChangeDetectionStrategy, ViewEncapsulation, OnInit, NgZone } from '@angular/core';
 import { Platform, Events, App, LoadingController } from 'ionic-angular';
 import { MenuOptionModel } from '../../app/models/menu-option.model';
 import { SideMenuSettings } from '../../app/models/side-menu-settings';
@@ -6,179 +6,15 @@ import { SideMenuRedirectEvent, SideMenuRedirectEventData } from '../../app/mode
 import { Storage } from '@ionic/storage';
 import { GeneralTocItem } from '../../app/models/table-of-contents.model';
 import { TocAccordionMenuOptionModel } from '../../app/models/toc-accordion-menu-option.model';
+import { InnerMenuOptionModel } from '../../app/models/inner-menu-option.model';
 import { ConfigService,  } from '@ngx-config/core';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { ThrowStmt } from '@angular/compiler';
 import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MetadataService } from '../../app/services/metadata/metadata.service';
-
-/*-------------------------------------*/
-
-// All children will be stored here in order to reduce lag
-// They will be used everytime a parent is toggled in toggleItemOptions
-const childrenToc = {};
-const searchChildrenToc = {};
-let childrenTocIdCounter = 1;
-
-class InnerMenuOptionModel {
-  public static counter = 1;
-
-  id?: number;
-  iconName?: string;
-  text?: string;
-  title?: string;
-  targetOption?: TocAccordionMenuOptionModel;
-  parent?: InnerMenuOptionModel;
-  selected?: boolean;
-  expanded?: boolean;
-  childrenCount?: number;
-  subOptions?: Array<InnerMenuOptionModel>;
-  type?: string;
-  publication_id?: any;
-  facsimile_id?: any;
-  page_nr?: any;
-  facs_nr?: any;
-  children?: Array<InnerMenuOptionModel>;
-  is_child?: boolean;
-  is_gallery?: boolean;
-  itemId?: any;
-  markdownID?: any;
-  datafile?: any;
-  url?: any;
-  song_id?: any;
-  amountOfParents?: any;
-  openByDefault?: boolean;
-  loading?: boolean;
-  children_id?: any;
-  search_children_id?: any;
-  important?: boolean;
-  description: any;
-  collapsed: boolean;
-
-  public static fromMenuOptionModel(
-                  option: TocAccordionMenuOptionModel,
-                  parent?: InnerMenuOptionModel,
-                  isChild?: boolean,
-                  searchingTocItem?: Boolean
-                ): InnerMenuOptionModel {
-
-    const innerMenuOptionModel = new InnerMenuOptionModel();
-
-    innerMenuOptionModel.id = this.counter++;
-    innerMenuOptionModel.targetOption = option;
-    innerMenuOptionModel.parent = parent || null;
-    innerMenuOptionModel.type = option.type;
-    innerMenuOptionModel.selected = option.selected || false;
-
-    innerMenuOptionModel.important = option.important ? option.important : false;
-
-    if (['file', 'folder'].indexOf(option.type) !== -1) {
-      innerMenuOptionModel.markdownID = option.id;
-    }
-
-    if (option.text) {
-      innerMenuOptionModel.text = option.text;
-      innerMenuOptionModel.description = option.description;
-    } else if (option.title) {
-      innerMenuOptionModel.text = option.title;
-    }
-
-    innerMenuOptionModel.publication_id = option.publication_id || null;
-    innerMenuOptionModel.page_nr = option.page_nr || null;
-    innerMenuOptionModel.facs_nr = option.facs_nr || null;
-
-    innerMenuOptionModel.is_gallery = option.is_gallery || false;
-
-    if (option.itemId) {
-      innerMenuOptionModel.itemId = option.itemId;
-
-      const legacyID = option.itemId;
-      const legacyData = legacyID.split('_');
-
-      if (legacyData.length === 2 && innerMenuOptionModel.publication_id === null) {
-        innerMenuOptionModel.publication_id = legacyData[1];
-      }
-    }
-
-    if (option.facsimile_id) {
-      innerMenuOptionModel.facsimile_id = option.facsimile_id;
-    }
-
-    if (option.song_id) {
-      innerMenuOptionModel.song_id = option.song_id;
-    }
-
-    if (option.openByDefault) {
-      innerMenuOptionModel.openByDefault = true;
-    }
-
-    if (isChild) {
-      innerMenuOptionModel.is_child = true;
-    } else {
-      innerMenuOptionModel.is_child = false;
-    }
-
-    if (option.collapsed === false) {
-      innerMenuOptionModel.collapsed = false;
-      innerMenuOptionModel.expanded = true;
-      innerMenuOptionModel.important = true; // SK 18.5.2022 added
-    } else {
-      innerMenuOptionModel.collapsed = true;
-      innerMenuOptionModel.expanded = false;
-    }
-
-    if (option.children) {
-      // innerMenuOptionModel.expanded = false;
-      let storeChildren = false;
-
-      if (option.openByDefault) {
-      // innerMenuOptionModel.expanded = true;
-      }
-
-      innerMenuOptionModel.childrenCount = option.children.length;
-      innerMenuOptionModel.subOptions = [];
-
-      if (
-        option.children && option.children.length &&
-        !option.children_id && !option.search_children_id &&
-        !innerMenuOptionModel.markdownID &&
-        !searchingTocItem
-      ) {
-        innerMenuOptionModel.children_id = childrenTocIdCounter;
-        childrenToc[innerMenuOptionModel.children_id] = [];
-        childrenTocIdCounter++;
-        storeChildren = true;
-      }
-
-      option.children.forEach(subItem => {
-        const innerSubItem = InnerMenuOptionModel.fromMenuOptionModel(subItem, innerMenuOptionModel, true, searchingTocItem);
-        // innerSubItem.collapsed = subItem.collapsed;
-        if (innerSubItem.text) {
-          if (storeChildren) {
-            if ( childrenToc[innerMenuOptionModel.children_id].indexOf(innerSubItem) === -1 ) {
-              childrenToc[innerMenuOptionModel.children_id].push(innerSubItem);
-            }
-          } else {
-            if ( innerMenuOptionModel.subOptions.indexOf(innerSubItem) === -1 ) {
-              innerMenuOptionModel.subOptions.push(innerSubItem);
-            }
-          }
-        }
-
-        // Expand the parent if any
-        // child option is selected
-        if (subItem.selected) {
-          // innerSubItem.parent.selected = true;
-          innerSubItem.parent.expanded = true;
-          innerSubItem.parent.collapsed = false;
-        }
-      });
-    }
-    return innerMenuOptionModel;
-  }
-}
-
+import { TextService } from '../../app/services/texts/text.service';
+import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
 
 @Component({
   selector: 'table-of-contents-accordion',
@@ -202,84 +38,91 @@ export class TableOfContentsAccordionComponent {
     searchTitle?: String
   }) {
     // console.log('toc accordion options:', value);
-    if (value && value.toc && value.toc.length > 0) {
-      if (value.searchTocItem !== undefined && value.searchTocItem === true) {
-        this.searchingForTocItem = true;
-      }
-      this.menuOptions = value.toc;
-      this.collapsableItems = new Array<InnerMenuOptionModel>();
+    if (this.alphabethicOrderActive && this.sortableLetters.includes(this.collectionId)) {
+      this.activeMenuTree = this.alphabeticalactiveMenuTree;
+      this.textService.activeTocOrder = 'alphabetical';
+    } else if (this.chronologicalOrderActive && this.sortableLetters.includes(this.collectionId)) {
+      this.activeMenuTree = this.chronologicalactiveMenuTree;
+      this.textService.activeTocOrder = 'chronological';
+    } else {
+      this.textService.activeTocOrder = 'thematic';
+      if (value && value.toc && value.toc.length > 0) {
+        if (value.searchTocItem !== undefined && value.searchTocItem === true) {
+          this.searchingForTocItem = true;
+        }
+        this.menuOptions = value.toc;
+        this.collapsableItems = new Array<InnerMenuOptionModel>();
 
-      let foundSelected = false;
-      // Map the options to our internal models
-      this.menuOptions.forEach(option => {
-        const innerMenuOption = InnerMenuOptionModel.fromMenuOptionModel(option, null, false, value.searchTocItem);
-        if ( this.collapsableItems.indexOf(innerMenuOption) === -1 ) {
-          this.collapsableItems.push(innerMenuOption);
+        let foundSelected = false;
+        // Map the options to our internal models
+        this.menuOptions.forEach(option => {
+          const innerMenuOption = InnerMenuOptionModel.fromMenuOptionModel(option, null, false, value.searchTocItem);
+          // console.log(innerMenuOption);
+          if ( this.collapsableItems.indexOf(innerMenuOption) === -1 ) {
+            this.collapsableItems.push(innerMenuOption);
+          }
+
+          // Check if there's any option marked as selected
+          if (option.selected) {
+            this.selectedOption = innerMenuOption;
+            foundSelected = true;
+          } else if (innerMenuOption.childrenCount) {
+            innerMenuOption.subOptions.forEach(subItem => {
+              if (subItem.selected) {
+                this.selectedOption = subItem;
+                foundSelected = true;
+              }
+            });
+          }
+        });
+
+        if ( !foundSelected ) {
+        } else {
+          console.log('accordion toc options input: found menu item');
         }
 
-        // Check if there's any option marked as selected
-        if (option.selected) {
-          this.selectedOption = innerMenuOption;
-          foundSelected = true;
-        } else if (innerMenuOption.childrenCount) {
-          innerMenuOption.subOptions.forEach(subItem => {
-            if (subItem.selected) {
-              this.selectedOption = subItem;
-              foundSelected = true;
+        if (value.searchTocItem !== undefined && value.searchTocItem) {
+          // Find toc item and open its parents
+          if (value.searchItemId) {
+            value.searchItemId = String(value.searchItemId).replace('_nochapter', '').replace(':chapterID', '');
+            // Try to find the correct position in the TOC. If not found, try to find the nearest.
+            if ( this.findTocByPubOnly(this.collapsableItems, value.searchItemId) === false ) {
+              // try to find without position
+              value.searchItemId = String(value.searchItemId).split(';')[0];
+              if (this.findTocByPubOnly(this.collapsableItems, value.searchItemId) === false
+              && value.searchItemId.split('_').length > 2) {
+                // try to find without chapter if any
+                value.searchItemId = String(value.searchItemId).slice(0, String(value.searchItemId).lastIndexOf('_'));
+                this.findTocByPubOnly(this.collapsableItems, value.searchItemId);
+              }
             }
-          });
-        }
-      });
-
-      if ( !foundSelected ) {
-      } else {
-        console.log('accordion toc options input: found menu item');
-      }
-
-      if (value.searchTocItem !== undefined && value.searchTocItem) {
-        // Find toc item and open its parents
-        if (value.searchItemId) {
-          value.searchItemId = String(value.searchItemId).replace('_nochapter', '').replace(':chapterID', '');
-          if ( String(value.searchItemId).indexOf(';pos') !== -1 ) {
-            // Remove the position anchor from search if defined
-            // value.searchItemId = String(value.searchItemId).split(';pos')[0];
+            this.events.publish('typesAccordion:change', {
+              expand: true
+            });
+          } else if (value.searchPublicationId && value.searchTitle) {
+            this.findTocByPubAndTitle(this.collapsableItems, value.searchPublicationId, value.searchTitle);
+            this.events.publish('typesAccordion:change', {
+              expand: true
+            });
           }
-          // Try to find the correct position in the TOC. If not found, try to find the nearest.
-          if ( this.findTocByPubOnly(this.collapsableItems, value.searchItemId) === false ) {
-            value.searchItemId = String(value.searchItemId).split(';pos')[0];
-            this.findTocByPubOnly(this.collapsableItems, value.searchItemId);
-          }
-          this.events.publish('typesAccordion:change', {
-            expand: true
-          });
-        } else if (value.searchPublicationId && value.searchTitle) {
-          this.findTocByPubAndTitle(this.collapsableItems, value.searchPublicationId, value.searchTitle);
-          this.events.publish('typesAccordion:change', {
-            expand: true
-          });
-        }
 
-        /**
-         * ! SK 18.5.2022 I'm disabling this emptying of children in other branches for now since
-         * ! it causes several problems that I haven't found workarounds for yet. Rendering doesn't
-         * ! seem to be slower, so I'm not sure this is even necessary.
-         */
-
-        if (this.foundTocItem) {
-          // Empty children in all other branches in this toc tree for faster rendering
-          // If collapsable item is important, it's only showing necessary parents and children for current toc item
-          for (let i = 0; i < this.collapsableItems.length; i++) {
-            if (!this.collapsableItems[i].important) {
-              const innerMenuOptionWithoutChildren = InnerMenuOptionModel.fromMenuOptionModel(this.menuOptions[i], null, false, false);
-              this.collapsableItems[i] = innerMenuOptionWithoutChildren;
+          if (this.foundTocItem) {
+            // Empty children in all other branches in this toc tree for faster rendering
+            // If collapsable item is important, it's only showing necessary parents and children for current toc item
+            for (let i = 0; i < this.collapsableItems.length; i++) {
+              if (!this.collapsableItems[i].important) {
+                const innerMenuOptionWithoutChildren = InnerMenuOptionModel.fromMenuOptionModel(this.menuOptions[i], null, false, false);
+                this.collapsableItems[i] = innerMenuOptionWithoutChildren;
+              }
             }
+            // console.log('collapsable items', this.collapsableItems);
           }
-        }
 
+        }
+        this.searchingForTocItem = false;
       }
-      this.searchingForTocItem = false;
+      this.activeMenuTree = this.collapsableItems;
     }
-    this.activeMenuTree = this.collapsableItems;
   }
 
   @Input('settings')
@@ -299,18 +142,28 @@ export class TableOfContentsAccordionComponent {
   @Input() open: Boolean;
   @Output() selectOption = new EventEmitter<any>();
 
+  // All children will be stored here in order to reduce lag
+  // They will be used everytime a parent is toggled in toggleItemOptions
+  childrenToc = {};
+  searchChildrenToc = {};
+  // childrenTocIdCounter = 1;
+
   currentItem: GeneralTocItem;
   currentOption: any;
   searchingForTocItem = false;
   searchTocItemInAccordionByTitle = false;
   tocItemSearchChildrenCounter = 0;
   foundTocItem = false;
-  titleSelected: boolean;
-  introductionSelected: boolean;
+  selectedTocItem: InnerMenuOptionModel;
+  foundSelectedTocItem = false;
   coverSelected: boolean;
+  titleSelected: boolean;
+  forewordSelected: boolean;
+  introductionSelected: boolean;
   root: any;
   hasCover: boolean;
   hasTitle: boolean;
+  hasForeword: boolean;
   hasIntro: boolean;
   playmanTraditionPageInMusicAccordion = false;
   playmanTraditionPageID = '03-03';
@@ -323,10 +176,7 @@ export class TableOfContentsAccordionComponent {
   visibleTitleStack = [];
 
   chronologicalactiveMenuTree = [];
-  chronologicalTitleStack = [];
-
   alphabeticalactiveMenuTree: any[];
-  alphabeticalTitleStack: any[];
 
   activeMenuTree = [];
 
@@ -344,40 +194,66 @@ export class TableOfContentsAccordionComponent {
     public languageService: LanguageService,
     public userSettingsService: UserSettingsService,
     public translate: TranslateService,
-    public metadataService: MetadataService
+    public metadataService: MetadataService,
+    protected textService: TextService,
+    public tocService: TableOfContentsService,
+    private ngZone: NgZone
   ) {
   }
 
   constructAlphabeticalTOC(data) {
     this.alphabeticalactiveMenuTree = [];
-    this.alphabeticalTitleStack = [];
+    const itemArray = [];
     const list = this.flattenList(data.tocItems);
 
     for (const child of list) {
-        if (child.type !== 'section_title' && child.type !== 'subtitle') {
-            this.alphabeticalactiveMenuTree.push(child);
-        }
+      if (child.type === 'est' && child.itemId) {
+        itemArray.push(child);
+      }
     }
 
-    this.alphabeticalactiveMenuTree.sort(
+    itemArray.sort(
       (a, b) =>
         (a.text !== undefined && b.text !== undefined) ?
           ((String(a.text).toUpperCase() < String(b.text).toUpperCase()) ? -1 :
           (String(a.text).toUpperCase() > String(b.text).toUpperCase()) ? 1 : 0) : 0
-      );
-      this.storage.set('toc_alfabetical_' + data['collectionID'], this.alphabeticalactiveMenuTree);
+    );
+
+    this.alphabeticalactiveMenuTree = new Array<InnerMenuOptionModel>();
+
+    // Map the options to our internal models
+    itemArray.forEach(option => {
+      const innerMenuOption = InnerMenuOptionModel.fromMenuOptionModel(option, null, false, false);
+      if ( this.alphabeticalactiveMenuTree.indexOf(innerMenuOption) === -1 ) {
+        this.alphabeticalactiveMenuTree.push(innerMenuOption);
+      }
+
+      // Check if there's any option marked as selected
+      if (option.selected) {
+        option.selected = false;
+      } else if (innerMenuOption.childrenCount) {
+        innerMenuOption.subOptions.forEach(subItem => {
+          if (subItem.selected) {
+            subItem.selected = false;
+          }
+        });
+      }
+    });
+
+    if (data['collectionID']) {
+      this.storage.set('toc_alphabetical_' + data['collectionID'], this.alphabeticalactiveMenuTree);
+    }
   }
 
   constructChronologicalTOC(data) {
     this.chronologicalactiveMenuTree = [];
-    this.chronologicalTitleStack = [];
 
     const list = this.flattenList(data.tocItems);
 
     for (const child of list) {
-        if (child.date && child.type !== 'section_title' && child.type !== 'subtitle') {
-            this.chronologicalactiveMenuTree.push(child);
-        }
+      if (child.date && child.type === 'est' && child.itemId) {
+        this.chronologicalactiveMenuTree.push(child);
+      }
     }
 
     this.chronologicalactiveMenuTree.sort((a, b) => (a.date < b.date) ? -1 : (a.date > b.date) ? 1 : 0);
@@ -390,28 +266,51 @@ export class TableOfContentsAccordionComponent {
       const currentYear = String(item['date']).slice(0, 4);
       if ( prevYear === '' ) {
         prevYear = currentYear;
-        itemArray.push({type: 'section_title', text: prevYear, subOptions: []});
+        itemArray.push({type: 'subtitle', collapsed: true, text: prevYear, children: []});
       }
 
       if ( prevYear !==  currentYear ) {
-        itemArray[itemArray.length - 1].subOptions = childItems;
+        itemArray[itemArray.length - 1].children = childItems;
         itemArray[itemArray.length - 1].childrenCount = true;
         childItems = [];
         prevYear = currentYear;
-        itemArray.push({type: 'section_title', text: prevYear});
+        itemArray.push({type: 'subtitle', collapsed: true, text: prevYear});
       }
       childItems.push(this.chronologicalactiveMenuTree[i]);
     }
     if ( itemArray.length > 0 ) {
-      itemArray[itemArray.length - 1].subOptions = childItems;
+      itemArray[itemArray.length - 1].children = childItems;
       itemArray[itemArray.length - 1].childrenCount = true;
     } else {
       itemArray[0] = {};
-      itemArray[0].subOptions = childItems;
+      itemArray[0].children = childItems;
       itemArray[0].childrenCount = true;
     }
-    this.chronologicalactiveMenuTree = itemArray;
-    this.storage.set('toc_chronological_' + data['collectionID'], this.chronologicalactiveMenuTree);
+
+    this.chronologicalactiveMenuTree = new Array<InnerMenuOptionModel>();
+
+    // Map the options to our internal models
+    itemArray.forEach(option => {
+      const innerMenuOption = InnerMenuOptionModel.fromMenuOptionModel(option, null, false, false);
+      if ( this.chronologicalactiveMenuTree.indexOf(innerMenuOption) === -1 ) {
+        this.chronologicalactiveMenuTree.push(innerMenuOption);
+      }
+
+      // Check if there's any option marked as selected
+      if (option.selected) {
+        option.selected = false;
+      } else if (innerMenuOption.childrenCount) {
+        innerMenuOption.subOptions.forEach(subItem => {
+          if (subItem.selected) {
+            subItem.selected = false;
+          }
+        });
+      }
+    });
+
+    if (data['collectionID']) {
+      this.storage.set('toc_chronological_' + data['collectionID'], this.chronologicalactiveMenuTree);
+    }
   }
 
   flattenList(data) {
@@ -427,26 +326,110 @@ export class TableOfContentsAccordionComponent {
   }
 
   setActiveSortingType(type) {
-    if (type === 'thematic') {
-        this.alphabethicOrderActive = false;
-        this.chronologicalOrderActive = false;
-        this.thematicOrderActive = true;
-        this.activeMenuTree = this.collapsableItems;
-    } else if (type === 'alphabetical') {
-        this.alphabethicOrderActive = true;
-        this.chronologicalOrderActive = false;
-        this.thematicOrderActive = false;
-        this.activeMenuTree = this.alphabeticalactiveMenuTree;
+    if (type === 'alphabetical') {
+      this.textService.activeTocOrder = 'alphabetical';
+      this.alphabethicOrderActive = true;
+      this.chronologicalOrderActive = false;
+      this.thematicOrderActive = false;
+      this.storage.get('toc_alphabetical_' + this.collectionId).then((storageToc) => {
+        if ( storageToc === null || storageToc === undefined ) {
+          this.tocService.getTableOfContents(this.collectionId).subscribe(
+            toc => {
+              const data = {
+                collectionID: this.collectionId,
+                tocItems: toc
+              };
+              this.constructAlphabeticalTOC(data);
+              if (this.currentOption && this.currentOption.itemId) {
+                this.unSelectAllItems(this.alphabeticalactiveMenuTree);
+                this.selectOneItem(this.currentOption.itemId, this.alphabeticalactiveMenuTree);
+              }
+              this.activeMenuTree = this.alphabeticalactiveMenuTree;
+              this.cdRef.detectChanges();
+              this.events.publish('tocActiveSorting', type);
+            }
+          );
+        } else {
+          this.alphabeticalactiveMenuTree = storageToc;
+          if (this.currentOption && this.currentOption.itemId) {
+            this.unSelectAllItems(this.alphabeticalactiveMenuTree);
+            this.selectOneItem(this.currentOption.itemId, this.alphabeticalactiveMenuTree);
+          }
+          this.activeMenuTree = this.alphabeticalactiveMenuTree;
+          this.cdRef.detectChanges();
+          this.events.publish('tocActiveSorting', type);
+        }
+      });
     } else if (type === 'chronological') {
-        this.alphabethicOrderActive = false;
-        this.chronologicalOrderActive = true;
-        this.thematicOrderActive = false;
-        this.activeMenuTree = this.chronologicalactiveMenuTree;
+      this.textService.activeTocOrder = 'chronological';
+      this.alphabethicOrderActive = false;
+      this.chronologicalOrderActive = true;
+      this.thematicOrderActive = false;
+      this.storage.get('toc_chronological_' + this.collectionId).then((storageToc) => {
+        if ( storageToc === null || storageToc === undefined ) {
+          this.tocService.getTableOfContents(this.collectionId).subscribe(
+            toc => {
+              const data = {
+                collectionID: this.collectionId,
+                tocItems: toc
+              };
+              this.constructChronologicalTOC(data);
+              if (this.currentOption && this.currentOption.itemId) {
+                this.unSelectAllItems(this.chronologicalactiveMenuTree);
+                this.selectOneItem(this.currentOption.itemId, this.chronologicalactiveMenuTree);
+              }
+              this.activeMenuTree = this.chronologicalactiveMenuTree;
+              this.cdRef.detectChanges();
+              this.events.publish('tocActiveSorting', type);
+            }
+          );
+        } else {
+          this.chronologicalactiveMenuTree = storageToc;
+          if (this.currentOption && this.currentOption.itemId) {
+            this.unSelectAllItems(this.chronologicalactiveMenuTree);
+            this.selectOneItem(this.currentOption.itemId, this.chronologicalactiveMenuTree);
+          }
+          this.activeMenuTree = this.chronologicalactiveMenuTree;
+          this.cdRef.detectChanges();
+          this.events.publish('tocActiveSorting', type);
+        }
+      });
+    } else {
+      this.textService.activeTocOrder = 'thematic';
+      this.alphabethicOrderActive = false;
+      this.chronologicalOrderActive = false;
+      this.thematicOrderActive = true;
+      if (this.currentOption && this.currentOption.itemId) {
+        this.unSelectAllItems(this.collapsableItems);
+        this.selectOneItem(this.currentOption.itemId, this.collapsableItems);
+      }
+      this.activeMenuTree = this.collapsableItems;
+      this.cdRef.detectChanges();
+      this.events.publish('tocActiveSorting', 'thematic');
     }
+    this.ngZone.runOutsideAngular(() => {
+      setTimeout(function () {
+        try {
+          if (this.currentOption && this.currentOption.itemId) {
+            const itemId = 'toc_' + this.currentOption.itemId;
+            let foundElem = document.getElementById(itemId);
+            if (foundElem === null) {
+              // Scroll to toc item without position
+              foundElem = document.getElementById(itemId.split(';').shift());
+            }
+            if (foundElem) {
+              this.scrollElementIntoView(foundElem);
+            }
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }.bind(this), 1000);
+    });
   }
 
   ngOnChanges(about) {
-    if ( Array.isArray(about) ) {
+    if ( Array.isArray(about) && (this.isMarkdown || this.isGallery) ) {
       // console.log('toc-accordion ngOnChanges initialized', about);
       this.menuOptions = about;
       this.collapsableItems = new Array<InnerMenuOptionModel>();
@@ -477,27 +460,29 @@ export class TableOfContentsAccordionComponent {
         }
       });
 
-      /*
-      if (this.alphabethicOrderActive) {
-        this.activeMenuTree = this.alphabeticalactiveMenuTree;
-      } else if (this.chronologicalOrderActive) {
-        this.activeMenuTree = this.chronologicalactiveMenuTree;
-      } else {
-        this.activeMenuTree = this.collapsableItems;
-      }
-      */
       this.activeMenuTree = this.collapsableItems;
       this.cdRef.detectChanges();
     }
 
-    if ( this.titleSelected === false && this.coverSelected === false && this.introductionSelected === false ) {
+    if ( this.titleSelected === false && this.coverSelected === false
+    && this.introductionSelected === false && this.forewordSelected === false ) {
       if ( this.hasCover && this.defaultSelectedItem === 'cover' ) {
         this.coverSelected = true;
-      } else if ( this.hasTitle && this.defaultSelectedItem === 'title'  ) {
+      } else if ( this.hasTitle && this.defaultSelectedItem === 'title' ) {
         this.titleSelected = true;
-      } else if ( this.hasIntro && this.defaultSelectedItem === 'introduction'  ) {
+      } else if ( this.hasForeword && this.defaultSelectedItem === 'foreword' ) {
+        this.forewordSelected = true;
+      } else if ( this.hasIntro && this.defaultSelectedItem === 'introduction' ) {
         this.introductionSelected = true;
       }
+    }
+
+    if (this.alphabethicOrderActive && this.sortableLetters.includes(this.collectionId)) {
+      this.textService.activeTocOrder = 'alphabetical';
+    } else if (this.chronologicalOrderActive && this.sortableLetters.includes(this.collectionId)) {
+      this.textService.activeTocOrder = 'chronological';
+    } else {
+      this.textService.activeTocOrder = 'thematic';
     }
     // console.log('ngOnChanges this.activeMenuTree', this.activeMenuTree);
   }
@@ -522,15 +507,18 @@ export class TableOfContentsAccordionComponent {
       }, error => { }
     );
 
-    this.titleSelected = false;
-    this.introductionSelected = false;
     this.coverSelected = false;
+    this.titleSelected = false;
+    this.forewordSelected = false;
+    this.introductionSelected = false;
 
     const currentPage = String(window.location.href);
     if ( this.hasCover && currentPage.includes('/publication-cover/') ) {
       this.coverSelected = true;
     } else if ( this.hasTitle && currentPage.includes('/publication-title/') ) {
       this.titleSelected = true;
+    } else if ( this.hasForeword && currentPage.includes('/publication-foreword/') ) {
+      this.forewordSelected = true;
     } else if ( this.hasIntro && currentPage.includes('/publication-introduction/') ) {
       this.introductionSelected = true;
     }
@@ -559,9 +547,21 @@ export class TableOfContentsAccordionComponent {
     }
 
     try {
+      this.hasCover = this.config.getSettings('HasCover');
+    } catch (e) {
+      this.hasCover = false;
+    }
+
+    try {
       this.hasTitle = this.config.getSettings('HasTitle');
     } catch (e) {
       this.hasTitle = false;
+    }
+
+    try {
+      this.hasForeword = this.config.getSettings('HasForeword');
+    } catch (e) {
+      this.hasForeword = false;
     }
 
     try {
@@ -569,30 +569,26 @@ export class TableOfContentsAccordionComponent {
     } catch (e) {
       this.hasIntro = false;
     }
-
-    try {
-      this.hasCover = this.config.getSettings('HasCover');
-    } catch (e) {
-      this.hasCover = false;
-    }
   }
 
   registerEventListeners() {
     this.events.subscribe('tableOfContents:loaded', (data) => {
-      this.storage.get('toc_alfabetical_' + data['collectionID']).then((toc) => {
-        if ( toc === null || data['collectionID'] !== toc['collectionID'] ) {
-          this.constructAlphabeticalTOC(data);
-        } else {
-          this.alphabeticalactiveMenuTree = toc;
-        }
-      });
-      this.storage.get('toc_chronological_' + data['collectionID']).then((toc) => {
-        if ( toc === null || data['collectionID'] !== toc['collectionID'] ) {
-          this.constructChronologicalTOC(data);
-        } else {
-          this.chronologicalactiveMenuTree = toc;
-        }
-      });
+      if (this.sortableLetters.includes(this.collectionId)) {
+        this.storage.get('toc_alphabetical_' + data['collectionID']).then((toc) => {
+          if ( toc === null || toc === undefined ) {
+            this.constructAlphabeticalTOC(data);
+          } else {
+            this.alphabeticalactiveMenuTree = toc;
+          }
+        });
+        this.storage.get('toc_chronological_' + data['collectionID']).then((toc) => {
+          if ( toc === null || toc === undefined ) {
+            this.constructChronologicalTOC(data);
+          } else {
+            this.chronologicalactiveMenuTree = toc;
+          }
+        });
+      }
     });
 
     this.events.subscribe(SideMenuRedirectEvent, (data: SideMenuRedirectEventData) => {
@@ -601,29 +597,50 @@ export class TableOfContentsAccordionComponent {
     });
 
     this.events.subscribe('SelectedItemInMenu', (menu) => {
+      // console.log('this.collectionId', this.collectionId);
+      // console.log('menu.menuID', menu.menuID);
       if ( this.collectionId === undefined || this.collectionId === null ) {
         this.collectionId = menu.menuID;
       }
       // console.log('selectedItemInMenu', menu);
       // console.log('this.currentOption', this.currentOption);
-      if (this.collectionId !== menu.menuID && this.currentOption) {
+      if (this.collectionId !== menu.menuID && this.currentOption && this.collectionId !== 'mediaCollections') {
         this.currentOption.selected = false;
         this.currentOption = null;
       } else {
         // console.log('event: SelectedItemInMenu; this.collectionId', this.collectionId);
         if (menu && menu.component) {
-          if (menu.component === 'title-page') {
-            this.titleSelected = true;
-            this.introductionSelected = false;
-            this.coverSelected = false;
-          } else if (menu.component === 'introduction') {
-            this.titleSelected = false;
-            this.introductionSelected = true;
-            this.coverSelected = false;
-          } else if (menu.component === 'cover-page') {
-            this.titleSelected = false;
-            this.introductionSelected = false;
+          if (menu.component === 'cover-page') {
             this.coverSelected = true;
+            this.titleSelected = false;
+            this.forewordSelected = false;
+            this.introductionSelected = false;
+          } else if (menu.component === 'title-page') {
+            this.coverSelected = false;
+            this.titleSelected = true;
+            this.forewordSelected = false;
+            this.introductionSelected = false;
+          } else if (menu.component === 'foreword-page') {
+            this.coverSelected = false;
+            this.titleSelected = false;
+            this.forewordSelected = true;
+            this.introductionSelected = false;
+          } else if (menu.component === 'introduction') {
+            this.coverSelected = false;
+            this.titleSelected = false;
+            this.forewordSelected = false;
+            this.introductionSelected = true;
+          } else if (menu.component === 'media-collections' || menu.component === 'media-collection') {
+            this.coverSelected = false;
+            this.titleSelected = false;
+            this.forewordSelected = false;
+            this.introductionSelected = false;
+            this.collapsableItems.forEach(element => {
+              if (element.targetOption.id === menu.menuID) {
+                element.targetOption.selected = true;
+                element.selected = true;
+              }
+            });
           }
         }
       }
@@ -637,16 +654,20 @@ export class TableOfContentsAccordionComponent {
 
       this.coverSelected = false;
       this.titleSelected = false;
+      this.forewordSelected = false;
       this.introductionSelected = false;
       if (this.alphabethicOrderActive) {
         this.unSelectAllItems(this.alphabeticalactiveMenuTree);
         this.selectOneItem(itemId, this.alphabeticalactiveMenuTree);
+        this.activeMenuTree = this.alphabeticalactiveMenuTree;
       } else if (this.chronologicalOrderActive) {
         this.unSelectAllItems(this.chronologicalactiveMenuTree);
         this.selectOneItem(itemId, this.chronologicalactiveMenuTree);
+        this.activeMenuTree = this.chronologicalactiveMenuTree;
       } else {
         this.unSelectAllItems(this.collapsableItems);
         this.selectOneItem(itemId, this.collapsableItems);
+        this.activeMenuTree = this.collapsableItems;
       }
       this.cdRef.detectChanges();
     });
@@ -684,7 +705,7 @@ export class TableOfContentsAccordionComponent {
       if (!data) {
         return;
       }
-      this.unSelectAllItems(this.collapsableItems);
+      this.unSelectAllItemsByActiveMenuTree();
       this.cdRef.detectChanges();
     });
   }
@@ -704,7 +725,7 @@ export class TableOfContentsAccordionComponent {
         for (const child of tocItem.parent.subOptions) {
           if (child.subOptions && child.subOptions.length && !child.important) {
             child['search_children_id'] = this.tocItemSearchChildrenCounter;
-            searchChildrenToc[child.search_children_id] = child.subOptions;
+            this.searchChildrenToc[child.search_children_id] = child.subOptions;
             child.subOptions = [];
             this.tocItemSearchChildrenCounter++;
           }
@@ -783,6 +804,19 @@ export class TableOfContentsAccordionComponent {
     return this.foundTocItem;
   }
 
+  getSelectedTocItemByItemId(list, tocItemId) {
+    for (const item of list) {
+      if (item.itemId && (String(item.itemId) === String(tocItemId) || Number(item.itemId) === Number(tocItemId))) {
+        this.selectedTocItem = item;
+        this.foundSelectedTocItem = true;
+        return this.selectedTocItem;
+      } else if (item.subOptions && item.subOptions.length) {
+        this.getSelectedTocItemByItemId(item.subOptions, tocItemId);
+      }
+    }
+    return this.selectedTocItem;
+  }
+
   ngOnDestroy() {
     this.events.unsubscribe(SideMenuRedirectEvent);
     this.events.unsubscribe('SelectedItemInMenu');
@@ -791,116 +825,166 @@ export class TableOfContentsAccordionComponent {
     this.events.unsubscribe('tableOfContents:unSelectSelectedTocItem');
   }
 
-    /**
-     * Send the selected option to the caller component
-     */
-    public select(item: InnerMenuOptionModel): void {
-    // console.log('selecting toc item:', item);
-
-    if (this.currentOption) {
-      this.currentOption.selected = false;
-    }
-
-    item.selected = true;
-    this.currentOption = item;
-
-    this.unSelectOptions(this.collapsableItems);
-    this.coverSelected = false;
-    this.titleSelected = false;
-    this.introductionSelected = false;
-
-    this.events.publish('SelectedItemInMenu', {
-      menuID: this.collectionId,
-      component: 'table-of-contents-accordion-component'
-    });
-
-    // Try to remove META-Tags
-    this.metadataService.clearHead();
-    // Add the new META-Tags
-    this.metadataService.addDescription(this.collectionName + ' - ' + item.text);
-    this.metadataService.addKeywords();
-
-    if (this.isMarkdown) {
-      this.titleSelected = false;
-      this.introductionSelected = false;
-      this.coverSelected = false;
-      this.selectMarkdown(item);
-    } else if (item.is_gallery) {
-      this.titleSelected = false;
-      this.introductionSelected = false;
-      this.coverSelected = false;
-      this.selectGallery(item);
-    } else if ( item.itemId !== undefined ) {
-
-      this.storage.set('currentTOCItem', item);
-      const params = {root: this.options, tocItem: item, collection: {title: item.text}};
-      const nav = this.app.getActiveNavs();
-
-      this.titleSelected = false;
-      this.introductionSelected = false;
-      this.coverSelected = false;
-
-      if (item.url) {
-        params['url'] = item.url;
-      }
-
-      if (item.datafile) {
-        params['song_datafile'] = item.datafile;
-      }
-
-      if (item.itemId) {
-        params['tocLinkId'] = item.itemId;
-        const parts = item.itemId.split('_');
-        params['collectionID'] = parts[0];
-        params['publicationID'] = parts[1];
-        if ( parts.length > 2 ) {
-          params['chapterID'] = parts[2];
-        }
-      }
-
-      if (this.currentItem && this.currentItem['facsimilePage'] ) {
-        params['facsimilePage'] = this.currentItem['facsimilePage'];
-      }
-
-      params['facs_id'] = 'not';
-      params['facs_nr'] = 'infinite';
-      params['song_id'] = 'nosong';
-
-      params['selectedItemInAccordion'] = true;
-
-      params['search_title'] = 'searchtitle';
-
-      if (this.searchTocItemInAccordionByTitle && item.text) {
-        params['search_title'] = item.text;
-      }
-
-      if (item.type && item.type === 'facsimile') {
-        params['collectionID'] = this.collectionId;
-        params['publicationID'] = item.publication_id;
-        params['tocLinkId'] = `${this.collectionId}_${item.publication_id}`;
-
-        params['facs_id'] = item.facsimile_id;
-        params['facs_nr'] = item.facs_nr;
-      }
-
-      if (item.type && item.type === 'song-example') {
-        params['collectionID'] = this.collectionId;
-        params['publicationID'] = item.publication_id;
-        params['tocLinkId'] = `${this.collectionId}_${item.publication_id}`;
-        params['song_id'] = item.song_id;
-        params['facs_id'] = item.facsimile_id;
-        params['facs_nr'] = item.facs_nr;
-      }
-
-      if ( this.platform.is('core') ) {
-        this.events.publish('title-logo:show', true);
-      } else {
-        this.events.publish('title-logo:show', false);
-      }
-      nav[0].setRoot('read', params);
+  /**
+   * Send the selected option to the caller component
+   */
+  public select(item, isInnerMenuOptionItem = true): void {
+    if (isInnerMenuOptionItem) {
+      this.foundSelectedTocItem = true;
+      this.selectedTocItem = item;
+      // console.log('selecting toc item: ', item);
     } else {
-      this.storage.set('currentTOCItem', item);
+      this.foundSelectedTocItem = false;
+      this.getSelectedTocItemByItemId(this.activeMenuTree, item);
+      // console.log('selecting toc page-read item: ', item, this.selectedTocItem);
     }
+
+    if (this.foundSelectedTocItem && this.selectedTocItem) {
+      if (this.currentOption) {
+        this.currentOption.selected = false;
+      }
+
+      this.selectedTocItem.selected = true;
+      this.currentOption = this.selectedTocItem;
+
+      if (this.alphabethicOrderActive) {
+        this.unSelectOptions(this.alphabeticalactiveMenuTree);
+      } else if (this.chronologicalOrderActive) {
+        this.unSelectOptions(this.chronologicalactiveMenuTree);
+      } else {
+        this.unSelectOptions(this.collapsableItems);
+      }
+      this.coverSelected = false;
+      this.titleSelected = false;
+      this.forewordSelected = false;
+      this.introductionSelected = false;
+
+      this.events.publish('SelectedItemInMenu', {
+        menuID: this.collectionId,
+        component: 'table-of-contents-accordion-component'
+      });
+
+      // Try to remove META-Tags
+      this.metadataService.clearHead();
+      // Add the new META-Tags
+      this.metadataService.addDescription(this.collectionName + ' - ' + this.selectedTocItem.text);
+      this.metadataService.addKeywords();
+
+      if (this.isMarkdown) {
+        this.coverSelected = false;
+        this.titleSelected = false;
+        this.forewordSelected = false;
+        this.introductionSelected = false;
+        this.selectMarkdown(this.selectedTocItem);
+      } else if (this.selectedTocItem.is_gallery) {
+        this.coverSelected = false;
+        this.titleSelected = false;
+        this.forewordSelected = false;
+        this.introductionSelected = false;
+        this.selectGallery(this.selectedTocItem);
+      } else if (this.selectedTocItem.itemId !== undefined) {
+        this.coverSelected = false;
+        this.titleSelected = false;
+        this.forewordSelected = false;
+        this.introductionSelected = false;
+
+        this.storage.set('currentTOCItem', this.selectedTocItem);
+
+        const params = this.createReadPageParamsFromMenuItem(this.selectedTocItem);
+
+        if (this.textService.readViewTextId && this.selectedTocItem.itemId.split('_').length > 1
+        && this.selectedTocItem.itemId.indexOf(';') > -1
+        && this.selectedTocItem.itemId.split(';')[0] === this.textService.readViewTextId.split(';')[0]) {
+          // The read page we are navigating to is just a different position in the text that is already open
+          // --> no need to reload page-read, just scroll to correct position
+          this.events.publish('UpdatePositionInPageRead', params);
+          this.events.publish('UpdatePositionInPageRead:TextChanger', this.selectedTocItem.itemId);
+        } else {
+          if ( this.platform.is('core') ) {
+            this.events.publish('title-logo:show', true);
+          } else {
+            this.events.publish('title-logo:show', false);
+          }
+          const nav = this.app.getActiveNavs();
+          nav[0].setRoot('read', params);
+        }
+      } else {
+        this.storage.set('currentTOCItem', this.selectedTocItem);
+      }
+    }
+  }
+
+  createReadPageParamsFromMenuItem(item) {
+    const relevantItemData = {
+      collapsed: item.collapsed,
+      description: item.description,
+      expanded: item.expanded,
+      facs_nr: item.facs_nr,
+      id: item.id,
+      important: item.important,
+      is_child: item.is_child,
+      is_gallery: item.is_gallery,
+      itemId: item.itemId,
+      page_nr: item.page_nr,
+      publication_id: item.publication_id,
+      selected: item.selected,
+      text: item.text,
+      type: item.type
+    };
+    const params = {root: this.options, tocItem: relevantItemData, collection: {title: item.text}};
+
+    if (item.url) {
+      params['url'] = item.url;
+    }
+
+    if (item.datafile) {
+      params['song_datafile'] = item.datafile;
+    }
+
+    if (item.itemId) {
+      params['tocLinkId'] = item.itemId;
+      const parts = item.itemId.split('_');
+      params['collectionID'] = parts[0];
+      params['publicationID'] = parts[1];
+      if ( parts.length > 2 ) {
+        params['chapterID'] = parts[2];
+      }
+    }
+
+    if (this.currentItem && this.currentItem['facsimilePage'] ) {
+      params['facsimilePage'] = this.currentItem['facsimilePage'];
+    }
+
+    params['facs_id'] = 'not';
+    params['facs_nr'] = 'infinite';
+    params['song_id'] = 'nosong';
+
+    params['selectedItemInAccordion'] = true;
+
+    params['search_title'] = 'searchtitle';
+
+    if (this.searchTocItemInAccordionByTitle && item.text) {
+      params['search_title'] = item.text;
+    }
+
+    if (item.type && item.type === 'facsimile') {
+      params['collectionID'] = this.collectionId;
+      params['publicationID'] = item.publication_id;
+      params['tocLinkId'] = `${this.collectionId}_${item.publication_id}`;
+
+      params['facs_id'] = item.facsimile_id;
+      params['facs_nr'] = item.facs_nr;
+    }
+
+    if (item.type && item.type === 'song-example') {
+      params['collectionID'] = this.collectionId;
+      params['publicationID'] = item.publication_id;
+      params['tocLinkId'] = `${this.collectionId}_${item.publication_id}`;
+      params['song_id'] = item.song_id;
+      params['facs_id'] = item.facsimile_id;
+      params['facs_nr'] = item.facs_nr;
+    }
+    return params;
   }
 
   selectMarkdown(item) {
@@ -947,9 +1031,12 @@ export class TableOfContentsAccordionComponent {
   openIntroduction(id) {
     const params = {root: this.root, tocItem: null, collection: {title: 'Introduction'}};
     params['collectionID'] = id;
-    this.introductionSelected = true;
-    this.titleSelected = false;
     this.coverSelected = false;
+    this.titleSelected = false;
+    this.forewordSelected = false;
+    this.introductionSelected = true;
+    this.currentOption = null;
+    this.unSelectAllItemsByActiveMenuTree();
     const nav = this.app.getActiveNavs();
     if (this.platform.is('mobile')) {
       nav[0].push('introduction', params);
@@ -958,13 +1045,34 @@ export class TableOfContentsAccordionComponent {
     }
   }
 
+  openForewordPage(id) {
+    const params = {root: this.root, tocItem: null, collection: {title: 'Foreword Page'}};
+    params['collectionID'] = id;
+    params['firstItem'] = '1';
+    this.coverSelected = false;
+    this.titleSelected = false;
+    this.forewordSelected = true;
+    this.introductionSelected = false;
+    this.currentOption = null;
+    this.unSelectAllItemsByActiveMenuTree();
+    const nav = this.app.getActiveNavs();
+    if (this.platform.is('mobile')) {
+      nav[0].push('foreword-page', params);
+    } else {
+      nav[0].setRoot('foreword-page', params);
+    }
+  }
+
   openTitlePage(id) {
     const params = {root: this.root, tocItem: null, collection: {title: 'Title Page'}};
     params['collectionID'] = id;
     params['firstItem'] = '1';
-    this.titleSelected = true;
     this.coverSelected = false;
+    this.titleSelected = true;
+    this.forewordSelected = false;
     this.introductionSelected = false;
+    this.currentOption = null;
+    this.unSelectAllItemsByActiveMenuTree();
     const nav = this.app.getActiveNavs();
     if (this.platform.is('mobile')) {
       nav[0].push('title-page', params);
@@ -977,9 +1085,12 @@ export class TableOfContentsAccordionComponent {
     const params = {root: this.root, tocItem: null, collection: {title: 'Cover Page'}};
     params['collectionID'] = id;
     params['firstItem'] = '1';
-    this.titleSelected = false;
     this.coverSelected = true;
+    this.titleSelected = false;
+    this.forewordSelected = false;
     this.introductionSelected = false;
+    this.currentOption = null;
+    this.unSelectAllItemsByActiveMenuTree();
     const nav = this.app.getActiveNavs();
     if (this.platform.is('mobile')) {
       nav[0].push('cover-page', params);
@@ -1014,11 +1125,11 @@ export class TableOfContentsAccordionComponent {
       } else if (option.childrenCount) {
         if (option.subOptions.length) {
           this.selectOneItem(itemId, option.subOptions, option.subOptions);
-        } else if (!option.subOptions.length) {
-          if (option.children_id) {
-            option.subOptions = childrenToc[option.children_id];
-          } else if (option.search_children_id) {
-            option.subOptions = searchChildrenToc[option.search_children_id];
+        } else {
+          if (option.search_children_id > -1) {
+            option.subOptions = this.searchChildrenToc[option.search_children_id];
+          } else if (option.children_id > -1) {
+            option.subOptions = this.childrenToc[option.children_id];
           }
           this.selectOneItem(itemId, option.subOptions, option.subOptions);
         }
@@ -1034,47 +1145,80 @@ export class TableOfContentsAccordionComponent {
         item.selected = false;
       }
     }
+    if (this.currentOption) {
+      this.currentOption.selected = false;
+    }
+  }
+
+  unSelectAllItemsByActiveMenuTree() {
+    if (this.alphabethicOrderActive) {
+      this.unSelectAllItems(this.alphabeticalactiveMenuTree);
+    } else if (this.chronologicalOrderActive) {
+      this.unSelectAllItems(this.chronologicalactiveMenuTree);
+    } else {
+      this.unSelectAllItems(this.collapsableItems);
+    }
+    this.cdRef.detectChanges();
   }
 
   exit() {
     this.alphabethicOrderActive = false;
     this.chronologicalOrderActive = false;
     this.thematicOrderActive = false;
+    this.textService.activeTocOrder = 'thematic';
+    this.resetTocAccordionScroll();
     this.events.publish('exitActiveCollection');
     const params = {};
     const nav = this.app.getActiveNavs();
     nav[0].setRoot('HomePage', params, { animate: false });
   }
 
+  resetTocAccordionScroll() {
+    const tocElem = document.querySelector('#tableOfContentsMenu ion-content.toc-menu-content > .scroll-content');
+    if (tocElem) {
+      tocElem.scrollTo(0, 0);
+    }
+  }
+
   /**
    * Fetch suboptions from childrenToc.
    * Toggle the sub options of the selected item.
    */
-  public toggleItemOptions(targetOption: InnerMenuOptionModel): void {
-    if (!targetOption) { return; }
+  public toggleItemOptions(item, isInnerMenuOptionItem = true): void {
+    if (!item) { return; }
+
+    if (isInnerMenuOptionItem) {
+      this.foundSelectedTocItem = true;
+      this.selectedTocItem = item;
+      // console.log('toggling toc item: ', item);
+    } else {
+      this.foundSelectedTocItem = false;
+      this.getSelectedTocItemByItemId(this.activeMenuTree, item);
+      // console.log('toggling toc item: ', item, this.selectedTocItem);
+    }
 
     // Fetch suboptions if item doesn't have them already
-    if (!targetOption.subOptions.length) {
-      if (targetOption.children_id) {
-        targetOption.subOptions = childrenToc[targetOption.children_id];
-      } else if (targetOption.search_children_id) {
-        targetOption.subOptions = searchChildrenToc[targetOption.search_children_id];
+    if (!this.selectedTocItem.subOptions.length) {
+      if (this.selectedTocItem.search_children_id > -1) {
+        this.selectedTocItem.subOptions = this.searchChildrenToc[this.selectedTocItem.search_children_id];
+      } else if (this.selectedTocItem.children_id > -1) {
+        this.selectedTocItem.subOptions = this.childrenToc[this.selectedTocItem.children_id];
       }
     }
-    if ( targetOption.collapsed === undefined || String(targetOption.collapsed) === '' ) {
+    if ( this.selectedTocItem.collapsed === undefined || String(this.selectedTocItem.collapsed) === '' ) {
       // collapsed is inverted expanded
-      targetOption.collapsed = targetOption.expanded;
-      targetOption.expanded = !targetOption.collapsed;
+      this.selectedTocItem.collapsed = this.selectedTocItem.expanded;
+      this.selectedTocItem.expanded = !this.selectedTocItem.collapsed;
     } else {
       // Toggle the selected option
-      targetOption.expanded = targetOption.collapsed;
-      targetOption.collapsed = !targetOption.expanded;
+      this.selectedTocItem.expanded = this.selectedTocItem.collapsed;
+      this.selectedTocItem.collapsed = !this.selectedTocItem.expanded;
     }
-    // console.log('targetOption.itemId', targetOption.itemId);
-    if ( targetOption.itemId !== undefined ) {
-      this.select(targetOption);
+    // console.log('this.selectedTocItem.itemId', this.selectedTocItem.itemId);
+    if ( this.selectedTocItem.itemId !== undefined ) {
+      this.select(this.selectedTocItem, true);
     }
-    // console.log('toggleItemOptions, targetOption:', targetOption);
+    // console.log('toggleItemOptions, this.selectedTocItem:', this.selectedTocItem);
   }
 
   // Recursive function for finding selected markdown page in toc, marking it selected and expanding all collapsible parents
@@ -1124,8 +1268,7 @@ export class TableOfContentsAccordionComponent {
       }
     });
 
-    // Update the view since there wasn't
-    // any user interaction with it
+    // Update the view since there wasn't any user interaction with it
     this.cdRef.detectChanges();
   }
 
@@ -1155,12 +1298,12 @@ export class TableOfContentsAccordionComponent {
       this.selectedOption.selected = false;
       this.selectedOption.targetOption.selected = false;
 
-    if (this.selectedOption.parent) {
-      this.selectedOption.parent.selected = false;
-      this.selectedOption.parent.expanded = false;
-    }
+      if (this.selectedOption.parent) {
+        this.selectedOption.parent.selected = false;
+        this.selectedOption.parent.expanded = false;
+      }
 
-    this.selectedOption = null;
+      this.selectedOption = null;
     }
 
     // Set this option to be the selected
@@ -1275,6 +1418,44 @@ export class TableOfContentsAccordionComponent {
 
   public isDefinedAndPositive(property: any): boolean {
     return this.isDefined(property) && !isNaN(property) && property > 0;
+  }
+
+  /**
+   * This function can be used to scroll a container so that the element which it
+   * contains is placed either at the top edge of the container or in the center
+   * of the container. This function can be called multiple times simultaneously
+   * on elements in different containers, unlike the native scrollIntoView function
+   * which cannot be called multiple times simultaneously in Chrome due to a bug.
+   * Valid values for yPosition are 'top' and 'center'. The scroll behavior can
+   * either be 'auto' or the default 'smooth'.
+   */
+   private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0, scrollBehavior = 'smooth') {
+    if (element === undefined || element === null || (yPosition !== 'center' && yPosition !== 'top')) {
+      return;
+    }
+    // Find the scrollable container of the element which is to be scrolled into view
+    let container = element.parentElement;
+    while (container !== null && container.parentElement !== null &&
+      !container.classList.contains('scroll-content')) {
+      container = container.parentElement;
+    }
+    if (container === null || container.parentElement === null) {
+      return;
+    }
+
+    const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
+    let baseOffset = 10;
+    if (yPosition === 'center') {
+      baseOffset = Math.floor(container.offsetHeight / 2);
+      if (baseOffset > 45) {
+        baseOffset = baseOffset - 45;
+      }
+    }
+    if (scrollBehavior === 'smooth') {
+      container.scrollTo({top: y - baseOffset - offset, behavior: 'smooth'});
+    } else {
+      container.scrollTo({top: y - baseOffset - offset, behavior: 'auto'});
+    }
   }
 
 }

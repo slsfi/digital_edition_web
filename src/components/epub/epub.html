@@ -23,17 +23,17 @@
                 </button>
               </ion-col>
               <ion-col class="navigation-buttons-toc">
+                <button ion-button clear class="sec-menu-button" (click)="downloadEpub()">
+                  <ion-icon name="download" class="intro-dowload-button"></ion-icon>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Epub.Download' | translate }}</span>
+                </button>
                 <button *ngIf="showURNButton" ion-button clear class="sec-menu-button" (click)="showReference()">
                   <ion-icon class="urn-icon" name="share-alt"></ion-icon>
                   <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.refer' | translate }}</span>
                 </button>
-                <button ion-button clear #settingsIconElement (click)="showReadSettingsPopover($event)" class="sec-menu-button" id="settings-icon">
+                <button *ngIf="showDisplayOptionsButton" ion-button clear #settingsIconElement (click)="showReadSettingsPopover($event)" class="sec-menu-button" id="settings-icon">
                   <ion-icon class="settings-icon" name="settings"></ion-icon>
                   <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Epub.DisplayOptions' | translate }}</span>
-                </button>
-                <button ion-button clear class="sec-menu-button" (click)="downloadEpub()">
-                    <ion-icon name="download" class="intro-dowload-button"></ion-icon>
-                    <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Epub.Download' | translate }}</span>
                 </button>
                 <button ion-button clear class="sec-menu-button" (click)="toggleSearchMenu()">
                   <ion-icon name="search" class="intro-search-button" *ngIf="!searchMenuOpen"></ion-icon>
@@ -41,7 +41,7 @@
                   <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Epub.Search' | translate }}</span>
                 </button>
                 <button ion-button clear class="sec-menu-button" [ngClass]="tocMenuOpen ? 'menuOpenTOC' : 'menuClosedTOC'"  (click)="toggleTocMenu()">
-                  <ion-icon name="menu" class="intro-toc-button" *ngIf="!tocMenuOpen"></ion-icon>
+                  <ion-icon name="list" class="intro-toc-button" *ngIf="!tocMenuOpen"></ion-icon>
                   <ion-icon name="close" class="intro-toc-button" *ngIf="tocMenuOpen"></ion-icon>
                   <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Epub.Contents' | translate }}</span>
                 </button>

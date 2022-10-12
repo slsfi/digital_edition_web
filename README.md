@@ -10,8 +10,14 @@ https://ionicframework.com/
 [https://bitbucket.org/slssu/digital_edition_web](https://bitbucket.org/slssu/digital_edition_web)
 
 ## Live Site Examples
-[folkdiktning.sls.fi](http://folkdiktning.sls.fi)
+[topelius.sls.fi](https://topelius.sls.fi/)
 
-[granqvist.sls.fi](http://granqvist.sls.fi)
+[vonwright.sls.fi](https://vonwright.sls.fi/)
 
-[ordsprak.sls.fi](http://ordsprak.sls.fi)
+[soderholm.sls.fi](https://soderholm.sls.fi/)
+
+[folkdiktning.sls.fi](https://folkdiktning.sls.fi/)
+
+[granqvist.sls.fi](https://granqvist.sls.fi/)
+
+[ordsprak.sls.fi](https://ordsprak.sls.fi/)

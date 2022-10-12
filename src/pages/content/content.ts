@@ -1,16 +1,13 @@
-import { UserSettingsService } from './../../app/services/settings/user-settings.service';
-import { Component, Renderer } from '@angular/core';
-import { NavController, NavParams, Events, Platform, ViewController } from 'ionic-angular';
-
+import { Component } from '@angular/core';
+import { NavController, NavParams, Events, ViewController } from 'ionic-angular';
 import { ConfigService } from '@ngx-config/core';
-
 import { IonicPage } from 'ionic-angular';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { MdContent } from '../../app/models/md-content.model';
 import { MdContentService } from '../../app/services/md/md-content.service';
-import { TopMenuComponent } from '../components/top-menu/top-menu';
 import { SongService } from '../../app/services/song/song.service';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
  * A page used for displaying markdown content.
@@ -34,39 +31,26 @@ export class ContentPage /*implements OnDestroy*/ {
   songCategory: string;
   songExample: string;
   fileID: string;
+  languageSubscription: Subscription;
 
   constructor(
     public navCtrl: NavController,
     public params: NavParams,
     private mdContentService: MdContentService,
-    renderer: Renderer,
-    private userSettingsService: UserSettingsService,
     private config: ConfigService,
-    private langService: LanguageService,
+    protected langService: LanguageService,
     public events: Events,
     private viewctrl: ViewController,
     public songService: SongService,
     private analyticsService: AnalyticsService
   ) {
-    const data = this.config.getSettings('staticPages.about');
     this.fileID = this.params.get('id');
     this.mdContent = new MdContent({id: this.fileID, title: '...', content: null, filename: null});
+    this.languageSubscription = null;
     this.lang = this.config.getSettings('i18n.locale');
 
     this.langService.getLanguage().subscribe((lang) => {
       this.lang = lang;
-    });
-
-    this.events.subscribe('language:change', () => {
-      this.langService.getLanguage().subscribe((lang) => {
-        this.lang = lang;
-        if ( !String(this.fileID).includes(lang) ) {
-          const tmpId = String(this.fileID).split('-')
-          this.fileID = lang + '-' + tmpId[1] + '-' + tmpId[2];
-        }
-        this.getMdContent(this.fileID);
-        this.songCategoriesConfig();
-      });
     });
 
     if (!this.params.get('selectedItemInAccordion') || this.params.get('selectedItemInAccordion') === undefined) {
@@ -75,10 +59,56 @@ export class ContentPage /*implements OnDestroy*/ {
     this.songCategoriesConfig();
   }
 
+  ionViewWillEnter() {
+    this.events.publish('ionViewWillEnter', this.constructor.name);
+    this.events.publish('pageLoaded:content', {'title': this.mdContent.title});
+    this.events.publish('title-logo:setTitle', this.config.getSettings('app.page-title.' + this.lang));
+  }
+
+  ionViewDidEnter() {
+    this.analyticsService.doPageView('Content');
+  }
+
+  ionViewDidLoad() {
+    this.languageSubscription = this.langService.languageSubjectChange().subscribe(lang => {
+      if (lang) {
+        this.loadContent(lang);
+      }
+    });
+  }
+
+  ionViewWillLeave() {
+    this.events.publish('ionViewWillLeave', this.constructor.name);
+  }
+
   ngOnDestroy() {
-    this.events.unsubscribe('language:change');
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
     this.events.unsubscribe('aboutMarkdownTOC:loaded');
   }
+
+  loadContent(lang: string) {
+    if ( !String(this.fileID).includes(lang) ) {
+      // The language has changed so the content needs to be reloaded
+      this.fileID = lang + String(this.fileID).slice(String(this.fileID).indexOf('-'));
+      // Update url with the new id
+      let url = window.location.href;
+      url = url.slice(0, url.lastIndexOf('/')) + '/';
+      if (url.endsWith('/#/content/')) {
+        url += this.fileID;
+        history.pushState(null, null, url);
+      }
+      this.events.subscribe('aboutMarkdownTOC:loaded', (toc) => {
+        this.events.publish('tableOfContents:findMarkdownTocItem', {
+          markdownID: this.fileID
+        });
+      });
+    }
+    this.getMdContent(this.fileID);
+    this.songCategoriesConfig();
+  }
+
   songCategoriesConfig() {
     try {
       this.songCategories = this.config.getSettings(`SongCategories.${this.lang}`);
@@ -117,20 +147,6 @@ export class ContentPage /*implements OnDestroy*/ {
         });
       });
     }
-  }
-
-  ionViewWillLeave() {
-    this.events.publish('ionViewWillLeave', this.constructor.name);
-  }
-  ionViewWillEnter() {
-    this.events.publish('ionViewWillEnter', this.constructor.name);
-    this.events.publish('pageLoaded:content', {'title': this.mdContent.title});
-    this.getMdContent(this.mdContent.id);
-    this.events.publish('title-logo:setTitle', this.config.getSettings('app.page-title.' + this.lang));
-  }
-
-  ionViewDidEnter() {
-    this.analyticsService.doPageView('Content');
   }
 
   doAnalytics( title ) {

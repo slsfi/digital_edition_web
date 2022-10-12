@@ -15,6 +15,7 @@ import { UserSettingsService } from '../../app/services/settings/user-settings.s
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { MetadataService } from '../../app/services/metadata/metadata.service';
 import { MdContentService } from '../../app/services/md/md-content.service';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
  * Generated class for the PlaceSearchPage page.
@@ -40,7 +41,6 @@ export class PlaceSearchPage {
   @ViewChild(Content) content: Content;
 
   places: any[] = [];
-  appName: string;
   descending = false;
   order: number;
   column = 'name';
@@ -66,6 +66,7 @@ export class PlaceSearchPage {
   // tslint:disable-next-line:max-line-length
   alphabet: string[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Å', 'Ä', 'Ö'];
 
+  languageSubscription: Subscription;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -87,16 +88,54 @@ export class PlaceSearchPage {
               private analyticsService: AnalyticsService,
               private metadataService: MetadataService
   ) {
-    this.langService.getLanguage().subscribe((lang) => {
-      this.appName = this.config.getSettings('app.name.' + lang);
-      try {
-        this.showFilter = this.config.getSettings('LocationSearch.ShowFilter');
-      } catch (e) {
-        this.showFilter = true;
-      }
-      this.getMdContent(lang + '-12-03');
+    try {
+      this.showFilter = this.config.getSettings('LocationSearch.ShowFilter');
+    } catch (e) {
+      this.showFilter = true;
+    }
+  }
+
+  ionViewWillEnter() {
+    // Try to remove META-Tags
+    this.metadataService.clearHead();
+    // Add the new META-Tags
+    this.metadataService.addDescription(this.constructor.name);
+    this.metadataService.addKeywords();
+
+    this.events.publish('ionViewWillEnter', this.constructor.name);
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'place-search'});
+    this.events.publish('SelectedItemInMenu', {
+      menuID: 'placeSearch',
+      component: 'place-search'
     });
-    this.setData();
+  }
+
+  ionViewDidEnter() {
+    this.analyticsService.doPageView('Places');
+  }
+
+  ionViewDidLoad() {
+    this.languageSubscription = this.langService.languageSubjectChange().subscribe(lang => {
+      this.selectMusicAccordionItem();
+      this.setData();
+      if (lang) {
+        this.getMdContent(lang + '-12-03');
+      }
+    });
+  }
+
+  ionViewWillLeave() {
+    this.events.publish('ionViewWillLeave', this.constructor.name);
+  }
+
+  ionViewDidLeave() {
+    this.storage.remove('filterCollections');
+  }
+
+  ngOnDestroy() {
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
   }
 
   setData() {
@@ -107,18 +146,6 @@ export class PlaceSearchPage {
       } else {
         this.getPlaces();
       }
-    });
-  }
-
-  ionViewDidEnter() {
-    this.analyticsService.doPageView('Places');
-  }
-
-  ionViewDidLoad() {
-    this.events.subscribe('language:change', () => {
-      this.langService.getLanguage().subscribe((lang) => {
-        this.getMdContent(lang + '-12-03');
-      });
     });
   }
 
@@ -193,34 +220,6 @@ export class PlaceSearchPage {
     this.places = [];
     this.getPlaces();
     this.content.scrollToTop(400);
-  }
-
-  ionViewDidLeave() {
-    this.storage.remove('filterCollections');
-  }
-
-  ionViewWillLeave() {
-    this.events.publish('ionViewWillLeave', this.constructor.name);
-  }
-
-  ionViewWillEnter() {
-    // Try to remove META-Tags
-    this.metadataService.clearHead();
-    // Add the new META-Tags
-    this.metadataService.addDescription(this.constructor.name);
-    this.metadataService.addKeywords();
-
-    this.events.publish('ionViewWillEnter', this.constructor.name);
-    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'place-search'});
-    this.events.publish('SelectedItemInMenu', {
-      menuID: 'placeSearch',
-      component: 'place-search'
-    });
-    this.selectMusicAccordionItem();
-  }
-
-  ngOnDestroy() {
-    this.events.unsubscribe('language:change');
   }
 
   appHasMusicAccordionConfig() {

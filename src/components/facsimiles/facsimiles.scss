@@ -101,3 +101,10 @@ facsimiles {
 .mobile-mode-facsimiles facsimiles #facsimilies-image {
   padding-top: 1rem;
 }
+
+.mobile-mode-facsimiles facsimiles {
+    .leftFacsimileArrow,
+    .rightFacsimileArrowAndControls {
+        margin-top: -60px;
+    }
+}

@@ -80,19 +80,12 @@ export class FacsimilesComponent {
     public songService: SongService,
     private analyticsService: AnalyticsService
   ) {
-
     this.deRegisterEventListeners();
     this.registerEventListeners();
     this.manualPageNumber = 1;
     this.text = '';
     this.facsimiles = [];
     this.selectedFacsimileName = '';
-
-    const parts = String(this.itemId).split('_')
-    this.chapter = null;
-    if ( parts[2] !== undefined ) {
-      this.chapter = parts[2];
-    }
 
     if (this.params.get('facsimilePage') !== undefined) {
       this.facsimilePage = this.params.get('facsimilePage');
@@ -101,6 +94,13 @@ export class FacsimilesComponent {
     } else {
       this.facsimilePage = 0;
     }
+
+    try {
+      this.facsimilePagesInfinite = this.config.getSettings('settings.getFacsimilePagesInfinite');
+    } catch (e) {
+      this.facsimilePagesInfinite = false;
+    }
+
     try {
       this.facsimileDefaultZoomLevel = this.config.getSettings('settings.facsimileDefaultZoomLevel');
     } catch (e) {
@@ -117,8 +117,6 @@ export class FacsimilesComponent {
       this.facsBase = this.config.getSettings('app.facsimileBase');
     } catch (e) {
     }
-
-
   }
 
   openNewFacs(event: Event, id: any) {
@@ -141,33 +139,28 @@ export class FacsimilesComponent {
   }
 
   ngOnInit() {
+    const parts = String(this.itemId).split('_');
+    this.chapter = '';
+    if (parts[2] !== undefined) {
+      this.chapter = parts[2].split(';')[0];
+    }
 
     if (!this.selectedFacsimile) {
-      let getFacsimilePagesInfinite = false;
-      try {
-        getFacsimilePagesInfinite = this.config.getSettings('settings.getFacsimilePagesInfinite')
-      } catch (e) {
-      }
-
-      if (getFacsimilePagesInfinite) {
-        this.facsimilePagesInfinite = this.config.getSettings('settings.getFacsimilePagesInfinite');
-      }
-
       if (this.facsimilePagesInfinite) {
+        /* In the if-branches below the displayed facsimile image is set based on input, i.e. the facsimile component
+           has been opened through an emitted event. The default behaviour of the component is in the else-branch. */
         if (this.facsID && this.facsNr && this.songID) {
           this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
             this.config.getSettings('app.machineName') +
             `/song-example/page/image/${this.facsID}/`;
           this.facsNumber = this.facsNr;
-          this.facsSize = null
-
+          this.facsSize = null;
         } else if (this.facsID && this.facsNr) {
           this.facsUrl = this.config.getSettings('app.apiEndpoint') + '/' +
             this.config.getSettings('app.machineName') +
             `/facsimile/page/image/${this.facsID}/`;
           this.facsNumber = this.facsNr;
-          this.facsSize = null
-
+          this.facsSize = null;
         } else {
           this.facsSize = this.facsimileDefaultZoomLevel;
           this.getFacsimilePageInfinite();
@@ -184,22 +177,34 @@ export class FacsimilesComponent {
   getFacsimilePageInfinite() {
     this.facsimileService.getFacsimilePage(this.itemId).subscribe(
       facs => {
+        /* The facsimiles are returned ordered by priority (highest first) */
+        // console.log(facs);
+        const sectionId = this.chapter.replace('ch', '');
+        // console.log('sectionId', sectionId);
         if (facs.length > 0) {
           this.facsimiles = [];
-          if ( String(this.itemId).indexOf('ch') > 0 ) {
-            facs.forEach( fac => {
-              let section = String(this.itemId).split(';')[0];
-              section = String((String(section).split('_')[2]).replace('ch', ''));
-              if ( String(fac['section_id']) === section ) {
-                this.facsPage = fac;
+          if (this.chapter) {
+            /* Find facsimile with matching sectionId number AND lowest priority number */
+            let fPriority = 100000;
+            let fIndex = null;
+            for (let i = 0; i < facs.length; i++) {
+              if (i < 1) {
+                fPriority = facs[i]['priority'];
               }
-            });
-            if ( this.facsPage === undefined ) {
+              if (String(facs[i]['section_id']) === sectionId && facs[i]['priority'] <= fPriority) {
+                fPriority = facs[i]['priority'];
+                fIndex = i;
+              }
+            }
+            if (fIndex !== null && fIndex !== undefined) {
+              this.facsPage = facs[fIndex];
+            } else {
               this.facsPage = facs[0];
             }
           } else {
             this.facsPage = facs[0];
           }
+          // console.log('this.facsPage', this.facsPage);
 
           if (this.facsPage['external_url'] !== null && this.facsPage['external_url'] !== '' && this.facsPage['folder_path'] == null) {
             this.selectedFacsimileIsExternal = true;
@@ -218,12 +223,7 @@ export class FacsimilesComponent {
           this.selectedFacsimile.title = this.facsPage['title'];
           this.selectedFacsimileName = this.selectedFacsimile.title;
 
-          let sectionId = '';
-          if ( String(this.itemId).indexOf('ch') > 0 ) {
-            sectionId = String((String(String(this.itemId).split(';')[0]).split('_')[2]).replace('ch', ''));
-          }
-
-          // add all
+          // add all facsimiles to facsimiles array
           for (const f of facs) {
             const facsimile = new Facsimile(f);
             facsimile.itemId = this.itemId;
@@ -235,8 +235,8 @@ export class FacsimilesComponent {
               this.externalFacsimilesExist = true;
               this.externalURLs.push({'title': f['title'], 'url': f['external_url']});
             } else {
-              if ( sectionId !== '' ) {
-                if ( String(f['section_id']) === sectionId ) {
+              if (sectionId !== '') {
+                if (String(f['section_id']) === sectionId) {
                   this.facsimiles.push(facsimile);
                 }
               } else {
@@ -260,12 +260,16 @@ export class FacsimilesComponent {
               `/facsimiles/${this.facsPage['publication_facsimile_collection_id']}/`;
           }
 
+          /*
           if (this.facsimiles.length > 0) {
-            // console.log('recieved facsimiles (infinite) ,..,');
+            console.log('recieved facsimiles (infinite) ,..,');
           }
+          */
+          /*
           if (this.externalURLs.length > 0) {
-            // console.log('recieved external facsimiles ,...,');
+            console.log('recieved external facsimiles ,...,');
           }
+          */
         } else {
           this.translate.get('Read.Facsimiles.NoFacsimiles').subscribe(
             translation => {
@@ -278,8 +282,8 @@ export class FacsimilesComponent {
         }
       },
       error => {
-        console.error('Error loading facsimiles...');
-        this.errorMessage = <any>error
+        this.errorMessage = <any>error;
+        console.error('Error loading facsimiles...', String(this.errorMessage));
       }
     );
   }
@@ -290,7 +294,6 @@ export class FacsimilesComponent {
     }
     this.facsimileService.getFacsimiles(this.itemId, this.chapter).subscribe(
       facs => {
-        // in order to get id attributes for tooltips
         this.facsimiles = [];
         for (const f of facs) {
           const facsimile = new Facsimile(f);
@@ -357,7 +360,6 @@ export class FacsimilesComponent {
     if (facs === 'external') {
       this.selectedFacsimileIsExternal = true;
     } else if (facs) {
-
       this.selectedFacsimileIsExternal = false;
       this.selectedFacsimile = facs;
       this.selectedFacsimileName = this.selectedFacsimile.title;

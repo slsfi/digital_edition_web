@@ -5,8 +5,9 @@ import { TextService } from '../../app/services/texts/text.service';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { CommentService } from '../../app/services/comments/comment.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Events } from 'ionic-angular';
+import { Events, ModalController } from 'ionic-angular';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
+import { IllustrationPage } from '../../pages/illustration/illustration';
 /**
  * Class for the CommentsComponent component.
  *
@@ -42,7 +43,8 @@ export class CommentsComponent {
     private elementRef: ElementRef,
     private events: Events,
     private analyticsService: AnalyticsService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    protected modalController: ModalController
   ) {
   }
 
@@ -172,6 +174,16 @@ export class CommentsComponent {
                 this.scrollToComment(numId, targetElem);
               }
             }
+          }
+
+          // Check if click on a link to an illustration that should be opened in a modal
+          if (targetIsLink && targetElem.classList.contains('ref_illustration')) {
+            const illRefElem = targetElem as HTMLAnchorElement;
+            const hashNumber = illRefElem.hash;
+            const imageNumber = hashNumber.split('#')[1];
+            this.ngZone.run(() => {
+              this.openIllustration(imageNumber);
+            });
           }
         } catch (e) {}
       });
@@ -364,5 +376,16 @@ export class CommentsComponent {
       }
     }
     return names_str;
+  }
+
+  openIllustration(imageNumber) {
+    const modal = this.modalController.create(IllustrationPage,
+      { 'imageNumber': imageNumber },
+      { cssClass: 'foo' }
+    );
+    modal.present();
+    modal.onDidDismiss(data => {
+
+    });
   }
 }

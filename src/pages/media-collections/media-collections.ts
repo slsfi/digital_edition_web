@@ -331,9 +331,9 @@ export class MediaCollectionsPage {
     this.metadataService.addKeywords();
 
     this.events.publish('ionViewWillEnter', this.constructor.name);
-    this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'media-collections'});
+    this.events.publish('tableOfContents:unSelectSelectedTocItem', {selected: 'media-collections'});
     this.events.publish('SelectedItemInMenu', {
-      menuID: 'mediaCollections',
+      menuID: 'all',
       component: 'media-collections'
     });
   }

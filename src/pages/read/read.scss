@@ -297,8 +297,8 @@ page-read {
     padding: 6px;
   }
 
-  @media screen and (max-width: 800px) {
-    .read-columns__title {
+  @media screen and (max-width: 820px) {
+    .read-columns .read-column ion-card .read-columns__title {
       padding-left: 12px;
     }
     .scroll-zoom-wrapper {
@@ -336,6 +336,7 @@ ion-fab .fab-list-active .fab-backdrop {
   z-index: -1;
 }
 
+/* Make room for the text-changer at the bottom in mobile mode. */
 page-read .mobile-mode-read-content > .scroll-content {
   padding: 50px 0 50px 0 !important;
 }
@@ -370,7 +371,7 @@ page-read div.mobile-mode-facsimiles > facsimiles > div.tei {
 }
 
 
-@media(max-width: 800px) {
+@media(max-width: 820px) {
   ion-backdrop {
     visibility: visible !important;
     z-index: -2;

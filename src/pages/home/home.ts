@@ -9,6 +9,7 @@ import { LanguageService } from '../../app/services/languages/language.service';
 import { MdContentService } from '../../app/services/md/md-content.service';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { TextService } from '../../app/services/texts/text.service';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
  * HomePage is the first page user sees.
@@ -38,6 +39,7 @@ export class HomePage {
   portraitImageAltText = '';
   errorMessage: string;
   initLanguage: string;
+  languageSubscription: Subscription;
 
   constructor(
     public navCtrl: NavController,
@@ -111,24 +113,13 @@ export class HomePage {
     }
 
     this.imageUrlStyle = `url(${this.imageUrl})`;
-
-    this.events.subscribe('language:change', () => {
-      this.languageService.getLanguage().subscribe((lang) => {
-        this.appName = this.config.getSettings('app.name.' + lang);
-        const subTitle = this.config.getSettings('app.subTitle1.' + lang);
-        if ( subTitle !== '' ) {
-          this.appSubtitle = this.config.getSettings('app.subTitle1.' + lang);
-        } else {
-          this.appSubtitle = '';
-        }
-        this.getMdContent(lang + '-01');
-        this.getFooterMdContent(lang + '-06');
-      });
-    });
+    this.languageSubscription = null;
   }
 
   ngOnDestroy() {
-    this.events.unsubscribe('language:change');
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
   }
 
   ionViewWillLeave() {
@@ -142,21 +133,19 @@ export class HomePage {
       component: 'home'
     });
     this.events.publish('musicAccordion:reset', true);
-    this.languageService.getLanguage().subscribe((lang: string) => {
-      this.getMdContent(lang + '-01');
-      this.getFooterMdContent(lang + '-06');
-      this.appName = this.config.getSettings('app.name.' + lang);
-      const subTitle = this.config.getSettings('app.subTitle1.' + lang);
-      if ( subTitle !== '' ) {
-        this.appSubtitle = this.config.getSettings('app.subTitle1.' + lang);
-      } else {
-        this.appSubtitle = '';
-      }
-      this.events.publish('title-logo:setTitle', this.config.getSettings('app.page-title.' + lang));
-    });
   }
 
   ionViewDidLoad() {
+    this.languageSubscription = this.languageService.languageSubjectChange().subscribe(lang => {
+      if (lang) {
+        this.loadContent(lang);
+      } else {
+        this.languageService.getLanguage().subscribe(language => {
+          this.loadContent(language);
+        });
+      }
+    });
+
     /* Update the variables in textService that keep track of which texts have
        recently been opened in page-read. The purpose of this is to cause
        texts that are cached in storage to be cleared upon the next visit
@@ -166,6 +155,19 @@ export class HomePage {
       this.textService.previousReadViewTextId = this.textService.readViewTextId;
       this.textService.readViewTextId = '';
     }
+  }
+
+  loadContent(lang: string) {
+    this.getMdContent(lang + '-01');
+    this.getFooterMdContent(lang + '-06');
+    this.appName = this.config.getSettings('app.name.' + lang);
+    const subTitle = this.config.getSettings('app.subTitle1.' + lang);
+    if ( subTitle !== '' ) {
+      this.appSubtitle = this.config.getSettings('app.subTitle1.' + lang);
+    } else {
+      this.appSubtitle = '';
+    }
+    this.events.publish('title-logo:setTitle', this.config.getSettings('app.page-title.' + lang));
   }
 
   getMdContent(fileID: string) {
@@ -183,4 +185,5 @@ export class HomePage {
             error =>  {this.errorMessage = <any>error}
         );
   }
+
 }

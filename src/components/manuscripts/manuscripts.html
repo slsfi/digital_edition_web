@@ -7,6 +7,9 @@
     <!-- Doesn't always open the correct facsimile so hidden until further.
     <button ion-button outline (click)="openFacsimileMan($event, selectedManuscript)">{{"Read.Manuscripts.OpenFacsimile" | translate}}</button>
     -->
+    <button *ngIf="showOpenLegendButton" ion-button outline class="circular-icon-button align-right" (click)="openNewLegend($event)" [title]="legendTitle">
+      <ion-icon name="help"></ion-icon>
+    </button>
   </div>
   <ion-item class="show-normalized-toggle">
     <ion-label>{{"Read.Manuscripts.ShowNormalized" | translate}}</ion-label>

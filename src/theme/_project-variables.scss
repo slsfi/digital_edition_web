@@ -11,11 +11,15 @@
 
 // CUSTOM FONT SIZE VARIABLES
 // --------------------------------------------------
+$text-fontsize-mini:            12px; // 0.75rem;   => Only for print
+$text-fontsize-tiny:            13px; // 0.8125rem; => Only for print
+$text-fontsize-xxxsmall:        14px; // 0.875rem;  => Only for print
+$text-fontsize-xxsmall:         15px; // 0.9375rem; => Only for print
 $text-fontsize-xsmall:          16px; // 1rem;
 $text-fontsize-small:           17px; // 1.0625rem;
 $text-fontsize-medium:          18px; // 1.125rem;
-$text-fontsize-large:           19px; // 1.1875rem;
-$text-fontsize-xlarge:          21px; // 1.3125rem;
+$text-fontsize-large:           19px; // 1.1875rem; => Not for print
+$text-fontsize-xlarge:          21px; // 1.3125rem; => Not for print
 
 
 
@@ -86,6 +90,15 @@ $opacity-hover-transition: opacity 0.2s;
   --abbreviations-color-rgb:         255, 226, 250;
   --pageBreakOriginal-color:       #c34be1;
   --pageBreakEdition-color:        #d58205;
+
+  // Variant category colors
+  --lemma-identical-variant-background-color: #fff1b9;
+  --orthographic-variant-background-color:    #eee6ff;
+  --interpunction-variant-background-color:   #dbf0ec;
+  --substantial-variant-background-color:     #fee0e2;
+  --error-variant-background-color:           #f3c598;
+  --typographic-variant-background-color:     #f6e65b;
+  --variant-background-color:                 #c5c5c5;
 
   // TOC, i.e. the left navigation
   --toc-text-color:                           var(--dark-color);
@@ -232,42 +245,11 @@ p {
   cursor: pointer;
 }
 
-/* Den okände von Wright, tidslinje-tabell i markdown*/
-/* feta den första kolumnen */
-div.md_content markdown td:first-child {}
 div.md_content markdown td {
   padding: 0.5em;
   line-height: 1.4;
   vertical-align: top;
 }
-
-/* Style the button that is used to open and close the collapsible content */
-/* RADERA: torde vara en kvarleva från gamla eZTS
-.collapsibleToggler {
-  background-color: #F0F0F0;
-  color: #d47f00;
-  cursor: pointer;
-  padding: 0;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 1.3em;
-  font-family: Georgia, serif;
-} */
-
-/* Add a background color to the button when you move the mouse over it (hover)
-.collapsibleToggler:hover {
-  background-color: #E8E8E8;
-} */
-
-/* Style the collapsible content. Note: hidden by default
-.collapsibleContent {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
-} */
-
-
 
 /* ??? */
 ion-list-header ion-label {
