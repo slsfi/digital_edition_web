@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectorRef, ChangeDetectionStrategy, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectorRef, ChangeDetectionStrategy, ViewEncapsulation, OnInit, NgZone } from '@angular/core';
 import { Platform, Events, App, LoadingController } from 'ionic-angular';
 import { MenuOptionModel } from '../../app/models/menu-option.model';
 import { SideMenuSettings } from '../../app/models/side-menu-settings';
@@ -14,6 +14,7 @@ import { ThrowStmt } from '@angular/compiler';
 import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MetadataService } from '../../app/services/metadata/metadata.service';
 import { TextService } from '../../app/services/texts/text.service';
+import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
 
 @Component({
   selector: 'table-of-contents-accordion',
@@ -37,86 +38,91 @@ export class TableOfContentsAccordionComponent {
     searchTitle?: String
   }) {
     // console.log('toc accordion options:', value);
-    if (value && value.toc && value.toc.length > 0) {
-      if (value.searchTocItem !== undefined && value.searchTocItem === true) {
-        this.searchingForTocItem = true;
-      }
-      this.menuOptions = value.toc;
-      this.collapsableItems = new Array<InnerMenuOptionModel>();
+    if (this.alphabethicOrderActive && this.sortableLetters.includes(this.collectionId)) {
+      this.activeMenuTree = this.alphabeticalactiveMenuTree;
+      this.textService.activeTocOrder = 'alphabetical';
+    } else if (this.chronologicalOrderActive && this.sortableLetters.includes(this.collectionId)) {
+      this.activeMenuTree = this.chronologicalactiveMenuTree;
+      this.textService.activeTocOrder = 'chronological';
+    } else {
+      this.textService.activeTocOrder = 'thematic';
+      if (value && value.toc && value.toc.length > 0) {
+        if (value.searchTocItem !== undefined && value.searchTocItem === true) {
+          this.searchingForTocItem = true;
+        }
+        this.menuOptions = value.toc;
+        this.collapsableItems = new Array<InnerMenuOptionModel>();
 
-      let foundSelected = false;
-      // Map the options to our internal models
-      this.menuOptions.forEach(option => {
-        const innerMenuOption = InnerMenuOptionModel.fromMenuOptionModel(option, null, false, value.searchTocItem);
-        // console.log(innerMenuOption);
-        if ( this.collapsableItems.indexOf(innerMenuOption) === -1 ) {
-          this.collapsableItems.push(innerMenuOption);
+        let foundSelected = false;
+        // Map the options to our internal models
+        this.menuOptions.forEach(option => {
+          const innerMenuOption = InnerMenuOptionModel.fromMenuOptionModel(option, null, false, value.searchTocItem);
+          // console.log(innerMenuOption);
+          if ( this.collapsableItems.indexOf(innerMenuOption) === -1 ) {
+            this.collapsableItems.push(innerMenuOption);
+          }
+
+          // Check if there's any option marked as selected
+          if (option.selected) {
+            this.selectedOption = innerMenuOption;
+            foundSelected = true;
+          } else if (innerMenuOption.childrenCount) {
+            innerMenuOption.subOptions.forEach(subItem => {
+              if (subItem.selected) {
+                this.selectedOption = subItem;
+                foundSelected = true;
+              }
+            });
+          }
+        });
+
+        if ( !foundSelected ) {
+        } else {
+          console.log('accordion toc options input: found menu item');
         }
 
-        // Check if there's any option marked as selected
-        if (option.selected) {
-          this.selectedOption = innerMenuOption;
-          foundSelected = true;
-        } else if (innerMenuOption.childrenCount) {
-          innerMenuOption.subOptions.forEach(subItem => {
-            if (subItem.selected) {
-              this.selectedOption = subItem;
-              foundSelected = true;
+        if (value.searchTocItem !== undefined && value.searchTocItem) {
+          // Find toc item and open its parents
+          if (value.searchItemId) {
+            value.searchItemId = String(value.searchItemId).replace('_nochapter', '').replace(':chapterID', '');
+            // Try to find the correct position in the TOC. If not found, try to find the nearest.
+            if ( this.findTocByPubOnly(this.collapsableItems, value.searchItemId) === false ) {
+              // try to find without position
+              value.searchItemId = String(value.searchItemId).split(';')[0];
+              if (this.findTocByPubOnly(this.collapsableItems, value.searchItemId) === false
+              && value.searchItemId.split('_').length > 2) {
+                // try to find without chapter if any
+                value.searchItemId = String(value.searchItemId).slice(0, String(value.searchItemId).lastIndexOf('_'));
+                this.findTocByPubOnly(this.collapsableItems, value.searchItemId);
+              }
             }
-          });
-        }
-      });
-
-      if ( !foundSelected ) {
-      } else {
-        console.log('accordion toc options input: found menu item');
-      }
-
-      if (value.searchTocItem !== undefined && value.searchTocItem) {
-        // Find toc item and open its parents
-        if (value.searchItemId) {
-          value.searchItemId = String(value.searchItemId).replace('_nochapter', '').replace(':chapterID', '');
-          if ( String(value.searchItemId).indexOf(';pos') !== -1 ) {
-            // Remove the position anchor from search if defined
-            // value.searchItemId = String(value.searchItemId).split(';pos')[0];
+            this.events.publish('typesAccordion:change', {
+              expand: true
+            });
+          } else if (value.searchPublicationId && value.searchTitle) {
+            this.findTocByPubAndTitle(this.collapsableItems, value.searchPublicationId, value.searchTitle);
+            this.events.publish('typesAccordion:change', {
+              expand: true
+            });
           }
-          // Try to find the correct position in the TOC. If not found, try to find the nearest.
-          if ( this.findTocByPubOnly(this.collapsableItems, value.searchItemId) === false ) {
-            value.searchItemId = String(value.searchItemId).split(';pos')[0];
-            this.findTocByPubOnly(this.collapsableItems, value.searchItemId);
-          }
-          this.events.publish('typesAccordion:change', {
-            expand: true
-          });
-        } else if (value.searchPublicationId && value.searchTitle) {
-          this.findTocByPubAndTitle(this.collapsableItems, value.searchPublicationId, value.searchTitle);
-          this.events.publish('typesAccordion:change', {
-            expand: true
-          });
-        }
 
-        /**
-         * ! SK 18.5.2022 I'm disabling this emptying of children in other branches for now since
-         * ! it causes several problems that I haven't found workarounds for yet. Rendering doesn't
-         * ! seem to be slower, so I'm not sure this is even necessary.
-         */
-
-        if (this.foundTocItem) {
-          // Empty children in all other branches in this toc tree for faster rendering
-          // If collapsable item is important, it's only showing necessary parents and children for current toc item
-          for (let i = 0; i < this.collapsableItems.length; i++) {
-            if (!this.collapsableItems[i].important) {
-              const innerMenuOptionWithoutChildren = InnerMenuOptionModel.fromMenuOptionModel(this.menuOptions[i], null, false, false);
-              this.collapsableItems[i] = innerMenuOptionWithoutChildren;
+          if (this.foundTocItem) {
+            // Empty children in all other branches in this toc tree for faster rendering
+            // If collapsable item is important, it's only showing necessary parents and children for current toc item
+            for (let i = 0; i < this.collapsableItems.length; i++) {
+              if (!this.collapsableItems[i].important) {
+                const innerMenuOptionWithoutChildren = InnerMenuOptionModel.fromMenuOptionModel(this.menuOptions[i], null, false, false);
+                this.collapsableItems[i] = innerMenuOptionWithoutChildren;
+              }
             }
+            // console.log('collapsable items', this.collapsableItems);
           }
-          // console.log('collapsable items', this.collapsableItems);
-        }
 
+        }
+        this.searchingForTocItem = false;
       }
-      this.searchingForTocItem = false;
+      this.activeMenuTree = this.collapsableItems;
     }
-    this.activeMenuTree = this.collapsableItems;
   }
 
   @Input('settings')
@@ -170,10 +176,7 @@ export class TableOfContentsAccordionComponent {
   visibleTitleStack = [];
 
   chronologicalactiveMenuTree = [];
-  chronologicalTitleStack = [];
-
   alphabeticalactiveMenuTree: any[];
-  alphabeticalTitleStack: any[];
 
   activeMenuTree = [];
 
@@ -192,35 +195,58 @@ export class TableOfContentsAccordionComponent {
     public userSettingsService: UserSettingsService,
     public translate: TranslateService,
     public metadataService: MetadataService,
-    protected textService: TextService
+    protected textService: TextService,
+    public tocService: TableOfContentsService,
+    private ngZone: NgZone
   ) {
   }
 
   constructAlphabeticalTOC(data) {
     this.alphabeticalactiveMenuTree = [];
-    this.alphabeticalTitleStack = [];
+    const itemArray = [];
     const list = this.flattenList(data.tocItems);
 
     for (const child of list) {
       if (child.type === 'est' && child.itemId) {
-        this.alphabeticalactiveMenuTree.push(child);
+        itemArray.push(child);
       }
     }
 
-    this.alphabeticalactiveMenuTree.sort(
+    itemArray.sort(
       (a, b) =>
         (a.text !== undefined && b.text !== undefined) ?
           ((String(a.text).toUpperCase() < String(b.text).toUpperCase()) ? -1 :
           (String(a.text).toUpperCase() > String(b.text).toUpperCase()) ? 1 : 0) : 0
     );
+
+    this.alphabeticalactiveMenuTree = new Array<InnerMenuOptionModel>();
+
+    // Map the options to our internal models
+    itemArray.forEach(option => {
+      const innerMenuOption = InnerMenuOptionModel.fromMenuOptionModel(option, null, false, false);
+      if ( this.alphabeticalactiveMenuTree.indexOf(innerMenuOption) === -1 ) {
+        this.alphabeticalactiveMenuTree.push(innerMenuOption);
+      }
+
+      // Check if there's any option marked as selected
+      if (option.selected) {
+        option.selected = false;
+      } else if (innerMenuOption.childrenCount) {
+        innerMenuOption.subOptions.forEach(subItem => {
+          if (subItem.selected) {
+            subItem.selected = false;
+          }
+        });
+      }
+    });
+
     if (data['collectionID']) {
-      this.storage.set('toc_alfabetical_' + data['collectionID'], this.alphabeticalactiveMenuTree);
+      this.storage.set('toc_alphabetical_' + data['collectionID'], this.alphabeticalactiveMenuTree);
     }
   }
 
   constructChronologicalTOC(data) {
     this.chronologicalactiveMenuTree = [];
-    this.chronologicalTitleStack = [];
 
     const list = this.flattenList(data.tocItems);
 
@@ -240,27 +266,48 @@ export class TableOfContentsAccordionComponent {
       const currentYear = String(item['date']).slice(0, 4);
       if ( prevYear === '' ) {
         prevYear = currentYear;
-        itemArray.push({type: 'section_title', text: prevYear, subOptions: []});
+        itemArray.push({type: 'subtitle', collapsed: true, text: prevYear, children: []});
       }
 
       if ( prevYear !==  currentYear ) {
-        itemArray[itemArray.length - 1].subOptions = childItems;
+        itemArray[itemArray.length - 1].children = childItems;
         itemArray[itemArray.length - 1].childrenCount = true;
         childItems = [];
         prevYear = currentYear;
-        itemArray.push({type: 'section_title', text: prevYear});
+        itemArray.push({type: 'subtitle', collapsed: true, text: prevYear});
       }
       childItems.push(this.chronologicalactiveMenuTree[i]);
     }
     if ( itemArray.length > 0 ) {
-      itemArray[itemArray.length - 1].subOptions = childItems;
+      itemArray[itemArray.length - 1].children = childItems;
       itemArray[itemArray.length - 1].childrenCount = true;
     } else {
       itemArray[0] = {};
-      itemArray[0].subOptions = childItems;
+      itemArray[0].children = childItems;
       itemArray[0].childrenCount = true;
     }
-    this.chronologicalactiveMenuTree = itemArray;
+
+    this.chronologicalactiveMenuTree = new Array<InnerMenuOptionModel>();
+
+    // Map the options to our internal models
+    itemArray.forEach(option => {
+      const innerMenuOption = InnerMenuOptionModel.fromMenuOptionModel(option, null, false, false);
+      if ( this.chronologicalactiveMenuTree.indexOf(innerMenuOption) === -1 ) {
+        this.chronologicalactiveMenuTree.push(innerMenuOption);
+      }
+
+      // Check if there's any option marked as selected
+      if (option.selected) {
+        option.selected = false;
+      } else if (innerMenuOption.childrenCount) {
+        innerMenuOption.subOptions.forEach(subItem => {
+          if (subItem.selected) {
+            subItem.selected = false;
+          }
+        });
+      }
+    });
+
     if (data['collectionID']) {
       this.storage.set('toc_chronological_' + data['collectionID'], this.chronologicalactiveMenuTree);
     }
@@ -279,22 +326,106 @@ export class TableOfContentsAccordionComponent {
   }
 
   setActiveSortingType(type) {
-    if (type === 'thematic') {
-        this.alphabethicOrderActive = false;
-        this.chronologicalOrderActive = false;
-        this.thematicOrderActive = true;
-        this.activeMenuTree = this.collapsableItems;
-    } else if (type === 'alphabetical') {
-        this.alphabethicOrderActive = true;
-        this.chronologicalOrderActive = false;
-        this.thematicOrderActive = false;
-        this.activeMenuTree = this.alphabeticalactiveMenuTree;
+    if (type === 'alphabetical') {
+      this.textService.activeTocOrder = 'alphabetical';
+      this.alphabethicOrderActive = true;
+      this.chronologicalOrderActive = false;
+      this.thematicOrderActive = false;
+      this.storage.get('toc_alphabetical_' + this.collectionId).then((storageToc) => {
+        if ( storageToc === null || storageToc === undefined ) {
+          this.tocService.getTableOfContents(this.collectionId).subscribe(
+            toc => {
+              const data = {
+                collectionID: this.collectionId,
+                tocItems: toc
+              };
+              this.constructAlphabeticalTOC(data);
+              if (this.currentOption && this.currentOption.itemId) {
+                this.unSelectAllItems(this.alphabeticalactiveMenuTree);
+                this.selectOneItem(this.currentOption.itemId, this.alphabeticalactiveMenuTree);
+              }
+              this.activeMenuTree = this.alphabeticalactiveMenuTree;
+              this.cdRef.detectChanges();
+              this.events.publish('tocActiveSorting', type);
+            }
+          );
+        } else {
+          this.alphabeticalactiveMenuTree = storageToc;
+          if (this.currentOption && this.currentOption.itemId) {
+            this.unSelectAllItems(this.alphabeticalactiveMenuTree);
+            this.selectOneItem(this.currentOption.itemId, this.alphabeticalactiveMenuTree);
+          }
+          this.activeMenuTree = this.alphabeticalactiveMenuTree;
+          this.cdRef.detectChanges();
+          this.events.publish('tocActiveSorting', type);
+        }
+      });
     } else if (type === 'chronological') {
-        this.alphabethicOrderActive = false;
-        this.chronologicalOrderActive = true;
-        this.thematicOrderActive = false;
-        this.activeMenuTree = this.chronologicalactiveMenuTree;
+      this.textService.activeTocOrder = 'chronological';
+      this.alphabethicOrderActive = false;
+      this.chronologicalOrderActive = true;
+      this.thematicOrderActive = false;
+      this.storage.get('toc_chronological_' + this.collectionId).then((storageToc) => {
+        if ( storageToc === null || storageToc === undefined ) {
+          this.tocService.getTableOfContents(this.collectionId).subscribe(
+            toc => {
+              const data = {
+                collectionID: this.collectionId,
+                tocItems: toc
+              };
+              this.constructChronologicalTOC(data);
+              if (this.currentOption && this.currentOption.itemId) {
+                this.unSelectAllItems(this.chronologicalactiveMenuTree);
+                this.selectOneItem(this.currentOption.itemId, this.chronologicalactiveMenuTree);
+              }
+              this.activeMenuTree = this.chronologicalactiveMenuTree;
+              this.cdRef.detectChanges();
+              this.events.publish('tocActiveSorting', type);
+            }
+          );
+        } else {
+          this.chronologicalactiveMenuTree = storageToc;
+          if (this.currentOption && this.currentOption.itemId) {
+            this.unSelectAllItems(this.chronologicalactiveMenuTree);
+            this.selectOneItem(this.currentOption.itemId, this.chronologicalactiveMenuTree);
+          }
+          this.activeMenuTree = this.chronologicalactiveMenuTree;
+          this.cdRef.detectChanges();
+          this.events.publish('tocActiveSorting', type);
+        }
+      });
+    } else {
+      this.textService.activeTocOrder = 'thematic';
+      this.alphabethicOrderActive = false;
+      this.chronologicalOrderActive = false;
+      this.thematicOrderActive = true;
+      if (this.currentOption && this.currentOption.itemId) {
+        this.unSelectAllItems(this.collapsableItems);
+        this.selectOneItem(this.currentOption.itemId, this.collapsableItems);
+      }
+      this.activeMenuTree = this.collapsableItems;
+      this.cdRef.detectChanges();
+      this.events.publish('tocActiveSorting', 'thematic');
     }
+    this.ngZone.runOutsideAngular(() => {
+      setTimeout(function () {
+        try {
+          if (this.currentOption && this.currentOption.itemId) {
+            const itemId = 'toc_' + this.currentOption.itemId;
+            let foundElem = document.getElementById(itemId);
+            if (foundElem === null) {
+              // Scroll to toc item without position
+              foundElem = document.getElementById(itemId.split(';').shift());
+            }
+            if (foundElem) {
+              this.scrollElementIntoView(foundElem);
+            }
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }.bind(this), 1000);
+    });
   }
 
   ngOnChanges(about) {
@@ -329,15 +460,6 @@ export class TableOfContentsAccordionComponent {
         }
       });
 
-      /*
-      if (this.alphabethicOrderActive) {
-        this.activeMenuTree = this.alphabeticalactiveMenuTree;
-      } else if (this.chronologicalOrderActive) {
-        this.activeMenuTree = this.chronologicalactiveMenuTree;
-      } else {
-        this.activeMenuTree = this.collapsableItems;
-      }
-      */
       this.activeMenuTree = this.collapsableItems;
       this.cdRef.detectChanges();
     }
@@ -353,6 +475,14 @@ export class TableOfContentsAccordionComponent {
       } else if ( this.hasIntro && this.defaultSelectedItem === 'introduction' ) {
         this.introductionSelected = true;
       }
+    }
+
+    if (this.alphabethicOrderActive && this.sortableLetters.includes(this.collectionId)) {
+      this.textService.activeTocOrder = 'alphabetical';
+    } else if (this.chronologicalOrderActive && this.sortableLetters.includes(this.collectionId)) {
+      this.textService.activeTocOrder = 'chronological';
+    } else {
+      this.textService.activeTocOrder = 'thematic';
     }
     // console.log('ngOnChanges this.activeMenuTree', this.activeMenuTree);
   }
@@ -443,20 +573,22 @@ export class TableOfContentsAccordionComponent {
 
   registerEventListeners() {
     this.events.subscribe('tableOfContents:loaded', (data) => {
-      this.storage.get('toc_alfabetical_' + data['collectionID']).then((toc) => {
-        if ( toc === null || toc === undefined ) {
-          this.constructAlphabeticalTOC(data);
-        } else {
-          this.alphabeticalactiveMenuTree = toc;
-        }
-      });
-      this.storage.get('toc_chronological_' + data['collectionID']).then((toc) => {
-        if ( toc === null || toc === undefined ) {
-          this.constructChronologicalTOC(data);
-        } else {
-          this.chronologicalactiveMenuTree = toc;
-        }
-      });
+      if (this.sortableLetters.includes(this.collectionId)) {
+        this.storage.get('toc_alphabetical_' + data['collectionID']).then((toc) => {
+          if ( toc === null || toc === undefined ) {
+            this.constructAlphabeticalTOC(data);
+          } else {
+            this.alphabeticalactiveMenuTree = toc;
+          }
+        });
+        this.storage.get('toc_chronological_' + data['collectionID']).then((toc) => {
+          if ( toc === null || toc === undefined ) {
+            this.constructChronologicalTOC(data);
+          } else {
+            this.chronologicalactiveMenuTree = toc;
+          }
+        });
+      }
     });
 
     this.events.subscribe(SideMenuRedirectEvent, (data: SideMenuRedirectEventData) => {
@@ -527,12 +659,15 @@ export class TableOfContentsAccordionComponent {
       if (this.alphabethicOrderActive) {
         this.unSelectAllItems(this.alphabeticalactiveMenuTree);
         this.selectOneItem(itemId, this.alphabeticalactiveMenuTree);
+        this.activeMenuTree = this.alphabeticalactiveMenuTree;
       } else if (this.chronologicalOrderActive) {
         this.unSelectAllItems(this.chronologicalactiveMenuTree);
         this.selectOneItem(itemId, this.chronologicalactiveMenuTree);
+        this.activeMenuTree = this.chronologicalactiveMenuTree;
       } else {
         this.unSelectAllItems(this.collapsableItems);
         this.selectOneItem(itemId, this.collapsableItems);
+        this.activeMenuTree = this.collapsableItems;
       }
       this.cdRef.detectChanges();
     });
@@ -570,7 +705,7 @@ export class TableOfContentsAccordionComponent {
       if (!data) {
         return;
       }
-      this.unSelectAllItems(this.collapsableItems);
+      this.unSelectAllItemsByActiveMenuTree();
       this.cdRef.detectChanges();
     });
   }
@@ -697,11 +832,11 @@ export class TableOfContentsAccordionComponent {
     if (isInnerMenuOptionItem) {
       this.foundSelectedTocItem = true;
       this.selectedTocItem = item;
-      console.log('selecting toc item: ', item);
+      // console.log('selecting toc item: ', item);
     } else {
       this.foundSelectedTocItem = false;
       this.getSelectedTocItemByItemId(this.activeMenuTree, item);
-      console.log('selecting toc page-read item: ', item, this.selectedTocItem);
+      // console.log('selecting toc page-read item: ', item, this.selectedTocItem);
     }
 
     if (this.foundSelectedTocItem && this.selectedTocItem) {
@@ -712,7 +847,13 @@ export class TableOfContentsAccordionComponent {
       this.selectedTocItem.selected = true;
       this.currentOption = this.selectedTocItem;
 
-      this.unSelectOptions(this.collapsableItems);
+      if (this.alphabethicOrderActive) {
+        this.unSelectOptions(this.alphabeticalactiveMenuTree);
+      } else if (this.chronologicalOrderActive) {
+        this.unSelectOptions(this.chronologicalactiveMenuTree);
+      } else {
+        this.unSelectOptions(this.collapsableItems);
+      }
       this.coverSelected = false;
       this.titleSelected = false;
       this.forewordSelected = false;
@@ -894,6 +1035,8 @@ export class TableOfContentsAccordionComponent {
     this.titleSelected = false;
     this.forewordSelected = false;
     this.introductionSelected = true;
+    this.currentOption = null;
+    this.unSelectAllItemsByActiveMenuTree();
     const nav = this.app.getActiveNavs();
     if (this.platform.is('mobile')) {
       nav[0].push('introduction', params);
@@ -910,6 +1053,8 @@ export class TableOfContentsAccordionComponent {
     this.titleSelected = false;
     this.forewordSelected = true;
     this.introductionSelected = false;
+    this.currentOption = null;
+    this.unSelectAllItemsByActiveMenuTree();
     const nav = this.app.getActiveNavs();
     if (this.platform.is('mobile')) {
       nav[0].push('foreword-page', params);
@@ -926,6 +1071,8 @@ export class TableOfContentsAccordionComponent {
     this.titleSelected = true;
     this.forewordSelected = false;
     this.introductionSelected = false;
+    this.currentOption = null;
+    this.unSelectAllItemsByActiveMenuTree();
     const nav = this.app.getActiveNavs();
     if (this.platform.is('mobile')) {
       nav[0].push('title-page', params);
@@ -942,6 +1089,8 @@ export class TableOfContentsAccordionComponent {
     this.titleSelected = false;
     this.forewordSelected = false;
     this.introductionSelected = false;
+    this.currentOption = null;
+    this.unSelectAllItemsByActiveMenuTree();
     const nav = this.app.getActiveNavs();
     if (this.platform.is('mobile')) {
       nav[0].push('cover-page', params);
@@ -996,12 +1145,27 @@ export class TableOfContentsAccordionComponent {
         item.selected = false;
       }
     }
+    if (this.currentOption) {
+      this.currentOption.selected = false;
+    }
+  }
+
+  unSelectAllItemsByActiveMenuTree() {
+    if (this.alphabethicOrderActive) {
+      this.unSelectAllItems(this.alphabeticalactiveMenuTree);
+    } else if (this.chronologicalOrderActive) {
+      this.unSelectAllItems(this.chronologicalactiveMenuTree);
+    } else {
+      this.unSelectAllItems(this.collapsableItems);
+    }
+    this.cdRef.detectChanges();
   }
 
   exit() {
     this.alphabethicOrderActive = false;
     this.chronologicalOrderActive = false;
     this.thematicOrderActive = false;
+    this.textService.activeTocOrder = 'thematic';
     this.resetTocAccordionScroll();
     this.events.publish('exitActiveCollection');
     const params = {};
@@ -1026,11 +1190,11 @@ export class TableOfContentsAccordionComponent {
     if (isInnerMenuOptionItem) {
       this.foundSelectedTocItem = true;
       this.selectedTocItem = item;
-      console.log('toggling toc item: ', item);
+      // console.log('toggling toc item: ', item);
     } else {
       this.foundSelectedTocItem = false;
       this.getSelectedTocItemByItemId(this.activeMenuTree, item);
-      console.log('toggling toc item: ', item, this.selectedTocItem);
+      // console.log('toggling toc item: ', item, this.selectedTocItem);
     }
 
     // Fetch suboptions if item doesn't have them already
@@ -1254,6 +1418,44 @@ export class TableOfContentsAccordionComponent {
 
   public isDefinedAndPositive(property: any): boolean {
     return this.isDefined(property) && !isNaN(property) && property > 0;
+  }
+
+  /**
+   * This function can be used to scroll a container so that the element which it
+   * contains is placed either at the top edge of the container or in the center
+   * of the container. This function can be called multiple times simultaneously
+   * on elements in different containers, unlike the native scrollIntoView function
+   * which cannot be called multiple times simultaneously in Chrome due to a bug.
+   * Valid values for yPosition are 'top' and 'center'. The scroll behavior can
+   * either be 'auto' or the default 'smooth'.
+   */
+   private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0, scrollBehavior = 'smooth') {
+    if (element === undefined || element === null || (yPosition !== 'center' && yPosition !== 'top')) {
+      return;
+    }
+    // Find the scrollable container of the element which is to be scrolled into view
+    let container = element.parentElement;
+    while (container !== null && container.parentElement !== null &&
+      !container.classList.contains('scroll-content')) {
+      container = container.parentElement;
+    }
+    if (container === null || container.parentElement === null) {
+      return;
+    }
+
+    const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
+    let baseOffset = 10;
+    if (yPosition === 'center') {
+      baseOffset = Math.floor(container.offsetHeight / 2);
+      if (baseOffset > 45) {
+        baseOffset = baseOffset - 45;
+      }
+    }
+    if (scrollBehavior === 'smooth') {
+      container.scrollTo({top: y - baseOffset - offset, behavior: 'smooth'});
+    } else {
+      container.scrollTo({top: y - baseOffset - offset, behavior: 'auto'});
+    }
   }
 
 }

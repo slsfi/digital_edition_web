@@ -188,7 +188,7 @@ export class ReadPage /*implements OnDestroy*/ {
     public modalCtrl: ModalController,
     private sanitizer: DomSanitizer,
     private tooltipService: TooltipService,
-    private tocService: TableOfContentsService,
+    public tocService: TableOfContentsService,
     public translate: TranslateService,
     private langService: LanguageService,
     private events: Events,
@@ -469,7 +469,7 @@ export class ReadPage /*implements OnDestroy*/ {
       /* This is triggered when the publication chapter that should be opened in page-read
          is the same as the previous, only with a different text position. Then page-read
          is not reloaded, but the read-text is just scrolled to the correct position. */
-      console.log('Scrolling to new position in read text', params.tocLinkId);
+      console.log('Scrolling to new position in read text');
 
       const idParts = params.tocLinkId.split(';');
       if (idParts.length > 1 && idParts[1]) {
@@ -480,7 +480,19 @@ export class ReadPage /*implements OnDestroy*/ {
         this.updatePositionInURL(params.tocLinkId);
 
         const posId = idParts[1];
-        this.scrollReadTextToAnchorPosition(posId);
+        this.ngZone.runOutsideAngular(() => {
+          try {
+            this.scrollReadTextToAnchorPosition(posId);
+            const itemId = 'toc_' + this.establishedText.link;
+            let foundElem = document.getElementById(itemId);
+            if (foundElem === null) {
+              // Scroll to toc item without position
+              foundElem = document.getElementById(itemId.split(';').shift());
+            }
+            this.scrollToTOC(foundElem);
+          } catch (e) {
+          }
+        });
       } else {
         // No position in params --> reload the view with the given params
         const nav = this.app.getActiveNavs();
@@ -607,14 +619,6 @@ export class ReadPage /*implements OnDestroy*/ {
             tocItems.selectedPubId = this.params.get('publicationID');
           }
 
-          /** @TODO If the chapterID contains a position which is not in the TOC
-           *  the search for correct toc item will fail. If there is a position,
-           *  and the search doesn't find matches, the chapterID should be stripped
-           *  of position and a new search for toc item be carried out.
-           *
-           *  Also, refreshing pages with nochapter doesn't select the correct toc
-           *  item.
-           */
           const chIDFromParams = this.params.get('chapterID');
           if (chIDFromParams !== undefined
           && chIDFromParams !== null
