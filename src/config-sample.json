@@ -570,5 +570,12 @@
             "print": true
         },
         "usePrintNotDownloadIcon": false
+    },
+    "showDisplayOptionsButton": {
+        "pageTitle": true,
+        "pageForeword": true,
+        "pageIntroduction": true,
+        "pageRead": true,
+        "pageEpub": true
     }
 }

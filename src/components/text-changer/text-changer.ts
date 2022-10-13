@@ -440,12 +440,15 @@ export class TextChangerComponent {
       this.legacyId = this.params.get('collectionID');
       if (this.params.get('publicationID') !== undefined) {
         this.legacyId += '_' + this.params.get('publicationID')
-        if (this.params.get('chapterID') !== undefined && this.params.get('chapterID') !== 'nochapter') {
+        if (this.params.get('chapterID') !== undefined
+        && this.params.get('chapterID') !== 'nochapter'
+        && this.params.get('chapterID') !== ':chapterID'
+        && this.params.get('chapterID') !== '%3AchapterID') {
           this.legacyId += '_' + this.params.get('chapterID');
         }
       }
     }
-    this.legacyId = String(this.legacyId);
+    this.legacyId = String(this.legacyId).replace('_nochapter', '').replace(':chapterID', '').replace('%3AchapterID', '');
   }
 
   findNext(toc) {

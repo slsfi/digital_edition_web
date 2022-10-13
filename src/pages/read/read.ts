@@ -269,7 +269,7 @@ export class ReadPage /*implements OnDestroy*/ {
         textDownloadOptions.enabledEstablishedFormats !== null &&
         Object.keys(textDownloadOptions.enabledEstablishedFormats).length !== 0) {
           for (const [key, value] of Object.entries(textDownloadOptions.enabledEstablishedFormats)) {
-            if (`${value}`) {
+            if (value) {
               this.showTextDownloadButton = true;
               break;
             }
@@ -280,7 +280,7 @@ export class ReadPage /*implements OnDestroy*/ {
           textDownloadOptions.enabledCommentsFormats !== null &&
           Object.keys(textDownloadOptions.enabledCommentsFormats).length !== 0) {
             for (const [key, value] of Object.entries(textDownloadOptions.enabledCommentsFormats)) {
-              if (`${value}`) {
+              if (value) {
                 this.showTextDownloadButton = true;
                 break;
               }
@@ -524,19 +524,31 @@ export class ReadPage /*implements OnDestroy*/ {
 
   ngAfterViewInit() {
     this.ngZone.runOutsideAngular(() => {
-      setTimeout(function () {
+      let iterationsLeft = 6;
+      clearInterval(this.intervalTimerId);
+      this.intervalTimerId = window.setInterval(function() {
         try {
-          const itemId = 'toc_' + this.establishedText.link;
-          let foundElem = document.getElementById(itemId);
-          if (foundElem === null) {
-            // Scroll to toc item without position
-            foundElem = document.getElementById(itemId.split(';').shift());
+          if (iterationsLeft < 1) {
+            clearInterval(this.intervalTimerId);
+          } else {
+            iterationsLeft -= 1;
+            if (this.establishedText && this.establishedText.link) {
+              const itemId = 'toc_' + this.establishedText.link;
+              let foundElem = document.getElementById(itemId);
+              if (foundElem === null || foundElem === undefined) {
+                // Scroll to toc item without position
+                foundElem = document.getElementById(itemId.split(';').shift());
+              }
+              if (foundElem) {
+                this.scrollToTOC(foundElem);
+                clearInterval(this.intervalTimerId);
+              }
+            }
           }
-          this.scrollToTOC(foundElem);
         } catch (e) {
-          console.log(e);
+          console.log('error in setInterval function in PageRead.ngAfterViewInit()', e);
         }
-      }.bind(this), 1000);
+      }.bind(this), 500);
     });
     this.setFabBackdropWidth();
   }

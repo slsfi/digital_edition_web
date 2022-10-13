@@ -199,7 +199,7 @@ export class IntroductionPage {
         textDownloadOptions.enabledIntroductionFormats !== null &&
         Object.keys(textDownloadOptions.enabledIntroductionFormats).length !== 0) {
           for (const [key, value] of Object.entries(textDownloadOptions.enabledIntroductionFormats)) {
-            if (`${value}`) {
+            if (value) {
               this.showTextDownloadButton = true;
               break;
             }
