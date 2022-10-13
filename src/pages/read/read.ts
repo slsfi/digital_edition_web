@@ -269,7 +269,7 @@ export class ReadPage /*implements OnDestroy*/ {
         textDownloadOptions.enabledEstablishedFormats !== null &&
         Object.keys(textDownloadOptions.enabledEstablishedFormats).length !== 0) {
           for (const [key, value] of Object.entries(textDownloadOptions.enabledEstablishedFormats)) {
-            if (`${value}`) {
+            if (value) {
               this.showTextDownloadButton = true;
               break;
             }
@@ -280,7 +280,7 @@ export class ReadPage /*implements OnDestroy*/ {
           textDownloadOptions.enabledCommentsFormats !== null &&
           Object.keys(textDownloadOptions.enabledCommentsFormats).length !== 0) {
             for (const [key, value] of Object.entries(textDownloadOptions.enabledCommentsFormats)) {
-              if (`${value}`) {
+              if (value) {
                 this.showTextDownloadButton = true;
                 break;
               }
