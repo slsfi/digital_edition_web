@@ -524,19 +524,29 @@ export class ReadPage /*implements OnDestroy*/ {
 
   ngAfterViewInit() {
     this.ngZone.runOutsideAngular(() => {
-      setTimeout(function () {
+      let iterationsLeft = 5;
+      clearInterval(this.intervalTimerId);
+      this.intervalTimerId = window.setInterval(function() {
         try {
-          const itemId = 'toc_' + this.establishedText.link;
-          let foundElem = document.getElementById(itemId);
-          if (foundElem === null) {
-            // Scroll to toc item without position
-            foundElem = document.getElementById(itemId.split(';').shift());
+          if (iterationsLeft < 1) {
+            clearInterval(this.intervalTimerId);
+          } else {
+            iterationsLeft -= 1;
+            const itemId = 'toc_' + this.establishedText.link;
+            let foundElem = document.getElementById(itemId);
+            if (foundElem === null || foundElem === undefined) {
+              // Scroll to toc item without position
+              foundElem = document.getElementById(itemId.split(';').shift());
+            }
+            if (foundElem) {
+              this.scrollToTOC(foundElem);
+              clearInterval(this.intervalTimerId);
+            }
           }
-          this.scrollToTOC(foundElem);
         } catch (e) {
           console.log(e);
         }
-      }.bind(this), 1000);
+      }.bind(this), 500);
     });
     this.setFabBackdropWidth();
   }
