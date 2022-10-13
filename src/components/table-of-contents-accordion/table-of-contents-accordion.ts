@@ -240,8 +240,6 @@ export class TableOfContentsAccordionComponent {
       }
     });
 
-    console.log(JSON.stringify(this.alphabeticalactiveMenuTree));
-
     if (data['collectionID']) {
       this.storage.set('toc_alphabetical_' + data['collectionID'], this.alphabeticalactiveMenuTree);
     }
