@@ -524,7 +524,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
   ngAfterViewInit() {
     this.ngZone.runOutsideAngular(() => {
-      let iterationsLeft = 5;
+      let iterationsLeft = 6;
       clearInterval(this.intervalTimerId);
       this.intervalTimerId = window.setInterval(function() {
         try {
@@ -532,19 +532,21 @@ export class ReadPage /*implements OnDestroy*/ {
             clearInterval(this.intervalTimerId);
           } else {
             iterationsLeft -= 1;
-            const itemId = 'toc_' + this.establishedText.link;
-            let foundElem = document.getElementById(itemId);
-            if (foundElem === null || foundElem === undefined) {
-              // Scroll to toc item without position
-              foundElem = document.getElementById(itemId.split(';').shift());
-            }
-            if (foundElem) {
-              this.scrollToTOC(foundElem);
-              clearInterval(this.intervalTimerId);
+            if (this.establishedText && this.establishedText.link) {
+              const itemId = 'toc_' + this.establishedText.link;
+              let foundElem = document.getElementById(itemId);
+              if (foundElem === null || foundElem === undefined) {
+                // Scroll to toc item without position
+                foundElem = document.getElementById(itemId.split(';').shift());
+              }
+              if (foundElem) {
+                this.scrollToTOC(foundElem);
+                clearInterval(this.intervalTimerId);
+              }
             }
           }
         } catch (e) {
-          console.log(e);
+          console.log('error in setInterval function in PageRead.ngAfterViewInit()', e);
         }
       }.bind(this), 500);
     });
