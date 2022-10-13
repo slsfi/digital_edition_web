@@ -84,7 +84,7 @@ export class TableOfContentsAccordionComponent {
         if (value.searchTocItem !== undefined && value.searchTocItem) {
           // Find toc item and open its parents
           if (value.searchItemId) {
-            value.searchItemId = String(value.searchItemId).replace('_nochapter', '').replace(':chapterID', '');
+            value.searchItemId = String(value.searchItemId).replace('_nochapter', '').replace(':chapterID', '').replace('%3AchapterID', '');
             // Try to find the correct position in the TOC. If not found, try to find the nearest.
             if ( this.findTocByPubOnly(this.collapsableItems, value.searchItemId) === false ) {
               // try to find without position
