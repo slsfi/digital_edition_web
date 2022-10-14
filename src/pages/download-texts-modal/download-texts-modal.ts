@@ -371,11 +371,22 @@ export class DownloadTextsModalPage {
 
           content = this.constructHtmlForPrint(content, 'intro');
 
-          const newWindowRef = window.open();
-          newWindowRef.document.write(content);
-          newWindowRef.document.close();
-          newWindowRef.focus();
-          this.loadingIntro = false;
+          try {
+            const newWindowRef = window.open();
+            if (newWindowRef) {
+              newWindowRef.document.write(content);
+              newWindowRef.document.close();
+              newWindowRef.focus();
+            } else {
+              this.showErrorMessage = true;
+              console.log('unable to open new window');
+            }
+            this.loadingIntro = false;
+          } catch (e) {
+            this.loadingIntro = false;
+            this.showErrorMessage = true;
+            console.log('error opening introduction in print format in new window', e);
+          }
         },
         error => {
           console.log('error loading introduction');
@@ -400,11 +411,22 @@ export class DownloadTextsModalPage {
           content = this.constructHtmlForPrint(content, 'est');
         }
 
-        const newWindowRef = window.open();
-        newWindowRef.document.write(content);
-        newWindowRef.document.close();
-        newWindowRef.focus();
-        this.loadingEst = false;
+        try {
+          const newWindowRef = window.open();
+          if (newWindowRef) {
+            newWindowRef.document.write(content);
+            newWindowRef.document.close();
+            newWindowRef.focus();
+          } else {
+            this.showErrorMessage = true;
+            console.log('unable to open new window');
+          }
+          this.loadingEst = false;
+        } catch (e) {
+          this.loadingEst = false;
+          this.showErrorMessage = true;
+          console.log('error opening established text in print format in new window', e);
+        }
       },
       error => {
         console.log('error loading established text');
@@ -505,20 +527,42 @@ export class DownloadTextsModalPage {
                     const contentParts = content.split('</div>\n</comments>');
                     content = contentParts[0] + mContent + '</div>\n</comments>' + contentParts[1];
 
-                    const newWindowRef = window.open();
-                    newWindowRef.document.write(content);
-                    newWindowRef.document.close();
-                    newWindowRef.focus();
-                    this.loadingCom = false;
+                    try {
+                      const newWindowRef = window.open();
+                      if (newWindowRef) {
+                        newWindowRef.document.write(content);
+                        newWindowRef.document.close();
+                        newWindowRef.focus();
+                      } else {
+                        this.showErrorMessage = true;
+                        console.log('unable to open new window');
+                      }
+                      this.loadingCom = false;
+                    } catch (e) {
+                      this.loadingCom = false;
+                      this.showErrorMessage = true;
+                      console.log('error opening comment text in print format in new window', e);
+                    }
                   }
                 );
               }
             } else {
-              const newWindowRef = window.open();
-              newWindowRef.document.write(content);
-              newWindowRef.document.close();
-              newWindowRef.focus();
-              this.loadingCom = false;
+              try {
+                const newWindowRef = window.open();
+                if (newWindowRef) {
+                  newWindowRef.document.write(content);
+                  newWindowRef.document.close();
+                  newWindowRef.focus();
+                } else {
+                  this.showErrorMessage = true;
+                  console.log('unable to open new window');
+                }
+                this.loadingCom = false;
+              } catch (e) {
+                this.loadingCom = false;
+                this.showErrorMessage = true;
+                console.log('error opening comment text in print format in new window', e);
+              }
             }
           },
           metadataError => {
