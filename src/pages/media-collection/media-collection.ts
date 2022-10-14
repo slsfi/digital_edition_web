@@ -221,7 +221,7 @@ export class MediaCollectionPage {
     );
     modal.present();
     modal.onDidDismiss(data => {
-      console.log('dismissed', data);
+      // console.log('dismissed', data);
     });
   }
 
