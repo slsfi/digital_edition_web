@@ -1,4 +1,4 @@
-import { Component, Renderer2, ElementRef, OnDestroy, ViewChild, Input, EventEmitter, SecurityContext, NgZone } from '@angular/core';
+import { Component, Renderer2, ElementRef, OnDestroy, ViewChild, Input, EventEmitter, SecurityContext, NgZone, ChangeDetectorRef } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import {
   App, ViewController, NavController, NavParams, PopoverController, ActionSheetController,
@@ -198,7 +198,8 @@ export class ReadPage /*implements OnDestroy*/ {
     private userSettingsService: UserSettingsService,
     public publicationCacheService: PublicationCacheService,
     private socialSharing: SocialSharing,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    public cdRef: ChangeDetectorRef
   ) {
     this.isCached();
     this.searchResult = null;
@@ -541,6 +542,7 @@ export class ReadPage /*implements OnDestroy*/ {
               }
               if (foundElem) {
                 this.scrollToTOC(foundElem);
+                this.setFabBackdropWidth();
                 clearInterval(this.intervalTimerId);
               }
             }
@@ -548,9 +550,8 @@ export class ReadPage /*implements OnDestroy*/ {
         } catch (e) {
           console.log('error in setInterval function in PageRead.ngAfterViewInit()', e);
         }
-      }.bind(this), 500);
+      }.bind(this), 700);
     });
-    this.setFabBackdropWidth();
   }
 
   ngOnDestroy() {
@@ -3667,6 +3668,7 @@ export class ReadPage /*implements OnDestroy*/ {
     const pageReadElem = document.querySelector('page-read > ion-content > div.scroll-content');
     if (pageReadElem) {
       this.backdropWidth = pageReadElem.scrollWidth;
+      this.cdRef.detectChanges();
     }
   }
 
