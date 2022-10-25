@@ -316,19 +316,19 @@ export class IntroductionPage {
         } else {
           iterationsLeft -= 1;
           if (this.pos !== null && this.pos !== undefined) {
-            let positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
-            if (positionElement !== null && positionElement !== undefined) {
-              const parentElem = positionElement.parentElement;
+            let posElem: HTMLElement = document.querySelector('page-introduction:not([hidden]) [name="' + this.pos + '"]');
+            if (posElem !== null && posElem !== undefined) {
+              const parentElem = posElem.parentElement;
               if ( (parentElem !== null && parentElem.classList.contains('ttFixed'))
               || (parentElem.parentElement !== null && parentElem.parentElement.classList.contains('ttFixed')) ) {
                   // Anchor is in footnote --> look for next occurence since the first footnote element
                   // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
                   // the position we need to find).
-                  positionElement = document.getElementsByName(this.pos)[1] as HTMLElement;
+                  posElem = document.querySelectorAll('page-introduction:not([hidden]) [name="' + this.pos + '"]')[1] as HTMLElement;
               }
-              if (positionElement !== null && positionElement !== undefined && positionElement.classList !== null
-              && positionElement.classList.contains('anchor')) {
-                this.scrollToHTMLElement(positionElement);
+              if (posElem !== null && posElem !== undefined && posElem.classList !== null
+              && posElem.classList.contains('anchor')) {
+                this.scrollToHTMLElement(posElem);
                 clearInterval(this.intervalTimerId);
               }
             }
@@ -481,24 +481,17 @@ export class IntroductionPage {
                 positionId = positionId.replace('#', '');
 
                 // Find the element in the correct parent element.
-                const matchingElements = document.getElementsByName(positionId);
+                const matchingElements = document.querySelectorAll('page-introduction:not([hidden]) [name="' + positionId + '"]');
                 let targetElement = null;
-                const refType = 'PAGE-INTRODUCTION';
                 for (let i = 0; i < matchingElements.length; i++) {
-                  let parentElem = matchingElements[i].parentElement;
-                  while (parentElem !== null && parentElem.tagName !== refType) {
-                    parentElem = parentElem.parentElement;
-                  }
-                  if (parentElem !== null && parentElem.tagName === refType) {
-                    targetElement = matchingElements[i] as HTMLElement;
-                    if (targetElement.parentElement.classList.contains('ttFixed')
-                    || targetElement.parentElement.parentElement.classList.contains('ttFixed')) {
-                      // Found position is in footnote --> look for next occurence since the first footnote element
-                      // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
-                      // the position we need to find).
-                    } else {
-                      break;
-                    }
+                  targetElement = matchingElements[i] as HTMLElement;
+                  if (targetElement.parentElement.classList.contains('ttFixed')
+                  || targetElement.parentElement.parentElement.classList.contains('ttFixed')) {
+                    // Found position is in footnote --> look for next occurence since the first footnote element
+                    // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
+                    // the position we need to find).
+                  } else {
+                    break;
                   }
                 }
                 if (targetElement !== null && targetElement.classList.contains('anchor')) {
@@ -534,7 +527,8 @@ export class IntroductionPage {
               targetId = anchorElem.parentElement.getAttribute('href');
             }
             const dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
-            const target = anchorElem.ownerDocument.querySelector('page-introduction').querySelector(dataIdSelector) as HTMLElement;
+            let target = anchorElem.ownerDocument.querySelector('page-introduction:not([hidden])') as HTMLElement;
+            target = target.querySelector(dataIdSelector) as HTMLElement;
             if (target !== null) {
               if (anchorElem.classList.contains('footnoteReference')) {
                 // Link to (foot)note reference, prepend arrow
@@ -870,7 +864,7 @@ export class IntroductionPage {
     // Set horisontal offset due to possible side pane on the left.
     let sidePaneOffsetWidth = 0;
     let primaryToolbarHeight = 70;
-    const contentElem = document.querySelector('page-introduction > ion-content > .scroll-content') as HTMLElement;
+    const contentElem = document.querySelector('page-introduction:not([hidden]) > ion-content > .scroll-content') as HTMLElement;
     if (contentElem !== null) {
       sidePaneOffsetWidth = contentElem.getBoundingClientRect().left;
       primaryToolbarHeight = contentElem.getBoundingClientRect().top;
@@ -898,7 +892,7 @@ export class IntroductionPage {
     }
 
     // Find the tooltip element.
-    const tooltipElement: HTMLElement = document.querySelector('div.toolTip');
+    const tooltipElement: HTMLElement = document.querySelector('page-introduction:not([hidden]) div.toolTip');
     if (tooltipElement === null) {
       return;
     }
@@ -1193,7 +1187,7 @@ export class IntroductionPage {
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
     // Get page content element and adjust viewport height with horizontal scrollbar height if such is present
-    const contentElem = document.querySelector('page-introduction > ion-content > .scroll-content') as HTMLElement;
+    const contentElem = document.querySelector('page-introduction:not([hidden]) > ion-content > .scroll-content') as HTMLElement;
     let horizontalScrollbarOffsetHeight = 0;
     if (contentElem.clientHeight < contentElem.offsetHeight) {
       horizontalScrollbarOffsetHeight = contentElem.offsetHeight - contentElem.clientHeight;
@@ -1239,7 +1233,7 @@ export class IntroductionPage {
     this.hideToolTip();
     element.scrollIntoView();
     try {
-      const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span');
+      const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('page-introduction:not([hidden]) span');
       for (let i = 0; i < elems.length; i++) {
         if (elems[i].id === element.id) {
           elems[i].scrollIntoView();

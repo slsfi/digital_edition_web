@@ -159,13 +159,15 @@ export class CommentsComponent {
               // Find the lemma in the reading text. Replace all non-digits at the start of the comment's id with nothing.
               const numId = targetElem.classList[targetElem.classList.length - 1].replace( /^\D+/g, '');
               const targetId = 'start' + numId;
-              let lemmaStart = document.querySelector('read-text').querySelector('[data-id="' + targetId + '"]') as HTMLElement;
+              let lemmaStart = document.querySelector('page-read:not([hidden]) read-text') as HTMLElement;
+              lemmaStart = lemmaStart.querySelector('[data-id="' + targetId + '"]') as HTMLElement;
               if ( (lemmaStart.parentElement !== null
               && lemmaStart.parentElement.classList.contains('ttFixed'))
               || (lemmaStart.parentElement.parentElement !== null
               && lemmaStart.parentElement.parentElement.classList.contains('ttFixed')) ) {
                 // The lemma is in a footnote, so we should get the second element with targetId
-                lemmaStart = document.querySelector('read-text').querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
+                lemmaStart = document.querySelector('page-read:not([hidden]) read-text') as HTMLElement;
+                lemmaStart = lemmaStart.querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
               }
               if (lemmaStart !== null && lemmaStart !== undefined) {
                 // Scroll to start of lemma in reading text and temporarily prepend arrow.
@@ -225,7 +227,7 @@ export class CommentsComponent {
     let elem = commentElement;
     if (elem === undefined || elem === null || !elem.classList.contains('en' + numericId)) {
       // Find the comment in the comments view.
-      const commentsWrapper = document.querySelector('comments') as HTMLElement;
+      const commentsWrapper = document.querySelector('page-read:not([hidden]) comments') as HTMLElement;
       elem = commentsWrapper.getElementsByClassName('en' + numericId)[0] as HTMLElement;
     }
     if (elem !== null && elem !== undefined) {

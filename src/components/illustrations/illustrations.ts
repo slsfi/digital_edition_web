@@ -101,7 +101,7 @@ export class IllustrationsComponent {
     if (imageSrc) {
       imageFilename = imageSrc.substring(imageSrc.lastIndexOf('/') + 1);
       let target = null as HTMLElement;
-      const readtextElem = document.querySelector('read-text');
+      const readtextElem = document.querySelector('page-read:not([hidden]) read-text');
       try {
         if (image.class === 'doodle') {
           // Get the image filename without format and prepend tag_ to it

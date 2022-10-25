@@ -1207,10 +1207,12 @@ export class ReadPage /*implements OnDestroy*/ {
                 // Scroll to comment in comments view and scroll lemma in reading-text view.
                 const numId = eventTarget.getAttribute('data-id').replace( /^\D+/g, '');
                 const targetId = 'start' + numId;
-                let lemmaStart = document.querySelector('read-text').querySelector('[data-id="' + targetId + '"]') as HTMLElement;
+                let lemmaStart = document.querySelector('page-read:not([hidden]) read-text') as HTMLElement;
+                lemmaStart = lemmaStart.querySelector('[data-id="' + targetId + '"]') as HTMLElement;
                 if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
                   // The lemma is in a footnote, so we should get the second element with targetId.
-                  lemmaStart = document.querySelector('read-text').querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
+                  lemmaStart = document.querySelector('page-read:not([hidden]) read-text') as HTMLElement;
+                  lemmaStart = lemmaStart.querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
                 }
                 if (lemmaStart !== null && lemmaStart !== undefined) {
                   // Scroll to start of lemma in reading text and temporarily prepend arrow.
@@ -1295,6 +1297,7 @@ export class ReadPage /*implements OnDestroy*/ {
           if (!modalShown) {
             eventTarget = eventTarget['parentNode'];
             if (!eventTarget['classList'].contains('tooltiptrigger')
+            && eventTarget['parentNode']
             && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
               /* The parent isn't a tooltiptrigger, but the parent of the parent
                  is, use it for the next iteration. */
@@ -1364,7 +1367,7 @@ export class ReadPage /*implements OnDestroy*/ {
               // Find the containing scrollable element.
               let containerElem = null;
               if (targetColumnId) {
-                containerElem = document.getElementById(targetColumnId);
+                containerElem = document.querySelector('page-read:not([hidden]) #' + targetColumnId);
               } else {
                 containerElem = anchorElem.parentElement;
                 while (containerElem !== null && containerElem.parentElement !== null &&
@@ -1381,7 +1384,7 @@ export class ReadPage /*implements OnDestroy*/ {
                   && anchorElem.parentElement.parentElement !== null
                   && anchorElem.parentElement.parentElement.hasAttribute('class')
                   && anchorElem.parentElement.parentElement.classList.contains('infoOverlayContent')) {
-                    containerElem = document.querySelector('.mobile-mode-read-content > .scroll-content > ion-scroll > .scroll-content');
+                    containerElem = document.querySelector('page-read:not([hidden]) .mobile-mode-read-content > .scroll-content > ion-scroll > .scroll-content');
                   }
                 }
               }
@@ -1505,7 +1508,7 @@ export class ReadPage /*implements OnDestroy*/ {
                 positionId = hrefTargetItems[hrefTargetItems.length - 1].replace('#', '');
 
                 // Find the element in the correct column (read-text or comments) based on ref type.
-                const matchingElements = document.getElementsByName(positionId);
+                const matchingElements = document.querySelectorAll('page-read:not([hidden]) [name="' + positionId + '"]');
                 let targetElement = null;
                 let refType = 'READ-TEXT';
                 if (anchorElem.classList.contains('ref_comment')) {
@@ -2489,7 +2492,7 @@ export class ReadPage /*implements OnDestroy*/ {
     let horizontalScrollbarOffsetHeight = 0;
     let sidePaneOffsetWidth = 0;
     let primaryToolbarHeight = 70;
-    const contentElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
+    const contentElem = document.querySelector('page-read:not([hidden]) > ion-content > .scroll-content') as HTMLElement;
     if (contentElem !== null) {
       scrollLeft = contentElem.scrollLeft;
       sidePaneOffsetWidth = contentElem.getBoundingClientRect().left;
@@ -2525,7 +2528,7 @@ export class ReadPage /*implements OnDestroy*/ {
     }
 
     // Find the tooltip element.
-    const tooltipElement: HTMLElement = document.querySelector('div.toolTip');
+    const tooltipElement: HTMLElement = document.querySelector('page-read:not([hidden]) div.toolTip');
     if (tooltipElement === null) {
       return;
     }
@@ -2822,7 +2825,7 @@ export class ReadPage /*implements OnDestroy*/ {
     // scrolled horizontally to the left.
     let scrollLeft = 0;
     let horizontalScrollbarOffsetHeight = 0;
-    const contentElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
+    const contentElem = document.querySelector('page-read:not([hidden]) > ion-content > .scroll-content') as HTMLElement;
     if (contentElem !== null) {
       scrollLeft = contentElem.scrollLeft;
 
@@ -3218,7 +3221,7 @@ export class ReadPage /*implements OnDestroy*/ {
     element.scrollIntoView();
     this.hideToolTip();
     try {
-      const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span');
+      const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('page-read:not([hidden]) span');
       for (let i = 0; i < elems.length; i++) {
         if (elems[i].id === element.id) {
           elems[i].scrollIntoView();
@@ -3233,7 +3236,7 @@ export class ReadPage /*implements OnDestroy*/ {
     this.hideToolTip();
     try {
       if (element['classList'].contains('variantScrollTarget')) {
-        const variantContElems: NodeListOf<HTMLElement> = document.querySelectorAll('variations');
+        const variantContElems: NodeListOf<HTMLElement> = document.querySelectorAll('page-read:not([hidden]) variations');
         for (let v = 0; v < variantContElems.length; v++) {
           const elems: NodeListOf<HTMLElement> = variantContElems[v].querySelectorAll('.teiVariant');
           let variantNotScrolled = true;
@@ -3255,7 +3258,7 @@ export class ReadPage /*implements OnDestroy*/ {
           }
         }
       } else if (element['classList'].contains('anchorScrollTarget')) {
-        const elems: NodeListOf<HTMLElement> = document.querySelectorAll('.teiVariant.anchorScrollTarget');
+        const elems: NodeListOf<HTMLElement> = document.querySelectorAll('page-read:not([hidden]) .teiVariant.anchorScrollTarget');
         const elementClassList = element.className.split(' ');
         let targetClassName = '';
         let targetCompClassName = '';
@@ -3329,7 +3332,7 @@ export class ReadPage /*implements OnDestroy*/ {
     let elem = commentElement;
     if (elem === undefined || elem === null || !elem.classList.contains('en' + numericId)) {
       // Find the comment in the comments view.
-      const commentsWrapper = document.querySelector('comments') as HTMLElement;
+      const commentsWrapper = document.querySelector('page-read:not([hidden]) comments') as HTMLElement;
       elem = commentsWrapper.getElementsByClassName('en' + numericId)[0] as HTMLElement;
     }
     if (elem !== null && elem !== undefined) {
@@ -3498,7 +3501,7 @@ export class ReadPage /*implements OnDestroy*/ {
     if (columnElement === undefined || columnElement === null) {
       return;
     }
-    const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
+    const scrollingContainer = document.querySelector('page-read:not([hidden]) > ion-content > div.scroll-content');
     if (scrollingContainer !== null) {
       const x = columnElement.getBoundingClientRect().left + scrollingContainer.scrollLeft -
       scrollingContainer.getBoundingClientRect().left - offset;
@@ -3519,10 +3522,10 @@ export class ReadPage /*implements OnDestroy*/ {
           clearInterval(this.intervalTimerId);
         } else {
           iterationsLeft -= 1;
-          const viewElements = document.getElementsByClassName('read-column');
+          const viewElements = document.querySelector('page-read:not([hidden])').getElementsByClassName('read-column');
           if (viewElements[0] !== undefined) {
             const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
-            const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
+            const scrollingContainer = document.querySelector('page-read:not([hidden]) > ion-content > div.scroll-content');
             if (scrollingContainer !== null) {
               const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
               scrollingContainer.getBoundingClientRect().left;
@@ -3598,7 +3601,7 @@ export class ReadPage /*implements OnDestroy*/ {
    * array in textService.
    */
   removeVariationSortOrderFromService(columnIndex: number) {
-    const columnElem = document.querySelector('div#read_div_' + columnIndex);
+    const columnElem = document.querySelector('page-read:not([hidden]) div#read_div_' + columnIndex);
     if (columnElem) {
       const currentVarElem = columnElem.querySelector('variations');
       if (currentVarElem) {
@@ -3620,8 +3623,8 @@ export class ReadPage /*implements OnDestroy*/ {
    */
   switchVariationSortOrdersInService(currentColumnIndex: number, otherColumnIndex: number) {
     /* Check if either the current column or the one it is changing places with is a variations column */
-    const currentColumnElem = document.querySelector('div#read_div_' + currentColumnIndex);
-    const otherColumnElem = document.querySelector('div#read_div_' + otherColumnIndex);
+    const currentColumnElem = document.querySelector('page-read:not([hidden]) div#read_div_' + currentColumnIndex);
+    const otherColumnElem = document.querySelector('page-read:not([hidden]) div#read_div_' + otherColumnIndex);
     if (currentColumnElem && otherColumnElem) {
       const currentVarElem = currentColumnElem.querySelector('variations');
       const otherVarElem = otherColumnElem.querySelector('variations');
@@ -3645,7 +3648,7 @@ export class ReadPage /*implements OnDestroy*/ {
    * variations column with index columnIndex is the first or second variations column.
    */
   findVariationsColumnIndex(columnIndex: number) {
-    const columnElems = Array.from(document.querySelectorAll('div.read-column'));
+    const columnElems = Array.from(document.querySelectorAll('page-read:not([hidden]) div.read-column'));
     const varColIds = [];
     columnElems.forEach(function(column) {
       const varElem = column.querySelector('variations');
@@ -3664,14 +3667,14 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   setFabBackdropWidth() {
-    const pageReadElem = document.querySelector('page-read > ion-content > div.scroll-content');
+    const pageReadElem = document.querySelector('page-read:not([hidden]) > ion-content > div.scroll-content');
     if (pageReadElem) {
       this.backdropWidth = pageReadElem.scrollWidth;
     }
   }
 
   scrollReadTextToAnchorPosition(posId: string) {
-    const container = document.querySelectorAll('read-text')[0];
+    const container = document.querySelectorAll('page-read:not([hidden]) read-text')[0];
     if (container) {
       const targets = container.querySelectorAll('a[name="' + posId + '"].anchor');
       if (targets && targets.length > 0) {

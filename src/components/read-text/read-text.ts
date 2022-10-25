@@ -116,11 +116,11 @@ export class ReadTextComponent {
           }
 
           if (posId) {
-            let target = document.getElementsByName('' + posId + '')[0] as HTMLAnchorElement;
+            let target = document.querySelector('page-read:not([hidden]) [name="' + posId + '"]') as HTMLAnchorElement;
             if ( target && ((target.parentElement && target.parentElement.classList.contains('ttFixed'))
             || (target.parentElement.parentElement && target.parentElement.parentElement.classList.contains('ttFixed'))) ) {
               // Position in footnote --> look for second target
-              target = document.getElementsByName('' + posId + '')[1] as HTMLAnchorElement;
+              target = document.querySelectorAll('page-read:not([hidden]) [name="' + posId + '"]')[1] as HTMLAnchorElement;
             }
             if (target) {
               this.scrollToHTMLElement(target, false);
@@ -347,7 +347,7 @@ export class ReadTextComponent {
             // Check if we have an image to show in the illustrations-view
             if (image !== null) {
               // Check if we have an illustrations-view open, if not, open and display the clicked image there
-              if (document.querySelector('illustrations') === null) {
+              if (document.querySelector('page-read:not([hidden]) illustrations') === null) {
                 this.ngZone.run(() => {
                   this.openIllustrationInNewView(image);
                 });
@@ -463,10 +463,10 @@ export class ReadTextComponent {
           clearInterval(this.intervalTimerId);
         } else {
           iterationsLeft -= 1;
-          const viewElements = document.getElementsByClassName('read-column');
+          const viewElements = document.querySelector('page-read:not([hidden])').getElementsByClassName('read-column');
           if (viewElements[0] !== undefined) {
             const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
-            const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
+            const scrollingContainer = document.querySelector('page-read:not([hidden]) > ion-content > div.scroll-content');
             if (scrollingContainer !== null) {
               const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
               scrollingContainer.getBoundingClientRect().left;

@@ -310,7 +310,7 @@ export class VariationsComponent {
       }
       if (currentVarElemContainer !== null) {
         const varElemColumnIds = [];
-        const columnElems = Array.from(document.querySelectorAll('div.read-column'));
+        const columnElems = Array.from(document.querySelectorAll('page-read:not([hidden]) div.read-column'));
         if (columnElems) {
           columnElems.forEach(function(columnElem) {
             const varElem = columnElem.querySelector('variations');
@@ -346,10 +346,10 @@ export class VariationsComponent {
           clearInterval(this.intervalTimerId);
         } else {
           iterationsLeft -= 1;
-          const viewElements = document.getElementsByClassName('read-column');
+          const viewElements = document.querySelector('page-read:not([hidden])').getElementsByClassName('read-column');
           if (viewElements[0] !== undefined) {
             const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
-            const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
+            const scrollingContainer = document.querySelector('page-read:not([hidden]) > ion-content > div.scroll-content');
             if (scrollingContainer !== null) {
               const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
               scrollingContainer.getBoundingClientRect().left;

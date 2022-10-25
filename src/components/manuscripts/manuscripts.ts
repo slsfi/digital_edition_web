@@ -257,10 +257,10 @@ export class ManuscriptsComponent {
           clearInterval(this.intervalTimerId);
         } else {
           iterationsLeft -= 1;
-          const viewElements = document.getElementsByClassName('read-column');
+          const viewElements = document.querySelector('page-read:not([hidden])').getElementsByClassName('read-column');
           if (viewElements[0] !== undefined) {
             const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
-            const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
+            const scrollingContainer = document.querySelector('page-read:not([hidden]) > ion-content > div.scroll-content');
             if (scrollingContainer !== null) {
               const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
               scrollingContainer.getBoundingClientRect().left;
