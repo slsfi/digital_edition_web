@@ -10,14 +10,8 @@ import { ReferenceDataModalPage } from '../../pages/reference-data-modal/referen
 import { Subscription } from 'rxjs/Subscription';
 
 declare var ePub;
-/**
- * Generated class for the MathJaxComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
 
- export class Book {
+export class Book {
   label: string;
   file: string;
 }
