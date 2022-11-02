@@ -359,7 +359,8 @@
         "Download": "Ladda ner",
         "Search": "Sök",
         "SearchPhrase": "Söktext",
-        "Contents": "Innehåll"
+        "Contents": "Innehåll",
+        "FileNotFound": "Texten kunde inte laddas. Epub-filen saknas."
     },
     "DownloadTexts": {
         "Download": "Ladda ner",

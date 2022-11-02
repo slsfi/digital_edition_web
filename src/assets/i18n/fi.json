@@ -409,7 +409,8 @@
         "Download": "Lataa",
         "Search": "Haku",
         "SearchPhrase": "Hakulause",
-        "Contents": "Sisältö"
+        "Contents": "Sisältö",
+        "FileNotFound": "Tekstiä ei pystytty lataamaan. Epub-tiedostoa ei ole."
     },
     "DownloadTexts": {
         "Download": "Lataa",
