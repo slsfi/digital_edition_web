@@ -514,7 +514,6 @@ export class OccurrencesPage {
     }
     this.semanticDataService.getOccurrences(this.objectType, id).subscribe(
       occ => {
-        console.log('occ: ', occ);
         this.groupedTexts = [];
         this.infoLoading = false;
         occ.forEach(item => {
@@ -524,19 +523,11 @@ export class OccurrencesPage {
             }
           }
         });
-        // Sort alphabetically
+        // Sort collection names alphabetically
         this.commonFunctions.sortArrayOfObjectsAlphabetically(this.groupedTexts, 'name');
-        console.log('this.groupedTexts', this.groupedTexts);
-        for (let c = 0; c < this.groupedTexts.length; c++) {
-          console.log('groupedTexts publications', this.groupedTexts[c]['publications']);
-          this.commonFunctions.sortArrayOfObjectsAlphabetically(this.groupedTexts[c]['publications'], 'name');
-        }
 
-        this.groupedTexts.forEach(item => {
-          if (item.collection_id !== undefined && item.publications !== undefined) {
-            this.getPublicationTOCName(item.collection_id, item.publications);
-          }
-        });
+        // Replace publication names (from the database) with the names in the collection TOC-file.
+        this.updateAndSortPublicationNamesInOccurrenceResults();
 
         this.isLoading = false;
         this.infoLoading = false;
@@ -549,6 +540,7 @@ export class OccurrencesPage {
     );
   }
 
+  /*
   getPublicationTOCName(collectionId, publicationData) {
     this.semanticDataService.getPublicationTOC(collectionId).subscribe(
       tocData => {
@@ -559,7 +551,7 @@ export class OccurrencesPage {
     );
   }
 
-  public updatePublicationNames(tocData, publicationData, collectionId) {
+  updatePublicationNames(tocData, publicationData, collectionId) {
     publicationData.forEach(pub => {
       const id = collectionId + '_' + pub.publication_id;
       tocData.forEach(item => {
@@ -568,6 +560,38 @@ export class OccurrencesPage {
           pub.name = item['text'];
         }
       });
+    });
+  }
+  */
+
+  sortPublicationNamesInOccurrenceResults() {
+    // Sort publication names in occurrence results alphabetically
+    for (let c = 0; c < this.groupedTexts.length; c++) {
+      this.commonFunctions.sortArrayOfObjectsAlphabetically(this.groupedTexts[c]['publications'], 'name');
+    }
+  }
+
+  updateAndSortPublicationNamesInOccurrenceResults() {
+    // Loop through each collection with occurrence results, get TOC for each collection,
+    // then loop through each publication with occurrence results in each collection and
+    // update publication names from TOC-files. Finally, sort the publication names.
+    this.groupedTexts.forEach(item => {
+      if (item.collection_id !== undefined && item.publications !== undefined) {
+        this.semanticDataService.getPublicationTOC(item.collection_id).subscribe(
+          tocData => {
+            item.publications.forEach(pub => {
+              const id = item.collection_id + '_' + pub.publication_id;
+              tocData.forEach(tocItem => {
+                if (id === tocItem['itemId']) {
+                  pub.occurrences[0].displayName = tocItem['text'];
+                  pub.name = tocItem['text'];
+                }
+              });
+            });
+            this.sortPublicationNamesInOccurrenceResults();
+          }, error => { }
+        );
+      }
     });
   }
 
