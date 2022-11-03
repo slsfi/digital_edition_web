@@ -154,13 +154,8 @@ export class OccurrencesPage {
     }
 
     this.setObjectType();
+    console.log(this.occurrenceResult);
     this.getOccurrenceTexts(this.occurrenceResult);
-    console.log(this.groupedTexts);
-    this.commonFunctions.sortArrayOfObjectsAlphabetically(this.groupedTexts, 'name');
-    for (let c = 0; c < this.groupedTexts.length; c++) {
-      console.log(this.groupedTexts[c]['publications']);
-      // this.commonFunctions.sortArrayOfObjectsAlphabetically(this.groupedTexts[c]['publications'], 'name');
-    }
     this.getMediaData();
     this.getArticleData();
     this.getGalleryOccurrences();
@@ -498,6 +493,13 @@ export class OccurrencesPage {
           publications: [{publication_id: occurrence.publication_id, name: occurrence.publication_name, occurrences: [newOccurrence]}]};
         this.groupedTexts.push(item);
       }
+    }
+
+    console.log(this.groupedTexts);
+    this.commonFunctions.sortArrayOfObjectsAlphabetically(this.groupedTexts, 'name');
+    for (let c = 0; c < this.groupedTexts.length; c++) {
+      console.log(this.groupedTexts[c]['publications']);
+      // this.commonFunctions.sortArrayOfObjectsAlphabetically(this.groupedTexts[c]['publications'], 'name');
     }
   }
 
