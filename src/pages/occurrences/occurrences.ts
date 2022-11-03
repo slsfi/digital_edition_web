@@ -517,13 +517,23 @@ export class OccurrencesPage {
         console.log('occ: ', occ);
         this.groupedTexts = [];
         this.infoLoading = false;
-        // Sort alphabetically
         const addedTOCs: Array<String> = [];
         occ.forEach(item => {
           if ( item.occurrences !== undefined ) {
             for (const occurence of item.occurrences) {
               this.getOccurrence(occurence);
             }
+          }
+        });
+        // Sort alphabetically
+        console.log('this.groupedTexts', this.groupedTexts);
+        this.commonFunctions.sortArrayOfObjectsAlphabetically(this.groupedTexts, 'name');
+        for (let c = 0; c < this.groupedTexts.length; c++) {
+          console.log('groupedTexts publications', this.groupedTexts[c]['publications']);
+          this.commonFunctions.sortArrayOfObjectsAlphabetically(this.groupedTexts[c]['publications'], 'name');
+        }
+        occ.forEach(item => {
+          if ( item.occurrences !== undefined ) {
             if ( item.occurrences[0] !== undefined &&
              addedTOCs.includes(item.occurrences[0]['collection_id']) === false ) {
               this.getPublicationTOCName(item.occurrences[0]['collection_id'], this.groupedTexts);
