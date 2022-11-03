@@ -3,6 +3,7 @@ import { LanguageService } from '../../app/services/languages/language.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MdContentService } from '../../app/services/md/md-content.service';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
+import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
 import { Subscription } from 'rxjs/Subscription';
 /**
  * Class for the LegendComponent component.
@@ -35,7 +36,8 @@ export class LegendComponent {
     private ngZone: NgZone,
     protected readPopoverService: ReadPopoverService,
     private renderer2: Renderer2,
-    protected translateService: TranslateService
+    protected translateService: TranslateService,
+    public commonFunctions: CommonFunctionsService
   ) {
     this.intervalTimerId = 0;
   }
@@ -109,7 +111,7 @@ export class LegendComponent {
               }
               if (containerElem) {
                 const targetElem = containerElem.querySelector('[data-id="' + targetHref.slice(1) + '"]') as HTMLElement;
-                this.scrollElementIntoView(targetElem, 'top');
+                this.commonFunctions.scrollElementIntoView(targetElem, 'top');
               }
             }
           }
@@ -137,7 +139,7 @@ export class LegendComponent {
             const legendElements = document.querySelectorAll('page-read:not([hidden]) legend');
             const element = legendElements[legendElements.length - 1].querySelector('[data-id="' + this.scrollToElementId + '"]');
             if (element) {
-              this.scrollElementIntoView(element, 'top');
+              this.commonFunctions.scrollElementIntoView(element, 'top');
               clearInterval(this.intervalTimerId);
             }
           }

@@ -17,6 +17,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { MetadataService } from '../../app/services/metadata/metadata.service';
 import { MdContentService } from '../../app/services/md/md-content.service';
+import { TooltipService } from '../../app/services/tooltips/tooltip.service';
 import { Subscription } from 'rxjs/Subscription';
 
 /**
@@ -98,7 +99,8 @@ export class PersonSearchPage {
               private events: Events,
               private cf: ChangeDetectorRef,
               private analyticsService: AnalyticsService,
-              private metadataService: MetadataService
+              private metadataService: MetadataService,
+              private tooltipService: TooltipService
   ) {
     const type = this.navParams.get('type') || null;
     this.filterYear = null;
@@ -235,13 +237,6 @@ export class PersonSearchPage {
 
   getPersons() {
     this.showLoading = true;
-    // Get translation for 'BC'
-    let bcTranslation = 'BC';
-    this.translate.get('BC').subscribe(
-      translation => {
-        bcTranslation = translation;
-      }, error => { }
-    );
     this.semanticDataService.getSubjectsElastic(this.from, this.searchText, this.filters, this.infiniteScrollNumber).subscribe(
       persons => {
         const personsTmp = [];
@@ -259,31 +254,8 @@ export class PersonSearchPage {
           sortByName = sortByName.replace('di ', '');
           sortByName = sortByName.trim();
 
-          // Construct possible BC indicator for year born and year deceased
-          const bcIndicatorDeceased = (String(element['date_deceased']).includes('BC')) ? ' ' + bcTranslation : '';
-          let bcIndicatorBorn = (String(element['date_born']).includes('BC')) ? ' ' + bcTranslation : '';
-          if (String(element['date_born']).includes('BC') && bcIndicatorDeceased === bcIndicatorBorn) {
-            // Born and deceased are both BC --> don't add indicator to year born
-            bcIndicatorBorn = '';
-          }
-
-          // Get the born and deceased years without leading zeros and possible 'BC' indicators
-          const year_born_numeric = (element['date_born'] !== undefined && element['date_born'] !== null) ?
-            String(element['date_born']).split('-')[0].replace(/^0+/, '').split(' ')[0] : null;
-          const year_deceased_numeric = (element['date_deceased'] !== undefined && element['date_deceased'] !== null) ?
-            String(element['date_deceased']).split('-')[0].replace(/^0+/, '').split(' ')[0] : null;
-
-          // Construct string with year born and year deceased for output
-          element['year_born_deceased'] = '';
-          if (year_born_numeric !== null && year_deceased_numeric !== null
-          && year_born_numeric !== 'null' && year_deceased_numeric !== 'null') {
-            element['year_born_deceased'] += '(' + year_born_numeric + bcIndicatorBorn + '–'
-            + year_deceased_numeric + bcIndicatorDeceased + ')';
-          } else if (year_born_numeric !== null && year_born_numeric !== 'null') {
-            element['year_born_deceased'] += '(* ' + year_born_numeric + bcIndicatorBorn + ')';
-          } else if (year_deceased_numeric !== null && year_deceased_numeric !== 'null') {
-            element['year_born_deceased'] += '(&#8224; ' + year_deceased_numeric + bcIndicatorDeceased + ')';
-          }
+          element['year_born_deceased'] = this.tooltipService.constructYearBornDeceasedString(element['date_born'],
+          element['date_deceased']);
 
           sortBy.push(sortByName);
           element['sortBy'] = sortBy.join();

@@ -180,51 +180,51 @@
           </button>
           <ion-fab-list>
             <div class="fab-backdrop" [ngStyle]="{'width':backdropWidth+'px'}" (click)="fabmenuadd.close()"></div>
-            <button ion-fab (click)="showAllViews(); fabmenuadd.close(); scrollLastViewIntoView()" *ngIf="displayToggles['showAll']">
+            <button ion-fab (click)="showAllViews(); fabmenuadd.close(); commonFunctions.scrollLastViewIntoView()" *ngIf="displayToggles['showAll']">
               <ion-icon name="albums"></ion-icon>
               <ion-label>{{ "Read.ShowAll" | translate }}</ion-label>
             </button>
-            <button ion-fab (click)="addView('established', undefined, fabmenuadd); scrollLastViewIntoView()" *ngIf="!multilingualEST && displayToggles['established']">
+            <button ion-fab (click)="addView('established', undefined, fabmenuadd); commonFunctions.scrollLastViewIntoView()" *ngIf="!multilingualEST && displayToggles['established']">
               <ion-icon name="book"></ion-icon>
               <ion-label>{{ "Read.Established.AddButtonText" | translate }}</ion-label>
             </button>
             <div *ngIf="multilingualEST && displayToggles['established']">
-              <button ion-fab (click)="addView('established', undefined, fabmenuadd, null, null, lang); scrollLastViewIntoView()" *ngFor="let lang of estLanguages">
+              <button ion-fab (click)="addView('established', undefined, fabmenuadd, null, null, lang); commonFunctions.scrollLastViewIntoView()" *ngFor="let lang of estLanguages">
                 <ion-icon name="book"></ion-icon>
                 <ion-label>{{ "Read.Established.AddButtonText" | translate }} - {{lang}}</ion-label>
               </button>
             </div>
-            <button ion-fab (click)="addView('comments', undefined, fabmenuadd); scrollLastViewIntoView()" *ngIf="displayToggles['comments']">
+            <button ion-fab (click)="addView('comments', undefined, fabmenuadd); commonFunctions.scrollLastViewIntoView()" *ngIf="displayToggles['comments']">
               <ion-icon name="chatbubbles"></ion-icon>
               <ion-label>{{ "Read.Comments.AddButtonText" | translate }}</ion-label>
             </button>
-            <button ion-fab (click)="addView('facsimiles', undefined, fabmenuadd); scrollLastViewIntoView()" *ngIf="displayToggles['facsimiles']">
+            <button ion-fab (click)="addView('facsimiles', undefined, fabmenuadd); commonFunctions.scrollLastViewIntoView()" *ngIf="displayToggles['facsimiles']">
               <ion-icon name="image"></ion-icon>
               <ion-label>{{ "Read.Facsimiles.AddButtonText" | translate }}</ion-label>
             </button>
-            <button ion-fab (click)="addView('illustrations', undefined, fabmenuadd); scrollLastViewIntoView()" *ngIf="displayToggles['illustrations']">
+            <button ion-fab (click)="addView('illustrations', undefined, fabmenuadd); commonFunctions.scrollLastViewIntoView()" *ngIf="displayToggles['illustrations']">
               <ion-icon name="images"></ion-icon>
               <ion-label>{{ "Read.Illustrations.AddButtonText" | translate }}</ion-label>
             </button>
-            <button ion-fab (click)="addView('manuscripts', undefined, fabmenuadd); scrollLastViewIntoView()" *ngIf="displayToggles['manuscripts']">
+            <button ion-fab (click)="addView('manuscripts', undefined, fabmenuadd); commonFunctions.scrollLastViewIntoView()" *ngIf="displayToggles['manuscripts']">
               <ion-icon name="clipboard"></ion-icon>
               <ion-label>{{ "Read.Manuscripts.AddButtonText" | translate }}</ion-label>
             </button>
-            <button ion-fab (click)="addView('variations', undefined, fabmenuadd); addVariationSortOrderToService(0); scrollLastViewIntoView()" *ngIf="displayToggles['variations']">
+            <button ion-fab (click)="addView('variations', undefined, fabmenuadd); addVariationSortOrderToService(0); commonFunctions.scrollLastViewIntoView()" *ngIf="displayToggles['variations']">
               <ion-icon name="copy"></ion-icon>
               <ion-label>{{ "Read.Variations.AddButtonText" | translate }}</ion-label>
             </button>
-            <button ion-fab (click)="addView('songexample', undefined, fabmenuadd); scrollLastViewIntoView()" *ngIf="displayToggles['song-example']">
+            <button ion-fab (click)="addView('songexample', undefined, fabmenuadd); commonFunctions.scrollLastViewIntoView()" *ngIf="displayToggles['song-example']">
               <ion-icon name="musical-note"></ion-icon>
               <ion-label>{{ "Read.SongExample.AddButtonText" | translate }}</ion-label>
             </button>
             <!--
-            <button ion-fab (click)="addView('introduction', undefined, fabmenuadd); scrollLastViewIntoView()" *ngIf="displayToggles['introduction']">
+            <button ion-fab (click)="addView('introduction', undefined, fabmenuadd); commonFunctions.scrollLastViewIntoView()" *ngIf="displayToggles['introduction']">
               <ion-icon name="information-circle"></ion-icon>
               <ion-label>{{ "Read.Introduction.AddButtonText" | translate }}</ion-label>
             </button>
             -->
-            <button ion-fab (click)="addView('legend', undefined, fabmenuadd); scrollLastViewIntoView()" *ngIf="displayToggles['legend']">
+            <button ion-fab (click)="addView('legend', undefined, fabmenuadd); commonFunctions.scrollLastViewIntoView()" *ngIf="displayToggles['legend']">
               <ion-icon name="bulb"></ion-icon>
               <ion-label>{{ "Read.Legend.AddButtonText" | translate }}</ion-label>
             </button>

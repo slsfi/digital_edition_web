@@ -153,10 +153,10 @@ export class EpubComponent {
       const area = document.getElementById('area');
       let areaWidth = Math.floor(area.getBoundingClientRect().width);
       let areaHeight = Math.floor(area.getBoundingClientRect().height);
-      if (!this.numberIsEven(areaWidth)) {
+      if (!this.commonFunctions.numberIsEven(areaWidth)) {
         areaWidth = areaWidth - 1;
       }
-      if (!this.numberIsEven(areaHeight)) {
+      if (!this.commonFunctions.numberIsEven(areaHeight)) {
         areaHeight = areaHeight - 1;
       }
 
@@ -414,7 +414,7 @@ export class EpubComponent {
         if (_this.epubCreators.length > 0) {
           const tocCreatorP = document.createElement('p');
           tocCreatorP.className = 'epub_creator';
-          tocCreatorP.innerText = _this.formatWriterNamesForTOC(_this.epubCreators);
+          tocCreatorP.innerText = _this.commonFunctions.concatenateNames(_this.epubCreators, ',');
           tocDiv.appendChild(tocCreatorP);
         }
 
@@ -422,7 +422,7 @@ export class EpubComponent {
         if (_this.epubCreators.length < 1 && _this.epubContributors.length > 0) {
           const tocCreatorP = document.createElement('p');
           tocCreatorP.className = 'epub_creator';
-          tocCreatorP.innerText = _this.formatWriterNamesForTOC(_this.epubContributors);
+          tocCreatorP.innerText = _this.commonFunctions.concatenateNames(_this.epubContributors, ',');
           tocDiv.appendChild(tocCreatorP);
         }
 
@@ -606,41 +606,6 @@ export class EpubComponent {
     this.rendition.display(currentLocation);
   }
 
-  /**
-   * Given an array with names of people, this function return a string where the names
-   * have been concatenated. A comma (,) is used as a separator between all of the names
-   * except between the second to last and last, which are separated by an ampersand (&).
-   * @param names An array of strings with the names that are to be concatenated.
-   * @returns A string with the names concatenated.
-   */
-  formatWriterNamesForTOC(names: string[]) {
-    let names_str = '';
-    for (let i = 0; i < names.length; i++) {
-      names_str = names_str + names[i];
-      if (names.length > 2) {
-        if (i < names.length - 2) {
-          names_str = names_str + ', ';
-        } else if (i < names.length - 1) {
-          names_str = names_str + ' \u0026 ';
-        }
-      } else if (names.length === 2 && i < 1) {
-        names_str = names_str + ' \u0026 ';
-      }
-    }
-    return names_str;
-  }
-
-  /**
-   * Check if an integer is even.
-   */
-  numberIsEven(value: number) {
-    if (value % 2 === 0) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   private setUpInputListeners() {
     /*
       1. Listen for keydown events inside the epub rendition. This is needed for prev/next on keydown
@@ -751,10 +716,10 @@ export class EpubComponent {
     const area = document.querySelector('.toc-epub-container > #area');
     let areaWidth = Math.floor(area.getBoundingClientRect().width);
     let areaHeight = Math.floor(area.getBoundingClientRect().height);
-    if (!this.numberIsEven(areaWidth)) {
+    if (!this.commonFunctions.numberIsEven(areaWidth)) {
       areaWidth = areaWidth - 1;
     }
-    if (!this.numberIsEven(areaHeight)) {
+    if (!this.commonFunctions.numberIsEven(areaHeight)) {
       areaHeight = areaHeight - 1;
     }
     // Resize the epub rendition with the area's dimensions

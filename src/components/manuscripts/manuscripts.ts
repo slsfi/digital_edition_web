@@ -7,6 +7,7 @@ import { TextService } from '../../app/services/texts/text.service';
 import { AlertController, ToastController, Events, ViewController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
+import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
 
 /**
  * Generated class for the ManuscriptsComponent component.
@@ -36,7 +37,6 @@ export class ManuscriptsComponent {
   chapter: string;
   legendTitle: string;
   textLoading: Boolean = true;
-  intervalTimerId: number;
   showOpenLegendButton: Boolean = false;
 
   constructor(
@@ -52,12 +52,12 @@ export class ManuscriptsComponent {
     private events: Events,
     public translate: TranslateService,
     public viewctrl: ViewController,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    public commonFunctions: CommonFunctionsService
   ) {
     this.text = '';
     this.selectedManuscriptName = '';
     this.manuscripts = [];
-    this.intervalTimerId = 0;
 
     try {
       this.showOpenLegendButton = this.config.getSettings('showOpenLegendButton.manuscripts');
@@ -112,7 +112,7 @@ export class ManuscriptsComponent {
     event.stopPropagation();
     id.viewType = 'manuscriptFacsimile';
     this.openNewManView.emit(id);
-    this.scrollLastViewIntoView();
+    this.commonFunctions.scrollLastViewIntoView();
   }
 
   openNewLegend(event: Event) {
@@ -123,7 +123,7 @@ export class ManuscriptsComponent {
       id: 'ms-legend'
     }
     this.openNewLegendView.emit(id);
-    this.scrollLastViewIntoView();
+    this.commonFunctions.scrollLastViewIntoView();
   }
 
   getManuscript() {
@@ -244,33 +244,6 @@ export class ManuscriptsComponent {
     });
 
     alert.present();
-  }
-
-  /* This function scrolls the read-view horisontally to the last read column.
-   * It's called after adding new views. */
-  scrollLastViewIntoView() {
-    this.ngZone.runOutsideAngular(() => {
-      let iterationsLeft = 10;
-      clearInterval(this.intervalTimerId);
-      this.intervalTimerId = window.setInterval(function() {
-        if (iterationsLeft < 1) {
-          clearInterval(this.intervalTimerId);
-        } else {
-          iterationsLeft -= 1;
-          const viewElements = document.querySelector('page-read:not([hidden])').getElementsByClassName('read-column');
-          if (viewElements[0] !== undefined) {
-            const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
-            const scrollingContainer = document.querySelector('page-read:not([hidden]) > ion-content > div.scroll-content');
-            if (scrollingContainer !== null) {
-              const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
-              scrollingContainer.getBoundingClientRect().left;
-              scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
-              clearInterval(this.intervalTimerId);
-            }
-          }
-        }
-      }.bind(this), 500);
-    });
   }
 
 }

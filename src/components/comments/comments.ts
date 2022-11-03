@@ -4,6 +4,7 @@ import { ReadTextComponent } from '../read-text/read-text';
 import { TextService } from '../../app/services/texts/text.service';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { CommentService } from '../../app/services/comments/comment.service';
+import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, ModalController } from 'ionic-angular';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
@@ -44,7 +45,8 @@ export class CommentsComponent {
     private events: Events,
     private analyticsService: AnalyticsService,
     public translate: TranslateService,
-    protected modalController: ModalController
+    protected modalController: ModalController,
+    public commonFunctions: CommonFunctionsService
   ) {
   }
 
@@ -156,7 +158,7 @@ export class CommentsComponent {
               }
             }
             if (targetElem !== null && targetElem !== undefined) {
-              // Find the lemma in the reading text. Replace all non-digits at the start of the comment's id with nothing.
+              // Find the lemma in the reading text. Remove all non-digits at the start of the comment's id.
               const numId = targetElem.classList[targetElem.classList.length - 1].replace( /^\D+/g, '');
               const targetId = 'start' + numId;
               let lemmaStart = document.querySelector('page-read:not([hidden]) read-text') as HTMLElement;
@@ -171,9 +173,9 @@ export class CommentsComponent {
               }
               if (lemmaStart !== null && lemmaStart !== undefined) {
                 // Scroll to start of lemma in reading text and temporarily prepend arrow.
-                this.scrollToCommentLemma(lemmaStart);
+                this.commentService.scrollToCommentLemma(lemmaStart);
                 // Scroll to comment in the comments-column.
-                this.scrollToComment(numId, targetElem);
+                this.commentService.scrollToComment(numId, targetElem);
               }
             }
           }
@@ -193,138 +195,6 @@ export class CommentsComponent {
     });
   }
 
-  /* Use this function to scroll the lemma of a comment into view in the reading text view. */
-  private scrollToCommentLemma(lemmaStartElem: HTMLElement, timeOut = 5000) {
-    if (lemmaStartElem !== null && lemmaStartElem !== undefined && lemmaStartElem.classList.contains('anchor_lemma')) {
-
-      if (this.commentService.activeLemmaHighlight.lemmaTimeOutId !== null) {
-        // Clear previous lemma highlight if still active
-        this.commentService.activeLemmaHighlight.lemmaElement.style.display = null;
-        window.clearTimeout(this.commentService.activeLemmaHighlight.lemmaTimeOutId);
-      }
-
-      lemmaStartElem.style.display = 'inline';
-      this.scrollElementIntoView(lemmaStartElem);
-      const settimeoutId = setTimeout(() => {
-        lemmaStartElem.style.display = null;
-        this.commentService.activeLemmaHighlight = {
-          lemmaTimeOutId: null,
-          lemmaElement: null
-        }
-      }, timeOut);
-
-      this.commentService.activeLemmaHighlight = {
-        lemmaTimeOutId: settimeoutId,
-        lemmaElement: lemmaStartElem
-      }
-    }
-  }
-
-  /** Use this function to scroll to the comment with the specified numeric id
-   *  (excluding prefixes like 'end') in the first comments view on the page.
-   *  Alternatively, the comment element can be passed as an optional parameter. */
-  private scrollToComment(numericId: string, commentElement?: HTMLElement) {
-    let elem = commentElement;
-    if (elem === undefined || elem === null || !elem.classList.contains('en' + numericId)) {
-      // Find the comment in the comments view.
-      const commentsWrapper = document.querySelector('page-read:not([hidden]) comments') as HTMLElement;
-      elem = commentsWrapper.getElementsByClassName('en' + numericId)[0] as HTMLElement;
-    }
-    if (elem !== null && elem !== undefined) {
-
-      if (this.commentService.activeCommentHighlight.commentTimeOutId !== null) {
-        // Clear previous comment highlight if still active
-        this.commentService.activeCommentHighlight.commentLemmaElement.classList.remove('highlight');
-        window.clearTimeout(this.commentService.activeCommentHighlight.commentTimeOutId);
-      }
-
-      // Scroll the comment into view.
-      this.scrollElementIntoView(elem, 'center', -5);
-      const noteLemmaElem = elem.getElementsByClassName('noteLemma')[0] as HTMLElement;
-      noteLemmaElem.classList.add('highlight');
-      const settimeoutId = setTimeout(() => {
-        noteLemmaElem.classList.remove('highlight');
-        this.commentService.activeCommentHighlight = {
-          commentTimeOutId: null,
-          commentLemmaElement: null
-        }
-      }, 5000);
-
-      this.commentService.activeCommentHighlight = {
-        commentTimeOutId: settimeoutId,
-        commentLemmaElement: noteLemmaElem
-      }
-    }
-  }
-
-  private scrollToHTMLElement(element: HTMLElement, addTag: boolean, position = 'top', timeOut = 5000) {
-    try {
-      const tmp = element.previousElementSibling as HTMLElement;
-      let addedArrow = false;
-
-      if ( tmp !== null && tmp !== undefined && tmp.classList.contains('anchor_lemma') ) {
-        tmp.style.display = 'inline';
-        this.scrollElementIntoView(tmp, position);
-        setTimeout(function() {
-          tmp.style.display = 'none';
-        }, timeOut);
-        addedArrow = true;
-      } else {
-        const tmpImage: HTMLImageElement = new Image();
-        tmpImage.src = 'assets/images/ms_arrow_right.svg';
-        tmpImage.alt = 'arrow right image';
-        tmpImage.classList.add('inl_ms_arrow');
-        element.parentElement.insertBefore(tmpImage, element);
-        this.scrollElementIntoView(tmpImage, position);
-        setTimeout(function() {
-          element.parentElement.removeChild(tmpImage);
-        }, timeOut);
-        addedArrow = true;
-      }
-
-      if ( addTag && !addedArrow ) {
-        element.innerHTML = '<img class="inl_ms_arrow" src="assets/images/ms_arrow_right.svg"/>';
-        this.scrollElementIntoView(element, position);
-        setTimeout(function() {
-          element.innerHTML = '';
-        }, timeOut);
-      }
-    } catch ( e ) {
-      console.error(e);
-    }
-  }
-
-  /** This function can be used to scroll a container so that the element which it
-   *  contains is placed either at the top edge of the container or in the center
-   *  of the container. This function can be called multiple times simultaneously
-   *  on elements in different containers, unlike the native scrollIntoView function
-   *  which cannot be called multiple times simultaneously in Chrome due to a bug.
-   *  Valid values for yPosition are 'top' and 'center'. */
-  private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0) {
-    if (element === undefined || element === null || (yPosition !== 'center' && yPosition !== 'top')) {
-      return;
-    }
-    // Find the scrollable container of the element which is to be scrolled into view
-    let container = element.parentElement;
-    while (container !== null && container.parentElement !== null &&
-     !container.classList.contains('scroll-content')) {
-      container = container.parentElement;
-    }
-    if (container === null || container.parentElement === null) {
-      return;
-    }
-
-    const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
-    let baseOffset = 10;
-    if (yPosition === 'center') {
-      baseOffset = Math.floor(container.offsetHeight / 2);
-      if (baseOffset > 45) {
-        baseOffset = baseOffset - 45;
-      }
-    }
-    container.scrollTo({top: y - baseOffset - offset, behavior: 'smooth'});
-  }
-
   getCorrespondanceMetadata() {
     this.commentService.getCorrespondanceMetadata(String(this.link).split('_')[1]).subscribe(
       text => {
@@ -340,8 +210,8 @@ export class CommentsComponent {
                 receivers.push(subject['mottagare']);
               }
             });
-            this.sender = this.concatenateNames(senders);
-            this.receiver = this.concatenateNames(receivers);
+            this.sender = this.commonFunctions.concatenateNames(senders);
+            this.receiver = this.commonFunctions.concatenateNames(receivers);
           }
         }
 
@@ -354,30 +224,6 @@ export class CommentsComponent {
         this.errorMessage = <any>error;
       }
     );
-  }
-
-  /**
-   * Given an array with names of people, this function return a string where the names
-   * have been concatenated. A semicolon (;) is used as a separator between all of the names
-   * except between the second to last and last, which are separated by an ampersand (&).
-   * @param names An array of strings with the names that are to be concatenated.
-   * @returns A string with the names concatenated.
-   */
-   concatenateNames(names: string[]) {
-    let names_str = '';
-    for (let i = 0; i < names.length; i++) {
-      names_str = names_str + names[i];
-      if (names.length > 2) {
-        if (i < names.length - 2) {
-          names_str = names_str + '; ';
-        } else if (i < names.length - 1) {
-          names_str = names_str + ' \u0026 ';
-        }
-      } else if (names.length === 2 && i < 1) {
-        names_str = names_str + ' \u0026 ';
-      }
-    }
-    return names_str;
   }
 
   openIllustration(imageNumber) {

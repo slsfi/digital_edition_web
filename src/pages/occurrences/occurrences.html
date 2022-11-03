@@ -20,7 +20,7 @@
               <h3>
                 <span *ngIf="occupation && !hideTypeAndDescription" class="occupation">{{occupation}} – </span>
                 <span class="title" [innerHTML]="title"></span>
-                <span *ngIf="(year_born != null && year_born != '') || (year_deceased != null && year_deceased != '')" class="year_born_deceased" [innerHTML]="year_born_deceased_string"></span>
+                <span *ngIf="year_born_deceased_string != null && year_born_deceased_string != ''" class="year_born_deceased" [innerHTML]="year_born_deceased_string"></span>
                 <span *ngIf="latitude" class="latitude">({{"Occurrences.latitude" | translate}} {{latitude}}, </span>
                 <span *ngIf="longitude" class="longitude">{{"Occurrences.longitude" | translate}} {{longitude}})</span>
               </h3>
