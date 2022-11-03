@@ -195,7 +195,7 @@
                     </ion-item-group>
                   </ion-item>
                   <ion-item *ngIf="simpleWorkMetadata && (objectType == 'work' || objectType == 'work_manifestation')">{{"Occurrences.workOccurrencesDisabled" | translate}}</ion-item>
-                  <ion-item *ngIf="!groupedTexts.length && !simpleWorkMetadata">{{"Occurrences.NoInfoFound" | translate}}</ion-item>
+                  <ion-item *ngIf="!isLoading && groupedTexts.length < 1 && !simpleWorkMetadata">{{"Occurrences.NoInfoFound" | translate}}</ion-item>
                 </ion-list>
               </ion-list>
             </ion-card-content>
