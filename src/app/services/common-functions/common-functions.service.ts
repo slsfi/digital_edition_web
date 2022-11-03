@@ -45,17 +45,22 @@ export class CommonFunctionsService {
    * @param fieldToSortOn 
    */
   sortArrayOfObjectsAlphabetically(arrayToSort: any, fieldToSortOn: string) {
-    arrayToSort.sort((a, b) => {
-      const fieldA = a[fieldToSortOn].toUpperCase();
-      const fieldB = b[fieldToSortOn].toUpperCase();
-      if (fieldA < fieldB) {
-        return -1;
-      }
-      if (fieldA > fieldB) {
-        return 1;
-      }
-      return 0;
-    });
+    if (Array.isArray(arrayToSort)) {
+      arrayToSort.sort((a, b) => {
+        if (typeof a[fieldToSortOn] !== "string") {
+          console.log(a[fieldToSortOn]);
+        }
+        const fieldA = a[fieldToSortOn].toUpperCase();
+        const fieldB = b[fieldToSortOn].toUpperCase();
+        if (fieldA < fieldB) {
+          return -1;
+        }
+        if (fieldA > fieldB) {
+          return 1;
+        }
+        return 0;
+      });
+    }
   }
 
 

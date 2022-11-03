@@ -525,6 +525,7 @@ export class OccurrencesPage {
         });
         // Sort collection names alphabetically
         this.commonFunctions.sortArrayOfObjectsAlphabetically(this.groupedTexts, 'name');
+        console.log('groupedTexts', this.groupedTexts);
 
         // Replace publication names (from the database) with the names in the collection TOC-file.
         this.updateAndSortPublicationNamesInOccurrenceResults();
@@ -588,6 +589,7 @@ export class OccurrencesPage {
                 }
               });
             });
+            console.log('item.publications', item.publications);
             if (item.publications !== undefined) {
               this.commonFunctions.sortArrayOfObjectsAlphabetically(item.publications, 'name');
             }
