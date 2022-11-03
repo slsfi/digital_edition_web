@@ -6,7 +6,7 @@
                     <button *ngIf="images.length > 1" ion-fab mini (click)="previous()">
                         <ion-icon name="arrow-back"></ion-icon>
                     </button>
-                    <button *ngIf="backsides.length>1" ion-fab mini (click)="backside = !backside">
+                    <button *ngIf="backsides.length > 0 && backsides[activeImage]" ion-fab mini (click)="showBackside = !showBackside">
                         <ion-icon name="repeat"></ion-icon>
                     </button>
                     <button *ngIf="images.length > 1" ion-fab mini (click)="next()">
@@ -46,7 +46,7 @@
             <div class="center_content">
                 <div class="div_img">
                     <div *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()">
-                        <img alt="facsimile" *ngIf="!facsimilePagesInfinite && (!backside || !backsides[activeImage])"
+                        <img alt="facsimile" *ngIf="!facsimilePagesInfinite && (!showBackside || !backsides[activeImage])"
                           [src]="images[activeImage]"
                           class="facsimile-zoom-image"
                           [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)', 'max-height':'calc(100vh - '+toolbarHeight+'px)'}"
@@ -56,8 +56,8 @@
                           (mousedown)="$event.preventDefault();"
                           draggable="true"
                         >
-                        <img alt="facsimile" *ngIf="!facsimilePagesInfinite && backside && backsides[activeImage]"
-                          [src]="backSide(images[activeImage])"
+                        <img alt="facsimile" *ngIf="!facsimilePagesInfinite && showBackside && backsides[activeImage]"
+                          [src]="getBacksideUrl(images[activeImage])"
                           class="facsimile-zoom-image"
                           [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)', 'max-height':'calc(100vh - '+toolbarHeight+'px)'}"
                           (wheel)="onMouseWheel($event)"

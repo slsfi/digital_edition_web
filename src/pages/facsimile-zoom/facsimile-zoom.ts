@@ -1,6 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, Events } from 'ionic-angular';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
+import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 
 /**
@@ -34,19 +35,22 @@ export class FacsimileZoomModalPage {
 
   facsUrl = '';
   facsimilePagesInfinite = false;
-  backside = false;
+  showBackside = false;
   facsSize: number;
   facsPage: any;
   facsNumber = 0;
   manualPageNumber = 1;
   showAboutHelp = true;
 
-  constructor(public viewCtrl: ViewController,
-              public navCtrl: NavController,
-              public navParams: NavParams,
-              private events: Events,
-              private userSettingsService: UserSettingsService,
-              private analyticsService: AnalyticsService) {
+  constructor(
+    public viewCtrl: ViewController,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private events: Events,
+    private userSettingsService: UserSettingsService,
+    public commonFunctions: CommonFunctionsService,
+    private analyticsService: AnalyticsService
+  ) {
     this.manualPageNumber = 1;
     this.backsides = [];
   }
@@ -109,7 +113,6 @@ export class FacsimileZoomModalPage {
           }
         }
       }
-
       this.activeImage = this.navParams.get('activeImage');
       this.manualPageNumber = this.activeImage + 1;
       this.doAnalytics(String(this.images[this.activeImage]));
@@ -122,6 +125,14 @@ export class FacsimileZoomModalPage {
       }
     } catch (e) {
       this.backsides = [];
+    }
+    // Loop through backsides array and check if backside image-files actually exist
+    for (let i = 0; i < this.backsides.length; i++) {
+      this.commonFunctions.urlExists(this.backsides[i]).then((res: Boolean) => {
+        if (res === false) {
+          this.backsides[i] = null;
+        }
+      });
     }
    }
 
@@ -249,8 +260,8 @@ export class FacsimileZoomModalPage {
     this.doAnalytics(String(this.images[this.activeImage]));
   }
 
-  backSide(url) {
-    return url.replace('.jpg', 'B.jpg');
+  getBacksideUrl(frontsideUrl) {
+    return frontsideUrl.replace('.jpg', 'B.jpg');
   }
 
   handlePanEvent(event) {
