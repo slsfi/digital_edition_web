@@ -525,7 +525,6 @@ export class OccurrencesPage {
         });
         // Sort collection names alphabetically
         this.commonFunctions.sortArrayOfObjectsAlphabetically(this.groupedTexts, 'name');
-        console.log('groupedTexts', this.groupedTexts);
 
         // Replace publication names (from the database) with the names in the collection TOC-file.
         this.updateAndSortPublicationNamesInOccurrenceResults();
@@ -540,30 +539,6 @@ export class OccurrencesPage {
       () => console.log('Fetched tags...')
     );
   }
-
-  /*
-  getPublicationTOCName(collectionId, publicationData) {
-    this.semanticDataService.getPublicationTOC(collectionId).subscribe(
-      tocData => {
-          this.updatePublicationNames(tocData, publicationData, collectionId);
-        },
-      error =>  {
-      }
-    );
-  }
-
-  updatePublicationNames(tocData, publicationData, collectionId) {
-    publicationData.forEach(pub => {
-      const id = collectionId + '_' + pub.publication_id;
-      tocData.forEach(item => {
-        if (id === item['itemId']) {
-          pub.occurrences[0].displayName = item['text'];
-          pub.name = item['text'];
-        }
-      });
-    });
-  }
-  */
 
   sortPublicationNamesInOccurrenceResults() {
     // Sort publication names in occurrence results alphabetically
@@ -584,12 +559,11 @@ export class OccurrencesPage {
               const id = item.collection_id + '_' + pub.publication_id;
               tocData.forEach(tocItem => {
                 if (id === tocItem['itemId']) {
-                  pub.occurrences[0].displayName = tocItem['text'];
-                  pub.name = tocItem['text'];
+                  pub.occurrences[0].displayName = String(tocItem['text']);
+                  pub.name = String(tocItem['text']);
                 }
               });
             });
-            console.log('item.publications', item.publications);
             if (item.publications !== undefined) {
               this.commonFunctions.sortArrayOfObjectsAlphabetically(item.publications, 'name');
             }

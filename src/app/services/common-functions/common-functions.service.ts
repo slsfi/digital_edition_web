@@ -41,17 +41,14 @@ export class CommonFunctionsService {
 
   /**
    * Function for sorting an array of objects alphabetically ascendingly based on the given object key (field).
-   * @param arrayToSort 
-   * @param fieldToSortOn 
+   * @param arrayToSort
+   * @param fieldToSortOn
    */
   sortArrayOfObjectsAlphabetically(arrayToSort: any, fieldToSortOn: string) {
     if (Array.isArray(arrayToSort)) {
       arrayToSort.sort((a, b) => {
-        if (typeof a[fieldToSortOn] !== "string") {
-          console.log(a[fieldToSortOn]);
-        }
-        const fieldA = a[fieldToSortOn].toUpperCase();
-        const fieldB = b[fieldToSortOn].toUpperCase();
+        const fieldA = String(a[fieldToSortOn]).toUpperCase();
+        const fieldB = String(b[fieldToSortOn]).toUpperCase();
         if (fieldA < fieldB) {
           return -1;
         }
