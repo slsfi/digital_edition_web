@@ -154,7 +154,6 @@ export class OccurrencesPage {
     }
 
     this.setObjectType();
-    console.log(this.occurrenceResult);
     this.getOccurrenceTexts(this.occurrenceResult);
     this.getMediaData();
     this.getArticleData();
@@ -494,13 +493,6 @@ export class OccurrencesPage {
         this.groupedTexts.push(item);
       }
     }
-
-    console.log(this.groupedTexts);
-    this.commonFunctions.sortArrayOfObjectsAlphabetically(this.groupedTexts, 'name');
-    for (let c = 0; c < this.groupedTexts.length; c++) {
-      console.log(this.groupedTexts[c]['publications']);
-      // this.commonFunctions.sortArrayOfObjectsAlphabetically(this.groupedTexts[c]['publications'], 'name');
-    }
   }
 
   setFacsimileOccurrence(occurrence: Occurrence, type: string) {
@@ -522,6 +514,7 @@ export class OccurrencesPage {
     }
     this.semanticDataService.getOccurrences(this.objectType, id).subscribe(
       occ => {
+        console.log('occ: ', occ);
         this.groupedTexts = [];
         this.infoLoading = false;
         // Sort alphabetically
@@ -533,7 +526,7 @@ export class OccurrencesPage {
             }
             if ( item.occurrences[0] !== undefined &&
              addedTOCs.includes(item.occurrences[0]['collection_id']) === false ) {
-              this.getPublicationTOCName(item.occurrences[0], this.groupedTexts);
+              this.getPublicationTOCName(item.occurrences[0]['collection_id'], this.groupedTexts);
               addedTOCs.push(item.occurrences[0]['collection_id']);
             }
           }
@@ -549,18 +542,17 @@ export class OccurrencesPage {
     );
   }
 
-  getPublicationTOCName(occ_data, all_data) {
-    const itemId = occ_data['collection_id'] + '_' + occ_data['publication_id'];
-    this.semanticDataService.getPublicationTOC(occ_data['collection_id']).subscribe(
+  getPublicationTOCName(collectionId, all_data) {
+    this.semanticDataService.getPublicationTOC(collectionId).subscribe(
       toc_data => {
-          this.updatePublicationNames(toc_data, all_data, itemId);
+          this.updatePublicationNames(toc_data, all_data);
         },
       error =>  {
       }
     );
   }
 
-  public updatePublicationNames(tocData, allData, itemId) {
+  public updatePublicationNames(tocData, allData) {
     tocData.forEach( item => {
       allData.forEach(data => {
         data['publications'].forEach(pub => {
