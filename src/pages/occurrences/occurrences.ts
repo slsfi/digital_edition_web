@@ -12,6 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 import leaflet from 'leaflet';
 import { BootstrapOptions } from '@angular/core/src/application_ref';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
+import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
 
 /**
  * Generated class for the OccurrencesPage page.
@@ -84,7 +85,8 @@ export class OccurrencesPage {
               public occurrenceService: OccurrenceService,
               public viewCtrl: ViewController,
               private events: Events,
-              private analyticsService: AnalyticsService
+              private analyticsService: AnalyticsService,
+              public commonFunctions: CommonFunctionsService,
   ) {
     if (this.simpleWorkMetadata === undefined) {
       try {
@@ -153,6 +155,12 @@ export class OccurrencesPage {
 
     this.setObjectType();
     this.getOccurrenceTexts(this.occurrenceResult);
+    console.log(this.groupedTexts);
+    this.commonFunctions.sortArrayOfObjectsAlphabetically(this.groupedTexts, 'name');
+    for (let c = 0; c < this.groupedTexts.length; c++) {
+      console.log(this.groupedTexts[c]['publications']);
+      // this.commonFunctions.sortArrayOfObjectsAlphabetically(this.groupedTexts[c]['publications'], 'name');
+    }
     this.getMediaData();
     this.getArticleData();
     this.getGalleryOccurrences();
@@ -562,14 +570,6 @@ export class OccurrencesPage {
         });
       });
   });
-  }
-
-  sortList(arrayToSort, fieldToSortOn) {
-    arrayToSort.sort(function(a, b) {
-      if (a[fieldToSortOn].charCodeAt(0) < b[fieldToSortOn].charCodeAt(0)) { return -1; }
-      if (a[fieldToSortOn].charCodeAt(0) > b[fieldToSortOn].charCodeAt(0)) { return 1; }
-      return 0;
-    });
   }
 
   toggleList(id) {
