@@ -40,6 +40,26 @@ export class CommonFunctionsService {
 
 
   /**
+   * Function for sorting an array of objects alphabetically ascendingly based on the given object key (field).
+   * @param arrayToSort 
+   * @param fieldToSortOn 
+   */
+  sortArrayOfObjectsAlphabetically(arrayToSort: any, fieldToSortOn: string) {
+    arrayToSort.sort((a, b) => {
+      const fieldA = a[fieldToSortOn].toUpperCase();
+      const fieldB = b[fieldToSortOn].toUpperCase();
+      if (fieldA < fieldB) {
+        return -1;
+      }
+      if (fieldA > fieldB) {
+        return 1;
+      }
+      return 0;
+    });
+  }
+
+
+  /**
    * This function can be used to scroll a container so that the element which it
    * contains is placed either at the top edge of the container or in the center
    * of the container. This function can be called multiple times simultaneously
