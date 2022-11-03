@@ -588,7 +588,7 @@ export class OccurrencesPage {
                 }
               });
             });
-            if (item.publications !== undefined && item.publications.length > 0) {
+            if (item.publications !== undefined) {
               this.commonFunctions.sortArrayOfObjectsAlphabetically(item.publications, 'name');
             }
           }, error => { }
