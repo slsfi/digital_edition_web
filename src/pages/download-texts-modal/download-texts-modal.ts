@@ -3,6 +3,7 @@ import { NavController, ViewController, NavParams, Events } from 'ionic-angular'
 import { ConfigService } from '@ngx-config/core';
 import { TextService } from '../../app/services/texts/text.service';
 import { CommentService } from '../../app/services/comments/comment.service';
+import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
 import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
@@ -56,7 +57,8 @@ export class DownloadTextsModalPage {
     public readPopoverService: ReadPopoverService,
     private tocService: TableOfContentsService,
     private langService: LanguageService,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    public commonFunctions: CommonFunctionsService
   ) {
     // Get configs
     this.appMachineName = this.config.getSettings('app.machineName');
@@ -371,11 +373,22 @@ export class DownloadTextsModalPage {
 
           content = this.constructHtmlForPrint(content, 'intro');
 
-          const newWindowRef = window.open();
-          newWindowRef.document.write(content);
-          newWindowRef.document.close();
-          newWindowRef.focus();
-          this.loadingIntro = false;
+          try {
+            const newWindowRef = window.open();
+            if (newWindowRef) {
+              newWindowRef.document.write(content);
+              newWindowRef.document.close();
+              newWindowRef.focus();
+            } else {
+              this.showErrorMessage = true;
+              console.log('unable to open new window');
+            }
+            this.loadingIntro = false;
+          } catch (e) {
+            this.loadingIntro = false;
+            this.showErrorMessage = true;
+            console.log('error opening introduction in print format in new window', e);
+          }
         },
         error => {
           console.log('error loading introduction');
@@ -392,7 +405,8 @@ export class DownloadTextsModalPage {
         if (content === '<html xmlns="http://www.w3.org/1999/xhtml"><head></head><body>File not found</body></html>') {
           content = '';
         } else {
-          content = this.postprocessEstablishedText(content);
+          const c_id = String(this.textId).split('_')[0];
+          content = this.textService.postprocessEstablishedText(content, c_id);
 
           content = content.substring(content.indexOf('<body>') + 6, content.indexOf('</body>'));
           content = content.replace('<p> </p><p> </p><section role="doc-endnotes"><ol class="tei footnotesList"></ol></section>', '');
@@ -400,11 +414,22 @@ export class DownloadTextsModalPage {
           content = this.constructHtmlForPrint(content, 'est');
         }
 
-        const newWindowRef = window.open();
-        newWindowRef.document.write(content);
-        newWindowRef.document.close();
-        newWindowRef.focus();
-        this.loadingEst = false;
+        try {
+          const newWindowRef = window.open();
+          if (newWindowRef) {
+            newWindowRef.document.write(content);
+            newWindowRef.document.close();
+            newWindowRef.focus();
+          } else {
+            this.showErrorMessage = true;
+            console.log('unable to open new window');
+          }
+          this.loadingEst = false;
+        } catch (e) {
+          this.loadingEst = false;
+          this.showErrorMessage = true;
+          console.log('error opening established text in print format in new window', e);
+        }
       },
       error => {
         console.log('error loading established text');
@@ -445,8 +470,8 @@ export class DownloadTextsModalPage {
                       receivers.push(subject['mottagare']);
                     }
                   });
-                  concatSenders = this.concatenateNames(senders);
-                  concatReceivers = this.concatenateNames(receivers);
+                  concatSenders = this.commonFunctions.concatenateNames(senders);
+                  concatReceivers = this.commonFunctions.concatenateNames(receivers);
                 }
               }
               if (metadata['letter'] !== undefined && metadata['letter'] !== null) {
@@ -505,20 +530,42 @@ export class DownloadTextsModalPage {
                     const contentParts = content.split('</div>\n</comments>');
                     content = contentParts[0] + mContent + '</div>\n</comments>' + contentParts[1];
 
-                    const newWindowRef = window.open();
-                    newWindowRef.document.write(content);
-                    newWindowRef.document.close();
-                    newWindowRef.focus();
-                    this.loadingCom = false;
+                    try {
+                      const newWindowRef = window.open();
+                      if (newWindowRef) {
+                        newWindowRef.document.write(content);
+                        newWindowRef.document.close();
+                        newWindowRef.focus();
+                      } else {
+                        this.showErrorMessage = true;
+                        console.log('unable to open new window');
+                      }
+                      this.loadingCom = false;
+                    } catch (e) {
+                      this.loadingCom = false;
+                      this.showErrorMessage = true;
+                      console.log('error opening comment text in print format in new window', e);
+                    }
                   }
                 );
               }
             } else {
-              const newWindowRef = window.open();
-              newWindowRef.document.write(content);
-              newWindowRef.document.close();
-              newWindowRef.focus();
-              this.loadingCom = false;
+              try {
+                const newWindowRef = window.open();
+                if (newWindowRef) {
+                  newWindowRef.document.write(content);
+                  newWindowRef.document.close();
+                  newWindowRef.focus();
+                } else {
+                  this.showErrorMessage = true;
+                  console.log('unable to open new window');
+                }
+                this.loadingCom = false;
+              } catch (e) {
+                this.loadingCom = false;
+                this.showErrorMessage = true;
+                console.log('error opening comment text in print format in new window', e);
+              }
             }
           },
           metadataError => {
@@ -534,28 +581,6 @@ export class DownloadTextsModalPage {
         this.showErrorMessage = true;
       }
     );
-  }
-
-  private postprocessEstablishedText(text: string) {
-    const c_id = String(this.textId).split('_')[0];
-    let galleryId = 44;
-
-    try {
-      galleryId = this.config.getSettings('settings.galleryCollectionMapping')[c_id];
-    } catch ( err ) {
-    }
-
-    if ( String(text).includes('images/verk/http') ) {
-      text = text.replace(/images\/verk\//g, '');
-    } else {
-      text = text.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/${galleryId}/`);
-    }
-
-    text = text.replace(/\.png/g, '.svg');
-    text = text.replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"');
-    text = text.replace(/images\//g, 'assets/images/');
-
-    return text;
   }
 
   private constructHtmlForPrint(text: string, textType: string) {
@@ -776,30 +801,6 @@ export class DownloadTextsModalPage {
       filename += '---'
     }
     return filename;
-  }
-
-  /**
-  * Given an array with names of people, this function return a string where the names
-  * have been concatenated. A semicolon (;) is used as a separator between all of the names
-  * except between the second to last and last, which are separated by an ampersand (&).
-  * @param names An array of strings with the names that are to be concatenated.
-  * @returns A string with the names concatenated.
-  */
-  private concatenateNames(names: string[]) {
-    let names_str = '';
-    for (let i = 0; i < names.length; i++) {
-      names_str = names_str + names[i];
-      if (names.length > 2) {
-        if (i < names.length - 2) {
-          names_str = names_str + '; ';
-        } else if (i < names.length - 1) {
-          names_str = names_str + ' \u0026 ';
-        }
-      } else if (names.length === 2 && i < 1) {
-        names_str = names_str + ' \u0026 ';
-      }
-    }
-    return names_str;
   }
 
   doAnalytics(textType: string) {

@@ -7,6 +7,7 @@ import { TextService } from '../../app/services/texts/text.service';
 import { AlertController, ToastController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
+import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
 
 
 /**
@@ -39,7 +40,6 @@ export class VariationsComponent {
   varID: string;
   legendTitle: string;
   textLoading: Boolean = true;
-  intervalTimerId: number;
   showOpenLegendButton: Boolean = false;
 
   constructor(
@@ -53,13 +53,13 @@ export class VariationsComponent {
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     public translate: TranslateService,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    public commonFunctions: CommonFunctionsService
   ) {
     this.text = '';
     this.selectedVariationName = '';
     this.variations = [];
     this.varID = '';
-    this.intervalTimerId = 0;
 
     try {
       this.showOpenLegendButton = this.config.getSettings('showOpenLegendButton.variations');
@@ -273,7 +273,7 @@ export class VariationsComponent {
     variation.viewType = 'variations';
     this.textService.variationsOrder.push(variation.sort_order - 1);
     this.openNewVarView.emit(variation);
-    this.scrollLastViewIntoView();
+    this.commonFunctions.scrollLastViewIntoView();
   }
 
   openAllVariations() {
@@ -293,7 +293,7 @@ export class VariationsComponent {
       id: 'var-legend'
     }
     this.openNewLegendView.emit(id);
-    this.scrollLastViewIntoView();
+    this.commonFunctions.scrollLastViewIntoView();
   }
 
   /**
@@ -310,7 +310,7 @@ export class VariationsComponent {
       }
       if (currentVarElemContainer !== null) {
         const varElemColumnIds = [];
-        const columnElems = Array.from(document.querySelectorAll('div.read-column'));
+        const columnElems = Array.from(document.querySelectorAll('page-read:not([hidden]) div.read-column'));
         if (columnElems) {
           columnElems.forEach(function(columnElem) {
             const varElem = columnElem.querySelector('variations');
@@ -331,35 +331,6 @@ export class VariationsComponent {
         }
       }
     }
-  }
-
-  /**
-   * This function scrolls the read-view horisontally to the last read column.
-   * It's called after adding new views.
-   * */
-  scrollLastViewIntoView() {
-    this.ngZone.runOutsideAngular(() => {
-      let iterationsLeft = 10;
-      clearInterval(this.intervalTimerId);
-      this.intervalTimerId = window.setInterval(function() {
-        if (iterationsLeft < 1) {
-          clearInterval(this.intervalTimerId);
-        } else {
-          iterationsLeft -= 1;
-          const viewElements = document.getElementsByClassName('read-column');
-          if (viewElements[0] !== undefined) {
-            const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
-            const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
-            if (scrollingContainer !== null) {
-              const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
-              scrollingContainer.getBoundingClientRect().left;
-              scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
-              clearInterval(this.intervalTimerId);
-            }
-          }
-        }
-      }.bind(this), 500);
-    });
   }
 
 }

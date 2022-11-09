@@ -9,6 +9,7 @@ import { Facet } from '../../app/models/facet.model';
 import { Storage } from '@ionic/storage';
 import { IfObservable } from 'rxjs/observable/IfObservable';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
+import { TooltipService } from '../../app/services/tooltips/tooltip.service';
 /**
  * Generated class for the SimpleSearchComponent component.
  *
@@ -79,6 +80,7 @@ export class SimpleSearchComponent {
     public userSettingsService: UserSettingsService,
     public viewctrl: ViewController,
     public semanticDataService: SemanticDataService,
+    private tooltipService: TooltipService,
     private storage: Storage,
     private cf: ChangeDetectorRef,
     private analyticsService: AnalyticsService) {
@@ -608,6 +610,7 @@ export class SimpleSearchComponent {
           'hidden': false,
           'date_born': String(subjectData['date_born']).split('-')[0],
           'date_deceased': String(subjectData['date_deceased']).split('-')[0],
+          'year_born_deceased': this.tooltipService.constructYearBornDeceasedString(subjectData['date_born'], subjectData['date_deceased']),
           'place_of_birth': subjectData['place_of_birth'],
           'occupation': subjectData['occupation'],
           'score': element._score,

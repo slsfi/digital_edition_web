@@ -803,7 +803,11 @@ export class DigitalEditionsApp {
   registerEventListeners() {
     this.events.subscribe('digital-edition-list:open', (collection) => {
       console.log('listened to digital-edition-list:open');
-      this.openCollection(collection);
+      if (String(collection.id).endsWith('.epub')) {
+        this.openPage('epub', null, collection.id);
+      } else {
+        this.openCollection(collection);
+      }
     });
     this.events.subscribe('CollectionWithChildrenPdfs:highlight', (collectionID) => {
       if ( this.collectionsListWithTOC !== undefined && this.collectionsListWithTOC ) {

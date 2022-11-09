@@ -7,6 +7,7 @@ import { ReadPopoverService } from '../../app/services/settings/read-popover.ser
 import { FacsimileZoomModalPage } from '../../pages/facsimile-zoom/facsimile-zoom';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { TranslateService } from '@ngx-translate/core';
+import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
 /**
  * Generated class for the IllustrationsComponent component.
  *
@@ -32,6 +33,7 @@ export class IllustrationsComponent {
   apiEndPoint: string;
   appMachineName: string;
   projectMachineName: string;
+
   constructor(
     public navParams: NavParams,
     protected readPopoverService: ReadPopoverService,
@@ -40,15 +42,16 @@ export class IllustrationsComponent {
     private config: ConfigService,
     private events: Events,
     public translate: TranslateService,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    public commonFunctions: CommonFunctionsService
   ) {
     this.registerEventListeners();
   }
   ngOnInit() {
-    this.getIllustrationImages();
     this.appMachineName = this.config.getSettings('app.machineName');
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.projectMachineName = this.config.getSettings('app.machineName');
+    this.getIllustrationImages();
     this.doAnalytics();
   }
 
@@ -101,7 +104,7 @@ export class IllustrationsComponent {
     if (imageSrc) {
       imageFilename = imageSrc.substring(imageSrc.lastIndexOf('/') + 1);
       let target = null as HTMLElement;
-      const readtextElem = document.querySelector('read-text');
+      const readtextElem = document.querySelector('page-read:not([hidden]) read-text');
       try {
         if (image.class === 'doodle') {
           // Get the image filename without format and prepend tag_ to it
@@ -140,12 +143,12 @@ export class IllustrationsComponent {
             tmpImage.alt = 'ms arrow right image';
             tmpImage.classList.add('inl_ms_arrow');
             target.parentElement.insertBefore(tmpImage, target);
-            this.scrollElementIntoView(tmpImage);
+            this.commonFunctions.scrollElementIntoView(tmpImage);
             setTimeout(function() {
               target.parentElement.removeChild(tmpImage);
             }, 5000);
           } else {
-            this.scrollElementIntoView(target, 'top', 75);
+            this.commonFunctions.scrollElementIntoView(target, 'top', 75);
           }
         } else {
           console.log('Unable to find target when scrolling to image position in text, imageSrc:', imageSrc);
@@ -163,16 +166,7 @@ export class IllustrationsComponent {
     this.textService.getEstablishedText(this.itemId).subscribe(
       text => {
         const c_id = String(this.itemId).split('_')[0];
-        let galleryId = 44;
-        try {
-          galleryId = this.config.getSettings('settings.galleryCollectionMapping')[c_id];
-        } catch ( err ) {
-        }
-        if ( String(text).includes('/images/verk/http') ) {
-          text = text.replace(/images\/verk\//g, '');
-        } else {
-          text = text.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/${galleryId}/`);
-        }
+        text = this.textService.mapIllustrationImagePaths(text, c_id);
 
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(text, 'text/html');
@@ -208,34 +202,4 @@ export class IllustrationsComponent {
     this.analyticsService.doAnalyticsEvent('Illustration', 'Illustration', String(this.itemId));
   }
 
-  /** This function can be used to scroll a container so that the element which it
-   *  contains is placed either at the top edge of the container or in the center
-   *  of the container. This function can be called multiple times simultaneously
-   *  on elements in different containers, unlike the native scrollIntoView function
-   *  which cannot be called multiple times simultaneously in Chrome due to a bug.
-   *  Valid values for yPosition are 'top' and 'center'. */
-   private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0) {
-    if (element === undefined || element === null || (yPosition !== 'center' && yPosition !== 'top')) {
-      return;
-    }
-    // Find the scrollable container of the element which is to be scrolled into view
-    let container = element.parentElement;
-    while (container !== null && container.parentElement !== null &&
-     !container.classList.contains('scroll-content')) {
-      container = container.parentElement;
-    }
-    if (container === null || container.parentElement === null) {
-      return;
-    }
-
-    const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
-    let baseOffset = 10;
-    if (yPosition === 'center') {
-      baseOffset = Math.floor(container.offsetHeight / 2);
-      if (baseOffset > 45) {
-        baseOffset = baseOffset - 45;
-      }
-    }
-    container.scrollTo({top: y - baseOffset - offset, behavior: 'smooth'});
-  }
 }

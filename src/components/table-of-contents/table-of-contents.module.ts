@@ -4,7 +4,6 @@ import { TableOfContentsList } from './table-of-contents.component';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
 import { HttpClient } from '@angular/common/http';
 
 export function createTranslateLoader(http: HttpClient) {
@@ -31,9 +30,6 @@ export function createTranslateLoader(http: HttpClient) {
     ],
     entryComponents: [
         TableOfContentsList
-    ],
-    providers: [
-      TableOfContentsService
     ],
     exports: [
         TableOfContentsList

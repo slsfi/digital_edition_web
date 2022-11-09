@@ -13,6 +13,7 @@
               <p class="info_text">{{'SearchApp.infotext' | translate}}</p>
             </ion-col>
         </ion-row>
+
         <ion-row>
           <ion-col col-11>
             <ion-searchbar placeholder="{{'SearchApp.search-holder' | translate}}" class="searchbar" [(ngModel)]="searchText" (ionChange)=onChanged($event)>
@@ -24,20 +25,21 @@
             </button>
           </ion-col>
         </ion-row>
-        <ion-row class="loadingRow" *ngIf="showLoading">
-            <ion-spinner class="loading" name="crescent"></ion-spinner>
-        </ion-row>
 
         <ion-list>
-          <div *ngFor="let p of works">
-            <ion-item *ngIf="p?.firstOfItsKind">
-              <ion-item-divider color="light">{{p.firstOfItsKind}}</ion-item-divider>
+          <div *ngFor="let w of works">
+            <ion-item *ngIf="w?.firstOfItsKind">
+              <ion-item-divider color="light">{{w.firstOfItsKind}}</ion-item-divider>
             </ion-item>
-            <ion-item *ngIf="p['title'].length > 1" (click)="openWork(p)">
-                <span *ngFor="let author of p.author_data; let i = index;" class="author">{{(author['last_name'] != '')?author['last_name'].trim():''}}<span *ngIf="author['first_name'].length>0">, </span>{{(author['first_name'] != '')?author['first_name'].trim():''}}{{(i < (p.author_data.length-1))?', ': ''}}</span><span *ngIf="p.author_data.length>0">, </span><span class="work_title">{{p['title']}}</span>
+            <ion-item *ngIf="w['title'].length > 1" (click)="openWork(w)">
+                <span *ngFor="let author of w.author_data; let i = index;" class="author">{{(author['last_name'] != '')?author['last_name'].trim():''}}<span *ngIf="author['first_name'].length>0">, </span>{{(author['first_name'] != '')?author['first_name'].trim():''}}{{(i < (w.author_data.length-1))?', ': ''}}</span><span *ngIf="w.author_data.length>0">, </span><span class="work_title">{{w['title']}}</span>
             </ion-item>
           </div>
         </ion-list>
+
+        <ion-row class="loadingRow" *ngIf="showLoading">
+          <ion-spinner class="loading" name="crescent"></ion-spinner>
+        </ion-row>
 
         <ion-infinite-scroll *ngIf="!searchText" (ionInfinite)="doInfinite($event)">
           <ion-infinite-scroll-content></ion-infinite-scroll-content>

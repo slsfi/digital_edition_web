@@ -25,11 +25,11 @@ export class TextService {
   varIdsInStorage: string[] = [];
   readtextIdsInStorage: string[] = [];
 
-  /* activeTocOrder variable should be in table-of-contents.service, but due to the way that service
-     is set up the variable doesn't become global and shared across components there. */
-  activeTocOrder: string;
-
-  constructor(private http: Http, private config: ConfigService, private cache: TextCacheService) {
+  constructor(
+    private http: Http,
+    private config: ConfigService,
+    private cache: TextCacheService
+  ) {
     this.appMachineName = this.config.getSettings('app.machineName');
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
 
@@ -47,8 +47,6 @@ export class TextService {
     this.variationsOrder = [];
     this.varIdsInStorage = [];
     this.readtextIdsInStorage = [];
-
-    this.activeTocOrder = 'thematic';
   }
 
   getEstablishedText(id: string): Observable<any> {
@@ -342,6 +340,28 @@ export class TextService {
             return body.content;
           })
           .catch(this.handleError);
+  }
+
+  postprocessEstablishedText(text: string, collectionId: string) {
+    text = this.mapIllustrationImagePaths(text, collectionId);
+    text = text.replace(/\.png/g, '.svg');
+    text = text.replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"');
+    text = text.replace(/images\//g, 'assets/images/');
+    return text;
+  }
+
+  mapIllustrationImagePaths(text: string, collectionId: string) {
+    let galleryId = 44;
+    try {
+      galleryId = this.config.getSettings('settings.galleryCollectionMapping')[collectionId];
+    } catch ( err ) {}
+
+    if ( String(text).includes('images/verk/http') ) {
+      text = text.replace(/images\/verk\//g, '');
+    } else {
+      text = text.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/${galleryId}/`);
+    }
+    return text;
   }
 
   private handleError (error: Response | any) {

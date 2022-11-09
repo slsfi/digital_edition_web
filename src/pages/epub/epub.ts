@@ -5,13 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 
-/**
- * Desktop version shows collection cover page.
- * Mobile version lists collection publications.
- * Also mobile version of collection cover page and introduction is accessed from this page.
- */
-
- @IonicPage({
+@IonicPage({
   name: 'epub',
   segment: 'epub/:selectedFile'
 })

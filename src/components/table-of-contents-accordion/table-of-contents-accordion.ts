@@ -15,6 +15,7 @@ import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate
 import { MetadataService } from '../../app/services/metadata/metadata.service';
 import { TextService } from '../../app/services/texts/text.service';
 import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
+import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
 
 @Component({
   selector: 'table-of-contents-accordion',
@@ -40,12 +41,12 @@ export class TableOfContentsAccordionComponent {
     // console.log('toc accordion options:', value);
     if (this.alphabethicOrderActive && this.sortableLetters.includes(this.collectionId)) {
       this.activeMenuTree = this.alphabeticalactiveMenuTree;
-      this.textService.activeTocOrder = 'alphabetical';
+      this.tocService.activeTocOrder = 'alphabetical';
     } else if (this.chronologicalOrderActive && this.sortableLetters.includes(this.collectionId)) {
       this.activeMenuTree = this.chronologicalactiveMenuTree;
-      this.textService.activeTocOrder = 'chronological';
+      this.tocService.activeTocOrder = 'chronological';
     } else {
-      this.textService.activeTocOrder = 'thematic';
+      this.tocService.activeTocOrder = 'thematic';
       if (value && value.toc && value.toc.length > 0) {
         if (value.searchTocItem !== undefined && value.searchTocItem === true) {
           this.searchingForTocItem = true;
@@ -197,6 +198,7 @@ export class TableOfContentsAccordionComponent {
     public metadataService: MetadataService,
     protected textService: TextService,
     public tocService: TableOfContentsService,
+    public commonFunctions: CommonFunctionsService,
     private ngZone: NgZone
   ) {
   }
@@ -327,7 +329,7 @@ export class TableOfContentsAccordionComponent {
 
   setActiveSortingType(type) {
     if (type === 'alphabetical') {
-      this.textService.activeTocOrder = 'alphabetical';
+      this.tocService.activeTocOrder = 'alphabetical';
       this.alphabethicOrderActive = true;
       this.chronologicalOrderActive = false;
       this.thematicOrderActive = false;
@@ -361,7 +363,7 @@ export class TableOfContentsAccordionComponent {
         }
       });
     } else if (type === 'chronological') {
-      this.textService.activeTocOrder = 'chronological';
+      this.tocService.activeTocOrder = 'chronological';
       this.alphabethicOrderActive = false;
       this.chronologicalOrderActive = true;
       this.thematicOrderActive = false;
@@ -395,7 +397,7 @@ export class TableOfContentsAccordionComponent {
         }
       });
     } else {
-      this.textService.activeTocOrder = 'thematic';
+      this.tocService.activeTocOrder = 'thematic';
       this.alphabethicOrderActive = false;
       this.chronologicalOrderActive = false;
       this.thematicOrderActive = true;
@@ -418,7 +420,7 @@ export class TableOfContentsAccordionComponent {
               foundElem = document.getElementById(itemId.split(';').shift());
             }
             if (foundElem) {
-              this.scrollElementIntoView(foundElem);
+              this.commonFunctions.scrollElementIntoView(foundElem);
             }
           }
         } catch (e) {
@@ -478,11 +480,11 @@ export class TableOfContentsAccordionComponent {
     }
 
     if (this.alphabethicOrderActive && this.sortableLetters.includes(this.collectionId)) {
-      this.textService.activeTocOrder = 'alphabetical';
+      this.tocService.activeTocOrder = 'alphabetical';
     } else if (this.chronologicalOrderActive && this.sortableLetters.includes(this.collectionId)) {
-      this.textService.activeTocOrder = 'chronological';
+      this.tocService.activeTocOrder = 'chronological';
     } else {
-      this.textService.activeTocOrder = 'thematic';
+      this.tocService.activeTocOrder = 'thematic';
     }
     // console.log('ngOnChanges this.activeMenuTree', this.activeMenuTree);
   }
@@ -1165,7 +1167,7 @@ export class TableOfContentsAccordionComponent {
     this.alphabethicOrderActive = false;
     this.chronologicalOrderActive = false;
     this.thematicOrderActive = false;
-    this.textService.activeTocOrder = 'thematic';
+    this.tocService.activeTocOrder = 'thematic';
     this.resetTocAccordionScroll();
     this.events.publish('exitActiveCollection');
     const params = {};
@@ -1418,44 +1420,6 @@ export class TableOfContentsAccordionComponent {
 
   public isDefinedAndPositive(property: any): boolean {
     return this.isDefined(property) && !isNaN(property) && property > 0;
-  }
-
-  /**
-   * This function can be used to scroll a container so that the element which it
-   * contains is placed either at the top edge of the container or in the center
-   * of the container. This function can be called multiple times simultaneously
-   * on elements in different containers, unlike the native scrollIntoView function
-   * which cannot be called multiple times simultaneously in Chrome due to a bug.
-   * Valid values for yPosition are 'top' and 'center'. The scroll behavior can
-   * either be 'auto' or the default 'smooth'.
-   */
-   private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0, scrollBehavior = 'smooth') {
-    if (element === undefined || element === null || (yPosition !== 'center' && yPosition !== 'top')) {
-      return;
-    }
-    // Find the scrollable container of the element which is to be scrolled into view
-    let container = element.parentElement;
-    while (container !== null && container.parentElement !== null &&
-      !container.classList.contains('scroll-content')) {
-      container = container.parentElement;
-    }
-    if (container === null || container.parentElement === null) {
-      return;
-    }
-
-    const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
-    let baseOffset = 10;
-    if (yPosition === 'center') {
-      baseOffset = Math.floor(container.offsetHeight / 2);
-      if (baseOffset > 45) {
-        baseOffset = baseOffset - 45;
-      }
-    }
-    if (scrollBehavior === 'smooth') {
-      container.scrollTo({top: y - baseOffset - offset, behavior: 'smooth'});
-    } else {
-      container.scrollTo({top: y - baseOffset - offset, behavior: 'auto'});
-    }
   }
 
 }

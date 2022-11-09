@@ -381,53 +381,53 @@ div.tei.xlargeFontSize .teiManuscript.immediate_symbol img {
 /* Symbol/icon representing a drawing etc. */
 div.tei img.symbol {
     display: inline-block;
-    width:   1.17em; /* Default. */
+    width:   1.235em; /* Default. */
     height:  auto;
     vertical-align: text-bottom;
 }
 div.tei.miniFontSize img.symbol {
-    width:  ceil(1.17 * $text-fontsize-mini);
-    height: ceil(1.17 * $text-fontsize-mini);
+    width:  ceil(1.235 * $text-fontsize-mini);
+    height: ceil(1.235 * $text-fontsize-mini);
     vertical-align: floor(-0.2 * $text-fontsize-mini);
 }
 div.tei.tinyFontSize img.symbol {
-    width:  ceil(1.17 * $text-fontsize-tiny);
-    height: ceil(1.17 * $text-fontsize-tiny);
+    width:  ceil(1.235 * $text-fontsize-tiny);
+    height: ceil(1.235 * $text-fontsize-tiny);
     vertical-align: floor(-0.2 * $text-fontsize-tiny);
 }
 div.tei.xxxsmallFontSize img.symbol {
-    width:  ceil(1.17 * $text-fontsize-xxxsmall);
-    height: ceil(1.17 * $text-fontsize-xxxsmall);
+    width:  ceil(1.235 * $text-fontsize-xxxsmall);
+    height: ceil(1.235 * $text-fontsize-xxxsmall);
     vertical-align: floor(-0.2 * $text-fontsize-xxxsmall);
 }
 div.tei.xxsmallFontSize img.symbol {
-    width:  ceil(1.17 * $text-fontsize-xxsmall);
-    height: ceil(1.17 * $text-fontsize-xxsmall);
+    width:  ceil(1.235 * $text-fontsize-xxsmall);
+    height: ceil(1.235 * $text-fontsize-xxsmall);
     vertical-align: floor(-0.2 * $text-fontsize-xxsmall);
 }
 div.tei.xsmallFontSize img.symbol {
-    width:  ceil(1.17 * $text-fontsize-xsmall);
-    height: ceil(1.17 * $text-fontsize-xsmall);
+    width:  ceil(1.235 * $text-fontsize-xsmall);
+    height: ceil(1.235 * $text-fontsize-xsmall);
     vertical-align: floor(-0.2 * $text-fontsize-xsmall);
 }
 div.tei.smallFontSize img.symbol {
-    width:  ceil(1.17 * $text-fontsize-small);
-    height: ceil(1.17 * $text-fontsize-small);
+    width:  ceil(1.235 * $text-fontsize-small);
+    height: ceil(1.235 * $text-fontsize-small);
     vertical-align: floor(-0.2 * $text-fontsize-small);
 }
 div.tei.mediumFontSize img.symbol {
-    width:  ceil(1.17 * $text-fontsize-medium);
-    height: ceil(1.17 * $text-fontsize-medium);
+    width:  ceil(1.235 * $text-fontsize-medium);
+    height: ceil(1.235 * $text-fontsize-medium);
     vertical-align: floor(-0.2 * $text-fontsize-medium);
 }
 div.tei.largeFontSize img.symbol {
-    width:  ceil(1.17 * $text-fontsize-large);
-    height: ceil(1.17 * $text-fontsize-large);
+    width:  ceil(1.235 * $text-fontsize-large);
+    height: ceil(1.235 * $text-fontsize-large);
     vertical-align: floor(-0.2 * $text-fontsize-large);
 }
 div.tei.xlargeFontSize img.symbol {
-    width:  ceil(1.17 * $text-fontsize-xlarge);
-    height: ceil(1.17 * $text-fontsize-xlarge);
+    width:  ceil(1.235 * $text-fontsize-xlarge);
+    height: ceil(1.235 * $text-fontsize-xlarge);
     vertical-align: floor(-0.2 * $text-fontsize-xlarge);
 }
 

@@ -193,6 +193,8 @@ export class SemanticDataService {
     }
     if ( max === undefined || max === null ) {
       max = 800;
+    } else {
+      max = max + 100;
     }
 
     try {
@@ -253,7 +255,7 @@ export class SemanticDataService {
     } else if ( searchText !== undefined && searchText !== '' ) {
       payload.from = 0;
       payload.size = 5000;
-      payload.sort = ['_score'],
+      // payload.sort = ['_score'],
       payload.query.bool.must.push({fuzzy: {'full_name': {
           'value': `${String(searchText)}`}}});
     }
@@ -343,7 +345,7 @@ export class SemanticDataService {
     } else if ( searchText !== undefined && searchText !== '' ) {
       payload.from = 0;
       payload.size = 5000;
-      payload.sort = ['_score'],
+      // payload.sort = ['_score'],
       payload.query.bool.must.push({fuzzy: {'name': {
           'value': `${String(searchText)}`}}});
     }
@@ -443,7 +445,7 @@ export class SemanticDataService {
     } else if ( searchText !== undefined && searchText !== '' ) {
       payload.from = 0;
       payload.size = 5000;
-      payload.sort = ['_score'],
+      // payload.sort = ['_score'],
       payload.query.bool.must.push({fuzzy: {'name': {
           'value': `${String(searchText)}`}}});
     }

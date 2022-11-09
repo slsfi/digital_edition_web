@@ -8,37 +8,39 @@
       </ion-row>
       <ion-row class="search-area-row">
           <ion-col col-10>
-              <ion-row *ngIf="('SearchApp.infotext' | translate) !== 'SearchApp.infotext' && ('SearchApp.infotext' | translate).length>0">
-                <ion-col col-12>
-                  <p class="info_text">{{'SearchApp.infotext' | translate}}</p>
+            <ion-row *ngIf="('SearchApp.infotext' | translate) !== 'SearchApp.infotext' && ('SearchApp.infotext' | translate).length>0">
+              <ion-col col-12>
+                <p class="info_text">{{'SearchApp.infotext' | translate}}</p>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+                <ion-col col-10>
+                  <ion-searchbar placeholder="{{'SearchApp.search-holder' | translate}}" class="searchbar" [(ngModel)]="searchText" (ionChange)=onChanged($event)></ion-searchbar>
                 </ion-col>
-              </ion-row>
-              <ion-row>
-                  <ion-col col-10>
-                    <ion-searchbar placeholder="{{'SearchApp.search-holder' | translate}}" class="searchbar" [(ngModel)]="searchText" (ionChange)=onChanged($event)></ion-searchbar>
-                  </ion-col>
-                  <ion-col col-2 *ngIf="showFilter">
-                      <button (click)="openFilterModal()" ion-button><ion-icon class="filter-button" ios="ios-options" md="md-options"></ion-icon></button>
-                  </ion-col>
-              </ion-row>
-              <ion-row class="loadingRow" *ngIf="showLoading">
-                <ion-spinner class="loading" name="crescent"></ion-spinner>
-              </ion-row>
+                <ion-col col-2 *ngIf="showFilter">
+                    <button (click)="openFilterModal()" ion-button><ion-icon class="filter-button" ios="ios-options" md="md-options"></ion-icon></button>
+                </ion-col>
+            </ion-row>
 
             <ion-list>
-                <div *ngFor="let p of tags">
-                  <ion-item *ngIf="p?.firstOfItsKind">
-                    <ion-item-divider color="light">{{p.firstOfItsKind}}</ion-item-divider>
+                <div *ngFor="let t of tags">
+                  <ion-item *ngIf="t?.firstOfItsKind">
+                    <ion-item-divider color="light">{{t.firstOfItsKind}}</ion-item-divider>
                   </ion-item>
-                  <ion-item *ngIf="p?.name.length > 1" (click)="openTag(p)">
-                    <p>{{p.name}}</p>
+                  <ion-item *ngIf="t?.name.length > 1" (click)="openTag(t)">
+                    <p>{{t.name}}</p>
                   </ion-item>
                 </div>
             </ion-list>
 
-              <ion-infinite-scroll *ngIf="!searchText" (ionInfinite)="doInfinite($event)">
-                <ion-infinite-scroll-content></ion-infinite-scroll-content>
-              </ion-infinite-scroll>
+            <ion-row class="loadingRow" *ngIf="showLoading">
+              <ion-spinner class="loading" name="crescent"></ion-spinner>
+            </ion-row>
+
+            <ion-infinite-scroll *ngIf="!searchText" (ionInfinite)="doInfinite($event)">
+              <ion-infinite-scroll-content></ion-infinite-scroll-content>
+            </ion-infinite-scroll>
           </ion-col>
           <ion-col col-2 class="alphabet">
             <button ion-fab mini (click)="showAll()"><ion-icon name="refresh"></ion-icon></button>

@@ -28,10 +28,12 @@ import { LanguageService } from './services/languages/language.service';
 import { ReadPopoverService } from './services/settings/read-popover.service';
 import { CommentService } from './services/comments/comment.service';
 import { CommentCacheService } from './services/comments/comment-cache.service';
+import { CommonFunctionsService } from './services/common-functions/common-functions.service';
 import { SemanticDataService } from './services/semantic-data/semantic-data.service';
 import { ReferenceDataService } from './services/reference-data/reference-data.service';
 import { SearchDataService } from './services/search/search-data.service';
 import { TooltipService } from './services/tooltips/tooltip.service';
+import { TableOfContentsService } from './services/toc/table-of-contents.service';
 import { TableOfContentsModule } from '../components/table-of-contents/table-of-contents.module';
 import { DigitalEditionListModule } from '../components/digital-edition-list/digital-edition-list.module';
 import { MdContentService } from './services/md/md-content.service';
@@ -136,6 +138,7 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
   providers: [
     HtmlContentService,
     MdContentService,
+    TableOfContentsService,
     TextService,
     TextCacheService,
     TranslateService,
@@ -144,6 +147,7 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
     Title,
     CommentService,
     CommentCacheService,
+    CommonFunctionsService,
     SemanticDataService,
     ReferenceDataService,
     SearchDataService,
