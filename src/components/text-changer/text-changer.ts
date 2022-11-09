@@ -244,9 +244,9 @@ export class TextChangerComponent {
         toc => {
           if (toc && toc.children && String(toc.collectionId) === collectionId) {
             this.flatten(toc);
-            if (this.textService.activeTocOrder === 'alphabetical') {
+            if (this.tocService.activeTocOrder === 'alphabetical') {
               this.sortFlattenedTocAlphabetically();
-            } else if (this.textService.activeTocOrder === 'chronological') {
+            } else if (this.tocService.activeTocOrder === 'chronological') {
               this.sortFlattenedTocChronologically();
             }
             for (let i = 0; i < this.flattened.length; i++) {
@@ -456,9 +456,9 @@ export class TextChangerComponent {
     if ( this.flattened.length < 1 ) {
       this.flatten(toc);
     }
-    if (this.textService.activeTocOrder === 'alphabetical') {
+    if (this.tocService.activeTocOrder === 'alphabetical') {
       this.sortFlattenedTocAlphabetically();
-    } else if (this.textService.activeTocOrder === 'chronological') {
+    } else if (this.tocService.activeTocOrder === 'chronological') {
       this.sortFlattenedTocChronologically();
     }
     let itemFound = this.setCurrentPreviousAndNextItemsFromFlattenedToc();

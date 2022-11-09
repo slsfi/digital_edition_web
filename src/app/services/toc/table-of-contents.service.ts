@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-
 import { ConfigService } from '@ngx-config/core';
 import { TableOfContentsCategory, GeneralTocItem } from '../../models/table-of-contents.model';
 import { LanguageService } from '../languages/language.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Injectable()
 export class TableOfContentsService {
@@ -13,9 +13,15 @@ export class TableOfContentsService {
   private prevNextUrl = '/table-of-contents/';  // plus an id...
   private lang = 'sv';
   private multilingualTOC = false;
+  languageSubscription: Subscription;
   apiEndpoint: string;
+  activeTocOrder: string;
 
-  constructor(private http: Http, private config: ConfigService, private languageService: LanguageService) {
+  constructor(
+    private http: Http,
+    private config: ConfigService,
+    private languageService: LanguageService
+  ) {
     this.apiEndpoint = this.config.getSettings('app.apiEndpoint');
     try {
       const simpleApi = this.config.getSettings('app.simpleApi');
@@ -23,7 +29,6 @@ export class TableOfContentsService {
         this.apiEndpoint = simpleApi;
       }
     } catch (e) {
-
     }
 
     try {
@@ -31,14 +36,22 @@ export class TableOfContentsService {
       if (multilingualTOC) {
         this.multilingualTOC = multilingualTOC;
 
-        this.languageService.getLanguage().subscribe(lang => {
-          this.lang = lang;
+        this.languageSubscription = this.languageService.languageSubjectChange().subscribe(lang => {
+          if (lang) {
+            this.lang = lang;
+          }
         });
       }
     } catch (e) {
-
     }
 
+    this.activeTocOrder = 'thematic';
+  }
+
+  ngOnDestroy() {
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
   }
 
   getToc(): Observable<any> {
