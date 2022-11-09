@@ -188,8 +188,8 @@ export class TagSearchPage {
 
         this.allData = this.tags;
         this.cacheData = this.tags;
-        this.showLoading = false;
         this.sortListAlphabeticallyAndGroup(this.allData);
+        this.showLoading = false;
       },
       err => {
         console.error(err);

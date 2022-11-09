@@ -239,6 +239,7 @@ export class PersonSearchPage {
     this.showLoading = true;
     this.semanticDataService.getSubjectsElastic(this.from, this.searchText, this.filters, this.infiniteScrollNumber).subscribe(
       persons => {
+        console.log('getPersons persons: ', persons);
         const personsTmp = [];
         persons = persons.hits.hits;
         persons.forEach(element => {
@@ -282,8 +283,8 @@ export class PersonSearchPage {
 
         this.allData = this.persons;
         this.cacheData = this.persons;
-        this.showLoading = false;
         this.sortListAlphabeticallyAndGroup(this.persons);
+        this.showLoading = false;
       },
       err => {console.error(err); this.showLoading = false; }
     );
