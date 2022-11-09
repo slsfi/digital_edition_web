@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, ModalController, App, Platform, Vi
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
 import { ConfigService } from '@ngx-config/core';
 import { TextService } from '../../app/services/texts/text.service';
+import { TooltipService } from '../../app/services/tooltips/tooltip.service';
 import { OccurrenceService } from '../../app/services/occurrence/occurence.service';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { Occurrence, OccurrenceType, OccurrenceResult } from '../../app/models/occurrence.model';
@@ -11,6 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 import leaflet from 'leaflet';
 import { BootstrapOptions } from '@angular/core/src/application_ref';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
+import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
 
 /**
  * Generated class for the OccurrencesPage page.
@@ -44,8 +46,6 @@ export class OccurrencesPage {
   source: string = null;
   description: string = null;
   country: string = null;
-  year_born: string = null;
-  year_deceased: string = null;
   year_born_deceased_string: string = null;
   publisher: string = null;
   published_year: string = null;
@@ -80,11 +80,13 @@ export class OccurrencesPage {
               private app: App,
               private platform: Platform,
               protected textService: TextService,
+              private tooltipService: TooltipService,
               public translate: TranslateService,
               public occurrenceService: OccurrenceService,
               public viewCtrl: ViewController,
               private events: Events,
-              private analyticsService: AnalyticsService
+              private analyticsService: AnalyticsService,
+              public commonFunctions: CommonFunctionsService,
   ) {
     if (this.simpleWorkMetadata === undefined) {
       try {
@@ -130,33 +132,8 @@ export class OccurrencesPage {
       this.authors = [];
     }
 
-    // Get the born and deceased years without leading zeros and possible 'BC' indicators
-    this.year_born = (this.occurrenceResult.date_born !== undefined && this.occurrenceResult.date_born !== null) ?
-                              String(this.occurrenceResult.date_born).split('-')[0].replace(/^0+/, '').split(' ')[0] : null;
-    this.year_deceased = (this.occurrenceResult.date_deceased !== undefined && this.occurrenceResult.date_deceased !== null) ?
-                              String(this.occurrenceResult.date_deceased).split('-')[0].replace(/^0+/, '').split(' ')[0] : null;
-    // Get translation for 'BC'
-    let bcTranslation = 'BC';
-    this.translate.get('BC').subscribe(
-      translation => {
-        bcTranslation = translation;
-      }, error => { }
-    );
-    const bcIndicatorDeceased = (String(this.occurrenceResult.date_deceased).includes('BC')) ? ' ' + bcTranslation : '';
-    let bcIndicatorBorn = (String(this.occurrenceResult.date_born).includes('BC')) ? ' ' + bcTranslation : '';
-    if (String(this.occurrenceResult.date_born).includes('BC') && bcIndicatorDeceased === bcIndicatorBorn) {
-      // Born and deceased are both BC --> don't add indicator to year born
-      bcIndicatorBorn = '';
-    }
-    // Construct string with year born and year deceased for output
-    this.year_born_deceased_string = '';
-    if (this.year_born !== null && this.year_deceased !== null && this.year_born !== 'null' && this.year_deceased !== 'null') {
-      this.year_born_deceased_string += '(' + this.year_born + bcIndicatorBorn + '–' + this.year_deceased + bcIndicatorDeceased + ')';
-    } else if (this.year_born !== null && this.year_born !== 'null') {
-      this.year_born_deceased_string += '(* ' + this.year_born + bcIndicatorBorn + ')';
-    } else if (this.year_deceased !== null && this.year_deceased !== 'null') {
-      this.year_born_deceased_string += '(&#8224; ' + this.year_deceased + bcIndicatorDeceased + ')';
-    }
+    this.year_born_deceased_string = this.tooltipService.constructYearBornDeceasedString(this.occurrenceResult.date_born,
+      this.occurrenceResult.date_deceased);
 
     try {
       this.singleOccurrenceType = this.config.getSettings('SingleOccurrenceType');
@@ -539,20 +516,19 @@ export class OccurrencesPage {
       occ => {
         this.groupedTexts = [];
         this.infoLoading = false;
-        // Sort alphabetically
-        const addedTOCs: Array<String> = [];
         occ.forEach(item => {
           if ( item.occurrences !== undefined ) {
             for (const occurence of item.occurrences) {
               this.getOccurrence(occurence);
             }
-            if ( item.occurrences[0] !== undefined &&
-             addedTOCs.includes(item.occurrences[0]['collection_id']) === false ) {
-              this.getPublicationTOCName(item.occurrences[0], this.groupedTexts);
-              addedTOCs.push(item.occurrences[0]['collection_id']);
-            }
           }
         });
+        // Sort collection names alphabetically
+        this.commonFunctions.sortArrayOfObjectsAlphabetically(this.groupedTexts, 'name');
+
+        // Replace publication names (from the database) with the names in the collection TOC-file.
+        this.updateAndSortPublicationNamesInOccurrenceResults();
+
         this.isLoading = false;
         this.infoLoading = false;
       },
@@ -564,36 +540,36 @@ export class OccurrencesPage {
     );
   }
 
-  getPublicationTOCName(occ_data, all_data) {
-    const itemId = occ_data['collection_id'] + '_' + occ_data['publication_id'];
-    this.semanticDataService.getPublicationTOC(occ_data['collection_id']).subscribe(
-      toc_data => {
-          this.updatePublicationNames(toc_data, all_data, itemId);
-        },
-      error =>  {
+  sortPublicationNamesInOccurrenceResults() {
+    // Sort publication names in occurrence results alphabetically
+    for (let c = 0; c < this.groupedTexts.length; c++) {
+      this.commonFunctions.sortArrayOfObjectsAlphabetically(this.groupedTexts[c]['publications'], 'name');
+    }
+  }
+
+  updateAndSortPublicationNamesInOccurrenceResults() {
+    // Loop through each collection with occurrence results, get TOC for each collection,
+    // then loop through each publication with occurrence results in each collection and
+    // update publication names from TOC-files. Finally, sort the publication names.
+    this.groupedTexts.forEach(item => {
+      if (item.collection_id !== undefined && item.publications !== undefined) {
+        this.semanticDataService.getPublicationTOC(item.collection_id).subscribe(
+          tocData => {
+            item.publications.forEach(pub => {
+              const id = item.collection_id + '_' + pub.publication_id;
+              tocData.forEach(tocItem => {
+                if (id === tocItem['itemId']) {
+                  pub.occurrences[0].displayName = String(tocItem['text']);
+                  pub.name = String(tocItem['text']);
+                }
+              });
+            });
+            if (item.publications !== undefined) {
+              this.commonFunctions.sortArrayOfObjectsAlphabetically(item.publications, 'name');
+            }
+          }, error => { }
+        );
       }
-    );
-  }
-
-  public updatePublicationNames(tocData, allData, itemId) {
-    tocData.forEach( item => {
-      allData.forEach(data => {
-        data['publications'].forEach(pub => {
-          const id =  data['collection_id'] + '_' + pub['publication_id'];
-          if ( id === item['itemId'] ) {
-            pub.occurrences[0].displayName = item['text'];
-            pub['name'] = item['text'];
-          }
-        });
-      });
-  });
-  }
-
-  sortList(arrayToSort, fieldToSortOn) {
-    arrayToSort.sort(function(a, b) {
-      if (a[fieldToSortOn].charCodeAt(0) < b[fieldToSortOn].charCodeAt(0)) { return -1; }
-      if (a[fieldToSortOn].charCodeAt(0) > b[fieldToSortOn].charCodeAt(0)) { return 1; }
-      return 0;
     });
   }
 

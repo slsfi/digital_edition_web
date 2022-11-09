@@ -153,10 +153,8 @@ export class PlaceSearchPage {
     this.showLoading = true;
     this.semanticDataService.getLocationElastic(this.from, this.searchText).subscribe(
       places => {
-        places = places.hits.hits;
-        this.showLoading = false;
-
         const placesTmp = [];
+        places = places.hits.hits;
         places.forEach(element => {
           element = element['_source'];
           element['sortBy'] = String(element['name']).toLowerCase().trim().replace('ʽ', '');
@@ -183,6 +181,7 @@ export class PlaceSearchPage {
         this.allData = this.places;
         this.cacheData = this.places;
         this.sortListAlphabeticallyAndGroup(this.allData);
+        this.showLoading = false;
       },
       err => {console.error(err); this.showLoading = false; }
     );

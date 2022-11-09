@@ -28,11 +28,12 @@ export class TableOfContentsList {
   language: string;
 
   constructor(
-    private app:
-    App, private tableOfContentsService: TableOfContentsService,
+    private app: App,
+    private tableOfContentsService: TableOfContentsService,
     public translate: TranslateService,
     public languageService: LanguageService,
-    public events: Events) {
+    public events: Events
+  ) {
     this.languageService.getLanguage().subscribe((lang: string) => {
       this.language = lang;
     });

@@ -188,11 +188,17 @@ export class TagSearchPage {
 
         this.allData = this.tags;
         this.cacheData = this.tags;
-        this.showLoading = false;
         this.sortListAlphabeticallyAndGroup(this.allData);
+        this.showLoading = false;
       },
-      err => {console.error(err); this.showLoading = false; },
-      () => console.log(this.tags)
+      err => {
+        console.error(err);
+        this.showLoading = false;
+      },
+      () => {
+        console.log('get tags completed');
+        console.log(this.tags);
+      }
     );
   }
 
@@ -433,7 +439,7 @@ export class TagSearchPage {
         if (data[i].sortBy && data[i - 1].sortBy) {
           if (data[i].sortBy.length > 1 && data[i - 1].sortBy.length > 1) {
             if (data[i].sortBy.charAt(0) !== data[i - 1].sortBy.charAt(0)) {
-              console.log(data[i].sortBy.charAt(0) + ' != ' + data[i - 1].sortBy.charAt(0))
+              // console.log(data[i].sortBy.charAt(0) + ' != ' + data[i - 1].sortBy.charAt(0))
               const ltr = data[i].sortBy.charAt(0);
               if (ltr.length === 1 && ltr.match(/[a-z]/i)) {
                 data[i]['firstOfItsKind'] = data[i].sortBy.charAt(0);
@@ -497,7 +503,7 @@ export class TagSearchPage {
         this.allData = [];
         this.filters = filters;
         if (filters['isEmpty']) {
-          console.log('filters are empty')
+          console.log('filters are empty');
           this.tags = [];
           this.allData = [];
           this.count = 0;

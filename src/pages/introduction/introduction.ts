@@ -14,6 +14,7 @@ import { GeneralTocItem } from '../../app/models/table-of-contents.model';
 import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
 import { Storage } from '@ionic/storage';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
+import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
 import { ReferenceDataModalPage } from '../../pages/reference-data-modal/reference-data-modal';
 import { DownloadTextsModalPage } from '../download-texts-modal/download-texts-modal';
 import { OccurrencesPage } from '../occurrences/occurrences';
@@ -104,6 +105,7 @@ export class IntroductionPage {
     private storage: Storage,
     public semanticDataService: SemanticDataService,
     public readPopoverService: ReadPopoverService,
+    public commonFunctions: CommonFunctionsService,
     private config: ConfigService,
     public translate: TranslateService,
     private modalController: ModalController
@@ -316,19 +318,19 @@ export class IntroductionPage {
         } else {
           iterationsLeft -= 1;
           if (this.pos !== null && this.pos !== undefined) {
-            let positionElement: HTMLElement = document.getElementsByName(this.pos)[0];
-            if (positionElement !== null && positionElement !== undefined) {
-              const parentElem = positionElement.parentElement;
+            let posElem: HTMLElement = document.querySelector('page-introduction:not([hidden]) [name="' + this.pos + '"]');
+            if (posElem !== null && posElem !== undefined) {
+              const parentElem = posElem.parentElement;
               if ( (parentElem !== null && parentElem.classList.contains('ttFixed'))
               || (parentElem.parentElement !== null && parentElem.parentElement.classList.contains('ttFixed')) ) {
                   // Anchor is in footnote --> look for next occurence since the first footnote element
                   // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
                   // the position we need to find).
-                  positionElement = document.getElementsByName(this.pos)[1] as HTMLElement;
+                  posElem = document.querySelectorAll('page-introduction:not([hidden]) [name="' + this.pos + '"]')[1] as HTMLElement;
               }
-              if (positionElement !== null && positionElement !== undefined && positionElement.classList !== null
-              && positionElement.classList.contains('anchor')) {
-                this.scrollToHTMLElement(positionElement);
+              if (posElem !== null && posElem !== undefined && posElem.classList !== null
+              && posElem.classList.contains('anchor')) {
+                this.commonFunctions.scrollToHTMLElement(posElem);
                 clearInterval(this.intervalTimerId);
               }
             }
@@ -481,28 +483,21 @@ export class IntroductionPage {
                 positionId = positionId.replace('#', '');
 
                 // Find the element in the correct parent element.
-                const matchingElements = document.getElementsByName(positionId);
+                const matchingElements = document.querySelectorAll('page-introduction:not([hidden]) [name="' + positionId + '"]');
                 let targetElement = null;
-                const refType = 'PAGE-INTRODUCTION';
                 for (let i = 0; i < matchingElements.length; i++) {
-                  let parentElem = matchingElements[i].parentElement;
-                  while (parentElem !== null && parentElem.tagName !== refType) {
-                    parentElem = parentElem.parentElement;
-                  }
-                  if (parentElem !== null && parentElem.tagName === refType) {
-                    targetElement = matchingElements[i] as HTMLElement;
-                    if (targetElement.parentElement.classList.contains('ttFixed')
-                    || targetElement.parentElement.parentElement.classList.contains('ttFixed')) {
-                      // Found position is in footnote --> look for next occurence since the first footnote element
-                      // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
-                      // the position we need to find).
-                    } else {
-                      break;
-                    }
+                  targetElement = matchingElements[i] as HTMLElement;
+                  if (targetElement.parentElement.classList.contains('ttFixed')
+                  || targetElement.parentElement.parentElement.classList.contains('ttFixed')) {
+                    // Found position is in footnote --> look for next occurence since the first footnote element
+                    // is not displayed (footnote elements are copied to a list at the end of the introduction and that's
+                    // the position we need to find).
+                  } else {
+                    break;
                   }
                 }
                 if (targetElement !== null && targetElement.classList.contains('anchor')) {
-                  this.scrollToHTMLElement(targetElement);
+                  this.commonFunctions.scrollToHTMLElement(targetElement);
                 }
               } else {
                 // Different introduction, open in new window.
@@ -534,14 +529,15 @@ export class IntroductionPage {
               targetId = anchorElem.parentElement.getAttribute('href');
             }
             const dataIdSelector = '[data-id="' + String(targetId).replace('#', '') + '"]';
-            const target = anchorElem.ownerDocument.querySelector('page-introduction').querySelector(dataIdSelector) as HTMLElement;
+            let target = anchorElem.ownerDocument.querySelector('page-introduction:not([hidden])') as HTMLElement;
+            target = target.querySelector(dataIdSelector) as HTMLElement;
             if (target !== null) {
               if (anchorElem.classList.contains('footnoteReference')) {
                 // Link to (foot)note reference, prepend arrow
-                this.scrollToHTMLElement(target, 'top');
+                this.commonFunctions.scrollToHTMLElement(target, 'top');
               } else {
                 // Link in the introduction's TOC, scroll to target but don't prepend arrow
-                this.scrollElementIntoView(target, 'top');
+                this.commonFunctions.scrollElementIntoView(target, 'top');
               }
             }
           }
@@ -596,64 +592,7 @@ export class IntroductionPage {
 
     this.tooltipService.getPersonTooltip(id).subscribe(
       tooltip => {
-        let text = '';
-        let uncertainPretext = '';
-        let fictionalPretext = '';
-        if (targetElem.classList.contains('uncertain')) {
-          this.translate.get('uncertainPersonCorresp').subscribe(
-            translation => {
-              if (translation !== 'uncertainPersonCorresp') {
-                uncertainPretext = translation + ' ';
-              }
-            }, error => { }
-          );
-        }
-        if (targetElem.classList.contains('fictional')) {
-          this.translate.get('fictionalPersonCorresp').subscribe(
-            translation => {
-              if (translation !== 'fictionalPersonCorresp') {
-                fictionalPretext = translation + ':<br/>';
-              }
-            }, error => { }
-          );
-        }
-        if ( tooltip.date_born !== null || tooltip.date_deceased !== null ) {
-          // Get the born and deceased years without leading zeros and possible 'BC' indicators
-          const year_born = String(tooltip.date_born).split('-')[0].replace(/^0+/, '').split(' ')[0];
-          const year_deceased = String(tooltip.date_deceased).split('-')[0].replace(/^0+/, '').split(' ')[0];
-          // Get translation for 'BC'
-          let bcTranslation = 'BC';
-          this.translate.get('BC').subscribe(
-            translation => {
-              bcTranslation = translation;
-            }, error => { }
-          );
-          const bcIndicatorDeceased = (String(tooltip.date_deceased).includes('BC')) ? ' ' + bcTranslation : '';
-          let bcIndicatorBorn = (String(tooltip.date_born).includes('BC')) ? ' ' + bcTranslation : '';
-          if (String(tooltip.date_born).includes('BC') && bcIndicatorDeceased === bcIndicatorBorn) {
-            // Born and deceased BC, don't add indicator to year born
-            bcIndicatorBorn = '';
-          }
-          text = '<b>' + tooltip.name + '</b> (';
-          if (year_born !== null && year_deceased !== null && year_born !== 'null' && year_born !== 'null') {
-            text += year_born + bcIndicatorBorn + '–' + year_deceased + bcIndicatorDeceased;
-          } else if (year_born !== null && year_born !== 'null') {
-            text += '* ' + year_born + bcIndicatorBorn;
-          } else if (year_deceased !== null && year_deceased !== 'null') {
-            text += '&#8224; ' + year_deceased + bcIndicatorDeceased;
-          }
-          text += ')';
-        } else {
-          text = '<b>' + tooltip.name + '</b>';
-        }
-
-        if (tooltip.description !== null) {
-          text += ', ' + tooltip.description
-        }
-
-        text = uncertainPretext + text;
-        text = fictionalPretext + text;
-
+        const text = this.tooltipService.constructPersonTooltipText(tooltip, targetElem);
         this.setToolTipPosition(targetElem, text);
         this.setToolTipText(text);
         this.tooltips.persons[id] = text;
@@ -847,336 +786,22 @@ export class IntroductionPage {
   }
 
   setToolTipPosition(targetElem: HTMLElement, ttText: string) {
-    // Set vertical offset and toolbar height.
-    const yOffset = 5;
-    const secToolbarHeight = 50;
+    const ttProperties = this.tooltipService.getTooltipProperties(targetElem, ttText, 'page-introduction');
 
-    // Set how close to the edges of the "window" the tooltip can be placed. Currently this only applies if the
-    // tooltip is set above or below the trigger.
-    const edgePadding = 5;
-
-    // Set "padding" around tooltip trigger – this is how close to the trigger element the tooltip will be placed.
-    const triggerPaddingX = 8;
-    const triggerPaddingY = 8;
-
-    // Set min and max width for resized tooltips.
-    const resizedToolTipMinWidth = 300;
-    const resizedToolTipMaxWidth = 600;
-
-    // Get viewport width and height.
-    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-
-    // Set horisontal offset due to possible side pane on the left.
-    let sidePaneOffsetWidth = 0;
-    let primaryToolbarHeight = 70;
-    const contentElem = document.querySelector('page-introduction > ion-content > .scroll-content') as HTMLElement;
-    if (contentElem !== null) {
-      sidePaneOffsetWidth = contentElem.getBoundingClientRect().left;
-      primaryToolbarHeight = contentElem.getBoundingClientRect().top;
-    }
-
-    // Set variable for determining if the tooltip should be placed above or below the trigger rather than beside it.
-    let positionAboveOrBelowTrigger: Boolean = false;
-    let positionAbove: Boolean = false;
-
-    // Get rectangle which contains tooltiptrigger element. For trigger elements spanning multiple lines
-    // tooltips are always placed above or below the trigger.
-    const elemRects = targetElem.getClientRects();
-    let elemRect = null;
-    if (elemRects.length === 1) {
-      elemRect = elemRects[0];
-    } else {
-      positionAboveOrBelowTrigger = true;
-      if (elemRects[0].top - triggerPaddingY - primaryToolbarHeight - secToolbarHeight - edgePadding >
-         vh - elemRects[elemRects.length - 1].bottom - triggerPaddingY - edgePadding) {
-        elemRect = elemRects[0];
-        positionAbove = true;
-      } else {
-        elemRect = elemRects[elemRects.length - 1];
-      }
-    }
-
-    // Find the tooltip element.
-    const tooltipElement: HTMLElement = document.querySelector('div.toolTip');
-    if (tooltipElement === null) {
-      return;
-    }
-
-    // Get tooltip element's default dimensions and computed max-width (latter set by css).
-    const initialTTDimensions = this.getToolTipDimensions(tooltipElement, ttText, 0, true);
-    let ttHeight = initialTTDimensions.height;
-    let ttWidth = initialTTDimensions.width;
-    if (initialTTDimensions.compMaxWidth) {
-      this.toolTipMaxWidth = initialTTDimensions.compMaxWidth;
-    } else {
-      this.toolTipMaxWidth = '425px';
-    }
-    // Reset scale value for tooltip.
-    if (this.toolTipScaleValue) {
-      this.toolTipScaleValue = 1;
-    }
-
-    // Calculate default position.
-    let x = elemRect.right + triggerPaddingX;
-    let y = elemRect.top - primaryToolbarHeight - yOffset;
-
-    // Check if tooltip would be drawn outside the viewport.
-    let oversetX = x + ttWidth - vw;
-    let oversetY = elemRect.top + ttHeight - vh;
-    if (!positionAboveOrBelowTrigger) {
-      if (oversetX > 0) {
-        if (oversetY > 0) {
-          // Overset both vertically and horisontally. Check if tooltip can be moved to the left
-          // side of the trigger and upwards without modifying its dimensions.
-          if (elemRect.left - sidePaneOffsetWidth > ttWidth + triggerPaddingX && y - secToolbarHeight > oversetY) {
-            // Move tooltip to the left side of the trigger and upwards
-            x = elemRect.left - ttWidth - triggerPaddingX;
-            y = y - oversetY;
-          } else {
-            // Calc how much space there is on either side and attempt to place the tooltip on the side with more space.
-            const spaceRight = vw - x;
-            const spaceLeft = elemRect.left - sidePaneOffsetWidth - triggerPaddingX;
-            const maxSpace = Math.floor(Math.max(spaceRight, spaceLeft));
-
-            const ttDimensions = this.getToolTipDimensions(tooltipElement, ttText, maxSpace);
-            ttHeight = ttDimensions.height;
-            ttWidth = ttDimensions.width;
-
-            // Double-check that the narrower tooltip fits, but isn't too narrow.
-            if (ttWidth <= maxSpace && ttWidth > resizedToolTipMinWidth) {
-              // There is room, set new max-width.
-              this.toolTipMaxWidth = ttWidth + 'px';
-              if (spaceLeft > spaceRight) {
-                // Calc new horisontal position since an attempt to place the tooltip on the left will be made.
-                x = elemRect.left - triggerPaddingX - ttWidth;
-              }
-              // Check vertical space.
-              oversetY = elemRect.top + ttHeight - vh;
-              if (oversetY > 0) {
-                if (oversetY < y - secToolbarHeight) {
-                  // Move the y position upwards by oversetY.
-                  y = y - oversetY;
-                } else {
-                  positionAboveOrBelowTrigger = true;
-                }
-              }
-            } else {
-              positionAboveOrBelowTrigger = true;
-            }
-          }
-        } else {
-          // Overset only horisontally. Check if there is room on the left side of the trigger.
-          if (elemRect.left - sidePaneOffsetWidth - triggerPaddingX > ttWidth) {
-            // There is room on the left --> move tooltip there.
-            x = elemRect.left - ttWidth - triggerPaddingX;
-          } else {
-            // There is not enough room on the left. Try to squeeze in the tooltip on whichever side has more room.
-            // Calc how much space there is on either side.
-            const spaceRight = vw - x;
-            const spaceLeft = elemRect.left - sidePaneOffsetWidth - triggerPaddingX;
-            const maxSpace = Math.floor(Math.max(spaceRight, spaceLeft));
-
-            const ttDimensions = this.getToolTipDimensions(tooltipElement, ttText, maxSpace);
-            ttHeight = ttDimensions.height;
-            ttWidth = ttDimensions.width;
-
-            // Double-check that the narrower tooltip fits, but isn't too narrow.
-            if (ttWidth <= maxSpace && ttWidth > resizedToolTipMinWidth) {
-              // There is room, set new max-width.
-              this.toolTipMaxWidth = ttWidth + 'px';
-              if (spaceLeft > spaceRight) {
-                // Calc new horisontal position since an attempt to place the tooltip on the left will be made.
-                x = elemRect.left - triggerPaddingX - ttWidth;
-              }
-              // Check vertical space.
-              oversetY = elemRect.top + ttHeight - vh;
-              if (oversetY > 0) {
-                if (oversetY < y - secToolbarHeight) {
-                  // Move the y position upwards by oversetY.
-                  y = y - oversetY;
-                } else {
-                  positionAboveOrBelowTrigger = true;
-                }
-              }
-            } else {
-              positionAboveOrBelowTrigger = true;
-            }
-          }
-        }
-      } else if (oversetY > 0) {
-        // Overset only vertically. Check if there is room to move the tooltip upwards.
-        if (oversetY < y - secToolbarHeight) {
-          // Move the y position upwards by oversetY.
-          y = y - oversetY;
-        } else {
-          // There is not room to move the tooltip just upwards. Check if there is more room on the
-          // left side of the trigger so the width of the tooltip could be increased there.
-          const spaceRight = vw - x;
-          const spaceLeft = elemRect.left - sidePaneOffsetWidth - triggerPaddingX;
-
-          if (spaceLeft > spaceRight) {
-            const ttDimensions = this.getToolTipDimensions(tooltipElement, ttText, spaceLeft);
-            ttHeight = ttDimensions.height;
-            ttWidth = ttDimensions.width;
-
-            if (ttWidth <= spaceLeft && ttWidth > resizedToolTipMinWidth &&
-               ttHeight < vh - yOffset - primaryToolbarHeight - secToolbarHeight) {
-              // There is enough space on the left side of the trigger. Calc new positions.
-              this.toolTipMaxWidth = ttWidth + 'px';
-              x = elemRect.left - triggerPaddingX - ttWidth;
-              oversetY = elemRect.top + ttHeight - vh;
-              y = y - oversetY;
-            } else {
-              positionAboveOrBelowTrigger = true;
-            }
-          } else {
-            positionAboveOrBelowTrigger = true;
-          }
-        }
-      }
-    }
-
-    if (positionAboveOrBelowTrigger) {
-      // The tooltip could not be placed next to the trigger, so it has to be placed above or below it.
-      // Check if there is more space above or below the tooltip trigger.
-      let availableHeight = 0;
-      if (elemRects.length > 1 && positionAbove) {
-        availableHeight = elemRect.top - primaryToolbarHeight - secToolbarHeight - triggerPaddingY - edgePadding;
-      } else if (elemRects.length > 1) {
-        availableHeight = vh - elemRect.bottom - triggerPaddingY - edgePadding;
-      } else if (elemRect.top - primaryToolbarHeight - secToolbarHeight > vh - elemRect.bottom) {
-        positionAbove = true;
-        availableHeight = elemRect.top - primaryToolbarHeight - secToolbarHeight - triggerPaddingY - edgePadding;
-      } else {
-        positionAbove = false;
-        availableHeight = vh - elemRect.bottom - triggerPaddingY - edgePadding;
-      }
-
-      const availableWidth = vw - sidePaneOffsetWidth - (2 * edgePadding);
-
-      if (initialTTDimensions.height <= availableHeight && initialTTDimensions.width <= availableWidth) {
-        // The tooltip fits without resizing. Calculate position, check for possible overset and adjust.
-        x = elemRect.left;
-        if (positionAbove) {
-          y = elemRect.top - initialTTDimensions.height - primaryToolbarHeight - triggerPaddingY;
-        } else {
-          y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
-        }
-
-        // Check if tooltip would be drawn outside the viewport horisontally.
-        oversetX = x + initialTTDimensions.width - vw;
-        if (oversetX > 0) {
-          x = x - oversetX - edgePadding;
-        }
-      } else {
-        // Try to resize the tooltip so it would fit in view.
-        let newTTMaxWidth = Math.floor(availableWidth);
-        if (newTTMaxWidth > resizedToolTipMaxWidth) {
-          newTTMaxWidth = resizedToolTipMaxWidth;
-        }
-        // Calculate tooltip dimensions with new max-width
-        const ttNewDimensions = this.getToolTipDimensions(tooltipElement, ttText, newTTMaxWidth);
-
-        if (ttNewDimensions.height <= availableHeight && ttNewDimensions.width <= availableWidth) {
-          // Set new max-width and calculate position. Adjust if overset.
-          this.toolTipMaxWidth = ttNewDimensions.width + 'px';
-          x = elemRect.left;
-          if (positionAbove) {
-            y = elemRect.top - ttNewDimensions.height - primaryToolbarHeight - triggerPaddingY;
-          } else {
-            y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
-          }
-          // Check if tooltip would be drawn outside the viewport horisontally.
-          oversetX = x + ttNewDimensions.width - vw;
-          if (oversetX > 0) {
-            x = x - oversetX - edgePadding;
-          }
-        } else {
-          // Resizing the width and height of the tooltip element won't make it fit in view.
-          // Basically this means that the width is ok, but the height isn't.
-          // As a last resort, scale the tooltip so it fits in view.
-          const ratioX = availableWidth / ttNewDimensions.width;
-          const ratioY = availableHeight / ttNewDimensions.height;
-          const scaleRatio = Math.min(ratioX, ratioY) - 0.01;
-
-          this.toolTipMaxWidth = ttNewDimensions.width + 'px';
-          this.toolTipScaleValue = scaleRatio;
-          x = elemRect.left;
-          if (positionAbove) {
-            y = elemRect.top - availableHeight - triggerPaddingY - primaryToolbarHeight;
-          } else {
-            y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
-          }
-          oversetX = x + ttNewDimensions.width - vw;
-          if (oversetX > 0) {
-            x = x - oversetX - edgePadding;
-          }
-        }
-      }
-    }
-
-    // Set tooltip position
-    this.toolTipPosition = {
-      top: y + 'px',
-      left: (x - sidePaneOffsetWidth) + 'px'
-    };
-    if (this.userSettingsService.isDesktop()) {
+    if (ttProperties !== undefined && ttProperties !== null) {
+      // Set tooltip width, position and visibility
+      this.toolTipMaxWidth = ttProperties.maxWidth;
+      this.toolTipScaleValue = ttProperties.scaleValue;
+      this.toolTipPosition = {
+        top: ttProperties.top,
+        left: ttProperties.left
+      };
       this.toolTipPosType = 'absolute';
-    } else {
-      this.toolTipPosType = 'fixed';
+      if (!this.userSettingsService.isDesktop()) {
+        this.toolTipPosType = 'fixed';
+      }
+      this.tooltipVisible = true;
     }
-    this.tooltipVisible = true;
-  }
-
-  private getToolTipDimensions(toolTipElem: HTMLElement, toolTipText: string, maxWidth = 0, returnCompMaxWidth: Boolean = false) {
-    // Create hidden div and make it into a copy of the tooltip div. Calculations are done on the hidden div.
-    const hiddenDiv: HTMLElement = document.createElement('div');
-
-    // Loop over each class in the tooltip element and add them to the hidden div.
-    if (toolTipElem.className !== '') {
-      const ttClasses: string[] = Array.from(toolTipElem.classList);
-      ttClasses.forEach(
-        function(currentValue, currentIndex, listObj) {
-          hiddenDiv.classList.add(currentValue);
-        },
-      );
-    } else {
-      return undefined;
-    }
-
-    // Don't display the hidden div initially. Set max-width if defined, otherwise the max-width will be determined by css.
-    hiddenDiv.style.display = 'none';
-    hiddenDiv.style.position = 'absolute';
-    hiddenDiv.style.top = '0';
-    hiddenDiv.style.left = '0';
-    if (maxWidth > 0) {
-      hiddenDiv.style.maxWidth = maxWidth + 'px';
-    }
-    // Append hidden div to the parent of the tooltip element.
-    toolTipElem.parentNode.appendChild(hiddenDiv);
-    // Add content to the hidden div.
-    hiddenDiv.innerHTML = toolTipText;
-    // Make div visible again to calculate its width and height.
-    hiddenDiv.style.visibility = 'hidden';
-    hiddenDiv.style.display = 'block';
-    const ttHeight = hiddenDiv.offsetHeight;
-    const ttWidth = hiddenDiv.offsetWidth;
-    let compToolTipMaxWidth = '';
-    if (returnCompMaxWidth) {
-      // Get default tooltip max-width from css of hidden div if possible.
-      const hiddenDivCompStyles = window.getComputedStyle(hiddenDiv);
-      compToolTipMaxWidth = hiddenDivCompStyles.getPropertyValue('max-width');
-    }
-    // Remove hidden div.
-    hiddenDiv.remove();
-
-    const dimensions = {
-      width: ttWidth,
-      height: ttHeight,
-      compMaxWidth: compToolTipMaxWidth
-    }
-    return dimensions;
   }
 
   /** Set position and width of infoOverlay element. This function is not exactly
@@ -1193,7 +818,7 @@ export class IntroductionPage {
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
     // Get page content element and adjust viewport height with horizontal scrollbar height if such is present
-    const contentElem = document.querySelector('page-introduction > ion-content > .scroll-content') as HTMLElement;
+    const contentElem = document.querySelector('page-introduction:not([hidden]) > ion-content > .scroll-content') as HTMLElement;
     let horizontalScrollbarOffsetHeight = 0;
     if (contentElem.clientHeight < contentElem.offsetHeight) {
       horizontalScrollbarOffsetHeight = contentElem.offsetHeight - contentElem.clientHeight;
@@ -1233,70 +858,6 @@ export class IntroductionPage {
       // Set info overlay width
       this.infoOverlayWidth = calcWidth + 'px';
     }
-  }
-
-  private scrollToElement(element: HTMLElement) {
-    this.hideToolTip();
-    element.scrollIntoView();
-    try {
-      const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span');
-      for (let i = 0; i < elems.length; i++) {
-        if (elems[i].id === element.id) {
-          elems[i].scrollIntoView();
-        }
-      }
-    } catch (e) {
-
-    }
-  }
-
-  private scrollToHTMLElement(element: HTMLElement, position = 'top', timeOut = 5000) {
-    try {
-      this.ngZone.runOutsideAngular(() => {
-        const tmpImage: HTMLImageElement = new Image();
-        tmpImage.src = 'assets/images/ms_arrow_right.svg';
-        tmpImage.alt = 'arrow right image';
-        tmpImage.classList.add('inl_ms_arrow');
-        element.parentElement.insertBefore(tmpImage, element);
-        this.scrollElementIntoView(tmpImage, position);
-        setTimeout(function() {
-          element.parentElement.removeChild(tmpImage);
-        }, timeOut);
-      });
-    } catch ( e ) {
-      console.error(e);
-    }
-  }
-
-  /** This function can be used to scroll a container so that the element which it
-   *  contains is placed either at the top edge of the container or in the center
-   *  of the container. This function can be called multiple times simultaneously
-   *  on elements in different containers, unlike the native scrollIntoView function
-   *  which cannot be called multiple times simultaneously in Chrome due to a bug.
-   *  Valid values for yPosition are 'top' and 'center'. */
-  private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0) {
-    if (element === undefined || element === null || (yPosition !== 'center' && yPosition !== 'top')) {
-      return;
-    }
-    // Find the scrollable container of the element which is to be scrolled into view
-    let container = element.parentElement;
-    while (container !== null && container.parentElement !== null &&
-     !container.classList.contains('scroll-content')) {
-      container = container.parentElement;
-    }
-    if (container === null || container.parentElement === null) {
-      return;
-    }
-
-    const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
-    let baseOffset = 10;
-    if (yPosition === 'center') {
-      baseOffset = Math.floor(container.offsetHeight / 2);
-      if (baseOffset > 45) {
-        baseOffset = baseOffset - 45;
-      }
-    }
-    container.scrollTo({top: y - baseOffset - offset, behavior: 'smooth'});
   }
 
   private getEventTarget(event) {
@@ -1389,13 +950,6 @@ export class IntroductionPage {
       bottom: 0 + 'px',
       left: -1500 + 'px'
     };
-  }
-
-  private scrollToElementTOC(element: HTMLElement, event: Event) {
-    try {
-      element.scrollIntoView({behavior: 'smooth', block: 'start'});
-    } catch ( e ) {
-    }
   }
 
   showPersonModal(id: string) {

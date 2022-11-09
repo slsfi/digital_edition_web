@@ -129,7 +129,7 @@ export class TopMenuComponent {
     );
     modal.present();
     modal.onDidDismiss(data => {
-      console.log('dismissed', data);
+      // console.log('dismissed', data);
     });
   }
 
@@ -181,7 +181,7 @@ export class TopMenuComponent {
     const modal = this.modalController.create(ReferenceDataModalPage, {id: document.URL, type: 'reference', origin: 'top-menu'});
     modal.present();
     modal.onDidDismiss(data => {
-      console.log('dismissed', data);
+      // console.log('dismissed', data);
     });
   }
 }

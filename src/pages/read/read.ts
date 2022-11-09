@@ -40,6 +40,7 @@ import { SearchAppPage } from '../search-app/search-app';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
+import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
 
 /**
  * A page used for reading publications.
@@ -198,7 +199,8 @@ export class ReadPage /*implements OnDestroy*/ {
     private userSettingsService: UserSettingsService,
     public publicationCacheService: PublicationCacheService,
     private socialSharing: SocialSharing,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    public commonFunctions: CommonFunctionsService
   ) {
     this.isCached();
     this.searchResult = null;
@@ -1093,7 +1095,7 @@ export class ReadPage /*implements OnDestroy*/ {
   scrollToTOC(element: HTMLElement) {
     try {
       if (element !== null) {
-        this.scrollElementIntoView(element);
+        this.commonFunctions.scrollElementIntoView(element);
       }
     } catch (e) {
       console.log(e);
@@ -1207,16 +1209,18 @@ export class ReadPage /*implements OnDestroy*/ {
                 // Scroll to comment in comments view and scroll lemma in reading-text view.
                 const numId = eventTarget.getAttribute('data-id').replace( /^\D+/g, '');
                 const targetId = 'start' + numId;
-                let lemmaStart = document.querySelector('read-text').querySelector('[data-id="' + targetId + '"]') as HTMLElement;
+                let lemmaStart = document.querySelector('page-read:not([hidden]) read-text') as HTMLElement;
+                lemmaStart = lemmaStart.querySelector('[data-id="' + targetId + '"]') as HTMLElement;
                 if (lemmaStart.parentElement !== null && lemmaStart.parentElement.classList.contains('ttFixed')) {
                   // The lemma is in a footnote, so we should get the second element with targetId.
-                  lemmaStart = document.querySelector('read-text').querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
+                  lemmaStart = document.querySelector('page-read:not([hidden]) read-text') as HTMLElement;
+                  lemmaStart = lemmaStart.querySelectorAll('[data-id="' + targetId + '"]')[1] as HTMLElement;
                 }
                 if (lemmaStart !== null && lemmaStart !== undefined) {
                   // Scroll to start of lemma in reading text and temporarily prepend arrow.
-                  this.scrollToCommentLemma(lemmaStart);
+                  this.commentService.scrollToCommentLemma(lemmaStart);
                   // Scroll to comment in the comments-column.
-                  const commentSettimeoutId = this.scrollToComment(numId);
+                  this.commentService.scrollToComment(numId);
                 }
               } else {
                 // If a comments view isn't shown or viewmode is mobile, show comment in infoOverlay.
@@ -1295,6 +1299,7 @@ export class ReadPage /*implements OnDestroy*/ {
           if (!modalShown) {
             eventTarget = eventTarget['parentNode'];
             if (!eventTarget['classList'].contains('tooltiptrigger')
+            && eventTarget['parentNode']
             && eventTarget['parentNode']['classList'].contains('tooltiptrigger')) {
               /* The parent isn't a tooltiptrigger, but the parent of the parent
                  is, use it for the next iteration. */
@@ -1364,7 +1369,7 @@ export class ReadPage /*implements OnDestroy*/ {
               // Find the containing scrollable element.
               let containerElem = null;
               if (targetColumnId) {
-                containerElem = document.getElementById(targetColumnId);
+                containerElem = document.querySelector('page-read:not([hidden]) #' + targetColumnId);
               } else {
                 containerElem = anchorElem.parentElement;
                 while (containerElem !== null && containerElem.parentElement !== null &&
@@ -1381,7 +1386,7 @@ export class ReadPage /*implements OnDestroy*/ {
                   && anchorElem.parentElement.parentElement !== null
                   && anchorElem.parentElement.parentElement.hasAttribute('class')
                   && anchorElem.parentElement.parentElement.classList.contains('infoOverlayContent')) {
-                    containerElem = document.querySelector('.mobile-mode-read-content > .scroll-content > ion-scroll > .scroll-content');
+                    containerElem = document.querySelector('page-read:not([hidden]) .mobile-mode-read-content > .scroll-content > ion-scroll > .scroll-content');
                   }
                 }
               }
@@ -1394,7 +1399,7 @@ export class ReadPage /*implements OnDestroy*/ {
                 }
                 const target = containerElem.querySelector(dataIdSelector) as HTMLElement;
                 if (target !== null) {
-                  this.scrollToHTMLElement(target, 'top');
+                  this.commonFunctions.scrollToHTMLElement(target, 'top');
                 }
               }
             }
@@ -1404,14 +1409,14 @@ export class ReadPage /*implements OnDestroy*/ {
             const varTargets = Array.from(document.querySelectorAll('#' + sid));
 
             if (varTargets.length > 0) {
-              this.scrollElementIntoView(anchorElem);
+              this.commonFunctions.scrollElementIntoView(anchorElem);
               anchorElem.classList.add('highlight');
               window.setTimeout(function(elem) {
                 elem.classList.remove('highlight');
               }.bind(null, anchorElem), 5000);
 
               varTargets.forEach(function(varTarget: HTMLElement) {
-                this.scrollElementIntoView(varTarget);
+                this.commonFunctions.scrollElementIntoView(varTarget);
                 if (varTarget.firstElementChild !== null
                   && varTarget.firstElementChild !== undefined) {
                   if (varTarget.firstElementChild.classList.contains('var_margin')) {
@@ -1505,7 +1510,7 @@ export class ReadPage /*implements OnDestroy*/ {
                 positionId = hrefTargetItems[hrefTargetItems.length - 1].replace('#', '');
 
                 // Find the element in the correct column (read-text or comments) based on ref type.
-                const matchingElements = document.getElementsByName(positionId);
+                const matchingElements = document.querySelectorAll('page-read:not([hidden]) [name="' + positionId + '"]');
                 let targetElement = null;
                 let refType = 'READ-TEXT';
                 if (anchorElem.classList.contains('ref_comment')) {
@@ -1529,7 +1534,7 @@ export class ReadPage /*implements OnDestroy*/ {
                   }
                 }
                 if (targetElement !== null && targetElement.classList.contains('anchor')) {
-                  this.scrollToHTMLElement(targetElement);
+                  this.commonFunctions.scrollToHTMLElement(targetElement);
                 }
               } else {
                 // We are not on the same page, open in new window.
@@ -1833,64 +1838,7 @@ export class ReadPage /*implements OnDestroy*/ {
 
     this.tooltipService.getPersonTooltip(id).subscribe(
       tooltip => {
-        let text = '';
-        let uncertainPretext = '';
-        let fictionalPretext = '';
-        if (targetElem.classList.contains('uncertain')) {
-          this.translate.get('uncertainPersonCorresp').subscribe(
-            translation => {
-              if (translation !== 'uncertainPersonCorresp') {
-                uncertainPretext = translation + ' ';
-              }
-            }, error => { }
-          );
-        }
-        if (targetElem.classList.contains('fictional')) {
-          this.translate.get('fictionalPersonCorresp').subscribe(
-            translation => {
-              if (translation !== 'fictionalPersonCorresp') {
-                fictionalPretext = translation + ':<br/>';
-              }
-            }, error => { }
-          );
-        }
-        if ( tooltip.date_born !== null || tooltip.date_deceased !== null ) {
-          // Get the born and deceased years without leading zeros and possible 'BC' indicators
-          const year_born = String(tooltip.date_born).split('-')[0].replace(/^0+/, '').split(' ')[0];
-          const year_deceased = String(tooltip.date_deceased).split('-')[0].replace(/^0+/, '').split(' ')[0];
-          // Get translation for 'BC'
-          let bcTranslation = 'BC';
-          this.translate.get('BC').subscribe(
-            translation => {
-              bcTranslation = translation;
-            }, error => { }
-          );
-          const bcIndicatorDeceased = (String(tooltip.date_deceased).includes('BC')) ? ' ' + bcTranslation : '';
-          let bcIndicatorBorn = (String(tooltip.date_born).includes('BC')) ? ' ' + bcTranslation : '';
-          if (String(tooltip.date_born).includes('BC') && bcIndicatorDeceased === bcIndicatorBorn) {
-            // Born and deceased BC, don't add indicator to year born
-            bcIndicatorBorn = '';
-          }
-          text = '<b>' + tooltip.name.trim() + '</b> (';
-          if (year_born !== null && year_deceased !== null && year_born !== 'null' && year_deceased !== 'null') {
-            text += year_born + bcIndicatorBorn + '–' + year_deceased + bcIndicatorDeceased;
-          } else if (year_born !== null && year_born !== 'null') {
-            text += '* ' + year_born + bcIndicatorBorn;
-          } else if (year_deceased !== null && year_deceased !== 'null') {
-            text += '&#8224; ' + year_deceased + bcIndicatorDeceased;
-          }
-          text += ')';
-        } else {
-          text = '<b>' + tooltip.name.trim() + '</b>';
-        }
-
-        if (tooltip.description !== null) {
-          text += ', ' + tooltip.description
-        }
-
-        text = uncertainPretext + text;
-        text = fictionalPretext + text;
-
+        const text = this.tooltipService.constructPersonTooltipText(tooltip, targetElem);
         this.setToolTipPosition(targetElem, text);
         this.setToolTipText(text);
         this.tooltips.persons[id] = text;
@@ -2460,350 +2408,22 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   setToolTipPosition(targetElem: HTMLElement, ttText: string) {
-    // Set vertical offset and toolbar height.
-    const yOffset = 5;
-    const secToolbarHeight = 50;
+    const ttProperties = this.tooltipService.getTooltipProperties(targetElem, ttText, 'page-read');
 
-    // Set how close to the edges of the "window" the tooltip can be placed. Currently this only applies if the
-    // tooltip is set above or below the trigger.
-    const edgePadding = 5;
-
-    // Set "padding" around tooltip trigger – this is how close to the trigger element the tooltip will be placed.
-    const triggerPaddingX = 8;
-    const triggerPaddingY = 8;
-
-    // Set min and max width for resized tooltips.
-    const resizedToolTipMinWidth = 300;
-    const resizedToolTipMaxWidth = 600;
-
-    // Get viewport width and height.
-    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    let vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-
-    // Get how much the read page has scrolled horizontally to the left.
-    // Get read page content element and adjust viewport height with horizontal
-    // scrollbar height if such is present.
-    // Also get how much the read page has scrolled horizontally to the left.
-    // Set horisontal offset due to possible side pane on the left.
-    let scrollLeft = 0;
-    let horizontalScrollbarOffsetHeight = 0;
-    let sidePaneOffsetWidth = 0;
-    let primaryToolbarHeight = 70;
-    const contentElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
-    if (contentElem !== null) {
-      scrollLeft = contentElem.scrollLeft;
-      sidePaneOffsetWidth = contentElem.getBoundingClientRect().left;
-      primaryToolbarHeight = contentElem.getBoundingClientRect().top;
-
-      if (contentElem.clientHeight < contentElem.offsetHeight) {
-        horizontalScrollbarOffsetHeight = contentElem.offsetHeight - contentElem.clientHeight;
-      }
-    }
-
-    // Adjust effective viewport height if horizontal scrollbar present.
-    vh = vh - horizontalScrollbarOffsetHeight;
-
-    // Set variable for determining if the tooltip should be placed above or below the trigger rather than beside it.
-    let positionAboveOrBelowTrigger: Boolean = false;
-    let positionAbove: Boolean = false;
-
-    // Get rectangle which contains tooltiptrigger element. For trigger elements
-    // spanning multiple lines tooltips are always placed above or below the trigger.
-    const elemRects = targetElem.getClientRects();
-    let elemRect = null;
-    if (elemRects.length === 1) {
-      elemRect = elemRects[0];
-    } else {
-      positionAboveOrBelowTrigger = true;
-      if (elemRects[0].top - triggerPaddingY - primaryToolbarHeight - secToolbarHeight - edgePadding >
-         vh - elemRects[elemRects.length - 1].bottom - triggerPaddingY - edgePadding) {
-        elemRect = elemRects[0];
-        positionAbove = true;
-      } else {
-        elemRect = elemRects[elemRects.length - 1];
-      }
-    }
-
-    // Find the tooltip element.
-    const tooltipElement: HTMLElement = document.querySelector('div.toolTip');
-    if (tooltipElement === null) {
-      return;
-    }
-
-    // Get tooltip element's default dimensions and computed max-width (latter set by css).
-    const initialTTDimensions = this.getToolTipDimensions(tooltipElement, ttText, 0, true);
-    let ttHeight = initialTTDimensions.height;
-    let ttWidth = initialTTDimensions.width;
-    if (initialTTDimensions.compMaxWidth) {
-      this.toolTipMaxWidth = initialTTDimensions.compMaxWidth;
-    } else {
-      this.toolTipMaxWidth = '425px';
-    }
-    // Reset scale value for tooltip.
-    if (this.toolTipScaleValue) {
-      this.toolTipScaleValue = 1;
-    }
-
-    // Calculate default position, this is relative to the viewport's top-left corner.
-    let x = elemRect.right + triggerPaddingX;
-    let y = elemRect.top - primaryToolbarHeight - yOffset;
-
-    // Check if tooltip would be drawn outside the viewport.
-    let oversetX = x + ttWidth - vw;
-    let oversetY = elemRect.top + ttHeight - vh;
-    if (!positionAboveOrBelowTrigger) {
-      if (oversetX > 0) {
-        if (oversetY > 0) {
-          // Overset both vertically and horisontally. Check if tooltip can be moved to the left
-          // side of the trigger and upwards without modifying its dimensions.
-          if (elemRect.left - sidePaneOffsetWidth > ttWidth + triggerPaddingX && y - secToolbarHeight > oversetY) {
-            // Move tooltip to the left side of the trigger and upwards
-            x = elemRect.left - ttWidth - triggerPaddingX;
-            y = y - oversetY;
-          } else {
-            // Calc how much space there is on either side and attempt to place the tooltip on the side with more space.
-            const spaceRight = vw - x;
-            const spaceLeft = elemRect.left - sidePaneOffsetWidth - triggerPaddingX;
-            const maxSpace = Math.floor(Math.max(spaceRight, spaceLeft));
-
-            const ttDimensions = this.getToolTipDimensions(tooltipElement, ttText, maxSpace);
-            ttHeight = ttDimensions.height;
-            ttWidth = ttDimensions.width;
-
-            // Double-check that the narrower tooltip fits, but isn't too narrow.
-            if (ttWidth <= maxSpace && ttWidth > resizedToolTipMinWidth) {
-              // There is room, set new max-width.
-              this.toolTipMaxWidth = ttWidth + 'px';
-              if (spaceLeft > spaceRight) {
-                // Calc new horisontal position since an attempt to place the tooltip on the left will be made.
-                x = elemRect.left - triggerPaddingX - ttWidth;
-              }
-              // Check vertical space.
-              oversetY = elemRect.top + ttHeight - vh;
-              if (oversetY > 0) {
-                if (oversetY < y - secToolbarHeight) {
-                  // Move the y position upwards by oversetY.
-                  y = y - oversetY;
-                } else {
-                  positionAboveOrBelowTrigger = true;
-                }
-              }
-            } else {
-              positionAboveOrBelowTrigger = true;
-            }
-          }
-        } else {
-          // Overset only horisontally. Check if there is room on the left side of the trigger.
-          if (elemRect.left - sidePaneOffsetWidth - triggerPaddingX > ttWidth) {
-            // There is room on the left --> move tooltip there.
-            x = elemRect.left - ttWidth - triggerPaddingX;
-          } else {
-            // There is not enough room on the left. Try to squeeze in the tooltip on whichever side has more room.
-            // Calc how much space there is on either side.
-            const spaceRight = vw - x;
-            const spaceLeft = elemRect.left - sidePaneOffsetWidth - triggerPaddingX;
-            const maxSpace = Math.floor(Math.max(spaceRight, spaceLeft));
-
-            const ttDimensions = this.getToolTipDimensions(tooltipElement, ttText, maxSpace);
-            ttHeight = ttDimensions.height;
-            ttWidth = ttDimensions.width;
-
-            // Double-check that the narrower tooltip fits, but isn't too narrow.
-            if (ttWidth <= maxSpace && ttWidth > resizedToolTipMinWidth) {
-              // There is room, set new max-width.
-              this.toolTipMaxWidth = ttWidth + 'px';
-              if (spaceLeft > spaceRight) {
-                // Calc new horisontal position since an attempt to place the tooltip on the left will be made.
-                x = elemRect.left - triggerPaddingX - ttWidth;
-              }
-              // Check vertical space.
-              oversetY = elemRect.top + ttHeight - vh;
-              if (oversetY > 0) {
-                if (oversetY < y - secToolbarHeight) {
-                  // Move the y position upwards by oversetY.
-                  y = y - oversetY;
-                } else {
-                  positionAboveOrBelowTrigger = true;
-                }
-              }
-            } else {
-              positionAboveOrBelowTrigger = true;
-            }
-          }
-        }
-      } else if (oversetY > 0) {
-        // Overset only vertically. Check if there is room to move the tooltip upwards.
-        if (oversetY < y - secToolbarHeight) {
-          // Move the y position upwards by oversetY.
-          y = y - oversetY;
-        } else {
-          // There is not room to move the tooltip just upwards. Check if there is more room on the
-          // left side of the trigger so the width of the tooltip could be increased there.
-          const spaceRight = vw - x;
-          const spaceLeft = elemRect.left - sidePaneOffsetWidth - triggerPaddingX;
-
-          if (spaceLeft > spaceRight) {
-            const ttDimensions = this.getToolTipDimensions(tooltipElement, ttText, spaceLeft);
-            ttHeight = ttDimensions.height;
-            ttWidth = ttDimensions.width;
-
-            if (ttWidth <= spaceLeft && ttWidth > resizedToolTipMinWidth &&
-               ttHeight < vh - yOffset - primaryToolbarHeight - secToolbarHeight) {
-              // There is enough space on the left side of the trigger. Calc new positions.
-              this.toolTipMaxWidth = ttWidth + 'px';
-              x = elemRect.left - triggerPaddingX - ttWidth;
-              oversetY = elemRect.top + ttHeight - vh;
-              y = y - oversetY;
-            } else {
-              positionAboveOrBelowTrigger = true;
-            }
-          } else {
-            positionAboveOrBelowTrigger = true;
-          }
-        }
-      }
-    }
-
-    if (positionAboveOrBelowTrigger) {
-      // The tooltip could not be placed next to the trigger, so it has to be placed above or below it.
-      // Check if there is more space above or below the tooltip trigger.
-      let availableHeight = 0;
-      if (elemRects.length > 1 && positionAbove) {
-        availableHeight = elemRect.top - primaryToolbarHeight - secToolbarHeight - triggerPaddingY - edgePadding;
-      } else if (elemRects.length > 1) {
-        availableHeight = vh - elemRect.bottom - triggerPaddingY - edgePadding;
-      } else if (elemRect.top - primaryToolbarHeight - secToolbarHeight > vh - elemRect.bottom) {
-        positionAbove = true;
-        availableHeight = elemRect.top - primaryToolbarHeight - secToolbarHeight - triggerPaddingY - edgePadding;
-      } else {
-        positionAbove = false;
-        availableHeight = vh - elemRect.bottom - triggerPaddingY - edgePadding;
-      }
-
-      const availableWidth = vw - sidePaneOffsetWidth - (2 * edgePadding);
-
-      if (initialTTDimensions.height <= availableHeight && initialTTDimensions.width <= availableWidth) {
-        // The tooltip fits without resizing. Calculate position, check for possible overset and adjust.
-        x = elemRect.left;
-        if (positionAbove) {
-          y = elemRect.top - initialTTDimensions.height - primaryToolbarHeight - triggerPaddingY;
-        } else {
-          y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
-        }
-
-        // Check if tooltip would be drawn outside the viewport horisontally.
-        oversetX = x + initialTTDimensions.width - vw;
-        if (oversetX > 0) {
-          x = x - oversetX - edgePadding;
-        }
-      } else {
-        // Try to resize the tooltip so it would fit in view.
-        let newTTMaxWidth = Math.floor(availableWidth);
-        if (newTTMaxWidth > resizedToolTipMaxWidth) {
-          newTTMaxWidth = resizedToolTipMaxWidth;
-        }
-        // Calculate tooltip dimensions with new max-width
-        const ttNewDimensions = this.getToolTipDimensions(tooltipElement, ttText, newTTMaxWidth);
-
-        if (ttNewDimensions.height <= availableHeight && ttNewDimensions.width <= availableWidth) {
-          // Set new max-width and calculate position. Adjust if overset.
-          this.toolTipMaxWidth = ttNewDimensions.width + 'px';
-          x = elemRect.left;
-          if (positionAbove) {
-            y = elemRect.top - ttNewDimensions.height - primaryToolbarHeight - triggerPaddingY;
-          } else {
-            y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
-          }
-          // Check if tooltip would be drawn outside the viewport horisontally.
-          oversetX = x + ttNewDimensions.width - vw;
-          if (oversetX > 0) {
-            x = x - oversetX - edgePadding;
-          }
-        } else {
-          // Resizing the width and height of the tooltip element won't make it fit in view.
-          // Basically this means that the width is ok, but the height isn't.
-          // As a last resort, scale the tooltip so it fits in view.
-          const ratioX = availableWidth / ttNewDimensions.width;
-          const ratioY = availableHeight / ttNewDimensions.height;
-          const scaleRatio = Math.min(ratioX, ratioY) - 0.01;
-
-          this.toolTipMaxWidth = ttNewDimensions.width + 'px';
-          this.toolTipScaleValue = scaleRatio;
-          x = elemRect.left;
-          if (positionAbove) {
-            y = elemRect.top - availableHeight - triggerPaddingY - primaryToolbarHeight;
-          } else {
-            y = elemRect.bottom + triggerPaddingY - primaryToolbarHeight;
-          }
-          oversetX = x + ttNewDimensions.width - vw;
-          if (oversetX > 0) {
-            x = x - oversetX - edgePadding;
-          }
-        }
-      }
-    }
-
-    // Set tooltip position
-    this.toolTipPosition = {
-      top: y + 'px',
-      left: (x + scrollLeft - sidePaneOffsetWidth) + 'px'
-    };
-    if (this.userSettingsService.isDesktop()) {
+    if (ttProperties !== undefined && ttProperties !== null) {
+      // Set tooltip width, position and visibility
+      this.toolTipMaxWidth = ttProperties.maxWidth;
+      this.toolTipScaleValue = ttProperties.scaleValue;
+      this.toolTipPosition = {
+        top: ttProperties.top,
+        left: ttProperties.left
+      };
       this.toolTipPosType = 'absolute';
-    } else {
-      this.toolTipPosType = 'fixed';
+      if (!this.userSettingsService.isDesktop()) {
+        this.toolTipPosType = 'fixed';
+      }
+      this.tooltipVisible = true;
     }
-    this.tooltipVisible = true;
-  }
-
-  private getToolTipDimensions(toolTipElem: HTMLElement, toolTipText: string, maxWidth = 0, returnCompMaxWidth: Boolean = false) {
-    // Create hidden div and make it into a copy of the tooltip div. Calculations are done on the hidden div.
-    const hiddenDiv: HTMLElement = document.createElement('div');
-
-    // Loop over each class in the tooltip element and add them to the hidden div.
-    if (toolTipElem.className !== '') {
-      const ttClasses: string[] = Array.from(toolTipElem.classList);
-      ttClasses.forEach(
-        function(currentValue, currentIndex, listObj) {
-          hiddenDiv.classList.add(currentValue);
-        },
-      );
-    } else {
-      return undefined;
-    }
-
-    // Don't display the hidden div initially. Set max-width if defined, otherwise the max-width will be determined by css.
-    hiddenDiv.style.display = 'none';
-    hiddenDiv.style.position = 'absolute';
-    hiddenDiv.style.top = '0';
-    hiddenDiv.style.left = '0';
-    if (maxWidth > 0) {
-      hiddenDiv.style.maxWidth = maxWidth + 'px';
-    }
-    // Append hidden div to the parent of the tooltip element.
-    toolTipElem.parentNode.appendChild(hiddenDiv);
-    // Add content to the hidden div.
-    hiddenDiv.innerHTML = toolTipText;
-    // Make div visible again to calculate its width and height.
-    hiddenDiv.style.visibility = 'hidden';
-    hiddenDiv.style.display = 'block';
-    const ttHeight = hiddenDiv.offsetHeight;
-    const ttWidth = hiddenDiv.offsetWidth;
-    let compToolTipMaxWidth = '';
-    if (returnCompMaxWidth) {
-      // Get default tooltip max-width from css of hidden div if possible.
-      const hiddenDivCompStyles = window.getComputedStyle(hiddenDiv);
-      compToolTipMaxWidth = hiddenDivCompStyles.getPropertyValue('max-width');
-    }
-    // Remove hidden div.
-    hiddenDiv.remove();
-
-    const dimensions = {
-      width: ttWidth,
-      height: ttHeight,
-      compMaxWidth: compToolTipMaxWidth
-    }
-    return dimensions;
   }
 
   /**
@@ -2822,7 +2442,7 @@ export class ReadPage /*implements OnDestroy*/ {
     // scrolled horizontally to the left.
     let scrollLeft = 0;
     let horizontalScrollbarOffsetHeight = 0;
-    const contentElem = document.querySelector('page-read > ion-content > .scroll-content') as HTMLElement;
+    const contentElem = document.querySelector('page-read:not([hidden]) > ion-content > .scroll-content') as HTMLElement;
     if (contentElem !== null) {
       scrollLeft = contentElem.scrollLeft;
 
@@ -3214,26 +2834,11 @@ export class ReadPage /*implements OnDestroy*/ {
     nav[0].setRoot('read', params);
   }
 
-  private scrollToElement(element: HTMLElement) {
-    element.scrollIntoView();
-    this.hideToolTip();
-    try {
-      const elems: NodeListOf<HTMLSpanElement> = document.querySelectorAll('span');
-      for (let i = 0; i < elems.length; i++) {
-        if (elems[i].id === element.id) {
-          elems[i].scrollIntoView();
-        }
-      }
-    } catch (e) {
-
-    }
-  }
-
   private scrollToVariant(element: HTMLElement) {
     this.hideToolTip();
     try {
       if (element['classList'].contains('variantScrollTarget')) {
-        const variantContElems: NodeListOf<HTMLElement> = document.querySelectorAll('variations');
+        const variantContElems: NodeListOf<HTMLElement> = document.querySelectorAll('page-read:not([hidden]) variations');
         for (let v = 0; v < variantContElems.length; v++) {
           const elems: NodeListOf<HTMLElement> = variantContElems[v].querySelectorAll('.teiVariant');
           let variantNotScrolled = true;
@@ -3244,7 +2849,7 @@ export class ReadPage /*implements OnDestroy*/ {
               }
               if (variantNotScrolled) {
                 variantNotScrolled = false;
-                this.scrollElementIntoView(elems[i]);
+                this.commonFunctions.scrollElementIntoView(elems[i]);
               }
               setTimeout(function () {
                 if (elems[i] !== undefined) {
@@ -3255,7 +2860,7 @@ export class ReadPage /*implements OnDestroy*/ {
           }
         }
       } else if (element['classList'].contains('anchorScrollTarget')) {
-        const elems: NodeListOf<HTMLElement> = document.querySelectorAll('.teiVariant.anchorScrollTarget');
+        const elems: NodeListOf<HTMLElement> = document.querySelectorAll('page-read:not([hidden]) .teiVariant.anchorScrollTarget');
         const elementClassList = element.className.split(' ');
         let targetClassName = '';
         let targetCompClassName = '';
@@ -3282,80 +2887,13 @@ export class ReadPage /*implements OnDestroy*/ {
                 }
               }, 5000);
               if (iClassList[y] === targetClassName) {
-                this.scrollElementIntoView(elems[i]);
+                this.commonFunctions.scrollElementIntoView(elems[i]);
               }
             }
           }
         }
       }
     } catch (e) {
-    }
-  }
-
-  /* Use this function to scroll the lemma of a comment into view in the reading text view. */
-  private scrollToCommentLemma(lemmaStartElem: HTMLElement, timeOut = 5000) {
-    if (lemmaStartElem !== null && lemmaStartElem !== undefined && lemmaStartElem.classList.contains('anchor_lemma')) {
-
-      if (this.commentService.activeLemmaHighlight.lemmaTimeOutId !== null) {
-        // Clear previous lemma highlight if still active
-        this.commentService.activeLemmaHighlight.lemmaElement.style.display = null;
-        window.clearTimeout(this.commentService.activeLemmaHighlight.lemmaTimeOutId);
-      }
-
-      lemmaStartElem.style.display = 'inline';
-      this.scrollElementIntoView(lemmaStartElem);
-      const settimeoutId = setTimeout(() => {
-        lemmaStartElem.style.display = null;
-        this.commentService.activeLemmaHighlight = {
-          lemmaTimeOutId: null,
-          lemmaElement: null
-        }
-
-      }, timeOut);
-
-      this.commentService.activeLemmaHighlight = {
-        lemmaTimeOutId: settimeoutId,
-        lemmaElement: lemmaStartElem
-      }
-    }
-  }
-
-  /**
-   * Use this function to scroll to the comment with the specified numeric id
-   * (excluding prefixes like 'end') in the first comments view on the page.
-   * Alternatively, the comment element can be passed as an optional parameter.
-   */
-  private scrollToComment(numericId: string, commentElement?: HTMLElement) {
-    let elem = commentElement;
-    if (elem === undefined || elem === null || !elem.classList.contains('en' + numericId)) {
-      // Find the comment in the comments view.
-      const commentsWrapper = document.querySelector('comments') as HTMLElement;
-      elem = commentsWrapper.getElementsByClassName('en' + numericId)[0] as HTMLElement;
-    }
-    if (elem !== null && elem !== undefined) {
-
-      if (this.commentService.activeCommentHighlight.commentTimeOutId !== null) {
-        // Clear previous comment highlight if still active
-        this.commentService.activeCommentHighlight.commentLemmaElement.classList.remove('highlight');
-        window.clearTimeout(this.commentService.activeCommentHighlight.commentTimeOutId);
-      }
-
-      // Scroll the comment into view.
-      this.scrollElementIntoView(elem, 'center', -5);
-      const noteLemmaElem = elem.getElementsByClassName('noteLemma')[0] as HTMLElement;
-      noteLemmaElem.classList.add('highlight');
-      const settimeoutId = setTimeout(() => {
-        noteLemmaElem.classList.remove('highlight');
-        this.commentService.activeCommentHighlight = {
-          commentTimeOutId: null,
-          commentLemmaElement: null
-        }
-      }, 5000);
-
-      this.commentService.activeCommentHighlight = {
-        commentTimeOutId: settimeoutId,
-        commentLemmaElement: noteLemmaElem
-      }
     }
   }
 
@@ -3439,100 +2977,16 @@ export class ReadPage /*implements OnDestroy*/ {
     }).catch(err => console.error(err));
   }
 
-  // Scrolls element into view and prepends arrow for the duration of timeOut.
-  private scrollToHTMLElement(element: HTMLElement, position = 'top', timeOut = 5000, scrollBehavior = 'smooth') {
-    try {
-      const tmpImage: HTMLImageElement = new Image();
-      tmpImage.src = 'assets/images/ms_arrow_right.svg';
-      tmpImage.alt = 'arrow image';
-      tmpImage.classList.add('inl_ms_arrow');
-      element.parentElement.insertBefore(tmpImage, element);
-      this.scrollElementIntoView(tmpImage, position, 0, scrollBehavior);
-      setTimeout(function() {
-        element.parentElement.removeChild(tmpImage);
-      }, timeOut);
-    } catch ( e ) {
-      console.error(e);
-    }
-  }
-
-  /**
-   * This function can be used to scroll a container so that the element which it
-   * contains is placed either at the top edge of the container or in the center
-   * of the container. This function can be called multiple times simultaneously
-   * on elements in different containers, unlike the native scrollIntoView function
-   * which cannot be called multiple times simultaneously in Chrome due to a bug.
-   * Valid values for yPosition are 'top' and 'center'. The scroll behavior can
-   * either be 'auto' or the default 'smooth'.
-   */
-  private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0, scrollBehavior = 'smooth') {
-    if (element === undefined || element === null || (yPosition !== 'center' && yPosition !== 'top')) {
-      return;
-    }
-    // Find the scrollable container of the element which is to be scrolled into view
-    let container = element.parentElement;
-    while (container !== null && container.parentElement !== null &&
-      !container.classList.contains('scroll-content')) {
-      container = container.parentElement;
-    }
-    if (container === null || container.parentElement === null) {
-      return;
-    }
-
-    const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
-    let baseOffset = 10;
-    if (yPosition === 'center') {
-      baseOffset = Math.floor(container.offsetHeight / 2);
-      if (baseOffset > 45) {
-        baseOffset = baseOffset - 45;
-      }
-    }
-    if (scrollBehavior === 'smooth') {
-      container.scrollTo({top: y - baseOffset - offset, behavior: 'smooth'});
-    } else {
-      container.scrollTo({top: y - baseOffset - offset, behavior: 'auto'});
-    }
-  }
-
   private scrollColumnIntoView(columnElement: HTMLElement, offset = 26) {
     if (columnElement === undefined || columnElement === null) {
       return;
     }
-    const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
+    const scrollingContainer = document.querySelector('page-read:not([hidden]) > ion-content > div.scroll-content');
     if (scrollingContainer !== null) {
       const x = columnElement.getBoundingClientRect().left + scrollingContainer.scrollLeft -
       scrollingContainer.getBoundingClientRect().left - offset;
       scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
     }
-  }
-
-  /**
-   * This function scrolls the read-view horisontally to the last read column.
-   * It's called after adding new views.
-   * */
-  scrollLastViewIntoView() {
-    this.ngZone.runOutsideAngular(() => {
-      let iterationsLeft = 10;
-      clearInterval(this.intervalTimerId);
-      this.intervalTimerId = window.setInterval(function() {
-        if (iterationsLeft < 1) {
-          clearInterval(this.intervalTimerId);
-        } else {
-          iterationsLeft -= 1;
-          const viewElements = document.getElementsByClassName('read-column');
-          if (viewElements[0] !== undefined) {
-            const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
-            const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
-            if (scrollingContainer !== null) {
-              const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
-              scrollingContainer.getBoundingClientRect().left;
-              scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
-              clearInterval(this.intervalTimerId);
-            }
-          }
-        }
-      }.bind(this), 500);
-    });
   }
 
   printMainContentClasses() {
@@ -3598,7 +3052,7 @@ export class ReadPage /*implements OnDestroy*/ {
    * array in textService.
    */
   removeVariationSortOrderFromService(columnIndex: number) {
-    const columnElem = document.querySelector('div#read_div_' + columnIndex);
+    const columnElem = document.querySelector('page-read:not([hidden]) div#read_div_' + columnIndex);
     if (columnElem) {
       const currentVarElem = columnElem.querySelector('variations');
       if (currentVarElem) {
@@ -3620,8 +3074,8 @@ export class ReadPage /*implements OnDestroy*/ {
    */
   switchVariationSortOrdersInService(currentColumnIndex: number, otherColumnIndex: number) {
     /* Check if either the current column or the one it is changing places with is a variations column */
-    const currentColumnElem = document.querySelector('div#read_div_' + currentColumnIndex);
-    const otherColumnElem = document.querySelector('div#read_div_' + otherColumnIndex);
+    const currentColumnElem = document.querySelector('page-read:not([hidden]) div#read_div_' + currentColumnIndex);
+    const otherColumnElem = document.querySelector('page-read:not([hidden]) div#read_div_' + otherColumnIndex);
     if (currentColumnElem && otherColumnElem) {
       const currentVarElem = currentColumnElem.querySelector('variations');
       const otherVarElem = otherColumnElem.querySelector('variations');
@@ -3645,7 +3099,7 @@ export class ReadPage /*implements OnDestroy*/ {
    * variations column with index columnIndex is the first or second variations column.
    */
   findVariationsColumnIndex(columnIndex: number) {
-    const columnElems = Array.from(document.querySelectorAll('div.read-column'));
+    const columnElems = Array.from(document.querySelectorAll('page-read:not([hidden]) div.read-column'));
     const varColIds = [];
     columnElems.forEach(function(column) {
       const varElem = column.querySelector('variations');
@@ -3664,14 +3118,14 @@ export class ReadPage /*implements OnDestroy*/ {
   }
 
   setFabBackdropWidth() {
-    const pageReadElem = document.querySelector('page-read > ion-content > div.scroll-content');
+    const pageReadElem = document.querySelector('page-read:not([hidden]) > ion-content > div.scroll-content');
     if (pageReadElem) {
       this.backdropWidth = pageReadElem.scrollWidth;
     }
   }
 
   scrollReadTextToAnchorPosition(posId: string) {
-    const container = document.querySelectorAll('read-text')[0];
+    const container = document.querySelectorAll('page-read:not([hidden]) read-text')[0];
     if (container) {
       const targets = container.querySelectorAll('a[name="' + posId + '"].anchor');
       if (targets && targets.length > 0) {
@@ -3691,7 +3145,7 @@ export class ReadPage /*implements OnDestroy*/ {
             }
             this.scrollColumnIntoView(columnElement);
           }
-          this.scrollToHTMLElement(target);
+          this.commonFunctions.scrollToHTMLElement(target);
         }
       }
     }

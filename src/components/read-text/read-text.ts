@@ -10,6 +10,7 @@ import { UserSettingsService } from '../../app/services/settings/user-settings.s
 import { TranslateService } from '@ngx-translate/core';
 import { TextCacheService } from '../../app/services/texts/text-cache.service';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
+import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
 /**
  * Generated class for the ReadTextComponent component.
  *
@@ -55,7 +56,8 @@ export class ReadTextComponent {
     public userSettingsService: UserSettingsService,
     public translate: TranslateService,
     protected modalController: ModalController,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    public commonFunctions: CommonFunctionsService
   ) {
     this.appMachineName = this.config.getSettings('app.machineName');
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
@@ -88,7 +90,6 @@ export class ReadTextComponent {
       this.setIllustrationsInReadtextStatus();
     }
     this.setUpTextListeners();
-
   }
 
   ngAfterViewInit() {
@@ -116,14 +117,14 @@ export class ReadTextComponent {
           }
 
           if (posId) {
-            let target = document.getElementsByName('' + posId + '')[0] as HTMLAnchorElement;
+            let target = document.querySelector('page-read:not([hidden]) [name="' + posId + '"]') as HTMLAnchorElement;
             if ( target && ((target.parentElement && target.parentElement.classList.contains('ttFixed'))
             || (target.parentElement.parentElement && target.parentElement.parentElement.classList.contains('ttFixed'))) ) {
               // Position in footnote --> look for second target
-              target = document.getElementsByName('' + posId + '')[1] as HTMLAnchorElement;
+              target = document.querySelectorAll('page-read:not([hidden]) [name="' + posId + '"]')[1] as HTMLAnchorElement;
             }
             if (target) {
-              this.scrollToHTMLElement(target, false);
+              this.commonFunctions.scrollToHTMLElement(target);
               clearInterval(this.intervalTimerId);
             }
           } else {
@@ -158,7 +159,7 @@ export class ReadTextComponent {
     image.viewType = 'illustrations';
     image.id = null;
     this.openNewIllustrView.emit(image);
-    this.scrollLastViewIntoView();
+    this.commonFunctions.scrollLastViewIntoView();
   }
 
   private setIllustrationImages() {
@@ -234,7 +235,8 @@ export class ReadTextComponent {
             }
           );
         } else {
-          let processedText = this.postprocessReadtext(content);
+          const c_id = String(this.link).split('_')[0];
+          let processedText = this.textService.postprocessEstablishedText(content, c_id);
 
           if (!this.textService.readtextIdsInStorage.includes(this.estID)) {
             this.textService.readtextIdsInStorage.push(this.estID);
@@ -247,28 +249,6 @@ export class ReadTextComponent {
       },
       error => { this.errorMessage = <any>error; this.textLoading = false; this.text = 'Lästexten kunde inte hämtas.'; }
     );
-  }
-
-  private postprocessReadtext(text: string) {
-    const c_id = String(this.link).split('_')[0];
-    let galleryId = 44;
-
-    try {
-      galleryId = this.config.getSettings('settings.galleryCollectionMapping')[c_id];
-    } catch ( err ) {
-    }
-
-    if ( String(text).includes('images/verk/http') ) {
-      text = text.replace(/images\/verk\//g, '');
-    } else {
-      text = text.replace(/images\/verk\//g, `${this.apiEndPoint}/${this.appMachineName}/gallery/get/${galleryId}/`);
-    }
-
-    text = text.replace(/\.png/g, '.svg');
-    text = text.replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"tei $1\"');
-    text = text.replace(/images\//g, 'assets/images/');
-
-    return text;
   }
 
   /**
@@ -347,7 +327,7 @@ export class ReadTextComponent {
             // Check if we have an image to show in the illustrations-view
             if (image !== null) {
               // Check if we have an illustrations-view open, if not, open and display the clicked image there
-              if (document.querySelector('illustrations') === null) {
+              if (document.querySelector('page-read:not([hidden]) illustrations') === null) {
                 this.ngZone.run(() => {
                   this.openIllustrationInNewView(image);
                 });
@@ -376,106 +356,8 @@ export class ReadTextComponent {
     });
   }
 
-  private scrollToHTMLElement(element: HTMLElement, addTag: boolean, position = 'top', timeOut = 5000) {
-    try {
-      const tmp = element.previousElementSibling as HTMLElement;
-      let addedArrow = false;
-
-      if ( tmp !== null && tmp !== undefined && tmp.classList.contains('anchor_lemma') ) {
-        tmp.style.display = 'inline';
-        this.scrollElementIntoView(tmp, position);
-        setTimeout(function() {
-          tmp.style.display = 'none';
-        }, timeOut);
-        addedArrow = true;
-      } else {
-        const tmpImage: HTMLImageElement = new Image();
-        tmpImage.src = 'assets/images/ms_arrow_right.svg';
-        tmpImage.alt = 'ms arrow right image';
-        tmpImage.classList.add('inl_ms_arrow');
-        element.parentElement.insertBefore(tmpImage, element);
-        this.scrollElementIntoView(tmpImage, position);
-        setTimeout(function() {
-          element.parentElement.removeChild(tmpImage);
-        }, timeOut);
-        addedArrow = true;
-      }
-
-      if ( addTag && !addedArrow ) {
-        element.innerHTML = '<img class="inl_ms_arrow" alt="arrow right image" src="assets/images/ms_arrow_right.svg"/>';
-        this.scrollElementIntoView(element, position);
-        setTimeout(function() {
-          element.innerHTML = '';
-        }, timeOut);
-      }
-    } catch ( e ) {
-      console.error(e);
-    }
-  }
-
-  /**
-   * This function can be used to scroll a container so that the element which it
-   * contains is placed either at the top edge of the container or in the center
-   * of the container. This function can be called multiple times simultaneously
-   * on elements in different containers, unlike the native scrollIntoView function
-   * which cannot be called multiple times simultaneously in Chrome due to a bug.
-   * Valid values for yPosition are 'top' and 'center'.
-   */
-  private scrollElementIntoView(element: HTMLElement, yPosition = 'center', offset = 0) {
-    if (element === undefined || element === null || (yPosition !== 'center' && yPosition !== 'top')) {
-      return;
-    }
-    // Find the scrollable container of the element which is to be scrolled into view
-    let container = element.parentElement;
-    while (container !== null && container.parentElement !== null &&
-     !container.classList.contains('scroll-content')) {
-      container = container.parentElement;
-    }
-    if (container === null || container.parentElement === null) {
-      return;
-    }
-
-    const y = Math.floor(element.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top);
-    let baseOffset = 10;
-    if (yPosition === 'center') {
-      baseOffset = Math.floor(container.offsetHeight / 2);
-      if (baseOffset > 45) {
-        baseOffset = baseOffset - 45;
-      }
-    }
-    container.scrollTo({top: y - baseOffset - offset, behavior: 'smooth'});
-  }
-
   doAnalytics() {
     this.analyticsService.doAnalyticsEvent('Established', 'Established', String(this.link));
   }
 
-  /**
-   * This function scrolls the read-view horisontally to the last read column.
-   * It's called after adding new views.
-   */
-  scrollLastViewIntoView() {
-    this.ngZone.runOutsideAngular(() => {
-      let iterationsLeft = 10;
-      clearInterval(this.intervalTimerId);
-      this.intervalTimerId = window.setInterval(function() {
-        if (iterationsLeft < 1) {
-          clearInterval(this.intervalTimerId);
-        } else {
-          iterationsLeft -= 1;
-          const viewElements = document.getElementsByClassName('read-column');
-          if (viewElements[0] !== undefined) {
-            const lastViewElement = viewElements[viewElements.length - 1] as HTMLElement;
-            const scrollingContainer = document.querySelector('page-read > ion-content > div.scroll-content');
-            if (scrollingContainer !== null) {
-              const x = lastViewElement.getBoundingClientRect().right + scrollingContainer.scrollLeft -
-              scrollingContainer.getBoundingClientRect().left;
-              scrollingContainer.scrollTo({top: 0, left: x, behavior: 'smooth'});
-              clearInterval(this.intervalTimerId);
-            }
-          }
-        }
-      }.bind(this), 500);
-    });
-  }
 }

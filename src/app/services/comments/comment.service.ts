@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-
 import { ConfigService } from '@ngx-config/core';
 import { CommentCacheService } from './comment-cache.service';
+import { CommonFunctionsService } from '../common-functions/common-functions.service';
 
 @Injectable()
 export class CommentService {
@@ -13,7 +13,12 @@ export class CommentService {
   activeCommentHighlight: any;
   activeLemmaHighlight: any;
 
-  constructor(private http: Http, private config: ConfigService, private cache: CommentCacheService) {
+  constructor(
+    private http: Http,
+    private config: ConfigService,
+    private cache: CommentCacheService,
+    public commonFunctions: CommonFunctionsService
+  ) {
     this.activeCommentHighlight = {
       commentTimeOutId: null,
       commentLemmaElement: null
@@ -135,4 +140,81 @@ export class CommentService {
     })
     .catch(this.handleError);
   }
+
+  /* Use this function to scroll the lemma of a comment into view in the reading text view. */
+  /**
+   * Function used to scroll the lemma of a comment into view in the reading text view.
+   * @param lemmaStartElem The html element marking the start of the lemma in the reading text view.
+   * @param timeOut Duration for showing an arrow at the start of the lemma in the reading text view.
+   */
+  scrollToCommentLemma(lemmaStartElem: HTMLElement, timeOut = 5000) {
+    if (lemmaStartElem !== null && lemmaStartElem !== undefined && lemmaStartElem.classList.contains('anchor_lemma')) {
+
+      if (this.activeLemmaHighlight.lemmaTimeOutId !== null) {
+        // Clear previous lemma highlight if still active
+        this.activeLemmaHighlight.lemmaElement.style.display = null;
+        window.clearTimeout(this.activeLemmaHighlight.lemmaTimeOutId);
+      }
+
+      lemmaStartElem.style.display = 'inline';
+      this.commonFunctions.scrollElementIntoView(lemmaStartElem);
+      const settimeoutId = setTimeout(() => {
+        lemmaStartElem.style.display = null;
+        this.activeLemmaHighlight = {
+          lemmaTimeOutId: null,
+          lemmaElement: null
+        }
+
+      }, timeOut);
+
+      this.activeLemmaHighlight = {
+        lemmaTimeOutId: settimeoutId,
+        lemmaElement: lemmaStartElem
+      }
+    }
+  }
+
+  /**
+   * Function for scrolling to the comment with the specified numeric id
+   * (excluding prefixes like 'end') in the first comments view on the page.
+   * Alternatively, the comment element can be passed as an optional parameter.
+   * @param numericId The numeric id of the comment as a string. Must not contain prefixes like 'en',
+   * 'end' or 'start'.
+   * @param commentElement Optionally passed comment element. If omitted, the correct comment
+   * element will be searched for using numericId.
+   */
+   scrollToComment(numericId: string, commentElement?: HTMLElement) {
+    let elem = commentElement;
+    if (elem === undefined || elem === null || !elem.classList.contains('en' + numericId)) {
+      // Find the comment in the comments view.
+      const commentsWrapper = document.querySelector('page-read:not([hidden]) comments') as HTMLElement;
+      elem = commentsWrapper.getElementsByClassName('en' + numericId)[0] as HTMLElement;
+    }
+    if (elem !== null && elem !== undefined) {
+
+      if (this.activeCommentHighlight.commentTimeOutId !== null) {
+        // Clear previous comment highlight if still active
+        this.activeCommentHighlight.commentLemmaElement.classList.remove('highlight');
+        window.clearTimeout(this.activeCommentHighlight.commentTimeOutId);
+      }
+
+      // Scroll the comment into view.
+      this.commonFunctions.scrollElementIntoView(elem, 'center', -5);
+      const noteLemmaElem = elem.getElementsByClassName('noteLemma')[0] as HTMLElement;
+      noteLemmaElem.classList.add('highlight');
+      const settimeoutId = setTimeout(() => {
+        noteLemmaElem.classList.remove('highlight');
+        this.activeCommentHighlight = {
+          commentTimeOutId: null,
+          commentLemmaElement: null
+        }
+      }, 5000);
+
+      this.activeCommentHighlight = {
+        commentTimeOutId: settimeoutId,
+        commentLemmaElement: noteLemmaElem
+      }
+    }
+  }
+
 }

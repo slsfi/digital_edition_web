@@ -37,6 +37,8 @@ export class DigitalEditionList implements OnInit {
   hasMediaCollections = false;
   galleryInReadMenu = false;
   collectionSortOrder: any;
+  showEpubsInList = false;
+  availableEpubs = [];
 
   @Input() layoutType: string;
   @Input() collectionsToShow?: Array<any>;
@@ -92,6 +94,16 @@ export class DigitalEditionList implements OnInit {
       this.galleryInReadMenu = this.config.getSettings('ImageGallery.ShowInReadMenu');
     } catch (e) {
       this.galleryInReadMenu = false;
+    }
+    try {
+      this.showEpubsInList = this.config.getSettings('show.epubsInDigitalEditionList');
+    } catch (e) {
+      this.showEpubsInList = false;
+    }
+    try {
+      this.availableEpubs = this.config.getSettings('AvailableEpubs');
+    } catch (e) {
+      this.availableEpubs = [];
     }
   }
 
@@ -150,6 +162,9 @@ export class DigitalEditionList implements OnInit {
           }
           if (this.collectionsToShow !== undefined && this.collectionsToShow.length > 0) {
             this.filterCollectionsToShow(de);
+          }
+          if (this.showEpubsInList && Object.keys(this.availableEpubs).length > 0) {
+            this.prependEpubsToDigitalEditions();
           }
         },
         error => { this.errorMessage = <any>error }
@@ -293,7 +308,10 @@ export class DigitalEditionList implements OnInit {
 
   openCollection(collection: DigitalEdition, animate = true) {
     if ( (collection.isDownload === undefined || collection.isDownload === false) ) {
-      if (this.hasCover === false && this.hasIntro === false && this.hasTitle === false && this.hasForeword === false) {
+      if (String(collection.id).endsWith('.epub')) {
+        this.events.publish('digital-edition-list:open', collection);
+      } else if (this.hasCover === false && this.hasIntro === false
+      && this.hasTitle === false && this.hasForeword === false) {
         this.getTocRoot(collection);
       } else {
         this.events.publish('digital-edition-list:open', collection);
@@ -305,5 +323,19 @@ export class DigitalEditionList implements OnInit {
 
   openMediaCollections(collection) {
     this.events.publish('openMediaCollections', {});
+  }
+
+  prependEpubsToDigitalEditions() {
+    const epubNames = Object.keys(this.availableEpubs);
+    const epubCollections = [];
+    epubNames.forEach(name => {
+      const epubFilename = this.availableEpubs[name]['filename'];
+      const epubColl = new DigitalEdition({id: epubFilename, title: name});
+      epubCollections.push(epubColl);
+      if (this.availableEpubs[name]['cover'] !== undefined) {
+        this.editionImages[epubFilename] = this.availableEpubs[name]['cover'];
+      }
+    });
+    this.digitalEditions = epubCollections.concat(this.digitalEditions);
   }
 }

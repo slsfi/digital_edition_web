@@ -4,7 +4,7 @@
       <div class="page-title">{{appName}}</div>
       <div class="page-subtitle">Epub</div>
     </ion-title>
-    <ion-buttons>
+    <ion-buttons *ngIf="epubFileExists">
         <ion-grid>
             <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center justify-content-end>
               <ion-col class="navigation-buttons-col" *ngIf="(userSettingsService.isMobile() === false && userSettingsService.isTablet() === false)">
@@ -87,10 +87,11 @@
   <div *ngIf="loading" class="spinner-wrapper">
     <ion-spinner class="loading" name="crescent"></ion-spinner>
   </div>
-  <div id="area"></div>
+  <div *ngIf="epubFileExists" id="area"></div>
+  <p class="epub-error-message" *ngIf="!epubFileExists">{{"Epub.FileNotFound" | translate}}</p>
 </div>
 
-<div class="text-changer-mobile-view" *ngIf="(userSettingsService.isMobile() === true || userSettingsService.isTablet() === true)">
+<div class="text-changer-mobile-view" *ngIf="(userSettingsService.isMobile() === true || userSettingsService.isTablet() === true) && epubFileExists">
   <ion-grid class="forwardBackward">
       <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
         <ion-col class="navigation-buttons-col">
@@ -112,6 +113,6 @@
   </ion-grid>
 </div>
 
-<div class="current-position-container" *ngIf="!loading">
+<div class="current-position-container" *ngIf="!loading && epubFileExists">
   <span [innerHTML]="currentPositionPercentage"></span>
 </div>

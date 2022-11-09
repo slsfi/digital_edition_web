@@ -5,19 +5,14 @@ import { PopoverController, ModalController } from 'ionic-angular';
 import { MdContentService } from '../../app/services/md/md-content.service';
 import { ReadPopoverService, Fontsize } from '../../app/services/settings/read-popover.service';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
+import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
 import { ReadPopoverPage } from '../../pages/read-popover/read-popover';
 import { ReferenceDataModalPage } from '../../pages/reference-data-modal/reference-data-modal';
 import { Subscription } from 'rxjs/Subscription';
 
 declare var ePub;
-/**
- * Generated class for the MathJaxComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
 
- export class Book {
+export class Book {
   label: string;
   file: string;
 }
@@ -53,6 +48,7 @@ export class EpubComponent {
   fontsizeSubscription: Subscription;
   windowResizeTimeoutId: any;
   handleWindowResize: any;
+  epubFileExists: boolean;
 
   @Input() epubFileName?: string;
 
@@ -74,7 +70,8 @@ export class EpubComponent {
     public readPopoverService: ReadPopoverService,
     private renderer2: Renderer2,
     private ngZone: NgZone,
-    private config: ConfigService
+    private config: ConfigService,
+    public commonFunctions: CommonFunctionsService
   ) {
     this.tocMenuOpen = false;
     this.searchMenuOpen = false;
@@ -97,6 +94,7 @@ export class EpubComponent {
     this.fontsizeSubscription = null;
     this.windowResizeTimeoutId = null;
     this.handleWindowResize = null;
+    this.epubFileExists = true;
 
     try {
       this.showURNButton = this.config.getSettings('showURNButton.pageEpub');
@@ -119,16 +117,35 @@ export class EpubComponent {
     if (this.splitPaneObserver !== null && this.splitPaneObserver !== undefined) {
       this.splitPaneObserver.disconnect();
     }
-    this.fontsizeSubscription.unsubscribe();
-    this.unlistenKeyDownEvents();
-    window.removeEventListener('resize', this.handleWindowResize);
-    this.book.destroy();
+    if (this.fontsizeSubscription !== null && this.fontsizeSubscription !== undefined) {
+      this.fontsizeSubscription.unsubscribe();
+    }
+    if (this.unlistenKeyDownEvents !== undefined) {
+      this.unlistenKeyDownEvents();
+    }
+    if (this.handleWindowResize !== null && this.handleWindowResize !== undefined) {
+      window.removeEventListener('resize', this.handleWindowResize);
+    }
+    if (this.book !== undefined) {
+      this.book.destroy();
+    }
   }
 
   ngAfterViewInit() {
-    this.ngZone.runOutsideAngular(() => {
-      this.book = ePub('../assets/books/' + this.epubFileName);
+    const epubFilePath = '../assets/books/' + this.epubFileName;
+    this.commonFunctions.urlExists(epubFilePath).then((res: Boolean) => {
+      if (res) {
+        this.loadEpub(epubFilePath);
+      } else {
+        this.epubFileExists = false;
+        this.loading = false;
+      }
+    });
+  }
 
+  loadEpub(epubFilePath: string) {
+    this.ngZone.runOutsideAngular(() => {
+      this.book = ePub(epubFilePath);
       /*
         Get the dimensions of the epub rendering area. Adjust the size of the rendering
         to even numbers (helps rendering of spreads).
@@ -136,10 +153,10 @@ export class EpubComponent {
       const area = document.getElementById('area');
       let areaWidth = Math.floor(area.getBoundingClientRect().width);
       let areaHeight = Math.floor(area.getBoundingClientRect().height);
-      if (!this.numberIsEven(areaWidth)) {
+      if (!this.commonFunctions.numberIsEven(areaWidth)) {
         areaWidth = areaWidth - 1;
       }
-      if (!this.numberIsEven(areaHeight)) {
+      if (!this.commonFunctions.numberIsEven(areaHeight)) {
         areaHeight = areaHeight - 1;
       }
 
@@ -246,7 +263,8 @@ export class EpubComponent {
           } else if (this.atEnd) {
             this.currentPositionPercentage = '100.0 %';
           } else {
-            this.currentPositionPercentage = (parseFloat(this.book.locations.percentageFromCfi(this.currentLocationCfi)) * 100).toFixed(1) + ' %'
+            this.currentPositionPercentage = (parseFloat(this.book.locations.percentageFromCfi(this.currentLocationCfi)) * 100).toFixed(1)
+            + ' %';
           }
         });
 
@@ -289,7 +307,6 @@ export class EpubComponent {
     } catch (e) {
       this.availableEpubs = [];
     }
-
   }
 
   doSearch(q): Promise<any> {
@@ -397,7 +414,7 @@ export class EpubComponent {
         if (_this.epubCreators.length > 0) {
           const tocCreatorP = document.createElement('p');
           tocCreatorP.className = 'epub_creator';
-          tocCreatorP.innerText = _this.formatWriterNamesForTOC(_this.epubCreators);
+          tocCreatorP.innerText = _this.commonFunctions.concatenateNames(_this.epubCreators, ',');
           tocDiv.appendChild(tocCreatorP);
         }
 
@@ -405,7 +422,7 @@ export class EpubComponent {
         if (_this.epubCreators.length < 1 && _this.epubContributors.length > 0) {
           const tocCreatorP = document.createElement('p');
           tocCreatorP.className = 'epub_creator';
-          tocCreatorP.innerText = _this.formatWriterNamesForTOC(_this.epubContributors);
+          tocCreatorP.innerText = _this.commonFunctions.concatenateNames(_this.epubContributors, ',');
           tocDiv.appendChild(tocCreatorP);
         }
 
@@ -589,41 +606,6 @@ export class EpubComponent {
     this.rendition.display(currentLocation);
   }
 
-  /**
-   * Given an array with names of people, this function return a string where the names
-   * have been concatenated. A comma (,) is used as a separator between all of the names
-   * except between the second to last and last, which are separated by an ampersand (&).
-   * @param names An array of strings with the names that are to be concatenated.
-   * @returns A string with the names concatenated.
-   */
-  formatWriterNamesForTOC(names: string[]) {
-    let names_str = '';
-    for (let i = 0; i < names.length; i++) {
-      names_str = names_str + names[i];
-      if (names.length > 2) {
-        if (i < names.length - 2) {
-          names_str = names_str + ', ';
-        } else if (i < names.length - 1) {
-          names_str = names_str + ' \u0026 ';
-        }
-      } else if (names.length === 2 && i < 1) {
-        names_str = names_str + ' \u0026 ';
-      }
-    }
-    return names_str;
-  }
-
-  /**
-   * Check if an integer is even.
-   */
-  numberIsEven(value: number) {
-    if (value % 2 === 0) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   private setUpInputListeners() {
     /*
       1. Listen for keydown events inside the epub rendition. This is needed for prev/next on keydown
@@ -734,10 +716,10 @@ export class EpubComponent {
     const area = document.querySelector('.toc-epub-container > #area');
     let areaWidth = Math.floor(area.getBoundingClientRect().width);
     let areaHeight = Math.floor(area.getBoundingClientRect().height);
-    if (!this.numberIsEven(areaWidth)) {
+    if (!this.commonFunctions.numberIsEven(areaWidth)) {
       areaWidth = areaWidth - 1;
     }
-    if (!this.numberIsEven(areaHeight)) {
+    if (!this.commonFunctions.numberIsEven(areaHeight)) {
       areaHeight = areaHeight - 1;
     }
     // Resize the epub rendition with the area's dimensions
