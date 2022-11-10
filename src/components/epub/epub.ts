@@ -138,7 +138,7 @@ export class EpubComponent {
     this.commonFunctions.urlExists(domainUrl + epubFilePath).then((res) => {
       console.log('file exist check response: ', res);
       if (res > 0) {
-        this.loadEpub('../' + epubFilePath);
+        this.loadEpub('..' + epubFilePath);
       } else {
         this.epubFileExists = false;
         this.loading = false;
@@ -170,21 +170,26 @@ export class EpubComponent {
         Register epub themes for switching font size and setting font family to browser default serif for the
         search to highlight matches correctly.
       */
-      this.rendition.themes.register('fontsize_0', { 'body': { 'font-size': '1em' } });
-      this.rendition.themes.register('fontsize_1', { 'body': { 'font-size': '1.0625em' } });
-      this.rendition.themes.register('fontsize_2', { 'body': { 'font-size': '1.125em' } });
-      this.rendition.themes.register('fontsize_3', { 'body': { 'font-size': '1.1875em' } });
-      this.rendition.themes.register('fontsize_4', { 'body': { 'font-size': '1.3125em' } });
+      this.rendition.themes.register('fontsize_0', { 'body': { 'font-size': '1em' },
+        'img': { 'max-width': 'initial !important;' } });
+      this.rendition.themes.register('fontsize_1', { 'body': { 'font-size': '1.0625em' },
+        'img': { 'max-width': 'initial !important;' } });
+      this.rendition.themes.register('fontsize_2', { 'body': { 'font-size': '1.125em' },
+        'img': { 'max-width': 'initial !important;' } });
+      this.rendition.themes.register('fontsize_3', { 'body': { 'font-size': '1.1875em' },
+        'img': { 'max-width': 'initial !important;' } });
+      this.rendition.themes.register('fontsize_4', { 'body': { 'font-size': '1.3125em' },
+        'img': { 'max-width': 'initial !important;' } });
       this.rendition.themes.register('search_fontsize_0', { '*': { 'font-family': 'serif !important' },
-        'body': { 'font-size': '1em' } });
+        'body': { 'font-size': '1em' }, 'img': { 'max-width': 'initial !important;' } });
       this.rendition.themes.register('search_fontsize_1', { '*': { 'font-family': 'serif !important' },
-        'body': { 'font-size': '1.0625em' } });
+        'body': { 'font-size': '1.0625em' }, 'img': { 'max-width': 'initial !important;' } });
       this.rendition.themes.register('search_fontsize_2', { '*': { 'font-family': 'serif !important' },
-        'body': { 'font-size': '1.125em' } });
+        'body': { 'font-size': '1.125em' }, 'img': { 'max-width': 'initial !important;' } });
       this.rendition.themes.register('search_fontsize_3', { '*': { 'font-family': 'serif !important' },
-        'body': { 'font-size': '1.1875em' } });
+        'body': { 'font-size': '1.1875em' }, 'img': { 'max-width': 'initial !important;' } });
       this.rendition.themes.register('search_fontsize_4', { '*': { 'font-family': 'serif !important' },
-        'body': { 'font-size': '1.3125em' } });
+        'body': { 'font-size': '1.3125em' }, 'img': { 'max-width': 'initial !important;' } });
 
       this.rendition.themes.select('fontsize_' + this.fontsize);
 
