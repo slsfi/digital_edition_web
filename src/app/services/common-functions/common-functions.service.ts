@@ -19,11 +19,15 @@ export class CommonFunctionsService {
    */
   async urlExists(url: string) {
     const response = await fetch(url, { method: 'HEAD' });
+    console.log('fetch response', response);
+    return response.status;
+    /*
     if (response.ok && response.status !== 404) {
       return 1;
     } else {
       return 0;
     }
+    */
   }
 
 
