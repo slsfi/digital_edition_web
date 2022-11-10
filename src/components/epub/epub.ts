@@ -133,8 +133,9 @@ export class EpubComponent {
 
   ngAfterViewInit() {
     const epubFilePath = '../assets/books/' + this.epubFileName;
-    this.commonFunctions.urlExists(epubFilePath).then((res: Boolean) => {
-      if (res) {
+    this.commonFunctions.urlExists(epubFilePath).then((res) => {
+      console.log('file exist check response: ', res);
+      if (res > 0) {
         this.loadEpub(epubFilePath);
       } else {
         this.epubFileExists = false;
@@ -145,6 +146,7 @@ export class EpubComponent {
 
   loadEpub(epubFilePath: string) {
     this.ngZone.runOutsideAngular(() => {
+      console.log('Loading epub from ', epubFilePath);
       this.book = ePub(epubFilePath);
       /*
         Get the dimensions of the epub rendering area. Adjust the size of the rendering

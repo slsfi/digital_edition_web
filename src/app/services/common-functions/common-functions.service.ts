@@ -15,14 +15,14 @@ export class CommonFunctionsService {
 
 
   /**
-   * Check if a file is found behind the given url.
+   * Check if a file is found behind the given url. Returns 1 if file found, otherwise 0.
    */
   async urlExists(url: string) {
     const response = await fetch(url, { method: 'HEAD' });
     if (response.ok && response.status !== 404) {
-      return true;
+      return 1;
     } else {
-      return false;
+      return 0;
     }
   }
 
