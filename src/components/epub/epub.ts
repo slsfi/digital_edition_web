@@ -133,10 +133,12 @@ export class EpubComponent {
 
   ngAfterViewInit() {
     const epubFilePath = '/assets/books/' + this.epubFileName;
-    this.commonFunctions.urlExists(epubFilePath).then((res) => {
+    const domainUrl: string = String(window.location.href).split('/#/')[0].replace('https:', '').replace('http:', '');
+    console.log(domainUrl + epubFilePath);
+    this.commonFunctions.urlExists(domainUrl + epubFilePath).then((res) => {
       console.log('file exist check response: ', res);
-      if (res != 404) {
-        this.loadEpub('..' + epubFilePath);
+      if (res > 0) {
+        this.loadEpub('../' + epubFilePath);
       } else {
         this.epubFileExists = false;
         this.loading = false;
@@ -194,7 +196,7 @@ export class EpubComponent {
           this.ngZone.run(() => {
             this.loading = false;
           });
-        }, 2500);
+        }, 1000);
 
         /*
           Get epub title, creator(s), contributor(s) and cover image (as a blob) from the epub.

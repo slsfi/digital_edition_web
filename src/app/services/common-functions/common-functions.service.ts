@@ -15,19 +15,23 @@ export class CommonFunctionsService {
 
 
   /**
-   * Check if a file is found behind the given url. Returns 1 if file found, otherwise 0.
+   * Check if a file is found behind the given url. Returns 1 if file found,
+   * otherwise 0.
    */
   async urlExists(url: string) {
-    const response = await fetch(url, { method: 'HEAD' });
-    console.log('fetch response', response);
-    return response.status;
-    /*
-    if (response.ok && response.status !== 404) {
-      return 1;
-    } else {
+    try {
+      const response = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+      console.log('urlExists response', response);
+      if (response.ok && response.status !== 404) {
+        return 1;
+      } else {
+        return 0;
+      }
+    } catch (error) {
+      console.log('Could not fetch ', url);
+      console.error(`${error}`);
       return 0;
     }
-    */
   }
 
 
