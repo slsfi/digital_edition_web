@@ -132,6 +132,11 @@ export class EpubComponent {
   }
 
   ngAfterViewInit() {
+    /*
+      The check below if epub file exists is commented out since the epub is for some reason
+      not loaded in production mode if the check is there. Works locally in ionic serve though ...
+    */
+    /*
     const epubFilePath = '/assets/books/' + this.epubFileName;
     const domainUrl: string = String(window.location.href).split('/#/')[0].replace('https:', '').replace('http:', '');
     console.log(domainUrl + epubFilePath);
@@ -144,6 +149,8 @@ export class EpubComponent {
         this.loading = false;
       }
     });
+    */
+    this.loadEpub('../assets/books/' + this.epubFileName);
   }
 
   loadEpub(epubFilePath: string) {
@@ -171,25 +178,25 @@ export class EpubComponent {
         search to highlight matches correctly.
       */
       this.rendition.themes.register('fontsize_0', { 'body': { 'font-size': '1em' },
-        'img': { 'max-width': 'initial !important;' } });
+        'img': { 'max-width': '100% !important;' } });
       this.rendition.themes.register('fontsize_1', { 'body': { 'font-size': '1.0625em' },
-        'img': { 'max-width': 'initial !important;' } });
+        'img': { 'max-width': '100% !important;' } });
       this.rendition.themes.register('fontsize_2', { 'body': { 'font-size': '1.125em' },
-        'img': { 'max-width': 'initial !important;' } });
+        'img': { 'max-width': '100% !important;' } });
       this.rendition.themes.register('fontsize_3', { 'body': { 'font-size': '1.1875em' },
-        'img': { 'max-width': 'initial !important;' } });
+        'img': { 'max-width': '100% !important;' } });
       this.rendition.themes.register('fontsize_4', { 'body': { 'font-size': '1.3125em' },
-        'img': { 'max-width': 'initial !important;' } });
+        'img': { 'max-width': '100% !important;' } });
       this.rendition.themes.register('search_fontsize_0', { '*': { 'font-family': 'serif !important' },
-        'body': { 'font-size': '1em' }, 'img': { 'max-width': 'initial !important;' } });
+        'body': { 'font-size': '1em' }, 'img': { 'max-width': '100% !important;' } });
       this.rendition.themes.register('search_fontsize_1', { '*': { 'font-family': 'serif !important' },
-        'body': { 'font-size': '1.0625em' }, 'img': { 'max-width': 'initial !important;' } });
+        'body': { 'font-size': '1.0625em' }, 'img': { 'max-width': '100% !important;' } });
       this.rendition.themes.register('search_fontsize_2', { '*': { 'font-family': 'serif !important' },
-        'body': { 'font-size': '1.125em' }, 'img': { 'max-width': 'initial !important;' } });
+        'body': { 'font-size': '1.125em' }, 'img': { 'max-width': '100% !important;' } });
       this.rendition.themes.register('search_fontsize_3', { '*': { 'font-family': 'serif !important' },
-        'body': { 'font-size': '1.1875em' }, 'img': { 'max-width': 'initial !important;' } });
+        'body': { 'font-size': '1.1875em' }, 'img': { 'max-width': '100% !important;' } });
       this.rendition.themes.register('search_fontsize_4', { '*': { 'font-family': 'serif !important' },
-        'body': { 'font-size': '1.3125em' }, 'img': { 'max-width': 'initial !important;' } });
+        'body': { 'font-size': '1.3125em' }, 'img': { 'max-width': '100% !important;' } });
 
       this.rendition.themes.select('fontsize_' + this.fontsize);
 
