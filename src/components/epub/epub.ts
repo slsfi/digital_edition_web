@@ -132,15 +132,8 @@ export class EpubComponent {
   }
 
   ngAfterViewInit() {
-    /*
-      The check below if epub file exists is commented out since the epub is for some reason
-      not loaded in production mode if the check is there. Works locally in ionic serve though ...
-    */
-    /*
     const epubFilePath = '/assets/books/' + this.epubFileName;
-    const domainUrl: string = String(window.location.href).split('/#/')[0].replace('https:', '').replace('http:', '');
-    console.log(domainUrl + epubFilePath);
-    this.commonFunctions.urlExists(domainUrl + epubFilePath).then((res) => {
+    this.commonFunctions.urlExists(epubFilePath).then((res) => {
       console.log('file exist check response: ', res);
       if (res > 0) {
         this.loadEpub('..' + epubFilePath);
@@ -149,8 +142,6 @@ export class EpubComponent {
         this.loading = false;
       }
     });
-    */
-    this.loadEpub('../assets/books/' + this.epubFileName);
   }
 
   loadEpub(epubFilePath: string) {
