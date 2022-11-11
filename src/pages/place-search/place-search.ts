@@ -153,6 +153,7 @@ export class PlaceSearchPage {
     this.showLoading = true;
     this.semanticDataService.getLocationElastic(this.from, this.searchText).subscribe(
       places => {
+        console.log('getPlaces places: ', places);
         const placesTmp = [];
         places = places.hits.hits;
         places.forEach(element => {

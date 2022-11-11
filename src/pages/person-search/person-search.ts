@@ -240,46 +240,51 @@ export class PersonSearchPage {
     this.semanticDataService.getSubjectsElastic(this.from, this.searchText, this.filters, this.infiniteScrollNumber).subscribe(
       persons => {
         console.log('getPersons persons: ', persons);
+        if (persons.error !== undefined) {
+          console.error('Elastic search error getting persons: ', persons);
+        }
         const personsTmp = [];
-        persons = persons.hits.hits;
-        persons.forEach(element => {
-          element = element['_source'];
-          const sortBy = [];
-          let sortByName = String(element['full_name']).toLowerCase().replace('ʽ', '');
-          sortByName = sortByName.replace('de ', '');
-          sortByName = sortByName.replace('von ', '');
-          sortByName = sortByName.replace('van ', '');
-          sortByName = sortByName.replace('af ', '');
-          sortByName = sortByName.replace('d’ ', '');
-          sortByName = sortByName.replace('d’', '');
-          sortByName = sortByName.replace('di ', '');
-          sortByName = sortByName.trim();
+        if (persons.hits !== undefined) {
+          persons = persons.hits.hits;
+          persons.forEach(element => {
+            element = element['_source'];
+            const sortBy = [];
+            let sortByName = String(element['full_name']).toLowerCase().replace('ʽ', '');
+            sortByName = sortByName.replace('de ', '');
+            sortByName = sortByName.replace('von ', '');
+            sortByName = sortByName.replace('van ', '');
+            sortByName = sortByName.replace('af ', '');
+            sortByName = sortByName.replace('d’ ', '');
+            sortByName = sortByName.replace('d’', '');
+            sortByName = sortByName.replace('di ', '');
+            sortByName = sortByName.trim();
 
-          element['year_born_deceased'] = this.tooltipService.constructYearBornDeceasedString(element['date_born'],
-          element['date_deceased']);
+            element['year_born_deceased'] = this.tooltipService.constructYearBornDeceasedString(element['date_born'],
+            element['date_deceased']);
 
-          sortBy.push(sortByName);
-          element['sortBy'] = sortBy.join();
-          const ltr = element['sortBy'].charAt(0);
-          if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
-          } else {
-            const combining = /[\u0300-\u036F]/g;
-            element['sortBy'] = element['sortBy'].normalize('NFKD').replace(combining, '').replace(',', '');
-          }
-          if ( this.subType !== '' && this.subType !== null && element['type'] !== this.subType ) {
-          } else {
-            let found = false;
-            this.persons.forEach(pers => {
-              if ( pers.id === element['id'] ) {
-                found = true;
-              }
-            });
-            if ( !found ) {
-              personsTmp.push(element);
-              this.persons.push(element);
+            sortBy.push(sortByName);
+            element['sortBy'] = sortBy.join();
+            const ltr = element['sortBy'].charAt(0);
+            if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
+            } else {
+              const combining = /[\u0300-\u036F]/g;
+              element['sortBy'] = element['sortBy'].normalize('NFKD').replace(combining, '').replace(',', '');
             }
-          }
-        });
+            if ( this.subType !== '' && this.subType !== null && element['type'] !== this.subType ) {
+            } else {
+              let found = false;
+              this.persons.forEach(pers => {
+                if ( pers.id === element['id'] ) {
+                  found = true;
+                }
+              });
+              if ( !found ) {
+                personsTmp.push(element);
+                this.persons.push(element);
+              }
+            }
+          });
+        }
 
         this.allData = this.persons;
         this.cacheData = this.persons;
