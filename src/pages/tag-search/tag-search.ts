@@ -158,6 +158,9 @@ export class TagSearchPage {
     this.showLoading = true;
     this.semanticDataService.getTagElastic(this.from, this.searchText, this.filters).subscribe(
       tags => {
+        if (tags.error !== undefined) {
+          console.error('Elastic search error getting tags: ', tags);
+        }
         const tagsTmp = [];
         tags = tags.hits.hits;
         tags.forEach(element => {
@@ -196,8 +199,7 @@ export class TagSearchPage {
         this.showLoading = false;
       },
       () => {
-        console.log('get tags completed');
-        console.log(this.tags);
+        console.log('Get tags completed: ', this.tags);
       }
     );
   }
