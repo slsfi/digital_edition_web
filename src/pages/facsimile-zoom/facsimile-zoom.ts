@@ -128,8 +128,8 @@ export class FacsimileZoomModalPage {
     }
     // Loop through backsides array and check if backside image-files actually exist
     for (let i = 0; i < this.backsides.length; i++) {
-      this.commonFunctions.urlExists(this.backsides[i]).then((res: Boolean) => {
-        if (res === false) {
+      this.commonFunctions.urlExists(this.backsides[i]).then((res) => {
+        if (res < 1) {
           this.backsides[i] = null;
         }
       });
