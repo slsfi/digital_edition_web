@@ -147,7 +147,7 @@ export class EpubComponent {
   }
 
   loadEpub(epubFilePath: string) {
-    this.ngZone.runOutsideAngular(() => {
+    // this.ngZone.runOutsideAngular(() => {
       console.log('Loading epub from ', epubFilePath);
       this.book = ePub(epubFilePath);
       /*
@@ -171,25 +171,25 @@ export class EpubComponent {
         search to highlight matches correctly.
       */
       this.rendition.themes.register('fontsize_0', { 'body': { 'font-size': '1em' },
-        'img': { 'max-width': 'initial !important;' } });
+        'img': { 'max-width': '100% !important;' } });
       this.rendition.themes.register('fontsize_1', { 'body': { 'font-size': '1.0625em' },
-        'img': { 'max-width': 'initial !important;' } });
+        'img': { 'max-width': '100% !important;' } });
       this.rendition.themes.register('fontsize_2', { 'body': { 'font-size': '1.125em' },
-        'img': { 'max-width': 'initial !important;' } });
+        'img': { 'max-width': '100% !important;' } });
       this.rendition.themes.register('fontsize_3', { 'body': { 'font-size': '1.1875em' },
-        'img': { 'max-width': 'initial !important;' } });
+        'img': { 'max-width': '100% !important;' } });
       this.rendition.themes.register('fontsize_4', { 'body': { 'font-size': '1.3125em' },
-        'img': { 'max-width': 'initial !important;' } });
+        'img': { 'max-width': '100% !important;' } });
       this.rendition.themes.register('search_fontsize_0', { '*': { 'font-family': 'serif !important' },
-        'body': { 'font-size': '1em' }, 'img': { 'max-width': 'initial !important;' } });
+        'body': { 'font-size': '1em' }, 'img': { 'max-width': '100% !important;' } });
       this.rendition.themes.register('search_fontsize_1', { '*': { 'font-family': 'serif !important' },
-        'body': { 'font-size': '1.0625em' }, 'img': { 'max-width': 'initial !important;' } });
+        'body': { 'font-size': '1.0625em' }, 'img': { 'max-width': '100% !important;' } });
       this.rendition.themes.register('search_fontsize_2', { '*': { 'font-family': 'serif !important' },
-        'body': { 'font-size': '1.125em' }, 'img': { 'max-width': 'initial !important;' } });
+        'body': { 'font-size': '1.125em' }, 'img': { 'max-width': '100% !important;' } });
       this.rendition.themes.register('search_fontsize_3', { '*': { 'font-family': 'serif !important' },
-        'body': { 'font-size': '1.1875em' }, 'img': { 'max-width': 'initial !important;' } });
+        'body': { 'font-size': '1.1875em' }, 'img': { 'max-width': '100% !important;' } });
       this.rendition.themes.register('search_fontsize_4', { '*': { 'font-family': 'serif !important' },
-        'body': { 'font-size': '1.3125em' }, 'img': { 'max-width': 'initial !important;' } });
+        'body': { 'font-size': '1.3125em' }, 'img': { 'max-width': '100% !important;' } });
 
       this.rendition.themes.select('fontsize_' + this.fontsize);
 
@@ -198,9 +198,9 @@ export class EpubComponent {
       this.book.ready.then( () => {
         // Remove loading spinner with a delay
         setTimeout(() => {
-          this.ngZone.run(() => {
+          // this.ngZone.run(() => {
             this.loading = false;
-          });
+          // });
         }, 1000);
 
         /*
@@ -239,9 +239,9 @@ export class EpubComponent {
             this.epubCoverImageBlob = null;
           }
           // Generate table of contents view
-          this.ngZone.run(() => {
+          // this.ngZone.run(() => {
             this.createTOC();
-          });
+          // });
         });
 
         // Generate locations for calculating percentage positions throughout the book
@@ -250,7 +250,7 @@ export class EpubComponent {
 
       // Event fired when current location (i.e. page or spread) in book changes
       this.rendition.on('relocated', (location) => {
-        this.ngZone.run(() => {
+        // this.ngZone.run(() => {
 
           // Store current cfi location in book and check if at start or end of book
           this.previousLocationCfi = this.currentLocationCfi;
@@ -275,7 +275,7 @@ export class EpubComponent {
             this.currentPositionPercentage = (parseFloat(this.book.locations.percentageFromCfi(this.currentLocationCfi)) * 100).toFixed(1)
             + ' %';
           }
-        });
+        // });
 
         // Get the label of the current section from the epub
         const getNavItemByHref = href => (function flatten(arr) {
@@ -286,7 +286,7 @@ export class EpubComponent {
 
         const navItemHref = getNavItemByHref(this.rendition.currentLocation().start.href);
 
-        this.ngZone.run(() => {
+        // this.ngZone.run(() => {
           if (navItemHref !== null && navItemHref !== undefined) {
             this.currentSectionLabel = navItemHref.label;
           } else {
@@ -295,7 +295,7 @@ export class EpubComponent {
           if (this.currentSectionLabel === null || this.currentSectionLabel === undefined) {
             this.currentSectionLabel = '';
           }
-        });
+        // });
       });
 
       this.setUpInputListeners();
@@ -304,7 +304,7 @@ export class EpubComponent {
 
       this.setUpWindowResizeListener();
 
-    }); // End of runOutsideAngular
+    // }); // End of runOutsideAngular
 
     try {
       this.availableEpubs = this.config.getSettings('AvailableEpubs');
