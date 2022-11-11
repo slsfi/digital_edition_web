@@ -21,7 +21,6 @@ export class CommonFunctionsService {
   async urlExists(url: string) {
     try {
       const response = await fetch(url, { method: 'HEAD', cache: 'no-store' });
-      console.log('urlExists response', response);
       if (response.ok && response.status !== 404) {
         return 1;
       } else {

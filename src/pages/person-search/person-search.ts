@@ -239,7 +239,11 @@ export class PersonSearchPage {
     this.showLoading = true;
     this.semanticDataService.getSubjectsElastic(this.from, this.searchText, this.filters, this.infiniteScrollNumber).subscribe(
       persons => {
-        console.log('getPersons persons: ', persons);
+        /*
+        if (this.from < 1) {
+          console.log('First batch of persons from elastic: ', persons);
+        }
+        */
         if (persons.error !== undefined) {
           console.error('Elastic search error getting persons: ', persons);
         }
