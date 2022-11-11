@@ -132,6 +132,11 @@ export class EpubComponent {
   }
 
   ngAfterViewInit() {
+    /*
+      The check below if epub file exists is commented out since the epub is for some reason
+      not loaded in production mode if the check is there. Works locally in ionic serve though ...
+    */
+    /*
     const epubFilePath = '/assets/books/' + this.epubFileName;
     const domainUrl: string = String(window.location.href).split('/#/')[0].replace('https:', '').replace('http:', '');
     console.log(domainUrl + epubFilePath);
@@ -144,10 +149,12 @@ export class EpubComponent {
         this.loading = false;
       }
     });
+    */
+    this.loadEpub('../assets/books/' + this.epubFileName);
   }
 
   loadEpub(epubFilePath: string) {
-    // this.ngZone.runOutsideAngular(() => {
+    this.ngZone.runOutsideAngular(() => {
       console.log('Loading epub from ', epubFilePath);
       this.book = ePub(epubFilePath);
       /*
@@ -198,9 +205,9 @@ export class EpubComponent {
       this.book.ready.then( () => {
         // Remove loading spinner with a delay
         setTimeout(() => {
-          // this.ngZone.run(() => {
+          this.ngZone.run(() => {
             this.loading = false;
-          // });
+          });
         }, 1000);
 
         /*
@@ -239,9 +246,9 @@ export class EpubComponent {
             this.epubCoverImageBlob = null;
           }
           // Generate table of contents view
-          // this.ngZone.run(() => {
+          this.ngZone.run(() => {
             this.createTOC();
-          // });
+          });
         });
 
         // Generate locations for calculating percentage positions throughout the book
@@ -250,7 +257,7 @@ export class EpubComponent {
 
       // Event fired when current location (i.e. page or spread) in book changes
       this.rendition.on('relocated', (location) => {
-        // this.ngZone.run(() => {
+        this.ngZone.run(() => {
 
           // Store current cfi location in book and check if at start or end of book
           this.previousLocationCfi = this.currentLocationCfi;
@@ -275,7 +282,7 @@ export class EpubComponent {
             this.currentPositionPercentage = (parseFloat(this.book.locations.percentageFromCfi(this.currentLocationCfi)) * 100).toFixed(1)
             + ' %';
           }
-        // });
+        });
 
         // Get the label of the current section from the epub
         const getNavItemByHref = href => (function flatten(arr) {
@@ -286,7 +293,7 @@ export class EpubComponent {
 
         const navItemHref = getNavItemByHref(this.rendition.currentLocation().start.href);
 
-        // this.ngZone.run(() => {
+        this.ngZone.run(() => {
           if (navItemHref !== null && navItemHref !== undefined) {
             this.currentSectionLabel = navItemHref.label;
           } else {
@@ -295,7 +302,7 @@ export class EpubComponent {
           if (this.currentSectionLabel === null || this.currentSectionLabel === undefined) {
             this.currentSectionLabel = '';
           }
-        // });
+        });
       });
 
       this.setUpInputListeners();
@@ -304,7 +311,7 @@ export class EpubComponent {
 
       this.setUpWindowResizeListener();
 
-    // }); // End of runOutsideAngular
+    }); // End of runOutsideAngular
 
     try {
       this.availableEpubs = this.config.getSettings('AvailableEpubs');
