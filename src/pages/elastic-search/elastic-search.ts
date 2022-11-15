@@ -428,6 +428,7 @@ export class ElasticSearchPage {
     .subscribe((data: any) => {
       this.loading = false;
       this.total = data.hits.total.value;
+      console.log('hits: ', data.hits);
 
       // Append new hits to this.hits array.
       Array.prototype.push.apply(this.hits, data.hits.hits.map((hit: any) => ({
@@ -679,12 +680,20 @@ export class ElasticSearchPage {
   }
 
   getHeading(source: any) {
+    /*
     switch (source.type) {
       case 'brev':
         return this.filterEmpty([this.getTitle(source), this.getPublicationName(source)]);
 
       default:
         return this.filterEmpty([this.getTitle(source), this.getPublicationName(source)]);
+    }
+    */
+   const publication_name = this.getPublicationName(source);
+    if (publication_name) {
+      return publication_name;
+    } else {
+      return this.getTitle(source);
     }
   }
 
