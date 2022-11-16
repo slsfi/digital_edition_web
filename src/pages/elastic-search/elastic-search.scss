@@ -130,7 +130,7 @@ page-elastic-search {
 
   .hits-column ion-item.hitItem .textType {
     float: right;
-    font-size: 0.625rem !important;
+    font-size: 0.75em !important;
     text-transform: uppercase;
     margin-left: 8px;
     background-color: #fafafa;
@@ -157,6 +157,11 @@ page-elastic-search {
     &.tit {
       color: $tit-color;
     }
+  }
+
+  .hits-column ion-item.hitItem .matchHighlights {
+    margin-top: 0.25em;
+    border-top: 1px solid var(--elastic-search-hititem-border-color);
   }
 
   .hits-column ion-row.searchHits {
