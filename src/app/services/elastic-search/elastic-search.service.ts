@@ -388,7 +388,7 @@ export class ElasticSearchService {
     } else {
       errMsg = error.message ? error.message : error.toString()
     }
-    console.error('Eleastic Search query failed.', error)
+    console.error('Elastic search query failed.', error)
     return Observable.throw(errMsg)
   }
 

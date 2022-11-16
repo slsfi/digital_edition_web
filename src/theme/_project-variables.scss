@@ -26,13 +26,14 @@ $text-fontsize-xlarge:          21px; // 1.3125rem; => Not for print
 // CUSTOM COLOR VARIABLES
 // --------------------------------------------------
 // These apply to tags for the different text types in search results
-$est-color:       #5e5e5e;
+$est-color:       #0a2a80;
 $com-color:       #980202;
 $ms-color:        #69863a;
-$inl-color:       #c45495;
-$tit-color:       #3f889e;
+$inl-color:       #812b5d;
+$tit-color:       #5e1a06;
+$fore-color:      #113c49;
 $var-color:       #803fa7;
-$tag-color:       #0e7438;
+$tag-color:       #18a854;
 
 $purple-color:    #413861;
 $grey-color:      #666666;
@@ -148,9 +149,9 @@ $opacity-hover-transition: opacity 0.2s;
   // Elastic search
   --elastic-search-facet-background-color:                  #fbfbfb;
   --elastic-search-facet-border-color:                      #adadad;
-  --elastic-search-hititem-divider-color:                   #ccc;
-  --elastic-search-hititem-hover-background-color-rgb:        var(--primary-color-rgb);
-  --elastic-search-hititem-hover-background-color-alpha:      0.2;
+  --elastic-search-hititem-border-color:                    #ccc;
+  --elastic-search-hititem-hover-background-color:          #fff;
+  --elastic-search-hititem-hover-border-color:                var(--primary-color);
   --elastic-search-search-match-highlight-background-color:   var(--primary-color);
   --elastic-search-search-match-highlight-text-color:         var(--text-color-on-primary-color-background);
   --elastic-search-date-histogram-year-bar-color:             var(--primary-color);

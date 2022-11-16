@@ -659,12 +659,17 @@ export class ElasticSearchPage {
     return get(source, 'publication_data[0].pubname');
   }
 
+  getPublicationCollectionName(source: any) {
+    return get(source, 'publication_data[0].colname');
+  }
+
+  // Returns the title from the xml title element in the teiHeader
   getTitle(source: any) {
     return (source.TitleIndexed || source.name || '').trim();
   }
 
   getGenre(source: any) {
-    return get(source, 'publication_data[0].genre', source.collection_name);
+    return get(source, 'publication_data[0].genre');
   }
 
   private formatISO8601DateToLocale(date: string) {
