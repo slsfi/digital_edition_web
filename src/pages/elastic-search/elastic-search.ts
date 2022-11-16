@@ -416,7 +416,7 @@ export class ElasticSearchPage {
       queries: this.queries,
       highlight: {
         fields: {
-          textDataIndexed: { number_of_fragments: 2 },
+          textDataIndexed: { number_of_fragments: 1000, fragment_size: 200 },
         },
       },
       from: this.from,
