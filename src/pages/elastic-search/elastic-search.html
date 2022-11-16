@@ -177,8 +177,8 @@
                       </div>
                       <p class="itemHeading">{{getHeading(hit.source)}}</p>
                       <p class="itemPubCollection">{{getPublicationCollectionName(hit.source)}}</p>
-                      <div class="matchHighlights">
-                        <p *ngFor="let highlight of hit.highlight?.textDataIndexed" [innerHTML]="'...' + highlight + '...'" class="highlight"></p>
+                      <div *ngIf="hit.highlight" class="matchHighlights">
+                        <p *ngFor="let highlight of hit.highlight?.textDataIndexed" [innerHTML]="'&#8230; ' + highlight + ' &#8230;'" class="highlight"></p>
                       </div>
                     </ion-label>
                   </ion-item>

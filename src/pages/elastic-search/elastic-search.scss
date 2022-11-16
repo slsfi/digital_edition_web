@@ -160,8 +160,10 @@ page-elastic-search {
   }
 
   .hits-column ion-item.hitItem .matchHighlights {
-    margin-top: 0.25em;
+    margin-top: 0.5em;
+    padding-top: 0.25em;
     border-top: 1px solid var(--elastic-search-hititem-border-color);
+    white-space: normal;
   }
 
   .hits-column ion-row.searchHits {
