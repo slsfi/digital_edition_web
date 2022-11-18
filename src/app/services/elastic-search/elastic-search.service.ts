@@ -88,15 +88,7 @@ export class ElasticSearchService {
       .catch(this.handleError)
   }
 
-  private generateSearchQueryPayload({
-    queries,
-    highlight,
-    from,
-    size,
-    range,
-    facetGroups,
-    sort,
-  }: SearchQuery): object {
+  private generateSearchQueryPayload({ queries, highlight, from, size, range, facetGroups, sort }: SearchQuery): object {
     const payload: any = {
       from,
       size,
@@ -109,12 +101,13 @@ export class ElasticSearchService {
       sort,
     }
 
-    // Add free text query.
+    // Add free text query. Only matches the text data, publication name and collection name.
     queries.forEach(query => {
       if (query) {
         payload.query.bool.must.push({
-          query_string: {
+          simple_query_string: {
             query,
+            fields: ["textDataIndexed", "pubname^5"]
           }
         })
       }
