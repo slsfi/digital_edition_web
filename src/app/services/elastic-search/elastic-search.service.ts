@@ -94,8 +94,19 @@ export class ElasticSearchService {
       size,
       _source: this.source,
       query: {
-        bool: {
-          must: []
+        function_score: {
+          query: {
+            bool: {
+              must: []
+            }
+          },
+          functions: [
+            {
+              filter: { term: { "xml_type": "est" } }, 
+              weight: 2
+            }
+          ],
+          score_mode: "multiply",
         }
       },
       sort,
@@ -104,7 +115,7 @@ export class ElasticSearchService {
     // Add free text query. Only matches the text data, publication name and collection name.
     queries.forEach(query => {
       if (query) {
-        payload.query.bool.must.push({
+        payload.query.function_score.query.bool.must.push({
           simple_query_string: {
             query,
             fields: ["textDataIndexed", "publication_data.pubname^20"]
@@ -120,7 +131,7 @@ export class ElasticSearchService {
 
     // Add date range filter.
     if (range) {
-      payload.query.bool.must.push({
+      payload.query.function_score.query.bool.must.push({
         range: {
           orig_date_certain: {
             gte: range.from,
@@ -133,7 +144,7 @@ export class ElasticSearchService {
     // Add fixed filters that apply to all queries.
     if (this.fixedFilters) {
       this.fixedFilters.forEach(filter => {
-        payload.query.bool.must.push(filter)
+        payload.query.function_score.query.bool.must.push(filter)
       })
     }
 
@@ -164,11 +175,11 @@ export class ElasticSearchService {
           },
           functions: [
             {
-              filter: { term: { "xml_type": "multiply" } }, 
+              filter: { term: { "xml_type": "est" } }, 
               weight: 2
             }
           ],
-          score_mode: "sum",
+          score_mode: "multiply",
         }
       },
     }
@@ -176,9 +187,10 @@ export class ElasticSearchService {
     // Add free text query.
     queries.forEach(query => {
       if (query) {
-        payload.query.bool.must.push({
-          query_string: {
+        payload.query.function_score.query.bool.must.push({
+          simple_query_string: {
             query,
+            fields: ["textDataIndexed", "publication_data.pubname^20"]
           }
         })
       }
@@ -187,7 +199,7 @@ export class ElasticSearchService {
     // Add fixed filters that apply to all queries.
     if (this.fixedFilters) {
       this.fixedFilters.forEach(filter => {
-        payload.query.bool.must.push(filter)
+        payload.query.function_score.query.bool.must.push(filter)
       })
     }
 
@@ -257,8 +269,8 @@ export class ElasticSearchService {
     Object.entries(facetGroups).forEach(([facetGroupKey, facets]: [string, Facets]) => {
       const terms = this.filterSelectedFacetKeys(facets)
       if (terms.length > 0) {
-        payload.query.bool.filter = payload.query.bool.filter || []
-        payload.query.bool.filter.push({
+        payload.query.function_score.query.bool.filter = payload.query.function_score.query.bool.filter || []
+        payload.query.function_score.query.bool.filter.push({
           terms: {
             [this.aggregations[facetGroupKey].terms.field]: terms,
           }
