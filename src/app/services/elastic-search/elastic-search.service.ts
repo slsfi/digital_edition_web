@@ -103,10 +103,22 @@ export class ElasticSearchService {
           functions: [
             {
               filter: { term: { "xml_type": "est" } }, 
-              weight: 2
+              weight: 10
+            },
+            {
+              filter: { term: { "xml_type": "inl" } }, 
+              weight: 8
+            },
+            {
+              filter: { term: { "xml_type": "com" } }, 
+              weight: 6
+            },
+            {
+              filter: { term: { "xml_type": "ms" } }, 
+              weight: 4
             }
           ],
-          score_mode: "multiply",
+          score_mode: "sum",
         }
       },
       sort,
@@ -176,10 +188,22 @@ export class ElasticSearchService {
           functions: [
             {
               filter: { term: { "xml_type": "est" } }, 
-              weight: 2
+              weight: 10
+            },
+            {
+              filter: { term: { "xml_type": "inl" } }, 
+              weight: 8
+            },
+            {
+              filter: { term: { "xml_type": "com" } }, 
+              weight: 6
+            },
+            {
+              filter: { term: { "xml_type": "ms" } }, 
+              weight: 4
             }
           ],
-          score_mode: "multiply",
+          score_mode: "sum",
         }
       },
     }
