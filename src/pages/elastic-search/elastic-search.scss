@@ -274,13 +274,16 @@ page-elastic-search {
     }
 
     .highlight {
+      margin-bottom: 0;
       em {
         background-color: var(--elastic-search-search-match-highlight-background-color);
         color: var(--elastic-search-search-match-highlight-text-color);
-        padding: 0.2rem 6px;
-        line-height: 2.4rem;
+        line-height: 1.5;
         font-style: normal;
       }
+    }
+    .highlight + .highlight {
+      margin-top: 0.5em;
     }
 
     // List of facets
