@@ -107,7 +107,7 @@ export class ElasticSearchService {
         payload.query.bool.must.push({
           simple_query_string: {
             query,
-            fields: ["textDataIndexed", "pubname^20"]
+            fields: ["textDataIndexed", "publication_data.pubname^20"]
           }
         })
       }
