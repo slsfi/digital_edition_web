@@ -106,7 +106,7 @@ export class ElasticSearchPage {
 
   range: TimeRange;
   groupsOpenByDefault: any;
-  debouncedSearch = debounce(this.search, 500);
+  debouncedSearch = debounce(this.search, 1500);
   sortSelectOptions: Record<string, any> = {};
   mdContent: string;
   languageSubscription: Subscription;
