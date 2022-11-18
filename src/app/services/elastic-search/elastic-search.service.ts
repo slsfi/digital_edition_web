@@ -156,8 +156,19 @@ export class ElasticSearchService {
       size: 0,
       _source: this.source,
       query: {
-        bool: {
-          must: []
+        function_score: {
+          query: {
+            bool: {
+              must: []
+            }
+          },
+          functions: [
+            {
+              filter: { term: { "xml_type": "multiply" } }, 
+              weight: 2
+            }
+          ],
+          score_mode: "sum",
         }
       },
     }
