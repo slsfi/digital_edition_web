@@ -666,6 +666,10 @@ export class ElasticSearchPage {
     return get(source, 'publication_data[0].pubname');
   }
 
+  getHiglightedPublicationName(highlight: any) {
+    return get(highlight, 'publication_data.pubname[0]');
+  }
+
   getPublicationCollectionName(source: any) {
     return get(source, 'publication_data[0].colname');
   }
@@ -700,7 +704,7 @@ export class ElasticSearchPage {
     return array.filter(str => str).join(', ');
   }
 
-  getHeading(source: any) {
+  getHeading(hit: any) {
     /*
     switch (source.type) {
       case 'brev':
@@ -710,11 +714,13 @@ export class ElasticSearchPage {
         return this.filterEmpty([this.getTitle(source), this.getPublicationName(source)]);
     }
     */
-   const publication_name = this.getPublicationName(source);
+   const highlighted_pubname = this.getHiglightedPublicationName(hit.highlight);
+   console.log('highlighted_pubname', highlighted_pubname);
+   const publication_name = this.getPublicationName(hit.source);
     if (publication_name) {
       return publication_name;
     } else {
-      return this.getTitle(source);
+      return this.getTitle(hit.source);
     }
   }
 
