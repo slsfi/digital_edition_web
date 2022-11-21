@@ -420,7 +420,8 @@ export class ElasticSearchPage {
       queries: this.queries,
       highlight: {
         fields: {
-          "textDataIndexed": { number_of_fragments: 1000, fragment_size: 150, type: "plain" }
+          "textDataIndexed": { number_of_fragments: 1000, fragment_size: 150, type: "plain" },
+          "publication_data.pubname": { number_of_fragments: 0, type: "plain" },
         },
       },
       from: this.from,
