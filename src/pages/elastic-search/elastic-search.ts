@@ -85,6 +85,7 @@ export class ElasticSearchPage {
 
   loading = false;
   infiniteLoading = false;
+  elasticError = false;
   showFilter = true;
   queries: string[] = [''];
   cleanQueries: string[] = [''];
@@ -413,6 +414,7 @@ export class ElasticSearchPage {
   private search({ done, initialSearch }: SearchOptions = {}) {
     console.log(`search from ${this.from} to ${this.from + this.hitsPerPage}`);
 
+    this.elasticError = false;
     this.loading = true;
 
     // Fetch hits
@@ -432,37 +434,41 @@ export class ElasticSearchPage {
     })
     .subscribe((data: any) => {
       if (data.hits === undefined) {
-        console.log('no hits, data: ', data);
-      }
-      this.loading = false;
-      this.total = data.hits.total.value;
-      console.log('hits: ', data.hits);
+        console.error('Elastic search error, no hits: ', data);
+        this.loading = false;
+        this.total = 0;
+        this.elasticError = true;
+      } else {
+        this.loading = false;
+        this.total = data.hits.total.value;
+        console.log('hits: ', data.hits);
 
-      // Append new hits to this.hits array.
-      Array.prototype.push.apply(this.hits, data.hits.hits.map((hit: any) => ({
-        type: hit._source.xml_type,
-        source: hit._source,
-        highlight: hit.highlight,
-        id: hit._id
-      })));
+        // Append new hits to this.hits array.
+        Array.prototype.push.apply(this.hits, data.hits.hits.map((hit: any) => ({
+          type: hit._source.xml_type,
+          source: hit._source,
+          highlight: hit.highlight,
+          id: hit._id
+        })));
 
-      /*
-      this.cleanQueries = [];
-      if (this.queries.length > 0 && this.queries[0] !== undefined && this.queries[0].length > 0 ) {
-        this.queries.forEach(term => {
-          this.cleanQueries.push(term.toLowerCase().replace(/[^a-zA-ZåäöÅÄÖ[0-9]+/g, ''));
-          this.analyticsEvent('term', term);
-        });
-        for (const item in data.hits.hits) {
-          this.elastic.executeTermQuery(this.cleanQueries, [data.hits.hits[item]['_id']])
-          .subscribe((termData: any) => {
-            this.termData = termData;
-            const elementsIndex = this.hits.findIndex(element => element['id'] === data.hits.hits[item]['_id'] );
-            this.hits[elementsIndex] = {...this.hits[elementsIndex], count: termData};
-          })
+        /*
+        this.cleanQueries = [];
+        if (this.queries.length > 0 && this.queries[0] !== undefined && this.queries[0].length > 0 ) {
+          this.queries.forEach(term => {
+            this.cleanQueries.push(term.toLowerCase().replace(/[^a-zA-ZåäöÅÄÖ[0-9]+/g, ''));
+            this.analyticsEvent('term', term);
+          });
+          for (const item in data.hits.hits) {
+            this.elastic.executeTermQuery(this.cleanQueries, [data.hits.hits[item]['_id']])
+            .subscribe((termData: any) => {
+              this.termData = termData;
+              const elementsIndex = this.hits.findIndex(element => element['id'] === data.hits.hits[item]['_id'] );
+              this.hits[elementsIndex] = {...this.hits[elementsIndex], count: termData};
+            })
+          }
         }
+        */
       }
-      */
 
       if (done) {
         done();
