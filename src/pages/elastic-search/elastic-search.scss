@@ -311,6 +311,12 @@ page-elastic-search {
 
     .itemHeading {
       font-weight: bold;
+
+      em {
+        background-color: var(--elastic-search-search-match-highlight-background-color);
+        color: var(--elastic-search-search-match-highlight-text-color);
+        font-style: normal;
+      }
     }
 
     .highlight {
