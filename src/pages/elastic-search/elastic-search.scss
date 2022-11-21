@@ -140,13 +140,12 @@ page-elastic-search {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
-    align-items: flex-start;
-    text-align: right;
+    align-items: flex-end;
   }
 
   .hits-column ion-item.hitItem .hitNumber {
-    color: #464646;
-    padding-right: 0.5em;
+    color: #9b9b9b;
+    padding-right: 1em;
   }
 
   .hits-column ion-item.hitItem .hitTextType,
