@@ -667,7 +667,11 @@ export class ElasticSearchPage {
   }
 
   getHiglightedPublicationName(highlight: any) {
-    return get(highlight, 'publication_data.pubname[0]');
+    if (highlight["publication_data.pubname"]) {
+      return highlight["publication_data.pubname"][0];
+    } else {
+      return undefined;
+    }
   }
 
   getPublicationCollectionName(source: any) {
