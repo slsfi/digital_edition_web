@@ -709,22 +709,17 @@ export class ElasticSearchPage {
   }
 
   getHeading(hit: any) {
-    /*
-    switch (source.type) {
-      case 'brev':
-        return this.filterEmpty([this.getTitle(source), this.getPublicationName(source)]);
-
-      default:
-        return this.filterEmpty([this.getTitle(source), this.getPublicationName(source)]);
-    }
-    */
-   const highlighted_pubname = this.getHiglightedPublicationName(hit.highlight);
-   console.log('highlighted_pubname', highlighted_pubname);
-   const publication_name = this.getPublicationName(hit.source);
+    /* If a match is found in the publication name, return it from the highlights. Otherwise from the data. */
+    let publication_name = this.getHiglightedPublicationName(hit.highlight);
     if (publication_name) {
       return publication_name;
     } else {
-      return this.getTitle(hit.source);
+      publication_name = this.getPublicationName(hit.source);
+      if (publication_name) {
+        return publication_name;
+      } else {
+        return this.getTitle(hit.source);
+      }
     }
   }
 
