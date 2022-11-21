@@ -130,7 +130,7 @@ export class ElasticSearchService {
         payload.query.function_score.query.bool.must.push({
           simple_query_string: {
             query,
-            fields: ["textDataIndexed", "publication_data.pubname^20"]
+            fields: ["textDataIndexed", "publication_data.pubname^10"]
           }
         })
       }
@@ -188,19 +188,19 @@ export class ElasticSearchService {
           functions: [
             {
               filter: { term: { "xml_type": "est" } }, 
-              weight: 10
-            },
-            {
-              filter: { term: { "xml_type": "inl" } }, 
-              weight: 8
-            },
-            {
-              filter: { term: { "xml_type": "com" } }, 
               weight: 6
             },
             {
-              filter: { term: { "xml_type": "ms" } }, 
+              filter: { term: { "xml_type": "inl" } }, 
               weight: 4
+            },
+            {
+              filter: { term: { "xml_type": "com" } }, 
+              weight: 2
+            },
+            {
+              filter: { term: { "xml_type": "ms" } }, 
+              weight: 1
             }
           ],
           score_mode: "sum",
@@ -214,7 +214,7 @@ export class ElasticSearchService {
         payload.query.function_score.query.bool.must.push({
           simple_query_string: {
             query,
-            fields: ["textDataIndexed", "publication_data.pubname^20"]
+            fields: ["textDataIndexed", "publication_data.pubname^10"]
           }
         })
       }
