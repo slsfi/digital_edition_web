@@ -415,11 +415,6 @@ export class ElasticSearchPage {
 
     this.loading = true;
 
-    console.log('queries:', this.queries);
-    for (let i = 0; i < this.queries.length; i++) {
-      this.queries[i] = encodeURIComponent(this.queries[i]);
-    }
-
     // Fetch hits
     this.elastic.executeSearchQuery({
       queries: this.queries,
@@ -448,7 +443,6 @@ export class ElasticSearchPage {
         id: hit._id
       })));
 
-      /*
       this.cleanQueries = [];
       if (this.queries.length > 0 && this.queries[0] !== undefined && this.queries[0].length > 0 ) {
         this.queries.forEach(term => {
@@ -464,7 +458,6 @@ export class ElasticSearchPage {
           })
         }
       }
-      */
 
       if (done) {
         done();
