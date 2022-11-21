@@ -709,7 +709,10 @@ export class ElasticSearchPage {
 
   getHeading(hit: any) {
     /* If a match is found in the publication name, return it from the highlights. Otherwise from the data. */
-    let publication_name = this.getHiglightedPublicationName(hit.highlight);
+    let publication_name = undefined;
+    if (hit.highlight) {
+      publication_name = this.getHiglightedPublicationName(hit.highlight);
+    }
     if (publication_name) {
       return publication_name;
     } else {
