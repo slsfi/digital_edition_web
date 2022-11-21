@@ -135,6 +135,10 @@ page-elastic-search {
     align-content: flex-start;
     gap: 1em;
     white-space: normal;
+
+    .hitData {
+      width: 100%;
+    }
   }
 
   .hits-column ion-item.hitItem .hitHeader {

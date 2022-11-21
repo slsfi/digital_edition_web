@@ -443,6 +443,7 @@ export class ElasticSearchPage {
         id: hit._id
       })));
 
+      /*
       this.cleanQueries = [];
       if (this.queries.length > 0 && this.queries[0] !== undefined && this.queries[0].length > 0 ) {
         this.queries.forEach(term => {
@@ -458,6 +459,7 @@ export class ElasticSearchPage {
           })
         }
       }
+      */
 
       if (done) {
         done();
