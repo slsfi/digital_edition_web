@@ -420,8 +420,8 @@ export class ElasticSearchPage {
       queries: this.queries,
       highlight: {
         fields: {
-          "textDataIndexed": { number_of_fragments: 1000, fragment_size: 150, type: "plain" },
-          "publication_data.pubname": { number_of_fragments: 0, type: "plain" },
+          "textDataIndexed": { number_of_fragments: 1000, fragment_size: 150, type: "fvh" },
+          "publication_data.pubname": { number_of_fragments: 0, type: "fvh" },
         },
       },
       from: this.from,
@@ -431,6 +431,9 @@ export class ElasticSearchPage {
       sort: this.parseSortForQuery(),
     })
     .subscribe((data: any) => {
+      if (data.hits === undefined) {
+        console.log('no hits, data: ', data);
+      }
       this.loading = false;
       this.total = data.hits.total.value;
       console.log('hits: ', data.hits);
