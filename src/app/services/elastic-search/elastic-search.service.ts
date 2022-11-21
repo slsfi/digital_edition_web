@@ -102,19 +102,19 @@ export class ElasticSearchService {
           },
           functions: [
             {
-              filter: { term: { "xml_type": "est" } }, 
+              filter: { term: { "xml_type.keyword": "est" } }, 
               weight: 10
             },
             {
-              filter: { term: { "xml_type": "inl" } }, 
+              filter: { term: { "xml_type.keyword": "inl" } }, 
               weight: 8
             },
             {
-              filter: { term: { "xml_type": "com" } }, 
+              filter: { term: { "xml_type.keyword": "com" } }, 
               weight: 6
             },
             {
-              filter: { term: { "xml_type": "ms" } }, 
+              filter: { term: { "xml_type.keyword": "ms" } }, 
               weight: 4
             }
           ],
@@ -124,7 +124,7 @@ export class ElasticSearchService {
       sort,
     }
 
-    // Add free text query. Only matches the text data, publication name and collection name.
+    // Add free text query. Only matches the text data and publication name.
     queries.forEach(query => {
       if (query) {
         payload.query.function_score.query.bool.must.push({
@@ -187,19 +187,19 @@ export class ElasticSearchService {
           },
           functions: [
             {
-              filter: { term: { "xml_type": "est" } }, 
+              filter: { term: { "xml_type.keyword": "est" } }, 
               weight: 6
             },
             {
-              filter: { term: { "xml_type": "inl" } }, 
+              filter: { term: { "xml_type.keyword": "inl" } }, 
               weight: 4
             },
             {
-              filter: { term: { "xml_type": "com" } }, 
+              filter: { term: { "xml_type.keyword": "com" } }, 
               weight: 2
             },
             {
-              filter: { term: { "xml_type": "ms" } }, 
+              filter: { term: { "xml_type.keyword": "ms" } }, 
               weight: 1
             }
           ],

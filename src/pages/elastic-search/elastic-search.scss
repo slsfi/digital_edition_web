@@ -117,6 +117,7 @@ page-elastic-search {
     margin-bottom: 0.5em;
     border: 1px solid var(--elastic-search-hititem-border-color);
     border-radius: 4px;
+    transition: all 0.4s;
   }
 
   .hits-column ion-item.hitItem:hover {
@@ -144,7 +145,7 @@ page-elastic-search {
   }
 
   .hits-column ion-item.hitItem .hitNumber {
-    color: #9b9b9b;
+    color: #777;
     padding-right: 1em;
   }
 

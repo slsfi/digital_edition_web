@@ -324,11 +324,15 @@ export class ElasticSearchPage {
         break;
       }
     }
-    if (hit.source.xml_type !== 'tit') {
+    if (hit.source.xml_type === 'tit') {
+      this.app.getRootNav().push('title-page', params);
+    } else if (hit.source.xml_type === 'fore') {
+      this.app.getRootNav().push('foreword-page', params);
+    } else if (hit.source.xml_type === 'inl') {
+      this.app.getRootNav().push('introduction', params);
+    } else {
       params['selectedItemInAccordion'] = false;
       this.app.getRootNav().push('read', params);
-    } else {
-      this.app.getRootNav().push('title-page', params);
     }
   }
 
@@ -416,7 +420,8 @@ export class ElasticSearchPage {
       queries: this.queries,
       highlight: {
         fields: {
-          textDataIndexed: { number_of_fragments: 1000, fragment_size: 150 },
+          "textDataIndexed": { number_of_fragments: 1000, fragment_size: 150 },
+          "publication_data.pubname": { number_of_fragments: 1 },
         },
       },
       from: this.from,
