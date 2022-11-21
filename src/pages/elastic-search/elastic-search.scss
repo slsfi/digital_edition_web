@@ -156,11 +156,7 @@ page-elastic-search {
   .hits-column ion-item.hitItem .hitNumber {
     color: #777;
     font-size: 0.75em;
-
-    span {
-      position: relative;
-      top: -0.15em;
-    }
+    padding-top: 0.167em;
   }
 
   .hits-column ion-item.hitItem .hitTextType,

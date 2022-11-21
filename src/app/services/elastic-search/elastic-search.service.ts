@@ -196,11 +196,11 @@ export class ElasticSearchService {
             },
             {
               filter: { term: { "xml_type.keyword": "com" } }, 
-              weight: 2
+              weight: 1
             },
             {
               filter: { term: { "xml_type.keyword": "ms" } }, 
-              weight: 1^5
+              weight: 1
             }
           ],
           score_mode: "sum",
