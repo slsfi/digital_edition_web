@@ -488,6 +488,7 @@ export class ElasticSearchPage {
     });
 
     // Fetch suggestions
+    /*
     // TODO: Currently only works with the first search field.
     if (this.queries[0] && this.queries[0].length > 3) {
       this.elastic.executeSuggestionsQuery({
@@ -498,6 +499,7 @@ export class ElasticSearchPage {
         this.populateSuggestions(data.aggregations);
       });
     }
+    */
   }
 
   private parseSortForQuery() {
