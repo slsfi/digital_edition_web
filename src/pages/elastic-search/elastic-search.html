@@ -186,8 +186,8 @@
                           <div class="hitTextType {{ hit.source.xml_type }}">
                             <span>{{(hit.source.xml_type|translate)}}</span>
                           </div>
-                          <div class="hitTextDate">
-                            <span>{{getDate(hit.source))}}</span>
+                          <div *ngIf="hasDate(hit.source)" class="hitTextDate">
+                            <span>{{getDate(hit.source)}}</span>
                           </div>
                         </div>
                       </div>

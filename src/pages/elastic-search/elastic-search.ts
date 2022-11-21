@@ -676,6 +676,15 @@ export class ElasticSearchPage {
     return date && new Date(date).toLocaleDateString('fi-FI');
   }
 
+  hasDate(source: any) {
+    const dateData = get(source, 'publication_data[0].original_publication_date', source.orig_date_certain);
+    if (dateData === undefined || dateData === null || dateData === '') {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   private getDate(source: any) {
     return get(source, 'publication_data[0].original_publication_date', this.formatISO8601DateToLocale(source.orig_date_certain));
   }
