@@ -421,7 +421,7 @@ export class ElasticSearchPage {
       highlight: {
         fields: {
           "textDataIndexed": { number_of_fragments: 1000, fragment_size: 150 },
-          "publication_data.pubname": { number_of_fragments: 1 },
+          "publication_data.pubname": { number_of_fragments: 0 },
         },
       },
       from: this.from,

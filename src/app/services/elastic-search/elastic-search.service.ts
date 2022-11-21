@@ -130,7 +130,7 @@ export class ElasticSearchService {
         payload.query.function_score.query.bool.must.push({
           simple_query_string: {
             query,
-            fields: ["textDataIndexed", "publication_data.pubname^10"]
+            fields: ["textDataIndexed", "publication_data.pubname^5"]
           }
         })
       }
@@ -200,7 +200,7 @@ export class ElasticSearchService {
             },
             {
               filter: { term: { "xml_type.keyword": "ms" } }, 
-              weight: 1
+              weight: 1^5
             }
           ],
           score_mode: "sum",
@@ -214,7 +214,7 @@ export class ElasticSearchService {
         payload.query.function_score.query.bool.must.push({
           simple_query_string: {
             query,
-            fields: ["textDataIndexed", "publication_data.pubname^10"]
+            fields: ["textDataIndexed", "publication_data.pubname^5"]
           }
         })
       }
