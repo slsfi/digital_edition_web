@@ -122,13 +122,6 @@ export class ElasticSearchService {
         }
       },
       sort,
-      fields: [
-        "xml_type",
-        "collection_id",
-        "publication_id",
-        "textDataIndexed",
-        "publication_data.pubname"
-      ]
     }
 
     // Add free text query. Only matches the text data and publication name.
