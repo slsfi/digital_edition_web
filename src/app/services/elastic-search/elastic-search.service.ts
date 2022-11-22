@@ -111,17 +111,24 @@ export class ElasticSearchService {
             },
             {
               filter: { term: { "xml_type.keyword": "com" } }, 
-              weight: 6
+              weight: 2
             },
             {
               filter: { term: { "xml_type.keyword": "ms" } }, 
-              weight: 4
+              weight: 2
             }
           ],
           score_mode: "sum",
         }
       },
       sort,
+      fields: [
+        "xml_type",
+        "collection_id",
+        "publication_id",
+        "textDataIndexed",
+        "publication_data.pubname"
+      ]
     }
 
     // Add free text query. Only matches the text data and publication name.
