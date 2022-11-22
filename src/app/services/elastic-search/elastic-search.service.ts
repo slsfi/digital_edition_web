@@ -100,13 +100,6 @@ export class ElasticSearchService {
               must: []
             }
           },
-          fields: [
-            "xml_type",
-            "collection_id",
-            "publication_id",
-            "textDataIndexed",
-            "publication_data.pubname"
-          ],
           functions: [
             {
               filter: { term: { "xml_type.keyword": "est" } }, 
