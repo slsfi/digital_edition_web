@@ -85,6 +85,7 @@ export class ElasticSearchPage {
 
   loading = false;
   infiniteLoading = false;
+  elasticError = false;
   showFilter = true;
   queries: string[] = [''];
   cleanQueries: string[] = [''];
@@ -106,7 +107,7 @@ export class ElasticSearchPage {
 
   range: TimeRange;
   groupsOpenByDefault: any;
-  debouncedSearch = debounce(this.search, 500);
+  debouncedSearch = debounce(this.search, 1500);
   sortSelectOptions: Record<string, any> = {};
   mdContent: string;
   languageSubscription: Subscription;
@@ -324,11 +325,15 @@ export class ElasticSearchPage {
         break;
       }
     }
-    if (hit.source.xml_type !== 'tit') {
+    if (hit.source.xml_type === 'tit') {
+      this.app.getRootNav().push('title-page', params);
+    } else if (hit.source.xml_type === 'fore') {
+      this.app.getRootNav().push('foreword-page', params);
+    } else if (hit.source.xml_type === 'inl') {
+      this.app.getRootNav().push('introduction', params);
+    } else {
       params['selectedItemInAccordion'] = false;
       this.app.getRootNav().push('read', params);
-    } else {
-      this.app.getRootNav().push('title-page', params);
     }
   }
 
@@ -409,6 +414,7 @@ export class ElasticSearchPage {
   private search({ done, initialSearch }: SearchOptions = {}) {
     console.log(`search from ${this.from} to ${this.from + this.hitsPerPage}`);
 
+    this.elasticError = false;
     this.loading = true;
 
     // Fetch hits
@@ -416,7 +422,8 @@ export class ElasticSearchPage {
       queries: this.queries,
       highlight: {
         fields: {
-          textDataIndexed: { number_of_fragments: 2 },
+          "textDataIndexed": { number_of_fragments: 1000, fragment_size: 150, type: "plain" },
+          "publication_data.pubname": { number_of_fragments: 0, type: "plain" },
         },
       },
       from: this.from,
@@ -426,31 +433,41 @@ export class ElasticSearchPage {
       sort: this.parseSortForQuery(),
     })
     .subscribe((data: any) => {
-      this.loading = false;
-      this.total = data.hits.total.value;
+      if (data.hits === undefined) {
+        console.error('Elastic search error, no hits: ', data);
+        this.loading = false;
+        this.total = 0;
+        this.elasticError = true;
+      } else {
+        this.loading = false;
+        this.total = data.hits.total.value;
+        console.log('hits: ', data.hits);
 
-      // Append new hits to this.hits array.
-      Array.prototype.push.apply(this.hits, data.hits.hits.map((hit: any) => ({
-        type: hit._source.xml_type,
-        source: hit._source,
-        highlight: hit.highlight,
-        id: hit._id
-      })));
+        // Append new hits to this.hits array.
+        Array.prototype.push.apply(this.hits, data.hits.hits.map((hit: any) => ({
+          type: hit._source.xml_type,
+          source: hit._source,
+          highlight: hit.highlight,
+          id: hit._id
+        })));
 
-      this.cleanQueries = [];
-      if (this.queries.length > 0 && this.queries[0] !== undefined && this.queries[0].length > 0 ) {
-        this.queries.forEach(term => {
-          this.cleanQueries.push(term.toLowerCase().replace(/[^a-zA-ZåäöÅÄÖ[0-9]+/g, ''));
-          this.analyticsEvent('term', term);
-        });
-        for (const item in data.hits.hits) {
-          this.elastic.executeTermQuery(this.cleanQueries, [data.hits.hits[item]['_id']])
-          .subscribe((termData: any) => {
-            this.termData = termData;
-            const elementsIndex = this.hits.findIndex(element => element['id'] === data.hits.hits[item]['_id'] );
-            this.hits[elementsIndex] = {...this.hits[elementsIndex], count: termData};
-          })
+        /*
+        this.cleanQueries = [];
+        if (this.queries.length > 0 && this.queries[0] !== undefined && this.queries[0].length > 0 ) {
+          this.queries.forEach(term => {
+            this.cleanQueries.push(term.toLowerCase().replace(/[^a-zA-ZåäöÅÄÖ[0-9]+/g, ''));
+            this.analyticsEvent('term', term);
+          });
+          for (const item in data.hits.hits) {
+            this.elastic.executeTermQuery(this.cleanQueries, [data.hits.hits[item]['_id']])
+            .subscribe((termData: any) => {
+              this.termData = termData;
+              const elementsIndex = this.hits.findIndex(element => element['id'] === data.hits.hits[item]['_id'] );
+              this.hits[elementsIndex] = {...this.hits[elementsIndex], count: termData};
+            })
+          }
         }
+        */
       }
 
       if (done) {
@@ -471,6 +488,7 @@ export class ElasticSearchPage {
     });
 
     // Fetch suggestions
+    /*
     // TODO: Currently only works with the first search field.
     if (this.queries[0] && this.queries[0].length > 3) {
       this.elastic.executeSuggestionsQuery({
@@ -481,6 +499,7 @@ export class ElasticSearchPage {
         this.populateSuggestions(data.aggregations);
       });
     }
+    */
   }
 
   private parseSortForQuery() {
@@ -658,16 +677,38 @@ export class ElasticSearchPage {
     return get(source, 'publication_data[0].pubname');
   }
 
+  getHiglightedPublicationName(highlight: any) {
+    if (highlight["publication_data.pubname"]) {
+      return highlight["publication_data.pubname"][0];
+    } else {
+      return undefined;
+    }
+  }
+
+  getPublicationCollectionName(source: any) {
+    return get(source, 'publication_data[0].colname');
+  }
+
+  // Returns the title from the xml title element in the teiHeader
   getTitle(source: any) {
     return (source.TitleIndexed || source.name || '').trim();
   }
 
   getGenre(source: any) {
-    return get(source, 'publication_data[0].genre', source.collection_name);
+    return get(source, 'publication_data[0].genre');
   }
 
   private formatISO8601DateToLocale(date: string) {
     return date && new Date(date).toLocaleDateString('fi-FI');
+  }
+
+  hasDate(source: any) {
+    const dateData = get(source, 'publication_data[0].original_publication_date', source.orig_date_certain);
+    if (dateData === undefined || dateData === null || dateData === '') {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   private getDate(source: any) {
@@ -678,13 +719,21 @@ export class ElasticSearchPage {
     return array.filter(str => str).join(', ');
   }
 
-  getHeading(source: any) {
-    switch (source.type) {
-      case 'brev':
-        return this.filterEmpty([this.getTitle(source), this.getPublicationName(source)]);
-
-      default:
-        return this.filterEmpty([this.getTitle(source), this.getPublicationName(source)]);
+  getHeading(hit: any) {
+    /* If a match is found in the publication name, return it from the highlights. Otherwise from the data. */
+    let publication_name = undefined;
+    if (hit.highlight) {
+      publication_name = this.getHiglightedPublicationName(hit.highlight);
+    }
+    if (publication_name) {
+      return publication_name;
+    } else {
+      publication_name = this.getPublicationName(hit.source);
+      if (publication_name) {
+        return publication_name;
+      } else {
+        return this.getTitle(hit.source);
+      }
     }
   }
 

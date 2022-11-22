@@ -411,7 +411,7 @@ export class SemanticDataService {
   getTagElastic(from, searchText?, filters?) {
     let showPublishedStatus = 2;
     try {
-      showPublishedStatus = this.config.getSettings('LocationSearch.ShowPublishedStatus');
+      showPublishedStatus = this.config.getSettings('TagSearch.ShowPublishedStatus');
     } catch (e) {
       showPublishedStatus = 2;
     }

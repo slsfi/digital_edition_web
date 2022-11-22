@@ -31,6 +31,7 @@
         </ion-row>
 
         <!-- Suggested facets -->
+        <!--
         <ion-row *ngIf="hasSuggestedFacets()" class="selectedFacetGroups">
           <ion-col>
             <p class="suggested-facets-heading">{{'ElasticSearch.Suggestions' | translate}}</p>
@@ -46,6 +47,7 @@
             </div>
           </ion-col>
         </ion-row>
+        -->
 
         <!-- List of facet groups -->
         <ion-list class="facet-group-wrapper">
@@ -112,6 +114,11 @@
               {{'ElasticSearch.NoHits' | translate}}
             </h2>
           </ion-col>
+          <ion-col *ngIf="elasticError && total === 0" col-auto>
+            <h2 class="hits-heading">
+              {{'ElasticSearch.LoadingError' | translate}}
+            </h2>
+          </ion-col>
 
           <!-- Sort by -->
           <ion-col class="sort-by-wrapper" *ngIf="canShowHits() && total > 0" col-auto>
@@ -157,9 +164,11 @@
             <!-- Hits row -->
             <ion-row class="searchHits">
               <ion-list class="hits-list-wrapper" *ngIf="canShowHits() && total > 0">
-                <ng-container *ngFor="let hit of hits">
+                <ng-container *ngFor="let hit of hits; let i = index">
+                  <!-- Single hit -->
                   <ion-item (click)="open(hit)" class="hitItem">
-                    <ion-label>
+                    <div class="hitWrapper">
+                      <!--
                       <div class="word_count" *ngIf="cleanQueries.length > 0">
                         <label>{{'ElasticSearch.WordCount' | translate}}</label>
                         <span *ngFor="let query of cleanQueries">
@@ -171,10 +180,32 @@
                           </p>
                         </span>
                       </div>
-                      <p class="itemHeading">{{getHeading(hit.source)}}</p>
-                      <p>{{hit.type | translate}}, {{getSubHeading(hit.source)}}</p>
-                      <p *ngFor="let highlight of hit.highlight?.textDataIndexed" [innerHTML]="'...' + highlight + '...'" class="highlight"></p>
-                    </ion-label>
+                      -->
+                      <div class="hitNumber">
+                        <span>#{{i+1}}</span>
+                      </div>
+                      <div class="hitData">
+                        <div class="hitHeader">
+                          <div class="hitHeaderCol">
+                            <p class="itemHeading" [innerHTML]="getHeading(hit)"></p>
+                            <p class="itemPubCollection">{{getPublicationCollectionName(hit.source)}}</p>
+                          </div>
+                          <div class="hitHeaderCol">
+                            <div class="hitTextType {{ hit.source.xml_type }}">
+                              <span>{{(hit.source.xml_type|translate)}}</span>
+                            </div>
+                            <div *ngIf="hasDate(hit.source)" class="hitTextDate">
+                              <span>{{getDate(hit.source)}}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <ng-container *ngIf="hit && hit.highlight">
+                          <div *ngIf="hit.highlight.textDataIndexed" class="matchHighlights">
+                            <p *ngFor="let highlight of hit.highlight?.textDataIndexed" [innerHTML]="'&#8230; ' + highlight + ' &#8230;'" class="highlight"></p>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
                   </ion-item>
                 </ng-container>
               </ion-list>
