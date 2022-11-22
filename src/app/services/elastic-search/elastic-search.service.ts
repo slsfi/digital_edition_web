@@ -30,6 +30,7 @@ export class ElasticSearchService {
       console.error('Failed to load Elastic Search Service. Configuration error.', e.message)
       throw e
     }
+    this.source.push("collection_id");
     // Should not fail if config is missing.
     try {
       this.fixedFilters = this.config.getSettings('ElasticSearch.fixedFilters')
