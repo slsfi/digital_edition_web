@@ -259,7 +259,9 @@
         "NoWordHits": "no matches",
         "NoFacetOptions": "No options",
         "Suggestions": "Filter suggestions",
-        "ShowMoreHits": "Show more search matches"
+        "ShowMoreHits": "Show more search matches",
+        "ShowAllHitHighlights": "Show all hits in the text",
+        "LoadingError": "An error occurred while loading the search results."
     },
     "MediaCollections": {
         "MediaCollections": "Faksimilsamlingar",
