@@ -234,6 +234,10 @@ page-elastic-search {
       font-size: .8125rem;
       height: 1.875rem !important;
       margin-top: 0.75rem;
+
+      .hiddenButton {
+        display: none;
+      }
     }
   }
 

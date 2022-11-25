@@ -838,6 +838,7 @@ export class ElasticSearchPage {
   }
 
   showAllHitHighlights(event: any) {
+    // Find and show all hidden highlights
     let parentElem = event.target.parentElement as HTMLElement;
     while (parentElem !== null && !parentElem.classList.contains('matchHighlights')) {
       parentElem = parentElem.parentElement;
@@ -848,6 +849,16 @@ export class ElasticSearchPage {
       for (let i = 0; i < highlightElems.length; i++) {
         highlightElems[i].classList.remove('hiddenHighlight');
       }
+    }
+
+    // Find and hide the button that triggered the event
+    parentElem = event.target.parentElement as HTMLElement;
+    while (parentElem !== null && !parentElem.classList.contains('showAllHitHighlights')) {
+      parentElem = parentElem.parentElement;
+    }
+
+    if (parentElem !== null) {
+      parentElem.classList.add('hiddenButton');
     }
   }
 }
