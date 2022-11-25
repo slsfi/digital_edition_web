@@ -225,6 +225,12 @@ page-elastic-search {
     padding-top: 0.5em;
     border-top: 1px solid var(--elastic-search-hititem-border-color);
     white-space: normal;
+
+    .showAllHitHighlights {
+      font-size: .8125rem;
+      height: 1.875rem !important;
+      margin-top: 0.75rem;
+    }
   }
 
   .hits-column ion-row.searchHits {

@@ -202,10 +202,10 @@
                         <ng-container *ngIf="hit && hit.highlight">
                           <div *ngIf="hit.highlight.textDataIndexed" class="matchHighlights">
                             <ng-container *ngFor="let highlight of hit.highlight?.textDataIndexed; let h = index">
-                              <p [innerHTML]="'&#8230; ' + highlight + ' &#8230;'" [ngClass]="'highlight ' + ((h > 0)?'hiddenHighlight':'firstHighlight')"></p>
+                              <p [innerHTML]="'&#8230; ' + highlight + ' &#8230;'" [ngClass]="'highlight ' + ((h > 2)?'hiddenHighlight':'initialHighlight')"></p>
                             </ng-container>
-                            <ng-container *ngIf="hit.highlight.textDataIndexed.length > 1">
-                              <button ion-button outline (click)="showAllHitHighlights($event)">Visa alla träffar i dokumentet ({{hit.highlight.textDataIndexed.length}})</button>
+                            <ng-container *ngIf="hit.highlight.textDataIndexed.length > 3">
+                              <button ion-button outline class="showAllHitHighlights" (click)="showAllHitHighlights($event)">Visa alla träffar</button>
                             </ng-container>
                           </div>
                         </ng-container>
