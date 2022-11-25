@@ -838,6 +838,16 @@ export class ElasticSearchPage {
   }
 
   showAllHitHighlights(event: any) {
-    console.log(event);
+    let parentElem = event.target.parentElement as HTMLElement;
+    while (parentElem !== null && !parentElem.classList.contains('matchHighlights')) {
+      parentElem = parentElem.parentElement;
+    }
+
+    if (parentElem !== null) {
+      const highlightElems = parentElem.querySelectorAll('.hiddenHighlight');
+      for (let i = 0; i < highlightElems.length; i++) {
+        highlightElems[i].classList.remove('hiddenHighlight');
+      }
+    }
   }
 }
