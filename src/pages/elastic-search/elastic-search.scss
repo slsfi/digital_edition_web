@@ -235,7 +235,7 @@ page-elastic-search {
       height: 1.875rem !important;
       margin-top: 0.75rem;
 
-      .hiddenButton {
+      &.hiddenButton {
         display: none;
       }
     }
