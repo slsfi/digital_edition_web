@@ -836,4 +836,8 @@ export class ElasticSearchPage {
         error => { this.mdContent = ''; }
       );
   }
+
+  showAllHitHighlights(event: any) {
+    console.log(event);
+  }
 }
