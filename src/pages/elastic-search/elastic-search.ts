@@ -706,7 +706,7 @@ export class ElasticSearchPage {
   hasDate(source: any) {
     const dateData = get(source, 'publication_data[0].original_publication_date', source.orig_date_certain);
     if (dateData === undefined || dateData === null || dateData === '') {
-      if (source.orig_date_year !== undefined && source.orig_date_year !== null && source.orig_date_year !== "") {
+      if (source.orig_date_year !== undefined && source.orig_date_year !== null && source.orig_date_year !== '') {
         return true;
       } else {
         return false;
@@ -718,8 +718,8 @@ export class ElasticSearchPage {
 
   private getDate(source: any) {
     let date = get(source, 'publication_data[0].original_publication_date', this.formatISO8601DateToLocale(source.orig_date_certain));
-    if ((date === undefined || date === "" || date === null)
-    && source.orig_date_year !== undefined && source.orig_date_year !== null && source.orig_date_year !== "") {
+    if ((date === undefined || date === '' || date === null)
+    && source.orig_date_year !== undefined && source.orig_date_year !== null && source.orig_date_year !== '') {
       date = source.orig_date_year;
     }
     return date;
