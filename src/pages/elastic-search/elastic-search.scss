@@ -172,6 +172,11 @@ page-elastic-search {
       color: var(--elastic-search-search-match-highlight-text-color);
       font-style: normal;
     }
+
+    .commentHitHeadingPrepend::after {
+      content: "\0020";
+      white-space: pre;
+    }
   }
 
   .hits-column ion-item.hitItem .hitHeader:hover .hitHeading {

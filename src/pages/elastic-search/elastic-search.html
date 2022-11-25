@@ -187,7 +187,7 @@
                       <div class="hitData">
                         <a class="hitHeader" [href]="getHitHref(hit.source)">
                           <div class="hitHeaderCol">
-                            <p class="hitHeading" [innerHTML]="getHeading(hit)"></p>
+                            <p class="hitHeading"><span *ngIf="hit.source.xml_type === 'com'" class="commentHitHeadingPrepend">{{'ElasticSearch.CommentsHitHeadingPrepend' | translate}}</span><span [innerHTML]="getHeading(hit)"></span></p>
                             <p class="hitPubCollection">{{getPublicationCollectionName(hit.source)}}</p>
                           </div>
                           <div class="hitHeaderCol">

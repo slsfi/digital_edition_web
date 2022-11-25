@@ -261,7 +261,8 @@
         "Suggestions": "Filter suggestions",
         "ShowMoreHits": "Show more search matches",
         "ShowAllHitHighlights": "Show all hits in the text",
-        "LoadingError": "An error occurred while loading the search results."
+        "LoadingError": "An error occurred while loading the search results.",
+        "CommentsHitHeadingPrepend": "Commentary to"
     },
     "MediaCollections": {
         "MediaCollections": "Faksimilsamlingar",
