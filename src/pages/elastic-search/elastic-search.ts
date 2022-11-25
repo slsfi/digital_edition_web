@@ -714,6 +714,8 @@ export class ElasticSearchPage {
 
   private getDate(source: any) {
     let date = get(source, 'publication_data[0].original_publication_date', this.formatISO8601DateToLocale(source.orig_date_certain));
+    console.log('date', date);
+    console.log('source.orig_date_year', source.orig_date_year);
     if (date === undefined && source.orig_date_year !== undefined) {
       date = source.orig_date_year;
     }
