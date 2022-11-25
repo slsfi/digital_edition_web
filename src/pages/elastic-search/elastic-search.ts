@@ -713,7 +713,11 @@ export class ElasticSearchPage {
   }
 
   private getDate(source: any) {
-    return get(source, 'publication_data[0].original_publication_date', this.formatISO8601DateToLocale(source.orig_date_certain));
+    let date = get(source, 'publication_data[0].original_publication_date', this.formatISO8601DateToLocale(source.orig_date_certain));
+    if (date === undefined) {
+      date = this.formatISO8601DateToLocale(source.orig_date_year);
+    }
+    return date;
   }
 
   private filterEmpty(array: any[]) {
