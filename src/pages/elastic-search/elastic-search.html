@@ -205,7 +205,7 @@
                               <p [innerHTML]="'&#8230; ' + highlight + ' &#8230;'" [ngClass]="'highlight ' + ((h > 2)?'hiddenHighlight':'initialHighlight')"></p>
                             </ng-container>
                             <ng-container *ngIf="hit.highlight.textDataIndexed.length > 3">
-                              <button ion-button outline class="showAllHitHighlights" (click)="showAllHitHighlights($event)">{{'ElasticSearch.ShowAllHighlights' | translate}} (+{{hit.highlight.textDataIndexed.length-3}})</button>
+                              <button ion-button outline class="showAllHitHighlights" (click)="showAllHitHighlights($event)">{{'ElasticSearch.ShowAllHitHighlights' | translate}} (+{{hit.highlight.textDataIndexed.length-3}})</button>
                             </ng-container>
                           </div>
                         </ng-container>
