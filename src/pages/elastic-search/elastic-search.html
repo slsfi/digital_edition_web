@@ -185,9 +185,9 @@
                         <span>#{{i+1}}</span>
                       </div>
                       <div class="hitData">
-                        <div class="hitHeader">
+                        <a class="hitHeader" href="#">
                           <div class="hitHeaderCol">
-                            <p class="itemHeading"><a (click)="open(hit)" [innerHTML]="getHeading(hit)"></a></p>
+                            <p class="itemHeading" [innerHTML]="getHeading(hit)"></p>
                             <p class="itemPubCollection">{{getPublicationCollectionName(hit.source)}}</p>
                           </div>
                           <div class="hitHeaderCol">
@@ -198,7 +198,7 @@
                               <span>{{getDate(hit.source)}}</span>
                             </div>
                           </div>
-                        </div>
+                        </a>
                         <ng-container *ngIf="hit && hit.highlight">
                           <div *ngIf="hit.highlight.textDataIndexed" class="matchHighlights">
                             <p *ngFor="let highlight of hit.highlight?.textDataIndexed" [innerHTML]="'&#8230; ' + highlight + ' &#8230;'" class="highlight"></p>

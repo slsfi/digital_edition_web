@@ -23,14 +23,43 @@ export class ElasticSearchService {
       this.apiEndpoint = this.config.getSettings('app.apiEndpoint')
       this.machineName = this.config.getSettings('app.machineName')
       this.indices = this.config.getSettings('ElasticSearch.indices')
-      this.source = this.config.getSettings('ElasticSearch.source')
       this.aggregations = this.config.getSettings('ElasticSearch.aggregations')
       this.suggestions = this.config.getSettings('ElasticSearch.suggestions')
     } catch (e) {
       console.error('Failed to load Elastic Search Service. Configuration error.', e.message)
       throw e
     }
-    this.source.push("collection_id");
+    // Add fields that should always be returned in hits
+    this.source = [
+      "xml_type",
+      "TitleIndexed",
+      "publication_data",
+      "publication_locations",
+      "publication_subjects",
+      "publication_tags",
+      "publication_id",
+      "path",
+      "name",
+      "collection_id",
+      "collection_name",
+      "orig_date_year_uncertain",
+      "orig_date_certain"
+    ];
+
+    // Add additional fields that should be returned in hits from config file
+    try {
+      const configSourceFields = this.config.getSettings('ElasticSearch.source');
+      if (configSourceFields !== undefined && configSourceFields.length > 0) {
+        // Append additional fields to this.source if not already present
+        for (let i = 0; i < configSourceFields.length; i++) {
+          if (!this.source.includes(configSourceFields[i])) {
+            this.source.push(configSourceFields[i]);
+          }
+        }
+      }
+    } catch (e) {
+    }
+
     // Should not fail if config is missing.
     try {
       this.fixedFilters = this.config.getSettings('ElasticSearch.fixedFilters')
