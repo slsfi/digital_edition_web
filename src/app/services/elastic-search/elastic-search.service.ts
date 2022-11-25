@@ -42,6 +42,7 @@ export class ElasticSearchService {
       "name",
       "collection_id",
       "collection_name",
+      "orig_date_year",
       "orig_date_year_uncertain",
       "orig_date_certain"
     ];

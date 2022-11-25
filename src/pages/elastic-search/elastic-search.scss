@@ -147,6 +147,8 @@ page-elastic-search {
     align-items: flex-start;
     align-content: flex-start;
     white-space: normal;
+    text-decoration: none;
+    color: #000;
   }
 
   .hits-column ion-item.hitItem .hitHeader  .hitHeaderCol:last-child {
@@ -310,6 +312,7 @@ page-elastic-search {
 
     .itemHeading {
       font-weight: bold;
+      color: var(--default-link-color);
 
       em {
         background-color: var(--elastic-search-search-match-highlight-background-color);

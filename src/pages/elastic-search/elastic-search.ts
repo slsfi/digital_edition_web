@@ -720,6 +720,37 @@ export class ElasticSearchPage {
     return array.filter(str => str).join(', ');
   }
 
+  getHitHref(source: any) {
+    let path = '/#/';
+
+    if (source.xml_type == 'tit') {
+      path = path + 'publication-title/' + source.collection_id;
+    } else if (source.xml_type == 'fore') {
+      path = path + 'publication-foreword/' + source.collection_id;
+    } else if (source.xml_type == 'inl') {
+      path = path + 'publication-introduction/' + source.collection_id;
+    } else {
+      path = path + 'publication/' + source.collection_id;
+      path = path + '/text/' + source.publication_id;
+      path = path + '/nochapter/not/infinite/nosong/';
+      path = path + 'searchtitle' + '/';
+    }
+
+    if (source.xml_type == 'est') {
+      path = path + 'established';
+    } else if (source.xml_type == 'com') {
+      path = path + 'comments';
+    } else if (source.xml_type == 'ms') {
+      path = path + 'manuscripts';
+    } else if (source.xml_type == 'var') {
+      path = path + 'variations';
+    } else {
+      path = path + 'established';
+    }
+
+    return path;
+  }
+
   getHeading(hit: any) {
     /* If a match is found in the publication name, return it from the highlights. Otherwise from the data. */
     let publication_name = undefined;
