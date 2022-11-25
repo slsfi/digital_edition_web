@@ -201,7 +201,9 @@
                         </a>
                         <ng-container *ngIf="hit && hit.highlight">
                           <div *ngIf="hit.highlight.textDataIndexed" class="matchHighlights">
-                            <p *ngFor="let highlight of hit.highlight?.textDataIndexed" [innerHTML]="'&#8230; ' + highlight + ' &#8230;'" class="highlight"></p>
+                            <ng-container *ngFor="let highlight of hit.highlight?.textDataIndexed; let h = index">
+                              <p [innerHTML]="'&#8230; ' + highlight + ' &#8230;'" [ngClass]="'highlight ' + (h > 0)?'hiddenHighlight':'firstHighlight'"></p>
+                            </ng-container>
                           </div>
                         </ng-container>
                       </div>
