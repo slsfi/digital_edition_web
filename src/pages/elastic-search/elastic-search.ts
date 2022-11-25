@@ -371,6 +371,7 @@ export class ElasticSearchPage {
     if (from && to) {
       // Certain date range
       this.range = {from, to};
+      console.log('year range: ', this.range);
 
       this.cf.detectChanges();
       this.reset();
