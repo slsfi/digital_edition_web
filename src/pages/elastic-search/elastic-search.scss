@@ -113,7 +113,7 @@ page-elastic-search {
   }
 
   .hits-column ion-item.hitItem {
-    background-color: transparent;
+    background-color: #fff;
     margin-bottom: 0.5em;
     border: 1px solid var(--elastic-search-hititem-border-color);
     border-radius: 4px;
@@ -225,6 +225,10 @@ page-elastic-search {
     padding-top: 0.5em;
     border-top: 1px solid var(--elastic-search-hititem-border-color);
     white-space: normal;
+
+    .hiddenHighlight {
+      display: none;
+    }
 
     .showAllHitHighlights {
       font-size: .8125rem;
