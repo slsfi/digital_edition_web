@@ -187,8 +187,8 @@
                       <div class="hitData">
                         <a class="hitHeader" [href]="getHitHref(hit.source)">
                           <div class="hitHeaderCol">
-                            <p class="itemHeading" [innerHTML]="getHeading(hit)"></p>
-                            <p class="itemPubCollection">{{getPublicationCollectionName(hit.source)}}</p>
+                            <p class="hitHeading" [innerHTML]="getHeading(hit)"></p>
+                            <p class="hitPubCollection">{{getPublicationCollectionName(hit.source)}}</p>
                           </div>
                           <div class="hitHeaderCol">
                             <div class="hitTextType {{ hit.source.xml_type }}">

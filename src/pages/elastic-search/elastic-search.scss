@@ -163,7 +163,18 @@ page-elastic-search {
     align-items: flex-end;
   }
 
-  .hits-column ion-item.hitItem .hitHeader:hover .itemHeading {
+  .hits-column ion-item.hitItem .hitHeader .hitHeading {
+    font-weight: bold;
+    color: var(--default-link-color);
+
+    em {
+      background-color: var(--elastic-search-search-match-highlight-background-color);
+      color: var(--elastic-search-search-match-highlight-text-color);
+      font-style: normal;
+    }
+  }
+
+  .hits-column ion-item.hitItem .hitHeader:hover .hitHeading {
     text-decoration: underline;
   }
 
@@ -320,16 +331,7 @@ page-elastic-search {
 
     .itemHeading {
       font-weight: bold;
-      color: var(--default-link-color);
-
-      em {
-        background-color: var(--elastic-search-search-match-highlight-background-color);
-        color: var(--elastic-search-search-match-highlight-text-color);
-        font-style: normal;
-      }
     }
-
-
 
     .highlight {
       margin-bottom: 0;
