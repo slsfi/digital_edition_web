@@ -185,7 +185,7 @@
                         <span>#{{i+1}}</span>
                       </div>
                       <div class="hitData">
-                        <a class="hitHeader" href="getHitHref(hit.source)">
+                        <a class="hitHeader" [href]="getHitHref(hit.source)">
                           <div class="hitHeaderCol">
                             <p class="itemHeading" [innerHTML]="getHeading(hit)"></p>
                             <p class="itemPubCollection">{{getPublicationCollectionName(hit.source)}}</p>

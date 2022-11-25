@@ -31,20 +31,20 @@ export class ElasticSearchService {
     }
     // Add fields that should always be returned in hits
     this.source = [
-      "xml_type",
-      "TitleIndexed",
-      "publication_data",
-      "publication_locations",
-      "publication_subjects",
-      "publication_tags",
-      "publication_id",
-      "path",
-      "name",
-      "collection_id",
-      "collection_name",
-      "orig_date_year",
-      "orig_date_year_uncertain",
-      "orig_date_certain"
+      'xml_type',
+      'TitleIndexed',
+      'publication_data',
+      'publication_locations',
+      'publication_subjects',
+      'publication_tags',
+      'publication_id',
+      'path',
+      'name',
+      'collection_id',
+      'collection_name',
+      'orig_date_year',
+      'orig_date_year_uncertain',
+      'orig_date_certain'
     ];
 
     // Add additional fields that should be returned in hits from config file
@@ -133,23 +133,23 @@ export class ElasticSearchService {
           },
           functions: [
             {
-              filter: { term: { "xml_type.keyword": "est" } }, 
+              filter: { term: { 'xml_type.keyword': 'est' } },
               weight: 10
             },
             {
-              filter: { term: { "xml_type.keyword": "inl" } }, 
+              filter: { term: { 'xml_type.keyword': 'inl' } },
               weight: 8
             },
             {
-              filter: { term: { "xml_type.keyword": "com" } }, 
+              filter: { term: { 'xml_type.keyword': 'com' } },
               weight: 2
             },
             {
-              filter: { term: { "xml_type.keyword": "ms" } }, 
+              filter: { term: { 'xml_type.keyword': 'ms' } },
               weight: 2
             }
           ],
-          score_mode: "sum",
+          score_mode: 'sum',
         }
       },
       sort,
@@ -161,7 +161,7 @@ export class ElasticSearchService {
         payload.query.function_score.query.bool.must.push({
           simple_query_string: {
             query,
-            fields: ["textDataIndexed", "publication_data.pubname^5"]
+            fields: ['textDataIndexed', 'publication_data.pubname^5']
           }
         })
       }
@@ -218,23 +218,23 @@ export class ElasticSearchService {
           },
           functions: [
             {
-              filter: { term: { "xml_type.keyword": "est" } }, 
+              filter: { term: { 'xml_type.keyword': 'est' } },
               weight: 6
             },
             {
-              filter: { term: { "xml_type.keyword": "inl" } }, 
+              filter: { term: { 'xml_type.keyword': 'inl' } },
               weight: 4
             },
             {
-              filter: { term: { "xml_type.keyword": "com" } }, 
+              filter: { term: { 'xml_type.keyword': 'com' } },
               weight: 1
             },
             {
-              filter: { term: { "xml_type.keyword": "ms" } }, 
+              filter: { term: { 'xml_type.keyword': 'ms' } },
               weight: 1
             }
           ],
-          score_mode: "sum",
+          score_mode: 'sum',
         }
       },
     }
@@ -245,7 +245,7 @@ export class ElasticSearchService {
         payload.query.function_score.query.bool.must.push({
           simple_query_string: {
             query,
-            fields: ["textDataIndexed", "publication_data.pubname^5"]
+            fields: ['textDataIndexed', 'publication_data.pubname^5']
           }
         })
       }

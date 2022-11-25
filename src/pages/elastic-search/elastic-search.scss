@@ -151,12 +151,20 @@ page-elastic-search {
     color: #000;
   }
 
+  .hits-column ion-item.hitItem .hitHeader:hover {
+    opacity: 1;
+  }
+
   .hits-column ion-item.hitItem .hitHeader  .hitHeaderCol:last-child {
     margin-left: auto;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
     align-items: flex-end;
+  }
+
+  .hits-column ion-item.hitItem .hitHeader:hover .itemHeading {
+    text-decoration: underline;
   }
 
   .hits-column ion-item.hitItem .hitNumber {
@@ -320,6 +328,8 @@ page-elastic-search {
         font-style: normal;
       }
     }
+
+
 
     .highlight {
       margin-bottom: 0;

@@ -423,8 +423,8 @@ export class ElasticSearchPage {
       queries: this.queries,
       highlight: {
         fields: {
-          "textDataIndexed": { number_of_fragments: 1000, fragment_size: 150, type: "unified", boundary_scanner: "sentence" },
-          "publication_data.pubname": { number_of_fragments: 0, type: "plain" },
+          'textDataIndexed': { number_of_fragments: 1000, fragment_size: 150, type: 'unified', boundary_scanner: 'sentence' },
+          'publication_data.pubname': { number_of_fragments: 0, type: 'plain' },
         },
       },
       from: this.from,
@@ -679,8 +679,8 @@ export class ElasticSearchPage {
   }
 
   getHiglightedPublicationName(highlight: any) {
-    if (highlight["publication_data.pubname"]) {
-      return highlight["publication_data.pubname"][0];
+    if (highlight['publication_data.pubname']) {
+      return highlight['publication_data.pubname'][0];
     } else {
       return undefined;
     }
@@ -723,11 +723,11 @@ export class ElasticSearchPage {
   getHitHref(source: any) {
     let path = '/#/';
 
-    if (source.xml_type == 'tit') {
+    if (source.xml_type === 'tit') {
       path = path + 'publication-title/' + source.collection_id;
-    } else if (source.xml_type == 'fore') {
+    } else if (source.xml_type === 'fore') {
       path = path + 'publication-foreword/' + source.collection_id;
-    } else if (source.xml_type == 'inl') {
+    } else if (source.xml_type === 'inl') {
       path = path + 'publication-introduction/' + source.collection_id;
     } else {
       path = path + 'publication/' + source.collection_id;
@@ -736,13 +736,13 @@ export class ElasticSearchPage {
       path = path + 'searchtitle' + '/';
     }
 
-    if (source.xml_type == 'est') {
+    if (source.xml_type === 'est') {
       path = path + 'established';
-    } else if (source.xml_type == 'com') {
+    } else if (source.xml_type === 'com') {
       path = path + 'comments';
-    } else if (source.xml_type == 'ms') {
+    } else if (source.xml_type === 'ms') {
       path = path + 'manuscripts';
-    } else if (source.xml_type == 'var') {
+    } else if (source.xml_type === 'var') {
       path = path + 'variations';
     } else {
       path = path + 'established';
