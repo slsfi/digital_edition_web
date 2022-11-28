@@ -789,7 +789,7 @@ export class ElasticSearchPage {
     if (!str || str.length <= max) {
       return str;
     } else {
-      return str.substring(0, max) + '&#8230;';
+      return str.substring(0, max) + '...';
     }
   }
 

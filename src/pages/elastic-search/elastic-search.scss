@@ -107,6 +107,7 @@ page-elastic-search {
 
     .col {
       padding-top: 0;
+      padding-bottom: 8px;
     }
   }
 
@@ -297,6 +298,7 @@ page-elastic-search {
     border: 1px solid var(--elastic-search-facet-border-color);
     border-radius: 3px;
     padding: 10px;
+    margin-bottom: 0.5em;
     transition: all 0.4s;
 
     .years-heading {
@@ -435,7 +437,6 @@ page-elastic-search {
   }
 
   .selectedFacetGroups {
-    margin-bottom: 1em;
     display: block;
 
     .selectedFacetGroup {
@@ -446,7 +447,7 @@ page-elastic-search {
 
       .selectedFacetGroupTitle {
         font-size: 1em;
-        margin-top: 12px;
+        margin: 0.75em 0 0 1em;
       }
 
       ul {
