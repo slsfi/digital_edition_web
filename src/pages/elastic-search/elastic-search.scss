@@ -400,17 +400,27 @@ page-elastic-search {
   }
 
   .selectedFacetGroups {
+    margin-bottom: 1em;
+
     .selectedFacetGroup {
       display: flex;
-      flex-wrap: wrap;
       justify-content: flex-start;
-      gap: 1em;
+      align-items: center;
+      gap: 0.5em;
+      font-size: 1rem;
+
+      .selectedFacetGroupTitle {
+        font-size: 1em;
+        margin-top: 12px;
+      }
 
       ul {
         list-style-type: none;
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-start;
+        margin: 0;
+        padding: 0;
       }
       li {
         padding: 0;
