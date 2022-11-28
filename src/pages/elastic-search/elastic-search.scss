@@ -346,9 +346,13 @@ page-elastic-search {
     .item-inner {
       border-bottom: none;
     }
-  }
 
-  ion-item.item.item-block.item-md {
+    &.noFacetOptions {
+      ion-label {
+        margin-top: 0;
+      }
+    }
+
     .highlight {
       margin-bottom: 0;
       em {
@@ -375,6 +379,9 @@ page-elastic-search {
       }
       ion-item.item.item-block.item-md.facet:last-child {
         margin-bottom: 12px;
+      }
+      ion-item.item.item-block.item-md.facet:hover .checkbox-md .checkbox-icon {
+        border-color: var(--button-background-color);
       }
     }
   }
@@ -484,6 +491,7 @@ page-elastic-search {
       .show-more-button {
         height: 1.875rem !important;
         font-size: 0.8125rem;
+        margin: 10px 4px 16px 29px;
       }
     }
   }
