@@ -306,9 +306,9 @@
         "year": "Född mellan",
         "apply": "Verkställ"
     },
-    "Type": "Typ",
+    "Type": "Texttyp",
     "Genre": "Genre",
-    "Collection": "Utgåvor",
+    "Collection": "Delutgåva",
     "Location": "Plats",
     "Subjects": "Ämnen",
     "Tags": "Taggar",

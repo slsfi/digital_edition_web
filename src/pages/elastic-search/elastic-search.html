@@ -144,7 +144,7 @@
             <ion-row class="selectedFacetGroups">
               <ng-container *ngFor="let groupKey of objectKeys(selectedFacetGroups)">
                 <div class="selectedFacetGroup" *ngIf="hasSelectedFacetsByGroup(groupKey)">
-                  <div class="selectedFacetGroupTitle">{{groupKey | translate}}</div>
+                  <div class="selectedFacetGroupTitle">{{groupKey | translate}}:</div>
                   <ul>
                     <li *ngFor="let facet of objectValues(selectedFacetGroups[groupKey])">
                       <button

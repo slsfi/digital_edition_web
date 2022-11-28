@@ -6,6 +6,7 @@ page-elastic-search {
 
   ion-grid.search-grid {
     padding: 0 1rem;
+    margin-left: 0;
     max-width: 1400px;
   }
   @media(max-width: 820px) {
@@ -65,14 +66,12 @@ page-elastic-search {
   }
 
   ion-row.facet-and-hits-area-row {
-    padding-top: 1rem;
     padding-bottom: 2rem;
   }
 
   ion-col.facet-column {
-    width: 100%;
     max-width: 400px;
-    min-width: 300px;
+    min-width: 280px;
     margin-right: 12px;
     padding-left: 0;
   }
@@ -80,6 +79,7 @@ page-elastic-search {
   ion-col.search-result-column {
     width: 100%;
     max-width: 1000px;
+    flex-grow: 2;
   }
   
   ion-icon.settings-icon.icon {
@@ -93,16 +93,6 @@ page-elastic-search {
 
   ul {
     list-style-type: none;
-  }
-
-
-
-  .filter-button {
-    font-size: 2.8rem;
-  }
-
-  .searchbar {
-    color: white;
   }
 
   .info-toolbar {
@@ -522,24 +512,32 @@ page-elastic-search {
   }
 
   .hits-heading {
-    padding-left: 1rem;
-    font-size: 1.75rem;
-    margin-top: 0.375rem !important;
+    font-size: 1.25rem;
+    margin-top: 0.75rem !important;
   }
 
   .searchbar-wrapper {
     position: relative;
-    margin: 10px 0;
+    margin: 1rem 0;
     font-size: 1rem;
 
     .searchInput {
       font-size: 1.25em !important;
-      text-indent: 26px;
+      text-indent: 28px;
       width: 100%;
       max-width: 520px;
       border-radius: 3px;
       padding: 6px 8px;
       border: 1px solid #b5b5b5;
+      transition: all 0.4s;
+    }
+    .searchInput:hover {
+      border-color: var(--button-background-color);
+    }
+    .searchInput:focus {
+      border-color: var(--button-background-color);
+      box-shadow: 0 0 0 2px rgba(var(--button-background-color-rgb), 0.5);
+      outline: 3px solid transparent;
     }
 
     .removableSearchInput {
@@ -557,7 +555,7 @@ page-elastic-search {
       left: 0;
       background-color: #fff;
       color: #555;
-      margin: 7px 8px 7px 10px;
+      margin: 8px 8px 6px 12px;
       border-radius: 2px;
     }
   }
