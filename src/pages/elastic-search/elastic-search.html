@@ -144,7 +144,7 @@
         <ion-row class="hits-column">
           <ion-col>
             <!-- Selected facets row -->
-            <ion-row class="selectedFacetGroups">
+            <ion-row class="selectedFacetGroups" *ngIf="selectedFacetGroups">
               <ng-container *ngFor="let groupKey of objectKeys(selectedFacetGroups)">
                 <div class="selectedFacetGroup" *ngIf="hasSelectedFacetsByGroup(groupKey)">
                   <div class="selectedFacetGroupTitle">{{groupKey | translate}}:</div>
