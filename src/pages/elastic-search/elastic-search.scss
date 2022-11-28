@@ -66,8 +66,11 @@ page-elastic-search {
   }
 
   ion-row.search-row {
-    display: block;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
     width: 100%;
+    margin: 1.25rem 0 0.5rem 0;
   }
 
   ion-row.facet-and-hits-area-row {
@@ -316,6 +319,7 @@ page-elastic-search {
   }
 
   .sort-by-wrapper {
+    margin-left: auto;
     ion-item.item {
       background-color: transparent;
 
@@ -331,7 +335,7 @@ page-elastic-search {
     .sort-by-label {
       flex: 0;
       margin: 0;
-      padding: 13px 8px 13px 13px;
+      padding: 9px 6px 8px 9px;
       border-top-left-radius: 3px;
       border-bottom-left-radius: 3px;
       border: 1px solid var(--elastic-search-facet-border-color);
@@ -343,7 +347,7 @@ page-elastic-search {
 
     .sort-by-select {
       max-width: 300px;
-      padding: 13px 16px 13px 13px;
+      padding: 9px 11px 8px 8px;
       border-top-right-radius: 3px;
       border-bottom-right-radius: 3px;
       border: 1px solid var(--elastic-search-facet-border-color);
@@ -553,14 +557,14 @@ page-elastic-search {
 
   .searchbar-wrapper {
     position: relative;
-    margin: 1.25rem 0 0.5rem 0;
     font-size: 1rem;
+    width: 100%;
+    max-width: 520px;
 
     .searchInput {
       font-size: 1.25em !important;
       text-indent: 28px;
       width: 100%;
-      max-width: 520px;
       border-radius: 3px;
       padding: 6px 8px;
       border: 1px solid #b5b5b5;
