@@ -400,21 +400,21 @@ page-elastic-search {
   }
 
   .selectedFacetGroups {
-    ion-toolbar.toolbar {
-      max-height: unset !important;
-      min-height: unset !important;
-    }
+    .selectedFacetGroup {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 1em;
 
-    .toolbar-background {
-      background-color: transparent !important;
-    }
-
-    .toolbar-content {
-      margin: 0.75rem 0;
-    }
-
-    .toolbar-title {
-      color: #000;
+      ul {
+        list-style-type: none;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+      }
+      li {
+        padding: 0;
+      }
     }
 
     .suggested-facets-heading {

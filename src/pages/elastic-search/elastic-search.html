@@ -139,17 +139,20 @@
             <!-- Selected facets row -->
             <ion-row class="selectedFacetGroups">
               <ng-container *ngFor="let groupKey of objectKeys(selectedFacetGroups)">
-                <ion-toolbar *ngIf="hasSelectedFacetsByGroup(groupKey)">
-                  <ion-title>{{groupKey | translate}}</ion-title>
-                  <button
-                    *ngFor="let facet of objectValues(selectedFacetGroups[groupKey])"
-                    (click)="unselectFacet(groupKey, facet)"
-                    class="selectedFacetButton"
-                    ion-button icon-end small>
-                    {{getEllipsisString(facet.key | translate)}}
-                    <ion-icon name="close"></ion-icon>
-                  </button>
-                </ion-toolbar>
+                <div class="selectedFacetGroup" *ngIf="hasSelectedFacetsByGroup(groupKey)">
+                  <div class="selectedFacetGroupTitle">{{groupKey | translate}}</div>
+                  <ul>
+                    <li *ngFor="let facet of objectValues(selectedFacetGroups[groupKey])">
+                      <button
+                        (click)="unselectFacet(groupKey, facet)"
+                        class="selectedFacetButton"
+                        ion-button icon-end small>
+                        {{getEllipsisString(facet.key | translate)}}
+                        <ion-icon name="close"></ion-icon>
+                      </button>
+                    </li>
+                  </ul>
+                </div>
               </ng-container>
             </ion-row>
 
