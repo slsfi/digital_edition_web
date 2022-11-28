@@ -785,11 +785,11 @@ export class ElasticSearchPage {
     ]);
   }
 
-  getEllipsisString(str: string, max = 15) {
+  getEllipsisString(str: string, max = 50) {
     if (!str || str.length <= max) {
       return str;
     } else {
-      return str.substring(0, max) + '...';
+      return str.substring(0, max) + '&#8230;';
     }
   }
 

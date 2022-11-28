@@ -9,7 +9,10 @@ date-histogram {
   }
 
   ion-item.year-input {
-    &.item.item-block,
+    &.item.item-block {
+      border-bottom-color: #555;
+    }
+
     .label {
       color: #555;
     }
