@@ -58,12 +58,12 @@ page-elastic-search {
     }
   }
 
-  ion-row.search-area-row {
+  ion-row.facet-and-hits-area-row {
     padding-top: 1rem;
     padding-bottom: 2rem;
   }
 
-  ion-col.search-and-facet-column {
+  ion-col.facet-column {
     width: 100%;
     max-width: 400px;
     min-width: 300px;
@@ -304,8 +304,6 @@ page-elastic-search {
   }
 
   .sort-by-wrapper {
-    transition: all 0.4s;
-
     ion-item.item {
       background-color: transparent;
     }
@@ -324,6 +322,7 @@ page-elastic-search {
       border-right: 0;
       background-color: var(--elastic-search-facet-background-color);
       color: #6e6e6e;
+      transition: all 0.4s;
     }
 
     .sort-by-select {
@@ -334,6 +333,7 @@ page-elastic-search {
       border: 1px solid var(--elastic-search-facet-border-color);
       border-left: 0;
       background-color: var(--elastic-search-facet-background-color);
+      transition: all 0.4s;
     }
   }
   .sort-by-wrapper:hover {
@@ -474,6 +474,7 @@ page-elastic-search {
       padding-bottom: 4px;
       border: 1px solid var(--elastic-search-facet-border-color);
       border-radius: 3px;
+      transition: all 0.4s;
     }
     .facet-item:hover {
       border-color: var(--button-background-color);

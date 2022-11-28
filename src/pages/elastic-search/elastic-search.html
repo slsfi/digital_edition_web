@@ -6,29 +6,33 @@
         <markdown [data]="mdContent"></markdown>
       </div>
     </ion-row>
-    <ion-row class="search-area-row">
-      <!--  Search fields -->
-      <ion-col class="search-and-facet-column">
-        <ion-row *ngFor="let query of queries; let i = index; trackBy:trackByIdx" [ngClass]="i > 0 ? 'searchbar-wrapper additional-searchbar' : 'searchbar-wrapper'">
-          <ion-label *ngIf="i > 0" class="and-search-input-label">
-            {{ 'ElasticSearch.AND' | translate }}
-          </ion-label>
-          <input type="text"
-            placeholder="{{i > 0 ? ('ElasticSearch.ANDSearch' | translate) : ('ElasticSearch.Search' | translate)}}"
-            class="searchInput {{i > 0 ? 'removableSearchInput' : ''}}"
-            [(ngModel)]="queries[i]"
-            (keyup)="onQueryChange()"
-          />
-          <ion-icon *ngIf="i < 1" class="searchIcon" name="search"></ion-icon>
-          <ion-icon *ngIf="i > 0" (click)="removeSearchField(i)" class="removeIcon" name="remove-circle"></ion-icon>
-        </ion-row>
+    <ion-row class="search-row">
+      <div *ngFor="let query of queries; let i = index; trackBy:trackByIdx" [ngClass]="i > 0 ? 'searchbar-wrapper additional-searchbar' : 'searchbar-wrapper'">
+        <ion-label *ngIf="i > 0" class="and-search-input-label">
+          {{ 'ElasticSearch.AND' | translate }}
+        </ion-label>
+        <input type="text"
+          placeholder="{{i > 0 ? ('ElasticSearch.ANDSearch' | translate) : ('ElasticSearch.Search' | translate)}}"
+          class="searchInput {{i > 0 ? 'removableSearchInput' : ''}}"
+          [(ngModel)]="queries[i]"
+          (keyup)="onQueryChange()"
+        />
+        <ion-icon *ngIf="i < 1" class="searchIcon" name="search"></ion-icon>
+        <ion-icon *ngIf="i > 0" (click)="removeSearchField(i)" class="removeIcon" name="remove-circle"></ion-icon>
+      </div>
 
-        <!-- Add search field -->
-        <ion-row class="add-search-bar-wrapper">
-          <button (click)="addSearchField()" ion-button>
-            {{'ElasticSearch.SearchField' | translate}}
-          </button>
-        </ion-row>
+      <!-- Add search field -->
+      <!--
+      <ion-row class="add-search-bar-wrapper">
+        <button (click)="addSearchField()" ion-button>
+          {{'ElasticSearch.SearchField' | translate}}
+        </button>
+      </ion-row>
+      -->
+    </ion-row>
+    <ion-row class="facet-and-hits-area-row">
+      <!--  Search fields -->
+      <ion-col class="facet-column">
 
         <!-- Suggested facets -->
         <!--
