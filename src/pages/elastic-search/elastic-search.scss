@@ -291,6 +291,7 @@ page-elastic-search {
     border-radius: 3px;
     margin: 20px 0 0 0;
     padding: 10px;
+    transition: all 0.4s;
 
     .years-heading {
       margin-bottom: -14px;
@@ -303,6 +304,7 @@ page-elastic-search {
   }
 
   .sort-by-wrapper {
+    transition: all 0.4s;
 
     ion-item.item {
       background-color: transparent;
@@ -381,6 +383,7 @@ page-elastic-search {
 
       ion-item.item.item-block.item-md.facet {
         min-height: 1rem;
+        transition: all 0.4s;
 
         ion-checkbox.checkbox-md {
           margin: 6px 12px 6px 0;
