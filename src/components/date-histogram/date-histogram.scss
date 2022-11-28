@@ -8,6 +8,13 @@ date-histogram {
     color: var(--elastic-search-date-histogram-year-bar-color);
   }
 
+  ion-item.year-input {
+    &.item.item-block,
+    .label {
+      color: #555;
+    }
+  }
+
   .reset-buttons {
     height: 32px;
     ion-icon {
