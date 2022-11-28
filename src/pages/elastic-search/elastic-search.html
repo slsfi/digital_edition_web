@@ -55,6 +55,9 @@
 
         <!-- List of facet groups -->
         <ion-list class="facet-group-wrapper">
+          <ion-item class="facet-header">
+            <h2>Begränsa sökningen</h2>
+          </ion-item>
 
           <!-- Special facet for date histogram aggregation -->
           <ion-item class="date-histogram-wrapper" *ngIf="elastic.isDateHistogramAggregation('Years')">

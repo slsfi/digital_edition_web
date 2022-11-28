@@ -285,7 +285,6 @@ page-elastic-search {
   .date-histogram-wrapper {
     border: 1px solid var(--elastic-search-facet-border-color);
     border-radius: 3px;
-    margin: 20px 0 0 0;
     padding: 10px;
     transition: all 0.4s;
 
@@ -465,7 +464,8 @@ page-elastic-search {
       background-color: var(--elastic-search-facet-background-color);
     }
 
-    .facet-item {
+    .facet-item,
+    .facet-header {
       margin: 5px 0;
       padding-bottom: 4px;
       border: 1px solid var(--elastic-search-facet-border-color);
@@ -474,6 +474,12 @@ page-elastic-search {
     }
     .facet-item:hover {
       border-color: var(--button-background-color);
+    }
+
+    .facet-header {
+      h2 {
+        font-size: 1.25em;
+      }
     }
 
     .accordion-item {
