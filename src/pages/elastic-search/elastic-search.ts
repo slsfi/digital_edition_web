@@ -348,7 +348,7 @@ export class ElasticSearchPage {
    * Triggers a new search and clears selected facets.
    */
   onQueryChange() {
-    this.autoExpandSearchfields();
+    // this.autoExpandSearchfields();
     this.reset();
     this.loading = true;
     this.debouncedSearch();

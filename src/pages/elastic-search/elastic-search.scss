@@ -6,6 +6,7 @@ page-elastic-search {
 
   ion-grid.search-grid {
     padding: 0 1rem;
+    max-width: 1400px;
   }
   @media(max-width: 820px) {
     ion-grid.search-grid {
@@ -56,6 +57,11 @@ page-elastic-search {
         cursor: pointer;
       }
     }
+  }
+
+  ion-row.search-row {
+    display: block;
+    width: 100%;
   }
 
   ion-row.facet-and-hits-area-row {
@@ -524,14 +530,16 @@ page-elastic-search {
   .searchbar-wrapper {
     position: relative;
     margin: 10px 0;
+    font-size: 1rem;
 
     .searchInput {
+      font-size: 1.25em !important;
       text-indent: 26px;
       width: 100%;
-      border-radius: 2px;
+      max-width: 520px;
+      border-radius: 3px;
       padding: 6px 8px;
-      box-shadow: rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
-      border: none !important;
+      border: 1px solid #b5b5b5;
     }
 
     .removableSearchInput {
@@ -549,7 +557,7 @@ page-elastic-search {
       left: 0;
       background-color: #fff;
       color: #555;
-      padding: 4px 8px 3px 10px;
+      margin: 7px 8px 7px 10px;
       border-radius: 2px;
     }
   }
