@@ -567,7 +567,7 @@ page-elastic-search {
     }
     .searchInput:focus {
       border-color: var(--button-background-color);
-      box-shadow: 0 0 0 2px rgba(var(--button-background-color-rgb), 0.5);
+      box-shadow: 0 0 0 3px rgba(var(--button-background-color-rgb), 0.2);
       outline: 3px solid transparent;
     }
 
