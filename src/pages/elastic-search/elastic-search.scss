@@ -401,11 +401,11 @@ page-elastic-search {
 
   .selectedFacetGroups {
     margin-bottom: 1em;
+    display: block;
 
     .selectedFacetGroup {
       display: flex;
       justify-content: flex-start;
-      align-items: center;
       gap: 0.5em;
       font-size: 1rem;
 
