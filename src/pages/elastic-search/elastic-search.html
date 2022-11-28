@@ -6,6 +6,8 @@
         <markdown [data]="mdContent"></markdown>
       </div>
     </ion-row>
+
+    <!-- Search field -->
     <ion-row class="search-row">
       <div *ngFor="let query of queries; let i = index; trackBy:trackByIdx" [ngClass]="i > 0 ? 'searchbar-wrapper additional-searchbar' : 'searchbar-wrapper'">
         <ion-label *ngIf="i > 0" class="and-search-input-label">
@@ -29,6 +31,26 @@
         </button>
       </ion-row>
       -->
+    </ion-row>
+
+    <!-- Selected facets row -->
+    <ion-row class="selectedFacetGroups" *ngIf="hasSelectedFacets()">
+      <ng-container *ngFor="let groupKey of objectKeys(selectedFacetGroups)">
+        <div class="selectedFacetGroup" *ngIf="hasSelectedFacetsByGroup(groupKey)">
+          <div class="selectedFacetGroupTitle">{{groupKey | translate}}:</div>
+          <ul>
+            <li *ngFor="let facet of objectValues(selectedFacetGroups[groupKey])">
+              <button
+                (click)="unselectFacet(groupKey, facet)"
+                class="selectedFacetButton"
+                ion-button icon-end small>
+                {{getEllipsisString(facet.key | translate)}}
+                <ion-icon name="close"></ion-icon>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </ng-container>
     </ion-row>
     <ion-row class="facet-and-hits-area-row">
       <!--  Search fields -->
@@ -143,26 +165,6 @@
         <!-- Hits column -->
         <ion-row class="hits-column">
           <ion-col>
-            <!-- Selected facets row -->
-            <ion-row class="selectedFacetGroups" *ngIf="selectedFacetGroups">
-              <ng-container *ngFor="let groupKey of objectKeys(selectedFacetGroups)">
-                <div class="selectedFacetGroup" *ngIf="hasSelectedFacetsByGroup(groupKey)">
-                  <div class="selectedFacetGroupTitle">{{groupKey | translate}}:</div>
-                  <ul>
-                    <li *ngFor="let facet of objectValues(selectedFacetGroups[groupKey])">
-                      <button
-                        (click)="unselectFacet(groupKey, facet)"
-                        class="selectedFacetButton"
-                        ion-button icon-end small>
-                        {{getEllipsisString(facet.key | translate)}}
-                        <ion-icon name="close"></ion-icon>
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              </ng-container>
-            </ion-row>
-
             <!-- Search status row -->
             <ion-row class="searchStatus">
               <!-- Search status -->
