@@ -295,6 +295,7 @@ page-elastic-search {
     .years-heading {
       margin-bottom: -14px;
       padding-left: 20px;
+      font-weight: bold;
     }
   }
 
@@ -348,11 +349,6 @@ page-elastic-search {
   }
 
   ion-item.item.item-block.item-md {
-
-    .itemHeading {
-      font-weight: bold;
-    }
-
     .highlight {
       margin-bottom: 0;
       em {
@@ -374,8 +370,11 @@ page-elastic-search {
         min-height: 1rem;
 
         ion-checkbox.checkbox-md {
-          margin: 5px;
+          margin: 6px 12px 6px 0;
         }
+      }
+      ion-item.item.item-block.item-md.facet:last-child {
+        margin-bottom: 12px;
       }
     }
   }
@@ -450,24 +449,32 @@ page-elastic-search {
 
     .facet-item {
       margin: 5px 0;
-      padding-bottom: 1rem;
+      padding-bottom: 4px;
       border: 1px solid var(--elastic-search-facet-border-color);
       border-radius: 3px;
     }
 
     .accordion-item {
       margin: 0 !important;
+      white-space: normal;
+
+      .facetTitle {
+        font-weight: bold;
+        min-height: 1rem;
+        font-size: 1rem;
+        margin-top: 8px;
+        cursor: pointer;
+      }
 
       .facet {
         padding: 0;
-
-        ion-checkbox {
-          margin-right: 15px !important;
-        }
+        align-items: flex-start;
       }
 
       ion-label {
-        font-weight: 600;
+        white-space: normal;
+        margin-top: 5px;
+        margin-bottom: 5px;
       }
 
       .accordion-arrow {

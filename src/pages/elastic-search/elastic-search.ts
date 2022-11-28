@@ -800,7 +800,7 @@ export class ElasticSearchPage {
     arrow.classList.toggle('rotate');
 
     if (arrow.classList.contains('open')) {
-      facet.style.height = '0px';
+      facet.style.height = '0';
       arrow.classList.add('closed');
       arrow.classList.remove('open');
     } else {
