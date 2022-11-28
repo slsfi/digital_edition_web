@@ -23,6 +23,18 @@
         <ion-icon *ngIf="i > 0" (click)="removeSearchField(i)" class="removeIcon" name="remove-circle"></ion-icon>
       </div>
 
+      <!-- Sort by -->
+      <div class="sort-by-wrapper" *ngIf="canShowHits() && total > 0">
+        <ion-item>
+          <ion-label class="sort-by-label">{{'ElasticSearch.SortBy' | translate}}</ion-label>
+          <ion-select class="sort-by-select" [(ngModel)]="sort" (ionChange)="onSortByChanged($event)" [selectOptions]="sortSelectOptions" [cancelText]="'BasicActions.Cancel' | translate" [okText]="'BasicActions.Ok' | translate">
+            <ion-option value="">{{'ElasticSearch.Relevance' | translate}}</ion-option>
+            <ion-option value="orig_date_certain.asc">{{'ElasticSearch.OldestFirst' | translate}}</ion-option>
+            <ion-option value="orig_date_certain.desc">{{'ElasticSearch.NewestFirst' | translate}}</ion-option>
+          </ion-select>
+        </ion-item>
+      </div>
+
       <!-- Add search field -->
       <!--
       <ion-row class="add-search-bar-wrapper">
@@ -147,18 +159,6 @@
             <h2 class="hits-heading">
               {{'ElasticSearch.LoadingError' | translate}}
             </h2>
-          </ion-col>
-
-          <!-- Sort by -->
-          <ion-col class="sort-by-wrapper" *ngIf="canShowHits() && total > 0" col-auto>
-            <ion-item>
-              <ion-label class="sort-by-label">{{'ElasticSearch.SortBy' | translate}}</ion-label>
-              <ion-select class="sort-by-select" [(ngModel)]="sort" (ionChange)="onSortByChanged($event)" [selectOptions]="sortSelectOptions" [cancelText]="'BasicActions.Cancel' | translate" [okText]="'BasicActions.Ok' | translate">
-                <ion-option value="">{{'ElasticSearch.Relevance' | translate}}</ion-option>
-                <ion-option value="orig_date_certain.asc">{{'ElasticSearch.OldestFirst' | translate}}</ion-option>
-                <ion-option value="orig_date_certain.desc">{{'ElasticSearch.NewestFirst' | translate}}</ion-option>
-              </ion-select>
-            </ion-item>
           </ion-col>
         </ion-row>
 
