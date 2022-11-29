@@ -5,7 +5,7 @@ date-histogram {
   ion-col.year-input-col {
     max-width: 130px;
   }
-  ion-row.year-input-row:first-child ion-item.year-input {
+  ion-row.year-input-row .year-input-col:first-child ion-item.year-input {
     margin-left: auto;
   }
   ion-col.year-input-col-dash {

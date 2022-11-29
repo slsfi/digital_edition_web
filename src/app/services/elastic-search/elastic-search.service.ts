@@ -394,6 +394,7 @@ export class ElasticSearchService {
             filtered.filter.bool.filter.push({
               terms: {
                 [this.getAggregationField(groupKey)]: selectedFacetKeys,
+                order: { _key: "asc" }
               }
             })
           }
