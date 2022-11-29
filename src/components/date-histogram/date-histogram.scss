@@ -1,4 +1,10 @@
 date-histogram {
+  ion-row.year-input-row {
+    justify-content: flex-end;
+  }
+  ion-col.year-input-col {
+    max-width: 130px;
+  }
   ion-item.year-input.item.input-has-focus:last-child,
   ion-item.year-input.item.item-input.input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child {
     border-bottom-color: var(--elastic-search-date-histogram-year-bar-color);
@@ -11,6 +17,13 @@ date-histogram {
   ion-item.year-input {
     &.item.item-block {
       border-bottom-color: #555;
+      max-width: 100px;
+
+
+      input.text-input {
+        margin-right: 0;
+        width: 100%;
+      }
     }
 
     .label {

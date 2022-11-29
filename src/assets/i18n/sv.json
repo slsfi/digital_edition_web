@@ -277,7 +277,7 @@
     "ElasticSearch": {
         "PageTitle": "Sök",
         "NoHits": "Sökningen gav inga svar.",
-        "Found": "Antal texter med sökträffar:",
+        "Found": "Texter med sökträffar:",
         "SearchField": "Lägg till sökfält",
         "From": "Från",
         "To": "Till",
