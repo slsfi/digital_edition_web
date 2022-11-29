@@ -68,7 +68,8 @@ page-elastic-search {
   ion-row.search-row {
     display: flex;
     flex-wrap: nowrap;
-    align-items: center;
+    align-items: flex-start;
+    align-content: flex-start;
     width: 100%;
     margin: 1.25rem 0 0.5rem 0;
   }
