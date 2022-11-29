@@ -23,7 +23,7 @@
       </div>
 
       <!-- Sort by -->
-      <div class="sort-by-wrapper" *ngIf="canShowHits() && total > 0">
+      <div class="sort-by-wrapper" *ngIf="showSortOptions">
         <ion-item>
           <ion-label class="sort-by-label"><ion-icon class="sort-icon" name="arrow-round-down"></ion-icon></ion-label>
           <ion-select class="sort-by-select" [(ngModel)]="sort" (ionChange)="onSortByChanged($event)" [selectOptions]="sortSelectOptions" [cancelText]="'BasicActions.Cancel' | translate" [okText]="'BasicActions.Ok' | translate">
@@ -93,7 +93,7 @@
           </ion-item>
 
           <!-- Special facet for date histogram aggregation -->
-          <ion-item class="date-histogram-wrapper" *ngIf="elastic.isDateHistogramAggregation('Years')">
+          <ion-item class="date-histogram-wrapper" *ngIf="showYearFacet && elastic.isDateHistogramAggregation('Years')">
             <ion-label>
               <p class="years-heading">{{'ElasticSearch.Years' | translate}}</p>
               <date-histogram [years]="getFacets('Years')" [change]="onRangeChange.bind(this)"></date-histogram>

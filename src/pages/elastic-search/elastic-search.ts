@@ -100,6 +100,9 @@ export class ElasticSearchPage {
   showAllFacets = false;
   showAllFor = {};
 
+  showSortOptions = true;
+  showYearFacet = true;
+
   // -1 when there a search hasn't returned anything yet.
   total = -1;
   from = 0;
@@ -144,6 +147,16 @@ export class ElasticSearchPage {
       this.groupsOpenByDefault = this.config.getSettings('ElasticSearch.groupOpenByDefault');
     } catch (e) {
       console.error('Failed to load set facet groups open by default. Configuration error.', e);
+    }
+    try {
+      this.showSortOptions = this.config.getSettings('ElasticSearch.show.sortOptions');
+    } catch (e) {
+      this.showSortOptions = true;
+    }
+    try {
+      this.showYearFacet = this.config.getSettings('ElasticSearch.show.yearFacet');
+    } catch (e) {
+      this.showYearFacet = true;
     }
 
     this.languageSubscription = null;
