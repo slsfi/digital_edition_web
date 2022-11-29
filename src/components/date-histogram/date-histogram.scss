@@ -5,6 +5,9 @@ date-histogram {
   ion-col.year-input-col {
     max-width: 130px;
   }
+  ion-row.year-input-row:first-child ion-item.year-input {
+    margin-left: auto;
+  }
   ion-col.year-input-col-dash {
     align-items: flex-end;
     width: fit-content;
@@ -42,11 +45,13 @@ date-histogram {
     &.item.item-block {
       border-bottom-color: #555;
       max-width: 100px;
+      padding-left: 10px;
 
 
       input.text-input {
         margin-right: 0;
         width: 100%;
+        min-width: 50px;
       }
     }
 
