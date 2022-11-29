@@ -276,15 +276,15 @@
     },
     "ElasticSearch": {
         "PageTitle": "Sök",
-        "NoHits": "Din sökning matchade inga dokument",
-        "Found": "Sökträffar:",
+        "NoHits": "Sökningen gav inga svar.",
+        "Found": "Antal texter med sökträffar:",
         "SearchField": "Lägg till sökfält",
         "From": "Från",
         "To": "Till",
         "Search": "Söktext",
         "ANDSearch": "söktext",
         "AND": "och",
-        "Years": "Gränsår",
+        "Years": "År",
         "ShowMore": "Visa mera",
         "ShowLess": "Visa mindre",
         "SortBy": "Sortera enligt",
@@ -298,7 +298,8 @@
         "ShowMoreHits": "Visa fler sökträffar",
         "ShowAllHitHighlights": "Visa alla träffar i texten",
         "LoadingError": "Ett fel har uppstått när sökträffarna skulle laddas.",
-        "CommentsHitHeadingPrepend": "Kommentar till"
+        "CommentsHitHeadingPrepend": "Kommentar till",
+        "FilterResults": "Avgränsa sökningen"
     },
     "Filter": {
         "personTypes": "Personkategori",

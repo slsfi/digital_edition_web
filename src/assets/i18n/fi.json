@@ -305,7 +305,8 @@
         "ShowMoreHits": "Näytä lisää hakutuloksia",
         "ShowAllHitHighlights": "Näytä tekstin kaikki osumat",
         "LoadingError": "Tapahtui virhe ladatessa hakutuloksia.",
-        "CommentsHitHeadingPrepend": "Kommentaari:"
+        "CommentsHitHeadingPrepend": "Kommentaari:",
+        "FilterResults": "Rajaa hakua"
     },
     "Type": "Tekstityyppi",
     "Genre": "Tekstilaji",

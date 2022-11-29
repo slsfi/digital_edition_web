@@ -146,15 +146,6 @@ export class ElasticSearchPage {
       console.error('Failed to load set facet groups open by default. Configuration error.', e);
     }
 
-    this.translate.get('ElasticSearch.SortBy').subscribe(
-      translation => {
-        this.sortSelectOptions = {
-          title: translation,
-          cssClass: 'custom-select-alert'
-        };
-      }, error => { }
-    );
-
     this.languageSubscription = null;
   }
 
@@ -234,6 +225,14 @@ export class ElasticSearchPage {
           this.getMdContent(language + '-12-01');
         });
       }
+      this.translate.get('ElasticSearch.SortBy').subscribe(
+        translation => {
+          this.sortSelectOptions = {
+            title: translation,
+            cssClass: 'custom-select-alert'
+          };
+        }, error => { }
+      );
     });
   }
 

@@ -89,7 +89,7 @@
         <!-- List of facet groups -->
         <ion-list class="facet-group-wrapper">
           <ion-item class="facet-header">
-            <h2>Begränsa sökningen</h2>
+            <h2>{{'ElasticSearch.FilterResults' | translate}}</h2>
           </ion-item>
 
           <!-- Special facet for date histogram aggregation -->
@@ -114,11 +114,11 @@
                     <ng-container *ngFor="let facet of getFacets(facetGroupKey); let j = index">
                       <ion-item id="facet-{{facetGroupKey}}" *ngIf="showAllFor[facetGroupKey] || j < 10" class="facet">
                           <ion-label text-wrap *ngIf="facetGroupKey === 'Type'">
-                            {{facet.key | translate}} ({{facet.doc_count}})
+                            {{facet.key | translate}} <span class="facetDocCount">({{facet.doc_count}})</span>
                           </ion-label>
                           <ion-label text-wrap *ngIf="facetGroupKey !== 'Type'">
                             {{facet.key_as_string || facet.key}}
-                            ({{facet.doc_count}})
+                            <span class="facetDocCount">({{facet.doc_count}})</span>
                           </ion-label>
                           <ion-checkbox [(ngModel)]="facet.selected" (click)="updateFacet(facetGroupKey, facet)" [disabled]="facet.doc_count === 0 && facetGroupKey !== 'Type'"></ion-checkbox>
                       </ion-item>

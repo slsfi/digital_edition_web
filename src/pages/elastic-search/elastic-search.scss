@@ -75,23 +75,21 @@ page-elastic-search {
   }
 
   ion-row.facet-and-hits-area-row {
+    gap: 22px;
     padding: 1.5rem 0 2rem 0;
   }
 
   ion-col.facet-column {
     max-width: 400px;
     min-width: 280px;
-    margin-right: 12px;
-    padding-left: 0;
-    padding-top: 0;
+    padding: 0;
   }
 
   ion-col.search-result-column {
     width: 100%;
     max-width: 1000px;
     flex-grow: 2;
-    padding-top: 0;
-    padding-right: 0;
+    padding: 0;
   }
   
   ion-icon.settings-icon.icon {
@@ -341,7 +339,7 @@ page-elastic-search {
     .sort-by-label {
       flex: 0;
       margin: 0;
-      padding: 9px 6px 8px 9px;
+      padding: 4px 0 3px 8px;
       border-top-left-radius: 3px;
       border-bottom-left-radius: 3px;
       border: 1px solid var(--elastic-search-facet-border-color);
@@ -349,6 +347,10 @@ page-elastic-search {
       background-color: var(--elastic-search-facet-background-color);
       color: #6e6e6e;
       transition: all 0.4s;
+
+      ion-icon.sort-icon {
+        font-size: 1.5em;
+      }
     }
 
     .sort-by-select {
@@ -536,6 +538,11 @@ page-elastic-search {
       .facet {
         padding: 0;
         align-items: flex-start;
+
+        .facetDocCount {
+          font-size: 0.875em;
+          color: #686868;
+        }
       }
 
       ion-label {

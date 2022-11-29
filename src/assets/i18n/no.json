@@ -267,7 +267,8 @@
         "ShowMoreHits": "Visa fler sökträffar",
         "ShowAllHitHighlights": "Visa alla träffar i texten",
         "LoadingError": "Ett fel har uppstått när sökträffarna skulle laddas.",
-        "CommentsHitHeadingPrepend": "Kommentar till"
+        "CommentsHitHeadingPrepend": "Kommentar till",
+        "FilterResults": "Begränsa sökningen"
     },
     "est": "Lästext",
     "ms": "Manuskript",
