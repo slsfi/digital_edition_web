@@ -102,6 +102,8 @@ export class ElasticSearchPage {
 
   showSortOptions = true;
   showYearFacet = true;
+  prependPubNameToMsName = true;
+  prependPubNameToVarName = true;
 
   facetsToggledInMobileMode = false;
 
@@ -159,6 +161,16 @@ export class ElasticSearchPage {
       this.showYearFacet = this.config.getSettings('ElasticSearch.show.yearFacet');
     } catch (e) {
       this.showYearFacet = true;
+    }
+    try {
+      this.prependPubNameToMsName = this.config.getSettings('ElasticSearch.show.prependPubNameToMsName');
+    } catch (e) {
+      this.prependPubNameToMsName = true;
+    }
+    try {
+      this.prependPubNameToVarName = this.config.getSettings('ElasticSearch.show.prependPubNameToVarName');
+    } catch (e) {
+      this.prependPubNameToVarName = true;
     }
 
     this.languageSubscription = null;
@@ -729,11 +741,35 @@ export class ElasticSearchPage {
     return get(source, 'publication_data[0].pubname');
   }
 
+  getManuscriptName(source: any) {
+    return get(source, 'ms_data[0].name');
+  }
+
+  getVariantName(source: any) {
+    return get(source, 'var_data[0].name');
+  }
+
   getHiglightedPublicationName(highlight: any) {
     if (highlight['publication_data.pubname']) {
       return highlight['publication_data.pubname'][0];
     } else {
-      return undefined;
+      return '';
+    }
+  }
+
+  getHiglightedMsName(highlight: any) {
+    if (highlight['ms_data.name']) {
+      return highlight['ms_data.name'][0];
+    } else {
+      return '';
+    }
+  }
+
+  getHiglightedVarName(highlight: any) {
+    if (highlight['var_data.name']) {
+      return highlight['var_data.name'][0];
+    } else {
+      return '';
     }
   }
 
@@ -813,20 +849,44 @@ export class ElasticSearchPage {
 
   getHeading(hit: any) {
     /* If a match is found in the publication name, return it from the highlights. Otherwise from the data. */
-    let publication_name = undefined;
+    let publication_name = '';
     if (hit.highlight) {
       publication_name = this.getHiglightedPublicationName(hit.highlight);
     }
-    if (publication_name) {
-      return publication_name;
-    } else {
+    if (!publication_name) {
       publication_name = this.getPublicationName(hit.source);
-      if (publication_name) {
-        return publication_name;
-      } else {
-        return this.getTitle(hit.source);
+      if (!publication_name) {
+        publication_name = this.getTitle(hit.source);
       }
     }
+    if (hit.source.xml_type === 'ms') {
+      let ms_name = '';
+      if (hit.highlight) {
+        ms_name = this.getHiglightedMsName(hit.highlight);
+      }
+      if (!ms_name) {
+        ms_name = this.getManuscriptName(hit.source);
+      }
+      if (ms_name && this.prependPubNameToMsName) {
+        publication_name = publication_name + ', ' + ms_name;
+      } else if (ms_name) {
+        publication_name = ms_name;
+      }
+    } else if (hit.source.xml_type === 'var') {
+      let var_name = '';
+      if (hit.highlight) {
+        var_name = this.getHiglightedVarName(hit.highlight);
+      }
+      if (!var_name) {
+        var_name = this.getVariantName(hit.source);
+      }
+      if (var_name && this.prependPubNameToVarName) {
+        publication_name = publication_name + ', ' + var_name;
+      } else if (var_name) {
+        publication_name = var_name;
+      }
+    }
+    return publication_name;
   }
 
   getSubHeading(source) {
