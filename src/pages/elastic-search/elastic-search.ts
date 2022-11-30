@@ -641,8 +641,6 @@ export class ElasticSearchPage {
     // Get aggregation keys that are ordered in config.json.
     this.elastic.getAggregationKeys().forEach(facetGroupKey => {
       const newFacets = this.convertAggregationsToFacets(aggregations[facetGroupKey]);
-      this.facetGroups[facetGroupKey] = newFacets;
-      /*
       if (this.facetGroups[facetGroupKey]) {
         Object.entries(this.facetGroups[facetGroupKey]).forEach(([facetKey, existingFacet]: [string, any]) => {
           const newFacet = newFacets[facetKey];
@@ -665,7 +663,7 @@ export class ElasticSearchPage {
       } else {
         this.facetGroups[facetGroupKey] = newFacets;
       }
-      */
+      console.log(Object.entries(this.facetGroups[facetGroupKey]));
       /*
       console.log('facetGroupKey', facetGroupKey);
       console.log('this.facetGroups[facetGroupKey]', this.facetGroups[facetGroupKey]);
