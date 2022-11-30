@@ -587,7 +587,7 @@ export class ElasticSearchPage {
   getFacets(facetGroupKey: string): Facet[] {
     const facets = this.facetGroups[facetGroupKey];
     if (facets) {
-      if (facetGroupKey === 'Type') {
+      if (facetGroupKey !== 'Years') {
         let keys = [];
         let facetsAsArray = [];
         for (let key in facets) {      
