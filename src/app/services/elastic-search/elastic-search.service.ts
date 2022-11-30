@@ -328,9 +328,6 @@ export class ElasticSearchService {
         payload.query.function_score.query.bool.filter.push({
           terms: {
             [this.aggregations[facetGroupKey].terms.field]: terms,
-            order: {
-              _key: "asc"
-            }
           }
         })
       }
@@ -397,6 +394,9 @@ export class ElasticSearchService {
             filtered.filter.bool.filter.push({
               terms: {
                 [this.getAggregationField(groupKey)]: selectedFacetKeys,
+                order: {
+                  _key: "asc"
+                }
               }
             })
           }
