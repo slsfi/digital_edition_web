@@ -243,7 +243,7 @@ export class ReadTextComponent {
             this.storage.set(this.estID, processedText);
           }
 
-          processedText = this.insertSearchMatchTags(processedText);
+          processedText = this.commonFunctions.insertSearchMatchTags(processedText, this.matches);
           this.text = this.sanitizer.bypassSecurityTrustHtml(processedText);
         }
       },
