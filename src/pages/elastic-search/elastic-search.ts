@@ -600,8 +600,8 @@ export class ElasticSearchPage {
         }
         console.log('Object.values(facets)', Object.values(facets));
         console.log('facetsAsArray', facetsAsArray);
-        this.sortArrayOfObjectsNumerically(facetsAsArray, 'doc_count');
-        console.log('sorted facetsAsArray', facetsAsArray);
+        // this.sortArrayOfObjectsNumerically(facetsAsArray, 'doc_count');
+        // console.log('sorted facetsAsArray', facetsAsArray);
       }
       return Object.values(facets);
     } else {
