@@ -663,6 +663,7 @@ export class ElasticSearchPage {
       } else {
         this.facetGroups[facetGroupKey] = newFacets;
       }
+      console.log('this.facetGroups[facetGroupKey]', this.facetGroups[facetGroupKey]);
     });
   }
 
