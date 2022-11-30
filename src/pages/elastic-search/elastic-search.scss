@@ -500,6 +500,12 @@ page-elastic-search {
   }
 
   .facet-group-wrapper {
+    button.showFacetsButton {
+      height: 1.875rem !important;
+      font-size: 0.8125rem;
+      margin: 10px 4px 16px 29px;
+    }
+
     ion-item.item {
       background-color: var(--elastic-search-facet-background-color);
     }

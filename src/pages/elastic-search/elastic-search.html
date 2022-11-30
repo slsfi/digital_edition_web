@@ -88,14 +88,9 @@
 
         <!-- List of facet groups -->
         <ion-list class="facet-group-wrapper">
-          <ion-item *ngIf="userSettingsService.isMobile()">
-            <button
-                (click)="toggleFacetsColumn()"
-                class="showFacetsButton"
-                ion-button small>
-                {{'ElasticSearch.ShowFacets' | translate}}
-              </button>
-          </ion-item>
+          <button *ngIf="userSettingsService.isMobile()" class="showFacetsButton" (click)="toggleFacetsColumn()" ion-button small>
+              {{'ElasticSearch.ShowFacets' | translate}}
+            </button>
 
           <ion-item class="facet-header">
             <h2>{{'ElasticSearch.FilterResults' | translate}}</h2>
