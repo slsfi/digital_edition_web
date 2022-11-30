@@ -793,7 +793,7 @@ export class ElasticSearchPage {
       path = path + 'publication/' + source.collection_id;
       path = path + '/text/' + source.publication_id;
       path = path + '/nochapter/not/infinite/nosong/';
-      path = path + 'searchtitle' + '/';
+      path = path + encodeURIComponent(this.queries[0]) + '/';
     }
 
     if (source.xml_type === 'est') {

@@ -28,8 +28,8 @@
           <ion-label class="sort-by-label"><ion-icon class="sort-icon" name="arrow-round-down"></ion-icon></ion-label>
           <ion-select class="sort-by-select" [(ngModel)]="sort" (ionChange)="onSortByChanged($event)" [selectOptions]="sortSelectOptions" [cancelText]="'BasicActions.Cancel' | translate" [okText]="'BasicActions.Ok' | translate">
             <ion-option value="">{{'ElasticSearch.Relevance' | translate}}</ion-option>
-            <ion-option value="orig_date_certain.asc">{{'ElasticSearch.OldestFirst' | translate}}</ion-option>
-            <ion-option value="orig_date_certain.desc">{{'ElasticSearch.NewestFirst' | translate}}</ion-option>
+            <ion-option value="orig_date_sort.asc">{{'ElasticSearch.OldestFirst' | translate}}</ion-option>
+            <ion-option value="orig_date_sort.desc">{{'ElasticSearch.NewestFirst' | translate}}</ion-option>
           </ion-select>
         </ion-item>
       </div>
