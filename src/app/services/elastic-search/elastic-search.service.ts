@@ -329,7 +329,7 @@ export class ElasticSearchService {
           terms: {
             [this.aggregations[facetGroupKey].terms.field]: terms,
             order: {
-              "_key": "asc"
+              _key: "asc"
             }
           }
         })
