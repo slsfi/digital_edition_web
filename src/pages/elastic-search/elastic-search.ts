@@ -18,6 +18,7 @@ import { noUndefined } from '@angular/compiler/src/util';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MdContentService } from '../../app/services/md/md-content.service';
+import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
 import { Subscription } from 'rxjs/Subscription';
 
 /*
@@ -138,7 +139,8 @@ export class ElasticSearchPage {
     private userSettingsService: UserSettingsService,
     private events: Events,
     private cf: ChangeDetectorRef,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    public commonFunctions: CommonFunctionsService
   ) {
     console.log('constructing elastic search');
 
@@ -604,17 +606,17 @@ export class ElasticSearchPage {
     const facets = this.facetGroups[facetGroupKey];
     if (facets) {
       if (facetGroupKey !== 'Years') {
-        let keys = [];
-        let facetsAsArray = [];
-        for (let key in facets) {      
+        const keys = [];
+        const facetsAsArray = [];
+        for (const key in facets) {
           if (facets.hasOwnProperty(key)) {
             keys.push(key);
           }
         }
-        for (let i = 0; i < keys.length; i++) { 
+        for (let i = 0; i < keys.length; i++) {
           facetsAsArray.push(facets[keys[i]]);
         }
-        this.sortArrayOfObjectsNumerically(facetsAsArray, 'doc_count');
+        this.commonFunctions.sortArrayOfObjectsNumerically(facetsAsArray, 'doc_count');
         return facetsAsArray;
       } else {
         return Object.values(facets);
@@ -700,20 +702,6 @@ export class ElasticSearchPage {
         this.facetGroups[facetGroupKey] = newFacets;
       }
     });
-  }
-
-  sortArrayOfObjectsNumerically(arrayToSort: any, fieldToSortOn: string) {
-    if (Array.isArray(arrayToSort)) {
-      arrayToSort.sort((a, b) => {
-        if (a[fieldToSortOn] > b[fieldToSortOn]) {
-          return -1;
-        }
-        if (a[fieldToSortOn] < b[fieldToSortOn]) {
-          return 1;
-        }
-        return 0;
-      });
-    }
   }
 
   /**

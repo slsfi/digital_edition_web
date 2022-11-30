@@ -48,8 +48,6 @@ export class CommonFunctionsService {
 
   /**
    * Function for sorting an array of objects alphabetically ascendingly based on the given object key (field).
-   * @param arrayToSort
-   * @param fieldToSortOn
    */
   sortArrayOfObjectsAlphabetically(arrayToSort: any, fieldToSortOn: string) {
     if (Array.isArray(arrayToSort)) {
@@ -60,6 +58,23 @@ export class CommonFunctionsService {
           return -1;
         }
         if (fieldA > fieldB) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+  }
+
+  /**
+   * Function for sorting an array of objects numerically descendingly based on the given object key (field).
+   */
+  sortArrayOfObjectsNumerically(arrayToSort: any, fieldToSortOn: string) {
+    if (Array.isArray(arrayToSort)) {
+      arrayToSort.sort((a, b) => {
+        if (a[fieldToSortOn] > b[fieldToSortOn]) {
+          return -1;
+        }
+        if (a[fieldToSortOn] < b[fieldToSortOn]) {
           return 1;
         }
         return 0;
@@ -186,6 +201,26 @@ export class CommonFunctionsService {
       }
     }
     return names_str;
+  }
+
+
+  /**
+   * TODO: The regex doesn't work if the match string in the text is interspersed with tags.
+   * For instance, in the text the match could have a span indicating page break:
+   * Tavast<span class="tei pb_zts">|87|</span>länningar. This occurrence will not be marked
+   * with <match> tags in a search for "Tavastlänningar". However, these kind of matches are
+   * found on the elastic-search page.
+   */
+  insertSearchMatchTags(text: string, matches: string[]) {
+    if (matches instanceof Array && matches.length > 0) {
+      matches.forEach((val) => {
+        if (val) {
+          const re = new RegExp('(' + val + ')', 'ig');
+          text = text.replace(re, '<match>$1</match>');
+        }
+      });
+    }
+    return text;
   }
 
 }
