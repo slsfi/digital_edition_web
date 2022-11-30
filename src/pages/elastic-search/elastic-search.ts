@@ -376,6 +376,7 @@ export class ElasticSearchPage {
   onFacetsChanged() {
     this.cf.detectChanges();
     this.reset();
+    this.loading = true;
     this.debouncedSearch();
   }
 
@@ -663,7 +664,12 @@ export class ElasticSearchPage {
       } else {
         this.facetGroups[facetGroupKey] = newFacets;
       }
-      console.log(Object.entries(this.facetGroups[facetGroupKey]));
+      if (facetGroupKey === 'Type') {
+        let facetsAsArray = Object.entries(this.facetGroups[facetGroupKey]);
+        console.log('facetsAsArray', facetsAsArray);
+        this.sortArrayOfObjectsNumerically(facetsAsArray, 'doc_count');
+        console.log('sorted facetsAsArray', facetsAsArray);
+      }
       /*
       console.log('facetGroupKey', facetGroupKey);
       console.log('this.facetGroups[facetGroupKey]', this.facetGroups[facetGroupKey]);
@@ -672,6 +678,20 @@ export class ElasticSearchPage {
     /*
     console.log('this.facetGroups', this.facetGroups);
     */
+  }
+
+  sortArrayOfObjectsNumerically(arrayToSort: any, fieldToSortOn: string) {
+    if (Array.isArray(arrayToSort)) {
+      arrayToSort.sort((a, b) => {
+        if (a[fieldToSortOn] > b[fieldToSortOn]) {
+          return -1;
+        }
+        if (a[fieldToSortOn] < b[fieldToSortOn]) {
+          return 1;
+        }
+        return 0;
+      });
+    }
   }
 
   /**
