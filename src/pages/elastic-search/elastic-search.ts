@@ -586,7 +586,25 @@ export class ElasticSearchPage {
 
   getFacets(facetGroupKey: string): Facet[] {
     const facets = this.facetGroups[facetGroupKey];
-    return facets ? Object.values(facets) : [];
+    if (facets) {
+      if (facetGroupKey === 'Type') {
+        let keys = [];
+        let facetsAsArray = [];
+        for (let key in facets) {      
+          if (facets.hasOwnProperty(key)) {
+            keys.push(key);
+          }
+        }
+        for (let i = 0; i < keys.length; i++) { 
+          facetsAsArray.push(facets[keys[i]]);
+        }
+        console.log('Object.values(facets)', Object.values(facets));
+        console.log('facetsAsArray', facetsAsArray);
+      }
+      return Object.values(facets);
+    } else {
+      return [];
+    }
   }
 
   /**
@@ -664,7 +682,9 @@ export class ElasticSearchPage {
       } else {
         this.facetGroups[facetGroupKey] = newFacets;
       }
+      /*
       if (facetGroupKey === 'Type') {
+        console.log('this.facetGroups[facetGroupKey]', this.facetGroups[facetGroupKey]);
         let facetsAsArray = [];
         let keys = [];
         for (let key in this.facetGroups[facetGroupKey]) {      
@@ -682,6 +702,7 @@ export class ElasticSearchPage {
           console.log('sorted facetsAsArray', facetsAsArray);
         }, 3000);
       }
+      */
       /*
       console.log('facetGroupKey', facetGroupKey);
       console.log('this.facetGroups[facetGroupKey]', this.facetGroups[facetGroupKey]);
