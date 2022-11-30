@@ -103,6 +103,8 @@ export class ElasticSearchPage {
   showSortOptions = true;
   showYearFacet = true;
 
+  facetsToggledInMobileMode = false;
+
   // -1 when there a search hasn't returned anything yet.
   total = -1;
   from = 0;
@@ -918,5 +920,9 @@ export class ElasticSearchPage {
     if (parentElem !== null) {
       parentElem.classList.add('hiddenButton');
     }
+  }
+
+  toggleFacetsColumn() {
+    this.facetsToggledInMobileMode = !this.facetsToggledInMobileMode;
   }
 }

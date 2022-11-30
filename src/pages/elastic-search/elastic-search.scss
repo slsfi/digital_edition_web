@@ -83,6 +83,10 @@ page-elastic-search {
     max-width: 400px;
     min-width: 280px;
     padding: 0;
+
+    &.hide-facet-column {
+      display: none;
+    }
   }
 
   ion-col.search-result-column {
@@ -503,7 +507,7 @@ page-elastic-search {
     button.showFacetsButton {
       height: 1.875rem !important;
       font-size: 0.8125rem;
-      margin: 10px 4px 16px 29px;
+      margin: 0 1rem 1rem 0;
     }
 
     ion-item.item {

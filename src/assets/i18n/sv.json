@@ -299,7 +299,9 @@
         "ShowAllHitHighlights": "Visa alla träffar i texten",
         "LoadingError": "Ett fel har uppstått när sökträffarna skulle laddas.",
         "CommentsHitHeadingPrepend": "Kommentar till",
-        "FilterResults": "Avgränsa sökningen"
+        "FilterResults": "Avgränsa sökningen",
+        "ShowFacets": "Visa avgränsningar",
+        "HideFacets": "Dölj avgränsningar"
     },
     "Filter": {
         "personTypes": "Personkategori",

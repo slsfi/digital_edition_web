@@ -63,10 +63,15 @@
         </div>
       </ng-container>
     </ion-row>
+    <ion-row *ngIf="userSettingsService.isMobile()">
+      <button class="showFacetsButton" (click)="toggleFacetsColumn()" ion-button small>
+        <ng-container *ngIf="!facetsToggledInMobileMode">{{'ElasticSearch.ShowFacets' | translate}}</ng-container>
+        <ng-container *ngIf="facetsToggledInMobileMode">{{'ElasticSearch.HideFacets' | translate}}</ng-container>
+      </button>
+    </ion-row>
     <ion-row class="facet-and-hits-area-row">
       <!--  Search fields -->
-      <ion-col class="facet-column">
-
+      <ion-col class="facet-column" [class.hide-facet-column]="userSettingsService.isMobile() && !facetsToggledInMobileMode">
         <!-- Suggested facets -->
         <!--
         <ion-row *ngIf="hasSuggestedFacets()" class="selectedFacetGroups">
@@ -88,10 +93,6 @@
 
         <!-- List of facet groups -->
         <ion-list class="facet-group-wrapper">
-          <button *ngIf="userSettingsService.isMobile()" class="showFacetsButton" (click)="toggleFacetsColumn()" ion-button small>
-              {{'ElasticSearch.ShowFacets' | translate}}
-            </button>
-
           <ion-item class="facet-header">
             <h2>{{'ElasticSearch.FilterResults' | translate}}</h2>
           </ion-item>

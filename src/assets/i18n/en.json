@@ -263,7 +263,9 @@
         "ShowAllHitHighlights": "Show all hits in the text",
         "LoadingError": "An error occurred while loading the search results.",
         "CommentsHitHeadingPrepend": "Commentary to",
-        "FilterResults": "Filter results"
+        "FilterResults": "Filter results",
+        "ShowFacets": "Show filters",
+        "HideFacets": "Hide filters"
     },
     "MediaCollections": {
         "MediaCollections": "Faksimilsamlingar",
