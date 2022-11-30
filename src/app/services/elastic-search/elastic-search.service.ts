@@ -20,20 +20,46 @@ export class ElasticSearchService {
   constructor(private http: Http, private config: ConfigService) {
     // Should fail if config is missing.
     try {
-      this.apiEndpoint = this.config.getSettings('app.apiEndpoint')
-      this.machineName = this.config.getSettings('app.machineName')
-      this.indices = this.config.getSettings('ElasticSearch.indices')
-      this.source = this.config.getSettings('ElasticSearch.source')
-      this.aggregations = this.config.getSettings('ElasticSearch.aggregations')
-      this.suggestions = this.config.getSettings('ElasticSearch.suggestions')
+      this.apiEndpoint = this.config.getSettings('app.apiEndpoint');
+      this.machineName = this.config.getSettings('app.machineName');
+      this.indices = this.config.getSettings('ElasticSearch.indices');
+      this.aggregations = this.config.getSettings('ElasticSearch.aggregations');
     } catch (e) {
       console.error('Failed to load Elastic Search Service. Configuration error.', e.message)
       throw e
     }
-    this.source.push("collection_id");
+    // Add fields that should always be returned in hits
+    this.source = [
+      'xml_type',
+      'path',
+      'titleIndexed',
+      'collection_id',
+      'publication_id',
+      'publication_data',
+      'ms_data',
+      'var_data',
+      'orig_date_year',
+      'orig_date_certain'
+    ];
+
+    // Add additional fields that should be returned in hits from config file
+    try {
+      const configSourceFields = this.config.getSettings('ElasticSearch.source');
+      if (configSourceFields !== undefined && configSourceFields.length > 0) {
+        // Append additional fields to this.source if not already present
+        for (let i = 0; i < configSourceFields.length; i++) {
+          if (!this.source.includes(configSourceFields[i])) {
+            this.source.push(configSourceFields[i]);
+          }
+        }
+      }
+    } catch (e) {
+    }
+
     // Should not fail if config is missing.
     try {
-      this.fixedFilters = this.config.getSettings('ElasticSearch.fixedFilters')
+      this.fixedFilters = this.config.getSettings('ElasticSearch.fixedFilters');
+      this.suggestions = this.config.getSettings('ElasticSearch.suggestions');
     } catch (e) {
       console.error('Failed to load Elastic Search Service. Configuration error.', e.message)
     }
@@ -103,23 +129,23 @@ export class ElasticSearchService {
           },
           functions: [
             {
-              filter: { term: { "xml_type.keyword": "est" } }, 
+              filter: { term: { 'xml_type.keyword': 'est' } },
               weight: 10
             },
             {
-              filter: { term: { "xml_type.keyword": "inl" } }, 
+              filter: { term: { 'xml_type.keyword': 'inl' } },
               weight: 8
             },
             {
-              filter: { term: { "xml_type.keyword": "com" } }, 
+              filter: { term: { 'xml_type.keyword': 'com' } },
               weight: 2
             },
             {
-              filter: { term: { "xml_type.keyword": "ms" } }, 
+              filter: { term: { 'xml_type.keyword': 'ms' } },
               weight: 2
             }
           ],
-          score_mode: "sum",
+          score_mode: 'sum',
         }
       },
       sort,
@@ -131,7 +157,7 @@ export class ElasticSearchService {
         payload.query.function_score.query.bool.must.push({
           simple_query_string: {
             query,
-            fields: ["textDataIndexed", "publication_data.pubname^5"]
+            fields: ['textDataIndexed', 'publication_data.pubname^5', 'ms_data.name^3', 'var_data.name^3']
           }
         })
       }
@@ -146,7 +172,7 @@ export class ElasticSearchService {
     if (range) {
       payload.query.function_score.query.bool.must.push({
         range: {
-          orig_date_certain: {
+          orig_date_sort: {
             gte: range.from,
             lte: range.to,
           }
@@ -188,23 +214,23 @@ export class ElasticSearchService {
           },
           functions: [
             {
-              filter: { term: { "xml_type.keyword": "est" } }, 
+              filter: { term: { 'xml_type.keyword': 'est' } },
               weight: 6
             },
             {
-              filter: { term: { "xml_type.keyword": "inl" } }, 
+              filter: { term: { 'xml_type.keyword': 'inl' } },
               weight: 4
             },
             {
-              filter: { term: { "xml_type.keyword": "com" } }, 
+              filter: { term: { 'xml_type.keyword': 'com' } },
               weight: 1
             },
             {
-              filter: { term: { "xml_type.keyword": "ms" } }, 
+              filter: { term: { 'xml_type.keyword': 'ms' } },
               weight: 1
             }
           ],
-          score_mode: "sum",
+          score_mode: 'sum',
         }
       },
     }
@@ -215,7 +241,7 @@ export class ElasticSearchService {
         payload.query.function_score.query.bool.must.push({
           simple_query_string: {
             query,
-            fields: ["textDataIndexed", "publication_data.pubname^5"]
+            fields: ['textDataIndexed', 'publication_data.pubname^5', 'ms_data.name^3', 'var_data.name^3']
           }
         })
       }
@@ -375,7 +401,7 @@ export class ElasticSearchService {
     if (range && !aggregation.date_histogram) {
       filtered.filter.bool.filter.push({
         range: {
-          orig_date_certain: {
+          orig_date_sort: {
             gte: range.from,
             lte: range.to,
           }

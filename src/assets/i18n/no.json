@@ -264,7 +264,13 @@
         "NoWordHits": "inga träffar",
         "NoFacetOptions": "Inga sökord",
         "Suggestions": "Förslag på filtrering",
-        "ShowMoreHits": "Visa fler sökträffar"
+        "ShowMoreHits": "Visa fler sökträffar",
+        "ShowAllHitHighlights": "Visa alla träffar i texten",
+        "LoadingError": "Ett fel har uppstått när sökträffarna skulle laddas.",
+        "CommentsHitHeadingPrepend": "Kommentar till",
+        "FilterResults": "Begränsa sökningen",
+        "ShowFacets": "Visa avgränsningar",
+        "HideFacets": "Dölj avgränsningar"
     },
     "est": "Lästext",
     "ms": "Manuskript",

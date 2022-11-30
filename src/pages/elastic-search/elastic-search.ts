@@ -18,6 +18,7 @@ import { noUndefined } from '@angular/compiler/src/util';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MdContentService } from '../../app/services/md/md-content.service';
+import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
 import { Subscription } from 'rxjs/Subscription';
 
 /*
@@ -100,6 +101,13 @@ export class ElasticSearchPage {
   showAllFacets = false;
   showAllFor = {};
 
+  showSortOptions = true;
+  showYearFacet = true;
+  prependPubNameToMsName = true;
+  prependPubNameToVarName = true;
+
+  facetsToggledInMobileMode = false;
+
   // -1 when there a search hasn't returned anything yet.
   total = -1;
   from = 0;
@@ -131,7 +139,8 @@ export class ElasticSearchPage {
     private userSettingsService: UserSettingsService,
     private events: Events,
     private cf: ChangeDetectorRef,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    public commonFunctions: CommonFunctionsService
   ) {
     console.log('constructing elastic search');
 
@@ -145,15 +154,26 @@ export class ElasticSearchPage {
     } catch (e) {
       console.error('Failed to load set facet groups open by default. Configuration error.', e);
     }
-
-    this.translate.get('ElasticSearch.SortBy').subscribe(
-      translation => {
-        this.sortSelectOptions = {
-          title: translation,
-          cssClass: 'custom-select-alert'
-        };
-      }, error => { }
-    );
+    try {
+      this.showSortOptions = this.config.getSettings('ElasticSearch.show.sortOptions');
+    } catch (e) {
+      this.showSortOptions = true;
+    }
+    try {
+      this.showYearFacet = this.config.getSettings('ElasticSearch.show.yearFacet');
+    } catch (e) {
+      this.showYearFacet = true;
+    }
+    try {
+      this.prependPubNameToMsName = this.config.getSettings('ElasticSearch.show.prependPubNameToMsName');
+    } catch (e) {
+      this.prependPubNameToMsName = true;
+    }
+    try {
+      this.prependPubNameToVarName = this.config.getSettings('ElasticSearch.show.prependPubNameToVarName');
+    } catch (e) {
+      this.prependPubNameToVarName = true;
+    }
 
     this.languageSubscription = null;
   }
@@ -234,6 +254,14 @@ export class ElasticSearchPage {
           this.getMdContent(language + '-12-01');
         });
       }
+      this.translate.get('ElasticSearch.SortBy').subscribe(
+        translation => {
+          this.sortSelectOptions = {
+            title: translation,
+            cssClass: 'custom-select-alert'
+          };
+        }, error => { }
+      );
     });
   }
 
@@ -262,6 +290,7 @@ export class ElasticSearchPage {
     }
   }
 
+  /*
   open(hit) {
     this.events.publish('searchHitOpened', hit);
     const params = { tocItem: null, fetch: true, collection: { title: hit.source.TitleIndexed } };
@@ -336,6 +365,7 @@ export class ElasticSearchPage {
       this.app.getRootNav().push('read', params);
     }
   }
+  */
 
   /**
    * https://stackoverflow.com/questions/46991497/how-properly-bind-an-array-with-ngmodel-in-angular-4
@@ -348,7 +378,7 @@ export class ElasticSearchPage {
    * Triggers a new search and clears selected facets.
    */
   onQueryChange() {
-    this.autoExpandSearchfields();
+    // this.autoExpandSearchfields();
     this.reset();
     this.loading = true;
     this.debouncedSearch();
@@ -356,11 +386,13 @@ export class ElasticSearchPage {
   }
 
   /**
-   * Triggers a new search with selected facets.
+   * Triggers a new search with selected facets. Use debounced search to wait for additional facets
+   * being selected.
    */
   onFacetsChanged() {
     this.cf.detectChanges();
     this.reset();
+    this.loading = true;
     this.search();
   }
 
@@ -371,6 +403,7 @@ export class ElasticSearchPage {
     if (from && to) {
       // Certain date range
       this.range = {from, to};
+      console.log('year range: ', this.range);
 
       this.cf.detectChanges();
       this.reset();
@@ -422,8 +455,10 @@ export class ElasticSearchPage {
       queries: this.queries,
       highlight: {
         fields: {
-          "textDataIndexed": { number_of_fragments: 1000, fragment_size: 150, type: "fvh", boundary_scanner: "sentence" },
-          "publication_data.pubname": { number_of_fragments: 0, type: "plain" },
+          'textDataIndexed': { number_of_fragments: 1000, fragment_size: 150, type: 'fvh', boundary_scanner: 'sentence' },
+          'publication_data.pubname': { number_of_fragments: 0, type: 'plain' },
+          'ms_data.name': { number_of_fragments: 0, type: 'plain' },
+          'var_data.name': { number_of_fragments: 0, type: 'plain' },
         },
       },
       from: this.from,
@@ -569,7 +604,26 @@ export class ElasticSearchPage {
 
   getFacets(facetGroupKey: string): Facet[] {
     const facets = this.facetGroups[facetGroupKey];
-    return facets ? Object.values(facets) : [];
+    if (facets) {
+      if (facetGroupKey !== 'Years') {
+        const keys = [];
+        const facetsAsArray = [];
+        for (const key in facets) {
+          if (facets.hasOwnProperty(key)) {
+            keys.push(key);
+          }
+        }
+        for (let i = 0; i < keys.length; i++) {
+          facetsAsArray.push(facets[keys[i]]);
+        }
+        this.commonFunctions.sortArrayOfObjectsNumerically(facetsAsArray, 'doc_count');
+        return facetsAsArray;
+      } else {
+        return Object.values(facets);
+      }
+    } else {
+      return [];
+    }
   }
 
   /**
@@ -677,11 +731,35 @@ export class ElasticSearchPage {
     return get(source, 'publication_data[0].pubname');
   }
 
+  getManuscriptName(source: any) {
+    return get(source, 'ms_data[0].name');
+  }
+
+  getVariantName(source: any) {
+    return get(source, 'var_data[0].name');
+  }
+
   getHiglightedPublicationName(highlight: any) {
-    if (highlight["publication_data.pubname"]) {
-      return highlight["publication_data.pubname"][0];
+    if (highlight['publication_data.pubname']) {
+      return highlight['publication_data.pubname'][0];
     } else {
-      return undefined;
+      return '';
+    }
+  }
+
+  getHiglightedMsName(highlight: any) {
+    if (highlight['ms_data.name']) {
+      return highlight['ms_data.name'][0];
+    } else {
+      return '';
+    }
+  }
+
+  getHiglightedVarName(highlight: any) {
+    if (highlight['var_data.name']) {
+      return highlight['var_data.name'][0];
+    } else {
+      return '';
     }
   }
 
@@ -705,36 +783,100 @@ export class ElasticSearchPage {
   hasDate(source: any) {
     const dateData = get(source, 'publication_data[0].original_publication_date', source.orig_date_certain);
     if (dateData === undefined || dateData === null || dateData === '') {
-      return false;
+      if (source.orig_date_year !== undefined && source.orig_date_year !== null && source.orig_date_year !== '') {
+        return true;
+      } else {
+        return false;
+      }
     } else {
       return true;
     }
   }
 
   private getDate(source: any) {
-    return get(source, 'publication_data[0].original_publication_date', this.formatISO8601DateToLocale(source.orig_date_certain));
+    let date = get(source, 'publication_data[0].original_publication_date', this.formatISO8601DateToLocale(source.orig_date_certain));
+    if ((date === undefined || date === '' || date === null)
+    && source.orig_date_year !== undefined && source.orig_date_year !== null && source.orig_date_year !== '') {
+      date = source.orig_date_year;
+    }
+    return date;
   }
 
   private filterEmpty(array: any[]) {
     return array.filter(str => str).join(', ');
   }
 
+  getHitHref(source: any) {
+    let path = '/#/';
+
+    if (source.xml_type === 'tit') {
+      path = path + 'publication-title/' + source.collection_id;
+    } else if (source.xml_type === 'fore') {
+      path = path + 'publication-foreword/' + source.collection_id;
+    } else if (source.xml_type === 'inl') {
+      path = path + 'publication-introduction/' + source.collection_id;
+    } else {
+      path = path + 'publication/' + source.collection_id;
+      path = path + '/text/' + source.publication_id;
+      path = path + '/nochapter/not/infinite/nosong/';
+      path = path + encodeURIComponent(this.queries[0]) + '/';
+    }
+
+    if (source.xml_type === 'est') {
+      path = path + 'established';
+    } else if (source.xml_type === 'com') {
+      path = path + 'comments';
+    } else if (source.xml_type === 'ms') {
+      path = path + 'manuscripts';
+    } else if (source.xml_type === 'var') {
+      path = path + 'variations';
+    } else {
+      path = path + 'established';
+    }
+
+    return path;
+  }
+
   getHeading(hit: any) {
     /* If a match is found in the publication name, return it from the highlights. Otherwise from the data. */
-    let publication_name = undefined;
+    let publication_name = '';
     if (hit.highlight) {
       publication_name = this.getHiglightedPublicationName(hit.highlight);
     }
-    if (publication_name) {
-      return publication_name;
-    } else {
+    if (!publication_name) {
       publication_name = this.getPublicationName(hit.source);
-      if (publication_name) {
-        return publication_name;
-      } else {
-        return this.getTitle(hit.source);
+      if (!publication_name) {
+        publication_name = this.getTitle(hit.source);
       }
     }
+    if (hit.source.xml_type === 'ms') {
+      let ms_name = '';
+      if (hit.highlight) {
+        ms_name = this.getHiglightedMsName(hit.highlight);
+      }
+      if (!ms_name) {
+        ms_name = this.getManuscriptName(hit.source);
+      }
+      if (ms_name && this.prependPubNameToMsName) {
+        publication_name = publication_name + ', ' + ms_name;
+      } else if (ms_name) {
+        publication_name = ms_name;
+      }
+    } else if (hit.source.xml_type === 'var') {
+      let var_name = '';
+      if (hit.highlight) {
+        var_name = this.getHiglightedVarName(hit.highlight);
+      }
+      if (!var_name) {
+        var_name = this.getVariantName(hit.source);
+      }
+      if (var_name && this.prependPubNameToVarName) {
+        publication_name = publication_name + ', ' + var_name;
+      } else if (var_name) {
+        publication_name = var_name;
+      }
+    }
+    return publication_name;
   }
 
   getSubHeading(source) {
@@ -744,7 +886,7 @@ export class ElasticSearchPage {
     ]);
   }
 
-  getEllipsisString(str: string, max = 15) {
+  getEllipsisString(str: string, max = 50) {
     if (!str || str.length <= max) {
       return str;
     } else {
@@ -759,7 +901,7 @@ export class ElasticSearchPage {
     arrow.classList.toggle('rotate');
 
     if (arrow.classList.contains('open')) {
-      facet.style.height = '0px';
+      facet.style.height = '0';
       arrow.classList.add('closed');
       arrow.classList.remove('open');
     } else {
@@ -803,5 +945,34 @@ export class ElasticSearchPage {
         text => { this.mdContent = text.content; },
         error => { this.mdContent = ''; }
       );
+  }
+
+  showAllHitHighlights(event: any) {
+    // Find and show all hidden highlights
+    let parentElem = event.target.parentElement as HTMLElement;
+    while (parentElem !== null && !parentElem.classList.contains('matchHighlights')) {
+      parentElem = parentElem.parentElement;
+    }
+
+    if (parentElem !== null) {
+      const highlightElems = parentElem.querySelectorAll('.hiddenHighlight');
+      for (let i = 0; i < highlightElems.length; i++) {
+        highlightElems[i].classList.remove('hiddenHighlight');
+      }
+    }
+
+    // Find and hide the button that triggered the event
+    parentElem = event.target.parentElement as HTMLElement;
+    while (parentElem !== null && !parentElem.classList.contains('showAllHitHighlights')) {
+      parentElem = parentElem.parentElement;
+    }
+
+    if (parentElem !== null) {
+      parentElem.classList.add('hiddenButton');
+    }
+  }
+
+  toggleFacetsColumn() {
+    this.facetsToggledInMobileMode = !this.facetsToggledInMobileMode;
   }
 }
