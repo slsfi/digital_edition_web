@@ -423,6 +423,8 @@ page-elastic-search {
       }
       ion-item.item.item-block.item-md.facet:hover {
         color: var(--button-background-color);
+      }
+      ion-item.item.item-block.item-md.facet:hover .facetKeyName {
         text-decoration: underline;
       }
       ion-item.item.item-block.item-md.facet.item-checkbox-checked {

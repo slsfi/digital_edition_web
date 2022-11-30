@@ -114,10 +114,10 @@
                     <ng-container *ngFor="let facet of getFacets(facetGroupKey); let j = index">
                       <ion-item id="facet-{{facetGroupKey}}" *ngIf="showAllFor[facetGroupKey] || j < 10" class="facet">
                           <ion-label text-wrap *ngIf="facetGroupKey === 'Type'">
-                            {{facet.key | translate}} <span class="facetDocCount">({{facet.doc_count}})</span>
+                            <span class="facetKeyName">{{facet.key | translate}}</span> <span class="facetDocCount">({{facet.doc_count}})</span>
                           </ion-label>
                           <ion-label text-wrap *ngIf="facetGroupKey !== 'Type'">
-                            {{facet.key_as_string || facet.key}}
+                            <span class="facetKeyName">{{facet.key_as_string || facet.key}}</span>
                             <span class="facetDocCount">({{facet.doc_count}})</span>
                           </ion-label>
                           <ion-checkbox [(ngModel)]="facet.selected" (click)="updateFacet(facetGroupKey, facet)" [disabled]="facet.doc_count === 0 && facetGroupKey !== 'Type'"></ion-checkbox>
