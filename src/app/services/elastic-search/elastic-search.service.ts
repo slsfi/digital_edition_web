@@ -20,11 +20,10 @@ export class ElasticSearchService {
   constructor(private http: Http, private config: ConfigService) {
     // Should fail if config is missing.
     try {
-      this.apiEndpoint = this.config.getSettings('app.apiEndpoint')
-      this.machineName = this.config.getSettings('app.machineName')
-      this.indices = this.config.getSettings('ElasticSearch.indices')
-      this.aggregations = this.config.getSettings('ElasticSearch.aggregations')
-      this.suggestions = this.config.getSettings('ElasticSearch.suggestions')
+      this.apiEndpoint = this.config.getSettings('app.apiEndpoint');
+      this.machineName = this.config.getSettings('app.machineName');
+      this.indices = this.config.getSettings('ElasticSearch.indices');
+      this.aggregations = this.config.getSettings('ElasticSearch.aggregations');
     } catch (e) {
       console.error('Failed to load Elastic Search Service. Configuration error.', e.message)
       throw e
@@ -32,18 +31,14 @@ export class ElasticSearchService {
     // Add fields that should always be returned in hits
     this.source = [
       'xml_type',
-      'TitleIndexed',
-      'publication_data',
-      'publication_locations',
-      'publication_subjects',
-      'publication_tags',
-      'publication_id',
       'path',
-      'name',
+      'titleIndexed',
       'collection_id',
-      'collection_name',
+      'publication_id',
+      'publication_data',
+      'ms_data',
+      'var_data',
       'orig_date_year',
-      'orig_date_year_uncertain',
       'orig_date_certain'
     ];
 
@@ -63,7 +58,8 @@ export class ElasticSearchService {
 
     // Should not fail if config is missing.
     try {
-      this.fixedFilters = this.config.getSettings('ElasticSearch.fixedFilters')
+      this.fixedFilters = this.config.getSettings('ElasticSearch.fixedFilters');
+      this.suggestions = this.config.getSettings('ElasticSearch.suggestions');
     } catch (e) {
       console.error('Failed to load Elastic Search Service. Configuration error.', e.message)
     }
@@ -161,7 +157,7 @@ export class ElasticSearchService {
         payload.query.function_score.query.bool.must.push({
           simple_query_string: {
             query,
-            fields: ['textDataIndexed', 'publication_data.pubname^5']
+            fields: ['textDataIndexed', 'publication_data.pubname^5', 'ms_data.name^3', 'var_data.name^3']
           }
         })
       }
@@ -176,7 +172,7 @@ export class ElasticSearchService {
     if (range) {
       payload.query.function_score.query.bool.must.push({
         range: {
-          orig_date_certain: {
+          orig_date_sort: {
             gte: range.from,
             lte: range.to,
           }
@@ -245,7 +241,7 @@ export class ElasticSearchService {
         payload.query.function_score.query.bool.must.push({
           simple_query_string: {
             query,
-            fields: ['textDataIndexed', 'publication_data.pubname^5']
+            fields: ['textDataIndexed', 'publication_data.pubname^5', 'ms_data.name^3', 'var_data.name^3']
           }
         })
       }
@@ -405,7 +401,7 @@ export class ElasticSearchService {
     if (range && !aggregation.date_histogram) {
       filtered.filter.bool.filter.push({
         range: {
-          orig_date_certain: {
+          orig_date_sort: {
             gte: range.from,
             lte: range.to,
           }
