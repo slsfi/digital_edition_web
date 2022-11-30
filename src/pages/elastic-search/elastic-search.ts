@@ -370,12 +370,13 @@ export class ElasticSearchPage {
   }
 
   /**
-   * Triggers a new search with selected facets.
+   * Triggers a new search with selected facets. Use debounced search to wait for additional facets
+   * being selected.
    */
   onFacetsChanged() {
     this.cf.detectChanges();
     this.reset();
-    this.search();
+    this.debouncedSearch();
   }
 
   /**
