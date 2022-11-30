@@ -151,12 +151,12 @@ export class ElasticSearchPage {
     try {
       this.showSortOptions = this.config.getSettings('ElasticSearch.show.sortOptions');
     } catch (e) {
-      this.showSortOptions = false;
+      this.showSortOptions = true;
     }
     try {
       this.showYearFacet = this.config.getSettings('ElasticSearch.show.yearFacet');
     } catch (e) {
-      this.showYearFacet = false;
+      this.showYearFacet = true;
     }
 
     this.languageSubscription = null;
@@ -274,6 +274,7 @@ export class ElasticSearchPage {
     }
   }
 
+  /*
   open(hit) {
     this.events.publish('searchHitOpened', hit);
     const params = { tocItem: null, fetch: true, collection: { title: hit.source.TitleIndexed } };
@@ -348,6 +349,7 @@ export class ElasticSearchPage {
       this.app.getRootNav().push('read', params);
     }
   }
+  */
 
   /**
    * https://stackoverflow.com/questions/46991497/how-properly-bind-an-array-with-ngmodel-in-angular-4
