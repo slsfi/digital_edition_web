@@ -471,7 +471,7 @@ page-elastic-search {
 
       .selectedFacetGroupTitle {
         font-size: 1em;
-        margin: 0.75em 0 0 1em;
+        margin: 0.75em 0 0 0.5em;
       }
 
       ul {
@@ -503,13 +503,13 @@ page-elastic-search {
     }
   }
 
-  .facet-group-wrapper {
-    button.showFacetsButton {
-      height: 1.875rem !important;
-      font-size: 0.8125rem;
-      margin: 0 1rem 1rem 0;
-    }
+  button.showFacetsButton {
+    height: 1.875rem !important;
+    font-size: 0.8125rem;
+    margin: 0 1rem 1rem 0;
+  }
 
+  .facet-group-wrapper {
     ion-item.item {
       background-color: var(--elastic-search-facet-background-color);
     }
