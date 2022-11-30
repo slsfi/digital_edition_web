@@ -598,12 +598,11 @@ export class ElasticSearchPage {
         for (let i = 0; i < keys.length; i++) { 
           facetsAsArray.push(facets[keys[i]]);
         }
-        console.log('Object.values(facets)', Object.values(facets));
-        console.log('facetsAsArray', facetsAsArray);
-        // this.sortArrayOfObjectsNumerically(facetsAsArray, 'doc_count');
-        // console.log('sorted facetsAsArray', facetsAsArray);
+        this.sortArrayOfObjectsNumerically(facetsAsArray, 'doc_count');
+        return facetsAsArray;
+      } else {
+        return Object.values(facets);
       }
-      return Object.values(facets);
     } else {
       return [];
     }
