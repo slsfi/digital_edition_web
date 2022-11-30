@@ -677,8 +677,10 @@ export class ElasticSearchPage {
           facetsAsArray.push(this.facetGroups[facetGroupKey][keys[i]])
         }
         console.log('facetsAsArray', facetsAsArray);
-        this.sortArrayOfObjectsNumerically(facetsAsArray, 'doc_count');
-        console.log('sorted facetsAsArray', facetsAsArray);
+        setTimeout(() => {
+          this.sortArrayOfObjectsNumerically(facetsAsArray, 'doc_count');
+          console.log('sorted facetsAsArray', facetsAsArray);
+        }, 3000);
       }
       /*
       console.log('facetGroupKey', facetGroupKey);
