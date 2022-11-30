@@ -377,7 +377,7 @@ export class ElasticSearchPage {
     this.cf.detectChanges();
     this.reset();
     this.loading = true;
-    this.debouncedSearch();
+    this.search();
   }
 
   /**
@@ -683,35 +683,7 @@ export class ElasticSearchPage {
       } else {
         this.facetGroups[facetGroupKey] = newFacets;
       }
-      /*
-      if (facetGroupKey === 'Type') {
-        console.log('this.facetGroups[facetGroupKey]', this.facetGroups[facetGroupKey]);
-        let facetsAsArray = [];
-        let keys = [];
-        for (let key in this.facetGroups[facetGroupKey]) {      
-          if (this.facetGroups[facetGroupKey].hasOwnProperty(key)) {
-            keys.push(key);
-          }
-        }
-        for (let i = 0; i < keys.length; i++) { 
-          // console.log(keys[i], this.facetGroups[facetGroupKey][keys[i]]);
-          facetsAsArray.push(this.facetGroups[facetGroupKey][keys[i]])
-        }
-        console.log('facetsAsArray', facetsAsArray);
-        setTimeout(() => {
-          this.sortArrayOfObjectsNumerically(facetsAsArray, 'doc_count');
-          console.log('sorted facetsAsArray', facetsAsArray);
-        }, 3000);
-      }
-      */
-      /*
-      console.log('facetGroupKey', facetGroupKey);
-      console.log('this.facetGroups[facetGroupKey]', this.facetGroups[facetGroupKey]);
-      */
     });
-    /*
-    console.log('this.facetGroups', this.facetGroups);
-    */
   }
 
   sortArrayOfObjectsNumerically(arrayToSort: any, fieldToSortOn: string) {
