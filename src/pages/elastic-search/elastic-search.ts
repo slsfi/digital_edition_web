@@ -151,12 +151,12 @@ export class ElasticSearchPage {
     try {
       this.showSortOptions = this.config.getSettings('ElasticSearch.show.sortOptions');
     } catch (e) {
-      this.showSortOptions = true;
+      this.showSortOptions = false;
     }
     try {
       this.showYearFacet = this.config.getSettings('ElasticSearch.show.yearFacet');
     } catch (e) {
-      this.showYearFacet = true;
+      this.showYearFacet = false;
     }
 
     this.languageSubscription = null;
