@@ -455,6 +455,8 @@ export class ElasticSearchPage {
         fields: {
           'textDataIndexed': { number_of_fragments: 1000, fragment_size: 150, type: 'unified', boundary_scanner: 'sentence' },
           'publication_data.pubname': { number_of_fragments: 0, type: 'plain' },
+          'ms_data.name': { number_of_fragments: 0, type: 'plain' },
+          'var_data.name': { number_of_fragments: 0, type: 'plain' },
         },
       },
       from: this.from,
