@@ -465,13 +465,13 @@ page-elastic-search {
     .selectedFacetGroup {
       display: inline-flex;
       justify-content: flex-start;
-      align-items: center;
+      align-items: flex-start;
       gap: 0.5em;
       font-size: 1rem;
 
       .selectedFacetGroupTitle {
         font-size: 1em;
-        margin: 0 0 0 1em;
+        margin: 0.75em 0 0 1em;
       }
 
       ul {
