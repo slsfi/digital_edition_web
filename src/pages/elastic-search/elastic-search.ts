@@ -831,8 +831,6 @@ export class ElasticSearchPage {
       path = path + 'manuscripts';
     } else if (source.xml_type === 'var') {
       path = path + 'variations';
-    } else {
-      path = path + 'established';
     }
 
     return path;
