@@ -293,7 +293,7 @@ export class ElasticSearchPage {
   /*
   open(hit) {
     this.events.publish('searchHitOpened', hit);
-    const params = { tocItem: null, fetch: true, collection: { title: hit.source.TitleIndexed } };
+    const params = { tocItem: null, fetch: true, collection: { title: hit.source.titleIndexed } };
     const path = hit.source.path;
     const filename = path.split('/').pop();
 
@@ -769,7 +769,7 @@ export class ElasticSearchPage {
 
   // Returns the title from the xml title element in the teiHeader
   getTitle(source: any) {
-    return (source.TitleIndexed || source.name || '').trim();
+    return (source.titleIndexed || source.name || '').trim();
   }
 
   getGenre(source: any) {
