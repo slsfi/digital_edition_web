@@ -455,7 +455,7 @@ export class ElasticSearchPage {
       queries: this.queries,
       highlight: {
         fields: {
-          'textDataIndexed': { number_of_fragments: 1000, fragment_size: 150, type: 'fvh', boundary_scanner: 'sentence' },
+          'textDataIndexed': { number_of_fragments: 1000, fragment_size: 150, type: 'fvh' },
           'publication_data.pubname': { number_of_fragments: 0, type: 'plain' },
           'ms_data.name': { number_of_fragments: 0, type: 'plain' },
           'var_data.name': { number_of_fragments: 0, type: 'plain' },
