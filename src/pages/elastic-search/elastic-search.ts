@@ -102,9 +102,10 @@ export class ElasticSearchPage {
   showAllFor = {};
 
   showSortOptions = true;
-  showYearFacet = true;
   prependPubNameToMsName = true;
   prependPubNameToVarName = true;
+
+  disableFacetCheckboxes = false;
 
   facetsToggledInMobileMode = false;
 
@@ -160,11 +161,6 @@ export class ElasticSearchPage {
       this.showSortOptions = true;
     }
     try {
-      this.showYearFacet = this.config.getSettings('ElasticSearch.show.yearFacet');
-    } catch (e) {
-      this.showYearFacet = true;
-    }
-    try {
       this.prependPubNameToMsName = this.config.getSettings('ElasticSearch.show.prependPubNameToMsName');
     } catch (e) {
       this.prependPubNameToMsName = true;
@@ -202,7 +198,7 @@ export class ElasticSearchPage {
               const facetListType = <HTMLElement>document.querySelector('.facetList-' + facetGroup);
               try {
                 facetListType.style.height = '100%';
-                const facetArrowType = <HTMLElement>document.querySelector('#arrow-1');
+                const facetArrowType = <HTMLElement>document.querySelector('#arrow-' + facetGroup);
                 facetArrowType.classList.add('open', 'rotate');
               } catch ( e ) {
 
@@ -214,7 +210,7 @@ export class ElasticSearchPage {
               const facetListGenre = <HTMLElement>document.querySelector('.facetList-' + facetGroup);
               try {
                 facetListGenre.style.height = '100%';
-                const facetArrowGenre = <HTMLElement>document.querySelector('#arrow-2');
+                const facetArrowGenre = <HTMLElement>document.querySelector('#arrow-' + facetGroup);
                 facetArrowGenre.classList.add('open', 'rotate');
               } catch ( e ) {
 
@@ -226,7 +222,7 @@ export class ElasticSearchPage {
               const facetListCollection = <HTMLElement>document.querySelector('.facetList-' + facetGroup);
               try {
                 facetListCollection.style.height = '100%';
-                const facetArrowCollection = <HTMLElement>document.querySelector('#arrow-3');
+                const facetArrowCollection = <HTMLElement>document.querySelector('#arrow-' + facetGroup);
                 facetArrowCollection.classList.add('open', 'rotate');
               } catch ( e ) {
 
@@ -386,10 +382,10 @@ export class ElasticSearchPage {
   }
 
   /**
-   * Triggers a new search with selected facets. Use debounced search to wait for additional facets
-   * being selected.
+   * Triggers a new search with selected facets.
    */
   onFacetsChanged() {
+    this.disableFacetCheckboxes = true;
     this.cf.detectChanges();
     this.reset();
     this.loading = true;
@@ -515,12 +511,17 @@ export class ElasticSearchPage {
       queries: this.queries,
       facetGroups: this.facetGroups,
       range: this.range,
-    })
-    .subscribe((data: any) => {
-      console.log('aggregation data', data);
-
-      this.populateFacets(data.aggregations);
-    });
+    }).subscribe(
+      (data: any) => {
+        console.log('aggregation data', data);
+        this.disableFacetCheckboxes = false;
+        this.populateFacets(data.aggregations);
+      },
+      error => {
+        this.disableFacetCheckboxes = false;
+        console.error('Error fetching aggregations', error);
+      }
+    );
 
     // Fetch suggestions
     /*

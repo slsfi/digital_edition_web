@@ -417,11 +417,19 @@ export class ElasticSearchService {
   }
 
   isDateHistogramAggregation(aggregationKey: string): boolean {
-    return !!this.aggregations[aggregationKey]['date_histogram']
+    if (this.aggregations[aggregationKey] !== undefined) {
+      return !!this.aggregations[aggregationKey]['date_histogram'];
+    } else {
+      return false;
+    }
   }
 
   isTermsAggregation(aggregationKey: string): boolean {
-    return !!this.aggregations[aggregationKey]['terms']
+    if (this.aggregations[aggregationKey] !== undefined) {
+      return !!this.aggregations[aggregationKey]['terms'];
+    } else {
+      return false;
+    }
   }
 
   getAggregationKeys(): string[] {
