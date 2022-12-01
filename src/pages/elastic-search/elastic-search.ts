@@ -102,9 +102,10 @@ export class ElasticSearchPage {
   showAllFor = {};
 
   showSortOptions = true;
-  showYearFacet = true;
   prependPubNameToMsName = true;
   prependPubNameToVarName = true;
+
+  disableFacetCheckboxes = false;
 
   facetsToggledInMobileMode = false;
 
@@ -158,11 +159,6 @@ export class ElasticSearchPage {
       this.showSortOptions = this.config.getSettings('ElasticSearch.show.sortOptions');
     } catch (e) {
       this.showSortOptions = true;
-    }
-    try {
-      this.showYearFacet = this.config.getSettings('ElasticSearch.show.yearFacet');
-    } catch (e) {
-      this.showYearFacet = true;
     }
     try {
       this.prependPubNameToMsName = this.config.getSettings('ElasticSearch.show.prependPubNameToMsName');
@@ -386,10 +382,10 @@ export class ElasticSearchPage {
   }
 
   /**
-   * Triggers a new search with selected facets. Use debounced search to wait for additional facets
-   * being selected.
+   * Triggers a new search with selected facets.
    */
   onFacetsChanged() {
+    this.disableFacetCheckboxes = true;
     this.cf.detectChanges();
     this.reset();
     this.loading = true;
@@ -518,7 +514,7 @@ export class ElasticSearchPage {
     })
     .subscribe((data: any) => {
       console.log('aggregation data', data);
-
+      this.disableFacetCheckboxes = false;
       this.populateFacets(data.aggregations);
     });
 
