@@ -511,12 +511,17 @@ export class ElasticSearchPage {
       queries: this.queries,
       facetGroups: this.facetGroups,
       range: this.range,
-    })
-    .subscribe((data: any) => {
-      console.log('aggregation data', data);
-      this.disableFacetCheckboxes = false;
-      this.populateFacets(data.aggregations);
-    });
+    }).subscribe(
+      (data: any) => {
+        console.log('aggregation data', data);
+        this.disableFacetCheckboxes = false;
+        this.populateFacets(data.aggregations);
+      },
+      error => {
+        this.disableFacetCheckboxes = false;
+        console.error('Error fetching aggregations', error);
+      }
+    );
 
     // Fetch suggestions
     /*
