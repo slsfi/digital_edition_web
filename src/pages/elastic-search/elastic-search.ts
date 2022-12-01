@@ -202,7 +202,7 @@ export class ElasticSearchPage {
               const facetListType = <HTMLElement>document.querySelector('.facetList-' + facetGroup);
               try {
                 facetListType.style.height = '100%';
-                const facetArrowType = <HTMLElement>document.querySelector('#arrow-1');
+                const facetArrowType = <HTMLElement>document.querySelector('#arrow-' + facetGroup);
                 facetArrowType.classList.add('open', 'rotate');
               } catch ( e ) {
 
@@ -214,7 +214,7 @@ export class ElasticSearchPage {
               const facetListGenre = <HTMLElement>document.querySelector('.facetList-' + facetGroup);
               try {
                 facetListGenre.style.height = '100%';
-                const facetArrowGenre = <HTMLElement>document.querySelector('#arrow-2');
+                const facetArrowGenre = <HTMLElement>document.querySelector('#arrow-' + facetGroup);
                 facetArrowGenre.classList.add('open', 'rotate');
               } catch ( e ) {
 
@@ -226,7 +226,7 @@ export class ElasticSearchPage {
               const facetListCollection = <HTMLElement>document.querySelector('.facetList-' + facetGroup);
               try {
                 facetListCollection.style.height = '100%';
-                const facetArrowCollection = <HTMLElement>document.querySelector('#arrow-3');
+                const facetArrowCollection = <HTMLElement>document.querySelector('#arrow-' + facetGroup);
                 facetArrowCollection.classList.add('open', 'rotate');
               } catch ( e ) {
 
