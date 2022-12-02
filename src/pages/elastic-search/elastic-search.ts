@@ -371,6 +371,17 @@ export class ElasticSearchPage {
   }
 
   /**
+   * Triggers a new search.
+   */
+  startSearchFromButton() {
+    this.disableFacetCheckboxes = true;
+    this.reset();
+    this.loading = true;
+    this.search();
+    this.cf.detectChanges();
+  }
+
+  /**
    * Triggers a new search and clears selected facets.
    */
   onQueryChange() {
@@ -401,17 +412,17 @@ export class ElasticSearchPage {
       this.range = {from, to};
       console.log('year range: ', this.range);
 
+      this.disableFacetCheckboxes = true;
       this.cf.detectChanges();
       this.reset();
       this.search();
-
     } else if (!from && !to) {
       // All time
       this.range = null;
+      this.disableFacetCheckboxes = true;
       this.cf.detectChanges();
       this.reset();
       this.search();
-
     } else {
       // Only one year selected, so do nothing
       this.range = null
@@ -422,6 +433,7 @@ export class ElasticSearchPage {
    * Sorting changed so trigger new query.
    */
   onSortByChanged() {
+    this.disableFacetCheckboxes = true;
     this.reset();
     this.search();
   }
@@ -451,7 +463,7 @@ export class ElasticSearchPage {
       queries: this.queries,
       highlight: {
         fields: {
-          'textDataIndexed': { number_of_fragments: 1000, fragment_size: 150, type: 'fvh' },
+          'textDataIndexed': { number_of_fragments: 1000, fragment_size: 150, type: 'unified' },
           'publication_data.pubname': { number_of_fragments: 0, type: 'plain' },
           'ms_data.name': { number_of_fragments: 0, type: 'plain' },
           'var_data.name': { number_of_fragments: 0, type: 'plain' },

@@ -17,9 +17,9 @@
           placeholder="{{i > 0 ? ('ElasticSearch.ANDSearch' | translate) : ('ElasticSearch.Search' | translate)}}"
           class="searchInput {{i > 0 ? 'removableSearchInput' : ''}}"
           [(ngModel)]="queries[i]"
-          (keyup)="onQueryChange()"
         />
         <ion-icon class="searchIcon" name="search"></ion-icon>
+        <button class="searchButton" (click)="startSearchFromButton()" ion-button>Sök</button>
       </div>
 
       <!-- Sort by -->
