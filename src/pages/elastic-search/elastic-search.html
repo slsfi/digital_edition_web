@@ -17,9 +17,10 @@
           placeholder="{{i > 0 ? ('ElasticSearch.ANDSearch' | translate) : ('ElasticSearch.Search' | translate)}}"
           class="searchInput {{i > 0 ? 'removableSearchInput' : ''}}"
           [(ngModel)]="queries[i]"
+          (keyup.enter)="initSearch()"
         />
-        <ion-icon *ngIf="queries[i]" class="clearSearchIcon" name="backspace"></ion-icon>
-        <button class="searchButton" (click)="startSearchFromButton()" ion-button>
+        <ion-icon *ngIf="queries[i]" class="clearSearchIcon" name="backspace" (click)="clearSearch()"></ion-icon>
+        <button class="searchButton" (click)="initSearch()" ion-button>
           <ion-icon class="searchIcon" name="search"></ion-icon>
         </button>
       </div>

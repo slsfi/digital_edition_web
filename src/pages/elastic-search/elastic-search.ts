@@ -373,12 +373,19 @@ export class ElasticSearchPage {
   /**
    * Triggers a new search.
    */
-  startSearchFromButton() {
+  initSearch() {
     this.disableFacetCheckboxes = true;
     this.reset();
     this.loading = true;
     this.search();
     this.cf.detectChanges();
+  }
+
+  clearSearch() {
+    this.queries.forEach(query => {
+      query = "";
+    });
+    this.initSearch();
   }
 
   /**
