@@ -383,7 +383,7 @@ export class ElasticSearchPage {
 
   clearSearch() {
     this.queries.forEach(query => {
-      query = "";
+      query = '';
     });
     this.initSearch();
   }
