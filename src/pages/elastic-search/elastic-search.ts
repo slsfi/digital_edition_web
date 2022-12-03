@@ -382,9 +382,10 @@ export class ElasticSearchPage {
   }
 
   clearSearch() {
-    this.queries.forEach(query => {
-      query = '';
-    });
+    for (let i = 0; i < this.queries.length; i++) {
+      this.queries[i] = '';
+    }
+    this.cf.detectChanges();
     this.initSearch();
   }
 
