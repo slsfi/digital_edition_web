@@ -588,10 +588,10 @@ page-elastic-search {
     font-size: 1rem;
     width: 100%;
     max-width: 600px;
+    position: relative;
 
     .searchInput {
       font-size: 1.25em !important;
-      text-indent: 28px;
       width: 100%;
       min-width: 250px;
       border-radius: 3px;
@@ -610,8 +610,8 @@ page-elastic-search {
 
     .searchButton {
       height: 2.375rem !important;
-      font-size: 0.8125rem;
-      margin: 0 0.625rem;
+      font-size: 0.625rem;
+      margin: 0 0.5rem;
       box-shadow: none;
     }
 
@@ -621,7 +621,15 @@ page-elastic-search {
     }
 
     ion-icon.searchIcon {
-      
+      font-size: 1.625rem;
+    }
+
+    ion-icon.clearSearchIcon {
+      font-size: 1.625rem;
+      color: #000;
+      position: absolute;
+      top: 0;
+      right: 4.5rem;
     }
   }
 
