@@ -18,8 +18,9 @@
           class="searchInput {{i > 0 ? 'removableSearchInput' : ''}}"
           [(ngModel)]="queries[i]"
         />
-        <ion-icon class="searchIcon" name="search"></ion-icon>
-        <button class="searchButton" (click)="startSearchFromButton()" ion-button>Sök</button>
+        <button class="searchButton" (click)="startSearchFromButton()" ion-button>
+          <ion-icon class="searchIcon" name="search"></ion-icon>
+        </button>
       </div>
 
       <!-- Sort by -->
