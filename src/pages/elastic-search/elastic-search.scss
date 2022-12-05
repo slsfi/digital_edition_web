@@ -597,7 +597,7 @@ page-elastic-search {
       padding: 6px 8px;
       border: 1px solid #b5b5b5;
       border-right: 0;
-      transition: all 0.4s;
+      transition: all 0.3s;
       height: 1.9em;
     }
     .searchInput:hover {
@@ -605,9 +605,9 @@ page-elastic-search {
     }
     .searchInput:focus {
       border-color: var(--button-background-color);
-      box-shadow: 0 0 0 3px rgba(var(--button-background-color-rgb), 0.2);
+      // box-shadow: 0 0 0 3px rgba(var(--button-background-color-rgb), 0.2);
       outline: 3px solid transparent;
-      clip-path: inset(-3px 0 -3px -3px);
+      // clip-path: inset(-3px 0 -3px -3px);
     }
 
     .searchButton {
@@ -618,9 +618,13 @@ page-elastic-search {
       border-radius: 0 3px 3px 0;
     }
 
-    .searchInput:focus + .searchButton {
-      box-shadow: 0 0 0 3px rgba(var(--button-background-color-rgb), 0.2);
-      clip-path: inset(-3px -3px -3px 0);
+    // .searchInput:focus + .searchButton {
+      // box-shadow: 0 0 0 3px rgba(var(--button-background-color-rgb), 0.2);
+      // clip-path: inset(-3px -3px -3px 0);
+    // }
+
+    .searchButton:hover {
+      filter: brightness(1.15);
     }
 
     .removableSearchInput {
