@@ -101,10 +101,11 @@ export class ElasticSearchPage {
 
   showAllFacets = false;
   showAllFor = {};
-
   showSortOptions = true;
   prependPubNameToMsName = true;
   prependPubNameToVarName = true;
+  textHighlightType = 'unified';
+  textHighlightFragmentSize = 150;
 
   disableFacetCheckboxes = false;
 
@@ -170,6 +171,20 @@ export class ElasticSearchPage {
       this.prependPubNameToVarName = this.config.getSettings('ElasticSearch.show.prependPubNameToVarName');
     } catch (e) {
       this.prependPubNameToVarName = true;
+    }
+    try {
+      this.textHighlightType = this.config.getSettings('ElasticSearch.textHighlightType');
+    } catch (e) {
+      this.textHighlightType = 'unified';
+    }
+    try {
+      this.textHighlightFragmentSize = this.config.getSettings('ElasticSearch.textHighlightFragmentSize');
+    } catch (e) {
+      this.textHighlightFragmentSize = 150;
+    }
+
+    if (this.textHighlightType !== 'fvh' && this.textHighlightType !== 'unified' && this.textHighlightType !== 'plain') {
+      this.textHighlightType = 'unified';
     }
 
     this.languageSubscription = null;
@@ -473,7 +488,7 @@ export class ElasticSearchPage {
       queries: this.queries,
       highlight: {
         fields: {
-          'textDataIndexed': { number_of_fragments: 1000, fragment_size: 150, type: 'unified' },
+          'textDataIndexed': { number_of_fragments: 1000, fragment_size: this.textHighlightFragmentSize, type: this.textHighlightType },
           'publication_data.pubname': { number_of_fragments: 0, type: 'plain' },
           'ms_data.name': { number_of_fragments: 0, type: 'plain' },
           'var_data.name': { number_of_fragments: 0, type: 'plain' },
@@ -488,11 +503,9 @@ export class ElasticSearchPage {
     .subscribe((data: any) => {
       if (data.hits === undefined) {
         console.error('Elastic search error, no hits: ', data);
-        this.loading = false;
         this.total = 0;
         this.elasticError = true;
       } else {
-        this.loading = false;
         this.total = data.hits.total.value;
         console.log('hits: ', data.hits);
 
@@ -522,6 +535,8 @@ export class ElasticSearchPage {
         }
         */
       }
+      this.loading = false;
+      this.disableFacetCheckboxes = false;
 
       if (done) {
         done();
@@ -536,11 +551,9 @@ export class ElasticSearchPage {
     }).subscribe(
       (data: any) => {
         console.log('aggregation data', data);
-        this.disableFacetCheckboxes = false;
         this.populateFacets(data.aggregations);
       },
       error => {
-        this.disableFacetCheckboxes = false;
         console.error('Error fetching aggregations', error);
       }
     );

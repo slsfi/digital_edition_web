@@ -607,9 +607,7 @@ page-elastic-search {
     }
     .searchInput:focus {
       border-color: var(--button-background-color);
-      // box-shadow: 0 0 0 3px rgba(var(--button-background-color-rgb), 0.2);
       outline: none;
-      // clip-path: inset(-3px 0 -3px -3px);
     }
 
     .searchButton {
@@ -621,11 +619,6 @@ page-elastic-search {
       border-radius: 0 3px 3px 0;
       transition: all 0.4s;
     }
-
-    // .searchInput:focus + .searchButton {
-      // box-shadow: 0 0 0 3px rgba(var(--button-background-color-rgb), 0.2);
-      // clip-path: inset(-3px -3px -3px 0);
-    // }
 
     .searchButton:hover {
       filter: brightness(1.15);
