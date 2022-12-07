@@ -90,6 +90,7 @@ export class ElasticSearchPage {
   showFilter = true;
   queries: string[] = [''];
   cleanQueries: string[] = [''];
+  currentQuery = '';
   hits: object[] = [];
   termData: object[] = [];
   hitsPerPage = 20;
@@ -375,6 +376,7 @@ export class ElasticSearchPage {
    */
   initSearch() {
     this.disableFacetCheckboxes = true;
+    this.currentQuery = this.queries[0];
     this.reset();
     this.loading = true;
     this.search();
@@ -385,12 +387,13 @@ export class ElasticSearchPage {
     for (let i = 0; i < this.queries.length; i++) {
       this.queries[i] = '';
     }
+    this.currentQuery = this.queries[0];
     this.cf.detectChanges();
     this.initSearch();
   }
 
   /**
-   * Triggers a new search and clears selected facets.
+   * Triggers a new search and clears suggested facets. DEPRECATED
    */
   onQueryChange() {
     // this.autoExpandSearchfields();
@@ -594,7 +597,7 @@ export class ElasticSearchPage {
   }
 
   canShowHits() {
-    return (!this.loading || this.infiniteLoading) && (this.queries[0] || this.range || this.hasSelectedFacets());
+    return (!this.loading || this.infiniteLoading) && (this.currentQuery || this.range || this.hasSelectedFacets());
   }
 
   hasSelectedFacets() {
