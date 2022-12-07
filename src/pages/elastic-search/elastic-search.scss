@@ -111,7 +111,6 @@ page-elastic-search {
 
   .info-toolbar {
     width: 100%;
-    flex-wrap: wrap;
     align-items: center;
   }
   .info-toolbar > div {
@@ -616,7 +615,7 @@ page-elastic-search {
       height: 2.375rem !important;
       min-width: 2.5rem;
       font-size: 0.625rem;
-      margin: 0 0.5rem 0 0;
+      margin: 0;
       box-shadow: none;
       border-radius: 0 3px 3px 0;
       transition: all 0.4s;
@@ -645,7 +644,7 @@ page-elastic-search {
       color: #555;
       position: absolute;
       top: 50%;
-      right: 3.75rem;
+      right: 3.25rem;
       transform: translate(0%, -50%);
       padding-top: 0.0625rem;
       cursor: pointer;

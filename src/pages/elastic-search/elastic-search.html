@@ -136,7 +136,7 @@
         </ion-list>
       </ion-col>
 
-      <ion-col class="search-result-column">
+      <ion-col class="search-result-column" *ngIf="total > -1">
         <ion-row class="info-toolbar">
           <!-- Show search results  -->
           <div *ngIf="canShowHits() && total > 0">
