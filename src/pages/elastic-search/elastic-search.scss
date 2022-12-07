@@ -92,6 +92,7 @@ page-elastic-search {
   ion-col.search-result-column {
     width: 100%;
     max-width: 1000px;
+    min-width: 50%;
     flex-grow: 2;
     padding: 0;
   }
@@ -648,6 +649,11 @@ page-elastic-search {
       transform: translate(0%, -50%);
       padding-top: 0.0625rem;
       cursor: pointer;
+      transition: all 0.4s;
+    }
+
+    ion-icon.clearSearchIcon:hover {
+      filter: brightness(1.5);
     }
   }
 
