@@ -25,18 +25,6 @@
         </button>
       </div>
 
-      <!-- Sort by -->
-      <div class="sort-by-wrapper" *ngIf="showSortOptions">
-        <ion-item>
-          <ion-label class="sort-by-label"><ion-icon class="sort-icon" name="arrow-round-down"></ion-icon></ion-label>
-          <ion-select class="sort-by-select" [(ngModel)]="sort" (ionChange)="onSortByChanged($event)" [selectOptions]="sortSelectOptions" [cancelText]="'BasicActions.Cancel' | translate" [okText]="'BasicActions.Ok' | translate">
-            <ion-option value="">{{'ElasticSearch.Relevance' | translate}}</ion-option>
-            <ion-option value="orig_date_sort.asc">{{'ElasticSearch.OldestFirst' | translate}}</ion-option>
-            <ion-option value="orig_date_sort.desc">{{'ElasticSearch.NewestFirst' | translate}}</ion-option>
-          </ion-select>
-        </ion-item>
-      </div>
-
       <!-- Add search field -->
       <!--
       <ion-row class="add-search-bar-wrapper">
@@ -151,20 +139,31 @@
       <ion-col class="search-result-column">
         <ion-row class="info-toolbar">
           <!-- Show search results  -->
-          <ion-col *ngIf="canShowHits() && total > 0" push-col-3>
+          <ion-col *ngIf="canShowHits() && total > 0">
             <h2 class="hits-heading">
               {{'ElasticSearch.Found' | translate}} {{total}}
             </h2>
           </ion-col>
-          <ion-col *ngIf="canShowHits() && total === 0 && !elasticError" col-auto>
+          <ion-col *ngIf="canShowHits() && total === 0 && !elasticError">
             <h2 class="hits-heading">
               {{'ElasticSearch.NoHits' | translate}}
             </h2>
           </ion-col>
-          <ion-col *ngIf="elasticError && total === 0" col-auto>
+          <ion-col *ngIf="elasticError && total === 0">
             <h2 class="hits-heading">
               {{'ElasticSearch.LoadingError' | translate}}
             </h2>
+          </ion-col>
+          <ion-col class="sort-by-wrapper" *ngIf="showSortOptions">
+            <!-- Sort by -->
+            <ion-item>
+              <ion-label class="sort-by-label"><ion-icon class="sort-icon" name="arrow-round-down"></ion-icon></ion-label>
+              <ion-select class="sort-by-select" [(ngModel)]="sort" (ionChange)="onSortByChanged($event)" [selectOptions]="sortSelectOptions" [cancelText]="'BasicActions.Cancel' | translate" [okText]="'BasicActions.Ok' | translate">
+                <ion-option value="">{{'ElasticSearch.Relevance' | translate}}</ion-option>
+                <ion-option value="orig_date_sort.asc">{{'ElasticSearch.OldestFirst' | translate}}</ion-option>
+                <ion-option value="orig_date_sort.desc">{{'ElasticSearch.NewestFirst' | translate}}</ion-option>
+              </ion-select>
+            </ion-item>
           </ion-col>
         </ion-row>
 

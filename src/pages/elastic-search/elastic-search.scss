@@ -111,10 +111,11 @@ page-elastic-search {
 
   .info-toolbar {
     width: 100%;
+    flex-wrap: wrap;
+    align-items: center;
 
     .col {
-      padding-top: 0;
-      padding-bottom: 8px;
+      padding: 0 0 0.5rem 0;
     }
   }
 
@@ -124,6 +125,7 @@ page-elastic-search {
 
     .col {
       padding-right: 0;
+      padding-left: 0;
     }
   }
 
