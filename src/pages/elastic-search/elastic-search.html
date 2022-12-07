@@ -139,22 +139,22 @@
       <ion-col class="search-result-column">
         <ion-row class="info-toolbar">
           <!-- Show search results  -->
-          <ion-col *ngIf="canShowHits() && total > 0">
+          <div *ngIf="canShowHits() && total > 0">
             <h2 class="hits-heading">
               {{'ElasticSearch.Found' | translate}} {{total}}
             </h2>
-          </ion-col>
-          <ion-col *ngIf="canShowHits() && total === 0 && !elasticError">
+          </div>
+          <div *ngIf="canShowHits() && total === 0 && !elasticError">
             <h2 class="hits-heading">
               {{'ElasticSearch.NoHits' | translate}}
             </h2>
-          </ion-col>
-          <ion-col *ngIf="elasticError && total === 0">
+          </div>
+          <div *ngIf="elasticError && total === 0">
             <h2 class="hits-heading">
               {{'ElasticSearch.LoadingError' | translate}}
             </h2>
-          </ion-col>
-          <ion-col class="sort-by-wrapper" *ngIf="showSortOptions">
+          </div>
+          <div class="sort-by-wrapper" *ngIf="showSortOptions">
             <!-- Sort by -->
             <ion-item>
               <ion-label class="sort-by-label"><ion-icon class="sort-icon" name="arrow-round-down"></ion-icon></ion-label>
@@ -164,7 +164,7 @@
                 <ion-option value="orig_date_sort.desc">{{'ElasticSearch.NewestFirst' | translate}}</ion-option>
               </ion-select>
             </ion-item>
-          </ion-col>
+          </div>
         </ion-row>
 
         <!-- Hits column -->

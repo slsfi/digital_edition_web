@@ -376,7 +376,6 @@ export class ElasticSearchPage {
    */
   initSearch() {
     this.disableFacetCheckboxes = true;
-    this.currentQuery = this.queries[0];
     this.reset();
     this.loading = true;
     this.search();
@@ -387,7 +386,6 @@ export class ElasticSearchPage {
     for (let i = 0; i < this.queries.length; i++) {
       this.queries[i] = '';
     }
-    this.currentQuery = this.queries[0];
     this.cf.detectChanges();
     this.initSearch();
   }
@@ -466,6 +464,7 @@ export class ElasticSearchPage {
   private search({ done, initialSearch }: SearchOptions = {}) {
     console.log(`search from ${this.from} to ${this.from + this.hitsPerPage}`);
 
+    this.currentQuery = this.queries[0];
     this.elasticError = false;
     this.loading = true;
 

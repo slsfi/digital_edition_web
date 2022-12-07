@@ -113,10 +113,9 @@ page-elastic-search {
     width: 100%;
     flex-wrap: wrap;
     align-items: center;
-
-    .col {
-      padding: 0 0 0.5rem 0;
-    }
+  }
+  .info-toolbar > div {
+    padding: 0 0 0.5rem 0;
   }
 
   .hits-column {
@@ -332,6 +331,7 @@ page-elastic-search {
     margin-left: auto;
     ion-item.item {
       background-color: transparent;
+      padding-left: 0.5rem;
 
       &.item-block .item-inner {
         padding-right: 0;
@@ -339,7 +339,7 @@ page-elastic-search {
     }
 
     .input-wrapper {
-      justify-content: flex-end;
+      // justify-content: flex-end;
     }
 
     .sort-by-label {
