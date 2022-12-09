@@ -581,7 +581,12 @@ page-elastic-search {
 
   .hits-heading {
     font-size: 1.25rem;
+    font-weight: normal;
     margin-top: 0.75rem !important;
+
+    span {
+      font-weight: bold;
+    }
   }
 
   .searchbar-wrapper {

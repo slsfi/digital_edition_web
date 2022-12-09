@@ -141,7 +141,7 @@
           <!-- Show search results  -->
           <div *ngIf="canShowHits() && total > 0">
             <h2 class="hits-heading">
-              {{'ElasticSearch.Found' | translate}} {{total}}
+              Visar {{from}}–{{from+hitsPerPage}} av <span>{{total}}</span> resultat
             </h2>
           </div>
           <div *ngIf="canShowHits() && total === 0 && !elasticError">
