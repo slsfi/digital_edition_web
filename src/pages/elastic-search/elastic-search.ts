@@ -176,12 +176,12 @@ export class ElasticSearchPage {
     try {
       this.textTitleHighlightType = this.config.getSettings('ElasticSearch.textTitleHighlightType');
     } catch (e) {
-      this.textTitleHighlightType = 'fvh';
+      this.textTitleHighlightType = 'unified';
     }
     try {
       this.textHighlightType = this.config.getSettings('ElasticSearch.textHighlightType');
     } catch (e) {
-      this.textHighlightType = 'fvh';
+      this.textHighlightType = 'unified';
     }
     try {
       this.textHighlightFragmentSize = this.config.getSettings('ElasticSearch.textHighlightFragmentSize');
@@ -499,7 +499,7 @@ export class ElasticSearchPage {
         fields: {
           'text_data': { number_of_fragments: 1000, fragment_size: this.textHighlightFragmentSize, type: this.textHighlightType },
           'text_title': { number_of_fragments: 0, type: this.textTitleHighlightType },
-          'publication_data.publication_name': { number_of_fragments: 0, type: 'plain' },
+          'publication_data.publication_name': { number_of_fragments: 0, type: 'unified' },
         },
       },
       from: this.from,
