@@ -214,9 +214,8 @@ export class CommonFunctionsService {
   insertSearchMatchTags(text: string, matches: string[]) {
     if (matches instanceof Array && matches.length > 0) {
       matches.forEach((val) => {
-        console.log('Attempting to match-mark ', val);
         if (val) {
-          const re = new RegExp('\b(' + val + ')\b', 'ig');
+          const re = new RegExp('\\b(' + val + ')\\b', 'ig');
           text = text.replace(re, '<match>$1</match>');
         }
       });
