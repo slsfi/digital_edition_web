@@ -104,6 +104,7 @@ export class ElasticSearchPage {
   showSortOptions = true;
   prependPubNameToMsName = true;
   prependPubNameToVarName = true;
+  textTitleHighlightType = 'unified';
   textHighlightType = 'unified';
   textHighlightFragmentSize = 150;
 
@@ -173,9 +174,14 @@ export class ElasticSearchPage {
       this.prependPubNameToVarName = true;
     }
     try {
+      this.textTitleHighlightType = this.config.getSettings('ElasticSearch.textTitleHighlightType');
+    } catch (e) {
+      this.textTitleHighlightType = 'fvh';
+    }
+    try {
       this.textHighlightType = this.config.getSettings('ElasticSearch.textHighlightType');
     } catch (e) {
-      this.textHighlightType = 'unified';
+      this.textHighlightType = 'fvh';
     }
     try {
       this.textHighlightFragmentSize = this.config.getSettings('ElasticSearch.textHighlightFragmentSize');
@@ -183,6 +189,9 @@ export class ElasticSearchPage {
       this.textHighlightFragmentSize = 150;
     }
 
+    if (this.textTitleHighlightType !== 'fvh' && this.textTitleHighlightType !== 'unified' && this.textTitleHighlightType !== 'plain') {
+      this.textTitleHighlightType = 'unified';
+    }
     if (this.textHighlightType !== 'fvh' && this.textHighlightType !== 'unified' && this.textHighlightType !== 'plain') {
       this.textHighlightType = 'unified';
     }
@@ -305,7 +314,7 @@ export class ElasticSearchPage {
   /*
   open(hit) {
     this.events.publish('searchHitOpened', hit);
-    const params = { tocItem: null, fetch: true, collection: { title: hit.source.titleIndexed } };
+    const params = { tocItem: null, fetch: true, collection: { title: hit.source.doc_title } };
     const path = hit.source.path;
     const filename = path.split('/').pop();
 
@@ -328,7 +337,7 @@ export class ElasticSearchPage {
     // not / infinite / nosong / searchtitle / established & variations & facsimiles
 
 
-    switch (hit.source.xml_type) {
+    switch (hit.source.text_type) {
       case 'est': {
         params['urlviews'] = 'established';
         params['views'].push({type: 'established'});
@@ -366,11 +375,11 @@ export class ElasticSearchPage {
         break;
       }
     }
-    if (hit.source.xml_type === 'tit') {
+    if (hit.source.text_type === 'tit') {
       this.app.getRootNav().push('title-page', params);
-    } else if (hit.source.xml_type === 'fore') {
+    } else if (hit.source.text_type === 'fore') {
       this.app.getRootNav().push('foreword-page', params);
-    } else if (hit.source.xml_type === 'inl') {
+    } else if (hit.source.text_type === 'inl') {
       this.app.getRootNav().push('introduction', params);
     } else {
       params['selectedItemInAccordion'] = false;
@@ -488,10 +497,9 @@ export class ElasticSearchPage {
       queries: this.queries,
       highlight: {
         fields: {
-          'textDataIndexed': { number_of_fragments: 1000, fragment_size: this.textHighlightFragmentSize, type: this.textHighlightType },
-          'publication_data.pubname': { number_of_fragments: 0, type: 'plain' },
-          'ms_data.name': { number_of_fragments: 0, type: 'plain' },
-          'var_data.name': { number_of_fragments: 0, type: 'plain' },
+          'text_data': { number_of_fragments: 1000, fragment_size: this.textHighlightFragmentSize, type: this.textHighlightType },
+          'text_title': { number_of_fragments: 0, type: this.textTitleHighlightType },
+          'publication_data.publication_name': { number_of_fragments: 0, type: 'plain' },
         },
       },
       from: this.from,
@@ -511,7 +519,7 @@ export class ElasticSearchPage {
 
         // Append new hits to this.hits array.
         Array.prototype.push.apply(this.hits, data.hits.hits.map((hit: any) => ({
-          type: hit._source.xml_type,
+          type: hit._source.text_type,
           source: hit._source,
           highlight: hit.highlight,
           id: hit._id
@@ -591,8 +599,6 @@ export class ElasticSearchPage {
   }
 
   /**
-   * TODO: Make infinite scroll should work with the super long facets column.
-   * Current workaround for this is to increate hitsPerPage to 20.
    * ! Infinite-scroll commented out, using button for loading more matches for now.
    */
   loadMore(e) {
@@ -763,49 +769,37 @@ export class ElasticSearchPage {
     return facets;
   }
 
+  getTextName(source: any) {
+    return get(source, 'text_title');
+  }
+
   getPublicationName(source: any) {
-    return get(source, 'publication_data[0].pubname');
+    return get(source, 'publication_data[0].publication_name');
   }
 
-  getManuscriptName(source: any) {
-    return get(source, 'ms_data[0].name');
-  }
-
-  getVariantName(source: any) {
-    return get(source, 'var_data[0].name');
+  getHiglightedTextName(highlight: any) {
+    if (highlight['text_title']) {
+      return highlight['text_title'][0];
+    } else {
+      return '';
+    }
   }
 
   getHiglightedPublicationName(highlight: any) {
-    if (highlight['publication_data.pubname']) {
-      return highlight['publication_data.pubname'][0];
-    } else {
-      return '';
-    }
-  }
-
-  getHiglightedMsName(highlight: any) {
-    if (highlight['ms_data.name']) {
-      return highlight['ms_data.name'][0];
-    } else {
-      return '';
-    }
-  }
-
-  getHiglightedVarName(highlight: any) {
-    if (highlight['var_data.name']) {
-      return highlight['var_data.name'][0];
+    if (highlight['publication_data.publication_name']) {
+      return highlight['publication_data.publication_name'][0];
     } else {
       return '';
     }
   }
 
   getPublicationCollectionName(source: any) {
-    return get(source, 'publication_data[0].colname');
+    return get(source, 'publication_data[0].collection_name');
   }
 
   // Returns the title from the xml title element in the teiHeader
   getTitle(source: any) {
-    return (source.titleIndexed || source.name || '').trim();
+    return (source.doc_title || source.name || '').trim();
   }
 
   getGenre(source: any) {
@@ -845,11 +839,11 @@ export class ElasticSearchPage {
   getHitHref(hit: any) {
     let path = '/#/';
 
-    if (hit.source.xml_type === 'tit') {
+    if (hit.source.text_type === 'tit') {
       path = path + 'publication-title/' + hit.source.collection_id;
-    } else if (hit.source.xml_type === 'fore') {
+    } else if (hit.source.text_type === 'fore') {
       path = path + 'publication-foreword/' + hit.source.collection_id;
-    } else if (hit.source.xml_type === 'inl') {
+    } else if (hit.source.text_type === 'inl') {
       path = path + 'publication-introduction/' + hit.source.collection_id;
     } else {
       path = path + 'publication/' + hit.source.collection_id;
@@ -858,13 +852,13 @@ export class ElasticSearchPage {
       path = path + this.getMatchesForUrl(hit) + '/';
     }
 
-    if (hit.source.xml_type === 'est') {
+    if (hit.source.text_type === 'est') {
       path = path + 'established';
-    } else if (hit.source.xml_type === 'com') {
+    } else if (hit.source.text_type === 'com') {
       path = path + 'comments';
-    } else if (hit.source.xml_type === 'ms') {
+    } else if (hit.source.text_type === 'ms') {
       path = path + 'manuscripts';
-    } else if (hit.source.xml_type === 'var') {
+    } else if (hit.source.text_type === 'var') {
       path = path + 'variations';
     }
 
@@ -873,44 +867,30 @@ export class ElasticSearchPage {
 
   getHeading(hit: any) {
     /* If a match is found in the publication name, return it from the highlights. Otherwise from the data. */
-    let publication_name = '';
+    let text_name = '';
     if (hit.highlight) {
-      publication_name = this.getHiglightedPublicationName(hit.highlight);
+      text_name = this.getHiglightedTextName(hit.highlight);
     }
-    if (!publication_name) {
-      publication_name = this.getPublicationName(hit.source);
-      if (!publication_name) {
-        publication_name = this.getTitle(hit.source);
+    if (!text_name) {
+      text_name = this.getTextName(hit.source);
+      if (!text_name) {
+        text_name = this.getTitle(hit.source);
       }
     }
-    if (hit.source.xml_type === 'ms') {
-      let ms_name = '';
+    if ((hit.source.text_type === 'ms' && this.prependPubNameToMsName)
+    || (hit.source.text_type === 'var' && this.prependPubNameToVarName)) {
+      let pub_name = '';
       if (hit.highlight) {
-        ms_name = this.getHiglightedMsName(hit.highlight);
+        pub_name = this.getHiglightedPublicationName(hit.highlight);
       }
-      if (!ms_name) {
-        ms_name = this.getManuscriptName(hit.source);
+      if (!pub_name) {
+        pub_name = this.getPublicationName(hit.source);
       }
-      if (ms_name && this.prependPubNameToMsName) {
-        publication_name = publication_name + ', ' + ms_name;
-      } else if (ms_name) {
-        publication_name = ms_name;
-      }
-    } else if (hit.source.xml_type === 'var') {
-      let var_name = '';
-      if (hit.highlight) {
-        var_name = this.getHiglightedVarName(hit.highlight);
-      }
-      if (!var_name) {
-        var_name = this.getVariantName(hit.source);
-      }
-      if (var_name && this.prependPubNameToVarName) {
-        publication_name = publication_name + ', ' + var_name;
-      } else if (var_name) {
-        publication_name = var_name;
+      if (pub_name) {
+        text_name = pub_name + ', ' + text_name;
       }
     }
-    return publication_name;
+    return text_name;
   }
 
   getSubHeading(source) {
@@ -929,12 +909,12 @@ export class ElasticSearchPage {
   }
 
   getMatchesForUrl(hit: any) {
-    if (hit && hit.highlight && hit.highlight.textDataIndexed) {
+    if (hit && hit.highlight && hit.highlight.text_data) {
       let encoded_matches = '';
       const unique_matches = [];
       const regexp = /<em>.+?<\/em>/g;
       
-      hit.highlight.textDataIndexed.forEach(highlight => {
+      hit.highlight.text_data.forEach(highlight => {
         const matches = highlight.match(regexp);
         matches.forEach(match => {
           const clean_match = match.replace('<em>', '').replace('</em>', '');
