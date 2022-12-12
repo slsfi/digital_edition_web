@@ -141,7 +141,7 @@
           <!-- Show search results  -->
           <div *ngIf="canShowHits() && total > 0">
             <h2 class="hits-heading">
-              Visar <span>1–{{from+hitsPerPage}}</span> av <span>{{total}}</span> resultat
+              {{'ElasticSearch.Found' | translate}} {{total}}
             </h2>
           </div>
           <div *ngIf="canShowHits() && total === 0 && !elasticError">
@@ -202,7 +202,7 @@
                         <span>#{{n+1}}</span>
                       </div>
                       <div class="hitData">
-                        <a class="hitHeader" [href]="getHitHref(hit.source)">
+                        <a class="hitHeader" [href]="getHitHref(hit)">
                           <div class="hitHeaderCol">
                             <p class="hitHeading"><span *ngIf="hit.source.xml_type === 'com'" class="commentHitHeadingPrepend">{{'ElasticSearch.CommentsHitHeadingPrepend' | translate}}</span><span [innerHTML]="getHeading(hit)"></span></p>
                             <p class="hitPubCollection">{{getPublicationCollectionName(hit.source)}}</p>

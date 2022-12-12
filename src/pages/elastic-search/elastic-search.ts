@@ -93,7 +93,7 @@ export class ElasticSearchPage {
   currentQuery = '';
   hits: object[] = [];
   termData: object[] = [];
-  hitsPerPage = 20;
+  hitsPerPage = 10;
   aggregations: object = {};
   facetGroups: FacetGroups = {};
   selectedFacetGroups: FacetGroups = {};
@@ -842,29 +842,29 @@ export class ElasticSearchPage {
     return array.filter(str => str).join(', ');
   }
 
-  getHitHref(source: any) {
+  getHitHref(hit: any) {
     let path = '/#/';
 
-    if (source.xml_type === 'tit') {
-      path = path + 'publication-title/' + source.collection_id;
-    } else if (source.xml_type === 'fore') {
-      path = path + 'publication-foreword/' + source.collection_id;
-    } else if (source.xml_type === 'inl') {
-      path = path + 'publication-introduction/' + source.collection_id;
+    if (hit.source.xml_type === 'tit') {
+      path = path + 'publication-title/' + hit.source.collection_id;
+    } else if (hit.source.xml_type === 'fore') {
+      path = path + 'publication-foreword/' + hit.source.collection_id;
+    } else if (hit.source.xml_type === 'inl') {
+      path = path + 'publication-introduction/' + hit.source.collection_id;
     } else {
-      path = path + 'publication/' + source.collection_id;
-      path = path + '/text/' + source.publication_id;
+      path = path + 'publication/' + hit.source.collection_id;
+      path = path + '/text/' + hit.source.publication_id;
       path = path + '/nochapter/not/infinite/nosong/';
-      path = path + encodeURIComponent(this.queries[0]) + '/';
+      path = path + this.getMatchesForUrl(hit) + '/';
     }
 
-    if (source.xml_type === 'est') {
+    if (hit.source.xml_type === 'est') {
       path = path + 'established';
-    } else if (source.xml_type === 'com') {
+    } else if (hit.source.xml_type === 'com') {
       path = path + 'comments';
-    } else if (source.xml_type === 'ms') {
+    } else if (hit.source.xml_type === 'ms') {
       path = path + 'manuscripts';
-    } else if (source.xml_type === 'var') {
+    } else if (hit.source.xml_type === 'var') {
       path = path + 'variations';
     }
 
@@ -925,6 +925,38 @@ export class ElasticSearchPage {
       return str;
     } else {
       return str.substring(0, max) + '...';
+    }
+  }
+
+  getMatchesForUrl(hit: any) {
+    if (hit && hit.highlight && hit.highlight.textDataIndexed) {
+      let encoded_matches = '';
+      const unique_matches = [];
+      const regexp = /<em>.+?<\/em>/g;
+      
+      hit.highlight.textDataIndexed.forEach(highlight => {
+        const matches = highlight.match(regexp);
+        matches.forEach(match => {
+          const clean_match = match.replace('<em>', '').replace('</em>', '');
+          if (!unique_matches.includes(clean_match)) {
+            unique_matches.push(clean_match);
+          }
+        });
+      });
+
+      if (unique_matches.length > 0) {
+        for (let i = 0; i < unique_matches.length; i++) {
+          encoded_matches = encoded_matches + encodeURIComponent(unique_matches[i]);
+          if (i < unique_matches.length - 1) {
+            encoded_matches = encoded_matches + '&';
+          }
+        }
+        return encoded_matches;
+      } else {
+        return 'searchtitle';
+      }
+    } else {
+      return 'searchtitle';
     }
   }
 
