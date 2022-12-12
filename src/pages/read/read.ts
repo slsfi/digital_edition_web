@@ -589,7 +589,7 @@ export class ReadPage /*implements OnDestroy*/ {
         console.log('Read, matches:', this.matches);
         const search_matches = this.search_title.split('&');
         search_matches.forEach(search_match => {
-          this.matches.push(decodeURIComponent(this.search_title));
+          this.matches.push(decodeURIComponent(search_match));
         });
       }
     }
