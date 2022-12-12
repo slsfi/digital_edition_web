@@ -913,7 +913,7 @@ export class ElasticSearchPage {
       let encoded_matches = '';
       const unique_matches = [];
       const regexp = /<em>.+?<\/em>/g;
-      
+
       hit.highlight.text_data.forEach(highlight => {
         const matches = highlight.match(regexp);
         matches.forEach(match => {
