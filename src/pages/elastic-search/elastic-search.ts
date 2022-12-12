@@ -917,7 +917,7 @@ export class ElasticSearchPage {
       hit.highlight.text_data.forEach(highlight => {
         const matches = highlight.match(regexp);
         matches.forEach(match => {
-          const clean_match = match.replace('<em>', '').replace('</em>', '');
+          const clean_match = match.replace('<em>', '').replace('</em>', '').toLowerCase();
           if (!unique_matches.includes(clean_match)) {
             unique_matches.push(clean_match);
           }
