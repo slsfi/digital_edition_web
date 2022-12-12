@@ -135,19 +135,19 @@ export class ElasticSearchService {
           },
           functions: [
             {
-              filter: { term: { 'text_type.keyword': 'est' } },
+              filter: { term: { 'text_type': 'est' } },
               weight: 10
             },
             {
-              filter: { term: { 'text_type.keyword': 'inl' } },
+              filter: { term: { 'text_type': 'inl' } },
               weight: 8
             },
             {
-              filter: { term: { 'text_type.keyword': 'com' } },
+              filter: { term: { 'text_type': 'com' } },
               weight: 2
             },
             {
-              filter: { term: { 'text_type.keyword': 'ms' } },
+              filter: { term: { 'text_type': 'ms' } },
               weight: 2
             }
           ],
@@ -220,19 +220,19 @@ export class ElasticSearchService {
           },
           functions: [
             {
-              filter: { term: { 'text_type.keyword': 'est' } },
+              filter: { term: { 'text_type': 'est' } },
               weight: 6
             },
             {
-              filter: { term: { 'text_type.keyword': 'inl' } },
+              filter: { term: { 'text_type': 'inl' } },
               weight: 4
             },
             {
-              filter: { term: { 'text_type.keyword': 'com' } },
+              filter: { term: { 'text_type': 'com' } },
               weight: 1
             },
             {
-              filter: { term: { 'text_type.keyword': 'ms' } },
+              filter: { term: { 'text_type': 'ms' } },
               weight: 1
             }
           ],

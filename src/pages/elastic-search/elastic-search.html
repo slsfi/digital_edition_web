@@ -204,12 +204,12 @@
                       <div class="hitData">
                         <a class="hitHeader" [href]="getHitHref(hit)">
                           <div class="hitHeaderCol">
-                            <p class="hitHeading"><span *ngIf="hit.source.xml_type === 'com'" class="commentHitHeadingPrepend">{{'ElasticSearch.CommentsHitHeadingPrepend' | translate}}</span><span [innerHTML]="getHeading(hit)"></span></p>
+                            <p class="hitHeading"><span *ngIf="hit.source.text_type === 'com'" class="commentHitHeadingPrepend">{{'ElasticSearch.CommentsHitHeadingPrepend' | translate}}</span><span [innerHTML]="getHeading(hit)"></span></p>
                             <p class="hitPubCollection">{{getPublicationCollectionName(hit.source)}}</p>
                           </div>
                           <div class="hitHeaderCol">
-                            <div class="hitTextType {{ hit.source.xml_type }}">
-                              <span>{{(hit.source.xml_type|translate)}}</span>
+                            <div class="hitTextType {{ hit.source.text_type }}">
+                              <span>{{(hit.source.text_type|translate)}}</span>
                             </div>
                             <div *ngIf="hasDate(hit.source)" class="hitTextDate">
                               <span>{{getDate(hit.source)}}</span>
@@ -217,12 +217,12 @@
                           </div>
                         </a>
                         <ng-container *ngIf="hit && hit.highlight">
-                          <div *ngIf="hit.highlight.textDataIndexed" class="matchHighlights">
-                            <ng-container *ngFor="let highlight of hit.highlight?.textDataIndexed; let h = index">
+                          <div *ngIf="hit.highlight.text_data" class="matchHighlights">
+                            <ng-container *ngFor="let highlight of hit.highlight?.text_data; let h = index">
                               <p [innerHTML]="'&#8230; ' + highlight + ' &#8230;'" [ngClass]="'highlight ' + ((h > 2)?'hiddenHighlight':'initialHighlight')"></p>
                             </ng-container>
-                            <ng-container *ngIf="hit.highlight.textDataIndexed.length > 3">
-                              <button ion-button outline class="showAllHitHighlights" (click)="showAllHitHighlights($event)">{{'ElasticSearch.ShowAllHitHighlights' | translate}} (+{{hit.highlight.textDataIndexed.length-3}})</button>
+                            <ng-container *ngIf="hit.highlight.text_data.length > 3">
+                              <button ion-button outline class="showAllHitHighlights" (click)="showAllHitHighlights($event)">{{'ElasticSearch.ShowAllHitHighlights' | translate}} (+{{hit.highlight.text_data.length-3}})</button>
                             </ng-container>
                           </div>
                         </ng-container>
