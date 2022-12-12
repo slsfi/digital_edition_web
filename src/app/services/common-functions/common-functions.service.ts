@@ -215,7 +215,7 @@ export class CommonFunctionsService {
     if (matches instanceof Array && matches.length > 0) {
       matches.forEach((val) => {
         if (val) {
-          const re = new RegExp('(' + val + ')', 'ig');
+          const re = new RegExp('\\b(' + val + ')\\b', 'ig');
           text = text.replace(re, '<match>$1</match>');
         }
       });

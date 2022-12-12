@@ -581,10 +581,15 @@ export class ReadPage /*implements OnDestroy*/ {
     if (this.params.get('search_title') !== undefined &&
       this.params.get('search_title') !== ':song_id' &&
       this.params.get('search_title') !== 'searchtitle') {
-      this.search_title = decodeURIComponent(this.params.get('search_title'));
+      this.search_title = this.params.get('search_title');
     }
     if (this.matches === undefined || this.matches.length < 1) {
-      this.matches.push(this.search_title);
+      if (this.search_title) {
+        const search_matches = this.search_title.split('&');
+        search_matches.forEach(search_match => {
+          this.matches.push(decodeURIComponent(search_match));
+        });
+      }
     }
   }
 

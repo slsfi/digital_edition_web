@@ -17,21 +17,12 @@
           placeholder="{{i > 0 ? ('ElasticSearch.ANDSearch' | translate) : ('ElasticSearch.Search' | translate)}}"
           class="searchInput {{i > 0 ? 'removableSearchInput' : ''}}"
           [(ngModel)]="queries[i]"
-          (keyup)="onQueryChange()"
+          (keyup.enter)="initSearch()"
         />
-        <ion-icon class="searchIcon" name="search"></ion-icon>
-      </div>
-
-      <!-- Sort by -->
-      <div class="sort-by-wrapper" *ngIf="showSortOptions">
-        <ion-item>
-          <ion-label class="sort-by-label"><ion-icon class="sort-icon" name="arrow-round-down"></ion-icon></ion-label>
-          <ion-select class="sort-by-select" [(ngModel)]="sort" (ionChange)="onSortByChanged($event)" [selectOptions]="sortSelectOptions" [cancelText]="'BasicActions.Cancel' | translate" [okText]="'BasicActions.Ok' | translate">
-            <ion-option value="">{{'ElasticSearch.Relevance' | translate}}</ion-option>
-            <ion-option value="orig_date_sort.asc">{{'ElasticSearch.OldestFirst' | translate}}</ion-option>
-            <ion-option value="orig_date_sort.desc">{{'ElasticSearch.NewestFirst' | translate}}</ion-option>
-          </ion-select>
-        </ion-item>
+        <ion-icon *ngIf="queries[i]" class="clearSearchIcon" name="backspace" (click)="clearSearch()"></ion-icon>
+        <button class="searchButton" (click)="initSearch()" ion-button>
+          <ion-icon class="searchIcon" name="search"></ion-icon>
+        </button>
       </div>
 
       <!-- Add search field -->
@@ -148,21 +139,32 @@
       <ion-col class="search-result-column">
         <ion-row class="info-toolbar">
           <!-- Show search results  -->
-          <ion-col *ngIf="canShowHits() && total > 0" push-col-3>
+          <div *ngIf="canShowHits() && total > 0">
             <h2 class="hits-heading">
               {{'ElasticSearch.Found' | translate}} {{total}}
             </h2>
-          </ion-col>
-          <ion-col *ngIf="canShowHits() && total === 0 && !elasticError" col-auto>
+          </div>
+          <div *ngIf="canShowHits() && total === 0 && !elasticError">
             <h2 class="hits-heading">
               {{'ElasticSearch.NoHits' | translate}}
             </h2>
-          </ion-col>
-          <ion-col *ngIf="elasticError && total === 0" col-auto>
+          </div>
+          <div *ngIf="elasticError && total === 0">
             <h2 class="hits-heading">
               {{'ElasticSearch.LoadingError' | translate}}
             </h2>
-          </ion-col>
+          </div>
+          <div class="sort-by-wrapper" *ngIf="showSortOptions && canShowHits() && total > 0">
+            <!-- Sort by -->
+            <ion-item>
+              <ion-label class="sort-by-label"><ion-icon class="sort-icon" name="arrow-round-down"></ion-icon></ion-label>
+              <ion-select class="sort-by-select" [(ngModel)]="sort" (ionChange)="onSortByChanged($event)" [selectOptions]="sortSelectOptions" [cancelText]="'BasicActions.Cancel' | translate" [okText]="'BasicActions.Ok' | translate">
+                <ion-option value="">{{'ElasticSearch.Relevance' | translate}}</ion-option>
+                <ion-option value="orig_date_sort.asc">{{'ElasticSearch.OldestFirst' | translate}}</ion-option>
+                <ion-option value="orig_date_sort.desc">{{'ElasticSearch.NewestFirst' | translate}}</ion-option>
+              </ion-select>
+            </ion-item>
+          </div>
         </ion-row>
 
         <!-- Hits column -->
@@ -200,14 +202,14 @@
                         <span>#{{n+1}}</span>
                       </div>
                       <div class="hitData">
-                        <a class="hitHeader" [href]="getHitHref(hit.source)">
+                        <a class="hitHeader" [href]="getHitHref(hit)">
                           <div class="hitHeaderCol">
-                            <p class="hitHeading"><span *ngIf="hit.source.xml_type === 'com'" class="commentHitHeadingPrepend">{{'ElasticSearch.CommentsHitHeadingPrepend' | translate}}</span><span [innerHTML]="getHeading(hit)"></span></p>
+                            <p class="hitHeading"><span *ngIf="hit.source.text_type === 'com'" class="commentHitHeadingPrepend">{{'ElasticSearch.CommentsHitHeadingPrepend' | translate}}</span><span [innerHTML]="getHeading(hit)"></span></p>
                             <p class="hitPubCollection">{{getPublicationCollectionName(hit.source)}}</p>
                           </div>
                           <div class="hitHeaderCol">
-                            <div class="hitTextType {{ hit.source.xml_type }}">
-                              <span>{{(hit.source.xml_type|translate)}}</span>
+                            <div class="hitTextType {{ hit.source.text_type }}">
+                              <span>{{(hit.source.text_type|translate)}}</span>
                             </div>
                             <div *ngIf="hasDate(hit.source)" class="hitTextDate">
                               <span>{{getDate(hit.source)}}</span>
@@ -215,12 +217,12 @@
                           </div>
                         </a>
                         <ng-container *ngIf="hit && hit.highlight">
-                          <div *ngIf="hit.highlight.textDataIndexed" class="matchHighlights">
-                            <ng-container *ngFor="let highlight of hit.highlight?.textDataIndexed; let h = index">
+                          <div *ngIf="hit.highlight.text_data" class="matchHighlights">
+                            <ng-container *ngFor="let highlight of hit.highlight?.text_data; let h = index">
                               <p [innerHTML]="'&#8230; ' + highlight + ' &#8230;'" [ngClass]="'highlight ' + ((h > 2)?'hiddenHighlight':'initialHighlight')"></p>
                             </ng-container>
-                            <ng-container *ngIf="hit.highlight.textDataIndexed.length > 3">
-                              <button ion-button outline class="showAllHitHighlights" (click)="showAllHitHighlights($event)">{{'ElasticSearch.ShowAllHitHighlights' | translate}} (+{{hit.highlight.textDataIndexed.length-3}})</button>
+                            <ng-container *ngIf="hit.highlight.text_data.length > 3">
+                              <button ion-button outline class="showAllHitHighlights" (click)="showAllHitHighlights($event)">{{'ElasticSearch.ShowAllHitHighlights' | translate}} (+{{hit.highlight.text_data.length-3}})</button>
                             </ng-container>
                           </div>
                         </ng-container>
