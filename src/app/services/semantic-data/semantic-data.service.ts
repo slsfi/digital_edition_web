@@ -246,7 +246,7 @@ export class SemanticDataService {
         }
       })
     }
-    // Seach for first character of name
+    // Search for first character of name
     if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
       payload.from = 0;
       payload.size = 5000;
@@ -336,7 +336,7 @@ export class SemanticDataService {
         }
       }
     }
-    // Seach for first character of name
+    // Search for first character of name
     if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
       payload.from = 0;
       payload.size = 5000;
@@ -386,7 +386,7 @@ export class SemanticDataService {
         }
       }
     }
-    // Seach for first character of name
+    // Search for first character of name
     if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
       payload.from = 0;
       payload.size = 5000;
@@ -430,13 +430,19 @@ export class SemanticDataService {
             'term' : { 'published' : showPublishedStatus }
           },
           {
+            'term' : { 'ev_o_deleted' : 0 }
+          },
+          {
+            'term' : { 'ev_c_deleted' : 0 }
+          },
+          {
             'term' : { 'tag_deleted' : 0 }
           }],
         }
       }
     }
 
-    // Seach for first character of name
+    // Search for first character of name
     if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
       payload.from = 0;
       payload.size = 5000;
