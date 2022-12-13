@@ -202,9 +202,12 @@
                         <span>#{{n+1}}</span>
                       </div>
                       <div class="hitData">
-                        <a class="hitHeader" [href]="getHitHref(hit)">
+                        <a class="hitHeader" [href]="getHitHref(hit)" target="_blank">
                           <div class="hitHeaderCol">
-                            <p class="hitHeading"><span *ngIf="hit.source.text_type === 'com'" class="commentHitHeadingPrepend">{{'ElasticSearch.CommentsHitHeadingPrepend' | translate}}</span><span [innerHTML]="getHeading(hit)"></span></p>
+                            <p class="hitHeading">
+                              <span *ngIf="hit.source.text_type === 'com'" class="commentHitHeadingPrepend">{{'ElasticSearch.CommentsHitHeadingPrepend' | translate}}</span><span [innerHTML]="getHeading(hit)"></span>
+                              <ion-icon class="open-icon" name="open" aria-description="{{'ElasticSearch.OpenInNewWindow' | translate}}"></ion-icon>
+                            </p>
                             <p class="hitPubCollection">{{getPublicationCollectionName(hit.source)}}</p>
                           </div>
                           <div class="hitHeaderCol">

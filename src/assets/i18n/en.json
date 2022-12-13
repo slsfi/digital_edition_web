@@ -265,7 +265,8 @@
         "CommentsHitHeadingPrepend": "Commentary to",
         "FilterResults": "Filter results",
         "ShowFacets": "Show filters",
-        "HideFacets": "Hide filters"
+        "HideFacets": "Hide filters",
+        "OpenInNewWindow": "The link opens in a new window."
     },
     "MediaCollections": {
         "MediaCollections": "Faksimilsamlingar",

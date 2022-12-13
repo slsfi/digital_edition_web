@@ -308,7 +308,8 @@
         "CommentsHitHeadingPrepend": "Kommentaari:",
         "FilterResults": "Rajaa hakua",
         "ShowFacets": "Näytä rajaukset",
-        "HideFacets": "Piilota rajaukset"
+        "HideFacets": "Piilota rajaukset",
+        "OpenInNewWindow": "Linkki avautuu uuteen ikkunaan."
     },
     "Type": "Tekstityyppi",
     "Genre": "Tekstilaji",
