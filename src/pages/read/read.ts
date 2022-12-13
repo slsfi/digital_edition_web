@@ -401,7 +401,6 @@ export class ReadPage /*implements OnDestroy*/ {
       if (this.params.get('matches') !== undefined) {
         this.matches = this.params.get('matches');
       }
-      console.log('initial this.matches', this.matches);
 
       this.setDefaultViews();
 
