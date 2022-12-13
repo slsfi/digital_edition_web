@@ -216,8 +216,8 @@ export class CommonFunctionsService {
       console.log('insertSearchMatchTags matches: ', matches);
       matches.forEach((val) => {
         if (val) {
-          const re = new RegExp('(?<=^|\\P{L})(' + val + ')(?=\\P{L}|$)', 'gmi');
-          text = text.replace(re, '<match>$2</match>');
+          const re = new RegExp('(?<=^|\\P{L})(' + val + ')(?=\\P{L}|$)', 'gumi');
+          text = text.replace(re, '<match>$1</match>');
         }
       });
     }
