@@ -586,8 +586,6 @@ export class ReadPage /*implements OnDestroy*/ {
     }
     if (this.matches === undefined || this.matches.length < 1) {
       if (this.search_title) {
-        console.log('Read, search_title:', this.search_title);
-        console.log('Read, matches:', this.matches);
         const search_matches = this.search_title.split('_');
         search_matches.forEach(search_match => {
           this.matches.push(decodeURIComponent(search_match));

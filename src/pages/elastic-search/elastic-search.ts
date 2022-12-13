@@ -109,6 +109,7 @@ export class ElasticSearchPage {
   textHighlightFragmentSize = 150;
 
   disableFacetCheckboxes = false;
+  highlightSearchMatches = true;
 
   facetsToggledInMobileMode = false;
 
@@ -162,6 +163,11 @@ export class ElasticSearchPage {
       this.showSortOptions = this.config.getSettings('ElasticSearch.show.sortOptions');
     } catch (e) {
       this.showSortOptions = true;
+    }
+    try {
+      this.highlightSearchMatches = this.config.getSettings('show.highlightedSearchMatches');
+    } catch (e) {
+      this.highlightSearchMatches = true;
     }
     try {
       this.prependPubNameToMsName = this.config.getSettings('ElasticSearch.show.prependPubNameToMsName');
@@ -909,7 +915,7 @@ export class ElasticSearchPage {
   }
 
   getMatchesForUrl(hit: any) {
-    if (hit && hit.highlight && hit.highlight.text_data) {
+    if (hit && hit.highlight && hit.highlight.text_data && this.highlightSearchMatches) {
       let encoded_matches = '';
       const unique_matches = [];
       const regexp = /<em>.+?<\/em>/g;
