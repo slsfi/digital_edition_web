@@ -215,6 +215,7 @@ export class CommonFunctionsService {
     if (matches instanceof Array && matches.length > 0) {
       matches.forEach((val) => {
         if (val) {
+          console.log('highlighting ', val);
           // Replace spaces in the match string with a regex and also insert a regex between each
           // character in the match string. This way html tags inside the match string can be
           // ignored when searching for the match string in the text.
@@ -229,6 +230,7 @@ export class CommonFunctionsService {
               c_val = c_val + char;
             }
           }
+          console.log('c_val ', c_val);
           const re = new RegExp('(?<=^|\\P{L})(' + c_val + ')(?=\\P{L}|$)', 'gumi');
           text = text.replace(re, '<match>$1</match>');
         }
