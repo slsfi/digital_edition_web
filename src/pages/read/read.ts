@@ -401,6 +401,7 @@ export class ReadPage /*implements OnDestroy*/ {
       if (this.params.get('matches') !== undefined) {
         this.matches = this.params.get('matches');
       }
+      console.log('initial this.matches', this.matches);
 
       this.setDefaultViews();
 
@@ -587,7 +588,7 @@ export class ReadPage /*implements OnDestroy*/ {
       if (this.search_title) {
         console.log('Read, search_title:', this.search_title);
         console.log('Read, matches:', this.matches);
-        const search_matches = this.search_title.split('&');
+        const search_matches = this.search_title.split('_');
         search_matches.forEach(search_match => {
           this.matches.push(decodeURIComponent(search_match));
         });

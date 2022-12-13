@@ -928,7 +928,7 @@ export class ElasticSearchPage {
         for (let i = 0; i < unique_matches.length; i++) {
           encoded_matches = encoded_matches + encodeURIComponent(unique_matches[i]);
           if (i < unique_matches.length - 1) {
-            encoded_matches = encoded_matches + '&';
+            encoded_matches = encoded_matches + '_';
           }
         }
         return encoded_matches;
