@@ -206,7 +206,7 @@
                           <div class="hitHeaderCol">
                             <p class="hitHeading">
                               <span *ngIf="hit.source.text_type === 'com'" class="commentHitHeadingPrepend">{{'ElasticSearch.CommentsHitHeadingPrepend' | translate}}</span><span [innerHTML]="getHeading(hit)"></span>
-                              <ion-icon class="open-icon" name="open" aria-description="Öppnas i nytt fönster."></ion-icon>
+                              <ion-icon class="open-icon" name="open" aria-label="{{'ElasticSearch.OpenInNewWindow' | translate}}"></ion-icon>
                             </p>
                             <p class="hitPubCollection">{{getPublicationCollectionName(hit.source)}}</p>
                           </div>

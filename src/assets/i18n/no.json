@@ -270,7 +270,8 @@
         "CommentsHitHeadingPrepend": "Kommentar till",
         "FilterResults": "Begränsa sökningen",
         "ShowFacets": "Visa avgränsningar",
-        "HideFacets": "Dölj avgränsningar"
+        "HideFacets": "Dölj avgränsningar",
+        "OpenInNewWindow": "Länken öppnas i ett nytt fönster."
     },
     "est": "Lästext",
     "ms": "Manuskript",

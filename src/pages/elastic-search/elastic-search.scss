@@ -163,6 +163,11 @@ page-elastic-search {
     .hitData {
       width: 100%;
     }
+
+    ion-icon.open-icon.icon {
+      font-size: 1.125rem;
+      margin: 0 0.25rem 0 0.125rem;
+    }
   }
 
   .hits-column ion-item.hitItem .hitHeader {
