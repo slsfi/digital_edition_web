@@ -206,7 +206,7 @@
                           <div class="hitHeaderCol">
                             <p class="hitHeading">
                               <span *ngIf="hit.source.text_type === 'com'" class="commentHitHeadingPrepend">{{'ElasticSearch.CommentsHitHeadingPrepend' | translate}}</span><span [innerHTML]="getHeading(hit)"></span>
-                              <ion-icon class="open-icon" name="open" aria-description="{{'ElasticSearch.OpenInNewWindow' | translate}}"></ion-icon>
+                              <ion-icon class="open-icon" name="open" aria-description="{{'ElasticSearch.OpenInNewWindow' | translate}}" title="{{'ElasticSearch.OpenInNewWindow' | translate}}"></ion-icon>
                             </p>
                             <p class="hitPubCollection">{{getPublicationCollectionName(hit.source)}}</p>
                           </div>
@@ -245,9 +245,7 @@
             -->
             <ion-row class="load-more-hits-wrapper" *ngIf="canShowHits() && hasMore() && total > 0">
               <ion-spinner *ngIf="infiniteLoading" class="loading" name="crescent"></ion-spinner>
-              <ng-container *ngIf="!infiniteLoading">
-                <button ion-button (click)="loadMore($event)">{{"ElasticSearch.ShowMoreHits" | translate}}</button>
-              </ng-container>
+              <button ion-button (click)="loadMore($event)" [disabled]="infiniteLoading">{{"ElasticSearch.ShowMoreHits" | translate}}</button>
             </ion-row>
           </ion-col>
         </ion-row>

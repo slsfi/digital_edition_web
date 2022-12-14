@@ -505,7 +505,7 @@ export class ElasticSearchPage {
         fields: {
           'text_data': { number_of_fragments: 1000, fragment_size: this.textHighlightFragmentSize, type: this.textHighlightType },
           'text_title': { number_of_fragments: 0, type: this.textTitleHighlightType },
-          'publication_data.publication_name': { number_of_fragments: 0, type: 'unified' },
+          'publication_data.publication_name': { number_of_fragments: 0, type: 'plain' },
         },
       },
       from: this.from,
