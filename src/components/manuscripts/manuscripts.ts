@@ -178,13 +178,15 @@ export class ManuscriptsComponent {
     this.selectedManuscriptName = this.selectedManuscript.name;
     if (this.selectedManuscript && this.selectedManuscript.manuscript_normalized !== undefined) {
       if (this.normalized) {
+        this.text = this.commonFunctions.insertSearchMatchTags(this.selectedManuscript.manuscript_normalized, this.matches);
         this.text = this.sanitizer.bypassSecurityTrustHtml(
-          this.selectedManuscript.manuscript_normalized.replace(/images\//g, 'assets/images/')
+          this.text.replace(/images\//g, 'assets/images/')
             .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiManuscript tei $1\"')
         );
       } else {
+        this.text = this.commonFunctions.insertSearchMatchTags(this.selectedManuscript.manuscript_changes, this.matches);
         this.text = this.sanitizer.bypassSecurityTrustHtml(
-          this.selectedManuscript.manuscript_changes.replace(/images\//g, 'assets/images/')
+          this.text.replace(/images\//g, 'assets/images/')
             .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiManuscript tei $1\"')
         );
       }

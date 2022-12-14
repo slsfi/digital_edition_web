@@ -28,7 +28,7 @@
                 </button>
                 <button *ngIf="showTopElasticButton" ion-button class="top-menu-button elastic-search-button" (click)="elasticSearch()" id="elasticSearchIcon">
                   <ion-icon name="search"></ion-icon>
-                  <span class="side-title">{{'TopMenu.AdvancedSearch' | translate }}</span><span class="side-title beta-label"><strong>(BETA)</strong></span>
+                  <span class="side-title">{{'TopMenu.AdvancedSearch' | translate }}</span>
                 </button>
                 <button *ngIf="showTopURNButton" ion-button (click)="showReference($event)">
                   <ion-icon name="share-alt"></ion-icon>
@@ -51,7 +51,10 @@
                 <button ion-button class="top-menu-button" (click)="front()">
                   <ion-icon name="home"></ion-icon>
                 </button>
-                <button *ngIf="showTopSimpleSearchButton || showTopElasticButton" ion-button (click)="searchApp()" class="searchButton simple-search-button" id="searchIcon">
+                <button *ngIf="showTopSimpleSearchButton" ion-button (click)="searchApp()" class="searchButton simple-search-button" id="searchIcon">
+                  <ion-icon name="search"></ion-icon>
+                </button>
+                <button *ngIf="showTopElasticButton" ion-button (click)="elasticSearch()" class="searchButton elastic-search-button" id="elasticSearchIcon">
                   <ion-icon name="search"></ion-icon>
                 </button>
                 <button *ngIf="showTopURNButton" ion-button (click)="showReference($event)">
@@ -94,7 +97,7 @@
                 </button>
                 <button *ngIf="showTopElasticButton" ion-button class="top-menu-button elastic-search-button" (click)="elasticSearch()" id="elasticSearchIcon">
                   <ion-icon name="search"></ion-icon>
-                  <span class="side-title">{{'TopMenu.AdvancedSearch' | translate }}</span><span class="side-title beta-label"><strong>(BETA)</strong></span>
+                  <span class="side-title">{{'TopMenu.AdvancedSearch' | translate }}</span>
                 </button>
                 <button *ngIf="showTopURNButton" ion-button class="top-menu-button" (click)="showReference($event)">
                   <ion-icon name="share-alt"></ion-icon>

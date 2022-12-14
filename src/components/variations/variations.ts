@@ -173,8 +173,9 @@ export class VariationsComponent {
     }
     this.selectedVariationName = this.selectedVariation.name;
     if (this.selectedVariation && this.selectedVariation.content !== undefined) {
+      this.text = this.commonFunctions.insertSearchMatchTags(this.selectedVariation.content, this.matches);
       this.text = this.sanitizer.bypassSecurityTrustHtml(
-          this.selectedVariation.content.replace(/images\//g, 'assets/images/')
+          this.text.replace(/images\//g, 'assets/images/')
             .replace(/\.png/g, '.svg').replace(/class=\"([a-z A-Z _ 0-9]{1,140})\"/g, 'class=\"teiVariant tei $1\"')
       );
     }

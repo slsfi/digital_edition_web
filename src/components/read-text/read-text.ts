@@ -205,7 +205,7 @@ export class ReadTextComponent {
       this.storage.get(this.estID).then((readtext) => {
         if (readtext) {
           this.textLoading = false;
-          readtext = this.insertSearchMatchTags(readtext);
+          readtext = this.commonFunctions.insertSearchMatchTags(readtext, this.matches);
           this.text = this.sanitizer.bypassSecurityTrustHtml(readtext);
           console.log('Retrieved read-text from cache');
         } else {
@@ -243,30 +243,12 @@ export class ReadTextComponent {
             this.storage.set(this.estID, processedText);
           }
 
-          processedText = this.insertSearchMatchTags(processedText);
+          processedText = this.commonFunctions.insertSearchMatchTags(processedText, this.matches);
           this.text = this.sanitizer.bypassSecurityTrustHtml(processedText);
         }
       },
       error => { this.errorMessage = <any>error; this.textLoading = false; this.text = 'Lästexten kunde inte hämtas.'; }
     );
-  }
-
-  /**
-   * TODO: The regex doesn't work if the match string in the text is interspersed with tags.
-   * For instance, in the text the match could have a span indicating page break:
-   * Tavast<span class="tei pb_zts">|87|</span>länningar. This occurrence will not be marked
-   * with <match> tags in a search for "Tavastlänningar". However, these kind of matches are
-   * found on the elastic-search page.
-   */
-  private insertSearchMatchTags(text: string) {
-    if (this.matches instanceof Array && this.matches.length > 0) {
-      console.log('search matches:', this.matches);
-      this.matches.forEach((val) => {
-        const re = new RegExp('(' + val + ')', 'ig');
-        text = text.replace(re, '<match>$1</match>');
-      });
-    }
-    return text;
   }
 
   /**

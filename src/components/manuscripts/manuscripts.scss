@@ -12,6 +12,11 @@ manuscripts {
     background-color: var(--main-background-color);
   }
 
+  /* Highlight for search match. */
+  match {
+    background-color: $search-match-color !important;
+  }
+
 }
 .mobile-mode-manuscripts manuscripts .text-select-wrapper {
   display: none !important;

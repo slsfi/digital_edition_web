@@ -583,6 +583,14 @@ export class ReadPage /*implements OnDestroy*/ {
       this.params.get('search_title') !== 'searchtitle') {
       this.search_title = this.params.get('search_title');
     }
+    if (this.matches === undefined || this.matches.length < 1) {
+      if (this.search_title) {
+        const search_matches = this.search_title.split('_');
+        search_matches.forEach(search_match => {
+          this.matches.push(decodeURIComponent(search_match));
+        });
+      }
+    }
   }
 
   openOccurrenceResult() {

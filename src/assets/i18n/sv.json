@@ -276,8 +276,8 @@
     },
     "ElasticSearch": {
         "PageTitle": "Sök",
-        "NoHits": "Din sökning matchade inga dokument",
-        "Found": "Sökträffar:",
+        "NoHits": "Sökningen gav inga svar.",
+        "Found": "Texter med sökträffar:",
         "SearchField": "Lägg till sökfält",
         "From": "Från",
         "To": "Till",
@@ -295,7 +295,15 @@
         "NoWordHits": "inga träffar",
         "NoFacetOptions": "Inga sökord",
         "Suggestions": "Förslag på filtrering",
-        "ShowMoreHits": "Visa fler sökträffar"
+        "ShowMoreHits": "Visa fler sökträffar",
+        "ShowAllHitHighlights": "Visa alla träffar i texten",
+        "LoadingError": "Ett fel har uppstått när sökträffarna skulle laddas.",
+        "CommentsHitHeadingPrepend": "Kommentar till",
+        "FilterResults": "Avgränsa sökningen",
+        "ShowFacets": "Visa avgränsningar",
+        "HideFacets": "Dölj avgränsningar",
+        "OpenInNewWindow": "Länken öppnas i ett nytt fönster.",
+        "ScrollToTop": "Till början"
     },
     "Filter": {
         "personTypes": "Personkategori",
@@ -303,9 +311,9 @@
         "year": "Född mellan",
         "apply": "Verkställ"
     },
-    "Type": "Typ",
+    "Type": "Texttyp",
     "Genre": "Genre",
-    "Collection": "Utgåvor",
+    "Collection": "Delutgåva",
     "Location": "Plats",
     "Subjects": "Ämnen",
     "Tags": "Taggar",

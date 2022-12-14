@@ -302,7 +302,15 @@
         "NoWordHits": "ei osumia",
         "NoFacetOptions": "Ei hakusanoja",
         "Suggestions": "Suodatusehdotuksia",
-        "ShowMoreHits": "Näytä lisää hakutuloksia"
+        "ShowMoreHits": "Näytä lisää hakutuloksia",
+        "ShowAllHitHighlights": "Näytä tekstin kaikki osumat",
+        "LoadingError": "Tapahtui virhe ladatessa hakutuloksia.",
+        "CommentsHitHeadingPrepend": "Kommentaari:",
+        "FilterResults": "Rajaa hakua",
+        "ShowFacets": "Näytä rajaukset",
+        "HideFacets": "Piilota rajaukset",
+        "OpenInNewWindow": "Linkki avautuu uuteen ikkunaan.",
+        "ScrollToTop": "Palaa alkuun"
     },
     "Type": "Tekstityyppi",
     "Genre": "Tekstilaji",

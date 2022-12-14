@@ -48,8 +48,6 @@ export class CommonFunctionsService {
 
   /**
    * Function for sorting an array of objects alphabetically ascendingly based on the given object key (field).
-   * @param arrayToSort
-   * @param fieldToSortOn
    */
   sortArrayOfObjectsAlphabetically(arrayToSort: any, fieldToSortOn: string) {
     if (Array.isArray(arrayToSort)) {
@@ -60,6 +58,23 @@ export class CommonFunctionsService {
           return -1;
         }
         if (fieldA > fieldB) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+  }
+
+  /**
+   * Function for sorting an array of objects numerically descendingly based on the given object key (field).
+   */
+  sortArrayOfObjectsNumerically(arrayToSort: any, fieldToSortOn: string) {
+    if (Array.isArray(arrayToSort)) {
+      arrayToSort.sort((a, b) => {
+        if (a[fieldToSortOn] > b[fieldToSortOn]) {
+          return -1;
+        }
+        if (a[fieldToSortOn] < b[fieldToSortOn]) {
           return 1;
         }
         return 0;
@@ -186,6 +201,42 @@ export class CommonFunctionsService {
       }
     }
     return names_str;
+  }
+
+
+  /**
+   * TODO: The regex doesn't work if the match string in the text is interspersed with tags.
+   * For instance, in the text the match could have a span indicating page break:
+   * Tavast<span class="tei pb_zts">|87|</span>länningar. This occurrence will not be marked
+   * with <match> tags in a search for "Tavastlänningar". However, these kind of matches are
+   * found on the elastic-search page.
+   */
+  insertSearchMatchTags(text: string, matches: string[]) {
+    if (matches instanceof Array && matches.length > 0) {
+      matches.forEach((val) => {
+        if (val) {
+          console.log('highlighting ', val);
+          // Replace spaces in the match string with a regex and also insert a regex between each
+          // character in the match string. This way html tags inside the match string can be
+          // ignored when searching for the match string in the text.
+          let c_val = '';
+          for (let i = 0; i < val.length; i++) {
+            const char = val.charAt(i);
+            if (char === ' ') {
+              c_val = c_val + '(?:\\s*<[^>]+>\\s*)*\\s+(?:\\s*<[^>]+>\\s*)*';
+            } else if (i < val.length - 1) {
+              c_val = c_val + char + '(?:<[^>]+>)*';
+            } else {
+              c_val = c_val + char;
+            }
+          }
+          console.log('c_val ', c_val);
+          const re = new RegExp('(?<=^|\\P{L})(' + c_val + ')(?=\\P{L}|$)', 'gumi');
+          text = text.replace(re, '<match>$1</match>');
+        }
+      });
+    }
+    return text;
   }
 
 }
