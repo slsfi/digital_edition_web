@@ -265,7 +265,7 @@ export class ElasticSearchPage {
             try {
               facetListRest.style.setProperty('height', '0px');
               const facetArrowRest = <HTMLElement>document.querySelector('#arrow-' + facetGroup);
-              facetArrowRest.classList.add('closed', 'rotate');
+              facetArrowRest.classList.add('closed');
             } catch (e) {
             }
             break;
