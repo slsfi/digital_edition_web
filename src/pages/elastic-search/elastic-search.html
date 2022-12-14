@@ -170,14 +170,6 @@
         <!-- Hits column -->
         <ion-row class="hits-column">
           <ion-col>
-            <!-- Search status row -->
-            <ion-row class="searchStatus">
-              <!-- Search status -->
-              <div *ngIf="loading">
-                <ion-spinner class="loading" name="crescent"></ion-spinner>
-              </div>
-            </ion-row>
-
             <!-- Hits row -->
             <ion-row class="searchHits">
               <ion-list class="hits-list-wrapper" *ngIf="canShowHits() && total > 0">
