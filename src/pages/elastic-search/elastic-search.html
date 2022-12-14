@@ -244,7 +244,9 @@
             </ion-row>
             -->
             <ion-row class="load-more-hits-wrapper" *ngIf="canShowHits() && hasMore() && total > 0">
-              <ion-spinner *ngIf="infiniteLoading" class="loading" name="crescent"></ion-spinner>
+              <div class="loading-spinner-wrapper">
+                <ion-spinner *ngIf="infiniteLoading" class="loading" name="crescent"></ion-spinner>
+              </div>
               <button ion-button (click)="loadMore($event)" [disabled]="infiniteLoading">{{"ElasticSearch.ShowMoreHits" | translate}}</button>
             </ion-row>
           </ion-col>
