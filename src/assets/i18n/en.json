@@ -266,7 +266,8 @@
         "FilterResults": "Filter results",
         "ShowFacets": "Show filters",
         "HideFacets": "Hide filters",
-        "OpenInNewWindow": "The link opens in a new window."
+        "OpenInNewWindow": "The link opens in a new window.",
+        "ScrollToTop": "Scroll to top"
     },
     "MediaCollections": {
         "MediaCollections": "Faksimilsamlingar",

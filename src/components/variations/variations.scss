@@ -1,3 +1,6 @@
 variations {
-
+    /* Highlight for search match. */
+    match {
+        background-color: $search-match-color !important;
+    }
 }

@@ -309,7 +309,8 @@
         "FilterResults": "Rajaa hakua",
         "ShowFacets": "Näytä rajaukset",
         "HideFacets": "Piilota rajaukset",
-        "OpenInNewWindow": "Linkki avautuu uuteen ikkunaan."
+        "OpenInNewWindow": "Linkki avautuu uuteen ikkunaan.",
+        "ScrollToTop": "Palaa alkuun"
     },
     "Type": "Tekstityyppi",
     "Genre": "Tekstilaji",
