@@ -271,7 +271,8 @@
         "FilterResults": "Begränsa sökningen",
         "ShowFacets": "Visa avgränsningar",
         "HideFacets": "Dölj avgränsningar",
-        "OpenInNewWindow": "Länken öppnas i ett nytt fönster."
+        "OpenInNewWindow": "Länken öppnas i ett nytt fönster.",
+        "ScrollToTop": "Till början"
     },
     "est": "Lästext",
     "ms": "Manuskript",
