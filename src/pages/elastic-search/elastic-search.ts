@@ -1027,4 +1027,11 @@ export class ElasticSearchPage {
   toggleFacetsColumn() {
     this.facetsToggledInMobileMode = !this.facetsToggledInMobileMode;
   }
+
+  scrollToTop() {
+    const searchBarElem = document.querySelector('.searchbar-wrapper') as HTMLElement;
+    if (searchBarElem) {
+      this.commonFunctions.scrollElementIntoView(searchBarElem, 'top', 16);
+    }
+  }
 }
