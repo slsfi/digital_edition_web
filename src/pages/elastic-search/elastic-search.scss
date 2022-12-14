@@ -289,8 +289,12 @@ page-elastic-search {
     button.button {
       font-size: 0.875rem;
       height: 2rem !important;
-      margin-top: 1rem;
+      margin-top: 2rem;
     }
+  }
+
+  .load-more-hits-wrapper + .hits-footer button.button {
+    margin-top: 1rem;
   }
 
   /* Currently not used */
