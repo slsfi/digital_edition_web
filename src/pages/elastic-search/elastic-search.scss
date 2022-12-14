@@ -145,6 +145,10 @@ page-elastic-search {
     }
   }
 
+  .hits-column ion-list.hits-list-wrapper ion-item.hitItem:last-child {
+    margin-bottom: 0;
+  }
+
   .hits-column ion-item.hitItem:hover {
     border-color: var(--elastic-search-hititem-hover-border-color);
     background-color: var(--elastic-search-hititem-hover-background-color) !important;
@@ -275,10 +279,6 @@ page-elastic-search {
         display: none;
       }
     }
-  }
-
-  .hits-column ion-row.searchHits {
-    margin-bottom: 1rem;
   }
 
   /* Currently not used */
