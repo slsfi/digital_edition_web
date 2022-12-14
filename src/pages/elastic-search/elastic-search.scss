@@ -281,6 +281,12 @@ page-elastic-search {
     }
   }
 
+  .hits-column .hits-footer {
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+  }
+
   /* Currently not used */
   .infinite-scroll-wrapper {
     width: 100%;
