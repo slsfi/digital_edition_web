@@ -249,7 +249,7 @@
               </div>
               <button ion-button (click)="loadMore($event)" [disabled]="infiniteLoading">{{"ElasticSearch.ShowMoreHits" | translate}}</button>
             </ion-row>
-            <ion-row class="hits-footer" *ngIf="canShowHits() && total > 0">
+            <ion-row class="hits-footer" *ngIf="canShowHits() && total > 5">
               <button ion-button outline (click)="scrollToTop()">{{"ElasticSearch.ScrollToTop" | translate}}</button>
             </ion-row>
           </ion-col>
