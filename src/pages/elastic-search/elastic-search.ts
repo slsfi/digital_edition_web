@@ -207,8 +207,12 @@ export class ElasticSearchPage {
 
   private getParamsData() {
     try {
-      const query = this.navParams.get('query');
+      let query = this.navParams.get('query');
       if (query !== ':query') {
+        // Remove line break characters
+        query = query.replace(/\n/gm, '');
+        // Remove any script tags
+        query = query.replace(/<script.+?<\/script>/gi, '');
         this.queries[0] = query;
       }
     } catch (e) {
@@ -217,7 +221,12 @@ export class ElasticSearchPage {
   }
 
   ionViewDidLoad() {
-    this.search({initialSearch: true});
+    this.getParamsData();
+    if (this.queries[0]) {
+      this.initSearch();
+    } else {
+      this.search({initialSearch: true});
+    }
     // Open type by default
     setTimeout(() => {
       const facetGroups = Object.keys(this.facetGroups);
@@ -308,7 +317,6 @@ export class ElasticSearchPage {
       menuID: 'elasticSearch',
       component: 'elastic-search'
     });
-    this.getParamsData();
   }
 
   ngOnDestroy() {

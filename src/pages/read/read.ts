@@ -584,10 +584,17 @@ export class ReadPage /*implements OnDestroy*/ {
       this.search_title = this.params.get('search_title');
     }
     if (this.matches === undefined || this.matches.length < 1) {
+      // Get search match phrases from search_title and decode them
       if (this.search_title) {
         const search_matches = this.search_title.split('_');
         search_matches.forEach(search_match => {
-          this.matches.push(decodeURIComponent(search_match));
+          let decoded_match = decodeURIComponent(search_match);
+          // Remove line break characters
+          decoded_match = decoded_match.replace(/\n/gm, '');
+          // Remove any script tags
+          decoded_match = decoded_match.replace(/<script.+?<\/script>/gi, '');
+          decoded_match = this.commonFunctions.encodeCharEntities(decoded_match);
+          this.matches.push(decoded_match);
         });
       }
     }
