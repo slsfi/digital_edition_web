@@ -33,19 +33,13 @@ export class ElasticSearchService {
       'text_type',
       'text_title',
       'text_data',
-      'path',
       'doc_title',
       'collection_id',
       'publication_id',
       'publication_data',
-      'ms_data',
-      'var_data',
       'orig_date_year',
       'orig_date_certain',
-      'orig_date_sort',
-      'deleted',
-      'published',
-      'tie_breaker_id'
+      'orig_date_sort'
     ];
 
     // Add additional fields that should be returned in hits from config file
