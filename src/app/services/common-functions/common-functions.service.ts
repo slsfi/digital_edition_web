@@ -205,11 +205,12 @@ export class CommonFunctionsService {
 
 
   /**
-   * TODO: The regex doesn't work if the match string in the text is interspersed with tags.
+   * TODO: The regex doesn't work if the match string in the text is interspersed with opening and closing tags.
    * For instance, in the text the match could have a span indicating page break:
    * Tavast<span class="tei pb_zts">|87|</span>länningar. This occurrence will not be marked
    * with <match> tags in a search for "Tavastlänningar". However, these kind of matches are
    * found on the elastic-search page.
+   * However, the regex does take care of self-closing tags in the match string, for instance <img/>.
    */
   insertSearchMatchTags(text: string, matches: string[]) {
     if (matches instanceof Array && matches.length > 0) {
@@ -238,7 +239,7 @@ export class CommonFunctionsService {
   }
 
   /**
-   * Returns the text with all occurrences of the specified characters exchanged with their
+   * Returns the text with all occurrences of the specified characters replaced with their
    * corresponding character entity references.
    */
   encodeCharEntities(text: string) {
@@ -252,7 +253,8 @@ export class CommonFunctionsService {
       'ʄ' : '&#x284;'
     };
 
-    // First parse the text as html which will decode all entity references
+    // First parse the text as html which will decode all entity references,
+    // otherwise & in existing entity references will be replaced.
     const parser = new DOMParser;
     const dom = parser.parseFromString('<!DOCTYPE html><html><body>' + text + '</body></html>', 'text/html');
     text = dom.body.textContent;
