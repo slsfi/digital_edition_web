@@ -237,4 +237,32 @@ export class CommonFunctionsService {
     return text;
   }
 
+  /**
+   * Returns the text with all occurrences of the specified characters exchanged with their
+   * corresponding character entity references.
+   */
+  encodeCharEntities(text: string) {
+    const entities = {
+      '&' : '&amp;',
+      '<' : '&lt;',
+      '>' : '&gt;',
+      '"' : '&quot;',
+      '\'' : '&apos;',
+      '℔' : '&#x2114;',
+      'ʄ' : '&#x284;'
+    };
+
+    // First parse the text as html which will decode all entity references
+    const parser = new DOMParser;
+    const dom = parser.parseFromString('<!DOCTYPE html><html><body>' + text + '</body></html>', 'text/html');
+    text = dom.body.textContent;
+
+    // Then encode the selected characters
+    Object.entries(entities).forEach(([code, entity]) => {
+      const re = new RegExp('[' + code + ']', 'gi');
+      text = text.replace(re, entity);
+    });
+    return text;
+  }
+
 }
