@@ -102,8 +102,6 @@ export class ElasticSearchPage {
   showAllFacets = false;
   showAllFor = {};
   showSortOptions = true;
-  prependPubNameToMsName = true;
-  prependPubNameToVarName = true;
   textTitleHighlightType = 'unified';
   textHighlightType = 'unified';
   textHighlightFragmentSize = 150;
@@ -168,16 +166,6 @@ export class ElasticSearchPage {
       this.highlightSearchMatches = this.config.getSettings('show.highlightedSearchMatches');
     } catch (e) {
       this.highlightSearchMatches = true;
-    }
-    try {
-      this.prependPubNameToMsName = this.config.getSettings('ElasticSearch.show.prependPubNameToMsName');
-    } catch (e) {
-      this.prependPubNameToMsName = true;
-    }
-    try {
-      this.prependPubNameToVarName = this.config.getSettings('ElasticSearch.show.prependPubNameToVarName');
-    } catch (e) {
-      this.prependPubNameToVarName = true;
     }
     try {
       this.textTitleHighlightType = this.config.getSettings('ElasticSearch.textTitleHighlightType');
@@ -513,7 +501,6 @@ export class ElasticSearchPage {
         fields: {
           'text_data': { number_of_fragments: 1000, fragment_size: this.textHighlightFragmentSize, type: this.textHighlightType },
           'text_title': { number_of_fragments: 0, type: this.textTitleHighlightType },
-          'publication_data.publication_name': { number_of_fragments: 0, type: 'plain' },
         },
       },
       from: this.from,
@@ -889,19 +876,6 @@ export class ElasticSearchPage {
       text_name = this.getTextName(hit.source);
       if (!text_name) {
         text_name = this.getTitle(hit.source);
-      }
-    }
-    if ((hit.source.text_type === 'ms' && this.prependPubNameToMsName)
-    || (hit.source.text_type === 'var' && this.prependPubNameToVarName)) {
-      let pub_name = '';
-      if (hit.highlight) {
-        pub_name = this.getHiglightedPublicationName(hit.highlight);
-      }
-      if (!pub_name) {
-        pub_name = this.getPublicationName(hit.source);
-      }
-      if (pub_name) {
-        text_name = pub_name + ', ' + text_name;
       }
     }
     return text_name;
