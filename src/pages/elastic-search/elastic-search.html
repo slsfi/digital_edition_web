@@ -62,7 +62,7 @@
     </ion-row>
     <ion-row class="facet-and-hits-area-row">
       <!--  Search fields -->
-      <ion-col class="facet-column" [class.hide-facet-column]="userSettingsService.isMobile() && !facetsToggledInMobileMode">
+      <ion-col *ngIf="showFacets" class="facet-column" [class.hide-facet-column]="userSettingsService.isMobile() && !facetsToggledInMobileMode">
         <!-- Suggested facets -->
         <!--
         <ion-row *ngIf="hasSuggestedFacets()" class="selectedFacetGroups">
