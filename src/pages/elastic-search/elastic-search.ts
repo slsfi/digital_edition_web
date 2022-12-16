@@ -87,7 +87,6 @@ export class ElasticSearchPage {
   loading = false;
   infiniteLoading = false;
   elasticError = false;
-  showFilter = true;
   queries: string[] = [''];
   cleanQueries: string[] = [''];
   currentQuery = '';
@@ -99,9 +98,9 @@ export class ElasticSearchPage {
   selectedFacetGroups: FacetGroups = {};
   suggestedFacetGroups: FacetGroups = {};
 
-  showAllFacets = false;
   showAllFor = {};
   showSortOptions = true;
+  showFacets = true;
   textTitleHighlightType = 'unified';
   textHighlightType = 'unified';
   textHighlightFragmentSize = 150;
@@ -161,6 +160,11 @@ export class ElasticSearchPage {
       this.showSortOptions = this.config.getSettings('ElasticSearch.show.sortOptions');
     } catch (e) {
       this.showSortOptions = true;
+    }
+    try {
+      this.showFacets = this.config.getSettings('ElasticSearch.show.facets');
+    } catch (e) {
+      this.showFacets = true;
     }
     try {
       this.highlightSearchMatches = this.config.getSettings('show.highlightedSearchMatches');
