@@ -157,7 +157,7 @@ export class ElasticSearchService {
         payload.query.function_score.query.bool.must.push({
           simple_query_string: {
             query,
-            fields: ['text_data', 'text_title^5', 'publication_data.publication_name']
+            fields: ['text_data', 'text_title^5']
           }
         });
       }
@@ -241,7 +241,7 @@ export class ElasticSearchService {
         payload.query.function_score.query.bool.must.push({
           simple_query_string: {
             query,
-            fields: ['text_data', 'text_title^5', 'publication_data.publication_name^1']
+            fields: ['text_data', 'text_title^5']
           }
         });
       }
