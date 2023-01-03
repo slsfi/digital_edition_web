@@ -53,7 +53,7 @@ export class PersonSearchPage {
   personsCopy: any[] = [];
   searchText: string;
   texts: SingleOccurrence[] = [];
-  infiniteScrollNumber = 800;
+  infiniteScrollNumber = 500;
 
   personTitle: string;
   selectedLinkID: string;
@@ -62,6 +62,7 @@ export class PersonSearchPage {
   type: any;
   subType: any;
   from = 0;
+  agg_after_key: Record<string, any> = {};
 
   filters: any[] = [];
 
@@ -114,11 +115,13 @@ export class PersonSearchPage {
     } catch (e) {
       this.personSearchTypes = [];
     }
+    /*
     try {
       this.infiniteScrollNumber = this.config.getSettings('PersonSearch.InitialLoadNumber');
     } catch (e) {
-      this.infiniteScrollNumber = 800;
+      this.infiniteScrollNumber = 500;
     }
+    */
   }
 
   ionViewWillEnter() {
@@ -218,6 +221,7 @@ export class PersonSearchPage {
 
   sortByLetter(letter) {
     this.searchText = letter;
+    this.agg_after_key = {};
     this.persons = [];
     this.cf.detectChanges();
     this.getPersons();
@@ -237,21 +241,19 @@ export class PersonSearchPage {
 
   getPersons() {
     this.showLoading = true;
-    this.semanticDataService.getSubjectsElastic(this.from, this.searchText, this.filters, this.infiniteScrollNumber).subscribe(
+    this.semanticDataService.getSubjectsElastic(this.agg_after_key, this.searchText, this.filters, this.infiniteScrollNumber).subscribe(
       persons => {
-        /*
-        if (this.from < 1) {
-          console.log('First batch of persons from elastic: ', persons);
-        }
-        */
+        console.log('Elastic response: ', persons);
         if (persons.error !== undefined) {
           console.error('Elastic search error getting persons: ', persons);
         }
-        const personsTmp = [];
-        if (persons.hits !== undefined) {
-          persons = persons.hits.hits;
+
+        if (persons.aggregations.unique_subjects.buckets.length > 0) {
+          this.agg_after_key = persons.aggregations.unique_subjects.after_key;
+
+          persons = persons.aggregations.unique_subjects.buckets;
           persons.forEach(element => {
-            element = element['_source'];
+            element = element['key'];
             const sortBy = [];
             let sortByName = String(element['full_name']).toLowerCase().replace('ʽ', '');
             sortByName = sortByName.replace('de ', '');
@@ -276,18 +278,11 @@ export class PersonSearchPage {
             }
             if ( this.subType !== '' && this.subType !== null && element['type'] !== this.subType ) {
             } else {
-              let found = false;
-              this.persons.forEach(pers => {
-                if ( pers.id === element['id'] ) {
-                  found = true;
-                }
-              });
-              if ( !found ) {
-                personsTmp.push(element);
-                this.persons.push(element);
-              }
+              this.persons.push(element);
             }
           });
+        } else {
+          this.agg_after_key = {};
         }
 
         this.allData = this.persons;
@@ -295,7 +290,11 @@ export class PersonSearchPage {
         this.sortListAlphabeticallyAndGroup(this.persons);
         this.showLoading = false;
       },
-      err => {console.error(err); this.showLoading = false; }
+      err => {
+        console.error(err);
+        this.showLoading = false;
+        this.agg_after_key = {};
+      }
     );
   }
 
@@ -430,6 +429,7 @@ export class PersonSearchPage {
       if (filters) {
         this.persons = [];
         this.allData = [];
+        this.agg_after_key = {};
         this.filters = filters;
         if (filters['isEmpty'] || filters['isEmpty'] === undefined) {
           console.log('filters are empty')
@@ -538,7 +538,7 @@ export class PersonSearchPage {
     if ( !terms || terms === '' ) {
       this.persons = this.personsCopy;
     } else if (terms != null) {
-      this.from = 0;
+      this.agg_after_key = {};
       this.getPersons();
       this.persons = [];
       terms = String(terms).toLowerCase().replace(' ', '');
@@ -563,7 +563,6 @@ export class PersonSearchPage {
   }
 
   doInfinite(infiniteScroll) {
-    this.from += this.infiniteScrollNumber;
     this.getPersons();
     infiniteScroll.complete();
   }
@@ -616,7 +615,7 @@ export class PersonSearchPage {
     this.loadMorePersons();
     */
     this.count = 0;
-    this.from = 0;
+    this.agg_after_key = {};
     this.searchText = '';
     this.filters = [];
     this.persons = [];
