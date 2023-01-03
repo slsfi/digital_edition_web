@@ -418,6 +418,12 @@ export class SemanticDataService {
     const payload: any = {
       from: from,
       size: 800,
+      _source: [
+        'id',
+        'tag_id',
+        'name',
+        'tag_type'
+      ],
       sort: [
         { 'name.keyword' : 'asc' }
       ],
@@ -428,6 +434,9 @@ export class SemanticDataService {
           },
           {
             'term' : { 'published' : showPublishedStatus }
+          },
+          {
+            'term' : { 'publication_deleted' : 0 }
           },
           {
             'term' : { 'ev_o_deleted' : 0 }
