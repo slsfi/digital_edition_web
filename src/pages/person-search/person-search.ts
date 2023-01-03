@@ -239,7 +239,7 @@ export class PersonSearchPage {
     });
   }
 
-  async getPersons() {
+  getPersons() {
     this.showLoading = true;
     this.semanticDataService.getSubjectsElastic(this.agg_after_key, this.searchText, this.filters, this.infiniteScrollNumber).subscribe(
       persons => {
@@ -294,10 +294,6 @@ export class PersonSearchPage {
         console.error(err);
         this.showLoading = false;
         this.agg_after_key = {};
-        return 0;
-      },
-      () => {
-        return 1;
       }
     );
   }
@@ -566,12 +562,9 @@ export class PersonSearchPage {
     }
   }
 
-  doInfinite(): Promise<void> {
-    return new Promise((resolve) => {
-      this.getPersons().then((res) => {
-        resolve();
-      });
-    });
+  doInfinite(infiniteScroll) {
+    this.getPersons();
+    infiniteScroll.complete();
   }
 
   async openPerson(occurrenceResult: OccurrenceResult) {
