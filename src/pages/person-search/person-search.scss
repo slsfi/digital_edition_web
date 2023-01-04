@@ -141,4 +141,29 @@ page-person-search {
         max-width: 650px;
     }
 
+    .load-more-wrapper {
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+
+        button.button {
+        font-size: 0.875rem;
+        height: 2rem !important;
+        margin-top: 0;
+        }
+
+        .loading-spinner-wrapper {
+        min-height: 4rem;
+        }
+
+        ion-spinner.loading {
+        padding: 1rem 0;
+        }
+    }
+
+    .load-more-wrapper + .hits-footer button.button {
+        margin-top: 1rem;
+      }
 }

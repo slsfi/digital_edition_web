@@ -360,7 +360,9 @@
     },
     "BasicActions": {
         "Ok": "Ok",
-        "Cancel": "Avbryt"
+        "Cancel": "Avbryt",
+        "ShowMore": "Visa fler",
+        "ScrollToTop": "Till början"
     },
     "Epub": {
         "DisplayOptions": "Textstorlek",

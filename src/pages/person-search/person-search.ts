@@ -18,6 +18,7 @@ import { AnalyticsService } from '../../app/services/analytics/analytics.service
 import { MetadataService } from '../../app/services/metadata/metadata.service';
 import { MdContentService } from '../../app/services/md/md-content.service';
 import { TooltipService } from '../../app/services/tooltips/tooltip.service';
+import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
 import { Subscription } from 'rxjs/Subscription';
 
 /**
@@ -53,7 +54,7 @@ export class PersonSearchPage {
   personsCopy: any[] = [];
   searchText: string;
   texts: SingleOccurrence[] = [];
-  infiniteScrollNumber = 500;
+  max_fetch_size = 500;
 
   personTitle: string;
   selectedLinkID: string;
@@ -63,6 +64,7 @@ export class PersonSearchPage {
   subType: any;
   from = 0;
   agg_after_key: Record<string, any> = {};
+  last_fetch_size = 0;
 
   filters: any[] = [];
 
@@ -101,7 +103,8 @@ export class PersonSearchPage {
               private cf: ChangeDetectorRef,
               private analyticsService: AnalyticsService,
               private metadataService: MetadataService,
-              private tooltipService: TooltipService
+              private tooltipService: TooltipService,
+              public commonFunctions: CommonFunctionsService
   ) {
     const type = this.navParams.get('type') || null;
     this.filterYear = null;
@@ -117,9 +120,9 @@ export class PersonSearchPage {
     }
     /*
     try {
-      this.infiniteScrollNumber = this.config.getSettings('PersonSearch.InitialLoadNumber');
+      this.max_fetch_size = this.config.getSettings('PersonSearch.InitialLoadNumber');
     } catch (e) {
-      this.infiniteScrollNumber = 500;
+      this.max_fetch_size = 500;
     }
     */
   }
@@ -241,15 +244,16 @@ export class PersonSearchPage {
 
   getPersons() {
     this.showLoading = true;
-    this.semanticDataService.getSubjectsElastic(this.agg_after_key, this.searchText, this.filters, this.infiniteScrollNumber).subscribe(
+    this.semanticDataService.getSubjectsElastic(this.agg_after_key, this.searchText, this.filters, this.max_fetch_size).subscribe(
       persons => {
         console.log('Elastic response: ', persons);
         if (persons.error !== undefined) {
           console.error('Elastic search error getting persons: ', persons);
         }
 
-        if (persons.aggregations.unique_subjects.buckets.length > 0) {
+        if (persons.aggregations && persons.aggregations.unique_subjects && persons.aggregations.unique_subjects.buckets.length > 0) {
           this.agg_after_key = persons.aggregations.unique_subjects.after_key;
+          this.last_fetch_size = persons.aggregations.unique_subjects.buckets.length;
 
           persons = persons.aggregations.unique_subjects.buckets;
           persons.forEach(element => {
@@ -283,6 +287,7 @@ export class PersonSearchPage {
           });
         } else {
           this.agg_after_key = {};
+          this.last_fetch_size = 0;
         }
 
         this.allData = this.persons;
@@ -294,6 +299,7 @@ export class PersonSearchPage {
         console.error(err);
         this.showLoading = false;
         this.agg_after_key = {};
+        this.last_fetch_size = 0;
       }
     );
   }
@@ -324,7 +330,7 @@ export class PersonSearchPage {
 
       this.sortListAlphabeticallyAndGroup(this.allData);
 
-      for (let i = 0; i < this.infiniteScrollNumber; i++) {
+      for (let i = 0; i < this.max_fetch_size; i++) {
         this.persons.push(this.allData[this.count]);
         this.personsCopy.push(this.allData[this.count]);
         this.count++
@@ -502,7 +508,7 @@ export class PersonSearchPage {
 
     this.persons = [];
     this.allData = newData;
-    for (let k = 0; k < this.infiniteScrollNumber; k++) {
+    for (let k = 0; k < this.max_fetch_size; k++) {
       if (k === this.allData.length) {
         break;
       } else {
@@ -514,7 +520,7 @@ export class PersonSearchPage {
   }
 
   loadMorePersons() {
-    for (let i = 0; i < this.infiniteScrollNumber; i++) {
+    for (let i = 0; i < this.max_fetch_size; i++) {
       if (i === this.allData.length) {
         break;
       } else {
@@ -562,9 +568,18 @@ export class PersonSearchPage {
     }
   }
 
+  /*
   doInfinite(infiniteScroll) {
     this.getPersons();
     infiniteScroll.complete();
+  }
+  */
+  loadMore(e) {
+    this.getPersons();
+  }
+
+  hasMore() {
+    return this.last_fetch_size < this.max_fetch_size + 1;
   }
 
   async openPerson(occurrenceResult: OccurrenceResult) {
@@ -629,6 +644,13 @@ export class PersonSearchPage {
         text => { this.mdContent = text.content; },
         error => { this.mdContent = ''; }
       );
+  }
+
+  scrollToTop() {
+    const topElem = document.querySelector('.search-area-row') as HTMLElement;
+    if (topElem) {
+      this.commonFunctions.scrollElementIntoView(topElem, 'top', 0);
+    }
   }
 
 }

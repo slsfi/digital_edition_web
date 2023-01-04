@@ -410,7 +410,9 @@
     },
     "BasicActions": {
         "Ok": "Ok",
-        "Cancel": "Peruuta"
+        "Cancel": "Peruuta",
+        "ShowMore": "Näytä lisää",
+        "ScrollToTop": "Palaa alkuun"
     },
     "Epub": {
         "DisplayOptions": "Tekstikoko",

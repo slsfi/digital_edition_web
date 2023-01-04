@@ -352,7 +352,9 @@
     },
     "BasicActions": {
         "Ok": "Ok",
-        "Cancel": "Cancel"
+        "Cancel": "Cancel",
+        "ShowMore": "Show more",
+        "ScrollToTop": "Scroll to top"
     },
     "Epub": {
         "DisplayOptions": "Text size",
