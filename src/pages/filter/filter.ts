@@ -77,7 +77,7 @@ export class FilterPage {
           if (filterCollections) {
             this.filterCollections = filterCollections;
           } else {
-            console.log('filters in cache empty');
+            console.log('filter collections in cache empty');
           }
         });
       }
@@ -101,7 +101,7 @@ export class FilterPage {
           if (filterPersonTypes) {
             this.filterPersonTypes = filterPersonTypes;
           } else {
-            console.log('filters in cache empty');
+            console.log('filter person types in cache empty');
           }
           this.showLoading = false;
         });
@@ -128,7 +128,7 @@ export class FilterPage {
             if (filterCategoryTypes) {
               this.filterCategoryTypes = filterCategoryTypes;
             } else {
-              console.log('filters in cache empty');
+              console.log('filter category types in cache empty');
             }
             this.showLoading = false;
           });

@@ -37,16 +37,24 @@ page-filter {
     border: 1px solid gray;
     background-color: rgba($color: #000000, $alpha: 0.1);
     margin-top:1rem;
+    max-width: 200px;
   }
   .toYear{
     border: 1px solid gray;
     background-color: rgba($color: #000000, $alpha: 0.1);
     margin-left: 1rem;
     margin-top:1rem;
+    max-width: 200px;
   }
 
   .year_label{
     margin-bottom: 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  ion-item.filter-year-inputs.item .item-inner {
+    border-bottom: 0 !important;
   }
 
   ion-item ion-label {

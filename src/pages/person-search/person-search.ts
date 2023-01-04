@@ -192,6 +192,7 @@ export class PersonSearchPage {
         name: this.subType,
         selected: true
       }
+      this.filters['filterPersonTypes'] = [];
       this.filters['filterPersonTypes'].push(subTypeObj);
       /**
        * TODO: Get correct page title if subtype person search
