@@ -243,7 +243,7 @@ export class PersonSearchPage {
             element = element['key'];
 
             let sortByName = String(element['full_name']).replace('ʽ', '').trim();
-            sortByName = sortByName.replace('/^(?:de |von |van |af |d’ |d’|di |zu )/', '').toLowerCase();
+            sortByName = sortByName.replace(/^(?:de |von |van |af |d’ |d’|di |zu )/, '').toLowerCase();
             const ltr = sortByName.charAt(0);
             if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
               element['sortBy'] = sortByName;
