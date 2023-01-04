@@ -62,7 +62,6 @@ export class PersonSearchPage {
   showFilter = true;
   type: any;
   subType: any;
-  from = 0;
   agg_after_key: Record<string, any> = {};
   last_fetch_size = 0;
 
@@ -74,9 +73,6 @@ export class PersonSearchPage {
 
   // tslint:disable-next-line:max-line-length
   alphabet: string[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Å', 'Ä', 'Ö'];
-
-  cacheItem = false;
-  personsKey = 'person-search';
 
   personSearchTypes = [];
   filterYear: number;
@@ -147,10 +143,10 @@ export class PersonSearchPage {
   }
 
   ionViewDidLoad() {
+    this.getParamsData();
+    this.selectMusicAccordionItem();
+    this.getPersons();
     this.languageSubscription = this.langService.languageSubjectChange().subscribe(lang => {
-      this.getParamsData();
-      this.selectMusicAccordionItem();
-      this.setData();
       if (lang) {
         this.getMdContent(lang + '-12-02');
       }
@@ -186,7 +182,6 @@ export class PersonSearchPage {
     }
 
     if (this.subType) {
-      this.personsKey += `-${this.subType}`;
       /**
        * TODO: Get correct page title if subtype person search
        */
@@ -228,18 +223,7 @@ export class PersonSearchPage {
     this.persons = [];
     this.cf.detectChanges();
     this.getPersons();
-    this.content.scrollToTop(400);
-  }
-
-  setData() {
-    this.storage.get(this.personsKey).then((persons) => {
-      if (persons) {
-        this.cacheItem = true;
-        this.getCacheText(this.personsKey);
-      } else {
-        this.getPersons();
-      }
-    });
+    this.scrollToTop();
   }
 
   getPersons() {
@@ -304,88 +288,6 @@ export class PersonSearchPage {
     );
   }
 
-  async download() {
-    this.cacheItem = !this.cacheItem;
-
-    if (this.cacheItem) {
-      await this.storeCacheText(this.personsKey, this.cacheData);
-    } else if (!this.cacheItem) {
-      this.removeFromCache(this.personsKey);
-    }
-  }
-
-  async storeCacheText(id: string, text: any) {
-    await this.storage.set(id, text);
-    await this.addedToCacheToast(id);
-  }
-
-  async removeFromCache(id: string) {
-    await this.storage.remove(id);
-    await this.removedFromCacheToast(id);
-  }
-
-  getCacheText(id: string) {
-    this.storage.get(id).then((persons) => {
-      this.allData = persons;
-
-      this.sortListAlphabeticallyAndGroup(this.allData);
-
-      for (let i = 0; i < this.max_fetch_size; i++) {
-        this.persons.push(this.allData[this.count]);
-        this.personsCopy.push(this.allData[this.count]);
-        this.count++
-      }
-    });
-  }
-
-  async addedToCacheToast(id: string) {
-    let status = '';
-
-    await this.storage.get(id).then((content) => {
-      if (content) {
-        status = 'Persons downloaded successfully';
-      } else {
-        status = 'Persons were not added to cache';
-      }
-    });
-
-    const toast = await this.toastCtrl.create({
-      message: status,
-      duration: 3000,
-      position: 'bottom'
-    });
-
-    await toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
-    });
-
-    await toast.present();
-  }
-
-  async removedFromCacheToast(id: string) {
-    let status = '';
-
-    await this.storage.get(id).then((content) => {
-      if (content) {
-        status = 'Persons were not removed from cache';
-      } else {
-        status = 'Persons were successfully removed from cache';
-      }
-    });
-
-    const toast = await this.toastCtrl.create({
-      message: status,
-      duration: 3000,
-      position: 'bottom'
-    });
-
-    await toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
-    });
-
-    await toast.present();
-  }
-
   sortListAlphabeticallyAndGroup(listOfPersons: any[]) {
     const persons = listOfPersons;
 
@@ -419,6 +321,7 @@ export class PersonSearchPage {
     }
     return persons;
   }
+
   sortPersonsAlphabetically(persons) {
     persons.sort(function(a, b) {
       if (a.sortBy.charCodeAt(0) < b.sortBy.charCodeAt(0)) { return -1; }
@@ -428,6 +331,7 @@ export class PersonSearchPage {
 
     return persons;
   }
+
   openFilterModal() {
     const filterModal = this.modalCtrl.create(FilterPage, { searchType: 'person-search' });
     filterModal.onDidDismiss(filters => {
@@ -519,18 +423,6 @@ export class PersonSearchPage {
     }
   }
 
-  loadMorePersons() {
-    for (let i = 0; i < this.max_fetch_size; i++) {
-      if (i === this.allData.length) {
-        break;
-      } else {
-        this.persons.push(this.allData[this.count]);
-        this.personsCopy.push(this.allData[this.count]);
-        this.count++
-      }
-    }
-  }
-
   onChanged(obj) {
     this.cf.detectChanges();
     console.log('segment changed')
@@ -538,6 +430,7 @@ export class PersonSearchPage {
   }
 
   filter(terms) {
+    console.log('filter terms:', terms);
     if ( terms._value ) {
       terms = terms._value;
     }
@@ -550,30 +443,26 @@ export class PersonSearchPage {
       terms = String(terms).toLowerCase().replace(' ', '');
       for (const person of this.allData) {
         let sortBy = String(person.full_name).toLowerCase().replace(' ', '').replace('ʽ', '');
-        sortBy = sortBy.replace('de', '').replace('von', '').replace('van', '').replace('af', '');
-        let sortByReverse = String(person.full_name).toLowerCase().replace(' ', '').replace('ʽ', '');
-        sortByReverse = sortByReverse.replace('de', '').replace('von', '').replace('van', '').replace('af', '');
-        if (sortBy) {
-          if (sortBy.includes(terms) || sortByReverse.includes(terms)) {
-            const inList = this.persons.some(function(p) {
-              return (p.sortBy === person.sortBy)
-            });
-            if (!inList) {
-              this.persons.push(person);
-            }
+        sortBy = sortBy.replace('de ', '');
+        sortBy = sortBy.replace('von ', '');
+        sortBy = sortBy.replace('van ', '');
+        sortBy = sortBy.replace('af ', '');
+        sortBy = sortBy.replace('d’ ', '');
+        sortBy = sortBy.replace('d’', '');
+        sortBy = sortBy.replace('di ', '');
+        sortBy = sortBy.trim();
+        if (sortBy && sortBy.includes(terms)) {
+          const inList = this.persons.some(function(p) {
+            return (p.sortBy === person.sortBy)
+          });
+          if (!inList) {
+            this.persons.push(person);
           }
         }
       }
-    } else {
     }
   }
 
-  /*
-  doInfinite(infiniteScroll) {
-    this.getPersons();
-    infiniteScroll.complete();
-  }
-  */
   loadMore(e) {
     this.getPersons();
   }
@@ -622,13 +511,6 @@ export class PersonSearchPage {
   }
 
   showAll() {
-    /*
-    this.persons = [];
-    this.allData = [];
-    this.count = 0;
-    this.allData = this.cacheData;
-    this.loadMorePersons();
-    */
     this.count = 0;
     this.agg_after_key = {};
     this.searchText = '';
