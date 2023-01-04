@@ -20,6 +20,7 @@ import { MdContentService } from '../../app/services/md/md-content.service';
 import { TooltipService } from '../../app/services/tooltips/tooltip.service';
 import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
 import { Subscription } from 'rxjs/Subscription';
+import debounce from 'lodash/debounce';
 
 /**
  * Generated class for the PersonSearchPage page.
@@ -66,6 +67,7 @@ export class PersonSearchPage {
   last_fetch_size = 0;
 
   filters: any[] = [];
+  filter_by_letter_triggered = false;
 
   objectType = 'subject';
   pageTitle: string;
@@ -78,6 +80,7 @@ export class PersonSearchPage {
   filterYear: number;
 
   languageSubscription: Subscription;
+  debouncedSearch = debounce(this.searchPersons, 1500);
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -104,11 +107,13 @@ export class PersonSearchPage {
   ) {
     const type = this.navParams.get('type') || null;
     this.filterYear = null;
+    /*
     try {
       this.showFilter = this.config.getSettings('PersonSearch.ShowFilter');
     } catch (e) {
       this.showFilter = true;
     }
+    */
     try {
       this.personSearchTypes = this.config.getSettings('PersonSearchTypes');
     } catch (e) {
@@ -217,15 +222,6 @@ export class PersonSearchPage {
     }
   }
 
-  sortByLetter(letter) {
-    this.searchText = letter;
-    this.agg_after_key = {};
-    this.persons = [];
-    this.cf.detectChanges();
-    this.getPersons();
-    this.scrollToTop();
-  }
-
   getPersons() {
     this.showLoading = true;
     this.semanticDataService.getSubjectsElastic(this.agg_after_key, this.searchText, this.filters, this.max_fetch_size).subscribe(
@@ -242,22 +238,13 @@ export class PersonSearchPage {
           persons = persons.aggregations.unique_subjects.buckets;
           persons.forEach(element => {
             element = element['key'];
-            const sortBy = [];
-            let sortByName = String(element['full_name']).toLowerCase().replace('ʽ', '');
-            sortByName = sortByName.replace('de ', '');
-            sortByName = sortByName.replace('von ', '');
-            sortByName = sortByName.replace('van ', '');
-            sortByName = sortByName.replace('af ', '');
-            sortByName = sortByName.replace('d’ ', '');
-            sortByName = sortByName.replace('d’', '');
-            sortByName = sortByName.replace('di ', '');
-            sortByName = sortByName.trim();
+            let sortByName = String(element['full_name']).replace('ʽ', '').trim();
+            sortByName = sortByName.replace('/^(?:de |von |van |af |d’ |d’|di )/', '').toLowerCase();
 
             element['year_born_deceased'] = this.tooltipService.constructYearBornDeceasedString(element['date_born'],
             element['date_deceased']);
 
-            sortBy.push(sortByName);
-            element['sortBy'] = sortBy.join();
+            element['sortBy'] = sortByName;
             const ltr = element['sortBy'].charAt(0);
             if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
             } else {
@@ -423,17 +410,41 @@ export class PersonSearchPage {
     }
   }
 
-  onChanged(obj) {
-    this.cf.detectChanges();
-    console.log('segment changed')
-    this.filter(obj);
+  showAll() {
+    this.filter_by_letter_triggered = true;
+    this.count = 0;
+    this.filters = [];
+    this.searchText = '';
   }
 
+  filterByLetter(letter) {
+    this.filter_by_letter_triggered = true;
+    this.searchText = letter;
+    this.scrollToTop();
+  }
+
+  onChanged() {
+    this.cf.detectChanges();
+    if (this.filter_by_letter_triggered) {
+      this.filter_by_letter_triggered = false;
+      this.searchPersons();
+    } else {
+      this.debouncedSearch();
+    }
+  }
+
+  searchPersons() {
+    this.agg_after_key = {};
+    this.persons = [];
+    this.getPersons();
+  }
+
+  /*
   filter(terms) {
-    console.log('filter terms:', terms);
     if ( terms._value ) {
       terms = terms._value;
     }
+    console.log('filter terms:', terms);
     if ( !terms || terms === '' ) {
       this.persons = this.personsCopy;
     } else if (terms != null) {
@@ -462,6 +473,7 @@ export class PersonSearchPage {
       }
     }
   }
+  */
 
   loadMore(e) {
     this.getPersons();
@@ -508,16 +520,6 @@ export class PersonSearchPage {
 
       occurrenceModal.present();
     }
-  }
-
-  showAll() {
-    this.count = 0;
-    this.agg_after_key = {};
-    this.searchText = '';
-    this.filters = [];
-    this.persons = [];
-    this.getPersons();
-    this.content.scrollToTop(400);
   }
 
   getMdContent(fileID: string) {
