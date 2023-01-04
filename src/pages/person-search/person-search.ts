@@ -579,7 +579,7 @@ export class PersonSearchPage {
   }
 
   hasMore() {
-    return this.last_fetch_size < this.max_fetch_size + 1;
+    return this.last_fetch_size > this.max_fetch_size - 1;
   }
 
   async openPerson(occurrenceResult: OccurrenceResult) {
