@@ -67,6 +67,7 @@ export class PersonSearchPage {
   last_fetch_size = 0;
 
   filters: any[] = [];
+  filter_by_letter_triggered = false;
 
   objectType = 'subject';
   pageTitle: string;
@@ -237,19 +238,15 @@ export class PersonSearchPage {
           persons = persons.aggregations.unique_subjects.buckets;
           persons.forEach(element => {
             element = element['key'];
+
             let sortByName = String(element['full_name']).replace('ʽ', '').trim();
             sortByName = sortByName.replace('/^(?:de |von |van |af |d’ |d’|di |zu )/', '').toLowerCase();
+            const combining = /[\u0300-\u036F]/g;
+            element['sortBy'] = sortByName.normalize('NFKD').replace(combining, '').replace(',', '');
 
             element['year_born_deceased'] = this.tooltipService.constructYearBornDeceasedString(element['date_born'],
             element['date_deceased']);
 
-            element['sortBy'] = sortByName;
-            const ltr = element['sortBy'].charAt(0);
-            if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
-            } else {
-              const combining = /[\u0300-\u036F]/g;
-              element['sortBy'] = element['sortBy'].normalize('NFKD').replace(combining, '').replace(',', '');
-            }
             if ( this.subType !== '' && this.subType !== null && element['type'] !== this.subType ) {
             } else {
               this.persons.push(element);
@@ -412,21 +409,38 @@ export class PersonSearchPage {
   }
 
   showAll() {
+    this.filter_by_letter_triggered = true;
     this.count = 0;
     this.filters = [];
-    this.searchText = '';
-    this.searchPersons();
+    if (this.searchText !== '') {
+      this.searchText = '';
+      this.cf.detectChanges();
+    } else {
+      this.filter_by_letter_triggered = false;
+      this.searchPersons();
+    }
   }
 
   filterByLetter(letter) {
-    this.searchText = letter;
-    this.searchPersons();
+    this.filter_by_letter_triggered = true;
+    if (this.searchText !== letter) {
+      this.searchText = letter;
+      this.cf.detectChanges();
+    } else {
+      this.filter_by_letter_triggered = false;
+      this.searchPersons();
+    }
     this.scrollToTop();
   }
 
   onChanged() {
     this.cf.detectChanges();
-    this.debouncedSearch();
+    if (this.filter_by_letter_triggered) {
+      this.filter_by_letter_triggered = false;
+      this.searchPersons();
+    } else {
+      this.debouncedSearch();
+    }
   }
 
   searchPersons() {
