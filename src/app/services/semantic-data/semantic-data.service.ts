@@ -190,7 +190,7 @@ export class SemanticDataService {
       .catch(this.handleError);
   }
 
-  getSubjectsElastic(after_key, searchText?, filters?, max?) {
+  getSubjectsElastic(after_key?, searchText?, filters?, max?) {
     let showPublishedStatus = 2;
     if ( filters === null ) {
       filters = {};
@@ -200,20 +200,18 @@ export class SemanticDataService {
     } else if (max > 10000) {
       max = 10000;
     }
-    /*
     try {
       showPublishedStatus = this.config.getSettings('PersonSearch.ShowPublishedStatus');
     } catch (e) {
       showPublishedStatus = 2;
     }
-    */
 
     const payload: any = {
       size: 0,
       query: {
         bool: {
           must: [
-            { 'term': { 'project_id': { 'value': 4 } } },
+            { 'term': { 'project_id': { 'value': this.config.getSettings('app.projectId') } } },
             { 'term': { 'published': { 'value': showPublishedStatus } } },
             { 'term': { 'sub_deleted': { 'value': 0 } } },
           ]
@@ -226,17 +224,17 @@ export class SemanticDataService {
             sources: [
               { 'sort_by_name': { 'terms': { 'field': 'sort_by_name.keyword', 'missing_bucket': true } } },
               { 'full_name': { 'terms': { 'field': 'full_name.keyword' } } },
-              { 'id': { 'terms': { 'field': 'id' } } },
               { 'date_born': { 'terms': { 'field': 'date_born.keyword', 'missing_bucket': true } } },
               { 'date_deceased': { 'terms': { 'field': 'date_deceased.keyword', 'missing_bucket': true } } },
-              { 'type': { 'terms' : { 'field': 'type.keyword', 'missing_bucket': true } } }
+              { 'type': { 'terms' : { 'field': 'type.keyword', 'missing_bucket': true } } },
+              { 'id': { 'terms': { 'field': 'id' } } }
             ]
           }
         }
       }
     }
 
-    if (!this.commonFunctions.isEmptyObject(after_key)) {
+    if (after_key !== undefined && !this.commonFunctions.isEmptyObject(after_key)) {
       payload.aggs.unique_subjects.composite.after = after_key;
     }
 
@@ -254,7 +252,7 @@ export class SemanticDataService {
         range: {
           date_born_date: {
             gte: filters.filterYearMin + '-01-01',
-            lte: filters.filterYearMax + '-01-01',
+            lte: filters.filterYearMax + '-12-31',
           }
         }
       })

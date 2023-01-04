@@ -23,14 +23,8 @@ import { Subscription } from 'rxjs/Subscription';
 import debounce from 'lodash/debounce';
 
 /**
- * Generated class for the PersonSearchPage page.
- *
  * A page for searching person occurrences.
- * Can be filtered by collection and person type.
- * Persons can be stored in cache in order to work offline as well.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+ * Can be filtered by person type and year born, as well as searched.
  */
 
 @IonicPage({
@@ -43,32 +37,19 @@ import debounce from 'lodash/debounce';
   templateUrl: 'person-search.html'
 })
 export class PersonSearchPage {
-
   @ViewChild(Content) content: Content;
 
   persons: any[] = [];
-  descending = false;
-  order: number;
-  count = 0;
-  allData: OccurrenceResult[];
-  cacheData: OccurrenceResult[];
-  personsCopy: any[] = [];
   searchText: string;
-  texts: SingleOccurrence[] = [];
   max_fetch_size = 500;
-
-  personTitle: string;
-  selectedLinkID: string;
+  last_fetch_size = 0;
+  agg_after_key: Record<string, any> = {};
   showLoading = false;
   showFilter = true;
-  type: any;
-  subType: any;
-  agg_after_key: Record<string, any> = {};
-  last_fetch_size = 0;
-
   filters: any[] = [];
   immediate_search = false;
-
+  type: any;
+  subType: any;
   objectType = 'subject';
   pageTitle: string;
   mdContent: string;
@@ -80,7 +61,7 @@ export class PersonSearchPage {
   filterYear: number;
 
   languageSubscription: Subscription;
-  debouncedSearch = debounce(this.searchPersons, 750);
+  debouncedSearch = debounce(this.searchPersons, 500);
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -107,25 +88,25 @@ export class PersonSearchPage {
   ) {
     const type = this.navParams.get('type') || null;
     this.filterYear = null;
-    /*
+
     try {
       this.showFilter = this.config.getSettings('PersonSearch.ShowFilter');
     } catch (e) {
       this.showFilter = true;
     }
-    */
+
     try {
       this.personSearchTypes = this.config.getSettings('PersonSearchTypes');
     } catch (e) {
       this.personSearchTypes = [];
     }
-    /*
+
     try {
       this.max_fetch_size = this.config.getSettings('PersonSearch.InitialLoadNumber');
     } catch (e) {
       this.max_fetch_size = 500;
     }
-    */
+
   }
 
   ionViewWillEnter() {
@@ -276,8 +257,6 @@ export class PersonSearchPage {
           this.last_fetch_size = 0;
         }
 
-        this.allData = this.persons;
-        this.cacheData = this.persons;
         this.sortListAlphabeticallyAndGroup(this.persons);
         this.showLoading = false;
       },
@@ -325,101 +304,27 @@ export class PersonSearchPage {
   }
 
   /**
-   * TODO: No project sites have the filter modal enabled because it hasn't been fully developed yet.
+   * TODO: No project sites have the filter modal enabled because it hasn't been fully developed yet. Further testing needed.
    */
   openFilterModal() {
     const filterModal = this.modalCtrl.create(FilterPage, { searchType: 'person-search' });
     filterModal.onDidDismiss(filters => {
-
       if (filters) {
         this.persons = [];
-        this.allData = [];
         this.agg_after_key = {};
         this.filters = filters;
-        if (filters['isEmpty'] || filters['isEmpty'] === undefined) {
-          console.log('filters are empty')
-          this.count = 0;
-          this.getPersons();
-        } else {
-          this.allData = this.cacheData;
-          if (filters.filterYear) {
-            this.filterByYear(filters.filterYear);
-          }
-          if (filters.filterCollections) {
-            const filterSelected = filters.filterCollections.some(function(el) {
-              return el.selected === true;
-            });
-            if (filterSelected) {
-              this.getSubjectsOccurrencesByCollection(filters.filterCollections, this.sortListAlphabeticallyAndGroup);
-            }
-          }
-          if (filters.filterPersonTypes) {
-            this.getPersons();
-          }
+
+        if (filters.filterYear) {
+          this.filterYear = filters.filterYear;
         }
+
+        this.getPersons();
       }
     });
     filterModal.present();
   }
 
-  filterByYear(year: number) {
-    this.filterYear = year;
-    this.getPersons();
-  }
-
-  getSubjectsOccurrencesByCollection(filterCollections, callback) {
-    this.count = 0;
-    const filterCollectionIds = [];
-
-    for (const f of filterCollections) {
-      filterCollectionIds.push(f.id);
-    }
-
-    for (const person of this.persons) {
-      for (const occurrence of person.occurrences) {
-        const inFilterList = filterCollectionIds.some(function(filter) {
-          return filter === occurrence.collection_id;
-        });
-        if (!inFilterList) {
-          this.persons.splice(this.persons.indexOf(person), 1);
-          this.personsCopy.splice(this.persons.indexOf(person), 1);
-        }
-      }
-    }
-  }
-
-  getSubjectsOccurrenceBySubjectType(filterTypes) {
-    this.count = 0;
-    const filterSubjectTypes = [];
-    const newData = [];
-
-    for (const f of filterTypes) {
-      filterSubjectTypes.push(f.type);
-    }
-
-    for (let i = 0; i < this.allData.length; i ++) {
-      for (let j = 0; j < filterSubjectTypes.length; j ++) {
-        if (filterSubjectTypes[j] === this.allData[i].object_type) {
-          newData.push(this.allData[i]);
-        }
-      }
-    }
-
-    this.persons = [];
-    this.allData = newData;
-    for (let k = 0; k < this.max_fetch_size; k++) {
-      if (k === this.allData.length) {
-        break;
-      } else {
-        this.persons.push(this.allData[this.count]);
-        this.personsCopy.push(this.allData[this.count]);
-        this.count++
-      }
-    }
-  }
-
   showAll() {
-    this.count = 0;
     this.filters = [];
     this.searchText = '';
     this.searchPersons();

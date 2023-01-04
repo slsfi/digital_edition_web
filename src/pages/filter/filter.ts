@@ -46,7 +46,6 @@ export class FilterPage {
     }
 
     if (navParams.get('searchType') === 'person-search') {
-      this.getFilterCollections();
       this.getFilterPersonTypes();
       this.shouldFilterYear = true;
     }
@@ -54,7 +53,6 @@ export class FilterPage {
       this.getFilterCollections();
     }
     if (navParams.get('searchType') === 'tag-search') {
-      this.getFilterCollections();
       this.getFilterCategoryTypes();
     }
   }
