@@ -105,6 +105,17 @@ export class FilterPage {
           if (filterPersonTypes) {
             this.filterPersonTypes = filterPersonTypes;
             console.log('loaded filter person types from storage');
+            this.filterPersonTypes.forEach(type => {
+              if (this.activeFilters['filterPersonTypes'] && this.activeFilters['filterPersonTypes'].length > 0) {
+                this.activeFilters['filterPersonTypes'].forEach(activeType => {
+                  if (type.name === activeType.name) {
+                    type.selected = true;
+                  } else {
+                    type.selected = false;
+                  }
+                });
+              }
+            });
           } else {
             console.log('filter person types in cache empty');
           }

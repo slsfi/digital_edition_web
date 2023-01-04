@@ -33,18 +33,23 @@ page-filter {
       border: 1px solid rgba($color: #ffffff, $alpha: 0.7);
   }
 
-  .fromYear{
+  .fromYear {
     border: 1px solid gray;
     background-color: rgba($color: #000000, $alpha: 0.1);
     margin-top:1rem;
     max-width: 200px;
   }
-  .toYear{
+  .toYear {
     border: 1px solid gray;
     background-color: rgba($color: #000000, $alpha: 0.1);
     margin-left: 1rem;
     margin-top:1rem;
     max-width: 200px;
+  }
+
+  .fromYear:focus,
+  .toYear:focus {
+    background-color: transparent !important;
   }
 
   .year_label{
