@@ -293,7 +293,7 @@ export class PersonSearchPage {
     for (let i = 0; i < persons.length ; i++) {
       if (persons[i] && persons[i - 1]) {
         if (persons[i].sort_by_name && persons[i - 1].sort_by_name) {
-          if (persons[i].sort_by_name.length > 1 && persons[i - 1].sort_by_name.length > 1) {
+          if (persons[i].sort_by_name.length > 0 && persons[i - 1].sort_by_name.length > 0) {
             if (persons[i].sort_by_name.charAt(0) !== persons[i - 1].sort_by_name.charAt(0)) {
               const ltr = persons[i].sort_by_name.charAt(0);
               if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
