@@ -257,7 +257,6 @@ export class PersonSearchPage {
 
             if ( this.subType !== '' && this.subType !== null && element['type'] !== this.subType ) {
             } else {
-              console.log('Added person:', element);
               this.persons.push(element);
             }
           });
