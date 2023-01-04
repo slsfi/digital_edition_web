@@ -67,7 +67,6 @@ export class PersonSearchPage {
   last_fetch_size = 0;
 
   filters: any[] = [];
-  filter_by_letter_triggered = false;
 
   objectType = 'subject';
   pageTitle: string;
@@ -239,7 +238,7 @@ export class PersonSearchPage {
           persons.forEach(element => {
             element = element['key'];
             let sortByName = String(element['full_name']).replace('ʽ', '').trim();
-            sortByName = sortByName.replace('/^(?:de |von |van |af |d’ |d’|di )/', '').toLowerCase();
+            sortByName = sortByName.replace('/^(?:de |von |van |af |d’ |d’|di |zu )/', '').toLowerCase();
 
             element['year_born_deceased'] = this.tooltipService.constructYearBornDeceasedString(element['date_born'],
             element['date_deceased']);
@@ -278,7 +277,7 @@ export class PersonSearchPage {
   sortListAlphabeticallyAndGroup(listOfPersons: any[]) {
     const persons = listOfPersons;
 
-    this.sortPersonsAlphabetically(persons);
+    this.commonFunctions.sortArrayOfObjectsAlphabetically(persons, 'sortBy');
     this.groupPersonsAlphabetically(persons);
 
     for (let j = 0; j < persons.length; j++) {
@@ -309,6 +308,7 @@ export class PersonSearchPage {
     return persons;
   }
 
+  /*
   sortPersonsAlphabetically(persons) {
     persons.sort(function(a, b) {
       if (a.sortBy.charCodeAt(0) < b.sortBy.charCodeAt(0)) { return -1; }
@@ -318,6 +318,7 @@ export class PersonSearchPage {
 
     return persons;
   }
+  */
 
   openFilterModal() {
     const filterModal = this.modalCtrl.create(FilterPage, { searchType: 'person-search' });
@@ -411,26 +412,21 @@ export class PersonSearchPage {
   }
 
   showAll() {
-    this.filter_by_letter_triggered = true;
     this.count = 0;
     this.filters = [];
     this.searchText = '';
+    this.searchPersons();
   }
 
   filterByLetter(letter) {
-    this.filter_by_letter_triggered = true;
     this.searchText = letter;
+    this.searchPersons();
     this.scrollToTop();
   }
 
   onChanged() {
     this.cf.detectChanges();
-    if (this.filter_by_letter_triggered) {
-      this.filter_by_letter_triggered = false;
-      this.searchPersons();
-    } else {
-      this.debouncedSearch();
-    }
+    this.debouncedSearch();
   }
 
   searchPersons() {
