@@ -226,7 +226,7 @@ export class PersonSearchPage {
     this.showLoading = true;
     this.semanticDataService.getSubjectsElastic(this.agg_after_key, this.searchText, this.filters, this.max_fetch_size).subscribe(
       persons => {
-        console.log('Elastic response: ', persons);
+        // console.log('Elastic response: ', persons);
         if (persons.error !== undefined) {
           console.error('Elastic search error getting persons: ', persons);
         }
@@ -234,6 +234,7 @@ export class PersonSearchPage {
         if (persons.aggregations && persons.aggregations.unique_subjects && persons.aggregations.unique_subjects.buckets.length > 0) {
           this.agg_after_key = persons.aggregations.unique_subjects.after_key;
           this.last_fetch_size = persons.aggregations.unique_subjects.buckets.length;
+          console.log('Number of fetched persons: ', this.last_fetch_size);
 
           const combining = /[\u0300-\u036F]/g;
 
@@ -256,6 +257,7 @@ export class PersonSearchPage {
 
             if ( this.subType !== '' && this.subType !== null && element['type'] !== this.subType ) {
             } else {
+              console.log('Added person:', element);
               this.persons.push(element);
             }
           });
