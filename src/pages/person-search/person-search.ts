@@ -305,11 +305,8 @@ export class PersonSearchPage {
     return persons;
   }
 
-  /**
-   * TODO: No project sites have the filter modal enabled because it hasn't been fully developed yet. Further testing needed.
-   */
   openFilterModal() {
-    const filterModal = this.modalCtrl.create(FilterPage, { searchType: 'person-search' });
+    const filterModal = this.modalCtrl.create(FilterPage, { searchType: 'person-search', activeFilters: this.filters });
     filterModal.onDidDismiss(filters => {
       if (filters) {
         this.persons = [];

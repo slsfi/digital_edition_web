@@ -41,6 +41,12 @@ export class FilterPage {
 
     if ( navParams.get('activeFilters') !== undefined ) {
       this.activeFilters = navParams.get('activeFilters');
+      if (this.activeFilters['filterYearMin']) {
+        this.filterYearMin = this.activeFilters['filterYearMin'];
+      }
+      if (this.activeFilters['filterYearMax']) {
+        this.filterYearMax = this.activeFilters['filterYearMax'];
+      }
     } else {
       this.activeFilters = [];
     }
@@ -98,6 +104,7 @@ export class FilterPage {
         this.storage.get('filterPersonTypes').then((filterPersonTypes) => {
           if (filterPersonTypes) {
             this.filterPersonTypes = filterPersonTypes;
+            console.log('loaded filter person types from storage');
           } else {
             console.log('filter person types in cache empty');
           }
