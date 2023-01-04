@@ -67,7 +67,7 @@ export class PersonSearchPage {
   last_fetch_size = 0;
 
   filters: any[] = [];
-  filter_by_letter_triggered = false;
+  immediate_search = false;
 
   objectType = 'subject';
   pageTitle: string;
@@ -80,7 +80,7 @@ export class PersonSearchPage {
   filterYear: number;
 
   languageSubscription: Subscription;
-  debouncedSearch = debounce(this.searchPersons, 1500);
+  debouncedSearch = debounce(this.searchPersons, 750);
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -416,34 +416,21 @@ export class PersonSearchPage {
   }
 
   showAll() {
-    this.filter_by_letter_triggered = true;
     this.count = 0;
     this.filters = [];
-    if (this.searchText !== '') {
-      this.searchText = '';
-      this.cf.detectChanges();
-    } else {
-      this.filter_by_letter_triggered = false;
-      this.searchPersons();
-    }
+    this.searchText = '';
+    this.searchPersons();
   }
 
   filterByLetter(letter) {
-    this.filter_by_letter_triggered = true;
-    if (this.searchText !== letter) {
-      this.searchText = letter;
-      this.cf.detectChanges();
-    } else {
-      this.filter_by_letter_triggered = false;
-      this.searchPersons();
-    }
+    this.searchText = letter;
+    this.searchPersons();
     this.scrollToTop();
   }
 
   onSearchInput() {
-    this.cf.detectChanges();
-    if (this.filter_by_letter_triggered) {
-      this.filter_by_letter_triggered = false;
+    if (this.immediate_search) {
+      this.immediate_search = false;
       this.searchPersons();
     } else {
       this.debouncedSearch();
@@ -451,13 +438,17 @@ export class PersonSearchPage {
   }
 
   onSearchClear() {
-    this.searchPersons();
+    this.immediate_search = true;
   }
 
   searchPersons() {
     this.agg_after_key = {};
     this.persons = [];
-    this.getPersons();
+    if (this.showLoading) {
+      this.debouncedSearch();
+    } else {
+      this.getPersons();
+    }
   }
 
   /*
