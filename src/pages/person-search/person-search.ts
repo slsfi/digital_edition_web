@@ -187,7 +187,12 @@ export class PersonSearchPage {
     }
 
     if (this.subType) {
-      this.filters['filterPersonTypes'] = this.subType;
+      const subTypeObj = {
+        key: this.subType,
+        name: this.subType,
+        selected: true
+      }
+      this.filters['filterPersonTypes'].push(subTypeObj);
       /**
        * TODO: Get correct page title if subtype person search
        */
@@ -318,6 +323,9 @@ export class PersonSearchPage {
     return persons;
   }
 
+  /**
+   * TODO: No project sites have the filter modal enabled because it hasn't been fully developed yet.
+   */
   openFilterModal() {
     const filterModal = this.modalCtrl.create(FilterPage, { searchType: 'person-search' });
     filterModal.onDidDismiss(filters => {
