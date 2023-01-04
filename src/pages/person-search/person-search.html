@@ -28,7 +28,7 @@
                   <ion-item *ngIf="p?.firstOfItsKind">
                     <ion-item-divider color="light">{{p.firstOfItsKind.toLocaleUpperCase()}}</ion-item-divider>
                   </ion-item>
-                  <ion-item *ngIf="p?.sortBy.length > 1" (click)="openPerson(p)">
+                  <ion-item *ngIf="p?.sort_by_name.length > 0" (click)="openPerson(p)">
                     <p>{{p.full_name}} <span *ngIf="p.date_born || p.date_deceased" [innerHTML]="p.year_born_deceased"></span></p>
                   </ion-item>
                 </div>

@@ -197,8 +197,8 @@ export class SemanticDataService {
     }
     if ( max === undefined || max === null ) {
       max = 500;
-    } else if (max > 9999) {
-      max = 9999;
+    } else if (max > 10000) {
+      max = 10000;
     }
     /*
     try {
@@ -213,7 +213,7 @@ export class SemanticDataService {
       query: {
         bool: {
           must: [
-            { 'term': { 'project_id': { 'value': this.config.getSettings('app.projectId') } } },
+            { 'term': { 'project_id': { 'value': 4 } } },
             { 'term': { 'published': { 'value': showPublishedStatus } } },
             { 'term': { 'sub_deleted': { 'value': 0 } } },
           ]
@@ -224,6 +224,7 @@ export class SemanticDataService {
           composite: {
             size: max,
             sources: [
+              { 'sort_by_name': { 'terms': { 'field': 'sort_by_name.keyword', 'missing_bucket': true } } },
               { 'full_name': { 'terms': { 'field': 'full_name.keyword' } } },
               { 'id': { 'terms': { 'field': 'id' } } },
               { 'date_born': { 'terms': { 'field': 'date_born.keyword', 'missing_bucket': true } } },

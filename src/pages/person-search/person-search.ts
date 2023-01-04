@@ -187,6 +187,7 @@ export class PersonSearchPage {
     }
 
     if (this.subType) {
+      this.filters['filterPersonTypes'] = this.subType;
       /**
        * TODO: Get correct page title if subtype person search
        */
@@ -234,6 +235,7 @@ export class PersonSearchPage {
         if (persons.aggregations && persons.aggregations.unique_subjects && persons.aggregations.unique_subjects.buckets.length > 0) {
           this.agg_after_key = persons.aggregations.unique_subjects.after_key;
           this.last_fetch_size = persons.aggregations.unique_subjects.buckets.length;
+
           console.log('Number of fetched persons: ', this.last_fetch_size);
 
           const combining = /[\u0300-\u036F]/g;
@@ -242,14 +244,17 @@ export class PersonSearchPage {
           persons.forEach(element => {
             element = element['key'];
 
-            let sortByName = String(element['full_name']).replace('ʽ', '').trim();
+            let sortByName = String(element['full_name']);
+            if (element['sort_by_name']) {
+              sortByName = String(element['sort_by_name']);
+            }
+            sortByName = sortByName.replace('ʽ', '').trim();
             sortByName = sortByName.replace(/^(?:de |von |van |af |d’ |d’|di |zu )/, '').toLowerCase();
             const ltr = sortByName.charAt(0);
             if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
-              element['sortBy'] = sortByName;
+              element['sort_by_name'] = sortByName;
             } else {
-              const combining = /[\u0300-\u036F]/g;
-              element['sortBy'] = sortByName.normalize('NFKD').replace(combining, '').replace(',', '');
+              element['sort_by_name'] = sortByName.normalize('NFKD').replace(combining, '').replace(',', '');
             }
 
             element['year_born_deceased'] = this.tooltipService.constructYearBornDeceasedString(element['date_born'],
@@ -282,12 +287,12 @@ export class PersonSearchPage {
   sortListAlphabeticallyAndGroup(listOfPersons: any[]) {
     const persons = listOfPersons;
 
-    this.commonFunctions.sortArrayOfObjectsAlphabetically(persons, 'sortBy');
+    this.commonFunctions.sortArrayOfObjectsAlphabetically(persons, 'sort_by_name');
     this.groupPersonsAlphabetically(persons);
 
     for (let j = 0; j < persons.length; j++) {
-      if (persons[j].sortBy.length > 1) {
-        persons[j]['firstOfItsKind'] = persons[j].sortBy.charAt(0);
+      if (persons[j].sort_by_name.length > 1) {
+        persons[j]['firstOfItsKind'] = persons[j].sort_by_name.charAt(0);
         break;
       }
     }
@@ -298,12 +303,12 @@ export class PersonSearchPage {
     // Checks when first character changes in order to divide names into alphabetical groups
     for (let i = 0; i < persons.length ; i++) {
       if (persons[i] && persons[i - 1]) {
-        if (persons[i].sortBy && persons[i - 1].sortBy) {
-          if (persons[i].sortBy.length > 1 && persons[i - 1].sortBy.length > 1) {
-            if (persons[i].sortBy.charAt(0) !== persons[i - 1].sortBy.charAt(0)) {
-              const ltr = persons[i].sortBy.charAt(0);
+        if (persons[i].sort_by_name && persons[i - 1].sort_by_name) {
+          if (persons[i].sort_by_name.length > 1 && persons[i - 1].sort_by_name.length > 1) {
+            if (persons[i].sort_by_name.charAt(0) !== persons[i - 1].sort_by_name.charAt(0)) {
+              const ltr = persons[i].sort_by_name.charAt(0);
               if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
-                persons[i]['firstOfItsKind'] = persons[i].sortBy.charAt(0);
+                persons[i]['firstOfItsKind'] = persons[i].sort_by_name.charAt(0);
               }
             }
           }
@@ -312,18 +317,6 @@ export class PersonSearchPage {
     }
     return persons;
   }
-
-  /*
-  sortPersonsAlphabetically(persons) {
-    persons.sort(function(a, b) {
-      if (a.sortBy.charCodeAt(0) < b.sortBy.charCodeAt(0)) { return -1; }
-      if (a.sortBy.charCodeAt(0) > b.sortBy.charCodeAt(0)) { return 1; }
-      return 0;
-    });
-
-    return persons;
-  }
-  */
 
   openFilterModal() {
     const filterModal = this.modalCtrl.create(FilterPage, { searchType: 'person-search' });
@@ -451,42 +444,6 @@ export class PersonSearchPage {
       this.getPersons();
     }
   }
-
-  /*
-  filter(terms) {
-    if ( terms._value ) {
-      terms = terms._value;
-    }
-    console.log('filter terms:', terms);
-    if ( !terms || terms === '' ) {
-      this.persons = this.personsCopy;
-    } else if (terms != null) {
-      this.agg_after_key = {};
-      this.getPersons();
-      this.persons = [];
-      terms = String(terms).toLowerCase().replace(' ', '');
-      for (const person of this.allData) {
-        let sortBy = String(person.full_name).toLowerCase().replace(' ', '').replace('ʽ', '');
-        sortBy = sortBy.replace('de ', '');
-        sortBy = sortBy.replace('von ', '');
-        sortBy = sortBy.replace('van ', '');
-        sortBy = sortBy.replace('af ', '');
-        sortBy = sortBy.replace('d’ ', '');
-        sortBy = sortBy.replace('d’', '');
-        sortBy = sortBy.replace('di ', '');
-        sortBy = sortBy.trim();
-        if (sortBy && sortBy.includes(terms)) {
-          const inList = this.persons.some(function(p) {
-            return (p.sortBy === person.sortBy)
-          });
-          if (!inList) {
-            this.persons.push(person);
-          }
-        }
-      }
-    }
-  }
-  */
 
   loadMore(e) {
     this.getPersons();
