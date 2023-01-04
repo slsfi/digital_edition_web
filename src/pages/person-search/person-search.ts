@@ -58,7 +58,6 @@ export class PersonSearchPage {
   alphabet: string[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Å', 'Ä', 'Ö'];
 
   personSearchTypes = [];
-  filterYear: number;
 
   languageSubscription: Subscription;
   debouncedSearch = debounce(this.searchPersons, 500);
@@ -87,7 +86,6 @@ export class PersonSearchPage {
               public commonFunctions: CommonFunctionsService
   ) {
     const type = this.navParams.get('type') || null;
-    this.filterYear = null;
 
     /*
     try {
@@ -317,11 +315,6 @@ export class PersonSearchPage {
         this.persons = [];
         this.agg_after_key = {};
         this.filters = filters;
-
-        if (filters.filterYear) {
-          this.filterYear = filters.filterYear;
-        }
-
         this.getPersons();
       }
     });

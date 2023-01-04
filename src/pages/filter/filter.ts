@@ -184,19 +184,25 @@ export class FilterPage {
 
   checkIfFiltersEmpty(filters) {
     if (this.navParams.get('searchType') === 'person-search') {
-      if (!filters['filterYear'] && filters['filterPersonTypes'].length <= 0) {
+      if (!filters['filterYearMin'] && filters['filterYearMax']) {
+        filters['filterYearMin'] = '1';
+      }
+      if (filters['filterYearMin'] && !filters['filterYearMax']) {
+        filters['filterYearMax'] = '2200';
+      }
+      if (!filters['filterYearMin'] && !filters['filterYearMax'] && filters['filterPersonTypes'].length < 1) {
         this.isEmpty = true;
       }
     }
 
     if (this.navParams.get('searchType') === 'place-search') {
-      if (filters['filterCollections'].length <= 0) {
+      if (filters['filterCollections'].length < 1) {
         this.isEmpty = true;
       }
     }
 
     if (this.navParams.get('searchType') === 'tag-search') {
-      if (filters['filterCategoryTypes'].length <= 0) {
+      if (filters['filterCategoryTypes'].length < 1) {
         this.isEmpty = true;
       }
     }
