@@ -89,11 +89,13 @@ export class PersonSearchPage {
     const type = this.navParams.get('type') || null;
     this.filterYear = null;
 
+    /*
     try {
       this.showFilter = this.config.getSettings('PersonSearch.ShowFilter');
     } catch (e) {
       this.showFilter = true;
     }
+    */
 
     try {
       this.personSearchTypes = this.config.getSettings('PersonSearchTypes');
@@ -101,11 +103,13 @@ export class PersonSearchPage {
       this.personSearchTypes = [];
     }
 
+    /*
     try {
       this.max_fetch_size = this.config.getSettings('PersonSearch.InitialLoadNumber');
     } catch (e) {
       this.max_fetch_size = 500;
     }
+    */
 
   }
 

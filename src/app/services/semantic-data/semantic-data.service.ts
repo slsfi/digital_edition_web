@@ -200,11 +200,13 @@ export class SemanticDataService {
     } else if (max > 10000) {
       max = 10000;
     }
+    /*
     try {
       showPublishedStatus = this.config.getSettings('PersonSearch.ShowPublishedStatus');
     } catch (e) {
       showPublishedStatus = 2;
     }
+    */
 
     const payload: any = {
       size: 0,
