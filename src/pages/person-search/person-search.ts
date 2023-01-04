@@ -235,14 +235,21 @@ export class PersonSearchPage {
           this.agg_after_key = persons.aggregations.unique_subjects.after_key;
           this.last_fetch_size = persons.aggregations.unique_subjects.buckets.length;
 
+          const combining = /[\u0300-\u036F]/g;
+
           persons = persons.aggregations.unique_subjects.buckets;
           persons.forEach(element => {
             element = element['key'];
 
             let sortByName = String(element['full_name']).replace('ʽ', '').trim();
             sortByName = sortByName.replace('/^(?:de |von |van |af |d’ |d’|di |zu )/', '').toLowerCase();
-            const combining = /[\u0300-\u036F]/g;
-            element['sortBy'] = sortByName.normalize('NFKD').replace(combining, '').replace(',', '');
+            const ltr = sortByName.charAt(0);
+            if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
+              element['sortBy'] = sortByName;
+            } else {
+              const combining = /[\u0300-\u036F]/g;
+              element['sortBy'] = sortByName.normalize('NFKD').replace(combining, '').replace(',', '');
+            }
 
             element['year_born_deceased'] = this.tooltipService.constructYearBornDeceasedString(element['date_born'],
             element['date_deceased']);
@@ -433,7 +440,7 @@ export class PersonSearchPage {
     this.scrollToTop();
   }
 
-  onChanged() {
+  onSearchInput() {
     this.cf.detectChanges();
     if (this.filter_by_letter_triggered) {
       this.filter_by_letter_triggered = false;
@@ -441,6 +448,10 @@ export class PersonSearchPage {
     } else {
       this.debouncedSearch();
     }
+  }
+
+  onSearchClear() {
+    this.searchPersons();
   }
 
   searchPersons() {
