@@ -28,10 +28,7 @@
                 <span class="active-filters-heading">{{'Filter.activeFilters' | translate}}:</span>
                 <ng-container *ngIf="filters.filterPersonTypes">
                   <ng-container *ngFor="let fpt of filters.filterPersonTypes; let i = index">
-                    <span class="active-person-type">{{fpt.name}}</span><ng-container *ngIf="i < filters.filterPersonTypes.length - 1">, </ng-container>
-                  </ng-container>
-                </ng-container>
-                <ng-container *ngIf="filters.filterPersonTypes && (filters.filterYearMin || filters.filterYearMax)">, </ng-container>
+                    <span class="active-person-type">{{fpt.name}}</span><ng-container *ngIf="i < filters.filterPersonTypes.length - 1">, </ng-container></ng-container></ng-container><ng-container *ngIf="filters.filterPersonTypes && (filters.filterYearMin || filters.filterYearMax)">, </ng-container>
                 <ng-container *ngIf="filters.filterYearMin || filters.filterYearMax">
                   <span class="active-filter-year-heading">{{'Filter.year' | translate | lowercase}}</span>
                   <span *ngIf="filters.filterYearMin">{{filters.filterYearMin}}</span>–<span *ngIf="filters.filterYearMax">{{filters.filterYearMax}}</span>
