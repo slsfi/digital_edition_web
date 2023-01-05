@@ -33,23 +33,27 @@ page-filter {
       border: 1px solid rgba($color: #ffffff, $alpha: 0.7);
   }
 
-  .fromYear {
-    border: 1px solid gray;
-    background-color: rgba($color: #000000, $alpha: 0.1);
-    margin-top:1rem;
-    max-width: 200px;
-  }
+  .fromYear,
   .toYear {
     border: 1px solid gray;
     background-color: rgba($color: #000000, $alpha: 0.1);
-    margin-left: 1rem;
     margin-top:1rem;
     max-width: 200px;
+    transition: all 0.3s;
   }
 
-  ion-item.filter-year-inputs .fromYear :focus,
-  ion-item.filter-year-inputs .toYear :focus {
-    background-color: transparent !important;
+  .fromYear {
+    margin-right: 0.5rem;
+  }
+
+  .toYear {
+    margin-left: 0.5rem;
+  }
+
+  ion-item.filter-year-inputs.input-has-focus .fromYear,
+  ion-item.filter-year-inputs.input-has-focus .toYear {
+    background-color: transparent;
+    border-color: var(--button-background-color);
   }
 
   .year_label{
