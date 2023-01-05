@@ -381,7 +381,7 @@ export class PersonSearchPage {
 
     } else {
       const occurrenceModal = this.modalCtrl.create(OccurrencesPage, {
-        occurrenceResult: occurrenceResult,
+        id: occurrenceResult.id,
         showOccurrencesModalOnRead: showOccurrencesModalOnRead,
         objectType: this.objectType
       });
