@@ -28,15 +28,11 @@ page-filter {
 		opacity: 1;
 	}
 
-  .apply-button {
-      margin-left: 1.2rem !important;
-      border: 1px solid rgba($color: #ffffff, $alpha: 0.7);
-  }
-
   .fromYear,
   .toYear {
     border: 1px solid gray;
-    background-color: rgba($color: #000000, $alpha: 0.1);
+    border-radius: $corner-roundness;
+    background-color: #fff;
     margin-top:1rem;
     max-width: 200px;
     transition: all 0.3s;
@@ -52,7 +48,6 @@ page-filter {
 
   ion-item.filter-year-inputs.input-has-focus .fromYear,
   ion-item.filter-year-inputs.input-has-focus .toYear {
-    background-color: transparent;
     border-color: var(--button-background-color);
   }
 
