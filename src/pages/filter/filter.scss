@@ -47,8 +47,8 @@ page-filter {
     max-width: 200px;
   }
 
-  .fromYear:focus,
-  .toYear:focus {
+  ion-item.filter-year-inputs .fromYear :focus,
+  ion-item.filter-year-inputs .toYear :focus {
     background-color: transparent !important;
   }
 

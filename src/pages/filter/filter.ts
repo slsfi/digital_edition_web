@@ -41,12 +41,11 @@ export class FilterPage {
 
     if ( navParams.get('activeFilters') !== undefined ) {
       this.activeFilters = navParams.get('activeFilters');
-      console.log('active filters:', this.activeFilters);
       if (this.activeFilters['filterYearMin']) {
-        this.filterYearMin = this.activeFilters['filterYearMin'];
+        this.filterYearMin = Number(this.activeFilters['filterYearMin']);
       }
       if (this.activeFilters['filterYearMax']) {
-        this.filterYearMax = this.activeFilters['filterYearMax'];
+        this.filterYearMax = Number(this.activeFilters['filterYearMax']);
       }
     } else {
       this.activeFilters = [];
@@ -94,7 +93,6 @@ export class FilterPage {
     this.semanticDataService.getFilterPersonTypes().subscribe(
       filterPersonTypes => {
         this.filterPersonTypes = filterPersonTypes['aggregations']['types']['buckets'];
-        console.log('filterpersontypes:', this.filterPersonTypes);
         this.filterPersonTypes.forEach( cat => {
           cat.name = cat.key;
           if (this.activeFilters['filterPersonTypes'] && this.activeFilters['filterPersonTypes'].length > 0) {
@@ -110,7 +108,6 @@ export class FilterPage {
             cat.selected = false;
           }
         });
-        console.log('filter person types after:', this.filterPersonTypes);
         this.showLoading = false;
       },
       error =>  {this.errorMessage = <any>error}
@@ -222,11 +219,6 @@ export class FilterPage {
     if (filterCollections) {
       this.storage.remove('filterCollections');
       this.storage.set('filterCollections', this.filterCollections);
-    }
-
-    if (filterPersonTypes) {
-      this.storage.remove('filterPersonTypes');
-      this.storage.set('filterPersonTypes', this.filterPersonTypes);
     }
 
     if (filterCategoryTypes) {
