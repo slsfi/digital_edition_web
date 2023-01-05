@@ -81,13 +81,11 @@ export class PersonSearchPage {
               private tooltipService: TooltipService,
               public commonFunctions: CommonFunctionsService
   ) {
-    /*
     try {
       this.showFilter = this.config.getSettings('PersonSearch.ShowFilter');
     } catch (e) {
       this.showFilter = true;
     }
-    */
 
     try {
       this.personSearchTypes = this.config.getSettings('PersonSearchTypes');
