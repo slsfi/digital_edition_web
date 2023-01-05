@@ -23,7 +23,7 @@
                 </ion-col>
             </ion-row>
 
-            <ion-row class="active-filters-row" *ngIf="filters && (filters.filterPersonTypes || filters.filterYearMin || filters.filterYearMax)">
+            <ion-row class="active-filters-row" *ngIf="filters && (filters.filterPersonTypes || filters.filterYearMin || filters.filterYearMax) && !filters.isEmpty">
               <ion-item>
                 <span class="active-filters-heading">{{'Filter.activeFilters' | translate}}:</span>
                 <ng-container *ngIf="filters.filterPersonTypes">
