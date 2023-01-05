@@ -23,6 +23,14 @@
                 </ion-col>
             </ion-row>
 
+            <ion-row *ngIf="filters && filters.length > 0">
+              <p>Aktiva avgränsningar: 
+                <ng-container *ngFor="let f of filters">
+                  <span>{{f.name}} </span>
+                </ng-container>
+              </p>
+            </ion-row>
+
             <ion-list>
                 <div *ngFor="let p of persons">
                   <ion-item *ngIf="p?.firstOfItsKind">
