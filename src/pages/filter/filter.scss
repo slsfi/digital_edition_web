@@ -61,7 +61,8 @@ page-filter {
   }
 
   ion-item.filter-year-inputs.item .item-inner,
-  ion-item.filter-year-inputs.input-has-focus {
+  ion-item.filter-year-inputs.input-has-focus,
+  ion-item.filter-year-inputs.input-has-value {
     border-bottom: 0 !important;
     box-shadow: none !important;
   }

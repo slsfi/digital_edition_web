@@ -192,21 +192,21 @@ export class SemanticDataService {
 
   getSubjectsElastic(after_key?, searchText?, filters?, max?) {
     let showPublishedStatus = 2;
-    if ( filters === null ) {
-      filters = {};
-    }
-    if ( max === undefined || max === null ) {
-      max = 500;
-    } else if (max > 10000) {
-      max = 10000;
-    }
-    /*
     try {
       showPublishedStatus = this.config.getSettings('PersonSearch.ShowPublishedStatus');
     } catch (e) {
       showPublishedStatus = 2;
     }
-    */
+
+    if ( filters === null ) {
+      filters = {};
+    }
+
+    if ( max === undefined || max === null ) {
+      max = 500;
+    } else if (max > 10000) {
+      max = 10000;
+    }
 
     const payload: any = {
       size: 0,

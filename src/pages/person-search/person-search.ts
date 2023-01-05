@@ -1,11 +1,10 @@
-import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import { IonicPage, NavController, NavParams, ModalController, App, Platform,
-  LoadingController, ToastController, Content, Events, ViewController } from 'ionic-angular';
+  LoadingController, Content, Events } from 'ionic-angular';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { ConfigService } from '@ngx-config/core';
-import { TextService } from '../../app/services/texts/text.service';
 import { FilterPage } from '../filter/filter';
 import { OccurrenceService } from '../../app/services/occurrence/occurence.service';
 import { Occurrence, OccurrenceType, OccurrenceResult } from '../../app/models/occurrence.model';
@@ -71,15 +70,12 @@ export class PersonSearchPage {
               public modalCtrl: ModalController,
               private app: App,
               private platform: Platform,
-              protected textService: TextService,
               public loadingCtrl: LoadingController,
               public occurrenceService: OccurrenceService,
               protected storage: Storage,
               public translate: TranslateService,
-              private toastCtrl: ToastController,
               private userSettingsService: UserSettingsService,
               private events: Events,
-              private cf: ChangeDetectorRef,
               private analyticsService: AnalyticsService,
               private metadataService: MetadataService,
               private tooltipService: TooltipService,
@@ -87,13 +83,11 @@ export class PersonSearchPage {
   ) {
     const type = this.navParams.get('type') || null;
 
-    /*
     try {
       this.showFilter = this.config.getSettings('PersonSearch.ShowFilter');
     } catch (e) {
       this.showFilter = true;
     }
-    */
 
     try {
       this.personSearchTypes = this.config.getSettings('PersonSearchTypes');
@@ -101,7 +95,6 @@ export class PersonSearchPage {
       this.personSearchTypes = [];
     }
 
-    /*
     try {
       this.max_fetch_size = this.config.getSettings('PersonSearch.InitialLoadNumber');
       if (this.max_fetch_size > 10000) {
@@ -110,7 +103,6 @@ export class PersonSearchPage {
     } catch (e) {
       this.max_fetch_size = 500;
     }
-    */
 
   }
 
@@ -146,11 +138,6 @@ export class PersonSearchPage {
 
   ionViewWillLeave() {
     this.events.publish('ionViewWillLeave', this.constructor.name);
-  }
-
-  ionViewDidLeave() {
-    this.storage.remove('filterCollections');
-    this.storage.remove('filterPersonTypes');
   }
 
   ngOnDestroy() {
@@ -315,7 +302,6 @@ export class PersonSearchPage {
         this.persons = [];
         this.agg_after_key = {};
         this.filters = filters;
-        console.log('filters: ', this.filters);
         this.getPersons();
       }
     });
