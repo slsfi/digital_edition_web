@@ -312,6 +312,7 @@ export class PersonSearchPage {
         this.persons = [];
         this.agg_after_key = {};
         this.filters = filters;
+        console.log('filters: ', this.filters);
         this.getPersons();
       }
     });
