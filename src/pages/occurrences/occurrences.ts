@@ -98,8 +98,8 @@ export class OccurrencesPage {
 
     this.occurrenceResult = this.navParams.get('occurrenceResult');
     if ( this.occurrenceResult !== undefined ) {
-      console.log('Getting occurrenceResult from navParams:');
-      console.log(this.occurrenceResult);
+      // console.log('Getting occurrenceResult from navParams:');
+      // console.log(this.occurrenceResult);
       this.init();
     } else if ( this.navParams.get('type') && this.navParams.get('id') ) {
       // console.log('occurrenceResult not in navParams, getting object data');
