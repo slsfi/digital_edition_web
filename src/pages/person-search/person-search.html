@@ -24,11 +24,14 @@
             </ion-row>
 
             <ion-row *ngIf="filters && (filters.filterPersonTypes || filters.filterYearMin || filters.filterYearMax)">
-              <p>Aktiva avgränsningar: 
-                <ng-container *ngFor="let f of filters">
+              <ion-item>Aktiva avgränsningar: 
+                <ng-container *ngIf="filters.filterPersonTypes" *ngFor="let fpt of filters.filterPersonTypes">
                   <span>{{f.name}} </span>
                 </ng-container>
-              </p>
+                <ng-container *ngIf="filters.filterYearMin || filters.filterYearMax">
+                  <span *ngIf="filters.filterYearMin">{{filters.filterYearMin}}</span>–<span *ngIf="filters.filterYearMax">{{filters.filterYearMax}}</span>
+                </ng-container>
+              </ion-item>
             </ion-row>
 
             <ion-list>
