@@ -306,10 +306,12 @@
         "ScrollToTop": "Till början"
     },
     "Filter": {
+        "title": "Avgränsningar",
         "personTypes": "Personkategori",
         "tagTypes": "Ämneskategori",
-        "year": "Född mellan",
-        "apply": "Verkställ"
+        "year": "Född",
+        "apply": "Verkställ",
+        "activeFilters": "Aktiva avgränsningar"
     },
     "Type": "Texttyp",
     "Genre": "Genre",
@@ -409,7 +411,9 @@
     },
     "BasicActions": {
         "Ok": "Ok",
-        "Cancel": "Avbryt"
+        "Cancel": "Avbryt",
+        "ShowMore": "Visa fler",
+        "ScrollToTop": "Till början"
     },
     "Epub": {
         "DisplayOptions": "Textstorlek",

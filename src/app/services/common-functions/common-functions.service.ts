@@ -267,4 +267,16 @@ export class CommonFunctionsService {
     return text;
   }
 
+  /**
+   * Returns true if the given object is empty, i.e. has no properties, else false.
+   */
+  isEmptyObject(obj) {
+    return !(() => {
+      for (const i in obj) {
+        return true;
+      }
+      return false;
+    })();
+  }
+
 }

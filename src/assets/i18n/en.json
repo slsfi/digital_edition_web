@@ -207,10 +207,12 @@
         "infotext": ""
     },
     "Filter": {
-        "personTypes": "Personkategori",
-        "tagTypes": "Ämneskategori",
-        "year": "Född mellan",
-        "apply": "Apply"
+        "title": "Filter",
+        "personTypes": "Person category",
+        "tagTypes": "Tag category",
+        "year": "Born",
+        "apply": "Apply",
+        "activeFilters": "Active filters"
     },
     "Occurrences": {
         "Title": "Occurrences",
@@ -352,7 +354,9 @@
     },
     "BasicActions": {
         "Ok": "Ok",
-        "Cancel": "Cancel"
+        "Cancel": "Cancel",
+        "ShowMore": "Show more",
+        "ScrollToTop": "Scroll to top"
     },
     "Epub": {
         "DisplayOptions": "Text size",

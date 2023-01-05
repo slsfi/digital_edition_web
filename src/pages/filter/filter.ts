@@ -41,12 +41,17 @@ export class FilterPage {
 
     if ( navParams.get('activeFilters') !== undefined ) {
       this.activeFilters = navParams.get('activeFilters');
+      if (this.activeFilters['filterYearMin']) {
+        this.filterYearMin = Number(this.activeFilters['filterYearMin']);
+      }
+      if (this.activeFilters['filterYearMax']) {
+        this.filterYearMax = Number(this.activeFilters['filterYearMax']);
+      }
     } else {
       this.activeFilters = [];
     }
 
     if (navParams.get('searchType') === 'person-search') {
-      this.getFilterCollections();
       this.getFilterPersonTypes();
       this.shouldFilterYear = true;
     }
@@ -54,7 +59,6 @@ export class FilterPage {
       this.getFilterCollections();
     }
     if (navParams.get('searchType') === 'tag-search') {
-      this.getFilterCollections();
       this.getFilterCategoryTypes();
     }
   }
@@ -77,7 +81,7 @@ export class FilterPage {
           if (filterCollections) {
             this.filterCollections = filterCollections;
           } else {
-            console.log('filters in cache empty');
+            console.log('filter collections in cache empty');
           }
         });
       }
@@ -90,22 +94,23 @@ export class FilterPage {
       filterPersonTypes => {
         this.filterPersonTypes = filterPersonTypes['aggregations']['types']['buckets'];
         this.filterPersonTypes.forEach( cat => {
-          cat.selected = false;
           cat.name = cat.key;
+          if (this.activeFilters['filterPersonTypes'] && this.activeFilters['filterPersonTypes'].length > 0) {
+            for (let i = 0; i < this.activeFilters['filterPersonTypes'].length; i++) {
+              if (cat.name === this.activeFilters['filterPersonTypes'][i].name) {
+                cat.selected = true;
+                break;
+              } else {
+                cat.selected = false;
+              }
+            }
+          } else {
+            cat.selected = false;
+          }
         });
         this.showLoading = false;
       },
-      error =>  {this.errorMessage = <any>error},
-      () => {
-        this.storage.get('filterPersonTypes').then((filterPersonTypes) => {
-          if (filterPersonTypes) {
-            this.filterPersonTypes = filterPersonTypes;
-          } else {
-            console.log('filters in cache empty');
-          }
-          this.showLoading = false;
-        });
-      }
+      error =>  {this.errorMessage = <any>error}
     );
   }
 
@@ -128,7 +133,7 @@ export class FilterPage {
             if (filterCategoryTypes) {
               this.filterCategoryTypes = filterCategoryTypes;
             } else {
-              console.log('filters in cache empty');
+              console.log('filter category types in cache empty');
             }
             this.showLoading = false;
           });
@@ -186,19 +191,26 @@ export class FilterPage {
 
   checkIfFiltersEmpty(filters) {
     if (this.navParams.get('searchType') === 'person-search') {
-      if (!filters['filterYear'] && filters['filterCollections'].length <= 0 && filters['filterPersonTypes'].length <= 0) {
+      const d = new Date();
+      if (!filters['filterYearMin'] && filters['filterYearMax']) {
+        filters['filterYearMin'] = 1;
+      }
+      if ((filters['filterYearMin'] && !filters['filterYearMax']) || (Number(filters['filterYearMax']) > d.getFullYear())) {
+        filters['filterYearMax'] = d.getFullYear();
+      }
+      if (!filters['filterYearMin'] && !filters['filterYearMax'] && filters['filterPersonTypes'].length < 1) {
         this.isEmpty = true;
       }
     }
 
     if (this.navParams.get('searchType') === 'place-search') {
-      if (filters['filterCollections'].length <= 0) {
+      if (filters['filterCollections'].length < 1) {
         this.isEmpty = true;
       }
     }
 
     if (this.navParams.get('searchType') === 'tag-search') {
-      if (filters['filterCollections'].length <= 0 && filters['filterCategoryTypes'].length <= 0) {
+      if (filters['filterCategoryTypes'].length < 1) {
         this.isEmpty = true;
       }
     }
@@ -208,11 +220,6 @@ export class FilterPage {
     if (filterCollections) {
       this.storage.remove('filterCollections');
       this.storage.set('filterCollections', this.filterCollections);
-    }
-
-    if (filterPersonTypes) {
-      this.storage.remove('filterPersonTypes');
-      this.storage.set('filterPersonTypes', this.filterPersonTypes);
     }
 
     if (filterCategoryTypes) {
