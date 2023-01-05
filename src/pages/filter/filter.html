@@ -23,9 +23,9 @@
     <ng-container *ngIf="!showLoading">
       <span *ngIf="shouldFilterYear" class="year_label label">{{"Filter.year" | translate}}</span>
       <ion-item class="filter-year-inputs" *ngIf="shouldFilterYear">
-        <ion-input type="number" min="1" class="fromYear" [(ngModel)]="filterYearMin"></ion-input>
+        <ion-input type="number" min="1" max="2200" class="fromYear" [(ngModel)]="filterYearMin"></ion-input>
         <span class="year-delimiter">–</span>
-        <ion-input type="number" min="1" class="toYear" [(ngModel)]="filterYearMax"></ion-input>
+        <ion-input type="number" min="1" max="2200" class="toYear" [(ngModel)]="filterYearMax"></ion-input>
       </ion-item>
       <ion-item-divider *ngIf="shouldFilterYear" style="background: transparent;"></ion-item-divider>
 

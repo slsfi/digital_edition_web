@@ -33,7 +33,7 @@
                 </ng-container>
                 <ng-container *ngIf="filters.filterPersonTypes && (filters.filterYearMin || filters.filterYearMax)">, </ng-container>
                 <ng-container *ngIf="filters.filterYearMin || filters.filterYearMax">
-                  <span class="active-filter-year-heading">{{'Filter.year' | translate}}</span>
+                  <span class="active-filter-year-heading">{{'Filter.year' | translate | lowercase}}</span>
                   <span *ngIf="filters.filterYearMin">{{filters.filterYearMin}}</span>–<span *ngIf="filters.filterYearMax">{{filters.filterYearMax}}</span>
                 </ng-container>
               </ion-item>
