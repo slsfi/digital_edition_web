@@ -192,15 +192,13 @@ export class SemanticDataService {
 
   getSubjectsElastic(after_key?, searchText?, filters?, max?) {
     let showPublishedStatus = 2;
-    /*
     try {
       showPublishedStatus = this.config.getSettings('PersonSearch.ShowPublishedStatus');
     } catch (e) {
       showPublishedStatus = 2;
     }
-    */
 
-    if ( filters === null ) {
+    if ( filters === null || filters === undefined ) {
       filters = {};
     }
 

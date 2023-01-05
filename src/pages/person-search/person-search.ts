@@ -81,8 +81,6 @@ export class PersonSearchPage {
               private tooltipService: TooltipService,
               public commonFunctions: CommonFunctionsService
   ) {
-    const type = this.navParams.get('type') || null;
-
     try {
       this.showFilter = this.config.getSettings('PersonSearch.ShowFilter');
     } catch (e) {
@@ -147,7 +145,7 @@ export class PersonSearchPage {
   }
 
   getParamsData() {
-    this.type = this.navParams.get('type');
+    this.type = this.navParams.get('type') || null;
     this.subType = this.navParams.get('subtype');
 
     if ( String(this.subType).includes('subtype') ) {
