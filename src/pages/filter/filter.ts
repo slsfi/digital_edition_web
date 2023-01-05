@@ -41,6 +41,7 @@ export class FilterPage {
 
     if ( navParams.get('activeFilters') !== undefined ) {
       this.activeFilters = navParams.get('activeFilters');
+      console.log('active filters:', this.activeFilters);
       if (this.activeFilters['filterYearMin']) {
         this.filterYearMin = this.activeFilters['filterYearMin'];
       }
@@ -93,6 +94,7 @@ export class FilterPage {
     this.semanticDataService.getFilterPersonTypes().subscribe(
       filterPersonTypes => {
         this.filterPersonTypes = filterPersonTypes['aggregations']['types']['buckets'];
+        console.log('filterpersontypes:', this.filterPersonTypes);
         this.filterPersonTypes.forEach( cat => {
           cat.selected = false;
           cat.name = cat.key;
@@ -203,7 +205,7 @@ export class FilterPage {
   checkIfFiltersEmpty(filters) {
     if (this.navParams.get('searchType') === 'person-search') {
       if (!filters['filterYearMin'] && filters['filterYearMax']) {
-        filters['filterYearMin'] = '1';
+        filters['filterYearMin'] = '0001';
       }
       if (filters['filterYearMin'] && !filters['filterYearMax']) {
         filters['filterYearMax'] = '2200';
