@@ -98,17 +98,19 @@ export class FilterPage {
         this.filterPersonTypes.forEach( cat => {
           cat.name = cat.key;
           if (this.activeFilters['filterPersonTypes'] && this.activeFilters['filterPersonTypes'].length > 0) {
-            this.activeFilters['filterPersonTypes'].forEach(activeType => {
-              if (cat.name === activeType.name) {
+            for (let i = 0; i < this.activeFilters['filterPersonTypes'].length; i++) {
+              if (cat.name === this.activeFilters['filterPersonTypes'][i].name) {
                 cat.selected = true;
+                break;
               } else {
                 cat.selected = false;
               }
-            });
+            }
           } else {
             cat.selected = false;
           }
         });
+        console.log('filter person types after:', this.filterPersonTypes);
         this.showLoading = false;
       },
       error =>  {this.errorMessage = <any>error}
