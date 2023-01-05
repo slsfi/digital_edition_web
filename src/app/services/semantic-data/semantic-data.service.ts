@@ -216,6 +216,8 @@ export class SemanticDataService {
             { 'term': { 'project_id': { 'value': this.config.getSettings('app.projectId') } } },
             { 'term': { 'published': { 'value': showPublishedStatus } } },
             { 'term': { 'sub_deleted': { 'value': 0 } } },
+            { 'term': { 'ev_c_deleted': { 'value': 0 } } },
+            { 'term': { 'ev_o_deleted': { 'value': 0 } } },
           ]
         }
       },
