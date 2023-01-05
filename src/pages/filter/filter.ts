@@ -191,11 +191,12 @@ export class FilterPage {
 
   checkIfFiltersEmpty(filters) {
     if (this.navParams.get('searchType') === 'person-search') {
+      const d = new Date();
       if (!filters['filterYearMin'] && filters['filterYearMax']) {
         filters['filterYearMin'] = 1;
       }
-      if (filters['filterYearMin'] && !filters['filterYearMax']) {
-        filters['filterYearMax'] = 2200;
+      if ((filters['filterYearMin'] && !filters['filterYearMax']) || (Number(filters['filterYearMax']) > d.getFullYear())) {
+        filters['filterYearMax'] = d.getFullYear();
       }
       if (!filters['filterYearMin'] && !filters['filterYearMax'] && filters['filterPersonTypes'].length < 1) {
         this.isEmpty = true;
