@@ -255,8 +255,8 @@ export class SemanticDataService {
       payload.query.bool.must.push({
         range: {
           date_born_date: {
-            gte: String(filters.filterYearMin).padStart(4, '0') + '-01-01',
-            lte: String(filters.filterYearMax).padStart(4, '0') + '-12-31',
+            gte: ('0000' + String(filters.filterYearMin)).slice(-4) + '-01-01',
+            lte: ('0000' + String(filters.filterYearMax)).slice(-4) + '-12-31',
           }
         }
       })
