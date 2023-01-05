@@ -306,10 +306,12 @@
         "ScrollToTop": "Till början"
     },
     "Filter": {
+        "title": "Avgränsningar",
         "personTypes": "Personkategori",
         "tagTypes": "Ämneskategori",
-        "year": "Född mellan",
-        "apply": "Verkställ"
+        "year": "Född",
+        "apply": "Verkställ",
+        "activeFilters": "Aktiva avgränsningar"
     },
     "Type": "Texttyp",
     "Genre": "Genre",

@@ -219,10 +219,12 @@
         "selectEdition": "Lue"
     },
     "Filter": {
-        "personTypes": "Personkategori",
-        "tagTypes": "Ämneskategori",
-        "year": "Född mellan",
-        "apply": "Verkställ"
+        "title": "Rajaa",
+        "personTypes": "Henkilötyyppi",
+        "tagTypes": "Asiasanatyyppi",
+        "year": "Syntynyt",
+        "apply": "Rajaa",
+        "activeFilters": "Aktiiviset rajaukset"
     },
     "SearchApp": {
         "simpleSearch": "Hae",

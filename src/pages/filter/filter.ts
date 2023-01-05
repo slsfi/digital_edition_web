@@ -192,10 +192,10 @@ export class FilterPage {
   checkIfFiltersEmpty(filters) {
     if (this.navParams.get('searchType') === 'person-search') {
       if (!filters['filterYearMin'] && filters['filterYearMax']) {
-        filters['filterYearMin'] = '0001';
+        filters['filterYearMin'] = 1;
       }
       if (filters['filterYearMin'] && !filters['filterYearMax']) {
-        filters['filterYearMax'] = '2200';
+        filters['filterYearMax'] = 2200;
       }
       if (!filters['filterYearMin'] && !filters['filterYearMax'] && filters['filterPersonTypes'].length < 1) {
         this.isEmpty = true;

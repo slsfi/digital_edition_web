@@ -92,7 +92,7 @@ page-person-search {
 
     .alphabet {
         margin-top: 0.5rem;
-        
+
         button {
             margin: 0 !important;
         }
@@ -175,5 +175,12 @@ page-person-search {
 
     .load-more-wrapper + .hits-footer button.button {
         margin-top: 1rem;
+    }
+
+    .active-filters-row {
+        .active-filters-heading {
+            font-weight: bold;
+        }
+
     }
 }

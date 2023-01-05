@@ -207,10 +207,12 @@
         "infotext": ""
     },
     "Filter": {
-        "personTypes": "Personkategori",
-        "tagTypes": "Ämneskategori",
-        "year": "Född mellan",
-        "apply": "Apply"
+        "title": "Filter",
+        "personTypes": "Person category",
+        "tagTypes": "Tag category",
+        "year": "Born",
+        "apply": "Apply",
+        "activeFilters": "Active filters"
     },
     "Occurrences": {
         "Title": "Occurrences",
