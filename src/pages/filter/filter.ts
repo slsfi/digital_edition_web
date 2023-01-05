@@ -96,34 +96,22 @@ export class FilterPage {
         this.filterPersonTypes = filterPersonTypes['aggregations']['types']['buckets'];
         console.log('filterpersontypes:', this.filterPersonTypes);
         this.filterPersonTypes.forEach( cat => {
-          cat.selected = false;
           cat.name = cat.key;
-        });
-        this.showLoading = false;
-      },
-      error =>  {this.errorMessage = <any>error},
-      () => {
-        this.storage.get('filterPersonTypes').then((filterPersonTypes) => {
-          if (filterPersonTypes) {
-            this.filterPersonTypes = filterPersonTypes;
-            console.log('loaded filter person types from storage');
-            this.filterPersonTypes.forEach(type => {
-              if (this.activeFilters['filterPersonTypes'] && this.activeFilters['filterPersonTypes'].length > 0) {
-                this.activeFilters['filterPersonTypes'].forEach(activeType => {
-                  if (type.name === activeType.name) {
-                    type.selected = true;
-                  } else {
-                    type.selected = false;
-                  }
-                });
+          if (this.activeFilters['filterPersonTypes'] && this.activeFilters['filterPersonTypes'].length > 0) {
+            this.activeFilters['filterPersonTypes'].forEach(activeType => {
+              if (cat.name === activeType.name) {
+                cat.selected = true;
+              } else {
+                cat.selected = false;
               }
             });
           } else {
-            console.log('filter person types in cache empty');
+            cat.selected = false;
           }
-          this.showLoading = false;
         });
-      }
+        this.showLoading = false;
+      },
+      error =>  {this.errorMessage = <any>error}
     );
   }
 
