@@ -81,8 +81,6 @@ export class PersonSearchPage {
               private tooltipService: TooltipService,
               public commonFunctions: CommonFunctionsService
   ) {
-    const type = this.navParams.get('type') || null;
-
     try {
       this.showFilter = this.config.getSettings('PersonSearch.ShowFilter');
     } catch (e) {
@@ -147,7 +145,7 @@ export class PersonSearchPage {
   }
 
   getParamsData() {
-    this.type = this.navParams.get('type');
+    this.type = this.navParams.get('type') || null;
     this.subType = this.navParams.get('subtype');
 
     if ( String(this.subType).includes('subtype') ) {
@@ -353,7 +351,7 @@ export class PersonSearchPage {
 
   async openPerson(occurrenceResult: OccurrenceResult) {
     let showOccurrencesModalOnRead = false;
-    if (this.config.getSettings('showOccurencesModalOnReadPageAfterSearch.tagSearch')) {
+    if (this.config.getSettings('showOccurencesModalOnReadPageAfterSearch.personSearch')) {
       showOccurrencesModalOnRead = true;
     }
 
@@ -381,9 +379,9 @@ export class PersonSearchPage {
 
     } else {
       const occurrenceModal = this.modalCtrl.create(OccurrencesPage, {
-        occurrenceResult: occurrenceResult,
-        showOccurrencesModalOnRead: showOccurrencesModalOnRead,
-        objectType: this.objectType
+        id: occurrenceResult.id,
+        type: this.objectType,
+        showOccurrencesModalOnRead: showOccurrencesModalOnRead
       });
 
       occurrenceModal.present();

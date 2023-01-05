@@ -223,6 +223,7 @@
         "personTypes": "Henkilötyyppi",
         "tagTypes": "Asiasanatyyppi",
         "year": "Syntynyt",
+        "bornBetween": "Syntynyt vuosien välissä",
         "apply": "Rajaa",
         "activeFilters": "Aktiiviset rajaukset"
     },

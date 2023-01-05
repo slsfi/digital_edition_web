@@ -198,7 +198,7 @@ export class SemanticDataService {
       showPublishedStatus = 2;
     }
 
-    if ( filters === null ) {
+    if ( filters === null || filters === undefined ) {
       filters = {};
     }
 

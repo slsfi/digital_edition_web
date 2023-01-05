@@ -310,6 +310,7 @@
         "personTypes": "Personkategori",
         "tagTypes": "Ämneskategori",
         "year": "Född",
+        "bornBetween": "Född mellan",
         "apply": "Verkställ",
         "activeFilters": "Aktiva avgränsningar"
     },

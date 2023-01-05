@@ -211,6 +211,7 @@
         "personTypes": "Person category",
         "tagTypes": "Tag category",
         "year": "Born",
+        "bornBetween": "Born between",
         "apply": "Apply",
         "activeFilters": "Active filters"
     },
