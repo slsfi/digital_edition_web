@@ -27,7 +27,7 @@
               <ion-item>Aktiva avgränsningar: 
                 <ng-container *ngIf="filters.filterPersonTypes">
                   <ng-container *ngFor="let fpt of filters.filterPersonTypes">
-                    <span>{{f.name}} </span>
+                    <span>{{fpt.name}} </span>
                   </ng-container>
                 </ng-container>
                 <ng-container *ngIf="filters.filterYearMin || filters.filterYearMax">
