@@ -353,7 +353,7 @@ export class PersonSearchPage {
 
   async openPerson(occurrenceResult: OccurrenceResult) {
     let showOccurrencesModalOnRead = false;
-    if (this.config.getSettings('showOccurencesModalOnReadPageAfterSearch.tagSearch')) {
+    if (this.config.getSettings('showOccurencesModalOnReadPageAfterSearch.personSearch')) {
       showOccurrencesModalOnRead = true;
     }
 
@@ -382,8 +382,8 @@ export class PersonSearchPage {
     } else {
       const occurrenceModal = this.modalCtrl.create(OccurrencesPage, {
         id: occurrenceResult.id,
-        showOccurrencesModalOnRead: showOccurrencesModalOnRead,
-        objectType: this.objectType
+        type: this.objectType,
+        showOccurrencesModalOnRead: showOccurrencesModalOnRead
       });
 
       occurrenceModal.present();
