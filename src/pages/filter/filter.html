@@ -21,12 +21,15 @@
     </ng-container>
 
     <ng-container *ngIf="!showLoading">
-      <span *ngIf="shouldFilterYear" class="year_label label">{{"Filter.year" | translate}}</span>
-      <ion-item *ngIf="shouldFilterYear">
-        <ion-input type="number" class="fromYear" [(ngModel)]="filterYearMin"></ion-input>
-        <ion-input type="number" class="toYear" [(ngModel)]="filterYearMax"></ion-input>
-      </ion-item>
-      <ion-item-divider *ngIf="shouldFilterYear" style="background: transparent;"></ion-item-divider>
+      <ion-list *ngIf="shouldFilterYear">
+        <ion-list-header class="year_label">
+          {{"Filter.bornBetween" | translate}}
+        </ion-list-header>
+        <ion-item class="filter-year-inputs" *ngIf="shouldFilterYear">
+          <ion-input type="number" min="1" class="fromYear" [(ngModel)]="filterYearMin"></ion-input>
+          <ion-input type="number" min="1" class="toYear" [(ngModel)]="filterYearMax"></ion-input>
+        </ion-item>
+      </ion-list>
 
       <ion-list *ngIf="filterCategoryTypes">
         <ion-list-header>

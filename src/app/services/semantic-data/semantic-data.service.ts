@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-
 import { ConfigService } from '@ngx-config/core';
+import { CommonFunctionsService } from '../common-functions/common-functions.service';
 
 @Injectable()
 export class SemanticDataService {
@@ -15,7 +15,11 @@ export class SemanticDataService {
   elasticTagIndex: string;
   flattened: any;
 
-  constructor(private http: Http, private config: ConfigService) {
+  constructor(
+    private http: Http,
+    private config: ConfigService,
+    public commonFunctions: CommonFunctionsService
+  ) {
     try {
       this.useLegacy = this.config.getSettings('app.useLegacyIdsForSemanticData');
     } catch (e) {
@@ -186,46 +190,59 @@ export class SemanticDataService {
       .catch(this.handleError);
   }
 
-  getSubjectsElastic(from, searchText?, filters?, max?) {
+  getSubjectsElastic(after_key?, searchText?, filters?, max?) {
     let showPublishedStatus = 2;
-    if ( filters === null ) {
-      filters = {};
-    }
-    if ( max === undefined || max === null ) {
-      max = 800;
-    } else {
-      max = max + 100;
-    }
-
     try {
       showPublishedStatus = this.config.getSettings('PersonSearch.ShowPublishedStatus');
     } catch (e) {
       showPublishedStatus = 2;
     }
+
+    if ( filters === null || filters === undefined ) {
+      filters = {};
+    }
+
+    if ( max === undefined || max === null ) {
+      max = 500;
+    } else if (max > 10000) {
+      max = 10000;
+    }
+
     const payload: any = {
-      from: from,
-      size: max,
-      sort: [
-        { 'full_name.keyword' : {'order' : 'asc'} }
-      ],
+      size: 0,
       query: {
         bool: {
-          must : [{
-            'term' : { 'project_id' : this.config.getSettings('app.projectId') }
-          },
-          {
-            'term' : { 'published' : showPublishedStatus }
-          },
-          {
-            'term' : { 'sub_deleted' : 0 }
-          }],
+          must: [
+            { 'term': { 'project_id': { 'value': this.config.getSettings('app.projectId') } } },
+            { 'term': { 'published': { 'value': showPublishedStatus } } },
+            { 'term': { 'sub_deleted': { 'value': 0 } } },
+            { 'term': { 'ev_c_deleted': { 'value': 0 } } },
+            { 'term': { 'ev_o_deleted': { 'value': 0 } } },
+          ]
+        }
+      },
+      aggs: {
+        unique_subjects: {
+          composite: {
+            size: max,
+            sources: [
+              { 'sort_by_name': { 'terms': { 'field': 'sort_by_name.keyword', 'missing_bucket': true } } },
+              { 'full_name': { 'terms': { 'field': 'full_name.keyword' } } },
+              { 'date_born': { 'terms': { 'field': 'date_born.keyword', 'missing_bucket': true } } },
+              { 'date_deceased': { 'terms': { 'field': 'date_deceased.keyword', 'missing_bucket': true } } },
+              { 'type': { 'terms' : { 'field': 'type.keyword', 'missing_bucket': true } } },
+              { 'id': { 'terms': { 'field': 'id' } } }
+            ]
+          }
         }
       }
     }
 
+    if (after_key !== undefined && !this.commonFunctions.isEmptyObject(after_key)) {
+      payload.aggs.unique_subjects.composite.after = after_key;
+    }
+
     if (filters !== undefined && filters['filterPersonTypes'] !== undefined && filters['filterPersonTypes'].length > 0) {
-      payload.from = 0;
-      payload.size = 1000;
       payload.query.bool.must.push({bool: {should: []}});
       filters['filterPersonTypes'].forEach(element => {
         payload.query.bool.must[payload.query.bool.must.length - 1].bool.
@@ -235,27 +252,21 @@ export class SemanticDataService {
 
     // Add date range filter.
     if (filters.filterYearMax && filters.filterYearMin) {
-      payload.from = 0;
-      payload.size = 1000;
       payload.query.bool.must.push({
         range: {
           date_born_date: {
-            gte: filters.filterYearMin + '-01-01',
-            lte: filters.filterYearMax + '-01-01',
+            gte: ('0000' + String(filters.filterYearMin)).slice(-4) + '-01-01',
+            lte: ('0000' + String(filters.filterYearMax)).slice(-4) + '-12-31',
           }
         }
       })
     }
+
     // Search for first character of name
     if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
-      payload.from = 0;
-      payload.size = 5000;
       payload.query.bool.must.push({regexp: {'full_name.keyword': {
           'value': `${String(searchText)}.*|${String(searchText).toLowerCase()}.*`}}});
     } else if ( searchText !== undefined && searchText !== '' ) {
-      payload.from = 0;
-      payload.size = 5000;
-      // payload.sort = ['_score'],
       payload.query.bool.must.push({fuzzy: {'full_name': {
           'value': `${String(searchText)}`}}});
     }
@@ -418,6 +429,12 @@ export class SemanticDataService {
     const payload: any = {
       from: from,
       size: 800,
+      _source: [
+        'id',
+        'tag_id',
+        'name',
+        'tag_type'
+      ],
       sort: [
         { 'name.keyword' : 'asc' }
       ],
@@ -428,6 +445,9 @@ export class SemanticDataService {
           },
           {
             'term' : { 'published' : showPublishedStatus }
+          },
+          {
+            'term' : { 'publication_deleted' : 0 }
           },
           {
             'term' : { 'ev_o_deleted' : 0 }

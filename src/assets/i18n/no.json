@@ -274,6 +274,15 @@
         "OpenInNewWindow": "Länken öppnas i ett nytt fönster.",
         "ScrollToTop": "Till början"
     },
+    "Filter": {
+        "title": "Avgränsningar",
+        "personTypes": "Personkategori",
+        "tagTypes": "Ämneskategori",
+        "year": "Född",
+        "bornBetween": "Född mellan",
+        "apply": "Verkställ",
+        "activeFilters": "Aktiva avgränsningar"
+    },
     "est": "Lästext",
     "ms": "Manuskript",
     "com": "Kommentar",
@@ -360,7 +369,9 @@
     },
     "BasicActions": {
         "Ok": "Ok",
-        "Cancel": "Avbryt"
+        "Cancel": "Avbryt",
+        "ShowMore": "Visa fler",
+        "ScrollToTop": "Till början"
     },
     "Epub": {
         "DisplayOptions": "Textstorlek",
