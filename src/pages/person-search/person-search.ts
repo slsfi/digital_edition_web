@@ -104,6 +104,9 @@ export class PersonSearchPage {
     /*
     try {
       this.max_fetch_size = this.config.getSettings('PersonSearch.InitialLoadNumber');
+      if (this.max_fetch_size > 10000) {
+        this.max_fetch_size = 10000;
+      }
     } catch (e) {
       this.max_fetch_size = 500;
     }

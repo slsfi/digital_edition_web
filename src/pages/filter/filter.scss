@@ -33,7 +33,6 @@ page-filter {
     border: 1px solid gray;
     border-radius: $corner-roundness;
     background-color: #fff;
-    margin-top:1rem;
     max-width: 200px;
     transition: all 0.3s;
   }
@@ -44,6 +43,10 @@ page-filter {
 
   .toYear {
     margin-left: 0.5rem;
+  }
+
+  ion-item.filter-year-inputs {
+    padding-bottom: 1rem;
   }
 
   ion-item.filter-year-inputs.input-has-focus .fromYear,
@@ -57,7 +60,8 @@ page-filter {
     font-weight: bold;
   }
 
-  ion-item.filter-year-inputs.item .item-inner {
+  ion-item.filter-year-inputs.item .item-inner,
+  ion-item.filter-year-inputs.input-has-focus {
     border-bottom: 0 !important;
     box-shadow: none !important;
   }
