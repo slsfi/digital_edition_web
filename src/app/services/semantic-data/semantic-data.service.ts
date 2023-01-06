@@ -419,7 +419,7 @@ export class SemanticDataService {
     .catch(this.handleError)
   }
 
-  getTagElastic(from, searchText?, filters?, max?) {
+  getTagElastic(after_key, searchText?, filters?, max?) {
     let showPublishedStatus = 2;
     /*
     try {
@@ -429,69 +429,65 @@ export class SemanticDataService {
     }
     */
 
+    if ( filters === null || filters === undefined ) {
+      filters = {};
+    }
+
     if ( max === undefined || max === null ) {
-      max = 200;
+      max = 500;
     } else if (max > 10000) {
       max = 10000;
     }
 
     const payload: any = {
-      from: from,
-      size: max,
-      _source: [
-        'id',
-        'tag_id',
-        'name',
-        'tag_type'
-      ],
-      sort: [
-        { 'name.keyword' : 'asc' }
-      ],
+      size: 0,
       query: {
         bool: {
-          must : [{
-            'term' : { 'project_id' : 6 } // this.config.getSettings('app.projectId') }
-          },
-          {
-            'term' : { 'published' : showPublishedStatus }
-          },
-          {
-            'term' : { 'publication_deleted' : 0 }
-          },
-          {
-            'term' : { 'ev_o_deleted' : 0 }
-          },
-          {
-            'term' : { 'ev_c_deleted' : 0 }
-          },
-          {
-            'term' : { 'tag_deleted' : 0 }
-          }],
+          must: [
+            { 'term': { 'project_id': { 'value': 6  } } }, // this.config.getSettings('app.projectId') } } },
+            { 'term': { 'published': { 'value': showPublishedStatus } } },
+            { 'term': { 'publication_deleted': { 'value': 0 } } },
+            { 'term': { 'tag_deleted': { 'value': 0 } } },
+            { 'term': { 'ev_c_deleted': { 'value': 0 } } },
+            { 'term': { 'ev_o_deleted': { 'value': 0 } } },
+          ]
+        }
+      },
+      aggs: {
+        unique_tags: {
+          composite: {
+            size: max,
+            sources: [
+              { 'name': { 'terms': { 'field': 'name.keyword' } } },
+              { 'tag_type': { 'terms': { 'field': 'tag_type.keyword', 'missing_bucket': true } } },
+              { 'id': { 'terms': { 'field': 'id' } } },
+              { 'tag_id': { 'terms': { 'field': 'tag_id' } } }
+            ]
+          }
         }
       }
     }
 
-    // Search for first character of name
-    if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
-      payload.from = 0;
-      payload.size = 9999;
-      payload.query.bool.must.push({regexp: {'name.keyword': {
-          'value': `${String(searchText)}.*|${String(searchText).toLowerCase()}.*`}}});
-    } else if ( searchText !== undefined && searchText !== '' ) {
-      payload.from = 0;
-      payload.size = 9999;
-      payload.query.bool.must.push({fuzzy: {'name': {
-          'value': `${String(searchText)}`}}});
+    if (after_key !== undefined && !this.commonFunctions.isEmptyObject(after_key)) {
+      payload.aggs.unique_tags.composite.after = after_key;
     }
 
-    if (filters !== undefined && filters['filterCategoryTypes'] !== undefined) {
-      payload.from = 0;
-      payload.size = 9999;
+    if (filters !== undefined && filters['filterCategoryTypes'] !== undefined && filters['filterCategoryTypes'].length > 0) {
       payload.query.bool.must.push({bool: {should: []}});
       filters['filterCategoryTypes'].forEach(element => {
         payload.query.bool.must[payload.query.bool.must.length - 1].bool.
         should.push({'term': {'tag_type.keyword': String(element.name)}});
       });
+    }
+
+    if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
+      // Search for first character of tag name
+      payload.query.bool.must.push({regexp: {'name.keyword': {
+          'value': `${String(searchText)}.*|${String(searchText).toLowerCase()}.*`}}});
+    } else if ( searchText !== undefined && searchText !== '' ) {
+      // Fuzzy search in full tag name
+      payload.query.bool.must.push({fuzzy: {'name': {
+          'value': `${String(searchText)}`}}});
     }
 
     return this.http.post(this.getSearchUrl(this.elasticTagIndex), payload)

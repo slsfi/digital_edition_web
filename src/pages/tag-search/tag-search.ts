@@ -40,7 +40,7 @@ export class TagSearchPage {
   texts: any[] = [];
   showLoading = false;
   showFilter = true;
-  from = 0;
+  agg_after_key: Record<string, any> = {};
   last_fetch_size = 0;
   max_fetch_size = 50;
   filters: any[] = [];
@@ -127,42 +127,39 @@ export class TagSearchPage {
 
   getTags() {
     this.showLoading = true;
-    this.semanticDataService.getTagElastic(this.from, this.searchText, this.filters, this.max_fetch_size).subscribe(
+    this.semanticDataService.getTagElastic(this.agg_after_key, this.searchText, this.filters, this.max_fetch_size).subscribe(
       tags => {
+        console.log('Elastic response: ', tags);
         if (tags.error !== undefined) {
           console.error('Elastic search error getting tags: ', tags);
         }
-        const tagsTmp = [];
-        tags = tags.hits.hits;
-        this.last_fetch_size = tags.length;
+        if (tags.aggregations && tags.aggregations.unique_tags && tags.aggregations.unique_tags.buckets.length > 0) {
+          this.agg_after_key = tags.aggregations.unique_tags.after_key;
+          this.last_fetch_size = tags.aggregations.unique_tags.buckets.length;
 
-        console.log('Number of fetched tags: ', this.last_fetch_size);
+          console.log('Number of fetched tags: ', this.last_fetch_size);
 
-        tags.forEach(element => {
-          element = element['_source'];
-          element.name = String(element.name)
-          element['sortBy'] = String(element.name).trim().replace('ʽ', '').toUpperCase();
-          if ( element.name ) {
-            let found = false;
-            this.tags.forEach(tag => {
-              if ( tag.id === element['id'] ) {
-                found = true;
-              }
-            });
-            if ( !found ) {
-              tagsTmp.push(element);
-              this.tags.push(element);
+          const combining = /[\u0300-\u036F]/g;
+
+          tags = tags.aggregations.unique_tags.buckets;
+          tags.forEach(element => {
+            element = element['key'];
+
+            let sortByName = String(element['name']);
+            sortByName = sortByName.replace('ʽ', '').trim().toLowerCase();
+            const ltr = sortByName.charAt(0);
+            if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
+              element['sortBy'] = sortByName;
+            } else {
+              element['sortBy'] = sortByName.normalize('NFKD').replace(combining, '').replace(',', '');
             }
-          }
-          const ltr = element['sortBy'].charAt(0);
-          const mt = ltr.match(/[a-zåäö]/i);
-          if (ltr.length === 1 && ltr.match(/[a-zåäö]/i) !== null) {
-            // console.log(ltr);
-          } else {
-            const combining = /[\u0300-\u036F]/g;
-            element['sortBy'] = element['sortBy'].normalize('NFKD').replace(combining, '').replace(',', '');
-          }
-        });
+
+            this.tags.push(element);
+          });
+        } else {
+          this.agg_after_key = {};
+          this.last_fetch_size = 0;
+        }
 
         this.sortListAlphabeticallyAndGroup(this.tags);
         this.showLoading = false;
@@ -170,7 +167,7 @@ export class TagSearchPage {
       err => {
         console.error(err);
         this.showLoading = false;
-        this.from = 0;
+        this.agg_after_key = {};
         this.last_fetch_size = 0;
       }
     );
@@ -202,7 +199,7 @@ export class TagSearchPage {
   }
 
   searchTags() {
-    this.from = 0;
+    this.agg_after_key = {};
     this.tags = [];
     if (this.showLoading) {
       this.debouncedSearch();
@@ -212,7 +209,6 @@ export class TagSearchPage {
   }
 
   loadMore(e) {
-    this.from += this.max_fetch_size;
     this.getTags();
   }
 
@@ -272,7 +268,7 @@ export class TagSearchPage {
 
     } else {
       const occurrenceModal = this.modalCtrl.create(OccurrencesPage, {
-        occurrenceResult: occurrenceResult,
+        id: occurrenceResult.id,
         type: this.objectType,
         showOccurrencesModalOnRead: showOccurrencesModalOnRead
       });
@@ -319,7 +315,7 @@ export class TagSearchPage {
     filterModal.onDidDismiss(filters => {
       if (filters) {
         this.tags = [];
-        this.from = 0;
+        this.agg_after_key = {};
         this.filters = filters;
         this.getTags();
       }
