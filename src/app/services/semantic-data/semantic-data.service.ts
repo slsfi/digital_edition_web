@@ -419,7 +419,7 @@ export class SemanticDataService {
     .catch(this.handleError)
   }
 
-  getTagElastic(after_key, searchText?, filters?, max?) {
+  getTagElastic(after_key?, searchText?, filters?, max?) {
     let showPublishedStatus = 2;
     /*
     try {
@@ -441,9 +441,6 @@ export class SemanticDataService {
 
     const payload: any = {
       size: 0,
-      sort: [
-        { 'name.keyword' : 'asc' }
-      ],
       query: {
         bool: {
           must: [

@@ -42,7 +42,7 @@ export class TagSearchPage {
   showFilter = true;
   agg_after_key: Record<string, any> = {};
   last_fetch_size = 0;
-  max_fetch_size = 50;
+  max_fetch_size = 500;
   filters: any[] = [];
   immediate_search = false;
   mdContent: string;
@@ -81,7 +81,7 @@ export class TagSearchPage {
     try {
       this.max_fetch_size = this.config.getSettings('TagSearch.InitialLoadNumber');
     } catch (e) {
-      this.max_fetch_size = 200;
+      this.max_fetch_size = 500;
     }
     */
   }
@@ -129,7 +129,7 @@ export class TagSearchPage {
     this.showLoading = true;
     this.semanticDataService.getTagElastic(this.agg_after_key, this.searchText, this.filters, this.max_fetch_size).subscribe(
       tags => {
-        console.log('Elastic response: ', tags);
+        // console.log('Elastic response: ', tags);
         if (tags.error !== undefined) {
           console.error('Elastic search error getting tags: ', tags);
         }
