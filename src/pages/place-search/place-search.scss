@@ -132,13 +132,12 @@ page-place-search {
         }
     }
 
-    .filter-button {
-        font-size: 2.8rem;
-    }
-
     .searchbar {
         color: white;
         max-width: 650px;
     }
 
+    button.button ion-icon.filter-button {
+        font-size: 1.5rem;
+    }
 }

@@ -120,25 +120,23 @@ export class FilterPage {
       filterCategoryTypes => {
         this.filterCategoryTypes = filterCategoryTypes['aggregations']['types']['buckets'];
         this.filterCategoryTypes.forEach( cat => {
-          cat.selected = false;
           cat.name = cat.key;
+          if (this.activeFilters['filterCategoryTypes'] && this.activeFilters['filterCategoryTypes'].length > 0) {
+            for (let i = 0; i < this.activeFilters['filterCategoryTypes'].length; i++) {
+              if (cat.name === this.activeFilters['filterCategoryTypes'][i].name) {
+                cat.selected = true;
+                break;
+              } else {
+                cat.selected = false;
+              }
+            }
+          } else {
+            cat.selected = false;
+          }
         });
         this.showLoading = false;
       },
-      error =>  {this.errorMessage = <any>error},
-      () => {
-        // Don't apply filters if we just loaded the page
-        if ( this.activeFilters['filterCategoryTypes'] !== undefined ) {
-          this.storage.get('filterCategoryTypes').then((filterCategoryTypes) => {
-            if (filterCategoryTypes) {
-              this.filterCategoryTypes = filterCategoryTypes;
-            } else {
-              console.log('filter category types in cache empty');
-            }
-            this.showLoading = false;
-          });
-        }
-      }
+      error =>  {this.errorMessage = <any>error}
     );
   }
 

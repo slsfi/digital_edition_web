@@ -419,16 +419,25 @@ export class SemanticDataService {
     .catch(this.handleError)
   }
 
-  getTagElastic(from, searchText?, filters?) {
+  getTagElastic(from, searchText?, filters?, max?) {
     let showPublishedStatus = 2;
+    /*
     try {
       showPublishedStatus = this.config.getSettings('TagSearch.ShowPublishedStatus');
     } catch (e) {
       showPublishedStatus = 2;
     }
+    */
+
+    if ( max === undefined || max === null ) {
+      max = 200;
+    } else if (max > 10000) {
+      max = 10000;
+    }
+
     const payload: any = {
       from: from,
-      size: 800,
+      size: max,
       _source: [
         'id',
         'tag_id',
@@ -441,7 +450,7 @@ export class SemanticDataService {
       query: {
         bool: {
           must : [{
-            'term' : { 'project_id' : this.config.getSettings('app.projectId') }
+            'term' : { 'project_id' : 6 } //this.config.getSettings('app.projectId') }
           },
           {
             'term' : { 'published' : showPublishedStatus }
@@ -465,20 +474,19 @@ export class SemanticDataService {
     // Search for first character of name
     if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
       payload.from = 0;
-      payload.size = 5000;
+      payload.size = 9999;
       payload.query.bool.must.push({regexp: {'name.keyword': {
           'value': `${String(searchText)}.*|${String(searchText).toLowerCase()}.*`}}});
     } else if ( searchText !== undefined && searchText !== '' ) {
       payload.from = 0;
-      payload.size = 5000;
-      // payload.sort = ['_score'],
+      payload.size = 9999;
       payload.query.bool.must.push({fuzzy: {'name': {
           'value': `${String(searchText)}`}}});
     }
 
     if (filters !== undefined && filters['filterCategoryTypes'] !== undefined) {
       payload.from = 0;
-      payload.size = 1000;
+      payload.size = 9999;
       payload.query.bool.must.push({bool: {should: []}});
       filters['filterCategoryTypes'].forEach(element => {
         payload.query.bool.must[payload.query.bool.must.length - 1].bool.
