@@ -216,11 +216,8 @@ export class SemanticDataService {
             { 'term': { 'project_id': { 'value': this.config.getSettings('app.projectId') } } },
             { 'term': { 'published': { 'value': showPublishedStatus } } },
             { 'term': { 'sub_deleted': { 'value': 0 } } },
-            { 'term': { 'ev_deleted': { 'value': 0 } } },
             { 'term': { 'ev_c_deleted': { 'value': 0 } } },
             { 'term': { 'ev_o_deleted': { 'value': 0 } } },
-            { 'term': { 'publication_deleted': { 'value': 0 } } },
-            { 'term': { 'publication_collection_deleted': { 'value': 0 } } },
           ]
         }
       },
@@ -265,12 +262,11 @@ export class SemanticDataService {
       })
     }
 
+    // Search for first character of name
     if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
-      // Search for first character of name
-      payload.query.bool.must.push({regexp: {'sort_by_name.keyword': {
+      payload.query.bool.must.push({regexp: {'full_name.keyword': {
           'value': `${String(searchText)}.*|${String(searchText).toLowerCase()}.*`}}});
     } else if ( searchText !== undefined && searchText !== '' ) {
-      // Fuzzy search in full name
       payload.query.bool.must.push({fuzzy: {'full_name': {
           'value': `${String(searchText)}`}}});
     }
