@@ -1,5 +1,4 @@
 import { Component, ViewChild } from '@angular/core';
-// tslint:disable-next-line:max-line-length
 import { IonicPage, NavController, NavParams, ModalController, App, Platform,
   LoadingController, Content, Events } from 'ionic-angular';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';

@@ -1,4 +1,4 @@
-import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, App, Platform,
   ModalController, Content, Events, ViewController } from 'ionic-angular';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
@@ -19,13 +19,8 @@ import { Subscription } from 'rxjs/Subscription';
 import debounce from 'lodash/debounce';
 
 /**
- * Generated class for the tagsearchPage page.
- *
  * A page for searching tag occurrences.
- * Can be filtered by type.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+ * Can be filtered by tag type.
  */
 
 @IonicPage({
@@ -37,7 +32,6 @@ import debounce from 'lodash/debounce';
   templateUrl: 'tag-search.html'
 })
 export class TagSearchPage {
-
   @ViewChild(Content) content: Content;
 
   tags: any[] = [];
@@ -48,7 +42,7 @@ export class TagSearchPage {
   showFilter = true;
   from = 0;
   last_fetch_size = 0;
-  max_fetch_size = 200;
+  max_fetch_size = 50;
   filters: any[] = [];
   immediate_search = false;
   mdContent: string;
@@ -74,7 +68,6 @@ export class TagSearchPage {
               public viewCtrl: ViewController,
               private userSettingsService: UserSettingsService,
               private events: Events,
-              private cf: ChangeDetectorRef,
               private analyticsService: AnalyticsService,
               private metadataService: MetadataService,
               public commonFunctions: CommonFunctionsService

@@ -238,6 +238,7 @@ export class CommonFunctionsService {
     return text;
   }
 
+
   /**
    * Returns the text with all occurrences of the specified characters replaced with their
    * corresponding character entity references.
@@ -266,6 +267,7 @@ export class CommonFunctionsService {
     });
     return text;
   }
+
 
   /**
    * Returns true if the given object is empty, i.e. has no properties, else false.

@@ -68,7 +68,7 @@ export class SemanticDataService {
     query: {
           bool: {
             must : [{
-              term: { project_id : this.config.getSettings('app.projectId') }
+              term: { project_id : 6 } // this.config.getSettings('app.projectId') }
             }]
           }
     },
@@ -450,7 +450,7 @@ export class SemanticDataService {
       query: {
         bool: {
           must : [{
-            'term' : { 'project_id' : 6 } //this.config.getSettings('app.projectId') }
+            'term' : { 'project_id' : 6 } // this.config.getSettings('app.projectId') }
           },
           {
             'term' : { 'published' : showPublishedStatus }
