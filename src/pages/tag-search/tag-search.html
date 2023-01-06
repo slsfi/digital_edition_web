@@ -35,7 +35,7 @@
             <ion-list>
                 <div *ngFor="let t of tags">
                   <ion-item *ngIf="t?.firstOfItsKind">
-                    <ion-item-divider color="light">{{t.firstOfItsKind.toLocaleUpperCase()}}</ion-item-divider>
+                    <ion-item-divider color="light">{{t.firstOfItsKind}}</ion-item-divider>
                   </ion-item>
                   <ion-item *ngIf="t?.name.length > 1" (click)="openTag(t)">
                     <p>{{t.name}}</p>
