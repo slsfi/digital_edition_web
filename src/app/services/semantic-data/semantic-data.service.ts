@@ -441,6 +441,9 @@ export class SemanticDataService {
 
     const payload: any = {
       size: 0,
+      sort: [
+        { 'name.keyword' : 'asc' }
+      ],
       query: {
         bool: {
           must: [
