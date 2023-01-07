@@ -72,7 +72,6 @@ export class PlaceSearchPage {
     } catch (e) {
       this.showFilter = true;
     }
-    this.showFilter = true;
 
     try {
       this.max_fetch_size = this.config.getSettings('LocationSearch.InitialLoadNumber');
