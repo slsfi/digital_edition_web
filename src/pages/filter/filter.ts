@@ -5,7 +5,7 @@ import { SemanticDataService } from '../../app/services/semantic-data/semantic-d
 
 /**
  * This is a modal/page used to filter results.
- * Used by pages person-search, tag-search.
+ * Used by pages person-search, tag-search, place-search.
  */
 
 @IonicPage()
