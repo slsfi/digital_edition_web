@@ -68,7 +68,7 @@ export class SemanticDataService {
     query: {
           bool: {
             must : [{
-              term: { project_id : 6 } // this.config.getSettings('app.projectId') }
+              term: { project_id : 11 } // this.config.getSettings('app.projectId') }
             }]
           }
     },
@@ -285,7 +285,7 @@ export class SemanticDataService {
           should : [{
             bool: {
               must:  [{
-                'term' : { 'project_id' : this.config.getSettings('app.projectId') }
+                'term' : { 'project_id' : 11 } // this.config.getSettings('app.projectId') }
               },
               {
                 'term' : { 'id' : id }
@@ -295,7 +295,7 @@ export class SemanticDataService {
           {
             bool: {
               must:  [{
-                'term' : { 'project_id' : this.config.getSettings('app.projectId') }
+                'term' : { 'project_id' : 11 } // this.config.getSettings('app.projectId') }
               },
               {
                 'term' : { 'legacy_id' : id }
@@ -444,7 +444,7 @@ export class SemanticDataService {
       query: {
         bool: {
           must: [
-            { 'term': { 'project_id': { 'value': 6  } } }, // this.config.getSettings('app.projectId') } } },
+            { 'term': { 'project_id': { 'value': 11  } } }, // this.config.getSettings('app.projectId') } } },
             { 'term': { 'published': { 'value': showPublishedStatus } } },
             { 'term': { 'publication_deleted': { 'value': 0 } } },
             { 'term': { 'tag_deleted': { 'value': 0 } } },

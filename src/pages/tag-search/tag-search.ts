@@ -42,7 +42,7 @@ export class TagSearchPage {
   showFilter = true;
   agg_after_key: Record<string, any> = {};
   last_fetch_size = 0;
-  max_fetch_size = 500;
+  max_fetch_size = 50;
   filters: any[] = [];
   immediate_search = false;
   mdContent: string;
