@@ -239,7 +239,7 @@ export class PlaceSearchPage {
 
   async openPlace(occurrenceResult: OccurrenceResult) {
     let showOccurrencesModalOnRead = false;
-    if (this.config.getSettings('showOccurencesModalOnReadPageAfterSearch.locationSearch')) {
+    if (this.config.getSettings('showOccurencesModalOnReadPageAfterSearch.placeSearch')) {
       showOccurrencesModalOnRead = true;
     }
 
