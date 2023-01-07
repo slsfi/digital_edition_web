@@ -459,7 +459,6 @@ export class SemanticDataService {
     } else if ( searchText !== undefined && searchText !== '' ) {
       payload.from = 0;
       payload.size = 5000;
-      payload.sort = ['_score'],
       payload.query.bool.should[0].bool.must.push({fuzzy: {'title': {
           'value': `${String(searchText)}`}}});
       payload.query.bool.should[1].bool.must.push({regexp: {'author_data.full_name': {
