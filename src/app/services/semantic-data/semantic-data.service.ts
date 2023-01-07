@@ -392,16 +392,13 @@ export class SemanticDataService {
       payload.aggs.unique_places.composite.after = after_key;
     }
 
-    /* No filters implemented for locations yet. */
-    /*
-    if (filters !== undefined && filters['filterCategoryTypes'] !== undefined && filters['filterCategoryTypes'].length > 0) {
+    if (filters !== undefined && filters['filterPlaceCountries'] !== undefined && filters['filterPlaceCountries'].length > 0) {
       payload.query.bool.must.push({bool: {should: []}});
-      filters['filterCategoryTypes'].forEach(element => {
+      filters['filterPlaceCountries'].forEach(element => {
         payload.query.bool.must[payload.query.bool.must.length - 1].bool.
-        should.push({'term': {'tag_type.keyword': String(element.name)}});
+        should.push({'term': {'country.keyword': String(element.name)}});
       });
     }
-    */
 
     if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
       // Search for first character of place name
