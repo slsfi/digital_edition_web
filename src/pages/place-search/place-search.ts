@@ -331,9 +331,9 @@ export class PlaceSearchPage {
   }
 
   scrollToTop() {
-    const topElem = document.querySelector('.search-area-row') as HTMLElement;
+    const topElem = document.querySelector('.search-area-row .searchbar') as HTMLElement;
     if (topElem) {
-      this.commonFunctions.scrollElementIntoView(topElem, 'top', 0);
+      this.commonFunctions.scrollElementIntoView(topElem, 'top', 16);
     }
   }
 
