@@ -320,46 +320,76 @@ export class SemanticDataService {
     .catch(this.handleError)
   }
 
-  getLocationElastic(from, searchText?) {
+  getLocationElastic(after_key?, searchText?, filters?, max?) {
     let showPublishedStatus = 2;
+    /*
     try {
       showPublishedStatus = this.config.getSettings('LocationSearch.ShowPublishedStatus');
     } catch (e) {
       showPublishedStatus = 2;
     }
+    */
+
+    if ( filters === null || filters === undefined ) {
+      filters = {};
+    }
+
+    if ( max === undefined || max === null ) {
+      max = 500;
+    } else if (max > 10000) {
+      max = 10000;
+    }
+
     const payload: any = {
-      from: from,
-      size: 200,
-      sort: [
-        { 'name.keyword' : 'asc' }
-      ],
+      size: 0,
       query: {
         bool: {
-          must : [{
-            'term' : { 'project_id' : this.config.getSettings('app.projectId') }
-          },
-          {
-            'term' : { 'published' : showPublishedStatus }
-          },
-          {
-            'term' : { 'loc_deleted' : 0 }
-          }],
+          must: [
+            { 'term': { 'project_id': { 'value': this.config.getSettings('app.projectId') } } },
+            { 'term': { 'published': { 'value': showPublishedStatus } } },
+            { 'term': { 'loc_deleted': { 'value': 0 } } },
+          ]
+        }
+      },
+      aggs: {
+        unique_places: {
+          composite: {
+            size: max,
+            sources: [
+              { 'name': { 'terms': { 'field': 'name.keyword' } } },
+              { 'id': { 'terms': { 'field': 'id' } } },
+              { 'loc_id': { 'terms': { 'field': 'loc_id' } } }
+            ]
+          }
         }
       }
     }
-    // Search for first character of name
+
+    if (after_key !== undefined && !this.commonFunctions.isEmptyObject(after_key)) {
+      payload.aggs.unique_places.composite.after = after_key;
+    }
+
+    /* No filters implemented for locations yet. */
+    /*
+    if (filters !== undefined && filters['filterCategoryTypes'] !== undefined && filters['filterCategoryTypes'].length > 0) {
+      payload.query.bool.must.push({bool: {should: []}});
+      filters['filterCategoryTypes'].forEach(element => {
+        payload.query.bool.must[payload.query.bool.must.length - 1].bool.
+        should.push({'term': {'tag_type.keyword': String(element.name)}});
+      });
+    }
+    */
+
     if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
-      payload.from = 0;
-      payload.size = 5000;
+      // Search for first character of place name
       payload.query.bool.must.push({regexp: {'name.keyword': {
           'value': `${String(searchText)}.*|${String(searchText).toLowerCase()}.*`}}});
     } else if ( searchText !== undefined && searchText !== '' ) {
-      payload.from = 0;
-      payload.size = 5000;
-      // payload.sort = ['_score'],
+      // Fuzzy search in full place name
       payload.query.bool.must.push({fuzzy: {'name': {
           'value': `${String(searchText)}`}}});
     }
+
     return this.http.post(this.getSearchUrl(this.elasticLocationIndex), payload)
     .map(this.extractData)
     .catch(this.handleError)

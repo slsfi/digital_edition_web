@@ -1,6 +1,6 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, App, Platform,
-  LoadingController, Content, Events } from 'ionic-angular';
+  LoadingController, Events } from 'ionic-angular';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { ConfigService } from '@ngx-config/core';
@@ -35,8 +35,6 @@ import debounce from 'lodash/debounce';
   templateUrl: 'person-search.html'
 })
 export class PersonSearchPage {
-  @ViewChild(Content) content: Content;
-
   persons: any[] = [];
   searchText: string;
   max_fetch_size = 500;
