@@ -144,6 +144,9 @@ export class PlaceSearchPage {
             element = element['key'];
 
             let sortByName = String(element['name']);
+            if (element['sort_by_name']) {
+              sortByName = String(element['sort_by_name']);
+            }
             sortByName = sortByName.replace('ʽ', '').trim().toLowerCase();
             const ltr = sortByName.charAt(0);
             if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
