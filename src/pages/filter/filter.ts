@@ -141,6 +141,7 @@ export class FilterPage {
     this.showLoading = true;
     this.semanticDataService.getFilterPlaceCountries().subscribe(
       filterPlaceCountries => {
+        console.log('filterPlaceCountries:', filterPlaceCountries);
         this.filterPlaceCountries = filterPlaceCountries['aggregations']['countries']['buckets'];
         this.filterPlaceCountries.forEach( cat => {
           cat.name = cat.key;
