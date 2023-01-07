@@ -1,6 +1,5 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, App, Platform, ToastController,
-  ModalController, Events, ViewController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, App, Platform, ModalController, Events, ViewController, Content } from 'ionic-angular';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { ConfigService } from '@ngx-config/core';
@@ -31,6 +30,7 @@ import debounce from 'lodash/debounce';
   templateUrl: 'place-search.html',
 })
 export class PlaceSearchPage {
+  @ViewChild(Content) content: Content;
   places: any[] = [];
   searchText: string;
   max_fetch_size = 500;
@@ -60,11 +60,9 @@ export class PlaceSearchPage {
               public occurrenceService: OccurrenceService,
               protected storage: Storage,
               private events: Events,
-              private toastCtrl: ToastController,
               public modalCtrl: ModalController,
               public viewCtrl: ViewController,
               private userSettingsService: UserSettingsService,
-              private cf: ChangeDetectorRef,
               private analyticsService: AnalyticsService,
               private metadataService: MetadataService,
               public commonFunctions: CommonFunctionsService
@@ -182,7 +180,7 @@ export class PlaceSearchPage {
   filterByLetter(letter) {
     this.searchText = letter;
     this.searchPlaces();
-    this.scrollToTop();
+    this.content.scrollToTop(400);
   }
 
   onSearchInput() {
@@ -328,13 +326,6 @@ export class PlaceSearchPage {
         text => { this.mdContent = text.content; },
         error => { this.mdContent = ''; }
       );
-  }
-
-  scrollToTop() {
-    const topElem = document.querySelector('.search-area-row .searchbar') as HTMLElement;
-    if (topElem) {
-      this.commonFunctions.scrollElementIntoView(topElem, 'top', 16);
-    }
   }
 
 }

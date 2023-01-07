@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, App, Platform,
-  LoadingController, Events } from 'ionic-angular';
+  LoadingController, Events, Content } from 'ionic-angular';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { ConfigService } from '@ngx-config/core';
@@ -35,6 +35,7 @@ import debounce from 'lodash/debounce';
   templateUrl: 'person-search.html'
 })
 export class PersonSearchPage {
+  @ViewChild(Content) content: Content;
   persons: any[] = [];
   searchText: string;
   max_fetch_size = 500;
@@ -312,7 +313,7 @@ export class PersonSearchPage {
   filterByLetter(letter) {
     this.searchText = letter;
     this.searchPersons();
-    this.scrollToTop();
+    this.content.scrollToTop(400);
   }
 
   onSearchInput() {
@@ -391,13 +392,6 @@ export class PersonSearchPage {
         text => { this.mdContent = text.content; },
         error => { this.mdContent = ''; }
       );
-  }
-
-  scrollToTop() {
-    const topElem = document.querySelector('.search-area-row') as HTMLElement;
-    if (topElem) {
-      this.commonFunctions.scrollElementIntoView(topElem, 'top', 0);
-    }
   }
 
 }

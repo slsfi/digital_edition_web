@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, App, Platform,
-  ModalController, Events, ViewController } from 'ionic-angular';
+  ModalController, Events, ViewController, Content } from 'ionic-angular';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { ConfigService } from '@ngx-config/core';
@@ -32,6 +32,7 @@ import debounce from 'lodash/debounce';
   templateUrl: 'tag-search.html'
 })
 export class TagSearchPage {
+  @ViewChild(Content) content: Content;
   tags: any[] = [];
   tagsCopy: any[] = [];
   searchText: string;
@@ -184,7 +185,7 @@ export class TagSearchPage {
   filterByLetter(letter) {
     this.searchText = letter;
     this.searchTags();
-    this.scrollToTop();
+    this.content.scrollToTop(400);
   }
 
   onSearchInput() {
@@ -330,13 +331,6 @@ export class TagSearchPage {
         text => { this.mdContent = text.content; },
         error => { this.mdContent = ''; }
       );
-  }
-
-  scrollToTop() {
-    const topElem = document.querySelector('.search-area-row') as HTMLElement;
-    if (topElem) {
-      this.commonFunctions.scrollElementIntoView(topElem, 'top', 0);
-    }
   }
 
 }

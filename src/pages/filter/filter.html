@@ -35,9 +35,9 @@
         <ion-list-header>
           {{"Filter.tagTypes" | translate}}
         </ion-list-header>
-        <ion-item *ngFor="let filterC of filterCategoryTypes">
-            <ion-label>{{filterC.name}}</ion-label>
-            <ion-toggle [(ngModel)]="filterC.selected"></ion-toggle>
+        <ion-item *ngFor="let filterCT of filterCategoryTypes">
+            <ion-label>{{filterCT.name}}</ion-label>
+            <ion-toggle [(ngModel)]="filterCT.selected"></ion-toggle>
           </ion-item>
       </ion-list>
 
@@ -48,6 +48,16 @@
         <ion-item *ngFor="let filterPT of filterPersonTypes">
             <ion-label>{{filterPT.name}}</ion-label>
             <ion-toggle [(ngModel)]="filterPT.selected"></ion-toggle>
+          </ion-item>
+      </ion-list>
+
+      <ion-list *ngIf="filterPlaceCountries">
+        <ion-list-header>
+          {{"Filter.countries" | translate}}
+        </ion-list-header>
+        <ion-item *ngFor="let filterC of filterPlaceCountries">
+            <ion-label>{{filterC.name}}</ion-label>
+            <ion-toggle [(ngModel)]="filterC.selected"></ion-toggle>
           </ion-item>
       </ion-list>
     </ng-container>
