@@ -23,6 +23,15 @@
                 </ion-col>
             </ion-row>
 
+            <ion-row class="active-filters-row" *ngIf="filters && filters.filterPlaceCountries && !filters.isEmpty">
+              <ion-item>
+                <span class="active-filters-heading">{{'Filter.activeFilters' | translate}}:</span>
+                <ng-container *ngIf="filters.filterPlaceCountries && filters.filterPlaceCountries.length > 0">
+                  <ng-container *ngFor="let fpc of filters.filterPlaceCountries; let i = index">
+                    <span class="active-category-type">{{fpc.name}}</span><ng-container *ngIf="i < filters.filterPlaceCountries.length - 1">, </ng-container></ng-container></ng-container>
+              </ion-item>
+            </ion-row>
+
             <ion-list>
                 <div *ngFor="let p of places">
                   <ion-item *ngIf="p?.firstOfItsKind">
