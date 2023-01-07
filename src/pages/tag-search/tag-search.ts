@@ -146,12 +146,15 @@ export class TagSearchPage {
             element = element['key'];
 
             let sortByName = String(element['name']);
+            if (element['sort_by_name']) {
+              sortByName = String(element['sort_by_name']);
+            }
             sortByName = sortByName.replace('ʽ', '').trim().toLowerCase();
             const ltr = sortByName.charAt(0);
             if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
-              element['sortBy'] = sortByName;
+              element['sort_by_name'] = sortByName;
             } else {
-              element['sortBy'] = sortByName.normalize('NFKD').replace(combining, '').replace(',', '');
+              element['sort_by_name'] = sortByName.normalize('NFKD').replace(combining, '').replace(',', '');
             }
 
             this.tags.push(element);
@@ -281,18 +284,18 @@ export class TagSearchPage {
     const data = list;
 
     // Sort alphabetically
-    this.commonFunctions.sortArrayOfObjectsAlphabetically(data, 'sortBy');
+    this.commonFunctions.sortArrayOfObjectsAlphabetically(data, 'sort_by_name');
 
     // Check when first character changes in order to divide names into alphabetical groups
     for (let i = 0; i < data.length ; i++) {
       if (data[i] && data[i - 1]) {
-        if (data[i].sortBy && data[i - 1].sortBy) {
-          if (data[i].sortBy.length > 1 && data[i - 1].sortBy.length > 1) {
-            if (data[i].sortBy.charAt(0) !== data[i - 1].sortBy.charAt(0)) {
-              // console.log(data[i].sortBy.charAt(0) + ' != ' + data[i - 1].sortBy.charAt(0))
-              const ltr = data[i].sortBy.charAt(0);
+        if (data[i].sort_by_name && data[i - 1].sort_by_name) {
+          if (data[i].sort_by_name.length > 1 && data[i - 1].sort_by_name.length > 1) {
+            if (data[i].sort_by_name.charAt(0) !== data[i - 1].sort_by_name.charAt(0)) {
+              // console.log(data[i].sort_by_name.charAt(0) + ' != ' + data[i - 1].sort_by_name.charAt(0))
+              const ltr = data[i].sort_by_name.charAt(0);
               if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
-                data[i]['firstOfItsKind'] = data[i].sortBy.charAt(0);
+                data[i]['firstOfItsKind'] = data[i].sort_by_name.charAt(0);
               }
             }
           }
@@ -301,8 +304,8 @@ export class TagSearchPage {
     }
 
     for (let j = 0; j < data.length; j++) {
-      if (data[j].sortBy.length > 1) {
-        data[j]['firstOfItsKind'] = data[j].sortBy.charAt(0);
+      if (data[j].sort_by_name.length > 1) {
+        data[j]['firstOfItsKind'] = data[j].sort_by_name.charAt(0);
         break;
       }
     }

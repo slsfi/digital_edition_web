@@ -458,6 +458,7 @@ export class SemanticDataService {
           composite: {
             size: max,
             sources: [
+              { 'sort_by_name': { 'terms': { 'field': 'sort_by_name.keyword', 'missing_bucket': true } } },
               { 'name': { 'terms': { 'field': 'name.keyword' } } },
               { 'tag_type': { 'terms': { 'field': 'tag_type.keyword', 'missing_bucket': true } } },
               { 'id': { 'terms': { 'field': 'id' } } },
