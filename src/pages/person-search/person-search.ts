@@ -225,7 +225,7 @@ export class PersonSearchPage {
               sortByName = String(element['sort_by_name']);
             }
             sortByName = sortByName.replace('ʽ', '').trim();
-            sortByName = sortByName.replace(/^(?:de |von |van |af |d’ |d’|di |zu )/, '').toLowerCase();
+            sortByName = sortByName.replace(/^(?:de la |de |von |van |af |d’ |d’|di |du |des |zu |auf |del |do |dos |da |das |e )/, '').toLowerCase();
             const ltr = sortByName.charAt(0);
             if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
               element['sort_by_name'] = sortByName;

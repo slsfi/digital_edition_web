@@ -72,7 +72,6 @@ export class TagSearchPage {
               private metadataService: MetadataService,
               public commonFunctions: CommonFunctionsService
   ) {
-    /*
     try {
       this.showFilter = this.config.getSettings('TagSearch.ShowFilter');
     } catch (e) {
@@ -83,7 +82,6 @@ export class TagSearchPage {
     } catch (e) {
       this.max_fetch_size = 500;
     }
-    */
   }
 
   ionViewWillEnter() {
@@ -292,7 +290,6 @@ export class TagSearchPage {
         if (data[i].sort_by_name && data[i - 1].sort_by_name) {
           if (data[i].sort_by_name.length > 1 && data[i - 1].sort_by_name.length > 1) {
             if (data[i].sort_by_name.charAt(0) !== data[i - 1].sort_by_name.charAt(0)) {
-              // console.log(data[i].sort_by_name.charAt(0) + ' != ' + data[i - 1].sort_by_name.charAt(0))
               const ltr = data[i].sort_by_name.charAt(0);
               if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
                 data[i]['firstOfItsKind'] = data[i].sort_by_name.charAt(0);

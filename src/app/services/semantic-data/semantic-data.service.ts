@@ -68,7 +68,7 @@ export class SemanticDataService {
     query: {
           bool: {
             must : [{
-              term: { project_id : 6 } // this.config.getSettings('app.projectId') }
+              term: { project_id : this.config.getSettings('app.projectId') }
             }]
           }
     },
@@ -421,13 +421,11 @@ export class SemanticDataService {
 
   getTagElastic(after_key?, searchText?, filters?, max?) {
     let showPublishedStatus = 2;
-    /*
     try {
       showPublishedStatus = this.config.getSettings('TagSearch.ShowPublishedStatus');
     } catch (e) {
       showPublishedStatus = 2;
     }
-    */
 
     if ( filters === null || filters === undefined ) {
       filters = {};
@@ -444,7 +442,7 @@ export class SemanticDataService {
       query: {
         bool: {
           must: [
-            { 'term': { 'project_id': { 'value': 6  } } }, // this.config.getSettings('app.projectId') } } },
+            { 'term': { 'project_id': { 'value': this.config.getSettings('app.projectId') } } },
             { 'term': { 'published': { 'value': showPublishedStatus } } },
             { 'term': { 'publication_deleted': { 'value': 0 } } },
             { 'term': { 'tag_deleted': { 'value': 0 } } },
