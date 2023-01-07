@@ -20,6 +20,7 @@ export class FilterPage {
   filterYearMin: number;
   filterYearMax: number;
   filterCategoryTypes: any[];
+  filterPlaceCountries: any[];
   shouldFilterYear = false;
   isEmpty = false;
   activeFilters: any[];
@@ -50,7 +51,7 @@ export class FilterPage {
       this.shouldFilterYear = true;
     }
     if (navParams.get('searchType') === 'place-search') {
-      this.getFilterCollections();
+      this.getFilterPlaceCountries();
     }
     if (navParams.get('searchType') === 'tag-search') {
       this.getFilterCategoryTypes();
@@ -64,6 +65,7 @@ export class FilterPage {
     this.events.publish('ionViewWillEnter', this.constructor.name);
   }
 
+  /*
   getFilterCollections() {
     this.semanticDataService.getFilterCollections().subscribe(
       filterCollections => {
@@ -81,6 +83,7 @@ export class FilterPage {
       }
     );
   }
+  */
 
   getFilterPersonTypes() {
     this.showLoading = true;
@@ -134,11 +137,38 @@ export class FilterPage {
     );
   }
 
+  getFilterPlaceCountries() {
+    this.showLoading = true;
+    this.semanticDataService.getFilterPlaceCountries().subscribe(
+      filterPlaceCountries => {
+        this.filterPlaceCountries = filterPlaceCountries['aggregations']['countries']['buckets'];
+        this.filterPlaceCountries.forEach( cat => {
+          cat.name = cat.key;
+          if (this.activeFilters['filterPlaceCountries'] && this.activeFilters['filterPlaceCountries'].length > 0) {
+            for (let i = 0; i < this.activeFilters['filterPlaceCountries'].length; i++) {
+              if (cat.name === this.activeFilters['filterPlaceCountries'][i].name) {
+                cat.selected = true;
+                break;
+              } else {
+                cat.selected = false;
+              }
+            }
+          } else {
+            cat.selected = false;
+          }
+        });
+        this.showLoading = false;
+      },
+      error =>  {this.errorMessage = <any>error}
+    );
+  }
+
   apply() {
     const filters = [];
     const filterCollections = [];
     const filterPersonTypes = [];
     const filterCategoryTypes = [];
+    const filterPlaceCountries = [];
 
     if (this.filterYearMin) {
       filters['filterYearMin'] = this.filterYearMin;
@@ -174,11 +204,20 @@ export class FilterPage {
       filters['filterCategoryTypes'] = filterCategoryTypes;
     }
 
+    if (this.filterPlaceCountries) {
+      for (const filter of this.filterPlaceCountries) {
+        if (filter.selected) {
+          filterPlaceCountries.push(filter);
+        }
+      }
+      filters['filterPlaceCountries'] = filterPlaceCountries;
+    }
+
     this.checkIfFiltersEmpty(filters);
     filters['isEmpty'] = this.isEmpty;
 
     this.viewCtrl.dismiss(filters);
-    this.updateFilterCache(filterCollections, filterPersonTypes, filterCategoryTypes)
+    this.updateFilterCache(filterCollections);
   }
 
   checkIfFiltersEmpty(filters) {
@@ -196,7 +235,7 @@ export class FilterPage {
     }
 
     if (this.navParams.get('searchType') === 'place-search') {
-      if (filters['filterCollections'].length < 1) {
+      if (filters['filterPlaceCountries'].length < 1) {
         this.isEmpty = true;
       }
     }
@@ -208,15 +247,10 @@ export class FilterPage {
     }
   }
 
-  updateFilterCache(filterCollections?, filterPersonTypes?, filterCategoryTypes?) {
+  updateFilterCache(filterCollections?) {
     if (filterCollections) {
       this.storage.remove('filterCollections');
       this.storage.set('filterCollections', this.filterCollections);
-    }
-
-    if (filterCategoryTypes) {
-      this.storage.remove('filterCategoryTypes');
-      this.storage.set('filterCategoryTypes', this.filterCategoryTypes);
     }
   }
 

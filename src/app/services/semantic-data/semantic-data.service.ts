@@ -85,6 +85,29 @@ export class SemanticDataService {
     .catch(this.handleError)
   }
 
+  getFilterPlaceCountries(): Observable<any[]> {
+    const payload: any = {
+    size: 0,
+    query: {
+          bool: {
+            must : [{
+              term: { project_id : this.config.getSettings('app.projectId') }
+            }]
+          }
+    },
+    aggs : {
+          countries : {
+              terms : {
+                  field : 'country.keyword'
+              }
+          }
+      }
+    }
+    return this.http.post(this.getSearchUrl(this.elasticLocationIndex), payload)
+    .map(this.extractData)
+    .catch(this.handleError)
+  }
+
   getPlace(id: string): Observable<any> {
     return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
        this.config.getSettings('app.machineName') + '/location/' + id)
