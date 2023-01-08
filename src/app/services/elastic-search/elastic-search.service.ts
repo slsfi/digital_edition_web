@@ -131,19 +131,19 @@ export class ElasticSearchService {
           },
           functions: [
             {
-              filter: { term: { 'text_type': 'est' } },
+              filter: { term: { 'text_type.keyword': 'est' } },
               weight: 10
             },
             {
-              filter: { term: { 'text_type': 'inl' } },
+              filter: { term: { 'text_type.keyword': 'inl' } },
               weight: 8
             },
             {
-              filter: { term: { 'text_type': 'com' } },
+              filter: { term: { 'text_type.keyword': 'com' } },
               weight: 2
             },
             {
-              filter: { term: { 'text_type': 'ms' } },
+              filter: { term: { 'text_type.keyword': 'ms' } },
               weight: 2
             }
           ],
@@ -191,7 +191,7 @@ export class ElasticSearchService {
 
     // Add text type filter that applies to all queries.
     if (this.textTypes && Array.isArray(this.textTypes) && this.textTypes.length > 0) {
-      payload.query.function_score.query.bool.must.push({ 'terms': { 'text_type': this.textTypes } });
+      payload.query.function_score.query.bool.must.push({ 'terms': { 'text_type.keyword': this.textTypes } });
     }
 
     if (facetGroups) {
@@ -221,19 +221,19 @@ export class ElasticSearchService {
           },
           functions: [
             {
-              filter: { term: { 'text_type': 'est' } },
+              filter: { term: { 'text_type.keyword': 'est' } },
               weight: 6
             },
             {
-              filter: { term: { 'text_type': 'inl' } },
+              filter: { term: { 'text_type.keyword': 'inl' } },
               weight: 4
             },
             {
-              filter: { term: { 'text_type': 'com' } },
+              filter: { term: { 'text_type.keyword': 'com' } },
               weight: 1
             },
             {
-              filter: { term: { 'text_type': 'ms' } },
+              filter: { term: { 'text_type.keyword': 'ms' } },
               weight: 1
             }
           ],
@@ -263,7 +263,7 @@ export class ElasticSearchService {
 
     // Add text type filter that applies to all queries.
     if (this.textTypes && Array.isArray(this.textTypes) && this.textTypes.length > 0) {
-      payload.query.function_score.query.bool.must.push({ 'terms': { 'text_type': this.textTypes } });
+      payload.query.function_score.query.bool.must.push({ 'terms': { 'text_type.keyword': this.textTypes } });
     }
 
     if (facetGroups || range) {
