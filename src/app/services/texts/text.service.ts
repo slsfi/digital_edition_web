@@ -25,6 +25,11 @@ export class TextService {
   varIdsInStorage: string[] = [];
   readtextIdsInStorage: string[] = [];
 
+  /* A more logical place for the activeTocOrder variable would be the table-of-contents service,
+     but due to the way it's set up it can't be a singleton service. That's why activeTocOrder
+     is in this service. */
+  activeTocOrder: string;
+
   constructor(
     private http: Http,
     private config: ConfigService,
@@ -47,6 +52,7 @@ export class TextService {
     this.variationsOrder = [];
     this.varIdsInStorage = [];
     this.readtextIdsInStorage = [];
+    this.activeTocOrder = 'thematic';
   }
 
   getEstablishedText(id: string): Observable<any> {

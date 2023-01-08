@@ -41,12 +41,12 @@ export class TableOfContentsAccordionComponent {
     // console.log('toc accordion options:', value);
     if (this.alphabethicOrderActive && this.sortableLetters.includes(this.collectionId)) {
       this.activeMenuTree = this.alphabeticalactiveMenuTree;
-      this.tocService.activeTocOrder = 'alphabetical';
+      this.textService.activeTocOrder = 'alphabetical';
     } else if (this.chronologicalOrderActive && this.sortableLetters.includes(this.collectionId)) {
       this.activeMenuTree = this.chronologicalactiveMenuTree;
-      this.tocService.activeTocOrder = 'chronological';
+      this.textService.activeTocOrder = 'chronological';
     } else {
-      this.tocService.activeTocOrder = 'thematic';
+      this.textService.activeTocOrder = 'thematic';
       if (value && value.toc && value.toc.length > 0) {
         if (value.searchTocItem !== undefined && value.searchTocItem === true) {
           this.searchingForTocItem = true;
@@ -329,7 +329,7 @@ export class TableOfContentsAccordionComponent {
 
   setActiveSortingType(type) {
     if (type === 'alphabetical') {
-      this.tocService.activeTocOrder = 'alphabetical';
+      this.textService.activeTocOrder = 'alphabetical';
       this.alphabethicOrderActive = true;
       this.chronologicalOrderActive = false;
       this.thematicOrderActive = false;
@@ -363,7 +363,7 @@ export class TableOfContentsAccordionComponent {
         }
       });
     } else if (type === 'chronological') {
-      this.tocService.activeTocOrder = 'chronological';
+      this.textService.activeTocOrder = 'chronological';
       this.alphabethicOrderActive = false;
       this.chronologicalOrderActive = true;
       this.thematicOrderActive = false;
@@ -397,7 +397,7 @@ export class TableOfContentsAccordionComponent {
         }
       });
     } else {
-      this.tocService.activeTocOrder = 'thematic';
+      this.textService.activeTocOrder = 'thematic';
       this.alphabethicOrderActive = false;
       this.chronologicalOrderActive = false;
       this.thematicOrderActive = true;
@@ -480,11 +480,11 @@ export class TableOfContentsAccordionComponent {
     }
 
     if (this.alphabethicOrderActive && this.sortableLetters.includes(this.collectionId)) {
-      this.tocService.activeTocOrder = 'alphabetical';
+      this.textService.activeTocOrder = 'alphabetical';
     } else if (this.chronologicalOrderActive && this.sortableLetters.includes(this.collectionId)) {
-      this.tocService.activeTocOrder = 'chronological';
+      this.textService.activeTocOrder = 'chronological';
     } else {
-      this.tocService.activeTocOrder = 'thematic';
+      this.textService.activeTocOrder = 'thematic';
     }
     // console.log('ngOnChanges this.activeMenuTree', this.activeMenuTree);
   }
@@ -1167,7 +1167,7 @@ export class TableOfContentsAccordionComponent {
     this.alphabethicOrderActive = false;
     this.chronologicalOrderActive = false;
     this.thematicOrderActive = false;
-    this.tocService.activeTocOrder = 'thematic';
+    this.textService.activeTocOrder = 'thematic';
     this.resetTocAccordionScroll();
     this.events.publish('exitActiveCollection');
     const params = {};
