@@ -14,6 +14,7 @@ import { HttpClient } from '@angular/common/http';
 import { DragScrollModule } from 'ngx-drag-scroll';
 import { IonicStorageModule } from '@ionic/storage';
 import { PublicationCacheService } from '../../app/services/cache/publication-cache.service';
+import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
 import { IntroductionModule } from '../../components/introduction/introduction.module';
 import { LegendModule } from '../../components/legend/legend.module';
 
@@ -50,7 +51,8 @@ export function createTranslateLoader(http: HttpClient) {
       ReadPage,
     ],
     providers: [
-      PublicationCacheService
+      PublicationCacheService,
+      TableOfContentsService
     ]
   })
   export class ReadPageModule {}

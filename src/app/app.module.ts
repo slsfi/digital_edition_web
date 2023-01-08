@@ -33,7 +33,6 @@ import { SemanticDataService } from './services/semantic-data/semantic-data.serv
 import { ReferenceDataService } from './services/reference-data/reference-data.service';
 import { SearchDataService } from './services/search/search-data.service';
 import { TooltipService } from './services/tooltips/tooltip.service';
-import { TableOfContentsService } from './services/toc/table-of-contents.service';
 import { TableOfContentsModule } from '../components/table-of-contents/table-of-contents.module';
 import { DigitalEditionListModule } from '../components/digital-edition-list/digital-edition-list.module';
 import { MdContentService } from './services/md/md-content.service';
@@ -138,7 +137,6 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
   providers: [
     HtmlContentService,
     MdContentService,
-    TableOfContentsService,
     TextService,
     TextCacheService,
     TranslateService,

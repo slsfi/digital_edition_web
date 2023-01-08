@@ -177,12 +177,13 @@ export class PlaceSearchPage {
     this.filters = [];
     this.searchText = '';
     this.searchPlaces();
+    this.scrollToTop();
   }
 
   filterByLetter(letter) {
     this.searchText = letter;
     this.searchPlaces();
-    this.content.scrollToTop(400);
+    this.scrollToTop();
   }
 
   onSearchInput() {
@@ -328,6 +329,10 @@ export class PlaceSearchPage {
         text => { this.mdContent = text.content; },
         error => { this.mdContent = ''; }
       );
+  }
+
+  scrollToTop() {
+    this.content.scrollToTop(400);
   }
 
 }
