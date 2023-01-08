@@ -198,7 +198,7 @@ export class ElasticSearchService {
       this.injectFacetsToPayload(payload, facetGroups);
     }
 
-    console.log('search payload', payload);
+    // console.log('search payload', payload);
 
     return payload;
   }
@@ -272,7 +272,7 @@ export class ElasticSearchService {
       this.injectUnfilteredAggregationsToPayload(payload);
     }
 
-    console.log('aggregation payload', payload);
+    // console.log('aggregation payload', payload);
 
     return payload;
   }
@@ -323,7 +323,7 @@ export class ElasticSearchService {
       }
     }
 
-    console.log('suggestions payload', payload);
+    // console.log('suggestions payload', payload);
 
     return payload;
   }
