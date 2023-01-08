@@ -15,7 +15,6 @@ export class TableOfContentsService {
   private multilingualTOC = false;
   languageSubscription: Subscription;
   apiEndpoint: string;
-  activeTocOrder: string;
 
   constructor(
     private http: Http,
@@ -44,8 +43,6 @@ export class TableOfContentsService {
       }
     } catch (e) {
     }
-
-    this.activeTocOrder = 'thematic';
   }
 
   ngOnDestroy() {
