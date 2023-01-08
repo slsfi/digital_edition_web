@@ -182,7 +182,7 @@ export class PlaceSearchPage {
   filterByLetter(letter) {
     this.searchText = letter;
     this.searchPlaces();
-    this.content.scrollToTop(400);
+    this.scrollToTop();
   }
 
   onSearchInput() {
@@ -331,11 +331,7 @@ export class PlaceSearchPage {
   }
 
   scrollToTop() {
-    const topElem = document.querySelector('.search-area-row .searchbar') as HTMLElement;
-    console.log('topElem:', topElem);
-    if (topElem) {
-      this.commonFunctions.scrollElementIntoView(topElem, 'top', 0);
-    }
+    this.content.scrollToTop(400);
   }
 
 }

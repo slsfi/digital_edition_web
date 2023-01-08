@@ -313,7 +313,7 @@ export class PersonSearchPage {
   filterByLetter(letter) {
     this.searchText = letter;
     this.searchPersons();
-    this.content.scrollToTop(400);
+    this.scrollToTop();
   }
 
   onSearchInput() {
@@ -392,6 +392,10 @@ export class PersonSearchPage {
         text => { this.mdContent = text.content; },
         error => { this.mdContent = ''; }
       );
+  }
+
+  scrollToTop() {
+    this.content.scrollToTop(400);
   }
 
 }

@@ -185,7 +185,7 @@ export class TagSearchPage {
   filterByLetter(letter) {
     this.searchText = letter;
     this.searchTags();
-    this.content.scrollToTop(400);
+    this.scrollToTop();
   }
 
   onSearchInput() {
@@ -331,6 +331,10 @@ export class TagSearchPage {
         text => { this.mdContent = text.content; },
         error => { this.mdContent = ''; }
       );
+  }
+
+  scrollToTop() {
+    this.content.scrollToTop(400);
   }
 
 }
