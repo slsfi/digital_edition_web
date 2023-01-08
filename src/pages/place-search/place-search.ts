@@ -177,6 +177,7 @@ export class PlaceSearchPage {
     this.filters = [];
     this.searchText = '';
     this.searchPlaces();
+    this.scrollToTop();
   }
 
   filterByLetter(letter) {

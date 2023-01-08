@@ -309,6 +309,7 @@ export class PersonSearchPage {
     this.filters = [];
     this.searchText = '';
     this.searchPersons();
+    this.scrollToTop();
   }
 
   filterByLetter(letter) {

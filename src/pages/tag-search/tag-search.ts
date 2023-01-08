@@ -180,6 +180,7 @@ export class TagSearchPage {
     this.filters = [];
     this.searchText = '';
     this.searchTags();
+    this.scrollToTop();
   }
 
   filterByLetter(letter) {
