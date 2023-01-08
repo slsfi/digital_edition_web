@@ -345,11 +345,13 @@ export class SemanticDataService {
 
   getLocationElastic(after_key?, searchText?, filters?, max?) {
     let showPublishedStatus = 2;
+    /*
     try {
       showPublishedStatus = this.config.getSettings('LocationSearch.ShowPublishedStatus');
     } catch (e) {
       showPublishedStatus = 2;
     }
+    */
 
     if ( filters === null || filters === undefined ) {
       filters = {};
