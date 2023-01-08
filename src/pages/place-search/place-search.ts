@@ -126,7 +126,7 @@ export class PlaceSearchPage {
     this.showLoading = true;
     this.semanticDataService.getLocationElastic(this.agg_after_key, this.searchText, this.filters, this.max_fetch_size).subscribe(
       places => {
-        console.log('Elastic response: ', places);
+        // console.log('Elastic response: ', places);
         if (places.error !== undefined) {
           console.error('Elastic search error getting places: ', places);
         }
