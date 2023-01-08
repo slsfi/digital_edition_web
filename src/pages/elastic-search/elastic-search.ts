@@ -144,7 +144,7 @@ export class ElasticSearchPage {
     private analyticsService: AnalyticsService,
     public commonFunctions: CommonFunctionsService
   ) {
-    console.log('constructing elastic search');
+    // console.log('constructing elastic search');
 
     try {
       this.hitsPerPage = this.config.getSettings('ElasticSearch.hitsPerPage');
@@ -302,7 +302,7 @@ export class ElasticSearchPage {
   }
 
   ionViewWillEnter() {
-    console.log('will enter elastic search');
+    // console.log('will enter elastic search');
     this.events.publish('ionViewWillEnter', this.constructor.name)
     this.events.publish('tableOfContents:unSelectSelectedTocItem', {'selected': 'elastic-search'});
     this.events.publish('SelectedItemInMenu', {
@@ -449,7 +449,7 @@ export class ElasticSearchPage {
     if (from && to) {
       // Certain date range
       this.range = {from, to};
-      console.log('year range: ', this.range);
+      // console.log('year range: ', this.range);
 
       this.disableFacetCheckboxes = true;
       this.cf.detectChanges();
@@ -492,7 +492,7 @@ export class ElasticSearchPage {
    * Use debouncedSearch to wait for additional key presses when use types.
    */
   private search({ done, initialSearch }: SearchOptions = {}) {
-    console.log(`search from ${this.from} to ${this.from + this.hitsPerPage}`);
+    // console.log(`search from ${this.from} to ${this.from + this.hitsPerPage}`);
 
     this.currentQuery = this.queries[0];
     this.elasticError = false;
@@ -520,7 +520,7 @@ export class ElasticSearchPage {
         this.elasticError = true;
       } else {
         this.total = data.hits.total.value;
-        console.log('hits: ', data.hits);
+        // console.log('hits: ', data.hits);
 
         // Append new hits to this.hits array.
         Array.prototype.push.apply(this.hits, data.hits.hits.map((hit: any) => ({
@@ -563,7 +563,7 @@ export class ElasticSearchPage {
       range: this.range,
     }).subscribe(
       (data: any) => {
-        console.log('aggregation data', data);
+        // console.log('aggregation data', data);
         this.populateFacets(data.aggregations);
       },
       error => {

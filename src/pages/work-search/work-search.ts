@@ -427,7 +427,7 @@ export class WorkSearchPage {
         if (data[i].sortBy && data[i - 1].sortBy) {
           if (data[i].sortBy.length > 1 && data[i - 1].sortBy.length > 1) {
             if (data[i].sortBy.charAt(0) !== data[i - 1].sortBy.charAt(0)) {
-              console.log(data[i].sortBy.charAt(0) + ' != ' + data[i - 1].sortBy.charAt(0))
+              // console.log(data[i].sortBy.charAt(0) + ' != ' + data[i - 1].sortBy.charAt(0));
               const ltr = data[i].sortBy.charAt(0);
               if (ltr.length === 1 && ltr.match(/[a-z]/i)) {
                 data[i]['firstOfItsKind'] = data[i].sortBy.charAt(0);
