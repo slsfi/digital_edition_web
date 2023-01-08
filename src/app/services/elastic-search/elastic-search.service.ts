@@ -190,7 +190,7 @@ export class ElasticSearchService {
     }
 
     // Add text type filter that applies to all queries.
-    if (this.textTypes) {
+    if (this.textTypes && Array.isArray(this.textTypes) && this.textTypes.length > 0) {
       payload.query.function_score.query.bool.must.push({ 'terms': { "text_type.keyword": this.textTypes } });
     }
 
@@ -259,6 +259,11 @@ export class ElasticSearchService {
       this.fixedFilters.forEach(filter => {
         payload.query.function_score.query.bool.must.push(filter);
       });
+    }
+
+    // Add text type filter that applies to all queries.
+    if (this.textTypes && Array.isArray(this.textTypes) && this.textTypes.length > 0) {
+      payload.query.function_score.query.bool.must.push({ 'terms': { "text_type.keyword": this.textTypes } });
     }
 
     if (facetGroups || range) {
