@@ -330,4 +330,12 @@ export class PlaceSearchPage {
       );
   }
 
+  scrollToTop() {
+    const topElem = document.querySelector('.search-area-row') as HTMLElement;
+    console.log('topElem:', topElem);
+    if (topElem) {
+      this.commonFunctions.scrollElementIntoView(topElem, 'top', 0);
+    }
+  }
+
 }
