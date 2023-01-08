@@ -154,6 +154,9 @@ page-occurrences {
     .row {
       border-bottom: $background-color 1px solid;
     }
+    .row:last-of-type {
+        border-bottom: 0;
+    }
     ion-label {
       color: $text-color;
     }

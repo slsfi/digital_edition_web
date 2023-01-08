@@ -34,9 +34,9 @@
           </ion-card-header>
           <ion-card-content *ngIf="texts">
               <ion-list class="description_list">
-                <ion-item *ngIf="city || region || country || place_of_birth || (type && !hideTypeAndDescription) || source || publisher || published_year || isbn || (authors && authors[0] !== undefined) || journal || (description && !hideTypeAndDescription) || description || articleData.length > 0 || longitude" class="item-stable" (click)="showFilters()">
+                <ion-item *ngIf="(city && !hideCityRegionCountry) || (region && !hideCityRegionCountry) || (country && !hideCityRegionCountry) || place_of_birth || (type && !hideTypeAndDescription) || source || publisher || published_year || isbn || (authors && authors[0] !== undefined) || journal || (description && !hideTypeAndDescription) || description || articleData.length > 0 || longitude" class="item-stable" (click)="showFilters()">
                     <ion-grid>
-                      <ion-row *ngIf="city">
+                      <ion-row *ngIf="city && !hideCityRegionCountry">
                         <ion-col class="header">
                           {{"Occurrences.city" | translate}}
                         </ion-col>
@@ -44,7 +44,7 @@
                           <span class="city">{{city}}</span>
                         </ion-col>
                       </ion-row>
-                      <ion-row *ngIf="region">
+                      <ion-row *ngIf="region && !hideCityRegionCountry">
                         <ion-col class="header">
                           {{"Occurrences.region" | translate}}
                         </ion-col>
@@ -52,7 +52,7 @@
                             <span *ngIf="region" class="region">{{region}}</span>
                         </ion-col>
                       </ion-row>
-                      <ion-row *ngIf="country">
+                      <ion-row *ngIf="country && !hideCityRegionCountry">
                         <ion-col class="header">
                           {{"Occurrences.country" | translate}}
                         </ion-col>

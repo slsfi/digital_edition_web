@@ -85,6 +85,29 @@ export class SemanticDataService {
     .catch(this.handleError)
   }
 
+  getFilterPlaceCountries(): Observable<any[]> {
+    const payload: any = {
+    size: 0,
+    query: {
+          bool: {
+            must : [{
+              term: { project_id : this.config.getSettings('app.projectId') }
+            }]
+          }
+    },
+    aggs : {
+          countries : {
+              terms : {
+                  field : 'country.keyword'
+              }
+          }
+      }
+    }
+    return this.http.post(this.getSearchUrl(this.elasticLocationIndex), payload)
+    .map(this.extractData)
+    .catch(this.handleError)
+  }
+
   getPlace(id: string): Observable<any> {
     return this.http.get(this.config.getSettings('app.apiEndpoint') + '/' +
        this.config.getSettings('app.machineName') + '/location/' + id)
@@ -320,46 +343,72 @@ export class SemanticDataService {
     .catch(this.handleError)
   }
 
-  getLocationElastic(from, searchText?) {
+  getLocationElastic(after_key?, searchText?, filters?, max?) {
     let showPublishedStatus = 2;
     try {
       showPublishedStatus = this.config.getSettings('LocationSearch.ShowPublishedStatus');
     } catch (e) {
       showPublishedStatus = 2;
     }
+
+    if ( filters === null || filters === undefined ) {
+      filters = {};
+    }
+
+    if ( max === undefined || max === null ) {
+      max = 500;
+    } else if (max > 10000) {
+      max = 10000;
+    }
+
     const payload: any = {
-      from: from,
-      size: 200,
-      sort: [
-        { 'name.keyword' : 'asc' }
-      ],
+      size: 0,
       query: {
         bool: {
-          must : [{
-            'term' : { 'project_id' : this.config.getSettings('app.projectId') }
-          },
-          {
-            'term' : { 'published' : showPublishedStatus }
-          },
-          {
-            'term' : { 'loc_deleted' : 0 }
-          }],
+          must: [
+            { 'term': { 'project_id': { 'value': this.config.getSettings('app.projectId') } } },
+            { 'term': { 'published': { 'value': showPublishedStatus } } },
+            { 'term': { 'loc_deleted': { 'value': 0 } } },
+          ]
+        }
+      },
+      aggs: {
+        unique_places: {
+          composite: {
+            size: max,
+            sources: [
+              { 'sort_by_name': { 'terms': { 'field': 'sort_by_name.keyword', 'missing_bucket': true } } },
+              { 'name': { 'terms': { 'field': 'name.keyword' } } },
+              { 'id': { 'terms': { 'field': 'id' } } },
+              { 'loc_id': { 'terms': { 'field': 'loc_id' } } }
+            ]
+          }
         }
       }
     }
-    // Search for first character of name
+
+    if (after_key !== undefined && !this.commonFunctions.isEmptyObject(after_key)) {
+      payload.aggs.unique_places.composite.after = after_key;
+    }
+
+    if (filters !== undefined && filters['filterPlaceCountries'] !== undefined && filters['filterPlaceCountries'].length > 0) {
+      payload.query.bool.must.push({bool: {should: []}});
+      filters['filterPlaceCountries'].forEach(element => {
+        payload.query.bool.must[payload.query.bool.must.length - 1].bool.
+        should.push({'term': {'country.keyword': String(element.name)}});
+      });
+    }
+
     if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
-      payload.from = 0;
-      payload.size = 5000;
+      // Search for first character of place name
       payload.query.bool.must.push({regexp: {'name.keyword': {
           'value': `${String(searchText)}.*|${String(searchText).toLowerCase()}.*`}}});
     } else if ( searchText !== undefined && searchText !== '' ) {
-      payload.from = 0;
-      payload.size = 5000;
-      // payload.sort = ['_score'],
+      // Fuzzy search in full place name
       payload.query.bool.must.push({fuzzy: {'name': {
           'value': `${String(searchText)}`}}});
     }
+
     return this.http.post(this.getSearchUrl(this.elasticLocationIndex), payload)
     .map(this.extractData)
     .catch(this.handleError)
@@ -408,7 +457,6 @@ export class SemanticDataService {
     } else if ( searchText !== undefined && searchText !== '' ) {
       payload.from = 0;
       payload.size = 5000;
-      payload.sort = ['_score'],
       payload.query.bool.should[0].bool.must.push({fuzzy: {'title': {
           'value': `${String(searchText)}`}}});
       payload.query.bool.should[1].bool.must.push({regexp: {'author_data.full_name': {
@@ -419,71 +467,74 @@ export class SemanticDataService {
     .catch(this.handleError)
   }
 
-  getTagElastic(from, searchText?, filters?) {
+  getTagElastic(after_key?, searchText?, filters?, max?) {
     let showPublishedStatus = 2;
     try {
       showPublishedStatus = this.config.getSettings('TagSearch.ShowPublishedStatus');
     } catch (e) {
       showPublishedStatus = 2;
     }
+
+    if ( filters === null || filters === undefined ) {
+      filters = {};
+    }
+
+    if ( max === undefined || max === null ) {
+      max = 500;
+    } else if (max > 10000) {
+      max = 10000;
+    }
+
     const payload: any = {
-      from: from,
-      size: 800,
-      _source: [
-        'id',
-        'tag_id',
-        'name',
-        'tag_type'
-      ],
-      sort: [
-        { 'name.keyword' : 'asc' }
-      ],
+      size: 0,
       query: {
         bool: {
-          must : [{
-            'term' : { 'project_id' : this.config.getSettings('app.projectId') }
-          },
-          {
-            'term' : { 'published' : showPublishedStatus }
-          },
-          {
-            'term' : { 'publication_deleted' : 0 }
-          },
-          {
-            'term' : { 'ev_o_deleted' : 0 }
-          },
-          {
-            'term' : { 'ev_c_deleted' : 0 }
-          },
-          {
-            'term' : { 'tag_deleted' : 0 }
-          }],
+          must: [
+            { 'term': { 'project_id': { 'value': this.config.getSettings('app.projectId') } } },
+            { 'term': { 'published': { 'value': showPublishedStatus } } },
+            { 'term': { 'publication_deleted': { 'value': 0 } } },
+            { 'term': { 'tag_deleted': { 'value': 0 } } },
+            { 'term': { 'ev_c_deleted': { 'value': 0 } } },
+            { 'term': { 'ev_o_deleted': { 'value': 0 } } },
+          ]
+        }
+      },
+      aggs: {
+        unique_tags: {
+          composite: {
+            size: max,
+            sources: [
+              { 'sort_by_name': { 'terms': { 'field': 'sort_by_name.keyword', 'missing_bucket': true } } },
+              { 'name': { 'terms': { 'field': 'name.keyword' } } },
+              { 'tag_type': { 'terms': { 'field': 'tag_type.keyword', 'missing_bucket': true } } },
+              { 'id': { 'terms': { 'field': 'id' } } },
+              { 'tag_id': { 'terms': { 'field': 'tag_id' } } }
+            ]
+          }
         }
       }
     }
 
-    // Search for first character of name
-    if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
-      payload.from = 0;
-      payload.size = 5000;
-      payload.query.bool.must.push({regexp: {'name.keyword': {
-          'value': `${String(searchText)}.*|${String(searchText).toLowerCase()}.*`}}});
-    } else if ( searchText !== undefined && searchText !== '' ) {
-      payload.from = 0;
-      payload.size = 5000;
-      // payload.sort = ['_score'],
-      payload.query.bool.must.push({fuzzy: {'name': {
-          'value': `${String(searchText)}`}}});
+    if (after_key !== undefined && !this.commonFunctions.isEmptyObject(after_key)) {
+      payload.aggs.unique_tags.composite.after = after_key;
     }
 
-    if (filters !== undefined && filters['filterCategoryTypes'] !== undefined) {
-      payload.from = 0;
-      payload.size = 1000;
+    if (filters !== undefined && filters['filterCategoryTypes'] !== undefined && filters['filterCategoryTypes'].length > 0) {
       payload.query.bool.must.push({bool: {should: []}});
       filters['filterCategoryTypes'].forEach(element => {
         payload.query.bool.must[payload.query.bool.must.length - 1].bool.
         should.push({'term': {'tag_type.keyword': String(element.name)}});
       });
+    }
+
+    if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
+      // Search for first character of tag name
+      payload.query.bool.must.push({regexp: {'name.keyword': {
+          'value': `${String(searchText)}.*|${String(searchText).toLowerCase()}.*`}}});
+    } else if ( searchText !== undefined && searchText !== '' ) {
+      // Fuzzy search in full tag name
+      payload.query.bool.must.push({fuzzy: {'name': {
+          'value': `${String(searchText)}`}}});
     }
 
     return this.http.post(this.getSearchUrl(this.elasticTagIndex), payload)

@@ -56,6 +56,7 @@ export class OccurrencesPage {
   singleOccurrenceType: string = null;
   galleryOccurrenceData: any = [];
   hideTypeAndDescription = false;
+  hideCityRegionCountry = false;
   isLoading: Boolean = true;
   infoLoading: Boolean = true;
   showPublishedStatus: Number = 2;
@@ -145,6 +146,12 @@ export class OccurrencesPage {
       this.hideTypeAndDescription = this.config.getSettings('Occurrences.HideTypeAndDescription');
     } catch (e) {
       this.hideTypeAndDescription = false;
+    }
+
+    try {
+      this.hideCityRegionCountry = this.config.getSettings('Occurrences.hideCityRegionCountry');
+    } catch (e) {
+      this.hideCityRegionCountry = false;
     }
 
     try {
