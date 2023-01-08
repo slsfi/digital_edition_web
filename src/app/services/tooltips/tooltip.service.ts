@@ -14,9 +14,9 @@ export class TooltipService {
   private apiEndPoint: string;
   private projectMachineName: string;
   languageSubscription: Subscription;
-  uncertainPersonCorrespTranslation: string;
-  fictionalPersonCorrespTranslation: string;
-  BCTranslation: string;
+  uncertainPersonCorrespTranslation = '';
+  fictionalPersonCorrespTranslation = '';
+  BCTranslation = 'BC';
 
   constructor(
     private http: Http,
@@ -27,6 +27,8 @@ export class TooltipService {
   ) {
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
     this.projectMachineName = this.config.getSettings('app.machineName');
+
+    this.updateTranslations();
 
     this.languageSubscription = this.langService.languageSubjectChange().subscribe(lang => {
       if (lang) {
