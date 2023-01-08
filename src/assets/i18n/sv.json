@@ -309,6 +309,7 @@
         "title": "Avgränsningar",
         "personTypes": "Personkategori",
         "tagTypes": "Ämneskategori",
+        "countries": "Land",
         "year": "Född",
         "bornBetween": "Född mellan",
         "apply": "Verkställ",

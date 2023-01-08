@@ -91,6 +91,8 @@ page-tag-search {
     }
     
     .alphabet {
+        margin-top: 0.5rem;
+
         button {
             margin: 0 !important;
         }
@@ -132,13 +134,56 @@ page-tag-search {
         }
     }
 
-    .filter-button {
-        font-size: 2.8rem;
-    }
-
     .searchbar {
         color: white;
         max-width: 650px;
     }
 
+    .load-more-wrapper {
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+
+        button.button {
+            font-size: 0.875rem;
+            height: 2rem !important;
+            margin-top: 0;
+        }
+
+        .loading-spinner-wrapper {
+            min-height: 4rem;
+        }
+
+        ion-spinner.loading {
+            padding: 1rem 0;
+        }
+    }
+
+    .hits-footer {
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+    
+        button.button {
+            font-size: 0.875rem;
+            height: 2rem !important;
+            margin-top: 2rem;
+        }
+    }
+
+    .load-more-wrapper + .hits-footer button.button {
+        margin-top: 1rem;
+    }
+
+    .active-filters-row {
+        .active-filters-heading {
+            font-weight: bold;
+        }
+    }
+
+    button.button ion-icon.filter-button {
+        font-size: 1.5rem;
+    }
 }

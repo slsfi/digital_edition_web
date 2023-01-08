@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-// tslint:disable-next-line:max-line-length
 import { IonicPage, NavController, NavParams, ModalController, App, Platform,
-  LoadingController, Content, Events } from 'ionic-angular';
+  LoadingController, Events, Content } from 'ionic-angular';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { ConfigService } from '@ngx-config/core';
@@ -37,7 +36,6 @@ import debounce from 'lodash/debounce';
 })
 export class PersonSearchPage {
   @ViewChild(Content) content: Content;
-
   persons: any[] = [];
   searchText: string;
   max_fetch_size = 500;
@@ -226,7 +224,7 @@ export class PersonSearchPage {
               sortByName = String(element['sort_by_name']);
             }
             sortByName = sortByName.replace('ʽ', '').trim();
-            sortByName = sortByName.replace(/^(?:de |von |van |af |d’ |d’|di |zu )/, '').toLowerCase();
+            sortByName = sortByName.replace(/^(?:de la |de |von |van |af |d’ |d’|di |du |des |zu |auf |del |do |dos |da |das |e )/, '').toLowerCase();
             const ltr = sortByName.charAt(0);
             if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
               element['sort_by_name'] = sortByName;
@@ -315,7 +313,7 @@ export class PersonSearchPage {
   filterByLetter(letter) {
     this.searchText = letter;
     this.searchPersons();
-    this.scrollToTop();
+    this.content.scrollToTop(400);
   }
 
   onSearchInput() {
@@ -394,13 +392,6 @@ export class PersonSearchPage {
         text => { this.mdContent = text.content; },
         error => { this.mdContent = ''; }
       );
-  }
-
-  scrollToTop() {
-    const topElem = document.querySelector('.search-area-row') as HTMLElement;
-    if (topElem) {
-      this.commonFunctions.scrollElementIntoView(topElem, 'top', 0);
-    }
   }
 
 }

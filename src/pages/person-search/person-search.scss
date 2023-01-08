@@ -181,6 +181,9 @@ page-person-search {
         .active-filters-heading {
             font-weight: bold;
         }
+    }
 
+    button.button ion-icon.filter-button {
+        font-size: 1.5rem;
     }
 }

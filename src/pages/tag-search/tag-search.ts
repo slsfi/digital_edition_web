@@ -1,10 +1,9 @@
-import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, App, Platform, ToastController,
-  ModalController, Content, Events, ViewController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, App, Platform,
+  ModalController, Events, ViewController, Content } from 'ionic-angular';
 import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { ConfigService } from '@ngx-config/core';
-import { TextService } from '../../app/services/texts/text.service';
 import { OccurrenceService } from '../../app/services/occurrence/occurence.service';
 import { Occurrence, OccurrenceType, OccurrenceResult } from '../../app/models/occurrence.model';
 import { SingleOccurrence } from '../../app/models/single-occurrence.model';
@@ -15,17 +14,13 @@ import { UserSettingsService } from '../../app/services/settings/user-settings.s
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { MetadataService } from '../../app/services/metadata/metadata.service';
 import { MdContentService } from '../../app/services/md/md-content.service';
+import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
 import { Subscription } from 'rxjs/Subscription';
+import debounce from 'lodash/debounce';
 
 /**
- * Generated class for the tagsearchPage page.
- *
  * A page for searching tag occurrences.
- * Can be filtered by collection.
- * tags can be stored in cache in order to work offline as well.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+ * Can be filtered by tag type.
  */
 
 @IonicPage({
@@ -34,39 +29,29 @@ import { Subscription } from 'rxjs/Subscription';
 })
 @Component({
   selector: 'page-tag-search',
-  templateUrl: 'tag-search.html',
+  templateUrl: 'tag-search.html'
 })
 export class TagSearchPage {
-
   @ViewChild(Content) content: Content;
-
   tags: any[] = [];
-  descending = false;
-  order: number;
-  column = 'name';
-  count = 0;
-  allData: OccurrenceResult[];
   tagsCopy: any[] = [];
   searchText: string;
   texts: any[] = [];
-  cacheData: OccurrenceResult[];
-  tagsKey = 'tag-search';
-  cacheItem = false;
   showLoading = false;
   showFilter = true;
-  from = 0;
-  infiniteScrollNumber = 30;
+  agg_after_key: Record<string, any> = {};
+  last_fetch_size = 0;
+  max_fetch_size = 500;
   filters: any[] = [];
+  immediate_search = false;
   mdContent: string;
-
-  selectedLinkID: string;
-
   objectType = 'tag';
 
   // tslint:disable-next-line:max-line-length
   alphabet: string[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Å', 'Ä', 'Ö'];
 
   languageSubscription: Subscription;
+  debouncedSearch = debounce(this.searchTags, 500);
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -76,17 +61,15 @@ export class TagSearchPage {
               protected config: ConfigService,
               private app: App,
               private platform: Platform,
-              protected textService: TextService,
               public occurrenceService: OccurrenceService,
               protected storage: Storage,
-              private toastCtrl: ToastController,
               public modalCtrl: ModalController,
               public viewCtrl: ViewController,
               private userSettingsService: UserSettingsService,
               private events: Events,
-              private cf: ChangeDetectorRef,
               private analyticsService: AnalyticsService,
-              private metadataService: MetadataService
+              private metadataService: MetadataService,
+              public commonFunctions: CommonFunctionsService
   ) {
     try {
       this.showFilter = this.config.getSettings('TagSearch.ShowFilter');
@@ -94,9 +77,12 @@ export class TagSearchPage {
       this.showFilter = true;
     }
     try {
-      this.infiniteScrollNumber = this.config.getSettings('TagSearch.InitialLoadNumber');
+      this.max_fetch_size = this.config.getSettings('TagSearch.InitialLoadNumber');
+      if (this.max_fetch_size > 10000) {
+        this.max_fetch_size = 10000;
+      }
     } catch (e) {
-      this.infiniteScrollNumber = 200;
+      this.max_fetch_size = 500;
     }
   }
 
@@ -120,9 +106,9 @@ export class TagSearchPage {
   }
 
   ionViewDidLoad() {
+    this.selectMusicAccordionItem();
+    this.getTags();
     this.languageSubscription = this.langService.languageSubjectChange().subscribe(lang => {
-      this.selectMusicAccordionItem();
-      this.setData();
       if (lang) {
         this.getMdContent(lang + '-12-04');
       }
@@ -133,118 +119,104 @@ export class TagSearchPage {
     this.events.publish('ionViewWillLeave', this.constructor.name);
   }
 
-  ionViewDidLeave() {
-    this.storage.remove('filterCollections');
-  }
-
   ngOnDestroy() {
     if (this.languageSubscription) {
       this.languageSubscription.unsubscribe();
     }
   }
 
-  setData() {
-    this.storage.get(this.tagsKey).then((tags) => {
-      if (tags) {
-        this.cacheItem = true;
-        this.getCacheText(this.tagsKey);
-      } else {
-        this.gettags();
-      }
-    });
-  }
-
-  gettags() {
+  getTags() {
     this.showLoading = true;
-    this.semanticDataService.getTagElastic(this.from, this.searchText, this.filters).subscribe(
+    this.semanticDataService.getTagElastic(this.agg_after_key, this.searchText, this.filters, this.max_fetch_size).subscribe(
       tags => {
+        // console.log('Elastic response: ', tags);
         if (tags.error !== undefined) {
           console.error('Elastic search error getting tags: ', tags);
         }
-        const tagsTmp = [];
-        tags = tags.hits.hits;
-        tags.forEach(element => {
-          element = element['_source'];
-          element.name = String(element.name)
-          element['sortBy'] = String(element.name).trim().replace('ʽ', '').toUpperCase();
-          if ( element.name ) {
-            let found = false;
-            this.tags.forEach(tag => {
-              if ( tag.id === element['id'] ) {
-                found = true;
-              }
-            });
-            if ( !found ) {
-              tagsTmp.push(element);
-              this.tags.push(element);
-            }
-          }
-          const ltr = element['sortBy'].charAt(0);
-          const mt = ltr.match(/[a-zåäö]/i);
-          if (ltr.length === 1 && ltr.match(/[a-zåäö]/i) !== null) {
-            // console.log(ltr);
-          } else {
-            const combining = /[\u0300-\u036F]/g;
-            element['sortBy'] = element['sortBy'].normalize('NFKD').replace(combining, '').replace(',', '');
-          }
-        });
+        if (tags.aggregations && tags.aggregations.unique_tags && tags.aggregations.unique_tags.buckets.length > 0) {
+          this.agg_after_key = tags.aggregations.unique_tags.after_key;
+          this.last_fetch_size = tags.aggregations.unique_tags.buckets.length;
 
-        this.allData = this.tags;
-        this.cacheData = this.tags;
-        this.sortListAlphabeticallyAndGroup(this.allData);
+          console.log('Number of fetched tags: ', this.last_fetch_size);
+
+          const combining = /[\u0300-\u036F]/g;
+
+          tags = tags.aggregations.unique_tags.buckets;
+          tags.forEach(element => {
+            element = element['key'];
+
+            let sortByName = String(element['name']);
+            if (element['sort_by_name']) {
+              sortByName = String(element['sort_by_name']);
+            }
+            sortByName = sortByName.replace('ʽ', '').trim().toLowerCase();
+            const ltr = sortByName.charAt(0);
+            if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
+              element['sort_by_name'] = sortByName;
+            } else {
+              element['sort_by_name'] = sortByName.normalize('NFKD').replace(combining, '').replace(',', '');
+            }
+
+            this.tags.push(element);
+          });
+        } else {
+          this.agg_after_key = {};
+          this.last_fetch_size = 0;
+        }
+
+        this.sortListAlphabeticallyAndGroup(this.tags);
         this.showLoading = false;
       },
       err => {
         console.error(err);
         this.showLoading = false;
-      },
-      () => {
-        console.log('Get tags completed: ', this.tags);
+        this.agg_after_key = {};
+        this.last_fetch_size = 0;
       }
     );
   }
 
-  onChanged(obj) {
-    this.cf.detectChanges();
-    console.log('segment changed')
-    this.filter(obj);
+  showAll() {
+    this.filters = [];
+    this.searchText = '';
+    this.searchTags();
   }
 
-  loadMoretags() {
-    for (let i = 0; i < 30; i++) {
-      if (i === this.allData.length) {
-        break;
-      } else {
-        this.tags.push(this.allData[this.count]);
-        this.tagsCopy.push(this.allData[this.count]);
-        this.count++
-      }
+  filterByLetter(letter) {
+    this.searchText = letter;
+    this.searchTags();
+    this.content.scrollToTop(400);
+  }
+
+  onSearchInput() {
+    if (this.immediate_search) {
+      this.immediate_search = false;
+      this.searchTags();
+    } else {
+      this.debouncedSearch();
     }
   }
 
-  showAll() {
-    /*
-    this.tags = [];
-    this.allData = [];
-    this.count = 0;
-    this.allData = this.cacheData;
-    this.loadMoretags();
-    */
-    this.count = 0;
-    this.from = 0;
-    this.searchText = '';
-    this.filters = [];
-    this.tags = [];
-    this.gettags();
-    this.content.scrollToTop(400);
+  onSearchClear() {
+    this.immediate_search = true;
   }
 
-  sortByLetter(letter) {
-    this.searchText = letter;
+  searchTags() {
+    this.agg_after_key = {};
     this.tags = [];
-    this.cf.detectChanges();
-    this.gettags();
-    this.content.scrollToTop(400);
+    if (this.showLoading) {
+      this.debouncedSearch();
+    } else {
+      this.getTags();
+    }
+  }
+
+  loadMore(e) {
+    this.getTags();
+  }
+
+  hasMore() {
+    return this.last_fetch_size > this.max_fetch_size - 1;
   }
 
   appHasMusicAccordionConfig() {
@@ -267,41 +239,6 @@ export class TagSearchPage {
     }
 
     this.events.publish('musicAccordion:SetSelected', {musicAccordionKey: 'tagSearch'});
-  }
-
-  filter(terms) {
-    if ( terms._value ) {
-      terms = terms._value;
-    }
-    if (!terms) {
-      this.tags = this.tagsCopy;
-    } else if (terms != null) {
-      this.from = 0;
-      this.gettags();
-      this.tags = [];
-      terms = String(terms).toLowerCase().replace(' ', '');
-      for (const tag of this.allData) {
-        if (tag.name) {
-          const title = tag.name.toLocaleLowerCase();
-          if (title.includes(terms)) {
-            const inList = this.tags.some(function(p) {
-              return p.name === tag.name
-            });
-            if (!inList) {
-              this.tags.push(tag);
-            }
-          }
-        }
-      }
-    } else {
-      this.tags = this.tagsCopy;
-    }
-  }
-
-  doInfinite(infiniteScroll) {
-    this.from += this.infiniteScrollNumber;
-    this.gettags();
-    infiniteScroll.complete();
   }
 
   async openTag(occurrenceResult: OccurrenceResult) {
@@ -334,117 +271,30 @@ export class TagSearchPage {
 
     } else {
       const occurrenceModal = this.modalCtrl.create(OccurrencesPage, {
-        occurrenceResult: occurrenceResult,
-        showOccurrencesModalOnRead: showOccurrencesModalOnRead,
-        objectType: this.objectType
+        id: occurrenceResult.id,
+        type: this.objectType,
+        showOccurrencesModalOnRead: showOccurrencesModalOnRead
       });
 
       occurrenceModal.present();
     }
   }
 
-  async download() {
-    this.cacheItem = !this.cacheItem;
-
-    if (this.cacheItem) {
-      await this.storeCacheText(this.tagsKey, this.cacheData);
-    } else if (!this.cacheItem) {
-      this.removeFromCache(this.tagsKey);
-    }
-  }
-
-  async storeCacheText(id: string, text: any) {
-    await this.storage.set(id, text);
-    await this.addedToCacheToast(id);
-  }
-
-  async removeFromCache(id: string) {
-    await this.storage.remove(id);
-    await this.removedFromCacheToast(id);
-  }
-
-  getCacheText(id: string) {
-    this.storage.get(id).then((tags) => {
-      this.allData = tags;
-
-      this.sortListAlphabeticallyAndGroup(this.allData);
-
-      for (let i = 0; i < 30; i++) {
-        this.tags.push(this.allData[this.count]);
-        this.tagsCopy.push(this.allData[this.count]);
-        this.count++
-      }
-    });
-  }
-
-  async addedToCacheToast(id: string) {
-    let status = '';
-
-    await this.storage.get(id).then((content) => {
-      if (content) {
-        status = 'tags downloaded successfully';
-      } else {
-        status = 'tags were not added to cache';
-      }
-    });
-
-    const toast = await this.toastCtrl.create({
-      message: status,
-      duration: 3000,
-      position: 'bottom'
-    });
-
-    await toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
-    });
-
-    await toast.present();
-  }
-
-  async removedFromCacheToast(id: string) {
-    let status = '';
-
-    await this.storage.get(id).then((content) => {
-      if (content) {
-        status = 'tags were not removed from cache';
-      } else {
-        status = 'tags were successfully removed from cache';
-      }
-    });
-
-    const toast = await this.toastCtrl.create({
-      message: status,
-      duration: 3000,
-      position: 'bottom'
-    });
-
-    await toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
-    });
-
-    await toast.present();
-  }
-
   sortListAlphabeticallyAndGroup(list: any[]) {
     const data = list;
 
     // Sort alphabetically
-    data.sort(function(a, b) {
-      if (a.sortBy < b.sortBy) { return -1; }
-      if (a.sortBy > b.sortBy) { return 1; }
-      return 0;
-    });
+    this.commonFunctions.sortArrayOfObjectsAlphabetically(data, 'sort_by_name');
 
     // Check when first character changes in order to divide names into alphabetical groups
     for (let i = 0; i < data.length ; i++) {
       if (data[i] && data[i - 1]) {
-        if (data[i].sortBy && data[i - 1].sortBy) {
-          if (data[i].sortBy.length > 1 && data[i - 1].sortBy.length > 1) {
-            if (data[i].sortBy.charAt(0) !== data[i - 1].sortBy.charAt(0)) {
-              // console.log(data[i].sortBy.charAt(0) + ' != ' + data[i - 1].sortBy.charAt(0))
-              const ltr = data[i].sortBy.charAt(0);
-              if (ltr.length === 1 && ltr.match(/[a-z]/i)) {
-                data[i]['firstOfItsKind'] = data[i].sortBy.charAt(0);
+        if (data[i].sort_by_name && data[i - 1].sort_by_name) {
+          if (data[i].sort_by_name.length > 1 && data[i - 1].sort_by_name.length > 1) {
+            if (data[i].sort_by_name.charAt(0) !== data[i - 1].sort_by_name.charAt(0)) {
+              const ltr = data[i].sort_by_name.charAt(0);
+              if (ltr.length === 1 && ltr.match(/[a-zåäö]/i)) {
+                data[i]['firstOfItsKind'] = data[i].sort_by_name.charAt(0);
               }
             }
           }
@@ -453,8 +303,8 @@ export class TagSearchPage {
     }
 
     for (let j = 0; j < data.length; j++) {
-      if (data[j].sortBy.length > 1) {
-        data[j]['firstOfItsKind'] = data[j].sortBy.charAt(0);
+      if (data[j].sort_by_name.length > 1) {
+        data[j]['firstOfItsKind'] = data[j].sort_by_name.charAt(0);
         break;
       }
     }
@@ -462,92 +312,17 @@ export class TagSearchPage {
     return data;
   }
 
-  openText(text: any) {
-    const params = {};
-    const nav = this.app.getActiveNavs();
-    const col_id = text.collectionID.split('_')[0];
-    const pub_id = text.collectionID.split('_')[1];
-    let text_type: string;
-
-    if (text.textType === 'ms') {
-      text_type = 'manuscripts';
-    } else if (text.textType === 'var') {
-      text_type = 'variations';
-    } else if (text.textType === 'facs') {
-      text_type = 'facsimiles'
-    } else {
-      text_type = 'comments';
-    }
-
-    params['tocLinkId'] = text.collectionID;
-    params['collectionID'] = col_id;
-    params['publicationID'] = pub_id;
-    params['views'] = [
-      {
-        type: text_type,
-        id: text.linkID
-      }
-    ];
-
-    if (this.platform.is('mobile')) {
-      this.app.getRootNav().push('read', params);
-    } else {
-      this.app.getRootNav().push('read', params);
-    }
-  }
-
   openFilterModal() {
     const filterModal = this.modalCtrl.create(FilterPage, { searchType: 'tag-search', activeFilters: this.filters });
     filterModal.onDidDismiss(filters => {
-
       if (filters) {
         this.tags = [];
-        this.allData = [];
+        this.agg_after_key = {};
         this.filters = filters;
-        if (filters['isEmpty']) {
-          console.log('filters are empty');
-          this.tags = [];
-          this.allData = [];
-          this.count = 0;
-          this.gettags();
-        }
-
-        if (filters.filterCategoryTypes) {
-          this.gettags();
-        }
-
-        if (filters.filterCollections) {
-          const filterSelected = filters.filterCollections.some(function(el) {
-            return el.selected === true;
-          });
-          if (filterSelected) {
-            this.getSubjectsOccurrencesByCollection(filters.filterCollections, this.sortListAlphabeticallyAndGroup);
-          }
-        }
+        this.getTags();
       }
     });
     filterModal.present();
-  }
-
-  getSubjectsOccurrencesByCollection(filterCollections, callback) {
-    this.count = 0;
-    const filterCollectionIds = [];
-
-    for (const f of filterCollections) {
-      filterCollectionIds.push(f.id);
-    }
-
-    for (const tag of this.tags) {
-      for (const occurrence of tag.occurrences) {
-        const inFilterList = filterCollectionIds.some(function(filter) {
-          return filter === occurrence.collection_id;
-        });
-        if (!inFilterList) {
-          this.tags.splice(this.tags.indexOf(tag), 1);
-          this.tagsCopy.splice(this.tags.indexOf(tag), 1);
-        }
-      }
-    }
   }
 
   getMdContent(fileID: string) {

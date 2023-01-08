@@ -132,10 +132,6 @@ page-work-search {
         }
     }
 
-    .filter-button {
-        font-size: 2.8rem;
-    }
-
     .searchbar {
         color: white;
         max-width: 650px;
@@ -149,4 +145,7 @@ page-work-search {
       color: $grey-color;
     }
 
+    button.button ion-icon.filter-button {
+        font-size: 1.5rem;
+    }
 }

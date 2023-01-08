@@ -210,6 +210,7 @@
         "title": "Filter",
         "personTypes": "Person category",
         "tagTypes": "Tag category",
+        "countries": "Country",
         "year": "Born",
         "bornBetween": "Born between",
         "apply": "Apply",

@@ -222,6 +222,7 @@
         "title": "Rajaa",
         "personTypes": "Henkilötyyppi",
         "tagTypes": "Asiasanatyyppi",
+        "countries": "Maa",
         "year": "Syntynyt",
         "bornBetween": "Syntynyt vuosien välissä",
         "apply": "Rajaa",
