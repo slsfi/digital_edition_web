@@ -16,6 +16,7 @@ export class ElasticSearchService {
   private aggregations: Aggregations = {}
   private suggestions: SuggestionsConfig = {}
   private fixedFilters: object[]
+  private textTypes = [];
 
   constructor(private http: Http, private config: ConfigService) {
     // Should fail if config is missing.
@@ -59,6 +60,7 @@ export class ElasticSearchService {
     // Should not fail if config is missing.
     try {
       this.fixedFilters = this.config.getSettings('ElasticSearch.fixedFilters');
+      this.textTypes = this.config.getSettings('ElasticSearch.types');
       this.suggestions = this.config.getSettings('ElasticSearch.suggestions');
     } catch (e) {
       console.error('Failed to load Elastic Search Service. Configuration error.', e.message)
@@ -185,6 +187,11 @@ export class ElasticSearchService {
       this.fixedFilters.forEach(filter => {
         payload.query.function_score.query.bool.must.push(filter);
       });
+    }
+
+    // Add text type filter that applies to all queries.
+    if (this.textTypes) {
+      payload.query.function_score.query.bool.must.push({ 'terms': { "text_type.keyword": this.textTypes } });
     }
 
     if (facetGroups) {
