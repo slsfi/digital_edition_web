@@ -191,14 +191,14 @@ export class ElasticSearchService {
 
     // Add text type filter that applies to all queries.
     if (this.textTypes && Array.isArray(this.textTypes) && this.textTypes.length > 0) {
-      payload.query.function_score.query.bool.must.push({ 'terms': { "text_type": this.textTypes } });
+      payload.query.function_score.query.bool.must.push({ 'terms': { 'text_type': this.textTypes } });
     }
 
     if (facetGroups) {
       this.injectFacetsToPayload(payload, facetGroups);
     }
 
-    console.log('search payload', payload);
+    // console.log('search payload', payload);
 
     return payload;
   }
@@ -263,7 +263,7 @@ export class ElasticSearchService {
 
     // Add text type filter that applies to all queries.
     if (this.textTypes && Array.isArray(this.textTypes) && this.textTypes.length > 0) {
-      payload.query.function_score.query.bool.must.push({ 'terms': { "text_type": this.textTypes } });
+      payload.query.function_score.query.bool.must.push({ 'terms': { 'text_type': this.textTypes } });
     }
 
     if (facetGroups || range) {
@@ -272,7 +272,7 @@ export class ElasticSearchService {
       this.injectUnfilteredAggregationsToPayload(payload);
     }
 
-    console.log('aggregation payload', payload);
+    // console.log('aggregation payload', payload);
 
     return payload;
   }
@@ -323,7 +323,7 @@ export class ElasticSearchService {
       }
     }
 
-    console.log('suggestions payload', payload);
+    // console.log('suggestions payload', payload);
 
     return payload;
   }
