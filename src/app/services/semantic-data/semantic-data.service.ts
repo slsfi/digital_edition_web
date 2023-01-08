@@ -241,6 +241,7 @@ export class SemanticDataService {
             { 'term': { 'sub_deleted': { 'value': 0 } } },
             { 'term': { 'ev_c_deleted': { 'value': 0 } } },
             { 'term': { 'ev_o_deleted': { 'value': 0 } } },
+            { 'term': { 'publication_deleted': { 'value': 0 } } },
           ]
         }
       },
@@ -287,7 +288,7 @@ export class SemanticDataService {
 
     // Search for first character of name
     if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
-      payload.query.bool.must.push({regexp: {'full_name.keyword': {
+      payload.query.bool.must.push({regexp: {'sort_by_name.keyword': {
           'value': `${String(searchText)}.*|${String(searchText).toLowerCase()}.*`}}});
     } else if ( searchText !== undefined && searchText !== '' ) {
       payload.query.bool.must.push({fuzzy: {'full_name': {
@@ -369,6 +370,9 @@ export class SemanticDataService {
             { 'term': { 'project_id': { 'value': this.config.getSettings('app.projectId') } } },
             { 'term': { 'published': { 'value': showPublishedStatus } } },
             { 'term': { 'loc_deleted': { 'value': 0 } } },
+            { 'term': { 'ev_c_deleted': { 'value': 0 } } },
+            { 'term': { 'ev_o_deleted': { 'value': 0 } } },
+            { 'term': { 'publication_deleted': { 'value': 0 } } },
           ]
         }
       },
@@ -492,10 +496,10 @@ export class SemanticDataService {
           must: [
             { 'term': { 'project_id': { 'value': this.config.getSettings('app.projectId') } } },
             { 'term': { 'published': { 'value': showPublishedStatus } } },
-            { 'term': { 'publication_deleted': { 'value': 0 } } },
             { 'term': { 'tag_deleted': { 'value': 0 } } },
             { 'term': { 'ev_c_deleted': { 'value': 0 } } },
             { 'term': { 'ev_o_deleted': { 'value': 0 } } },
+            { 'term': { 'publication_deleted': { 'value': 0 } } },
           ]
         }
       },
