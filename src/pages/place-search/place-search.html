@@ -7,7 +7,7 @@
         </div>
       </ion-row>
       <ion-row class="search-area-row">
-          <ion-col col-10>
+          <ion-col>
             <ion-row *ngIf="('SearchApp.infotext' | translate) !== 'SearchApp.infotext' && ('SearchApp.infotext' | translate).length>0">
                 <ion-col col-12>
                   <p class="info_text">{{'SearchApp.infotext' | translate}}</p>
@@ -15,10 +15,10 @@
             </ion-row>
 
             <ion-row>
-                <ion-col col-10>
+                <ion-col class="searchbar-col" col-10>
                   <ion-searchbar placeholder="{{'SearchApp.search-holder' | translate}}" class="searchbar" [(ngModel)]="searchText" (ionInput)="onSearchInput($event)" (ionClear)="onSearchClear($event)"></ion-searchbar>
                 </ion-col>
-                <ion-col col-2 *ngIf="showFilter">
+                <ion-col class="filter-button-col" col-2 *ngIf="showFilter">
                     <button (click)="openFilterModal()" ion-button><ion-icon class="filter-button" name="funnel"></ion-icon></button>
                 </ion-col>
             </ion-row>
@@ -55,7 +55,7 @@
             </ion-row>
           </ion-col>
 
-          <ion-col col-2 class="alphabet">
+          <ion-col class="alphabet">
             <button ion-fab mini (click)="showAll()"><ion-icon name="refresh"></ion-icon></button>
             <button ion-fab mini *ngFor="let letter of alphabet" class="letter" (click)="filterByLetter(letter)">{{letter}}</button>
             <button ion-fab mini (click)="showAll()"><ion-icon name="refresh"></ion-icon></button>

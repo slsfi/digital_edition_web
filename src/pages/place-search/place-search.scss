@@ -72,6 +72,16 @@ page-place-search {
     ion-row.search-area-row {
         padding-top: 1rem;
         padding-bottom: 2rem;
+        width: 100%;
+        max-width: 1000px;
+    }
+
+    .searchbar-col.col {
+        padding-right: 0;
+    }
+
+    .filter-button-col.col {
+        padding-left: 0;
     }
 
     ion-icon.settings-icon.icon {
@@ -92,6 +102,7 @@ page-place-search {
 
     .alphabet {
         margin-top: 0.5rem;
+        flex-grow: 0;
 
         button {
             margin: 0 !important;
