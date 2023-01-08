@@ -191,7 +191,7 @@ export class ElasticSearchService {
 
     // Add text type filter that applies to all queries.
     if (this.textTypes && Array.isArray(this.textTypes) && this.textTypes.length > 0) {
-      payload.query.function_score.query.bool.must.push({ 'terms': { "text_type": this.textTypes } });
+      payload.query.function_score.query.bool.must.push({ 'terms': { 'text_type': this.textTypes } });
     }
 
     if (facetGroups) {
@@ -263,7 +263,7 @@ export class ElasticSearchService {
 
     // Add text type filter that applies to all queries.
     if (this.textTypes && Array.isArray(this.textTypes) && this.textTypes.length > 0) {
-      payload.query.function_score.query.bool.must.push({ 'terms': { "text_type": this.textTypes } });
+      payload.query.function_score.query.bool.must.push({ 'terms': { 'text_type': this.textTypes } });
     }
 
     if (facetGroups || range) {
