@@ -405,7 +405,7 @@ export class SemanticDataService {
 
     if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
       // Search for first character of place name
-      payload.query.bool.must.push({regexp: {'name.keyword': {
+      payload.query.bool.must.push({regexp: {'sort_by_name.keyword': {
           'value': `${String(searchText)}.*|${String(searchText).toLowerCase()}.*`}}});
     } else if ( searchText !== undefined && searchText !== '' ) {
       // Fuzzy search in full place name
@@ -533,7 +533,7 @@ export class SemanticDataService {
 
     if (searchText !== undefined && searchText !== '' && String(searchText).length === 1) {
       // Search for first character of tag name
-      payload.query.bool.must.push({regexp: {'name.keyword': {
+      payload.query.bool.must.push({regexp: {'sort_by_name.keyword': {
           'value': `${String(searchText)}.*|${String(searchText).toLowerCase()}.*`}}});
     } else if ( searchText !== undefined && searchText !== '' ) {
       // Fuzzy search in full tag name
