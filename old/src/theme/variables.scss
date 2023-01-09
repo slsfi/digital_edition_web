@@ -1,0 +1,144 @@
+/*
+    This file contains OVERRIDES TO THE DEFAULT IONIC SASS VARIABLES and must not contain any style rules.
+
+    Custom Sass variables generally belong in src/theme/_project-variables.scss
+
+    ALL CUSTOM STYLE RULES which should apply globally, including @font-face font loading rules which should be added before any styles, belong in src/app/app.scss.
+
+    Other custom style rules belong in the individual scss-files for components and pages.
+*/
+
+
+
+// Ionic Variables and Theming. For more info, please see:
+// https://ionicframework.com/docs/v3/theming/
+@import "ionic.globals";
+
+
+
+// Named Color Variables
+// --------------------------------------------------
+// Named colors makes it easy to reuse colors on various components.
+// It's highly recommended to change the default colors
+// to match your app's branding. Ionic uses a Sass map of
+// colors so you can add, rename and remove colors as needed.
+// The "primary" color is the only required color in the map.
+
+$colors: (
+	primary:	#538494,
+	secondary:	#e6e1d8,
+    dark:		#222,
+    light:		#f4f4f4
+);
+
+
+
+// Shared Variables
+// --------------------------------------------------
+// To customize the look and feel of this app, you can override
+// the Sass variables found in Ionic's source scss files.
+// To view all the possible Ionic variables, see:
+// https://ionicframework.com/docs/v3/theming/overriding-ionic-variables/
+
+// This is a custom variable
+$system-font-stack:         -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+
+// These are part of Ionic's Sass variables
+$font-size-root:                16px;
+$font-size-base:                1rem;
+$button-md-font-size:           1rem;
+$toolbar-md-button-font-size:   1rem;
+$toolbar-md-title-font-size:    1.25rem;
+$font-family-base:              "Roboto", $system-font-stack; // Use the css custom property --font-stack-app-base instead!
+$text-color:                  #000;
+$background-color:            #ecebe4;
+$toolbar-background:            color($colors, primary);
+$toolbar-active-color:        #fff;
+$toolbar-inactive-color:      #fff;
+$tabs-background:               color($colors, primary);
+$tabs-tab-color-active:       #fff;
+$tabs-tab-color-inactive:     #fff;
+$fab-content-margin:            0;
+
+
+// Customize the grid breakpoints: added xxl and xxxl breakpoints to the default values
+$grid-breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1550px,
+    xxxl: 2050px
+);
+
+
+
+// App iOS Variables
+// --------------------------------------------------
+// iOS only Sass variables can go here
+
+
+
+// App Material Design Variables
+// --------------------------------------------------
+// Material Design only Sass variables can go here
+
+// Use the default base font family
+$font-family-md-base:                       $font-family-base;
+
+// Use the default color as the background for the toolbar-md-background
+//$toolbar-md-background:                     $toolbar-background;
+
+// Use the default background for the tabbar since it inherits from toolbar
+//$tabs-md-background:                        $tabs-background;
+
+$fab-md-box-shadow:                         none;
+// Change the color of the tabs text
+//$tabs-md-tab-color-active:                #fff;
+$tabs-md-tab-color-inactive:                $tabs-tab-color-inactive;
+
+// Change the color of the segment button text
+//$toolbar-md-active-color:                 #fff;
+//$toolbar-md-inactive-color:               #fff;
+$segment-button-md-text-color-activated:    #fff; // default is $toolbar-active-color so actually unnecessary to declare again
+//$item-md-detail-push-show: true;
+
+$card-md-title-text-color:                  color($colors, dark);
+$card-md-box-shadow:                        none;
+$card-md-background-color:                  #fff; // default is same as $background-color
+
+$popover-md-border-radius:                  3px;
+
+
+
+// App Windows Variables
+// --------------------------------------------------
+// Windows only Sass variables can go here
+
+
+
+// App Theme
+// --------------------------------------------------
+// Ionic apps can have different themes applied, which can
+// then be future customized. This import comes last
+// so that the above variables are used and Ionic's
+// default are overridden.
+
+@import "ionic.theme.default";
+
+
+
+// Ionicons
+// --------------------------------------------------
+// The premium icon font for Ionic. For more info, please see:
+// http://ionicframework.com/docs/v2/ionicons/
+
+$ionicons-font-path: "../assets/fonts";
+@import "ionicons";
+
+
+
+// Project specific variables
+// --------------------------------------------------
+@import "project-variables.scss";

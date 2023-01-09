@@ -1,11 +1,7 @@
 {
   "name": "digitalEditions",
   "integrations": {
-    "cordova": {}
+    "capacitor": {}
   },
-  "devtool": "source-map",
-  "type": "ionic-angular",
-  "hooks" : {
-    "ionic:build:after": "npm run postbuild"
-  }
+  "type": "angular"
 }
