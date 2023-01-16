@@ -6,7 +6,7 @@ export class ConfigService {
   constructor() {
   }
 
-  getSettings(id: string): string {
+  getSettings(id: string): string | unknown {
     // return actual settings
     return 'asd';
   }

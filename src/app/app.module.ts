@@ -10,6 +10,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { DigitalEditionsApp } from './app.component';
 import { CommentModalPage } from 'src/pages/comment-modal/comment-modal';
+import { SemanticDataModalPage } from 'src/pages/semantic-data-modal/semantic-data-modal';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
@@ -33,14 +34,25 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
   declarations: [
     DigitalEditionsApp,
     CommentModalPage,
+    SemanticDataModalPage,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    }),
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    TranslateService
+  ],
   bootstrap: [DigitalEditionsApp],
 })
 export class AppModule {}
