@@ -1,0 +1,44 @@
+page-reference-data-modal {
+	/* This hides the vertical scrollbar on the right edge of the modal when it is not necessary to show it. */
+	ion-content > .scroll-content {
+		overflow: auto;
+		padding: 16px 24px 24px 24px;
+	}
+	
+	@media(max-width: 480px) {
+        ion-content.content[padding] > .scroll-content {
+            padding: 0;
+        }
+    }
+
+	ion-title {
+		margin-left: 12px;
+	}
+
+	.col {
+        padding: 0 0 4px 0;
+    }
+
+	.close-button {
+		margin-right: 12.8px;
+		transition: $opacity-hover-transition;
+	}
+
+	.close-button:hover {
+		opacity: $opacity-hover;
+	}
+
+	.close-button:active {
+		opacity: 1;
+	}
+
+	.header {
+		font-size: 1.375rem;
+  	}
+	.ref-category-label {
+		font-weight: bold;
+	}
+  	.urn {
+   		white-space: normal;
+  	}
+}

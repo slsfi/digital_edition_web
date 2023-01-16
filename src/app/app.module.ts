@@ -11,6 +11,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { DigitalEditionsApp } from './app.component';
 import { CommentModalPage } from 'src/pages/comment-modal/comment-modal';
 import { SemanticDataModalPage } from 'src/pages/semantic-data-modal/semantic-data-modal';
+import { ReferenceDataModalPage } from 'src/pages/reference-data-modal/reference-data-modal';
+import { EventsService } from './services/events/events.service';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
@@ -35,6 +37,8 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     DigitalEditionsApp,
     CommentModalPage,
     SemanticDataModalPage,
+    ReferenceDataModalPage,
+    // DownloadTextsModalPage,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
@@ -50,9 +54,46 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     }),
   ],
   providers: [
+    // HtmlContentService,
+    // MdContentService,
+    // TextService,
+    // TextCacheService,
+    TranslateService,
+    // LanguageService,
+    // ReadPopoverService,
+    // Title,
+    // CommentService,
+    // CommentCacheService,
+    // CommonFunctionsService,
+    // SemanticDataService,
+    // ReferenceDataService,
+    // SearchDataService,
+    // TooltipService,
+    // UserSettingsService,
+    // SocialSharing,
+    // GenericSettingsService,
+    // SplashScreen,
+    // SongService,
+    // TutorialService,
+    // GalleryService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    TranslateService
+    // AnalyticsService,
+    // MetadataService,
+    EventsService,
   ],
   bootstrap: [DigitalEditionsApp],
+  entryComponents: [
+    DigitalEditionsApp,
+    // ReadPopoverPage,
+    // UserSettingsPopoverPage,
+    CommentModalPage,
+    SemanticDataModalPage,
+    ReferenceDataModalPage,
+    // FacsimileZoomModalPage,
+    // DownloadTextsModalPage,
+    // IllustrationPage,
+    // SearchAppPage,
+    // SharePopoverPage,
+  ]
 })
 export class AppModule {}
