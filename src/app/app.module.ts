@@ -25,7 +25,7 @@ import { CommentCacheService } from './services/comments/comment-cache.service';
 import { CommonFunctionsService } from './services/common-functions/common-functions.service';
 import { SemanticDataService } from './services/semantic-data/semantic-data.service';
 import { ReferenceDataService } from './services/reference-data/reference-data.service';
-import { UserSettingsService } from './services/settings/user-settings.service';
+// import { UserSettingsService } from './services/settings/user-settings.service';
 import { GenericSettingsService } from './services/settings/generic-settings.service';
 import { AnalyticsService } from './services/analytics/analytics.service';
 
@@ -85,7 +85,7 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     ReferenceDataService,
     // SearchDataService,
     // TooltipService,
-    UserSettingsService,
+    // UserSettingsService,
     // SocialSharing,
     GenericSettingsService,
     // SplashScreen,

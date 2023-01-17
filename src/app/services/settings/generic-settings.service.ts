@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ConfigService } from '@ngx-config/core';
+import { ConfigService } from '../config/config.service';
 
 @Injectable()
 export class GenericSettingsService {
@@ -18,7 +18,7 @@ export class GenericSettingsService {
    * Settings can be found in config.json
    * @param settingPath - path for json object key
    */
-  show(settingPath) {
+  show(settingPath: any) {
     try {
       return this.config.getSettings('show.' + settingPath);
     } catch (e) {
@@ -31,7 +31,7 @@ export class GenericSettingsService {
    * Example: <ion-navbar hideBackButton="genericSettingsService.hideTopMenuBackButton('TopMenu')">
    * @param settingPath - path for json object key
    */
-  hideTopMenuBackButton(settingPath) {
+  hideTopMenuBackButton(settingPath: any) {
     try {
       return this.config.getSettings(`HideBackButton.${settingPath}`);
     } catch (e) {
