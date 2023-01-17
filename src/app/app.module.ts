@@ -1,5 +1,5 @@
 import { ErrorHandler, Injectable, NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppRoutingModule } from './app-routing.module';
@@ -16,6 +16,15 @@ import { EventsService } from './services/events/events.service';
 import { DownloadTextsModalPage } from 'src/pages/download-texts-modal/download-texts-modal';
 import { HtmlContentService } from './services/html/html-content.service';
 import { MdContentService } from './services/md/md-content.service';
+import { TextService } from './services/texts/text.service';
+import { TextCacheService } from './services/texts/text-cache.service';
+import { LanguageService } from './services/languages/language.service';
+import { ReadPopoverService } from './services/settings/read-popover.service';
+import { CommentService } from './services/comments/comment.service';
+import { CommentCacheService } from './services/comments/comment-cache.service';
+import { CommonFunctionsService } from './services/common-functions/common-functions.service';
+import { SemanticDataService } from './services/semantic-data/semantic-data.service';
+import { ReferenceDataService } from './services/reference-data/reference-data.service';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
@@ -60,17 +69,17 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
   providers: [
     HtmlContentService,
     MdContentService,
-    // TextService,
-    // TextCacheService,
+    TextService,
+    TextCacheService,
     TranslateService,
-    // LanguageService,
-    // ReadPopoverService,
-    // Title,
-    // CommentService,
-    // CommentCacheService,
-    // CommonFunctionsService,
-    // SemanticDataService,
-    // ReferenceDataService,
+    LanguageService,
+    ReadPopoverService,
+    Title,
+    CommentService,
+    CommentCacheService,
+    CommonFunctionsService,
+    SemanticDataService,
+    ReferenceDataService,
     // SearchDataService,
     // TooltipService,
     // UserSettingsService,
