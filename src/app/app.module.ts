@@ -14,6 +14,8 @@ import { SemanticDataModalPage } from 'src/pages/semantic-data-modal/semantic-da
 import { ReferenceDataModalPage } from 'src/pages/reference-data-modal/reference-data-modal';
 import { EventsService } from './services/events/events.service';
 import { DownloadTextsModalPage } from 'src/pages/download-texts-modal/download-texts-modal';
+import { HtmlContentService } from './services/html/html-content.service';
+import { MdContentService } from './services/md/md-content.service';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
@@ -41,6 +43,7 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     ReferenceDataModalPage,
     DownloadTextsModalPage,
   ],
+  // TODO imports are missing many things
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     IonicModule.forRoot(),
@@ -55,8 +58,8 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     }),
   ],
   providers: [
-    // HtmlContentService,
-    // MdContentService,
+    HtmlContentService,
+    MdContentService,
     // TextService,
     // TextCacheService,
     TranslateService,
