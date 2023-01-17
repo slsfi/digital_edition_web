@@ -1,22 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Platform, Events } from 'ionic-angular';
-import { ConfigService } from '@ngx-config/core';
+import { Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
-
 
 @Injectable()
 export class UserSettingsService {
 
   private _splitPaneOpen = false;
   private _splitPanePossible = true;
-  private _mode: string;
-  private _language: string;
+  private _mode?: string;
+  private _language?: string;
 
   constructor(
     private platform: Platform,
-    private config: ConfigService,
     private storage: Storage,
-    private events: Events,
   ) {
 
     this.detectPlatform();
@@ -29,7 +25,7 @@ export class UserSettingsService {
       if (mode) {
         this._mode = mode;
       } else {
-        if (this.platform.is('core') || this.platform.is('tablet')) {
+        if (this.platform.is('desktop') || this.platform.is('tablet')) {
           this._mode = 'desktop';
         } else {
           this._mode = 'mobile';
@@ -71,7 +67,7 @@ export class UserSettingsService {
 
   isDesktop() {
     if (this._mode === 'auto') {
-      return this.platform.is('core') || this.platform.is('tablet');
+      return this.platform.is('desktop') || this.platform.is('tablet');
     } else {
       return this._mode === 'desktop';
     }
@@ -104,7 +100,7 @@ export class UserSettingsService {
   }
 
   get mode(): string {
-    return this._mode
+    return this._mode as string
   }
 
   get splitPaneOpen(): boolean {
