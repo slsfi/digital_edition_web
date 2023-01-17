@@ -25,6 +25,9 @@ import { CommentCacheService } from './services/comments/comment-cache.service';
 import { CommonFunctionsService } from './services/common-functions/common-functions.service';
 import { SemanticDataService } from './services/semantic-data/semantic-data.service';
 import { ReferenceDataService } from './services/reference-data/reference-data.service';
+import { UserSettingsService } from './services/settings/user-settings.service';
+import { GenericSettingsService } from './services/settings/generic-settings.service';
+import { AnalyticsService } from './services/analytics/analytics.service';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
@@ -82,15 +85,15 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     ReferenceDataService,
     // SearchDataService,
     // TooltipService,
-    // UserSettingsService,
+    UserSettingsService,
     // SocialSharing,
-    // GenericSettingsService,
+    GenericSettingsService,
     // SplashScreen,
     // SongService,
     // TutorialService,
     // GalleryService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    // AnalyticsService,
+    AnalyticsService,
     // MetadataService,
     EventsService,
   ],
