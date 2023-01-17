@@ -1,38 +1,39 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { catchError, map, Observable, throwError } from 'rxjs';
+import { ajax, AjaxResponse } from 'rxjs/ajax';
 
-import { ConfigService } from '@ngx-config/core';
+import { ConfigService } from '../config/config.service';
 
 @Injectable()
 export class HtmlContentService {
 
   private htmlUrl = '/html/';
 
-  constructor(private http: Http, private config: ConfigService) {
+  constructor(private config: ConfigService) {
   }
 
   getHtmlContent (filename: string): Observable<any> {
-    return this.http.get(  this.config.getSettings('app.apiEndpoint') + '/' +
-                           this.config.getSettings('app.machineName') + this.htmlUrl + filename)
-                    .map(this.extractData)
-                    .catch(this.handleError);
+    return ajax(this.config.getSettings('app.apiEndpoint') + '/' +
+    this.config.getSettings('app.machineName') + this.htmlUrl + filename)
+       .pipe(
+        map(this.extractData),
+        catchError(this.handleError),
+       );
   }
 
-  private extractData(res: Response) {
-    const body = res.json();
-    return body || { };
+  private extractData(res: AjaxResponse<unknown>) {
+    return res.response;
   }
 
-  private handleError (error: Response | any) {
+  private async handleError (error: Response | any) {
     let errMsg: string;
     if (error instanceof Response) {
-      const body = error.json() || '';
+      const body = await error.json() || '';
       const err = body.error || JSON.stringify(body);
       errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
-    return Observable.throw(errMsg);
+    return throwError(errMsg);
   }
 }

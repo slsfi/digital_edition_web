@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ViewController, NavParams, Events } from 'ionic-angular';
-import { ConfigService } from '@ngx-config/core';
+import { NavController, ModalController, NavParams } from '@ionic/angular';
 import { TextService } from '../../app/services/texts/text.service';
 import { CommentService } from '../../app/services/comments/comment.service';
 import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
@@ -9,10 +8,12 @@ import { ReadPopoverService } from '../../app/services/settings/read-popover.ser
 import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
+import { ConfigService } from 'src/app/services/config/config.service';
+import { EventsService } from 'src/app/services/events/events.service';
 
 @Component({
   selector: 'page-download-texts-modal',
-  templateUrl: './download-texts-modal.html'
+  templateUrl: 'download-texts-modal.html'
 })
 export class DownloadTextsModalPage {
 
@@ -22,37 +23,37 @@ export class DownloadTextsModalPage {
   introductionMode: Boolean = false;
   readTextsMode: Boolean = false;
   textId: string;
-  collectionId: string;
-  publicationId: string;
-  chapterId: string;
-  positionId: string;
-  collectionTitle: string;
-  publicationTitle: string;
-  introductionTitle: string;
-  commentTitle: string;
-  downloadFormatsIntro: Record<string, any> = {};
-  downloadFormatsEst: Record<string, any> = {};
-  downloadFormatsCom: Record<string, any> = {};
+  collectionId?: string;
+  publicationId?: string;
+  chapterId?: string;
+  positionId?: string;
+  collectionTitle?: string;
+  publicationTitle?: string;
+  introductionTitle?: string;
+  commentTitle?: string;
+  downloadFormatsIntro?: Record<string, any> = {};
+  downloadFormatsEst?: Record<string, any> = {};
+  downloadFormatsCom?: Record<string, any> = {};
   showInstructions: Boolean = false;
-  instructionsText: string;
+  instructionsText?: string;
   showCopyright: Boolean = false;
-  copyrightText: string;
-  printTranslation: string;
-  textSizeTranslation: string;
+  copyrightText?: string;
+  printTranslation?: string;
+  textSizeTranslation?: string;
   loadingIntro: Boolean = false;
   loadingEst: Boolean = false;
   loadingCom: Boolean = false;
   showErrorMessage: Boolean = false;
-  objectURLs = [];
+  objectURLs: any[] = [];
 
   constructor(
     public navCtrl: NavController,
-    public viewCtrl: ViewController,
+    public viewCtrl: ModalController,
     params: NavParams,
     private config: ConfigService,
     private textService: TextService,
     private commentService: CommentService,
-    private events: Events,
+    private events: EventsService,
     public translate: TranslateService,
     public readPopoverService: ReadPopoverService,
     private tocService: TableOfContentsService,
@@ -61,25 +62,25 @@ export class DownloadTextsModalPage {
     public commonFunctions: CommonFunctionsService
   ) {
     // Get configs
-    this.appMachineName = this.config.getSettings('app.machineName');
-    this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
+    this.appMachineName = this.config.getSettings('app.machineName') as string;
+    this.apiEndPoint = this.config.getSettings('app.apiEndpoint') as string;
     try {
-      this.siteUrl = this.config.getSettings('siteMetaData.website.url');
+      this.siteUrl = this.config.getSettings('siteMetaData.website.url') as string;
     } catch (e) {
       this.siteUrl = '';
     }
     try {
-      this.downloadFormatsIntro = this.config.getSettings('textDownloadOptions.enabledIntroductionFormats');
+      this.downloadFormatsIntro = this.config.getSettings('textDownloadOptions.enabledIntroductionFormats') as object;
     } catch (e) {
       this.downloadFormatsIntro = undefined;
     }
     try {
-      this.downloadFormatsEst = this.config.getSettings('textDownloadOptions.enabledEstablishedFormats');
+      this.downloadFormatsEst = this.config.getSettings('textDownloadOptions.enabledEstablishedFormats') as object;
     } catch (e) {
       this.downloadFormatsEst = undefined;
     }
     try {
-      this.downloadFormatsCom = this.config.getSettings('textDownloadOptions.enabledCommentsFormats');
+      this.downloadFormatsCom = this.config.getSettings('textDownloadOptions.enabledCommentsFormats') as object;
     } catch (e) {
       this.downloadFormatsCom = undefined;
     }
@@ -197,21 +198,21 @@ export class DownloadTextsModalPage {
     );
 
     // Get collection title from database
-    this.textService.getCollection(this.collectionId).subscribe(
-      collectionData => {
+    this.textService.getCollection(this.collectionId as string).subscribe(
+      (collectionData: any) => {
         if (collectionData[0] !== undefined) {
           this.collectionTitle = collectionData[0]['name'];
         } else {
           this.collectionTitle = '';
         }
       },
-      error => { this.collectionTitle = ''; }
+      (error: any) => { this.collectionTitle = ''; }
     );
 
     // Get publication title from TOC (this way we can also get correct chapter titles for publications with chapters)
     if (this.readTextsMode) {
-      this.tocService.getTableOfContents(this.collectionId).subscribe(
-        toc => {
+      this.tocService.getTableOfContents(this.collectionId as string).subscribe(
+        (toc: any) => {
           if (toc !== null) {
             if (toc.children) {
               let searchItemId = this.collectionId + '_' + this.publicationId;
@@ -265,7 +266,7 @@ export class DownloadTextsModalPage {
     this.analyticsService.doPageView('Download texts modal');
   }
 
-  private initiateDownload(textType: string, format: string) {
+  public initiateDownload(textType: string, format: string) {
     this.showErrorMessage = false;
     let mimetype = 'application/xml';
     let fileExtension = 'xml';
@@ -275,21 +276,20 @@ export class DownloadTextsModalPage {
     }
     if (textType === 'intro') {
       this.loadingIntro = true;
-      this.langService.getLanguage().subscribe(lang => {
+      this.langService.getLanguage().subscribe((lang: any) => {
         this.textService.getDownloadableIntroduction(this.textId, format, lang).subscribe(
-          content => {
+          (content: any) => {
             const blob = new Blob([String(content)], {type: mimetype});
             const blobUrl = URL.createObjectURL(blob);
             this.objectURLs.push(blobUrl);
-            let link = document.createElement('a');
+            const link = document.createElement('a');
             link.href = blobUrl;
             link.download = this.convertToFilename(this.introductionTitle + '-' + this.collectionTitle) + '.' + fileExtension;
             link.target = '_blank'
             link.click();
-            link = null;
             this.loadingIntro = false;
           },
-          error => {
+          (error: any) => {
             console.log('error getting introduction in ' + format + ' format');
             this.loadingIntro = false;
             this.showErrorMessage = true;
@@ -299,19 +299,18 @@ export class DownloadTextsModalPage {
     } else if (textType === 'est') {
       this.loadingEst = true;
       this.textService.getDownloadableEstablishedText(this.textId, format).subscribe(
-        content => {
+        (content: any) => {
           const blob = new Blob([String(content)], {type: mimetype});
           const blobUrl = URL.createObjectURL(blob);
           this.objectURLs.push(blobUrl);
-          let link = document.createElement('a');
+          const link = document.createElement('a');
           link.href = blobUrl;
           link.download = this.convertToFilename(this.publicationTitle) +  '.' + fileExtension;
           link.target = '_blank'
           link.click();
-          link = null;
           this.loadingEst = false;
         },
-        error => {
+        (error: any) => {
           console.log('error getting established text in ' + format + ' format');
           this.loadingEst = false;
           this.showErrorMessage = true;
@@ -324,12 +323,11 @@ export class DownloadTextsModalPage {
           const blob = new Blob([String(content)], {type: mimetype});
           const blobUrl = URL.createObjectURL(blob);
           this.objectURLs.push(blobUrl);
-          let link = document.createElement('a');
+          const link = document.createElement('a');
           link.href = blobUrl;
           link.download = this.convertToFilename(this.publicationTitle + '-' + this.commentTitle) +  '.' + fileExtension;
           link.target = '_blank'
           link.click();
-          link = null;
           this.loadingCom = false;
         },
         error =>  {
@@ -342,7 +340,7 @@ export class DownloadTextsModalPage {
     this.doAnalytics(textType + '_' + format);
   }
 
-  private openPrintFriendlyText(textType: string) {
+  public openPrintFriendlyText(textType: string) {
     this.showErrorMessage = false;
     if (textType === 'intro') {
       this.loadingIntro = true;
@@ -362,13 +360,13 @@ export class DownloadTextsModalPage {
       URL.revokeObjectURL(object);
     });
     this.viewCtrl.dismiss();
-    this.events.publish('download-texts-modal:dismiss');
+    this.events.publishDownloadTextsModalDismiss();
   }
 
   private openIntroductionForPrint() {
-    this.langService.getLanguage().subscribe(lang => {
+    this.langService.getLanguage().subscribe((lang: any) => {
       this.textService.getIntroduction(this.textId, lang).subscribe(
-        res => {
+        (res: any) => {
           let content = res.content.replace(/images\//g, 'assets/images/').replace(/\.png/g, '.svg');
 
           content = this.constructHtmlForPrint(content, 'intro');
@@ -390,7 +388,7 @@ export class DownloadTextsModalPage {
             console.log('error opening introduction in print format in new window', e);
           }
         },
-        error => {
+        (error: any) => {
           console.log('error loading introduction');
           this.loadingIntro = false;
           this.showErrorMessage = true;
@@ -401,7 +399,7 @@ export class DownloadTextsModalPage {
 
   private openEstablishedForPrint() {
     this.textService.getEstablishedText(this.textId).subscribe(
-      content => {
+      (content: any) => {
         if (content === '<html xmlns="http://www.w3.org/1999/xhtml"><head></head><body>File not found</body></html>') {
           content = '';
         } else {
@@ -431,7 +429,7 @@ export class DownloadTextsModalPage {
           console.log('error opening established text in print format in new window', e);
         }
       },
-      error => {
+      (error: any) => {
         console.log('error loading established text');
         this.loadingEst = false;
         this.showErrorMessage = true;
@@ -460,9 +458,9 @@ export class DownloadTextsModalPage {
               let concatReceivers = '';
               if (metadata['subjects'] !== undefined && metadata['subjects'] !== null) {
                 if (metadata['subjects'].length > 0) {
-                  const senders = [];
-                  const receivers = [];
-                  metadata['subjects'].forEach(subject => {
+                  const senders = [] as any;
+                  const receivers = [] as any;
+                  metadata['subjects'].forEach((subject: any) => {
                     if ( subject['avs\u00e4ndare'] ) {
                       senders.push(subject['avs\u00e4ndare']);
                     }
@@ -586,8 +584,8 @@ export class DownloadTextsModalPage {
   private constructHtmlForPrint(text: string, textType: string) {
     const cssStylesheets = [];
     for (let i = 0; i < document.styleSheets.length; i++) {
-      if (document.styleSheets[i] !== null && document.styleSheets[i].href !== null && (document.styleSheets[i].href.indexOf('/assets/custom') !== -1 ||
-        document.styleSheets[i].href.indexOf('/build/main') !== -1)) {
+      const href = document.styleSheets[i].href;
+      if (href && (href.indexOf('/assets/custom') !== -1 || href.indexOf('/build/main') !== -1)) {
         cssStylesheets.push(document.styleSheets[i].href);
       }
     }
@@ -746,7 +744,7 @@ export class DownloadTextsModalPage {
   }
 
   private constructPrintHtmlTitle(textType: string) {
-    let title = '';
+    let title: any = '';
     if (textType === 'intro') {
       if (this.introductionTitle) {
         title = this.introductionTitle + ' | ';
@@ -771,17 +769,17 @@ export class DownloadTextsModalPage {
     return title;
   }
 
-  private recursiveSearchTocForPublicationTitle(toc_array, searchId, idIncludesPosition = false, parentTitle?) {
+  private recursiveSearchTocForPublicationTitle(toc_array: any, searchId: any, idIncludesPosition = false, parentTitle?: any) {
     if (toc_array !== null && toc_array !== undefined) {
-      toc_array.forEach(item => {
+      toc_array.forEach((item: any) => {
         if (item.itemId !== undefined && item.itemId === searchId) {
             this.publicationTitle = item.text;
-          if (this.publicationTitle.slice(-1) === '.') {
+          if (this.publicationTitle?.slice(-1) === '.') {
             this.publicationTitle = this.publicationTitle.slice(0, -1);
           }
         } else if (idIncludesPosition && item.itemId !== undefined && item.itemId.startsWith(searchId)) {
           this.publicationTitle = parentTitle;
-          if (this.publicationTitle.slice(-1) === '.') {
+          if (this.publicationTitle?.slice(-1) === '.') {
             this.publicationTitle = this.publicationTitle.slice(0, -1);
           }
         } else if (item.children) {
@@ -792,8 +790,8 @@ export class DownloadTextsModalPage {
   }
 
   // Returns the given title string as a string that can be used as a filename
-  private convertToFilename(title: string, maxLength = 75) {
-    let filename = title.replace(/[àáåä]/gi, 'a').replace(/[öøô]/gi, 'o').replace(/[æ]/gi, 'ae').replace(/[èéêë]/gi, 'e').replace(/[ûü]/gi, 'u');
+  private convertToFilename(title: string | undefined, maxLength = 75) {
+    let filename = title ? title.replace(/[àáåä]/gi, 'a').replace(/[öøô]/gi, 'o').replace(/[æ]/gi, 'ae').replace(/[èéêë]/gi, 'e').replace(/[ûü]/gi, 'u') : '';
     filename = filename.replace(/[  ]/gi, '_').replace(/[,:;*+?!"'^%/${}()|[\]\\]/g, '').replace(/[^a-z0-9_-]/gi, '-');
     filename = filename.replace(/_{2,}/g, '_').replace(/\-{2,}/g, '-').replace('-_', '_').toLowerCase();
     if (filename.length > maxLength) {

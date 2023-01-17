@@ -13,6 +13,7 @@ import { CommentModalPage } from 'src/pages/comment-modal/comment-modal';
 import { SemanticDataModalPage } from 'src/pages/semantic-data-modal/semantic-data-modal';
 import { ReferenceDataModalPage } from 'src/pages/reference-data-modal/reference-data-modal';
 import { EventsService } from './services/events/events.service';
+import { DownloadTextsModalPage } from 'src/pages/download-texts-modal/download-texts-modal';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
@@ -38,7 +39,7 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     CommentModalPage,
     SemanticDataModalPage,
     ReferenceDataModalPage,
-    // DownloadTextsModalPage,
+    DownloadTextsModalPage,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
@@ -90,7 +91,7 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     SemanticDataModalPage,
     ReferenceDataModalPage,
     // FacsimileZoomModalPage,
-    // DownloadTextsModalPage,
+    DownloadTextsModalPage,
     // IllustrationPage,
     // SearchAppPage,
     // SharePopoverPage,
