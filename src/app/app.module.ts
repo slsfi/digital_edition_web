@@ -31,6 +31,7 @@ import { AnalyticsService } from './services/analytics/analytics.service';
 import { MetadataService } from './services/metadata/metadata.service';
 import { GalleryService } from './services/gallery/gallery.service';
 import { SongService } from './services/song/song.service';
+import { TooltipService } from './services/tooltips/tooltip.service';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
@@ -87,11 +88,9 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     SemanticDataService,
     ReferenceDataService,
     // SearchDataService,
-    // TooltipService,
+    TooltipService,
     UserSettingsService,
-    // SocialSharing,
     GenericSettingsService,
-    // SplashScreen,
     SongService,
     GalleryService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
