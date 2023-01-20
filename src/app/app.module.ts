@@ -33,6 +33,8 @@ import { GalleryService } from './services/gallery/gallery.service';
 import { SongService } from './services/song/song.service';
 import { TooltipService } from './services/tooltips/tooltip.service';
 import { SearchDataService } from './services/search/search-data.service';
+import { SharePopoverPage } from 'src/pages/share-popover/share-popover';
+import { SharePopoverPageModule } from 'src/pages/share-popover/share-popover.module';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
@@ -73,6 +75,7 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
         deps: [HttpClient]
       }
     }),
+    SharePopoverPageModule,
   ],
   providers: [
     HtmlContentService,
@@ -111,7 +114,7 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     DownloadTextsModalPage,
     // IllustrationPage,
     // SearchAppPage,
-    // SharePopoverPage,
+    SharePopoverPage,
   ]
 })
 export class AppModule {}

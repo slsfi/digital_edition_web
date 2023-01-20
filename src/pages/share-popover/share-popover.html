@@ -1,0 +1,22 @@
+<ion-list>
+  <ion-list-header class="popover-header" color="secondary">
+    <div class="header-title">{{'Reference.share' | translate }}</div>
+    <div class="close" (click)="dismiss()"><ion-icon name="close"></ion-icon></div>
+  </ion-list-header>
+  <ion-item *ngIf="showSocial.email" (click)="shareEmail()">
+    <ion-icon item-start name="mail"></ion-icon>
+    <p>{{'Reference.mail' | translate }}</p>
+  </ion-item>
+  <ion-item *ngIf="showSocial.facebook" (click)="shareFacebook()">
+    <ion-icon item-start name="logo-facebook"></ion-icon>
+    <p>Facebook</p>
+  </ion-item>
+  <ion-item *ngIf="showSocial.twitter" (click)="shareTwitter()">
+    <ion-icon item-start name="logo-twitter"></ion-icon>
+    <p>Twitter</p>
+  </ion-item>
+  <ion-item *ngIf="showSocial.instagram" (click)="shareInstagram()">
+    <ion-icon item-start name="logo-instagram"></ion-icon>
+    <p>Instagram</p>
+  </ion-item>
+</ion-list>
