@@ -29,11 +29,6 @@ export class ReferenceDataService {
        );
   }
 
-  private extractData(res: Response) {
-    const body = res.json();
-    return body || { };
-  }
-
   private async handleError (error: Response | any) {
     let errMsg: string;
     if (error instanceof Response) {
