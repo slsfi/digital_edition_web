@@ -35,6 +35,9 @@ import { TooltipService } from './services/tooltips/tooltip.service';
 import { SearchDataService } from './services/search/search-data.service';
 import { SharePopoverPage } from 'src/pages/share-popover/share-popover';
 import { SharePopoverPageModule } from 'src/pages/share-popover/share-popover.module';
+import { SearchAppPage } from 'src/pages/search-app/search-app';
+import { SearchAppPageModule } from 'src/pages/search-app/search-app.module';
+import { CommonModule } from '@angular/common';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
@@ -76,6 +79,8 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
       }
     }),
     SharePopoverPageModule,
+    SearchAppPageModule,
+    CommonModule,
   ],
   providers: [
     HtmlContentService,
@@ -113,7 +118,7 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     // FacsimileZoomModalPage,
     DownloadTextsModalPage,
     // IllustrationPage,
-    // SearchAppPage,
+    SearchAppPage,
     SharePopoverPage,
   ]
 })

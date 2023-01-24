@@ -1,0 +1,10 @@
+comments {
+  /* Styles for comments are generally defined in src/theme/_tei_comment.scss */
+
+  /* Highlight for search match. */
+  match {
+    background-color: $search-match-color !important;
+  }
+
+}
+

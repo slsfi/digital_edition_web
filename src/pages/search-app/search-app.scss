@@ -1,0 +1,47 @@
+page-search-app {
+    .close-button {
+        float: right;
+        padding-right: 1rem;
+        font-size: 1.8rem !important;
+        color: #000;
+        transition: $opacity-hover-transition;
+    }
+    .close-button:hover {
+        opacity: $opacity-hover;
+    }
+      
+    .close-button:active {
+      opacity: 1;
+    }
+
+    .search-title {
+        margin-left: 1.2rem !important;
+        color: white;
+    }
+
+    .segment-header {
+        font-size: 1rem !important;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        min-width: max-content;
+    }
+
+    .segment-button {
+        border: 0 !important;
+        border-radius: 0 !important;
+    }
+
+	.segment-activated {
+		background-color: var(--segment-activated-background-color) !important;
+        border-color: var(--segment-activated-background-color) !important;
+        color: var(--segment-activated-text-color) !important;
+	}
+
+	.header {
+		border-bottom: 1px solid var(--segment-activated-background-color);
+	}
+
+    ion-content > .scroll-content {
+        overflow: auto;
+    }
+}

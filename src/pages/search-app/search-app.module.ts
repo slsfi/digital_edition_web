@@ -1,31 +1,28 @@
 import { NgModule } from '@angular/core';
-import { SharePopoverPage } from './share-popover';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { SearchAppPage } from './search-app';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
+import { IonicModule } from '@ionic/angular';
+import { ComponentsModule, createTranslateLoader } from 'src/app/components/components.module';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
-
-export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
 
 @NgModule({
   declarations: [
-    SharePopoverPage,
+    SearchAppPage,
   ],
   imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    TranslateModule.forChild({
+    IonicModule.forRoot(),
+    TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: (createTranslateLoader),
         deps: [HttpClient]
       }
-    })
+    }),
+    ComponentsModule,
+    CommonModule,
+    FormsModule,
   ],
 })
-export class SharePopoverPageModule {}
+export class SearchAppPageModule {}
