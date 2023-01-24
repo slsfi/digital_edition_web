@@ -39,6 +39,9 @@ import { SearchAppPage } from 'src/pages/search-app/search-app';
 import { SearchAppPageModule } from 'src/pages/search-app/search-app.module';
 import { CommonModule } from '@angular/common';
 import { UserSettingsPopoverPageModule } from 'src/pages/user-settings-popover/user-settings-popover.module';
+import { PipesModule } from 'src/pipes/pipes.module';
+import { DigitalEditionListModule } from './components/digital-edition-list/digital-edition-list.module';
+import { ComponentsModule } from './components/components.module';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
@@ -69,7 +72,12 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
   // TODO imports are missing many things
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
-    IonicModule.forRoot(),
+    IonicModule.forRoot(
+      {
+        mode: 'md',
+        backButtonText: '',
+      }
+    ),
     AppRoutingModule,
     HttpClientModule,
     TranslateModule.forRoot({
@@ -83,6 +91,17 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     SearchAppPageModule,
     CommonModule,
     UserSettingsPopoverPageModule,
+    ComponentsModule,
+    PipesModule,
+    DigitalEditionListModule,
+    // PersonSearchPageModule
+    // FacsimileZoomPageModule
+    // ReadPopoverPageModule
+    // UserSettingsPopoverPageModule
+    // IllustrationPageModule
+    // SearchAppPageModule
+    // SharePopoverPageModule
+    // MathJaxModule
   ],
   providers: [
     HtmlContentService,

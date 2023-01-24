@@ -82,7 +82,7 @@
         <ion-card class="digital-edition" style="padding: 20px; position: relative;">
           <ion-card-header class="digital-edition-list-card-header">
             <img
-              src="{{editionImages[edition.id] ? (editionImages[editionid]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
+              src="{{editionImages[edition.id] ? (editionImages[edition.id]).replace('.','_thumb.') : (editionImages.default).replace('.','_thumb.')}}">
             <ion-icon class="download" *ngIf="edition.isDownload" name="download">
             </ion-icon>
           </ion-card-header>

@@ -57,7 +57,7 @@ export class DigitalEditionList implements OnInit {
   ) {
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint') as string;
     this.projectMachineName = this.config.getSettings('app.machineName') as string;
-    this.editionImages = this.config.getSettings('editionImages');
+    this.editionImages = this.config.getSettings('editionImages') as any;
     this.editionShortTexts = this.config.getSettings('editionShortTexts') as string;
     this.appLanguage = (this.config.getSettings('i18n') as any).locale;
     this.collectionDownloads = this.config.getSettings('collectionDownloads') as any;
