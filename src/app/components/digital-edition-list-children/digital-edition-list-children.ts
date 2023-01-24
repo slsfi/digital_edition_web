@@ -25,7 +25,7 @@ export class DigitalEditionListChildrenComponent {
   collectionDownloads: any;
 
   constructor(
-    private userSettingsService: UserSettingsService,
+    public userSettingsService: UserSettingsService,
     private config: ConfigService,
     private analyticsService: AnalyticsService,
     private router: Router
