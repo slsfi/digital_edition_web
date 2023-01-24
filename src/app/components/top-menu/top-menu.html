@@ -1,0 +1,155 @@
+<ion-toolbar>
+  <ion-grid>
+    <ion-row>
+      <ion-col align-self-center *ngIf="(showLogo || !userSettingsService.isTablet()) && !(splitPaneMobile && userSettingsService.isMobile())">
+        <ion-grid>
+          <ion-row>
+            <ion-col *ngIf="userSettingsService.isDesktop() || userSettingsService.isTablet()">
+              <ion-buttons start>
+                <button ion-button icon-only (click)="toggleSplitPane()" class="enable top-menu-button" isActive="false" small id="menuToggle">
+                  <ion-icon *ngIf="!splitPaneOpen" name="menu"></ion-icon>
+                  <ion-icon *ngIf="splitPaneOpen" name="close"></ion-icon>
+                </button>
+                <button ion-button class="top-menu-button" (click)="front()">
+                  <ion-icon name="home"></ion-icon>
+                </button>
+                <button *ngIf="showTopContentButton" ion-button class="top-menu-button" (click)="content()">
+                  {{'TopMenu.Read' | translate }}
+                </button>
+                <button *ngIf="showTopAboutButton" ion-button class="top-menu-button" (click)="about()">
+                  {{'TopMenu.Info' | translate }}
+                </button>
+                <button *ngIf="showTopMusicButton" ion-button class="top-menu-button" (click)="music()">
+                  {{'TopMenu.Music' | translate }}
+                </button>
+                <button *ngIf="showTopSimpleSearchButton" ion-button class="top-menu-button simple-search-button" (click)="searchApp()" id="searchIcon">
+                  <ion-icon name="search"></ion-icon>
+                  <span class="side-title">{{'TopMenu.SimpleSearch' | translate }}</span>
+                </button>
+                <button *ngIf="showTopElasticButton" ion-button class="top-menu-button elastic-search-button" (click)="elasticSearch()" id="elasticSearchIcon">
+                  <ion-icon name="search"></ion-icon>
+                  <span class="side-title">{{'TopMenu.AdvancedSearch' | translate }}</span>
+                </button>
+                <button *ngIf="showTopURNButton" ion-button (click)="showReference($event)">
+                  <ion-icon name="share-alt"></ion-icon>
+                  <span class="side-title">{{'Reference.refer' | translate }}</span>
+                </button>
+                <button *ngIf="showHelpButton" ion-button class="top-menu-button" (click)="help()">
+                  <ion-icon name="help"></ion-icon>
+                </button>
+                <button *ngIf="showViewToggle" ion-button class="top-menu-button" (click)="showUserSettingsPopover($event)" end>
+                  <ion-icon name="md-globe"></ion-icon>
+                </button>
+              </ion-buttons>
+            </ion-col>
+            <ion-col *ngIf="userSettingsService.isMobile() && !userSettingsService.isDesktop() && !userSettingsService.isTablet()" class="mobile_row">
+              <ion-buttons start>
+                <button ion-button icon-only (click)="toggleSplitPane()" class="enable top-menu-button" isActive="false" id="menuToggle">
+                  <ion-icon *ngIf="!splitPaneOpen" name="menu"></ion-icon>
+                  <ion-icon *ngIf="splitPaneOpen" name="close"></ion-icon>
+                </button>
+                <button ion-button class="top-menu-button" (click)="front()">
+                  <ion-icon name="home"></ion-icon>
+                </button>
+                <button *ngIf="showTopSimpleSearchButton" ion-button (click)="searchApp()" class="searchButton simple-search-button" id="searchIcon">
+                  <ion-icon name="search"></ion-icon>
+                </button>
+                <button *ngIf="showTopElasticButton" ion-button (click)="elasticSearch()" class="searchButton elastic-search-button" id="elasticSearchIcon">
+                  <ion-icon name="search"></ion-icon>
+                </button>
+                <button *ngIf="showTopURNButton" ion-button (click)="showReference($event)">
+                  <ion-icon name="share-alt"></ion-icon>
+                </button>
+                <button *ngIf="showHelpButton" ion-button class="top-menu-button" (click)="help()">
+                  <ion-icon name="help"></ion-icon>
+                </button>
+                <button *ngIf="showViewToggle" ion-button (click)="showUserSettingsPopover($event)" end>
+                  <ion-icon name="md-globe"></ion-icon>
+                </button>
+              </ion-buttons>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+      <ion-col align-self-center *ngIf="!showLogo && userSettingsService.isTablet()" col-12>
+        <ion-grid>
+          <ion-row>
+            <ion-col *ngIf="userSettingsService.isDesktop() || userSettingsService.isTablet()">
+              <ion-buttons start>
+                <button ion-button icon-only (click)="toggleSplitPane()" class="enable top-menu-button" isActive="false" id="menuToggle">
+                  <ion-icon *ngIf="!splitPaneOpen" name="menu"></ion-icon>
+                  <ion-icon *ngIf="splitPaneOpen" name="close"></ion-icon>
+                </button>
+                <button ion-button class="top-menu-button" (click)="front()">
+                  <ion-icon name="home"></ion-icon>
+                </button>
+                <button *ngIf="showTopContentButton" ion-button class="top-menu-button" (click)="content()">
+                  {{'TopMenu.Read' | translate }}
+                </button>
+                <button *ngIf="showTopAboutButton" ion-button class="top-menu-button" (click)="about()">
+                  {{'TopMenu.Info' | translate }}
+                </button>
+                <button *ngIf="showTopMusicButton" ion-button class="top-menu-button" (click)="music()">
+                  {{'TopMenu.Music' | translate }}
+                </button>
+                <button *ngIf="showTopSimpleSearchButton" ion-button class="top-menu-button simple-search-button" (click)="searchApp()" id="searchIcon">
+                  <ion-icon name="search"></ion-icon>
+                </button>
+                <button *ngIf="showTopElasticButton" ion-button class="top-menu-button elastic-search-button" (click)="elasticSearch()" id="elasticSearchIcon">
+                  <ion-icon name="search"></ion-icon>
+                  <span class="side-title">{{'TopMenu.AdvancedSearch' | translate }}</span>
+                </button>
+                <button *ngIf="showTopURNButton" ion-button class="top-menu-button" (click)="showReference($event)">
+                  <ion-icon name="share-alt"></ion-icon>
+                  <span class="side-title">{{'Reference.refer' | translate }}</span>
+                </button>
+                <button *ngIf="showHelpButton" ion-button class="top-menu-button" (click)="help()">
+                  <ion-icon name="help"></ion-icon>
+                </button>
+                <button *ngIf="showViewToggle" ion-button class="top-menu-button" (click)="showUserSettingsPopover($event)" end>
+                  <ion-icon name="md-globe"></ion-icon>
+                </button>
+              </ion-buttons>
+            </ion-col>
+            <ion-col *ngIf="userSettingsService.isMobile() && !userSettingsService.isDesktop() && !userSettingsService.isTablet()">
+              <ion-buttons end>
+                <button ion-button icon-only (click)="toggleSplitPane()" class="enable top-menu-button" isActive="false" id="menuToggle">
+                  <ion-icon *ngIf="!splitPaneOpen" name="menu"></ion-icon>
+                  <ion-icon *ngIf="splitPaneOpen" name="close"></ion-icon>
+                </button>
+                <button ion-button class="top-menu-button" (click)="front()">
+                  <ion-icon name="home"></ion-icon>
+                </button>
+                <button *ngIf="showTopSimpleSearchButton || showTopElasticButton" ion-button (click)="searchApp()" id="searchIcon" class="searchButton simple-search-button">
+                  <ion-icon name="search"></ion-icon>
+                </button>
+                <button *ngIf="showTopURNButton" ion-button (click)="showReference($event)">
+                  <ion-icon name="share-alt"></ion-icon>
+                </button>
+                <button *ngIf="showViewToggle" ion-button (click)="showUserSettingsPopover($event)" end>
+                  <ion-icon name="md-globe"></ion-icon>
+                </button>
+              </ion-buttons>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+
+      <ion-col align-self-center *ngIf="userSettingsService.isMobile() && !userSettingsService.isDesktop() && !userSettingsService.isTablet()">
+        <ion-title float-right>
+          <title-logo></title-logo>
+        </ion-title>
+      </ion-col>
+      <ion-col align-self-center *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()">
+        <ion-title float-right>
+          <title-logo></title-logo>
+        </ion-title>
+      </ion-col>
+      <ion-col align-self-center *ngIf="userSettingsService.isTablet() && showLogo">
+        <ion-title float-right>
+          <title-logo></title-logo>
+        </ion-title>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-toolbar>

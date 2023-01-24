@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 
-// import { TopMenuComponent } from './top-menu/top-menu';
 // import { SplitPaneToggleComponent } from './split-pane-toggle/split-pane-toggle';
 // import { TableOfContentsDrilldownMenuComponent } from './table-of-contents-drilldown-menu/table-of-contents-drilldown-menu';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -8,7 +7,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 // import { StaticPagesTocDrilldownMenuComponent } from './static-pages-toc-drilldown-menu/static-pages-toc-drilldown-menu';
 import { HttpClient } from '@angular/common/http';
 // import { TocMenuComponent } from './toc-menu/toc-menu';
-// import { TitleLogoComponent } from './title-logo/title-logo';
 // import { TextChangerComponent } from './text-changer/text-changer';
 import { SimpleSearchComponent } from './simple-search/simple-search';
 // import { SocialSharingComponent } from './social-sharing/social-sharing';
@@ -28,6 +26,8 @@ import { PipesModule } from 'src/pipes/pipes.module';
 import { CommonModule } from '@angular/common';
 import { LanguageService } from '../services/languages/language.service';
 import { FormsModule } from '@angular/forms';
+import { TopMenuComponent } from './top-menu/top-menu';
+import { TitleLogoComponent } from './title-logo/title-logo';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -35,9 +35,8 @@ export function createTranslateLoader(http: HttpClient) {
 
 @NgModule({
   declarations: [
-    // TitleLogoComponent,
-    // TopMenuComponent,
-    // TopMenuComponent,
+    TitleLogoComponent,
+    TopMenuComponent,
     // SplitPaneToggleComponent,
     // TableOfContentsDrilldownMenuComponent,
     // StaticPagesTocDrilldownMenuComponent,
@@ -69,9 +68,8 @@ export function createTranslateLoader(http: HttpClient) {
     FormsModule,
   ],
   exports: [
-    // TitleLogoComponent,
-    // TopMenuComponent,
-    // TopMenuComponent,
+    TitleLogoComponent,
+    TopMenuComponent,
     // SplitPaneToggleComponent,
     // TableOfContentsDrilldownMenuComponent,
     // StaticPagesTocDrilldownMenuComponent,

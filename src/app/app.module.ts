@@ -38,6 +38,7 @@ import { SharePopoverPageModule } from 'src/pages/share-popover/share-popover.mo
 import { SearchAppPage } from 'src/pages/search-app/search-app';
 import { SearchAppPageModule } from 'src/pages/search-app/search-app.module';
 import { CommonModule } from '@angular/common';
+import { UserSettingsPopoverPageModule } from 'src/pages/user-settings-popover/user-settings-popover.module';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
@@ -81,6 +82,7 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     SharePopoverPageModule,
     SearchAppPageModule,
     CommonModule,
+    UserSettingsPopoverPageModule,
   ],
   providers: [
     HtmlContentService,

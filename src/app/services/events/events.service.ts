@@ -28,6 +28,27 @@ export class EventsService {
     private openMediaCollections = new Subject<any>();
     // open:pdf
     private openPdf = new Subject<any>();
+    // title-logo-show
+    private titleLogoShow = new Subject<any>();
+    // title-logo:setTitle
+    private titleLogoSetTitle = new Subject<any>();
+    // title-logo:setSubTitle
+    private titleLogoSetSubTitle = new Subject<any>();
+    // topMenu:help
+    private topMenuHelp = new Subject<any>();
+    // topMenu:elasticSearch
+    private topMenuElasticSearch = new Subject<any>();
+    // topMenu:front
+    private topMenuFront = new Subject<any>();
+    // topMenu:content
+    private topMenuContent = new Subject<any>();
+    // topMenu:about
+    private topMenuAbout = new Subject<any>();
+    // topMenu:music
+    private topMenuMusic = new Subject<any>();
+    // title-logo:collectionTitle
+    private titleLogoCollectionTitle = new Subject<any>();
+
 
     publishShareDismiss(data?: any) {
         this.shareDismiss.next(data);
@@ -115,5 +136,85 @@ export class EventsService {
 
     getOpenPdf(): Subject<any> {
         return this.openPdf;
+    }
+
+    publishTitleLogoShow(data?: any) {
+        this.titleLogoShow.next(data);
+    }
+
+    getTitleLogoShow(): Subject<any> {
+        return this.titleLogoShow;
+    }
+
+    publishTitleLogoSetTitle(data?: any) {
+        this.titleLogoSetTitle.next(data);
+    }
+
+    getTitleLogoSetTitle(): Subject<any> {
+        return this.titleLogoSetTitle;
+    }
+
+    publishTitleLogoSetSubTitle(data?: any) {
+        this.titleLogoSetSubTitle.next(data);
+    }
+
+    getTitleLogoSetSubTitle(): Subject<any> {
+        return this.titleLogoSetSubTitle;
+    }
+
+    publishTopMenuHelp(data?: any) {
+        this.topMenuHelp.next(data);
+    }
+
+    getTopMenuHelp(): Subject<any> {
+        return this.topMenuHelp;
+    }
+
+    publishTopMenuElasticSearch(data?: any) {
+        this.topMenuElasticSearch.next(data);
+    }
+
+    getTopMenuElasticSearch(): Subject<any> {
+        return this.topMenuElasticSearch;
+    }
+
+    publishTopMenuFront(data?: any) {
+        this.topMenuFront.next(data);
+    }
+
+    getTopMenuFront(): Subject<any> {
+        return this.topMenuFront;
+    }
+
+    publishTopMenuContent(data?: any) {
+        this.topMenuContent.next(data);
+    }
+
+    getTopMenuContent(): Subject<any> {
+        return this.topMenuContent;
+    }
+
+    publishTopMenuAbout(data?: any) {
+        this.topMenuAbout.next(data);
+    }
+
+    getTopMenuAbout(): Subject<any> {
+        return this.topMenuAbout;
+    }
+
+    publishTopMenuMusic(data?: any) {
+        this.topMenuMusic.next(data);
+    }
+
+    getTopMenuMusic(): Subject<any> {
+        return this.topMenuMusic;
+    }
+
+    publishTitleLogoCollectionTitle(data?: any) {
+        this.titleLogoCollectionTitle.next(data);
+    }
+
+    getTitleLogoCollectionTitle(): Subject<any> {
+        return this.titleLogoCollectionTitle;
     }
 }
