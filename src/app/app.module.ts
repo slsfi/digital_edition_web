@@ -45,6 +45,8 @@ import { ComponentsModule } from './components/components.module';
 import { ReadPopoverPage } from 'src/pages/read-popover/read-popover';
 import { ReadPopoverPageModule } from 'src/pages/read-popover/read-popover.module';
 import { UserSettingsPopoverPage } from 'src/pages/user-settings-popover/user-settings-popover';
+import { FacsimileZoomPageModule } from 'src/pages/facsimile-zoom/facsimile-zoom.module';
+import { FacsimileZoomModalPage } from 'src/pages/facsimile-zoom/facsimile-zoom';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
@@ -72,7 +74,6 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     ReferenceDataModalPage,
     DownloadTextsModalPage,
   ],
-  // TODO imports are missing many things
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     IonicModule.forRoot(
@@ -98,7 +99,7 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     PipesModule,
     DigitalEditionListModule,
     // PersonSearchPageModule
-    // FacsimileZoomPageModule
+    FacsimileZoomPageModule,
     ReadPopoverPageModule,
     // IllustrationPageModule
     // SearchAppPageModule
@@ -138,7 +139,7 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     CommentModalPage,
     SemanticDataModalPage,
     ReferenceDataModalPage,
-    // FacsimileZoomModalPage,
+    FacsimileZoomModalPage,
     DownloadTextsModalPage,
     // IllustrationPage,
     SearchAppPage,

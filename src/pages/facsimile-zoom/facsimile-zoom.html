@@ -1,0 +1,94 @@
+<ion-content>
+        <div middle class="facsimile_button_group">
+            <div class="buttons">
+                <div class="action_buttons">
+                    <button *ngIf="images.length > 1" ion-fab mini (click)="previous()">
+                        <ion-icon name="arrow-back"></ion-icon>
+                    </button>
+                    <button *ngIf="backsides.length > 0 && backsides[activeImage]" ion-fab mini (click)="showBackside = !showBackside">
+                        <ion-icon name="repeat"></ion-icon>
+                    </button>
+                    <button *ngIf="images.length > 1" ion-fab mini (click)="next()">
+                        <ion-icon name="arrow-forward"></ion-icon>
+                    </button>
+                    <button ion-fab mini (click)="rotate()">
+                      <ion-icon name="refresh"></ion-icon>
+                    </button>
+                    <button *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()" ion-fab mini (click)="zoomIn()">
+                        <ion-icon name="add"></ion-icon>
+                    </button>
+                    <button *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()" ion-fab mini (click)="zoomOut()">
+                        <ion-icon name="remove"></ion-icon>
+                    </button>
+                    <button ion-fab mini (click)="resetFacsimile()">
+                        <ion-icon name="undo"></ion-icon>
+                    </button>
+                    <button *ngIf="(descriptions && descriptions[activeImage]) || (imageTitles && imageTitles[activeImage])" ion-fab mini (click)="showAbout()">
+                        <ion-icon name="information"></ion-icon>
+                    </button>
+                    <button ion-fab mini (click)="cancel()">
+                        <ion-icon name="close" class="close_button"></ion-icon>
+                    </button>
+                    <ion-item class="facsimile-zoom-page-numbering"
+                    *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet() && images.length > 1">
+                        <ion-label class="page_number_label">{{"Read.Facsimiles.Page" | translate}} ({{"Read.Facsimiles.Of" | translate}} {{(images)?images.length:0}}):</ion-label>
+                        <ion-input class="page_number_input" (change)="setPage($event)" [(ngModel)]="manualPageNumber" type="number"></ion-input>
+                    </ion-item>
+                </div>
+                <div *ngIf="(descriptions && descriptions[activeImage]) || (imageTitles && imageTitles[activeImage])" class="image-description"
+                    [ngStyle]="{'display': showAboutHelp?'':'none'}">
+                    <ion-label *ngIf="(descriptions && descriptions[activeImage]) || (imageTitles && imageTitles[activeImage])" class="facs-desc"><span class="facs-desc-title" *ngIf="imageTitles && imageTitles[activeImage]" [innerHTML]="imageTitles[activeImage]"></span> <span *ngIf="descriptions && descriptions[activeImage]" [innerHTML]="descriptions[activeImage]"></span></ion-label>
+                </div>
+            </div>
+        </div>
+        <div class="contents">
+            <div class="center_content">
+                <div class="div_img">
+                    <div *ngIf="!userSettingsService.isMobile() && !userSettingsService.isTablet()">
+                        <img alt="facsimile" *ngIf="!facsimilePagesInfinite && (!showBackside || !backsides[activeImage])"
+                          [src]="images[activeImage]"
+                          class="facsimile-zoom-image"
+                          [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)', 'max-height':'calc(100vh - '+toolbarHeight+'px)'}"
+                          (wheel)="onMouseWheel($event)"
+                          (pan)="handlePanEvent($event)"
+                          (mouseup)="onMouseUp($event)"
+                          (mousedown)="$event.preventDefault();"
+                          draggable="true"
+                        >
+                        <img alt="facsimile" *ngIf="!facsimilePagesInfinite && showBackside && backsides[activeImage]"
+                          [src]="getBacksideUrl(images[activeImage])"
+                          class="facsimile-zoom-image"
+                          [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)', 'max-height':'calc(100vh - '+toolbarHeight+'px)'}"
+                          (wheel)="onMouseWheel($event)"
+                          (pan)="handlePanEvent($event)"
+                          (mouseup)="onMouseUp($event)"
+                          (mousedown)="$event.preventDefault();"
+                          draggable="true"
+                        >
+                        <img alt="facsimile" *ngIf="facsimilePagesInfinite && facsNumber"
+                          [src]="facsUrl + facsNumber + '/' + facsSize"
+                          class="facsimile-zoom-image"
+                          [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)', 'max-height':'calc(100vh - '+toolbarHeight+'px)'}"
+                          (wheel)="onMouseWheel($event)"
+                          (pan)="handlePanEvent($event)"
+                          (mouseup)="onMouseUp($event)"
+                          (mousedown)="$event.preventDefault();"
+                          draggable="true"
+                        >
+                    </div>
+                    <div *ngIf="(userSettingsService.isMobile() || userSettingsService.isTablet())">
+                        <div *ngIf="!facsimilePagesInfinite">
+                            <pinch-zoom overflow="visible" backgroundColor="transparent" [limit-zoom]="40" [minPanScale]="0">
+                                <img alt="facsimile" [src]="images[activeImage]" class="facsimile-zoom-image" [ngStyle]="{'max-height':'calc(100vh - '+toolbarHeight+'px)'}">
+                            </pinch-zoom>
+                        </div>
+                        <div *ngIf="facsimilePagesInfinite && facsNumber">
+                            <pinch-zoom overflow="visible" backgroundColor="transparent" [limit-zoom]="40" [minPanScale]="0">
+                                <img alt="facsimile" [src]="facsUrl + facsNumber" class="facsimile-zoom-image" [ngStyle]="{'max-height':'calc(100vh - '+toolbarHeight+'px)'}">
+                            </pinch-zoom>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</ion-content>

@@ -1,0 +1,198 @@
+page-facsimile-zoom {
+  background-color: rgba(2,2,2,0.5);
+
+  ion-content > div.scroll-content {
+    overflow-y: hidden;
+  }
+
+  .facsimile-zoom-image{
+    position: relative !important;
+    transform-origin: center center;
+    top: 5em;
+  }
+
+  .custom_arrow_left {
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 999;
+    margin-left: -100px;
+  }
+
+  .custom_arrow_right {
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 99;
+    margin-right: -100px;
+  }
+
+  .scroll{
+    height:100%;
+    width:100%;
+    position: relative;
+  }
+
+  .contents{
+    text-align: center;
+  }
+  .top{
+    height: 100%;
+    display: flex;
+    position: relative;
+  }
+  .center_content{
+    text-align: center;
+    display:inline-block;
+  }
+  .plus_minus{
+    display:flex;
+    flex-direction:row;
+    justify-content: space-around;
+  }
+  .div_img{
+    position: relative;
+
+    display:inline-block;
+  }
+
+  .arrow_right{
+    float: right;
+  }
+  .arrow_left{
+    float: left;
+  }
+
+  .facsimile_button_group {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 99;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+  }
+
+  .facsimile_button_group div.item-inner{
+    box-shadow: none !important;
+    border: 0 !important;
+  }
+
+  .div_close{
+    z-index: 999;
+    width: 40%;
+  }
+
+  pinch-zoom{
+    min-width: 100%;
+    min-height: 100%;
+  }
+
+  .imgbox {
+    display: grid;
+    height: 100%;
+  }
+
+  .facsimile-zoom-image {
+    max-width: 100%;
+    // 114px is the height of the toolbar when description is visible (on one row)
+    max-height: calc(100vh - 114px);
+    margin: auto;
+  }
+
+  .buttons{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: 4px;
+  }
+
+  .action_buttons{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: auto;
+  }
+  .action_buttons > button {
+    display: inline-block;
+  }
+
+  .action_buttons > button ion-icon.icon {
+    font-size: 32px;
+  }
+
+  ion-item.facsimile-zoom-page-numbering {
+    background-color: var(--main-background-color);
+    padding-left: 0;
+    margin-left: 8px;
+    width: auto;
+    min-height: auto;
+    align-self: center;
+    border-radius: $corner-roundness;
+
+    div.item-inner {
+      padding: 8px 0;
+      box-shadow: none !important;
+      border-bottom: 0;
+
+      div.input-wrapper {
+          display: inline-block;
+
+          ion-label.page_number_label {
+              float: left;
+              margin: 6px 8px;
+              color: var(--dark-color);
+              max-width: max-content;
+          }
+
+          ion-input.page_number_input {
+              float: left;
+              width: auto;
+              font-size: 1rem;
+
+              input {
+                  width: 4.5rem;
+                  padding: 5px;
+                  border: 1px solid #666;
+                  margin: 0;
+                  border-radius: $corner-roundness;
+                  background-color: #fafafa;
+              }
+              input:focus {
+                  border-color: var(--fab-button-primary-background-color);
+                  filter: brightness(110%);
+              }
+          }
+      }
+    }
+  }
+
+  .image-description {
+    margin: 4px 0;
+    max-width: 800px;
+  }
+  .image-description .facs-desc {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background-color: var(--main-background-color);
+    padding: 10px;
+    margin: 0;
+    white-space: normal;
+    line-height: 1.4rem;
+    border-radius: $corner-roundness;
+  }
+
+  .image-description .facs-desc .facs-desc-title {
+    font-weight: bold;
+  }
+
+  img {
+      cursor: move;
+      // https://github.com/hammerjs/hammer.js/issues/1050#issuecomment-267595556
+        // Need to use !important because something is trying to override the value.
+      touch-action: none !important;
+  }
+}

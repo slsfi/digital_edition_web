@@ -1,0 +1,12 @@
+<div class="pinch-zoom-content" [class.pz-dragging]="isDragging">
+	<ng-content></ng-content>
+</div>
+
+<!-- Control: one button -->
+<div class="pz-zoom-button {{zoomControlPositionClass}}" [class.pz-zoom-button-out]="isZoomedIn" *ngIf="isControl('one-button')" (click)="toggleZoom()"></div>
+
+<!-- Control: two buttons -->
+<div class="pz-zoom-control {{zoomControlPositionClass}}" [class.pz-zoomed-in]="isZoomedIn" *ngIf="isControl('two-buttons')">
+	<div class="pz-zoom-in" [class.pz-disabled]="isZoomLimitReached" (click)="zoomIn()"></div>
+	<div class="pz-zoom-out" [class.pz-disabled]="!isZoomedIn" (click)="zoomOut()"></div>
+</div>
