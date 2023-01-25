@@ -47,6 +47,8 @@ import { ReadPopoverPageModule } from 'src/pages/read-popover/read-popover.modul
 import { UserSettingsPopoverPage } from 'src/pages/user-settings-popover/user-settings-popover';
 import { FacsimileZoomPageModule } from 'src/pages/facsimile-zoom/facsimile-zoom.module';
 import { FacsimileZoomModalPage } from 'src/pages/facsimile-zoom/facsimile-zoom';
+import { IllustrationPage } from 'src/pages/illustration/illustration';
+import { IllustrationPageModule } from 'src/pages/illustration/illustration.module';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
@@ -101,7 +103,7 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     // PersonSearchPageModule
     FacsimileZoomPageModule,
     ReadPopoverPageModule,
-    // IllustrationPageModule
+    IllustrationPageModule
     // SearchAppPageModule
     // SharePopoverPageModule
     // MathJaxModule
@@ -141,7 +143,7 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     ReferenceDataModalPage,
     FacsimileZoomModalPage,
     DownloadTextsModalPage,
-    // IllustrationPage,
+    IllustrationPage,
     SearchAppPage,
     SharePopoverPage,
   ]

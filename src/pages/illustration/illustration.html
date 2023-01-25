@@ -1,0 +1,66 @@
+<!--
+  Generated template for the IllustrationPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-toolbar *ngIf="showDescription">
+    <ion-buttons end>
+      <button class="close-button" (click)="cancel()" ion-button>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="illustration-content">
+  <ion-fab right *ngIf="zoomImage" class="close-modal-button">
+      <button ion-fab mini (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+  </ion-fab>
+  <ion-fab *ngIf="showDescription" class="expand-button" middle right>
+    <button ion-fab mini (click)="zoomImg()">
+      <ion-icon name="expand"></ion-icon>
+    </button>
+  </ion-fab>
+  <ion-col *ngIf="showDescription">
+    <ion-card class="illustration-box">
+      <ion-card-content>
+        <img class="illustration-img-thumb" alt="illustration" [src]="imgPath">
+        <div class="media-metadata">
+          <p><b>{{imgMetadata['full_name']}}<ng-container *ngIf="imgMetadata['full_name'] && imgMetadata['media_title_translation']">, </ng-container><i>{{imgMetadata['media_title_translation']}}</i></b></p>
+          <p>{{imgMetadata['media_art_technique_translation']}}</p>
+          <p>{{imgMetadata['media_collection_title_translation']}}</p>
+          <p>{{imgMetadata['art_location']}}</p>
+          <p class="media-collection-link">
+            <a (click)="goToMediaCollection()">
+              <ion-icon name="photos"></ion-icon> {{ "MediaCollections.GotoMediaCollection" | translate }}
+            </a>
+          </p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ion-col>
+  <img *ngIf="zoomImage" alt="illustration" class="illustration-img"
+      [ngStyle]="{'transform':'scale(' + zoom + ') translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)', 'max-width':'100%', 'max-height':'100%'}"
+      [src]="imgPath"
+      (wheel)="onMouseWheel($event)"
+      (pan)="handleSwipeEvent($event)"
+      (mouseup)="onMouseUp($event)"
+      (touchend)="onTouchEnd($event)"
+      (mousedown)="$event.preventDefault();"
+    >
+  <ion-fab *ngIf="zoomImage && userSettingsService.isDesktop()" class="zoom-buttons" right middle>
+    <button ion-fab mini color="secondary" (click)="zoomIn()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+    <button ion-fab mini color="secondary" (click)="zoomOut()">
+      <ion-icon name="remove"></ion-icon>
+    </button>
+    <button ion-fab mini color="secondary" (click)="resetZoom()">
+      <ion-icon name="undo"></ion-icon>
+    </button>
+  </ion-fab>
+</ion-content>
