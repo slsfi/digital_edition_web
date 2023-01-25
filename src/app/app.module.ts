@@ -44,6 +44,7 @@ import { DigitalEditionListModule } from './components/digital-edition-list/digi
 import { ComponentsModule } from './components/components.module';
 import { ReadPopoverPage } from 'src/pages/read-popover/read-popover';
 import { ReadPopoverPageModule } from 'src/pages/read-popover/read-popover.module';
+import { UserSettingsPopoverPage } from 'src/pages/user-settings-popover/user-settings-popover';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
@@ -99,7 +100,6 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     // PersonSearchPageModule
     // FacsimileZoomPageModule
     ReadPopoverPageModule,
-    // UserSettingsPopoverPageModule
     // IllustrationPageModule
     // SearchAppPageModule
     // SharePopoverPageModule
@@ -134,7 +134,7 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
   entryComponents: [
     DigitalEditionsApp,
     ReadPopoverPage,
-    // UserSettingsPopoverPage,
+    UserSettingsPopoverPage,
     CommentModalPage,
     SemanticDataModalPage,
     ReferenceDataModalPage,
