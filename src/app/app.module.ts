@@ -51,6 +51,7 @@ import { IllustrationPage } from 'src/pages/illustration/illustration';
 import { IllustrationPageModule } from 'src/pages/illustration/illustration.module';
 import { MarkdownModule } from 'ngx-markdown';
 import { PersonSearchPageModule } from 'src/pages/person-search/person-search.module';
+import { MathJaxModule } from './components/math-jax/math-jax.module';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
@@ -106,7 +107,7 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     FacsimileZoomPageModule,
     ReadPopoverPageModule,
     IllustrationPageModule,
-    // MathJaxModule
+    MathJaxModule,
     MarkdownModule.forRoot({ loader: HttpClient }),
   ],
   providers: [
