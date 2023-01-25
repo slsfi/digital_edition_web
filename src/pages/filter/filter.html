@@ -1,0 +1,71 @@
+<!--
+  Generated template for the FilterPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{'Filter.title' | translate }}</ion-title>
+    <ion-buttons end>
+      <button class="close-button" ion-button (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ng-container *ngIf="showLoading">
+      <ion-spinner class="loading" name="crescent"></ion-spinner>
+    </ng-container>
+
+    <ng-container *ngIf="!showLoading">
+      <ion-list *ngIf="shouldFilterYear">
+        <ion-list-header class="year_label">
+          {{"Filter.bornBetween" | translate}}
+        </ion-list-header>
+        <ion-item class="filter-year-inputs" *ngIf="shouldFilterYear">
+          <ion-input type="number" min="1" class="fromYear" [(ngModel)]="filterYearMin"></ion-input>
+          <ion-input type="number" min="1" class="toYear" [(ngModel)]="filterYearMax"></ion-input>
+        </ion-item>
+      </ion-list>
+
+      <ion-list *ngIf="filterCategoryTypes">
+        <ion-list-header>
+          {{"Filter.tagTypes" | translate}}
+        </ion-list-header>
+        <ion-item *ngFor="let filterCT of filterCategoryTypes">
+            <ion-label>{{filterCT.name}}</ion-label>
+            <ion-toggle [(ngModel)]="filterCT.selected"></ion-toggle>
+          </ion-item>
+      </ion-list>
+
+      <ion-list *ngIf="filterPersonTypes">
+        <ion-list-header>
+          {{"Filter.personTypes" | translate}}
+        </ion-list-header>
+        <ion-item *ngFor="let filterPT of filterPersonTypes">
+            <ion-label>{{filterPT.name}}</ion-label>
+            <ion-toggle [(ngModel)]="filterPT.selected"></ion-toggle>
+          </ion-item>
+      </ion-list>
+
+      <ion-list *ngIf="filterPlaceCountries">
+        <ion-list-header>
+          {{"Filter.countries" | translate}}
+        </ion-list-header>
+        <ion-item *ngFor="let filterC of filterPlaceCountries">
+            <ion-label>{{filterC.name}}</ion-label>
+            <ion-toggle [(ngModel)]="filterC.selected"></ion-toggle>
+          </ion-item>
+      </ion-list>
+    </ng-container>
+
+    <hr/>
+
+    <ion-buttons end>
+      <button ion-button outline (click)="cancel()">{{"BasicActions.Cancel" | translate}}</button>
+      <button *ngIf="!showLoading" ion-button (click)="apply()">{{"Filter.apply" | translate}}</button>
+    </ion-buttons>
+</ion-content>

@@ -48,6 +48,12 @@ export class EventsService {
     private topMenuMusic = new Subject<any>();
     // title-logo:collectionTitle
     private titleLogoCollectionTitle = new Subject<any>();
+    // tableOfContents:unSelectSelectedTocItem
+    private tableOfContentsUnSelectSelectedTocItem = new Subject<any>();
+    // SelectedItemInMenu
+    private selectedItemInMenu = new Subject<any>();
+    // musicAccordion:SetSelected
+    private musicAccordionSetSelected = new Subject<any>();
 
 
     publishShareDismiss(data?: any) {
@@ -216,5 +222,29 @@ export class EventsService {
 
     getTitleLogoCollectionTitle(): Subject<any> {
         return this.titleLogoCollectionTitle;
+    }
+
+    publishTableOfContentsUnSelectSelectedTocItem(data?: any) {
+        this.tableOfContentsUnSelectSelectedTocItem.next(data);
+    }
+
+    getTableOfContentsUnSelectSelectedTocItem(): Subject<any> {
+        return this.tableOfContentsUnSelectSelectedTocItem;
+    }
+
+    publishSelectedItemInMenu(data?: any) {
+        this.selectedItemInMenu.next(data);
+    }
+
+    getSelectedItemInMenu(): Subject<any> {
+        return this.selectedItemInMenu;
+    }
+
+    publishMusicAccordionSetSelected(data?: any) {
+        this.musicAccordionSetSelected.next(data);
+    }
+
+    getMusicAccordionSetSelected(): Subject<any> {
+        return this.musicAccordionSetSelected;
     }
 }

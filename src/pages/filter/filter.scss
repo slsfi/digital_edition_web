@@ -1,0 +1,90 @@
+page-filter {
+  /* This hides the vertical scrollbar on the right edge of the modal when it is not necessary to show it. */
+	ion-content > .scroll-content {
+		overflow: auto;
+		padding: 16px 24px 24px 24px;
+	}
+	
+	@media(max-width: 480px) {
+    ion-content.content[padding] > .scroll-content {
+        padding: 0;
+    }
+  }
+
+  ion-title {
+		margin-left: 12px;
+	}
+
+  .close-button {
+    margin-right: 12.8px;
+		transition: $opacity-hover-transition;
+  }
+
+  .close-button:hover {
+		opacity: $opacity-hover;
+	}
+
+	.close-button:active {
+		opacity: 1;
+	}
+
+  .fromYear,
+  .toYear {
+    border: 1px solid gray;
+    border-radius: $corner-roundness;
+    background-color: #fff;
+    max-width: 200px;
+    transition: all 0.3s;
+  }
+
+  .fromYear {
+    margin-right: 0.5rem;
+  }
+
+  .toYear {
+    margin-left: 0.5rem;
+  }
+
+  ion-item.filter-year-inputs {
+    padding-bottom: 1rem;
+  }
+
+  ion-item.filter-year-inputs.input-has-focus .fromYear,
+  ion-item.filter-year-inputs.input-has-focus .toYear {
+    border-color: var(--button-background-color);
+  }
+
+  .year_label{
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  ion-item.filter-year-inputs.item .item-inner,
+  ion-item.filter-year-inputs.input-has-focus,
+  ion-item.filter-year-inputs.input-has-value {
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+  }
+
+  ion-list-header.list-header {
+    font-weight: bold;
+    border: 0;
+    color: #000;
+    background-color: var(--index-list-divider-background-color);
+    min-height: auto;
+  }
+
+  hr {
+    background-color: #383838;
+    height: 1px;
+    border: 0;
+    margin: 1.25rem 0 0.75rem 0;
+  }
+
+  ion-buttons button.button {
+    font-size: 0.8125rem;
+    height: 1.875rem !important;
+  }
+
+}

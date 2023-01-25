@@ -49,6 +49,8 @@ import { FacsimileZoomPageModule } from 'src/pages/facsimile-zoom/facsimile-zoom
 import { FacsimileZoomModalPage } from 'src/pages/facsimile-zoom/facsimile-zoom';
 import { IllustrationPage } from 'src/pages/illustration/illustration';
 import { IllustrationPageModule } from 'src/pages/illustration/illustration.module';
+import { MarkdownModule } from 'ngx-markdown';
+import { PersonSearchPageModule } from 'src/pages/person-search/person-search.module';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
@@ -100,13 +102,12 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     ComponentsModule,
     PipesModule,
     DigitalEditionListModule,
-    // PersonSearchPageModule
+    PersonSearchPageModule,
     FacsimileZoomPageModule,
     ReadPopoverPageModule,
-    IllustrationPageModule
-    // SearchAppPageModule
-    // SharePopoverPageModule
+    IllustrationPageModule,
     // MathJaxModule
+    MarkdownModule.forRoot({ loader: HttpClient }),
   ],
   providers: [
     HtmlContentService,

@@ -3,7 +3,9 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { FilterPage } from './filter';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { IonicModule } from 'ionic-angular';
+import { IonicModule } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -22,6 +24,8 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
+    CommonModule,
+    FormsModule,
   ],
 })
 export class FilterPageModule {}
