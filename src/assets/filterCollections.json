@@ -1,0 +1,142 @@
+[
+	{
+		"id" : 1,
+		"title" : "Ljungblommor",
+		"selected": false
+	},
+	{
+		"id" : 2,
+		"title" : "Nya blad och Ljung",
+		"selected": false
+	},
+	{
+		"id" : 3,
+		"title" : "Dramatiska verk",
+		"selected": false
+	},
+	{
+		"id" : 4,
+		"title" : "Noveller",
+		"selected": false
+	},
+	{
+		"id" : 5,
+		"title" : "Hertiginnan af Finland och andra historiska noveller",
+		"selected": false
+	},
+	{
+		"id" : 6,
+		"title" : "Fältskärns berättelser",
+		"selected": false
+	},
+	{
+		"id" : 7,
+		"title" : "Vinterqvällar",
+		"selected": false
+	},
+	{
+		"id" : 8,
+		"title" : "Planeternas skyddslingar",
+		"selected": false
+	},
+	{
+		"id" : 9,
+		"title" : "Läsning för barn",
+		"selected": false
+	},
+	{
+		"id" : 10,
+		"title" : "Naturens Bok och Boken om Vårt Land",
+		"selected": false
+	},
+	{
+		"id" : 11,
+		"title" : "Boken om vårt land",
+		"selected": false
+	},
+	{
+		"id" : 12,
+		"title" : "Finland framställdt i teckningar",
+		"selected": false
+	},
+	{
+		"id" : 13,
+		"title" : "En resa i Finland",
+		"selected": false
+	},
+	{
+		"id" : 14,
+		"title" : "Dagböcker",
+		"selected": false
+	},
+	{
+		"id" : 15,
+		"title" : "Brev",
+		"selected": false
+	},
+	{
+		"id" : 16,
+		"title" : "Övrig lyrik",
+		"selected": false
+	},
+	{
+		"id" : 17,
+		"title" : "Övrig dramatik",
+		"selected": false
+	},
+	{
+		"id" : 18,
+		"title" : "Noveller 1842–1855",
+		"selected": false
+	},
+	{
+		"id" : 19,
+		"title" : "Övrig barnlitteratur",
+		"selected": false
+	},
+	{
+		"id" : 20,
+		"title" : "Föreläsningar i geografi och historia",
+		"selected": false
+	},
+	{
+		"id" : 21,
+		"title" : "Journaler och chrönikor",
+		"selected": false
+	},
+	{
+		"id" : 22,
+		"title" : "Finland i 19de seklet",
+		"selected": false
+	},
+	{
+		"id" : 23,
+		"title" : "Publicistik",
+		"selected": false
+	},
+	{
+		"id" : 24,
+		"title" : "Academica",
+		"selected": false
+	},
+	{
+		"id" : 25,
+		"title" : "Föreningsliv",
+		"selected": false
+	},
+	{
+		"id" : 26,
+		"title" : "Religiösa skrifter",
+		"selected": false
+	},
+	{
+		"id" : 27,
+		"title" : "Noveller 1856–1879",
+		"selected": false
+	},
+	{
+		"id" : 28,
+		"title" : "Maamme kirja",
+		"selected": false
+	}
+]

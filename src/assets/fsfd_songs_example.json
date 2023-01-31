@@ -1,0 +1,50 @@
+[
+    {
+      "id": "via1_227",
+      "playman": "Alexander Slotte",
+      "song_type": "Menuett",
+      "song_name": "De gamlas menuett",
+      "landscape": "Österbotten",
+      "place": "Nedervetil",
+      "recorder": "Alexander Slotte",
+      "year": "",
+      "original_collection_location": "Originalet är förkommet",
+      "original_collection_signature": "Originalet är förkommet",
+      "volume": "VIA1, sid. 98",
+      "song_number": "227",
+      "comments": "Alexander Slotte föddes 7.4.1861 och avled 3.4.1927. Han var en av Svenska folkskolans vänners första stipendiater. Läs mer om Alexander Slotte under rubrikerna spelmännen och upptecknarna. Melodin sjöngs. Ordsatt av A. Slotte: De gamlas menuett.",
+      "song_text": ""
+    },
+    {
+        "id": "via1_729",
+        "playman": "Anders Kengo",
+        "song_type": "polska",
+        "song_name": "",
+        "landscape": "Österbotten",
+        "place": "Jeppo",
+        "recorder": "Otto Andersson",
+        "year": "1905",
+        "original_collection_location": "Svenska litteratursällskapet i Finland, SLS arkiv",
+        "original_collection_signature": "SLS 105, s. 35 och 2-3",
+        "volume": "VIA1, sid. 332",
+        "song_number": "729",
+        "comments": "Redan den första spelmannen jag besökte, Kängo Ant i Jeppo, skänkte mig en mängd alldeles obekanta menuetter och polskor. (Otto Anderssons anteckningar 1905.) Anders Kengo föddes 1858",
+        "song_text": ""
+    },
+    {
+        "id": "via1_1064a",
+        "playman": "Hans Jakob Hansson",
+        "song_type": "polonäs",
+        "song_name": "",
+        "landscape": "Nyland",
+        "place": "Lappträsk",
+        "recorder": "Victor Allardt",
+        "year": "1889",
+        "original_collection_location": "Svenska litteratursällskapet i Finland, SLS arkiv",
+        "original_collection_signature": "SLS 6, s. 1",
+        "volume": "VIA1, sid. 514",
+        "song_number": "1064a",
+        "comments": "Hans Jakob Hansson föddes 22.11.1836 i Strömfors. Flyttade vid 12 års ålder till Hindersby i Lappträsk. Fungerade som byspelman i Lappträsk. Dog 15.8.1908. (Otto Anderssons anteckningar.) Läs mer om Hans Jakob Hansson under rubriken spelmännen. Victor Allardt var den förste som 1889-1890 upptecknade dansmelodier i Östra Nyland. Läs mer om Victor Allardt under rubriken upptecknarna. Notvärdena minskade till hälften. (Utgivaren Otto Anderssons kommentar.)",
+        "song_text": ""
+    }
+  ]

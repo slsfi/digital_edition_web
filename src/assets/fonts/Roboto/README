@@ -1,0 +1,39 @@
+Roboto v2.317
+Downloaded from https://fonts.google.com/specimen/Roboto
+A newer version (v2.318) exists in https://github.com/googlefonts/roboto/releases
+but there is not a hinted variant available, so that's why the files from Google Fonts
+have been used.
+
+The webfonts in ttf, woff and woff2 format have been generated using the
+Fontsquirrel Webfont Generator at https://www.fontsquirrel.com/tools/webfont-generator
+
+The following settings were used in the generator:
+
+Font formats:
+	TrueType
+	WOFF
+	WOFF2
+
+Truetype Hinting:
+	Keep Existing
+
+Rendering:
+	Fix GASP Table
+
+Vertical Metrics:
+	No adjustment
+
+Fix Missing Glyphs:
+	Spaces
+	Hyphens
+
+X-height Matching:
+	None
+
+Subsetting:
+	None
+
+Advanced Options:
+	Font Name Suffix: -webfont
+	Em Square Value: 2048
+	Adjust Glyph Spacing: 0

@@ -1,0 +1,17 @@
+[
+    {
+      "title": "Historiska personer",
+      "selected": false,
+      "type": "historical"
+    },
+    {
+      "title": "Mytologiska & bibliska personer",
+      "selected": false,
+      "type": "mythological"
+    },
+    {
+      "title": "Fiktiva personer",
+      "selected": false,
+      "type": "fictive"
+    }
+  ]
