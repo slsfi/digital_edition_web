@@ -5,7 +5,6 @@ import { TranslateService } from '@ngx-translate/core';
 import leaflet from 'leaflet';
 import { SemanticDataService } from 'src/app/services/semantic-data/semantic-data.service';
 import { LanguageService } from 'src/app/services/languages/language.service';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { ModalController, NavController, NavParams, Platform } from '@ionic/angular';
 import { TextService } from 'src/app/services/texts/text.service';
 import { TooltipService } from 'src/app/services/tooltips/tooltip.service';
@@ -14,6 +13,7 @@ import { EventsService } from 'src/app/services/events/events.service';
 import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 import { CommonFunctionsService } from 'src/app/services/common-functions/common-functions.service';
 import { Router } from '@angular/router';
+import { ConfigService } from 'src/app/services/config/core/config.service';
 
 /**
  * Generated class for the OccurrencesPage page.

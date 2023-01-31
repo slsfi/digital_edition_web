@@ -2,10 +2,10 @@ import { Component, Renderer2, ElementRef, ViewChild } from '@angular/core';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { GalleryService } from '../../app/services/gallery/gallery.service';
 import { LanguageService } from '../../app/services/languages/language.service';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { ModalController, NavController, NavParams } from '@ionic/angular';
 import { EventsService } from 'src/app/services/events/events.service';
 import { Router } from '@angular/router';
+import { ConfigService } from 'src/app/services/config/core/config.service';
 
 /**
  * Generated class for the IllustrationPage page.

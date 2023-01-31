@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
+import { StorageService } from '../storage/storage.service';
 
 @Injectable()
 export class UserSettingsService {
@@ -12,7 +12,7 @@ export class UserSettingsService {
 
   constructor(
     private platform: Platform,
-    private storage: Storage,
+    private storage: StorageService,
   ) {
 
     this.detectPlatform();

@@ -2,7 +2,7 @@ import { Component, Input, ViewChild, Output, EventEmitter } from '@angular/core
 import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
 import { StaticPage } from 'src/app/models/static-pages.model';
-import { ConfigService } from 'src/app/services/config/config.service';
+import { ConfigService } from 'src/app/services/config/core/config.service';
 import { EventsService } from 'src/app/services/events/events.service';
 import { LanguageService } from 'src/app/services/languages/language.service';
 import { MdContentService } from 'src/app/services/md/md-content.service';

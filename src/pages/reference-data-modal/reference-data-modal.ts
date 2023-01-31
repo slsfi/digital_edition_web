@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { NavController, ModalController, NavParams } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ReferenceDataService } from '../../app/services/reference-data/reference-data.service';
-import { Storage } from '@ionic/storage';
 import { TranslateService } from '@ngx-translate/core';
 import { EventsService } from 'src/app/services/events/events.service';
+import { StorageService } from 'src/app/services/storage/storage.service';
 
 /*
   Generated class for the ReferenceDataModal page.
@@ -27,7 +27,7 @@ export class ReferenceDataModalPage {
   constructor(  public navCtrl: NavController,
                 public viewCtrl: ModalController,
                 params: NavParams,
-                private storage: Storage,
+                private storage: StorageService,
                 private sanitizer: DomSanitizer,
                 private referenceDataService: ReferenceDataService,
                 private events: EventsService,

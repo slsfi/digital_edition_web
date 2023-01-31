@@ -4,12 +4,12 @@ import { GeneralTocItem } from 'src/app/models/table-of-contents.model';
 import { DigitalEdition } from 'src/app/models/digital-edition.model';
 import { NavController, Platform } from '@ionic/angular';
 import { DigitalEditionListService } from 'src/app/services/toc/digital-edition-list.service';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { TableOfContentsService } from 'src/app/services/toc/table-of-contents.service';
 import { EventsService } from 'src/app/services/events/events.service';
 import { UserSettingsService } from 'src/app/services/settings/user-settings.service';
 import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 import { Router } from '@angular/router';
+import { ConfigService } from 'src/app/services/config/core/config.service';
 
 @Component({
   selector: 'digital-editions-list',

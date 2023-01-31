@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { ajax, AjaxResponse } from 'rxjs/ajax';
-
-import { ConfigService } from '../config/config.service';
+import { ConfigService } from '../config/core/config.service';
 
 @Injectable()
 export class SongService {

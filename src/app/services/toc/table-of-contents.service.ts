@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { LanguageService } from '../languages/language.service';
-import { ConfigService } from '../config/config.service';
 import { catchError, map, Observable, Subscription, throwError } from 'rxjs';
 import { ajax, AjaxResponse } from 'rxjs/ajax';
+import { ConfigService } from '../config/core/config.service';
 
 @Injectable()
 export class TableOfContentsService {

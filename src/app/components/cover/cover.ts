@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ConfigService } from 'src/app/services/config/config.service';
+import { ConfigService } from 'src/app/services/config/core/config.service';
 import { TextService } from 'src/app/services/texts/text.service';
 
 /**

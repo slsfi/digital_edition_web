@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ConfigService } from '../config/config.service';
+import { ConfigService } from '../config/core/config.service';
 
 export enum Fontsize {
     xsmall = 0,

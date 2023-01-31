@@ -4,8 +4,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { ReadPopoverService, Fontsize } from '../../app/services/settings/read-popover.service';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { ModalController, NavParams } from '@ionic/angular';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { EventsService } from 'src/app/services/events/events.service';
+import { ConfigService } from 'src/app/services/config/core/config.service';
 
 /**
  * This is a popover accessed in ReadPage.

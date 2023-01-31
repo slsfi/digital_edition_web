@@ -3,7 +3,6 @@ import { SemanticDataService } from '../../app/services/semantic-data/semantic-d
 import { LanguageService } from '../../app/services/languages/language.service';
 import { Occurrence, OccurrenceType, OccurrenceResult } from '../../app/models/occurrence.model';
 import { SingleOccurrence } from '../../app/models/single-occurrence.model';
-import { Storage } from '@ionic/storage';
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
@@ -15,11 +14,12 @@ import debounce from 'lodash/debounce';
 import { EventsService } from 'src/app/services/events/events.service';
 import { LoadingController, ModalController, NavController, NavParams, Platform } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { Router } from '@angular/router';
 import { OccurrenceService } from 'src/app/services/occurrence/occurence.service';
 import { OccurrencesPage } from '../occurrences/occurrences';
 import { FilterPage } from '../filter/filter';
+import { ConfigService } from 'src/app/services/config/core/config.service';
+import { StorageService } from 'src/app/services/storage/storage.service';
 
 /**
  * A page for searching person occurrences.
@@ -64,7 +64,7 @@ export class PersonSearchPage {
               private platform: Platform,
               public loadingCtrl: LoadingController,
               public occurrenceService: OccurrenceService,
-              protected storage: Storage,
+              protected storage: StorageService,
               public translate: TranslateService,
               private userSettingsService: UserSettingsService,
               private events: EventsService,

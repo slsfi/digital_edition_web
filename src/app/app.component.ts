@@ -2,14 +2,13 @@ import { ChangeDetectorRef, Component, NgZone, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AlertController, MenuController, Platform } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
 import { TranslateService } from '@ngx-translate/core';
 import { TableOfContentsAccordionComponent } from './components/table-of-contents-accordion/table-of-contents-accordion';
 import { DigitalEdition } from './models/digital-edition.model';
 import { SideMenuSettings } from './models/side-menu-settings';
 import { GeneralTocItem } from './models/table-of-contents.model';
 import { TocAccordionMenuOptionModel } from './models/toc-accordion-menu-option.model';
-import { ConfigService } from './services/config/config.service';
+import { ConfigService } from './services/config/core/config.service';
 import { EventsService } from './services/events/events.service';
 import { GalleryService } from './services/gallery/gallery.service';
 import { LanguageService } from './services/languages/language.service';
@@ -17,6 +16,7 @@ import { MdContentService } from './services/md/md-content.service';
 import { MetadataService } from './services/metadata/metadata.service';
 import { GenericSettingsService } from './services/settings/generic-settings.service';
 import { UserSettingsService } from './services/settings/user-settings.service';
+import { StorageService } from './services/storage/storage.service';
 import { DigitalEditionListService } from './services/toc/digital-edition-list.service';
 import { TableOfContentsService } from './services/toc/table-of-contents.service';
 
@@ -197,7 +197,7 @@ export class DigitalEditionsApp {
   constructor(
     public platform: Platform,
     public translate: TranslateService,
-    public storage: Storage,
+    public storage: StorageService,
     public languageService: LanguageService,
     private config: ConfigService,
     private menu: MenuController,
@@ -218,11 +218,11 @@ export class DigitalEditionsApp {
     this.mediaCollectionOptions = {};
 
     this.aboutPages = [];
-    this.apiEndPoint = this.config.getSettings('app.apiEndpoint') as any;
-    this.collectionDownloads = this.config.getSettings('collectionDownloads') as any;
-    this.projectMachineName = this.config.getSettings('app.machineName') as any;
+    this.apiEndPoint = this.config.getSettings('app.apiEndpoint');
+    this.collectionDownloads = this.config.getSettings('collectionDownloads');
+    this.projectMachineName = this.config.getSettings('app.machineName');
     try {
-      this.showBooks = this.genericSettingsService.show('TOC.Books') as any;
+      this.showBooks = this.genericSettingsService.show('TOC.Books');
     } catch (e) {
       this.showBooks = false;
     }

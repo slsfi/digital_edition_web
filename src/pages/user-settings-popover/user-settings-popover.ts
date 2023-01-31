@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 
 import { UserSettingsService } from '../../app/services/settings/user-settings.service';
 import { LanguageService } from '../../app/services/languages/language.service';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { ModalController } from '@ionic/angular';
 import { EventsService } from 'src/app/services/events/events.service';
+import { ConfigService } from 'src/app/services/config/core/config.service';
 
 /**
  * Popover with list of available user settings.

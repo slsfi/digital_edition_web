@@ -1,6 +1,4 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { Storage } from '@ionic/storage';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { UserSettingsService } from 'src/app/services/settings/user-settings.service';
 import { GenericSettingsService } from 'src/app/services/settings/generic-settings.service';
 import { EventsService } from 'src/app/services/events/events.service';
@@ -8,6 +6,8 @@ import { ModalController, PopoverController } from '@ionic/angular';
 import { ReferenceDataModalPage } from 'src/pages/reference-data-modal/reference-data-modal';
 import { UserSettingsPopoverPage } from 'src/pages/user-settings-popover/user-settings-popover';
 import { SearchAppPage } from 'src/pages/search-app/search-app';
+import { ConfigService } from 'src/app/services/config/core/config.service';
+import { StorageService } from 'src/app/services/storage/storage.service';
 
 /**
  * Generated class for the TopMenuComponent component.
@@ -45,7 +45,7 @@ export class TopMenuComponent {
     public userSettingsService: UserSettingsService,
     public genericSettingsService: GenericSettingsService,
     private modalController: ModalController,
-    protected storage: Storage,
+    protected storage: StorageService,
   ) {
     this.registerEventListeners();
     this.showColAmount = 'col-8';

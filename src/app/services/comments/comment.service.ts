@@ -4,7 +4,7 @@ import { ajax } from 'rxjs/ajax';
 import { CommentCacheService } from './comment-cache.service';
 import { CommonFunctionsService } from '../common-functions/common-functions.service';
 import { HttpClient } from '@angular/common/http';
-import { ConfigService } from '../config/config.service';
+import { ConfigService } from '../config/core/config.service';
 
 @Injectable()
 export class CommentService {

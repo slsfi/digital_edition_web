@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { UserSettingsService } from 'src/app/services/settings/user-settings.service';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 import { Router } from '@angular/router';
+import { ConfigService } from 'src/app/services/config/core/config.service';
 
 /**
  * Generated class for the DigitalEditionListChildrenComponent component.

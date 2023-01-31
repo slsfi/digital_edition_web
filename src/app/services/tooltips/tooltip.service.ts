@@ -3,8 +3,8 @@ import { CommentService } from '../comments/comment.service';
 import { LanguageService } from '../languages/language.service';
 import { TranslateService } from '@ngx-translate/core';
 import { catchError, map, Observable, Subscription, throwError } from 'rxjs';
-import { ConfigService } from '../config/config.service';
 import { ajax } from 'rxjs/ajax';
+import { ConfigService } from '../config/core/config.service';
 
 @Injectable()
 export class TooltipService {

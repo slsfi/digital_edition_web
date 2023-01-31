@@ -7,6 +7,7 @@ import * as Sentry from '@sentry/browser';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { IonicStorageModule } from '@ionic/storage-angular';
 
 import { DigitalEditionsApp } from './app.component';
 import { CommentModalPage } from 'src/pages/comment-modal/comment-modal';
@@ -52,6 +53,9 @@ import { IllustrationPageModule } from 'src/pages/illustration/illustration.modu
 import { MarkdownModule } from 'ngx-markdown';
 import { PersonSearchPageModule } from 'src/pages/person-search/person-search.module';
 import { MathJaxModule } from './components/math-jax/math-jax.module';
+import { ConfigLoader } from './services/config/core/config.loader';
+import { ConfigHttpLoader } from './services/config/http-loader/http-loader';
+import { ConfigModule } from './services/config/core/config.module';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
@@ -69,7 +73,10 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
-// TODO Config loader
+export function createConfigLoader(http: HttpClient): ConfigLoader {
+  return new ConfigHttpLoader(http, 'config.json');
+  // return new ConfigHttpLoader(http, 'assets/config.json');
+}
 
 @NgModule({
   declarations: [
@@ -96,6 +103,12 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
         deps: [HttpClient]
       }
     }),
+    ConfigModule.forRoot({
+      provide: ConfigLoader,
+      useFactory: (createConfigLoader),
+      deps: [HttpClient]
+    }),
+    IonicStorageModule.forRoot(),
     SharePopoverPageModule,
     SearchAppPageModule,
     CommonModule,

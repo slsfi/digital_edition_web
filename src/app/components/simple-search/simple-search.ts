@@ -1,9 +1,7 @@
 import { Component, Input, ViewChild, HostListener, ElementRef, ChangeDetectorRef } from '@angular/core';
-import { Storage } from '@ionic/storage';
 import { TableOfContentsCategory } from 'src/app/models/table-of-contents.model';
 import { IonSearchbar, NavParams, Platform } from '@ionic/angular';
 import { SearchDataService } from 'src/app/services/search/search-data.service';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { EventsService } from 'src/app/services/events/events.service';
 import { UserSettingsService } from 'src/app/services/settings/user-settings.service';
 import { SemanticDataService } from 'src/app/services/semantic-data/semantic-data.service';
@@ -11,6 +9,8 @@ import { TooltipService } from 'src/app/services/tooltips/tooltip.service';
 import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 import { Router } from '@angular/router';
 import { Facet } from 'src/app/models/facet.model';
+import { ConfigService } from 'src/app/services/config/core/config.service';
+import { StorageService } from 'src/app/services/storage/storage.service';
 /**
  * Generated class for the SimpleSearchComponent component.
  *
@@ -82,7 +82,7 @@ export class SimpleSearchComponent {
     public userSettingsService: UserSettingsService,
     public semanticDataService: SemanticDataService,
     private tooltipService: TooltipService,
-    private storage: Storage,
+    private storage: StorageService,
     private cf: ChangeDetectorRef,
     private analyticsService: AnalyticsService) {
     this.apiEndPoint = this.config.getSettings('app.apiEndpoint') as any;

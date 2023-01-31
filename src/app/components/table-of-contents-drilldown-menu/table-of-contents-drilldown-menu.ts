@@ -1,13 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { Storage } from '@ionic/storage';
 import { GeneralTocItem, TableOfContentsCategory } from 'src/app/models/table-of-contents.model';
 import { EventsService } from 'src/app/services/events/events.service';
 import { TableOfContentsService } from 'src/app/services/toc/table-of-contents.service';
 import { Platform } from '@ionic/angular';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { Router } from '@angular/router';
-
+import { ConfigService } from 'src/app/services/config/core/config.service';
+import { StorageService } from 'src/app/services/storage/storage.service';
 
 /**
  * Class for the TableOfContentsDrilldownMenuComponent component.
@@ -52,7 +51,7 @@ export class TableOfContentsDrilldownMenuComponent {
     private events: EventsService,
     private tableOfContentsService: TableOfContentsService,
     public platform: Platform,
-    protected storage: Storage,
+    protected storage: StorageService,
     public translate: TranslateService,
     private config: ConfigService,
     private router: Router,

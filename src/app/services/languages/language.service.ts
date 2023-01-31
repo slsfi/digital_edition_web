@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { LangChangeEvent, TranslateService/*, TranslatePipe*/ } from '@ngx-translate/core';
-import { Storage } from '@ionic/storage';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ConfigService } from '../config/config.service';
 import { EventsService } from '../events/events.service';
+import { ConfigService } from '../config/core/config.service';
+import { StorageService } from '../storage/storage.service';
 
 
 @Injectable()
@@ -15,7 +15,7 @@ export class LanguageService {
 
   constructor(
     public translate: TranslateService,
-    public storage: Storage,
+    public storage: StorageService,
     private config: ConfigService,
     private events: EventsService
   ) {

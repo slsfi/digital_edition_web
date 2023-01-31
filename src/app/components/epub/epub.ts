@@ -7,8 +7,8 @@ import { Fontsize, ReadPopoverService } from 'src/app/services/settings/read-pop
 import { Subscription } from 'rxjs';
 import { UserSettingsService } from 'src/app/services/settings/user-settings.service';
 import { MdContentService } from 'src/app/services/md/md-content.service';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { CommonFunctionsService } from 'src/app/services/common-functions/common-functions.service';
+import { ConfigService } from 'src/app/services/config/core/config.service';
 
 declare var ePub: any;
 

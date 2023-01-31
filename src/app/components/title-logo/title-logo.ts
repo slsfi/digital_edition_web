@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ConfigService } from 'src/app/services/config/config.service';
+import { ConfigService } from 'src/app/services/config/core/config.service';
 import { EventsService } from 'src/app/services/events/events.service';
 import { LanguageService } from 'src/app/services/languages/language.service';
 import { UserSettingsService } from 'src/app/services/settings/user-settings.service';

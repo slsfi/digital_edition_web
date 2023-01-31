@@ -8,8 +8,8 @@ import { ReadPopoverService } from '../../app/services/settings/read-popover.ser
 import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
 import { LanguageService } from '../../app/services/languages/language.service';
 import { AnalyticsService } from '../../app/services/analytics/analytics.service';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { EventsService } from 'src/app/services/events/events.service';
+import { ConfigService } from 'src/app/services/config/core/config.service';
 
 @Component({
   selector: 'page-download-texts-modal',
