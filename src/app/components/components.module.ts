@@ -28,6 +28,9 @@ import { LanguageService } from '../services/languages/language.service';
 import { FormsModule } from '@angular/forms';
 import { TopMenuComponent } from './top-menu/top-menu';
 import { TitleLogoComponent } from './title-logo/title-logo';
+import { TableOfContentsAccordionComponent } from './table-of-contents-accordion/table-of-contents-accordion';
+import { TableOfContentsDrilldownMenuComponent } from './table-of-contents-drilldown-menu/table-of-contents-drilldown-menu';
+import { StaticPagesTocDrilldownMenuComponent } from './static-pages-toc-drilldown-menu/static-pages-toc-drilldown-menu';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -38,15 +41,15 @@ export function createTranslateLoader(http: HttpClient) {
     TitleLogoComponent,
     TopMenuComponent,
     // SplitPaneToggleComponent,
-    // TableOfContentsDrilldownMenuComponent,
-    // StaticPagesTocDrilldownMenuComponent,
+    TableOfContentsDrilldownMenuComponent,
+    StaticPagesTocDrilldownMenuComponent,
     // TocMenuComponent,
     // TextChangerComponent,
     SimpleSearchComponent,
     // SocialSharingComponent,
     // SongExampleComponent,
     DigitalEditionListChildrenComponent,
-    // TableOfContentsAccordionComponent,
+    TableOfContentsAccordionComponent,
     // ListOfSongsComponent,
     // NgxExtendedPdfViewerComponent,
     // IllustrationsComponent,
@@ -71,15 +74,15 @@ export function createTranslateLoader(http: HttpClient) {
     TitleLogoComponent,
     TopMenuComponent,
     // SplitPaneToggleComponent,
-    // TableOfContentsDrilldownMenuComponent,
-    // StaticPagesTocDrilldownMenuComponent,
+    TableOfContentsDrilldownMenuComponent,
+    StaticPagesTocDrilldownMenuComponent,
     // TocMenuComponent,
     // TextChangerComponent,
     SimpleSearchComponent,
     // SocialSharingComponent,
     // SongExampleComponent,
     DigitalEditionListChildrenComponent,
-    // TableOfContentsAccordionComponent,
+    TableOfContentsAccordionComponent,
     // ListOfSongsComponent,
     // NgxExtendedPdfViewerComponent,
     // TableOfContentLetterFilterComponent,

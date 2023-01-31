@@ -46,7 +46,7 @@ export class InnerMenuOptionModel {
 
   public static fromMenuOptionModel(
                   option: TocAccordionMenuOptionModel,
-                  parent?: InnerMenuOptionModel,
+                  parent?: InnerMenuOptionModel | null,
                   isChild?: boolean,
                   searchingTocItem?: Boolean
                 ): InnerMenuOptionModel {

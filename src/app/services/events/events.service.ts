@@ -54,6 +54,42 @@ export class EventsService {
     private selectedItemInMenu = new Subject<any>();
     // musicAccordion:SetSelected
     private musicAccordionSetSelected = new Subject<any>();
+    // aboutMarkdownTOC:loaded
+    private aboutMarkdownTOCLoaded = new Subject<any>();
+    // pdfview:open
+    private pdfviewOpen = new Subject<any>();
+    // CollectionWithChildrenPdfs:highlight
+    private collectionWithChildrenPdfsHighlight = new Subject<any>();
+    // exitActiveCollection
+    private exitActiveCollection = new Subject<any>();
+    // musicAccordion:reset
+    private musicAccordionReset = new Subject<any>();
+    // collectionsAccordion:change
+    private collectionsAccordionChange = new Subject<any>();
+    // typesAccordion:change
+    private typesAccordionChange = new Subject<any>();
+    // aboutAccordion:change
+    private aboutAccordionChange = new Subject<any>();
+    // tableOfContents:loaded
+    private tableOfContentsLoaded = new Subject<any>();
+    // exitedTo
+    private exitedTo = new Subject<any>();
+    // ionViewDidLeave
+    private ionViewDidLeave = new Subject<any>();
+    // splitPaneToggle:disable
+    private splitPaneToggleDisable = new Subject<any>();
+    // tocActiveSorting
+    private tocActiveSorting = new Subject<any>();
+    // sidemenu:redirect
+    private sidemenuRedirect = new Subject<any>();
+    // selectOneItem
+    private selectOneItem = new Subject<any>();
+    // tableOfContents:findMarkdownTocItem
+    private tableOfContentsFindMarkdownTocItem = new Subject<any>();
+    // UpdatePositionInPageRead
+    private updatePositionInPageRead = new Subject<any>();
+    // UpdatePositionInPageRead:TextChanger
+    private updatePositionInPageReadTextChanger = new Subject<any>();
 
 
     publishShareDismiss(data?: any) {
@@ -246,5 +282,149 @@ export class EventsService {
 
     getMusicAccordionSetSelected(): Subject<any> {
         return this.musicAccordionSetSelected;
+    }
+
+    publishAboutMarkdownTOCLoaded(data?: any) {
+        this.aboutMarkdownTOCLoaded.next(data);
+    }
+
+    getAboutMarkdownTOCLoaded(): Subject<any> {
+        return this.aboutMarkdownTOCLoaded;
+    }
+
+    publishPdfviewOpen(data?: any) {
+        this.pdfviewOpen.next(data);
+    }
+
+    getPdfviewOpen(): Subject<any> {
+        return this.pdfviewOpen;
+    }
+
+    publishCollectionWithChildrenPdfsHighlight(data?: any) {
+        this.collectionWithChildrenPdfsHighlight.next(data);
+    }
+
+    getCollectionWithChildrenPdfsHighlight(): Subject<any> {
+        return this.collectionWithChildrenPdfsHighlight;
+    }
+
+    publishExitActiveCollection(data?: any) {
+        this.exitActiveCollection.next(data);
+    }
+
+    getExitActiveCollection(): Subject<any> {
+        return this.exitActiveCollection;
+    }
+
+    publishMusicAccordionReset(data?: any) {
+        this.musicAccordionReset.next(data);
+    }
+
+    getMusicAccordionReset(): Subject<any> {
+        return this.musicAccordionReset;
+    }
+
+    publishCollectionsAccordionChange(data?: any) {
+        this.collectionsAccordionChange.next(data);
+    }
+
+    getCollectionsAccordionChange(): Subject<any> {
+        return this.collectionsAccordionChange;
+    }
+
+    publishTypesAccordionChange(data?: any) {
+        this.typesAccordionChange.next(data);
+    }
+
+    getTypesAccordionChange(): Subject<any> {
+        return this.typesAccordionChange;
+    }
+
+    publishAboutAccordionChange(data?: any) {
+        this.aboutAccordionChange.next(data);
+    }
+
+    getAboutAccordionChange(): Subject<any> {
+        return this.aboutAccordionChange;
+    }
+
+    publishTableOfContentsLoaded(data?: any) {
+        this.tableOfContentsLoaded.next(data);
+    }
+
+    getTableOfContentsLoaded(): Subject<any> {
+        return this.tableOfContentsLoaded;
+    }
+
+    publishExitedTo(data?: any) {
+        this.exitedTo.next(data);
+    }
+
+    getExitedTo(): Subject<any> {
+        return this.exitedTo;
+    }
+
+    publishIonViewDidLeave(data?: any) {
+        this.ionViewDidLeave.next(data);
+    }
+
+    getIonViewDidLeave(): Subject<any> {
+        return this.ionViewDidLeave;
+    }
+
+    publishSplitPaneToggleDisable(data?: any) {
+        this.splitPaneToggleDisable.next(data);
+    }
+
+    getSplitPaneToggleDisable(): Subject<any> {
+        return this.splitPaneToggleDisable;
+    }
+
+    publishTocActiveSorting(data?: any) {
+        this.tocActiveSorting.next(data);
+    }
+
+    getTocActiveSorting(): Subject<any> {
+        return this.tocActiveSorting;
+    }
+
+    publishSidemenuRedirect(data?: any) {
+        this.sidemenuRedirect.next(data);
+    }
+
+    getSidemenuRedirect(): Subject<any> {
+        return this.sidemenuRedirect;
+    }
+
+    publishSelectOneItem(data?: any) {
+        this.selectOneItem.next(data);
+    }
+
+    getSelectOneItem(): Subject<any> {
+        return this.selectOneItem;
+    }
+
+    publishTableOfContentsFindMarkdownTocItem(data?: any) {
+        this.tableOfContentsFindMarkdownTocItem.next(data);
+    }
+
+    getTableOfContentsFindMarkdownTocItem(): Subject<any> {
+        return this.tableOfContentsFindMarkdownTocItem;
+    }
+
+    publishUpdatePositionInPageRead(data?: any) {
+        this.updatePositionInPageRead.next(data);
+    }
+
+    getUpdatePositionInPageRead(): Subject<any> {
+        return this.updatePositionInPageRead;
+    }
+
+    publishUpdatePositionInPageReadTextChanger(data?: any) {
+        this.updatePositionInPageReadTextChanger.next(data);
+    }
+
+    getUpdatePositionInPageReadTextChanger(): Subject<any> {
+        return this.updatePositionInPageReadTextChanger;
     }
 }
