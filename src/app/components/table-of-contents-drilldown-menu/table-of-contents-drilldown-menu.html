@@ -1,22 +1,22 @@
 <ion-list *ngIf="menuStack">
   <ion-item *ngIf="!sortableLetters.includes(collectionId) && menuStack.length === 1" (click)="unDrill()" class="back-to-list-button collections" no-lines>
-    <ion-icon name="ios-arrow-back" item-left small></ion-icon>
+    <ion-icon name="arrow-back" item-left small></ion-icon>
     <div style="padding-left:2rem; white-space: normal;" *ngIf="titleStack && titleStack.length > 0">{{titleStack[0]}}</div>
   </ion-item>
   <!-- *ngIf="this collection id is in the sortableLetters array" -->
   <ng-container *ngIf="sortableLetters.includes(collectionId)">
     <ion-item (click)="unDrill()" class="back-to-list-button" no-lines>
-      <div style="padding-left:2rem; white-space: normal;">{{ "Read.Back" | translate }}</div><ion-icon name="ios-arrow-back" item-left small></ion-icon>
+      <div style="padding-left:2rem; white-space: normal;">{{ "Read.Back" | translate }}</div><ion-icon name="arrow-back" item-left small></ion-icon>
     </ion-item>
     <ion-item class="collection-filters">
         <button id="thematic" ion-button [ngClass]="{active: thematicOrderActive}" (click)="visibleMenuStack = menuStack; setActiveSortingType($event)">
-            <ion-icon name="ios-pricetags-outline"></ion-icon>
+            <ion-icon name="pricetags-outline"></ion-icon>
         </button>
         <button id="chronological" ion-button [ngClass]="{active: chronologicalOrderActive}" (click)="visibleMenuStack = [chronologicalMenuStack]; setActiveSortingType($event)">
-            <ion-icon name="ios-calendar-outline"></ion-icon>
+            <ion-icon name="calendar-outline"></ion-icon>
         </button>
         <button id="alphabetical" ion-button [ngClass]="{active: alphabethicOrderActive}" (click)="visibleMenuStack = [alphabeticalMenuStack]; setActiveSortingType($event)">
-            <ion-icon name="ios-swap-outline"></ion-icon>
+            <ion-icon name="swap-outline"></ion-icon>
         </button>
     </ion-item>
 </ng-container>
@@ -31,7 +31,7 @@
     <ng-container *ngIf="item.children">
       <ion-item  (click)="drillDown(item)" id="toc_{{item.itemId}}">
         <p>{{item.text}}</p>
-        <ion-icon name="ios-arrow-forward" item-right small></ion-icon>
+        <ion-icon name="arrow-forward" item-right small></ion-icon>
       </ion-item>
     </ng-container>
     <ng-container *ngIf="!item.children">

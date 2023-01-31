@@ -149,8 +149,8 @@
                         </ion-col>
                       </ion-row>
                     </ion-grid>
-                    <ion-icon *ngIf="isFiltersShown() && longitude" class="map_icon" name="ios-map"></ion-icon>
-                    <ion-icon *ngIf="!isFiltersShown() && longitude" class="map_icon" name="ios-map-outline"></ion-icon>
+                    <ion-icon *ngIf="isFiltersShown() && longitude" class="map_icon" name="map"></ion-icon>
+                    <ion-icon *ngIf="!isFiltersShown() && longitude" class="map_icon" name="map-outline"></ion-icon>
                 </ion-item>
                 <ion-item *ngIf="longitude" [ngClass]="isFiltersShown()?'map_item':'map_item_hidden'">
                     <div id="map" [ngClass]="isFiltersShown()?'map':'map_hidden'"></div>
@@ -166,8 +166,8 @@
                       <ion-item-divider (click)="toggleList(collection.collection_id)" class="collection_name_label">
                         {{collection.name}}
                         <span class="forward-arrow-span">
-                          <ion-icon *ngIf="collection.hidden" name="ios-arrow-forward"></ion-icon>
-                          <ion-icon *ngIf="!collection.hidden" name="ios-arrow-down"></ion-icon>
+                          <ion-icon *ngIf="collection.hidden" name="arrow-forward"></ion-icon>
+                          <ion-icon *ngIf="!collection.hidden" name="arrow-down"></ion-icon>
                         </span>
                       </ion-item-divider>
                       <ion-list *ngIf="!collection.hidden" class="list_of_occurrences">

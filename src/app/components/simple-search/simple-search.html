@@ -40,8 +40,8 @@
         <div class="facets" [ngClass]="showFacets?'showFacets':'hideFacets'">
           <div class="facetCategories" *ngFor="let item of searchFacets">
             <ion-item *ngIf="item['count'] > 0">
-              <ion-icon *ngIf="item.opened" name="ios-arrow-forward" item-right (click)="showSubFacets(item)" class="facetArrow"></ion-icon>
-              <ion-icon *ngIf="!item.opened" name="ios-arrow-down" item-right (click)="showSubFacets(item)" class="facetArrow"></ion-icon>
+              <ion-icon *ngIf="item.opened" name="arrow-forward" item-right (click)="showSubFacets(item)" class="facetArrow"></ion-icon>
+              <ion-icon *ngIf="!item.opened" name="arrow-down" item-right (click)="showSubFacets(item)" class="facetArrow"></ion-icon>
               <ion-label (click)="showSubFacets(item)">{{item['name'] | translate }}</ion-label>
             </ion-item>
             <div class="subFacets" *ngIf="item.children.length > 0" [ngClass]="item.opened?'subFacetOpen':'subFacetClosed'">

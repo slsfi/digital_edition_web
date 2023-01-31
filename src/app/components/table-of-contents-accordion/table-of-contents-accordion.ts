@@ -1350,7 +1350,7 @@ export class TableOfContentsAccordionComponent {
         md: 50,
         wp: 50
       },
-      arrowIcon: 'ios-arrow-forward',
+      arrowIcon: 'arrow-forward',
       showSelectedOption: false,
       selectedOptionClass: 'selected-option',
       indentSubOptionsWithoutIcons: false,

@@ -3,7 +3,7 @@ export interface TocAccordionMenuOptionModel {
     collapsed?: boolean;
     id?: any;
     // If the option has sub items and the iconName is null,
-    // the default icon will be 'ios-arrow-down'.
+    // the default icon will be 'arrow-down'.
     iconName?: string;
 
     // The name to display in the menu
