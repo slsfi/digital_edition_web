@@ -21,3 +21,4 @@ RUN npm install cheerio
 RUN npm install rev-hash@3.0.0
 RUN npm i -g @sentry/browser
 RUN npm run build:prod
+RUN node ./scripts/cache-busting.js

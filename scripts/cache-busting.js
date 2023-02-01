@@ -73,50 +73,23 @@ function getHash(filename, folderPath) {
   return [fileHash, theFileIsAlreadyHashed];
 }
 
-
 var rootDir = path.resolve(__dirname, '../');
 var wwwRootDir = path.resolve(rootDir, 'www');
-var buildDir = path.join(wwwRootDir, 'build');
 var indexPath = path.join(wwwRootDir, 'index.html');
-var serviceWorkerPath = path.join(wwwRootDir, 'service-worker.js');
-var buildFiles = fs.readdirSync(buildDir);
-
-// Renaming service-worker.js in index.html
-$ = cheerio.load(fs.readFileSync(indexPath, 'utf-8'));
-let [fileHash, theFileIsAlreadyHashed] = getHash('service-worker.js', wwwRootDir);
-// console.log("fileHash", fileHash);
-let jsSWorker = $(`<script type="text/javascript" id="cache-bursting-script">
-  if (\'serviceWorker\' in navigator) {
-      navigator.serviceWorker.register(\'service-worker.${fileHash}.js\')
-        .then(() => console.log(\'service worker installed\'))
-        .catch(err => console.error(\'Error\', err));
-    }
-  </script>`);
-$("head script#service-worker-script").replaceWith(jsSWorker);
-fs.writeFileSync(indexPath, $.html());
-
-// rename serviceWorker file
-let newServiceWorkerPath = path.join(wwwRootDir, `service-worker.${fileHash}.js`);
-if(fs.existsSync(serviceWorkerPath)) {
-  // delete old hashed file if it exists.
-  var oldSWPaths = path.join(wwwRootDir, 'service-worker.*.js');
-  exe(`if [ -e ${oldSWPaths} ]; then rm ${oldSWPaths};fi`);
-  fs.renameSync(serviceWorkerPath, newServiceWorkerPath);
-}
 
 let f = {};
 
-for (let filename of ['main.js', 'main.css', 'polyfills.js', 'sw-toolbox.js', 'vendor.js']) {
-  let filePath = path.join(buildDir, filename);
-  let relativePath = path.join('build', filename);
+for (let filename of ['common.js', 'main.js', 'polyfills.js', 'runtime.js', 'scripts.js', 'styles.css']) {
+  let filePath = path.join(wwwRootDir, filename);
+  let relativePath = path.join(filename);
 
   let [file, fileExtension] = filename.split('.');
   let fileBase = file.split('/').pop();
-  let [fileHash, theFileIsAlreadyHashed] = getHash(filename, buildDir);
+  let [fileHash, theFileIsAlreadyHashed] = getHash(filename, wwwRootDir);
 
   let newFilename = `${fileBase}.${fileHash}.${fileExtension}`;
-  let newPath = path.join(buildDir, newFilename);
-  let newRelativePath = path.join('build', newFilename);
+  let newPath = path.join(wwwRootDir, newFilename);
+  let newRelativePath = path.join(newFilename);
 
   f[filename] = {
     'path' : filePath,
@@ -133,11 +106,6 @@ for (let filename of ['main.js', 'main.css', 'polyfills.js', 'sw-toolbox.js', 'v
     'attr': fileExtension == 'css' ? 'href' : 'src' // if there will be more than js and css, we will refactor this into a function
   }
 
-  // update service-worker.js to load base.[hash].ext
-  let re = new RegExp(f[filename].relativePath, "mg");
-  var swFile = fs.readFileSync(newServiceWorkerPath, 'utf-8');
-  swFile = swFile.replace(re, f[filename].newRelativePath);
-  fs.writeFileSync(newServiceWorkerPath, swFile);
   // console.log("new sw path", newServiceWorkerPath);
   // update index.html to load base.[hash].ext
   $ = cheerio.load(fs.readFileSync(indexPath, 'utf-8'));
