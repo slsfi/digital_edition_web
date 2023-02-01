@@ -12,7 +12,6 @@ COPY src/assets/fonts src/assets/fonts
 COPY src/assets/images src/assets/images
 COPY src/assets/custom_css src/assets/custom_css
 COPY scripts scripts
-COPY config config
 
 RUN mkdir www
 
