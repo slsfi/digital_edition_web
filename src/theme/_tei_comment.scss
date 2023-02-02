@@ -1,0 +1,101 @@
+div.tei {
+    h3.teiComment,
+    div.ms h3 {
+        font-size: 1.25em;
+        font-variant: small-caps;
+        margin: 0 0 0.5em;
+    }
+    h4.teiComment {
+        font-size: 1.125em;
+        font-style: italic;
+        margin: 2em 0 0.5em;
+    }
+
+    p.teiComment {
+        &.noteLegend {
+            text-indent: 0;
+            margin-bottom: 0.5rem;
+            font-size: 0.875em;
+        }
+    
+        /* The paragraph which contains the entire note/annotation. */
+        &.note {
+            margin-top: 1rem;
+            padding-left: 0;
+            text-indent: 0;
+        }
+
+        &.paragraphSpace {
+            padding-bottom: 0 !important;
+        }
+    }
+
+    h3.teiComment.smallCaps + p.paragraphSpace + h4.teiComment.italics,
+    h3.teiComment.smallCaps + h4.teiComment.italics {
+        margin-top: 1.25em;
+    }
+
+    span.teiComment {
+        &.notePosition {
+            font-family: var(--font-stack-app-base);
+            font-weight: normal;
+            font-size: 0.6875em;
+            padding-right: 0.5em;
+        }
+        
+        &.noteLemma {
+            font-style: italic;
+            font-weight: bold;
+        }
+        &.noteLemma.highlight {
+            color: #980202;
+        }
+
+        &.noteText::before {
+            content: " – ";
+            font-style: normal;
+            font-weight: normal;
+        }
+        
+        &.lemmaBreak {
+            font-style: normal;
+        }
+    }
+
+    /* Manuscript description */
+    div.ms {
+        margin-top: 3rem;
+
+        li {
+            list-style: none;
+            line-height: 1.5rem;
+        }
+    
+        ul {
+            padding-left: 0;
+        }
+    }
+}
+
+/* Change cursor to pointer only when showComments is true */
+.show_comments .teiComment.note {
+    cursor: pointer;
+}
+
+/* Style for references after comment notes. Used in vonwright.sls.fi */
+div.tei .teiComment.noteReference {
+    display: block;
+    font-size: 0.85em;
+    line-height: 1.55;
+    margin-top: 0.5em;
+}
+
+/* Legacy style for references after comment notes. Previously used in vonwright.sls.fi */
+comments div.tei p.note + p:not([class]) > span:not([class]),
+comments div.tei p.note + p:not([class]) ~ p:not([class]) > span:not([class]) {
+    font-size: 0.85em;
+    line-height: 1.55;
+    text-indent: 0;
+    display: block;
+    margin-top: 0.5em;
+}

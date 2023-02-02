@@ -1,0 +1,2518 @@
+/*
+    This file contains style rules which are applied exclusively to the contents of the <div> elements with class "tei" on the title page, cover page, in the introduction and in the columns on the read page.
+*/
+
+/* Padding below the columns so their height won't end precisely after the texts */
+page-title ion-scroll div.teiContainer,
+page-introduction ion-scroll div.teiContainer,
+read-text > div.teiContainer,
+comments > div.teiContainer,
+variations > div.teiContainer,
+manuscripts > div.teiContainer,
+legend > div.teiContainer {
+    padding-bottom: 20vh;
+}
+
+div.teiContainer {
+    font-family: var(--font-stack-tei);
+    font-size: $text-fontsize-small;
+    line-height: 1.6em;
+    white-space: normal;
+    max-width: 100%;
+}
+
+/* Font sizes. */
+div.tei.miniFontSize {
+    font-size: $text-fontsize-mini;
+}
+div.tei.tinyFontSize {
+    font-size: $text-fontsize-tiny;
+}
+div.tei.xxxsmallFontSize {
+    font-size: $text-fontsize-xxxsmall;
+}
+div.tei.xxsmallFontSize {
+    font-size: $text-fontsize-xxsmall;
+}
+div.tei.xsmallFontSize {
+    font-size: $text-fontsize-xsmall;
+}
+div.tei.smallFontSize {
+    font-size: $text-fontsize-small;
+}
+div.tei.mediumFontSize {
+    font-size: $text-fontsize-medium;
+}
+div.tei.largeFontSize {
+    font-size: $text-fontsize-large;
+}
+div.tei.xlargeFontSize {
+    font-size: $text-fontsize-xlarge;
+}
+
+/* Size of comment asterisks at different font sizes.
+    The size of the asterisks, page numberings and "squared times" symbol (normalisations)
+    have to be defined this way as they should be affected by the chosen font size, but
+    not the size of the text-element they are included in. For instance, the asterisks
+    must not be larger inside headings. */
+div.tei.miniFontSize img.comment {
+    width:  ceil(0.75 * $text-fontsize-mini) !important;
+    height: ceil(0.75 * $text-fontsize-mini) !important;
+}
+div.tei.tinyFontSize img.comment {
+    width:  ceil(0.75 * $text-fontsize-tiny) !important;
+    height: ceil(0.75 * $text-fontsize-tiny) !important;
+}
+div.tei.xxxsmallFontSize img.comment {
+    width:  ceil(0.75 * $text-fontsize-xxxsmall) !important;
+    height: ceil(0.75 * $text-fontsize-xxxsmall) !important;
+}
+div.tei.xxsmallFontSize img.comment {
+    width:  ceil(0.75 * $text-fontsize-xxsmall) !important;
+    height: ceil(0.75 * $text-fontsize-xxsmall) !important;
+}
+div.tei.xsmallFontSize img.comment {
+    width:  ceil(0.75 * $text-fontsize-xsmall) !important;
+    height: ceil(0.75 * $text-fontsize-xsmall) !important;
+}
+div.tei.smallFontSize img.comment {
+    width:  ceil(0.75 * $text-fontsize-small) !important;
+    height: ceil(0.75 * $text-fontsize-small) !important;
+}
+div.tei.mediumFontSize img.comment {
+    width:  ceil(0.75 * $text-fontsize-medium) !important;
+    height: ceil(0.75 * $text-fontsize-medium) !important;
+}
+div.tei.largeFontSize img.comment {
+    width:  ceil(0.75 * $text-fontsize-large) !important;
+    height: ceil(0.75 * $text-fontsize-large) !important;
+}
+div.tei.xlargeFontSize img.comment {
+    width:  ceil(0.75 * $text-fontsize-xlarge) !important;
+    height: ceil(0.75 * $text-fontsize-xlarge) !important;
+}
+
+/* Size of page numberings at different font sizes. */
+div.tei.miniFontSize.show_pageBreakOriginal,
+div.tei.miniFontSize.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: ceil(0.875 * $text-fontsize-mini);
+    }
+}
+div.tei.tinyFontSize.show_pageBreakOriginal,
+div.tei.tinyFontSize.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: ceil(0.875 * $text-fontsize-tiny);
+    }
+}
+div.tei.xxxsmallFontSize.show_pageBreakOriginal,
+div.tei.xxxsmallFontSize.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: ceil(0.875 * $text-fontsize-xxxsmall);
+    }
+}
+div.tei.xxsmallFontSize.show_pageBreakOriginal,
+div.tei.xxsmallFontSize.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: ceil(0.875 * $text-fontsize-xxsmall);
+    }
+}
+div.tei.xsmallFontSize.show_pageBreakOriginal,
+div.tei.xsmallFontSize.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: ceil(0.875 * $text-fontsize-xsmall);
+    }
+}
+div.tei.smallFontSize.show_pageBreakOriginal,
+div.tei.smallFontSize.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: ceil(0.875 * $text-fontsize-small);
+    }
+}
+div.tei.mediumFontSize.show_pageBreakOriginal,
+div.tei.mediumFontSize.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: ceil(0.875 * $text-fontsize-medium);
+    }
+}
+div.tei.largeFontSize.show_pageBreakOriginal,
+div.tei.largeFontSize.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: ceil(0.875 * $text-fontsize-large);
+    }
+}
+div.tei.xlargeFontSize.show_pageBreakOriginal,
+div.tei.xlargeFontSize.show_pageBreakEdition {
+    .pb_orig,
+    .pb_zts,
+    .pb_edition {
+        font-size: ceil(0.875 * $text-fontsize-xlarge);
+    }
+}
+
+/* Size of the "squared times" symbol at different font sizes (the symbol indicates a normalisation where something has
+    been removed from the text, or in variants, text that is missing. */
+div.tei.show_normalisations span.reg_hide img,
+div.tei.show_changes span.corr_hide img,
+div.tei span.seg img {
+    display: inline-block;
+    width:   0.625em; /* Default if the font size is not working. */
+    height:  0.625em;
+}
+div.tei.miniFontSize.show_normalisations span.reg_hide img,
+div.tei.miniFontSize.show_changes span.corr_hide img,
+div.tei.miniFontSize span.seg img {
+    width:  ceil(0.585 * $text-fontsize-mini);
+    height: ceil(0.585 * $text-fontsize-mini);
+}
+div.tei.tinyFontSize.show_normalisations span.reg_hide img,
+div.tei.tinyFontSize.show_changes span.corr_hide img,
+div.tei.tinyFontSize span.seg img {
+    width:  ceil(0.585 * $text-fontsize-tiny);
+    height: ceil(0.585 * $text-fontsize-tiny);
+}
+div.tei.xxsmallFontSize.show_normalisations span.reg_hide img,
+div.tei.xxsmallFontSize.show_changes span.corr_hide img,
+div.tei.xxsmallFontSize span.seg img {
+    width:  ceil(0.585 * $text-fontsize-xxsmall);
+    height: ceil(0.585 * $text-fontsize-xxsmall);
+}
+div.tei.xsmallFontSize.show_normalisations span.reg_hide img,
+div.tei.xsmallFontSize.show_changes span.corr_hide img,
+div.tei.xsmallFontSize span.seg img {
+    width:  ceil(0.585 * $text-fontsize-xsmall);
+    height: ceil(0.585 * $text-fontsize-xsmall);
+}
+div.tei.smallFontSize.show_normalisations span.reg_hide img,
+div.tei.smallFontSize.show_changes span.corr_hide img,
+div.tei.smallFontSize span.seg img {
+    width:  ceil(0.585 * $text-fontsize-small);
+    height: ceil(0.585 * $text-fontsize-small);
+}
+div.tei.mediumFontSize.show_normalisations span.reg_hide img,
+div.tei.mediumFontSize.show_changes span.corr_hide img,
+div.tei.mediumFontSize span.seg img {
+    width:  ceil(0.585 * $text-fontsize-medium);
+    height: ceil(0.585 * $text-fontsize-medium);
+}
+div.tei.largeFontSize.show_normalisations span.reg_hide img,
+div.tei.largeFontSize.show_changes span.corr_hide img,
+div.tei.largeFontSize span.seg img {
+    width:  ceil(0.585 * $text-fontsize-large);
+    height: ceil(0.585 * $text-fontsize-large);
+}
+div.tei.xlargeFontSize.show_normalisations span.reg_hide img,
+div.tei.xlargeFontSize.show_changes span.corr_hide img,
+div.tei.xlargeFontSize span.seg img {
+    width:  ceil(0.585 * $text-fontsize-xlarge);
+    height: ceil(0.585 * $text-fontsize-xlarge);
+}
+
+/* Size of the red triangle that indicates the start of lemmas etc. */
+div.tei span.anchor_lemma img,
+div.tei img.inl_ms_arrow,
+div.tei span.add_margin img,
+div.tei img.doodle,
+div.tei span.anchorScrollTarget img,
+div.tei span.anchorScrollTarget.highlight img,
+div.tei a.ref_variant img,
+div.tei span.extVariantsTrigger img {
+    display: inline-block;
+    width:   0.75em; /* Default */
+    height:  0.75em;
+}
+div.tei span.anchor_lemma img,
+div.tei img.inl_ms_arrow,
+div.tei span.anchorScrollTarget.highlight img,
+div.tei a.ref_variant.tooltiptrigger.highlight img,
+div.tei span.extVariantsTrigger.highlight img {
+    animation: filter-animation-brightness 1.5s infinite;
+}
+div.tei.miniFontSize span.anchor_lemma img,
+div.tei.miniFontSize img.inl_ms_arrow,
+div.tei.miniFontSize span.add_margin img,
+div.tei.miniFontSize img.doodle,
+div.tei.miniFontSize span.anchorScrollTarget img,
+div.tei.miniFontSize a.ref_variant img,
+div.tei.miniFontSize span.extVariantsTrigger img {
+    width:  ceil(0.75 * $text-fontsize-mini);
+    height: ceil(0.75 * $text-fontsize-mini);
+}
+div.tei.tinyFontSize span.anchor_lemma img,
+div.tei.tinyFontSize img.inl_ms_arrow,
+div.tei.tinyFontSize span.add_margin img,
+div.tei.tinyFontSize img.doodle,
+div.tei.tinyFontSize span.anchorScrollTarget img,
+div.tei.tinyFontSize a.ref_variant img,
+div.tei.tinyFontSize span.extVariantsTrigger img {
+    width:  ceil(0.75 * $text-fontsize-tiny);
+    height: ceil(0.75 * $text-fontsize-tiny);
+}
+div.tei.xxxsmallFontSize span.anchor_lemma img,
+div.tei.xxxsmallFontSize img.inl_ms_arrow,
+div.tei.xxxsmallFontSize span.add_margin img,
+div.tei.xxxsmallFontSize img.doodle,
+div.tei.xxxsmallFontSize span.anchorScrollTarget img,
+div.tei.xxxsmallFontSize a.ref_variant img,
+div.tei.xxxsmallFontSize span.extVariantsTrigger img {
+    width:  ceil(0.75 * $text-fontsize-xxxsmall);
+    height: ceil(0.75 * $text-fontsize-xxxsmall);
+}
+div.tei.xxsmallFontSize span.anchor_lemma img,
+div.tei.xxsmallFontSize img.inl_ms_arrow,
+div.tei.xxsmallFontSize span.add_margin img,
+div.tei.xxsmallFontSize img.doodle,
+div.tei.xxsmallFontSize span.anchorScrollTarget img,
+div.tei.xxsmallFontSize a.ref_variant img,
+div.tei.xxsmallFontSize span.extVariantsTrigger img {
+    width:  ceil(0.75 * $text-fontsize-xxsmall);
+    height: ceil(0.75 * $text-fontsize-xxsmall);
+}
+div.tei.xsmallFontSize span.anchor_lemma img,
+div.tei.xsmallFontSize img.inl_ms_arrow,
+div.tei.xsmallFontSize span.add_margin img,
+div.tei.xsmallFontSize img.doodle,
+div.tei.xsmallFontSize span.anchorScrollTarget img,
+div.tei.xsmallFontSize a.ref_variant img,
+div.tei.xsmallFontSize span.extVariantsTrigger img {
+    width:  ceil(0.75 * $text-fontsize-xsmall);
+    height: ceil(0.75 * $text-fontsize-xsmall);
+}
+div.tei.smallFontSize span.anchor_lemma img,
+div.tei.smallFontSize img.inl_ms_arrow,
+div.tei.smallFontSize span.add_margin img,
+div.tei.smallFontSize img.doodle,
+div.tei.smallFontSize span.anchorScrollTarget img,
+div.tei.smallFontSize a.ref_variant img,
+div.tei.smallFontSize span.extVariantsTrigger img {
+    width:  ceil(0.75 * $text-fontsize-small);
+    height: ceil(0.75 * $text-fontsize-small);
+}
+div.tei.mediumFontSize span.anchor_lemma img,
+div.tei.mediumFontSize img.inl_ms_arrow,
+div.tei.mediumFontSize span.add_margin img,
+div.tei.mediumFontSize img.doodle,
+div.tei.mediumFontSize span.anchorScrollTarget img,
+div.tei.mediumFontSize a.ref_variant img,
+div.tei.mediumFontSize span.extVariantsTrigger img {
+    width:  ceil(0.75 * $text-fontsize-medium);
+    height: ceil(0.75 * $text-fontsize-medium);
+}
+div.tei.largeFontSize span.anchor_lemma img,
+div.tei.largeFontSize img.inl_ms_arrow,
+div.tei.largeFontSize span.add_margin img,
+div.tei.largeFontSize img.doodle,
+div.tei.largeFontSize span.anchorScrollTarget img,
+div.tei.largeFontSize a.ref_variant img,
+div.tei.largeFontSize span.extVariantsTrigger img {
+    width:  ceil(0.75 * $text-fontsize-large);
+    height: ceil(0.75 * $text-fontsize-large);
+}
+div.tei.xlargeFontSize span.anchor_lemma img,
+div.tei.xlargeFontSize img.inl_ms_arrow,
+div.tei.xlargeFontSize span.add_margin img,
+div.tei.xlargeFontSize img.doodle,
+div.tei.xlargeFontSize span.anchorScrollTarget img,
+div.tei.xlargeFontSize a.ref_variant img,
+div.tei.xlargeFontSize span.extVariantsTrigger img {
+    width:  ceil(0.75 * $text-fontsize-xlarge);
+    height: ceil(0.75 * $text-fontsize-xlarge);
+}
+
+/* Size of the esh-symbol in manuscripts. */
+div.tei .teiManuscript.immediate_symbol img {
+    display: inline-block;
+    width:   0.9em; /* Default. */
+    height:  auto;
+}
+div.tei.miniFontSize .teiManuscript.immediate_symbol img {
+    width:  ceil(0.9 * $text-fontsize-mini);
+    height: ceil(0.9 * $text-fontsize-mini);
+}
+div.tei.tinyFontSize .teiManuscript.immediate_symbol img {
+    width:  ceil(0.9 * $text-fontsize-tiny);
+    height: ceil(0.9 * $text-fontsize-tiny);
+}
+div.tei.xxxsmallFontSize .teiManuscript.immediate_symbol img {
+    width:  ceil(0.9 * $text-fontsize-xxxsmall);
+    height: ceil(0.9 * $text-fontsize-xxxsmall);
+}
+div.tei.xxsmallFontSize .teiManuscript.immediate_symbol img {
+    width:  ceil(0.9 * $text-fontsize-xxsmall);
+    height: ceil(0.9 * $text-fontsize-xxsmall);
+}
+div.tei.xsmallFontSize .teiManuscript.immediate_symbol img {
+    width:  ceil(0.9 * $text-fontsize-xsmall);
+    height: ceil(0.9 * $text-fontsize-xsmall);
+}
+div.tei.smallFontSize .teiManuscript.immediate_symbol img {
+    width:  ceil(0.9 * $text-fontsize-small);
+    height: ceil(0.9 * $text-fontsize-small);
+}
+div.tei.mediumFontSize .teiManuscript.immediate_symbol img {
+    width:  ceil(0.9 * $text-fontsize-medium);
+    height: ceil(0.9 * $text-fontsize-medium);
+}
+div.tei.largeFontSize .teiManuscript.immediate_symbol img {
+    width:  ceil(0.9 * $text-fontsize-large);
+    height: ceil(0.9 * $text-fontsize-large);
+}
+div.tei.xlargeFontSize .teiManuscript.immediate_symbol img {
+    width:  ceil(0.9 * $text-fontsize-xlarge);
+    height: ceil(0.9 * $text-fontsize-xlarge);
+}
+
+/* Symbol/icon representing a drawing etc. */
+div.tei img.symbol {
+    display: inline-block;
+    width:   1.235em; /* Default. */
+    height:  auto;
+    vertical-align: text-bottom;
+}
+div.tei.miniFontSize img.symbol {
+    width:  ceil(1.235 * $text-fontsize-mini);
+    height: ceil(1.235 * $text-fontsize-mini);
+    vertical-align: floor(-0.2 * $text-fontsize-mini);
+}
+div.tei.tinyFontSize img.symbol {
+    width:  ceil(1.235 * $text-fontsize-tiny);
+    height: ceil(1.235 * $text-fontsize-tiny);
+    vertical-align: floor(-0.2 * $text-fontsize-tiny);
+}
+div.tei.xxxsmallFontSize img.symbol {
+    width:  ceil(1.235 * $text-fontsize-xxxsmall);
+    height: ceil(1.235 * $text-fontsize-xxxsmall);
+    vertical-align: floor(-0.2 * $text-fontsize-xxxsmall);
+}
+div.tei.xxsmallFontSize img.symbol {
+    width:  ceil(1.235 * $text-fontsize-xxsmall);
+    height: ceil(1.235 * $text-fontsize-xxsmall);
+    vertical-align: floor(-0.2 * $text-fontsize-xxsmall);
+}
+div.tei.xsmallFontSize img.symbol {
+    width:  ceil(1.235 * $text-fontsize-xsmall);
+    height: ceil(1.235 * $text-fontsize-xsmall);
+    vertical-align: floor(-0.2 * $text-fontsize-xsmall);
+}
+div.tei.smallFontSize img.symbol {
+    width:  ceil(1.235 * $text-fontsize-small);
+    height: ceil(1.235 * $text-fontsize-small);
+    vertical-align: floor(-0.2 * $text-fontsize-small);
+}
+div.tei.mediumFontSize img.symbol {
+    width:  ceil(1.235 * $text-fontsize-medium);
+    height: ceil(1.235 * $text-fontsize-medium);
+    vertical-align: floor(-0.2 * $text-fontsize-medium);
+}
+div.tei.largeFontSize img.symbol {
+    width:  ceil(1.235 * $text-fontsize-large);
+    height: ceil(1.235 * $text-fontsize-large);
+    vertical-align: floor(-0.2 * $text-fontsize-large);
+}
+div.tei.xlargeFontSize img.symbol {
+    width:  ceil(1.235 * $text-fontsize-xlarge);
+    height: ceil(1.235 * $text-fontsize-xlarge);
+    vertical-align: floor(-0.2 * $text-fontsize-xlarge);
+}
+
+/* Size of the hand-symbol in manuscripts. */
+div.tei img.teiManuscript.handSymbol {
+    display: inline-block;
+    width:   1em; /* Default. */
+    height:  auto;
+    top: 0;
+}
+div.tei.miniFontSize img.teiManuscript.handSymbol {
+    width:  ceil(1 * $text-fontsize-mini);
+    height: ceil(1 * $text-fontsize-mini);
+}
+div.tei.tinyFontSize img.teiManuscript.handSymbol {
+    width:  ceil(1 * $text-fontsize-tiny);
+    height: ceil(1 * $text-fontsize-tiny);
+}
+div.tei.xxxsmallFontSize img.teiManuscript.handSymbol {
+    width:  ceil(1 * $text-fontsize-xxxsmall);
+    height: ceil(1 * $text-fontsize-xxxsmall);
+}
+div.tei.xxsmallFontSize img.teiManuscript.handSymbol {
+    width:  ceil(1 * $text-fontsize-xxsmall);
+    height: ceil(1 * $text-fontsize-xxsmall);
+}
+div.tei.xsmallFontSize img.teiManuscript.handSymbol {
+    width:  ceil(1 * $text-fontsize-xsmall);
+    height: ceil(1 * $text-fontsize-xsmall);
+}
+div.tei.smallFontSize img.teiManuscript.handSymbol {
+    width:  ceil(1 * $text-fontsize-small);
+    height: ceil(1 * $text-fontsize-small);
+}
+div.tei.mediumFontSize img.teiManuscript.handSymbol {
+    width:  ceil(1 * $text-fontsize-medium);
+    height: ceil(1 * $text-fontsize-medium);
+}
+div.tei.largeFontSize img.teiManuscript.handSymbol {
+    width:  ceil(1 * $text-fontsize-large);
+    height: ceil(1 * $text-fontsize-large);
+}
+div.tei.xlargeFontSize img.teiManuscript.handSymbol {
+    width:  ceil(1 * $text-fontsize-xlarge);
+    height: ceil(1 * $text-fontsize-xlarge);
+}
+
+/* Make the red triangle (indicates start of lemmas in read-texts) blink brighter. */
+@keyframes filter-animation-brightness {
+    0% {
+        filter: brightness(100%);
+    }
+    25% {
+        filter: brightness(125%);
+    }
+    50% {
+        filter: brightness(150%);
+    }
+    75% {
+        filter: brightness(125%);
+    }
+    100% {
+        filter: brightness(100%);
+    }
+}
+
+div.tei {
+
+    p {
+        font-size: 1em;
+        line-height: 1.6em;
+        text-indent: 1.25em;
+        margin: 0;
+    }
+
+    blockquote {
+        font-style: normal;
+        font-size: 1em;
+        line-height: 1.6em;
+        margin: 1em 30px;
+    }
+
+    .padded p {
+        padding-left: 100px;
+    }
+    .padded h3 {
+        padding-left: 100px;
+    }
+
+    p.authorHeader {
+        text-indent: 0 !important;
+        margin-bottom: 0.5em;
+    }
+
+    p.invisiblelg {
+        margin-bottom: 1em !important;
+        margin-top: 1em !important;
+    }
+
+    /* Stanzas with a blank line between them should not have two blank lines just because there's
+        a page number in between. */
+    p.tei.invisiblelg + p.tei.invisiblelg {
+        margin-bottom: 0;
+    }
+  
+    /* No text-indent in blank lines, as they can contain <pb> that shouldn't have indentation,
+        and there shouldn't be double blank lines if invisiblelg contains <pb> */
+    p.tei.invisiblelg {
+        text-indent: 0 !important;
+        margin-top: 0 !important;
+    }
+
+    /* COMMON PARAGRAPHS */
+    p.invisible {
+        height: 0 !important;
+        width: 0 !important;
+        display: none;
+    }
+    p.personDesc, p.placeDesc, p.titleDesc {
+        text-indent: 0 !important;
+        margin-bottom: 1em !important;
+        padding-bottom: 0 !important;
+    }
+    p.paragraphSpace {
+        padding-bottom: 1.5em !important;
+    }
+    /*
+    p.letterStatus {
+        position: absolute;
+        top: 21px;
+        text-indent: 0 !important;
+    }
+    */
+    .topMargin {
+        margin-top: 1em;
+    }
+    .bottomMargin {
+        margin-bottom: 1em;
+    }
+    p.dateline
+    {
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+    p.underline,
+    h3.underline {
+        font-style: italic;
+    }
+    h3.underline {
+        text-decoration: underline;
+    }
+    span.underline {
+        font-style: italic;
+    }
+    .underlineTT {
+        text-decoration: underline;
+    }
+    .true-underline {
+        text-decoration: underline;
+    }
+    .tei_hi_medium {
+        text-decoration: none;
+        color: #000;
+    }
+    .tei_encircled_medium {
+        border: 1px solid #008100;
+    }
+    .tei_dashUnderline_medium {
+        border-bottom: 1px dashed #008100;
+    }
+    .tei_underline_medium {
+        text-decoration: underline;
+        color: #008100;
+    }
+    .tei_underline2_medium {
+        border-bottom: 3px double #008100;
+        font-style: normal;
+        text-decoration: none;
+    }
+    .stamp, 
+    .print {
+        font-family: var(--font-stack-tei-print-stamp);
+        letter-spacing: 1px;
+    }
+    .left {
+        text-align: left !important;
+        text-indent: 0 !important;
+    }
+    .center {
+        text-align: center;
+        text-indent: 0 !important;
+    }
+    .playCenter {
+        text-align: center;
+        text-indent: 0 !important;
+        margin-top: 0.9em !important;
+        margin-bottom: 0.3em !important;
+    }
+    .playCenter + .noIndent {
+        text-indent: 0 !important;
+        margin-bottom: 0.9em !important;
+    }
+    .center img {
+        height: 1em;
+    }
+    .right {
+        text-align: right;
+        text-indent: 0 !important;
+        margin-bottom: 1em;
+    }
+    .parIndent + .right + .right {
+        margin-top: -1em;
+    }
+    .img_left {
+        float: left;
+        padding-right: 8px;
+    }
+    .img_right {
+        float: right;
+        padding-left: 8px;
+    }
+    p.strofe {
+        text-indent: 0 !important;
+        padding-bottom: 1em !important;
+        margin-top: 1em !important;
+    }
+    p.l {
+        margin-left: 30px !important;
+        text-indent: -30px !important;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    .tei_indent
+    {
+        padding-left: 30px !important;
+        display: inline-block;
+    }
+    p.strofeSpacing  {
+        padding-bottom: 1em !important;
+    }
+    p.strofePadding {
+        padding-left: 20px;
+    }
+    p.milestoneWhen, 
+    p.milestonePart,
+    span.milestoneWhen, 
+    span.milestonePart {
+        font-family: var(--font-stack-app-base);
+        font-size: 0.8824em !important;
+        color: #4e4e4e;
+        background-color: #ececec;
+        margin: 0.8em 0 !important;
+        padding: 0 0.8em !important;
+        line-height: 1.5em !important;
+    }
+    span.milestoneWhen, 
+    span.milestonePart {
+        display: block;
+    }
+    hr.milestoneBar,
+    hr.milestoneSmallBar {
+        height: 1px;
+        border: 0;
+        background-color: #404040;
+        padding: 0;
+        margin: 1.5em auto;
+        width: 5.625em;
+    }
+    hr.milestoneSmallBar {
+        width: 2.25em;
+    }
+    hr.asterisk {
+        height: auto;
+        border: none;
+        background-color: transparent;
+        text-align: center;
+        margin: 1.75em auto 1.25em auto;
+    }
+    hr.asterisk::after {
+        color: #000;
+        content: "*";
+    }
+    hr.blank {
+        height: 0;
+        border: none;
+        background-color: transparent;
+        margin: 1.5em 0 0 0;
+    }
+    p.strofe + hr.milestoneBar,
+    p.strofe + hr.milestoneSmallBar {
+        margin-top: 0.5em;
+    }
+    p.teiOpener {
+        margin-bottom: 1.5em !important;
+    }
+    p.teiCloser {
+        margin-top: 1.5em !important;
+        margin-bottom: 1.5em !important;
+    }
+    .noIndent {
+        text-indent: 0 !important;
+    }
+    p.subtitle {
+        text-align: center;
+        font-style: italic;
+        font-size: 1.1176em;
+        margin: 0 0 2.25em 0;
+        text-indent: 0;
+    }
+    .parHalfIndent {
+        text-indent: 0 !important;
+        padding-left: 15px;
+    }
+    .halfLinePadding {
+        padding-bottom: 0.5em !important;
+    }
+
+    /* Old style for footnotes when they were <p> instead of <ol> */
+    p.footnote {
+        text-indent: 0 !important;
+        padding-bottom: 0.5em !important;
+    }
+
+    /* FOOTNOTES */
+    ol.footnotesList {
+        display: table;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+
+        li.footnoteItem {
+            display: table-row;
+
+            a.footnoteReference {
+                display: table-cell;
+                padding: 0 0.7em 0 0;
+                text-align: right;
+                text-decoration: none;
+
+                &:hover:not(.disable-hover) {
+                    text-decoration: underline;
+                }
+            }
+            span.footnoteText {
+                display: table-cell;
+                padding: 0;
+                overflow-wrap: anywhere;
+            }
+        }
+        li.footnoteItem::before {
+            content: "\200B";   /* Zero-width space needed for some screen readers since list-style-type is none. */
+        }
+    }
+
+    /* COMMON SPANS */
+    .sub {
+        vertical-align: sub;
+        font-size: 0.8235em;
+    }
+    .sup {
+        vertical-align: super;
+        font-size: 0.8235em;
+    }
+    .raised {
+        vertical-align: 60%;
+        line-height: 0.5em;
+        font-size: 0.8235em;
+    }
+    .uppercase {
+        text-transform: uppercase;
+    }
+    .italics {
+        font-style: italic;
+    }
+    .italicsTT {
+        font-style: italic;
+    }
+    .expanded {
+        font-style: italic;
+    }
+    .expandedTT {
+        letter-spacing: 2px;
+    }
+    .trueexpanded {
+        letter-spacing: 2px;
+    }
+    .expanded.italics {
+        letter-spacing: 2px;
+        font-style: italic;
+    }
+    .romanType {
+        font-style: italic;
+    }
+    .bold {
+        font-weight: bold;
+    }
+    .boldTT {
+        font-weight: bold;
+    }
+    span.underline2 {
+        font-style: italic;
+        text-decoration: underline;
+    }
+    .underline2TT {
+        border-bottom: 3px double black;
+        font-style: normal;
+        text-decoration: none;
+    }
+    span.dashUnderline {
+        border-bottom: 1px dashed black;
+    }
+    .dashUnderlineTT {
+        border-bottom: 1px dashed black;
+    }
+    .encircled {
+        border: 1px solid gray;
+    }
+    .encircledTT {
+        border: 1px solid gray;
+    }
+    .encreasedSize {
+        font-size: 120%;
+    }
+    .encreasedSizeTT {
+        font-size: 120%;
+    }
+    .anchor_lemma {
+        display: none;
+    }
+    a.textreference {
+        color: #000 !important;
+    }
+
+    /* MANUSCRIPT */
+    .symbol_red {
+        color: #990202;
+    }
+    .gap {
+        color: #990202;
+    }
+    .unclear {
+        color: #808080;
+    }
+    .space {
+        color: #990202;
+    }
+    .substitution {
+        color: #0000a1;
+    }
+    .tei_substitution_zts {
+        color: #0000a1;
+    }
+    .alternative {
+        position: relative;
+    }
+    .tei_add_subst_zts {
+        color: #0000a1;
+    }
+    .tei_subst_table {
+        display: inline-table;
+        position: relative;
+        padding: 0;
+        left: -4.8em;
+        font-style: inherit;
+        margin-right: -4.8em;
+        margin-bottom: -1em;
+    }
+    .tei_subst_table_noIndent {
+        display: inline-table;
+        position: relative;
+        padding: 0;
+        font-style: inherit;
+        margin-bottom: -1em;
+    }
+    .tei_td_del {
+        display: table-cell;
+        position: relative;
+    }
+    .tei_td_add {
+        display: table-cell;
+        position: relative;
+        top: -1.9em;
+    }
+    .tei_td_add_sublinear {
+        display: table-cell;
+        position: relative;
+    }
+    .tei_tr {
+        display: table-row;
+    }
+    .tei_tr_add {
+        display: table-row;
+        line-height: 0;
+    }
+    .delSpan {
+        background-color: #a5a299;
+        display: inline-block;
+        left: -1.7647em;
+        position: relative;
+    }
+    .delSpan_noIndent {
+        background-color: #a5a299;
+        display: inline-block;
+    }
+    .delSpan_editorial {
+        background-color: #cd955e;
+        display: inline-block;
+        left: -1.7647em;
+        position: relative;
+    }
+    .delSpan_noIndent_editorial {
+        background-color: #cd955e;
+        display: inline-block;
+    }
+    .delSpan_medium {
+        background-color: #a3b550;
+        display: inline-block;
+        left: -1.7647em;
+        position: relative;
+    }
+    .delSpan_noIndent_medium {
+        background-color: #a3b550;
+        display: inline-block;
+    }
+    .deletion {
+        text-decoration: line-through;
+    }
+    .deletion_strikethrough {
+        text-decoration: line-through;
+        background-color: #a5a299;
+    }
+    .deletion_subst {
+        text-decoration: line-through;
+    }
+    .tei_del_in_del {
+        position: relative;
+    }
+    .tei_deletion {
+        text-decoration: line-through;
+        color: map-get($map: $colors, $key: 'dark');
+    }
+    .tei_deletion_add {
+        text-decoration: line-through;
+        color: #0000a1;
+    }
+    .tei_deletion_add_medium {
+        text-decoration: line-through;
+        color: #606b2f;
+    }
+    .tei_deletion_del {
+        text-decoration: none;
+        color: map-get($map: $colors, $key: 'dark');
+    }
+    .tei_deletion_del_add {
+        text-decoration: none;
+        color: #0000a1;
+    }
+    .tei_deletion_del_subst {
+        text-decoration: line-through;
+        color: map-get($map: $colors, $key: 'dark');
+    }
+    .tei_deletion_del::after {
+        content: ' ';
+        position: absolute;
+        border-top: 1px solid #000;
+        top: 35%;
+        left: 0;
+        right: 0;
+    }
+    .tei_deletion_del_add::after {
+        content: ' ';
+        position: absolute;
+        border-top: 1px solid #000;
+        top: 35%;
+        left: 0;
+        right: 0;
+    }
+    .tei_deletion_del_subst::after {
+        content: ' ';
+        position: absolute;
+        border-top: 1px solid #000;
+        top: 35%;
+        left: 0;
+        right: 0;
+    }
+    .tei_deletion_subst {
+        text-decoration: line-through;
+        color: map-get($map: $colors, $key: 'dark');
+    }
+    .tei_deletion_editorial_wrapper {
+        text-decoration: line-through;
+        color: #a66e37 !important;
+    }
+    .tei_deletion_medium_wrapper {
+        text-decoration: line-through;
+        color: #008100 !important;
+    }
+    .tei_restore_editorial_wrapper {
+        border-bottom: 1px dashed #a66e37;
+    }
+    .tei_deletion_editorial {
+        text-decoration: none;
+        color: #000;
+    }
+    .tei_deletion_add_editorial {
+        text-decoration: none;
+        color: #0000a1;
+    }
+    .tei_add_margin {
+        color: #0000a1;
+        padding: 15px;
+    }
+    .tei_add_margin img {
+        margin-right: 3px;
+    }
+    .tei_add_over_zts {
+        vertical-align: super;
+        color: #0000a1;
+    }
+    .tei_add_over_hps {
+        color: #0000a1;
+        position: relative;
+        top: -0.9em;
+    }
+    .tei_add_sublinear {
+        vertical-align: -30%;
+        color: #0000a1;
+    }
+    .tei_add_inline {
+        color: #6262e6 !important;
+    }
+    .tei_add_in_add::before {
+        content: ' | ';
+        color: #990202 !important;
+    }
+    .tei_add_in_add {
+        color: #0000a1 !important;
+    }
+    .tei_add_choice {
+        position: absolute;
+        top: -0.9em;
+        left: 30px;
+    }
+    .tei_add_choice_sublinear {
+        position: absolute;
+        top: 1.5em;
+        left: -30px;
+    }
+    .tei_add_choice_noIndent {
+        position: absolute;
+        top: -1.2em;
+        left: 0;
+    }
+    .tei_add_choice_noIndent_sublinear {
+        position: absolute;
+        top: 1.5em;
+        left: 0;
+    }
+    .addSpan {
+        color: #0000a1;
+    }
+    .addSpan_choice {
+        color: #0000a1;
+        padding-left: 50px;
+    }
+    .tei_l_choice_master {
+        display: inline-block;
+        width: 50%;
+    }
+    .tei_l_choice_3 {
+        display: inline-block;
+        width: 33%;
+    }
+    span.split_symbol {
+        position: absolute;
+        z-index: 1;
+        top: 0.2em;
+        left: -8px;
+    }
+    span.join_symbol {
+        position: absolute;
+        z-index: 1;
+        top: -4px;
+        left: -9px;
+    }
+    .medium {
+        color: #008100 !important;
+    }
+    .restore {
+        border-bottom: 1px dashed green;
+    }
+    .switchpos_nonumber {
+        vertical-align: super;
+        color: #990202;
+    }
+    .switchpos_number {
+        vertical-align: super;
+        color: #0000a1;
+    }
+    .immediate_symbol {
+        position: relative;
+        bottom: -2px;
+        display: inline-block;
+    }
+
+    .tei_editorial {
+        color: #a66e37 !important;
+    }
+    .tei_note_editorial {
+        color: #a66e37 !important;
+        font-family: var(--font-stack-tei-editorial-note);
+        font-size: 0.9em;
+    }
+    .tei_note_editorial_margin {
+        color: #a66e37 !important;
+        font-family: var(--font-stack-tei-editorial-note);
+        font-size: 0.9em;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    .tei_hi_editorial_wrapper {
+        text-decoration: underline;
+        color: #a66e37 !important;
+    }
+    .tei_hi_editorial {
+        text-decoration: none;
+        color: map-get($map: $colors, $key: 'dark');
+    }
+
+    /* VARIANTS */
+    .lemma {
+        background-color: var(--lemma-identical-variant-background-color) !important;
+    }
+    div.lemma {
+        display: inline-block;
+    }
+    .variant {
+        background-color: var(--variant-background-color) !important;
+    }
+    div.variant {
+        display: inline-block;
+    }
+    .orthographic {
+        background-color:  var(--orthographic-variant-background-color) !important;
+    }
+    div.orthographic {
+        display: inline-block;
+    }
+    .substantial {
+        background-color: var(--substantial-variant-background-color) !important;
+    }
+    div.substantial {
+        display: inline-block;
+    }
+    .interpunction {
+        background-color: var(--interpunction-variant-background-color) !important;
+    }
+    div.interpunction {
+        display: inline-block;
+    }
+    .identical {
+        background-color: var(--lemma-identical-variant-background-color) !important;
+    }
+    div.identical {
+        display: inline-block;
+    }
+    .typographic {
+        background-color: var(--typographic-variant-background-color) !important;
+    }
+    div.typographic {
+        display: inline-block;
+    }
+    .error {
+        background-color: var(--error-variant-background-color) !important;
+    }
+    div.error {
+        display: inline-block;
+    }
+    .var_bold {
+        font-weight: bold;
+    }
+    span.extVariantsTrigger {
+        cursor: pointer;
+    }
+    span.extVariantsTrigger:hover {
+        opacity: 0.7;
+    }
+    span.extVariants {
+        display: none;
+        z-index: 1000;
+        padding: 3px;
+        margin-left: 0.25em;
+        border: 1px solid rgb(152, 0, 0);
+        background: var(--tooltip-background-color);
+        border-radius: $corner-roundness;
+        box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
+    }
+    span.extVariants.show-extVariants {
+        display: inline;
+    }
+
+    /* CALENDAR */
+    table.calendar {
+        margin-left: 10px;
+        margin-top: 0.7em;
+    }
+    table.calendar td {
+        font-size: 0.7em;
+        width: 23px;
+    }
+    a.calendarlink {
+        margin-left: 10px;
+    }
+    a.calendarlink img {
+        position: relative;
+        bottom: -2px;
+    }
+    .cal_days {
+        color: gray;
+    }
+    .cal_active {
+        color: #eb9414;
+        cursor: pointer;
+    }
+
+    /* SEARCH RESULT */
+    .p_editor {
+        color: #990202;
+    }
+    span.note_editor {
+        color: #990202;
+        font-style: italic;
+    }
+    span.note_foot {
+        color: #78756f;
+        font-style: italic;
+    }
+    .highlightPerson {
+        background-color: #e5bb71 !important;
+    }
+    .highlightPlace {
+        background-color: #d1dfb6 !important;
+    }
+    .highlightForeign {
+        background-color: #cae4eb !important;
+    }
+    .highlightWork {
+      background-color: #cae4eb !important;
+    }
+    .highlightXMLcomment {
+        background-color: #cae4eb !important;
+    }
+
+    /* these will be svg --> unclear which images are affected by this, might not be used anymore */
+    img.tooltiptrigger {
+        height: 10px;
+        width: 10px;
+        position: relative;
+        top: 4px;
+        left: 0;
+        margin: 0 !important;
+    }
+
+    /* Tables */
+    .table-wrapper {
+        overflow-x: auto;
+    }
+    table {
+        table-layout: fixed;
+    }
+    td,
+    th {
+        padding: 0.25em 1em 0.25em 0;
+        vertical-align: top;
+    }
+    td:last-child, 
+    th:last-child {
+        padding-right: 0;
+    }
+    table caption.table-caption {
+        text-align: left;
+        margin: 0 0 1em 0;
+        width: 100%;
+        overflow-wrap: normal;
+    }
+    
+    /* Style for centering a table */
+    table.centeredTable {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Style for adding borders to all cells in a table */
+    table.borderedCellTable th,
+    table.borderedCellTable td {
+        border: 1px solid #000;
+        padding: 0.25em;
+    }
+
+    /* Style for adding bottom borders to all rows in a table */
+    table.bottomBorderedRowsTable {
+        th, td {
+            border-bottom: 1px solid #d0d0d0;
+            padding: 0.25em;
+        }
+        th {
+            border-bottom-color: #000;
+        }
+        tr:last-child > td {
+            border-bottom: 0;
+        }
+    }
+
+    /* Styles for tables with 2, 3 and 4 columns of equal width */
+    table.equalWidthTable2 th,
+    table.equalWidthTable2 td {
+        width: 50%;
+    }
+
+    table.equalWidthTable3 th,
+    table.equalWidthTable3 td {
+        width: 33.33%;
+    }
+
+    table.equalWidthTable4 th,
+    table.equalWidthTable4 td {
+        width: 25%;
+    }
+
+    /* Style for table which is padded to the right and left */
+    table.paddedTable {
+        margin-left: 1.5em !important;
+        margin-right: 1.5em !important;
+    }
+
+    /* Style for table which has condensed vertical spacing between cells */
+    table.condensedTableCells th,
+    table.condensedTableCells td {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    /* Style for adding a bottom border to table cells */
+    .botBorder {
+        border-bottom: 1px solid #000;
+    }
+
+    /* Style for adding a right border to table cells */
+    .rightBorder {
+        border-right: 1px solid #000;
+    }
+    .rightBorder + td {
+        padding-left: 1em;
+    }
+
+    /* These heading styles are maybe not in use, at least in Topelius. Maybe from Parland? */
+    h1.poemtitle, 
+    h1.lettertitle {
+        font-variant: small-caps;
+        font-weight: normal !important;
+        font-size: 1.5em;
+    }
+    h3.title {
+        text-align: center;
+        font-weight: normal !important;
+        font-variant: small-caps !important;
+    }
+    h3.title1 {
+        font-size: 1.5em !important;
+        font-weight: normal !important;
+        padding-top: 10px;
+    }
+    h3.poemtitle,
+    h3.lettertitle,
+    h3.tei.letterTitle {
+        font-variant: small-caps;
+        font-weight: normal !important;
+    }
+    h3.sub, 
+    h3.shortstory, 
+    h3.section {
+        font-weight: normal !important;
+        font-size: 1.2em !important;
+    }
+    h3.shortstory {
+        font-size: 1.1em;
+    }
+    h3.section {
+        font-size: 1.4em !important;
+    }
+    h3.sub2 {
+        font-weight: normal !important;
+        font-size: 1.15em !important;
+    }
+    h3.motto {
+        font-size: 1.1em !important;
+        font-style: italic;
+        font-weight: normal !important;
+    }
+    h3.motto_ms {
+        font-size: 1.2em !important;
+        font-weight: normal !important;
+    }
+    h3.titleTopMargin,
+    h3.tei.titleTopMargin {
+        margin-top: 2em !important;
+    }
+    h3.titleBottomMargin,
+    h3.tei.titleBottomMargin {
+        margin-bottom: 2em !important;
+    }
+
+    /* STYLES FOR HEADINGS */
+    h1.tei,
+    h2.tei,
+    h3.tei,
+    h4.tei,
+    h5.tei,
+    h6.tei {
+        line-height: 1.35;
+    }
+    h1.tei {
+        font-size: 1.3530em; /* 23px when 1em = 17px */
+    }
+    h2.tei {
+        font-size: 1.2353em; /* 21px */
+    }
+    h3.tei {
+        font-size: 1.1765em; /* 20px */
+    }
+    h4.tei {
+        font-size: 1.0589em; /* 18px */
+    }
+    h5.tei {
+        font-size: 1em; /* 17px */
+    }
+    h6.tei {
+        font-size: 0.9412em; /* 16px */
+    }
+    h3.tei:first-child {
+        margin-top: inherit;
+    }
+    h1.tei.title {
+        font-variant: small-caps;
+        text-align: center;
+        font-weight: normal;
+        margin: 1em 0;
+    }
+    h1.tei.poemtitle {
+        font-variant: small-caps;
+        text-align: left;
+        font-weight: normal !important;
+        margin: 1em 0 !important;
+    }
+    h1.tei.poemtitleFromMs, 
+    h1.tei.poemtitleSuite {
+        font-style: italic;
+        text-align: left;
+        font-weight: normal !important;
+        margin: 1em 0 !important;
+        font-size: 1.3529em;
+    }
+    h1.tei.desc {
+        font-size: 1.1765em;
+        font-weight: normal;
+        font-style: italic;
+        text-align: center;
+        margin: 0 0 2em 0;
+    }
+    h2.tei.zts {
+        font-variant: small-caps;
+        font-size: 1.3em !important;
+        text-align: center;
+        font-weight: normal !important;
+        color: gray;
+        margin: 1em 0 !important;
+    }
+    h2.tei.section {
+        text-align: center !important;
+        font-weight: normal !important;
+        margin: 1em 0 !important;
+    }
+    p ~ h2.tei.section {
+        margin-top: 2em !important;
+    }
+    h2.tei.poemsection {
+        font-style: italic;
+        text-align: left;
+        font-weight: normal !important;
+        margin: 1em 0 !important;
+    }
+    h2.tei.section2 {
+        font-style: italic;
+        text-align: center;
+        font-weight: normal !important;
+        margin: 1em 0 !important;
+    }
+    p ~ h2.tei.section2 {
+        margin-top: 2em !important;
+    }
+    h2.tei.poemsection2 {
+        font-style: italic;
+        text-align: left;
+        font-weight: normal !important;
+        margin: 1em 0 !important;
+    }
+    h3.tei.chapter {
+        font-style: italic;
+        text-align: center;
+        font-weight: normal !important;
+        margin: 1.3em 0 1em 0 !important;
+    }
+    p ~ h3.tei.chapter {
+        margin-top: 1.75em !important;
+    }
+    h2.tei.section + h3.tei.chapter,
+    h2.tei.section2 + h3.tei.chapter {
+        margin-top: 1.3em !important;
+    }
+    h3.tei.poem {
+        font-style: italic;
+        text-align: left;
+        font-weight: normal !important;
+        margin: 1.3em 0 1em 0 !important;
+    }
+    h3.tei.poemdiary {
+        font-style: italic;
+        text-align: left;
+        font-weight: normal !important;
+        margin: 1.3em 0 1em 0 !important;
+        margin-left: 30px !important;
+        text-indent: -15px;
+    }
+    h3.tei.ms {
+        text-align: left;
+        font-weight: normal !important;
+        margin: 1.3em 0 1.3em 0 !important;
+    }
+    h3.tei.diary {
+        font-variant: small-caps;
+        text-align: center;
+        font-weight: normal !important;
+        margin: 1.3em 0 1em 0 !important;
+    }
+    h4.tei.sub {
+        font-style: italic;
+        text-align: center;
+        font-weight: normal !important;
+        margin: 1em 0 !important;
+    }
+    h4.tei.poemsub {
+        font-style: italic;
+        text-align: left;
+        font-weight: normal !important;
+        margin: 0.8em 0 1em 0 !important;
+    }
+    h4.tei.poemsubdiary {
+        font-style: italic;
+        text-align: left;
+        font-weight: normal !important;
+        margin: 0.8em 0 1em 0 !important;
+        margin-left: 30px !important;
+        text-indent: -15px;
+    }
+    h4.tei.mssub {
+        text-align: left;
+        font-weight: normal !important;
+        margin: 0.8em 0 1em 0 !important;
+    }
+    h5.tei.motto {
+        font-style: italic;
+        text-align: right;
+        font-weight: normal !important;
+        margin: 0.5em 0 0.7em 0 !important;
+        font-size: 0.88235em;
+    }
+    h5.tei.poemmotto {
+        font-style: italic;
+        text-align: left;
+        font-weight: normal !important;
+        margin: 0.5em 0 1.2em 0 !important;
+        font-size: 0.88235em;
+    }
+    h5.tei.sub2est {
+        font-style: italic;
+        text-align: center;
+        font-weight: normal !important;
+        margin: 1.3em 0 0.8em 0 !important;
+    }
+    h5.tei.poemsub2 {
+        font-style: italic;
+        text-align: left;
+        font-weight: normal !important;
+        margin: 1.3em 0 0.8em 0 !important;
+    }
+    h6.tei.sub3 {
+        font-style: italic;
+        text-align: center;
+        font-weight: normal !important;
+        font-family: Georgia, serif;
+        margin: 0.5em 0 0.8em 0 !important;
+    }
+    h6.tei.poemsub3 {
+        font-style: italic;
+        text-align: left;
+        font-weight: normal !important;
+        font-family: Georgia, serif;
+        margin: 0.5em 0 0.8em 0 !important;
+    }
+    h6.tei.motto2 {
+        font-style: italic;
+        text-align: right;
+        font-family: Georgia, serif;
+        font-weight: normal !important;
+        margin: 0.5em 0 0.5em 0 !important;
+        font-size: 0.88235em;
+    }
+    h6.tei.poemmotto2 {
+        font-style: italic;
+        text-align: left;
+        font-family: Georgia, serif;
+        font-weight: normal !important;
+        margin: 0.5em 0 0.5em 0 !important;
+        font-size: 0.88235em;
+    }
+    .blackletter {
+        font-family: var(--font-stack-tei-blackletter) !important;
+    }
+    p.paragraphDiary {
+        margin-top: 0.5em !important;
+    }
+    p.frontmatter {
+        padding-top: 2em !important;
+        padding-bottom: 2em !important;
+        padding-right: 1.5em !important;
+        padding-left: 1.5em !important;
+        border-top: 2px solid black;
+        border-bottom: 2px solid black;
+        line-height: 1.5em;
+    }
+    p.frontmatterPrevious {
+        padding-top: 2em !important;
+        margin-bottom: 1.5em !important;
+        padding-right: 1.5em !important;
+        padding-left: 1.5em !important;
+        border-top: 2px solid black;
+        line-height: 1.5em;
+    }
+    p.frontmatterMiddle {
+        margin-top: 1.5em !important;
+        margin-bottom: 1.5em !important;
+        padding-right: 1.5em !important;
+        padding-left: 1.5em !important;
+        line-height: 1.5em;
+    }
+    p.frontmatterNext {
+        margin-top: 1.5em !important;
+        padding-bottom: 2em !important;
+        padding-right: 1.5em !important;
+        padding-left: 1.5em !important;
+        border-bottom: 2px solid black;
+        line-height: 1.5em;
+    }
+    p.label_margin {
+        float: right;
+        text-indent: 0 !important;
+    }
+    p.label_above {
+        margin-left: 60px;
+        text-indent: 0 !important;
+        margin-top: 0.2em;
+        margin-bottom: 0.4em;
+    }
+    span.labelledLines_before {
+        margin-left: -80px !important;
+        text-indent: 0 !important;
+        position: absolute;
+    }
+    span.labelledLines_after {
+        float: right;
+        text-indent: 0 !important;
+    }
+    span.labelledLines_before_F {
+        margin-left: -200px !important;
+        text-indent: 0 !important;
+        position: absolute;
+    }
+    p.l.labelledLines_before {
+        position: relative;
+        margin-left: 110px !important;
+    }
+    p.l.labelledLines_before.lfinal {
+        position: relative;
+        margin-left: 120px !important;
+    }
+    p.item {
+        text-indent: 0 !important;
+        contain: none; /* Needed to override Ionic's generic style for .item */
+    }
+    p.item_indented {
+        margin-left: 40px !important;
+        text-indent: -15px !important;
+    }
+    p.lIndent {
+        text-indent: -9px !important;
+    }
+    p.lIndentDiary {
+        text-indent: -15px !important;
+    }
+    p.lcenter {
+        text-align: center !important;
+    }
+    p.lIndent.lcenter {
+        text-align: center !important;
+    }
+    p.lmedial {
+        text-indent: 30px !important;
+    }
+    p.lfinal {
+        text-indent: 80px !important;
+    }
+    p.lfinal2 {
+        text-indent: 95px !important;
+    }
+    .hangingIndent {
+        padding-left: 30px !important;
+        text-indent: -30px !important;
+    }
+    .poemP, 
+    .poemP.right, 
+    .poemP.normalizedIndent, 
+    .poemP.noIndent {
+        margin-left: 30px !important;
+        text-indent: -15px !important;
+        margin-bottom: 1em !important;
+        text-align: left;
+    }
+    /* Figure caption in e.g. ZTS: Finland i 19de seklet */
+    .figureP {
+        color: #737373 !important;
+        font-size: 0.95em !important;
+        margin-top: 0.5em !important;
+        margin-bottom: 0.5em !important;
+    }
+    span.figure {
+        display: inline-block;
+        margin-top: 0.5em !important;
+        margin-bottom: 0.5em !important;
+        text-indent: 0 !important;
+    }
+    .parIndent {
+        text-indent: 30px !important;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 0 !important;
+        margin-top: 0 !important;
+    }
+    :not(.parIndent) + .parIndent.noIndent {
+        text-indent: 0 !important;
+        padding-left: 30px;
+        padding-right: 30px;
+        margin-top: 1em !important;
+    }
+    :not(.parIndent) + .parIndent {
+        text-indent: 30px !important;
+        padding-left: 30px;
+        padding-right: 30px;
+        margin-top: 1em !important;
+    }
+    .parIndent + :not(.parIndent),
+    .parIndent + span.pb_zts + :not(.parIndent),
+    .parIndent + span.pb_edition + :not(.parIndent)
+    .parIndent + span.pb_orig + :not(.parIndent) {
+        margin-top: 1em !important;
+    }
+    .frontmatterNext + span {
+        margin-top: 1em !important;
+    }
+    div.comment_background {
+        font-size: 0.95em;
+        margin: 1.75em 0;
+    }
+    div.comment_background p,
+    div.comment_background h3 {
+        color: #55524c;
+    }
+    div.comment_background h3 {
+        font-size: 1.1em;
+        margin-bottom: 0.5em;
+    }
+    div.comment_background p:first-child {
+        margin-top: 1.5em;
+    }
+    /* Unclear if this rule is in use anymore. */
+    a.reference span.raised {
+        vertical-align: super;
+        line-height: 0.5em;
+        font-size: 0.65em !important;
+        font-variant: normal !important;
+        font-style: normal !important;
+        float: right !important;
+    }
+    .smallcaps {
+        font-variant: small-caps;
+    }
+    .abbr_noSmallcaps {
+        font-variant: normal;
+    }
+    .smallcapsItalics {
+        font-variant: small-caps;
+        font-style: italic;
+    }
+    /* For instance drama, scene and person instructions, e.g. in Topelius: Dramatik, Noveller och kortprosa */
+    span.smallFont {
+        font-size: 0.9412em;
+    }
+    .small {
+        font-size: 0.9412em !important;
+        color: gray;
+    }
+    .footnotePoem {
+        display: block;
+        text-indent: 15px;
+    }
+    .add_margin {
+        color: #0000a1;
+    }
+    /* ms-addition from the margin: the symbols should not fill the column width --> block? Might not be in use anymore. */
+    .add_margin img {
+        display: inline;
+        width: 3%;
+    }
+    .add_over {
+        vertical-align: super;
+        color: #0000a1;
+    }
+    .add_sublinear {
+        vertical-align: -30%;
+        color: #0000a1;
+    }
+    .add_inline {
+        color: #6262e6 !important;
+    }
+    .add_subst {
+        color: #0000a1;
+    }
+    .add_choice {
+        position: absolute;
+        top: -1.2em;
+        left: 0;
+    }
+    .ttDel {
+        display: none;
+    }
+    .revision {
+        border-radius: 5px;
+        border: 2px solid #000;
+        padding: 0.11em;
+    }
+    .figure-caption {
+        text-align: left;
+        margin: 0.5em 0;
+    }
+    .est_figure_graphic,
+    .est_figure_graphic.align_figure_left {
+        width: auto;
+        max-width: 100%;
+        padding-right: 0.5rem;
+        padding-left: 0;
+        float: left;
+    }
+    .est_figure_graphic.align_figure_right {
+        padding-right: 0;
+        padding-left: 0.5rem;
+        float: right;
+    }
+    .est_figure_graphic.align_figure_middle {
+        padding-right: 0;
+        padding-left: 0;
+        margin: 0 auto;
+        float: none;
+    }
+    img.doodle {
+        cursor: pointer;
+        display: none !important; /* By default doodles in read-text are not shown except when illustrations-view is shown. */
+    }
+    .pdf_figure_graphic {
+        display: inline-block;
+        margin: 0 0.5em 0 0;
+    }
+}
+
+/* Style for tooltip boxes. The tooltips also inherit styles from div.tei */
+.tei.toolTip {
+    z-index: 1001;
+    background: var(--tooltip-background-color);
+    border: 1px solid #222;
+    border-radius: $corner-roundness;
+    box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
+    padding: 0.5rem 0.625rem !important;
+    white-space: normal;
+    max-width: 25em;
+    width: max-content;
+    font-size: 1em;
+    line-height: 1.4em;
+    text-align: left;
+    transform-origin: left top; /* This is necessary for the scaling to work properly if the tooltip wouldn't fit in view otherwise. */
+    font-family: var(--font-stack-app-base);
+
+    /* Styles for (foot)notes in tooltips */
+    a.footnoteReference {
+        display: none;
+    }
+    p.footnoteText {
+        display: inline-block;
+        text-indent: 0;
+        line-height: 1.4em;
+    }
+}
+
+read-text div.tei .unclear.tooltiptrigger,
+read-text div.tei .gap.tooltiptrigger,
+read-text div.tei .revision.tooltiptrigger,
+read-text div.tei .tooltiptrigger > .keyword_symbol,
+read-text div.tei.clickable-illustrations .est_figure_graphic {
+    cursor: pointer;
+}
+
+/* In mobile mode doodles are not clickable since they can't be opened in an illustrations-view. Same for doodles in manuscripts-view. */
+.mobile-mode-established read-text div.tei img.doodle,
+manuscripts div.tei img.teiManuscript.doodle {
+    cursor: default;
+}
+
+/* Show doodles in read-text when there is an illustrations-view open and
+   always in manuscript-views. Also always show 'unkown' doodle images in read-text. */
+.illustrations-view-shown read-text div.tei img.doodle,
+read-text div.tei img.doodle.unknown,
+manuscripts div.tei img.teiManuscript.doodle {
+    display: inline-block !important;
+}
+
+/* Could possibly be changed to affect all tables in div.tei, not just in intros. */
+page-introduction div.tei .table-wrapper {
+    margin: 1.5em 0;
+}
+page-introduction div.tei h2.heading2 + .table-wrapper,
+page-introduction div.tei h3.heading3 + .table-wrapper,
+page-introduction div.tei h4.heading4 + .table-wrapper,
+page-introduction div.tei h5.heading5 + .table-wrapper,
+page-introduction div.tei h6.heading6 + .table-wrapper {
+    margin-top: 0;
+}
+page-introduction div.tei table {
+    margin: 0.3em 0;
+    font-size: 0.9412em;
+}
+page-introduction div.tei tr:first-child > td,
+page-introduction div.tei tr:first-child > th {
+    padding-top: 0;
+}
+page-introduction div.tei tr:last-child > td {
+    padding-bottom: 0;
+}
+page-introduction div.tei figure {
+    font-size: 0.9412em;
+    margin: 2em 0;
+}
+
+/* Style for infoOverlay boxes. They also inherit styles from div.tei */
+.tei.infoOverlay {
+    z-index: 1000;
+    display: inline-block;
+    background: var(--infoOverlay-background-color);
+    margin: 0;
+    padding: 0;
+    max-height: 50%;
+    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.4);
+    clip-path: inset(-12px -12px 0px -12px);
+    white-space: normal;
+    color: var(--infoOverlay-text-color);
+    font-size: 1em;
+    text-align: left;
+    line-height: 1.4em;
+    overflow: auto;
+    border-radius: $corner-roundness $corner-roundness 0 0;
+    font-family: var(--font-stack-app-base);
+
+    .infoOverlayHeader {
+        display: inline-block;
+        padding: 12px 16px 8px 16px;
+        position: sticky;
+	    top: 0;
+        background: var(--infoOverlay-background-color);
+	    width: 100%;
+        z-index: 10;
+
+        .infoOverlayTitle {
+            font-size: 0.7em;
+            text-transform: uppercase;
+            color: var(--infoOverlay-text-color);
+            display: inline;
+            font-weight: 600;
+        }
+
+        .infoOverlayButton {
+            cursor: pointer;
+            float: right;
+            opacity: 1;
+            transition: $opacity-hover-transition;
+        }
+        .infoOverlayButton:hover:not(.disable-hover) {
+            opacity: $opacity-hover;
+        }
+    }
+    .infoOverlayContent {
+        clear: both;
+        padding: 0 24px 24px 16px;
+
+        a {
+            color: var(--info-overlay-link-to-reference-color);
+        }
+
+        .footnoteWrapper {
+            display: flex;
+        }
+
+        a.footnoteReference {
+            display: inline-block;
+            margin-right: 0.7em;
+            text-decoration: none;
+        }
+        p.footnoteText,
+        p.infoOverlayText {
+            display: inline-block;
+            text-indent: 0;
+            width: 100%;
+            color: var(--infoOverlay-text-color);
+            line-height: 1.4em;
+            font-weight: 300;
+
+            img.comment {
+                filter: brightness(150%);
+            }
+        }
+
+        span.teiComment.noteLemma {
+            font-weight: 600;
+        }
+        span.teiComment.noteText {
+            font-weight: 300;
+        }
+
+        span.ioLemma {
+            font-weight: 600;
+            font-style: italic;
+
+            span.reg_hide,
+            span.corr_hide {
+                cursor: auto;
+            }
+
+            span.reg_hide img,
+            span.corr_hide img {
+                filter: invert(1);
+            }
+        }
+
+        span.ioLemma::after {
+            content: " – ";
+            font-style: normal;
+            font-weight: 300;
+        }
+    }
+}
+.infoOverlay.show_personInfo .infoOverlayContent p.footnoteText span.person,
+.infoOverlay.show_personInfo .infoOverlayContent p.infoOverlayText span.person,
+.infoOverlay.show_placeInfo .infoOverlayContent p.footnoteText span.placeName,
+.infoOverlay.show_placeInfo .infoOverlayContent p.infoOverlayText span.placeName,
+.infoOverlay.show_workInfo .infoOverlayContent p.footnoteText span.title,
+.infoOverlay.show_workInfo .infoOverlayContent p.infoOverlayText span.title,
+.infoOverlay.show_changes .infoOverlayContent p.footnoteText span.corr,
+.infoOverlay.show_changes .infoOverlayContent p.infoOverlayText span.corr,
+.infoOverlay.show_changes .infoOverlayContent p.footnoteText span.corr_red,
+.infoOverlay.show_changes .infoOverlayContent p.infoOverlayText span.corr_red,
+.infoOverlay.show_normalisations .infoOverlayContent p.footnoteText span.reg,
+.infoOverlay.show_normalisations .infoOverlayContent p.infoOverlayText span.reg,
+.infoOverlay.show_abbreviations .infoOverlayContent p.footnoteText span.abbr,
+.infoOverlay.show_abbreviations .infoOverlayContent p.infoOverlayText span.abbr {
+    color: var(--dark-color);
+    font-weight: normal;
+}
+
+
+/*** Advanced mode styles */
+div.tei .tooltip { display: none; }
+.tei                        img.comment { display: none; }
+.tei.show_comments          img.comment { display: inline-block; cursor: pointer; top: 0; }
+
+.tei.show_personInfo        span.person { background-color: var(--persName-color); cursor: pointer; }
+
+.tei.show_placeInfo         span.placeName { background-color: var(--placeName-color); cursor: pointer; }
+
+.tei.show_workInfo          span.title { background-color: var(--workTitle-color); cursor: pointer; }
+
+.tei.show_abbreviations     span.abbr { background-color: var(--abbreviations-color); cursor: pointer; }
+
+.tei.show_changes           span.corr, 
+.tei.show_changes           span.corr_red { background-color: var(--changes-color); cursor: pointer; }
+.tei                        span.corr_hide { display: none; }
+
+.tei.show_normalisations    span.reg.ttNormalisations { background-color: var(--normalisations-color); cursor: pointer; }
+.tei                        span.reg_hide { display: none; }
+.tei.show_normalisations    span.reg_hide,
+.tei.show_changes           span.corr_hide { display: inline; cursor: pointer; }
+
+
+
+/* PARAGRAPH AND LINE NUMBERING */
+.tei span.lNumber,
+.tei span.paragraph_number {
+    display: none;
+}
+.tei.show_pageNumbering span.paragraph_number,
+.tei.show_pageNumbering span.lNumber {
+    display: block;
+    position: absolute;
+    margin-left: -35px;
+    text-align: left;
+    width: 30px;
+    font-family: var(--font-stack-app-base);
+    font-size: 0.6875rem;
+	text-indent: 0;
+    font-style: normal !important;
+    font-weight: normal !important;
+}
+.tei.show_pageNumbering span.lNumber,
+.tei.show_pageNumbering p.parIndent span.paragraph_number,
+.tei.show_pageNumbering p.hangingIndent span.paragraph_number,
+.tei.show_pageNumbering blockquote span.paragraph_number {
+    margin-left: -65px;
+}
+
+.tei.show_pageNumbering p.item_indented span.paragraph_number {
+    margin-left: -75px;
+}
+
+.tei.show_pageNumbering p.labelledLines_before span.lNumber {
+    margin-left: -145px;
+}
+
+/* Left padding for read-texts and introductions when the paragraph numbering is displayed */
+read-text .tei.show_pageNumbering,
+page-introduction .tei.show_pageNumbering {
+    padding-left: 20px;
+}
+@media screen and (max-width: 820px) {
+    /* Add margin on small screens when showing paragraph numbering */
+    read-text .tei.show_pageNumbering,
+    page-introduction .tei.show_pageNumbering {
+        margin-left: 8px;
+    }
+}
+/* left padding if showing paragraph numbering in mobile view */
+page-read .mobile-mode-established .tei.show_pageNumbering {
+    padding-left: 28px;
+}
+
+/* PAGE BREAKS IN ORIGINAL AND EDITION */
+.pb_orig,
+.pb_zts,
+.pb_edition {
+    display: none;
+}
+div.tei.show_pageBreakOriginal .pb_orig,
+div.tei.show_pageBreakEdition .pb_zts,
+div.tei.show_pageBreakEdition .pb_edition {
+    font-family: var(--font-stack-app-base);
+    line-height: 1;
+    display: inline;
+}
+div.tei.show_pageBreakOriginal .pb_orig {
+    color: var(--pageBreakOriginal-color);
+}
+div.tei.show_pageBreakEdition .pb_zts,
+div.tei.show_pageBreakEdition .pb_edition {
+    color: var(--pageBreakEdition-color);
+}
+
+.tei a.anchor, 
+.tei a.anchor:hover {
+    color: inherit;
+    opacity: 1;
+}
+
+/* The footnote indicator */
+span.footnoteindicator {
+    font-size: 0.83em;
+    line-height: 0.5em;
+    vertical-align: super;
+    cursor: pointer;
+}
+
+/* Overrides for read-text */
+read-text div.tei {
+    span.dashUnderline {
+        font-style: italic;
+        border-bottom: none;
+    }
+    .encreasedSize {
+        font-style: italic;
+        font-size: 100%;
+    }
+    span.uppercase,
+    span.uppercaseDiary {
+        font-variant: small-caps;
+        text-transform: none;
+    }
+    .encircled {
+        font-style: italic;
+        border: none;
+    }
+}
+
+/* Overrides for manuscripts */
+manuscripts div.tei {
+    span.uppercase {
+        text-transform: uppercase;
+        font-variant: normal;
+    }
+    span.dashUnderline {
+        border-bottom: 1px dashed black;
+    }
+    .encircled {
+        border: 1px solid gray;
+    }
+    .encreasedSize {
+        font-size: 120%;
+    }
+    p.underline, 
+    h3.underline {
+        font-style: normal;
+        text-decoration: underline;
+    }
+}
+
+/* Introduction specific */
+page-introduction div.tei span.footnoteindicator {
+    color: var(--default-link-color);
+}
+page-introduction div.tei .est_figure_graphic {
+    padding-right: 0;
+    float: none;
+}
+page-introduction div.tei .parIndent,
+page-introduction div.tei blockquote {
+    font-size: 0.9412em;
+}
+page-introduction div > .noIndent.parIndent:first-child {
+	text-indent: 0 !important;
+}
+
+/* Headings in introductions */
+page-introduction {
+    /* Headings in intro TOC */
+    div#toc_text {
+        h1.title,
+        h2.heading2,
+        h3.heading3,
+        h4.heading4,
+        h5.heading5 {
+            font-weight: normal;
+            line-height: 1.125;
+        }
+        h1.title {
+            font-size: 1.1875rem;
+            font-weight: 700;
+            margin: 1.2em 0 0.6em 0;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+        h2.heading2 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 1.2em 0 0.6em 0;
+        }
+        h3.heading3 {
+            font-size: 1rem;
+            margin: 0.1em 0 0.4em 0;
+        }
+        h4.heading4 {
+            font-size: 1rem;
+            margin: 0.1em 0 0.4em 0;
+            padding-left: 1.75em;
+        }
+        h5.heading5 {
+            font-size: 0.875rem;
+            margin: 0.5em 0 0.457em 0;
+            padding-left: 4em;
+        }
+        span.writer {
+            font-size: 0.8125rem;
+            font-variant: normal;
+            font-weight: normal;
+            font-style: normal;
+            text-transform: none;
+            letter-spacing: normal;
+        }
+        span.italics {
+            font-style: italic;
+        }
+    }
+
+    /* Headings in intro text */
+    div.tei.tei {   
+        header {
+            margin: 4em 0;
+        }
+        header p {
+            text-align: center;
+            line-height: 1.35;
+            text-indent: 0;
+        }
+        header p[role="doc-subtitle"] {
+            font-size: 1.2942em;
+            font-style: italic;
+            margin: 0.75em 0;
+        }
+        header p.writer {
+            font-size: 1em;
+            margin: 1.75em 0;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+        h1.title + p.writer {
+            margin: 1em 0;
+        }
+        header h1.title > span.writer {
+            font-size: 0.5556em;
+            font-variant: normal;
+            font-weight: normal;
+        }
+        h1.title,
+        h2.heading2,
+        h3.heading3,
+        h4.heading4,
+        h5.heading5,
+        h6.heading6 {
+            font-weight: normal;
+            font-style: normal;
+            text-align: left;
+            line-height: 1.35;
+        }
+        h1.title {
+            font-size: 1.5883em;
+            text-transform: uppercase;
+            text-align: center;
+            margin: 0;
+            letter-spacing: 0.02em;
+        }
+        h2.heading2 {
+            font-size: 1.353em;
+            font-variant: small-caps;
+            margin: 1.7em 0 0.85em 0;
+        }
+        h3.heading3 {
+            font-size: 1.2353em;
+            font-weight: 600;
+            font-style: italic;
+            margin: 1.6em 0 0.85em 0;
+        }
+        h4.heading4 {
+            font-size: 1.11765em;
+            font-style: italic;
+            margin: 1.4em 0 0.875em 0;
+        }
+        h5.heading5 {
+            font-size: 1em;
+            font-weight: 600;
+            margin: 1.35em 0 0.875em 0;
+        }
+        h6.heading6 {
+            font-size: 0.9412em;
+            margin: 1.5em 0 1em 0;
+        }
+        h2.heading2 > span.writer {
+            font-size: 0.6087em;
+            font-variant: normal;
+            font-weight: normal;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+        h3.heading3 > span.writer {
+            font-size: 0.6667em;
+            font-style: normal;
+            font-weight: normal;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+        h2.heading2 + div > h3.heading3,
+        h2.heading2 + h3.heading3 {
+            margin-top: 1.238em;
+        }
+    }
+}
+
+/* Headings on title pages */
+page-title {
+    div.tei {
+        .title,
+        .subtitle,
+        .collectiontitle {
+            font-size: 2.2353em;
+            font-weight: normal;
+            line-height: 1.2;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        .subtitle {
+            font-size: 1.4706em;
+            margin-top: 1em;
+        }
+        .collectiontitle {
+            font-size: 1.8824em;
+            margin-top: 0.25em;
+            margin-bottom: 1em;
+            letter-spacing: 0.1em;
+            text-indent: 0;
+        }
+        .seriestitle {
+            margin-top: 2.5rem;
+            margin-bottom: 1em;
+            font-size: 1.2942em;
+            font-weight: normal;
+            line-height: 1.2;
+            text-align: center;
+            text-indent: 0;
+        }
+        .chapter {
+            font-size: 1.2942em;
+            font-weight: normal;
+            line-height: 1.2;
+            text-align: center;
+        }
+    }
+}
+
+page-foreword {
+    div.tei.tei {
+        header {
+            margin: 4em 0;
+        }
+        header p {
+            text-align: center;
+            line-height: 1.35;
+            text-indent: 0;
+        }
+        header p[role="doc-subtitle"] {
+            font-size: 1.2353em;
+            margin: 0.75em 0;
+        }
+        header p.writer {
+            font-size: 1em;
+            margin: 1.75em 0;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+        h1.title + p.writer {
+            margin: 1em 0;
+        }
+        header h1.title > span.writer {
+            font-size: 0.5556em;
+            font-variant: normal;
+            font-weight: normal;
+        }
+        h1.title {
+            font-size: 1.5883em;
+            font-weight: normal;
+            font-style: normal;
+            text-transform: none;
+            font-variant: normal;
+            text-align: center;
+            margin: 0;
+            letter-spacing: 0.02em;
+            line-height: 1.35;
+        }
+    }
+}

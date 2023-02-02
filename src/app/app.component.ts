@@ -1361,7 +1361,7 @@ export class DigitalEditionsApp {
   }
 
   setRootPage() {
-    const homeUrl = document.URL.indexOf('/#/home');
+    const homeUrl = document.URL.indexOf('/home');
     if (homeUrl >= 0 || document.URL.indexOf('#') < 0) {
       this.rootPage = 'HomePage';
     }

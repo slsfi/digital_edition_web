@@ -1,0 +1,51 @@
+div.tei.teiVariant {
+    h4 {
+        margin: 1em 0 .5em !important;
+        font-size: 1.0589em;
+    }
+    
+    h3 {
+        margin: 1.1em 0 .6em !important;
+        font-size: 1.1765em;
+        font-variant: initial !important;
+    }
+
+    h1.poemtitle {
+        font-variant: normal !important;
+        font-style: italic !important;
+        font-size: 1.3530em;
+    }
+
+    .variantScrollTarget {
+        cursor: pointer;
+    }
+
+    .variantScrollTarget.highlight,
+    .variantScrollTarget.highlight .teiVariant {
+        font-weight: bold;
+    }
+
+    .anchorScrollTarget {
+        cursor: pointer;
+    }
+
+    .var_margin {
+        position: absolute;
+        left: -1em;
+        text-indent: 1.25em !important;
+    }
+    .tit_figure_graphic {
+        width: auto;
+        max-width: 100%;
+        display: block;
+        margin: 0 auto;
+    }
+}
+
+.teiVariant.ref_variant + .teiVariant.ref_variant {
+    margin-left: -0.125em;
+}
+
+p.strofeSpacing {
+    padding-bottom: 1em !important;
+}

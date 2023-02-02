@@ -1,0 +1,43 @@
+div.tei.teiManuscript {
+
+    .tooltiptrigger.ttMs,
+    .tooltiptrigger.tooltipMs {
+        cursor: help;
+    } 
+
+    span.underline {
+        border-bottom: 1px solid black;
+        font-style: normal;
+    }
+    span.underline2 {
+        border-bottom: 3px double black;
+        font-style: normal;
+        text-decoration: none;
+    }
+
+    /* Is this used in ms? */
+    span.lemma {
+        background-color: #c1bac1;
+    }
+
+    p {
+        line-height: 180%;
+        position: relative;
+        text-indent: 1.7647em;
+    }
+
+    h4 {
+        margin: 1em 0 .5em !important;
+    }
+    
+    h3 {
+        margin: 1.1em 0 .6em;
+        font-variant: normal;
+        line-height: 1.45;
+    }
+}
+
+p.teiManuscript.strofe[class*="lg"] {
+	line-height: 180%;
+    text-indent: 0 !important;
+}

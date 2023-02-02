@@ -1,0 +1,264 @@
+/*  
+  This file contains CUSTOM SASS VARIABLES and CUSTOM CSS PROPERTIES used in this app and must 
+  not contain any style rules.
+
+  Overrides to Ionic's Sass variables belong in src/theme/variables.scss which imports this file.
+
+  ALL CUSTOM STYLE RULES which should apply globally, including @font-face font loading rules which should be added before any styles, belong in src/app/app.scss.
+
+  Other custom style rules belong in the individual scss-files for components and pages.
+*/
+
+// CUSTOM FONT SIZE VARIABLES
+// --------------------------------------------------
+$text-fontsize-mini:            12px; // 0.75rem;   => Only for print
+$text-fontsize-tiny:            13px; // 0.8125rem; => Only for print
+$text-fontsize-xxxsmall:        14px; // 0.875rem;  => Only for print
+$text-fontsize-xxsmall:         15px; // 0.9375rem; => Only for print
+$text-fontsize-xsmall:          16px; // 1rem;
+$text-fontsize-small:           17px; // 1.0625rem;
+$text-fontsize-medium:          18px; // 1.125rem;
+$text-fontsize-large:           19px; // 1.1875rem; => Not for print
+$text-fontsize-xlarge:          21px; // 1.3125rem; => Not for print
+
+
+
+// CUSTOM COLOR VARIABLES
+// --------------------------------------------------
+// These apply to tags for the different text types in search results
+$est-color:       #0a2a80;
+$com-color:       #980202;
+$ms-color:        #69863a;
+$inl-color:       #812b5d;
+$tit-color:       #5e1a06;
+$fore-color:      #113c49;
+$var-color:       #803fa7;
+$tag-color:       #18a854;
+
+$purple-color:    #413861;
+$grey-color:      #666666;
+$blackish-color:  #363636;
+$orange-color:    #e1a462;
+$white-color:     #fff;
+
+$search-match-color:            #a5d7a5;
+
+$forward-arrow-color:					  map-get($map: $colors, $key: 'dark');
+$divider-bg-color:              map-get($map: $colors, $key: 'secondary');
+
+
+
+// OTHER CUSTOM VARIABLES
+// --------------------------------------------------
+$top-menu-left: 370px;
+$top-menu-left-split-pane: 10px;
+$corner-roundness: $popover-md-border-radius;
+$opacity-hover: 0.6;
+$opacity-hover-transition: opacity 0.2s;
+
+
+
+// CSS CUSTOM PROPERTIES
+// --------------------------------------------------
+:root {
+// Base colors
+  // Create css custom properties from the scss map $colours defined in variables.scss. Produces:
+  // --primary-color: #538494;
+  // --secondary-color: #e6e1d8;
+  // --dark-color: #222;
+  // --light-color: #f4f4f4;
+  @each $key_name, $value in $colors {
+    --#{$key_name}-color: #{$value};
+  }
+  --primary-color-rgb: 83, 132, 148; /* RGB-version of --primary-color, used when an alpha channel needs to be added to the color */
+  --text-color-on-primary-color-background:   #fff;
+  --text-color-on-secondary-color-background: #000;
+  --default-link-color:                       #538494;
+  --main-background-color:                    #ecebe4;
+
+  // Semantic code colors
+  --persName-color:                #f9e0bf;
+  --persName-color-rgb:              249, 224, 191;
+  --placeName-color:               #dee8ca;
+  --placeName-color-rgb:             222, 232, 202;
+  --workTitle-color:               #f7efba;
+  --workTitle-color-rgb:             247, 239, 186;
+  --changes-color:                 #ccc;
+  --changes-color-rgb:               204, 204, 204;
+  --normalisations-color:          #e6e6e6;
+  --normalisations-color-rgb:        230, 230, 230;
+  --abbreviations-color:           #ffe2fa;
+  --abbreviations-color-rgb:         255, 226, 250;
+  --pageBreakOriginal-color:       #c34be1;
+  --pageBreakEdition-color:        #d58205;
+
+  // Variant category colors
+  --lemma-identical-variant-background-color: #fff1b9;
+  --orthographic-variant-background-color:    #eee6ff;
+  --interpunction-variant-background-color:   #dbf0ec;
+  --substantial-variant-background-color:     #fee0e2;
+  --error-variant-background-color:           #f3c598;
+  --typographic-variant-background-color:     #f6e65b;
+  --variant-background-color:                 #c5c5c5;
+
+  // TOC, i.e. the left navigation
+  --toc-text-color:                           var(--dark-color);
+  --toc-background-color:                     var(--main-background-color);
+  --toc-border-right-color:                 #dedede;
+  --toc-arrow-color:                          var(--toc-text-color);
+  --toc-divider-color:                      #dedede;
+  --toc-hover-color:                          var(--primary-color);
+  --toc-description-text-color:             #515151;
+  --toc-collection-title-text-color:          var(--toc-text-color);
+  --toc-collection-title-background-color:    var(--secondary-color);
+  --toc-back-button-text-color:               var(--dark-color);
+  --toc-back-button-arrow-color:              var(--toc-back-button-text-color);
+  --toc-back-button-background-color:       #e8e4df;
+  --toc-selected-item-text-color:             var(--dark-color);
+  --toc-selected-item-font-weight:            bold;
+  --toc-selected-item-arrow-color:            var(--toc-selected-item-text-color);
+  --toc-selected-item-background-color:       transparent;
+  --toc-selected-item-border-color:           transparent;
+  --toc-selected-item-divider-color:          var(--toc-divider-color);
+  --toc-selected-item-description-text-color: var(--toc-description-text-color);
+
+  // Home-page
+  --page-home-portrait-mode-background-color-below-image:   transparent;
+
+  // Introduction-page
+  --page-introduction-separate-toc-background-color:        var(--secondary-color);
+  --page-introduction-separate-toc-text-color:              var(--dark-color);
+
+  // Read-page
+  --page-read-columns-header-background-color:              var(--secondary-color);
+  --page-read-columns-background-color:                   #fafafa;
+  --page-read-add-column-text-color:                        var(--dark-color);
+  --page-read-add-column-background-color:                  var(--secondary-color);
+
+  // Top-menu
+  --top-menu-toolbar-bottom-border:                         0;
+  --top-menu-button-filter:                                 drop-shadow(0 1px 3px rgba(35, 35, 35, .3));
+
+  // Text-changer in read-page
+  --text-changer-background-color-mobile-mode:            #adadad;
+  --text-changer-text-color-mobile-mode:                  #000;
+
+  // Facsimile column in read-page
+  --facsimile-column-page-number-wrapper-background-color:  var(--main-background-color);
+
+  // Elastic search
+  --elastic-search-facet-background-color:                    transparent;
+  --elastic-search-facet-border-color:                      #ccc;
+  --elastic-search-hititem-border-color:                    #ccc;
+  --elastic-search-hititem-hover-background-color:          #fff;
+  --elastic-search-hititem-hover-border-color:                var(--primary-color);
+  --elastic-search-search-match-highlight-background-color: #a5d7a5;
+  --elastic-search-search-match-highlight-text-color:       #000;
+  --elastic-search-date-histogram-year-bar-color:             var(--primary-color);
+  --elastic-search-date-histogram-year-hover-color:           var(--secondary-color);
+  --elastic-search-date-histogram-year-in-range-color:      #751e22;
+
+  // Simple search
+  --simple-search-search-match-highlight-background-color:      var(--primary-color);
+  --simple-search-search-match-highlight-text-color:            var(--text-color-on-primary-color-background);
+  --simple-search-hititem-hover-background-color-rgb:           var(--primary-color-rgb);
+  --simple-search-hititem-hover-background-color-alpha:         0.2;
+  --simple-search-hititem-background-color:                     var(--main-background-color);
+  --simple-search-selected-search-suggestion-background-color:  var(--secondary-color);
+
+  // Media-collections
+  --media-collection-card-content-background-color:     var(--secondary-color);
+  --media-collection-card-content-border-top-color:     var(--primary-color);
+  --media-collection-filter-select-background-color:  #dad6cd;
+
+  // Indices, i.e. person-search, place-search, tag-search and work-search
+  --index-list-item-background-color:     var(--main-background-color);
+  --index-list-divider-background-color:  var(--secondary-color);
+
+  // Tutorial
+  --tutorial-tooltip-background-color:      #4F7B8C;
+  --tutorial-tooltip-text-color:            #fff;
+  --tutorial-tooltip-font-size:               1.0625rem;
+
+  // Info overlay
+	--infoOverlay-background-color:          #333;
+	--infoOverlay-text-color:                #e3e3e3;
+  --info-overlay-link-to-reference-color:  #7cc6de;
+
+  // Tooltips
+  --tooltip-background-color:              #fafafa;
+
+  // Ion-modal
+  --ion-modal-content-background-color:       var(--main-background-color);
+  --ion-modal-item-background-color:          var(--main-background-color);
+  --ion-modal-item-divider-border-bottom-color: #dedede;
+
+  // Ion-popover
+  --ion-popover-content-background-color:     var(--main-background-color);
+  --ion-popover-item-border-bottom-color:         #dedede;
+  --ion-popover-list-header-background-color: var(--secondary-color);
+
+  // Ion-segment
+  --segment-activated-background-color:       var(--primary-color);
+  --segment-activated-text-color:             var(--text-color-on-primary-color-background);
+
+  // Buttons
+  --button-background-color:                  var(--primary-color);
+  --button-background-color-rgb:              var(--primary-color-rgb);
+  --button-hover-background-color:            var(--button-background-color);
+  --button-text-color:                        var(--text-color-on-primary-color-background);
+  --button-clear-text-color:                  var(--primary-color);
+  --fab-button-primary-background-color:      var(--primary-color);
+  --fab-button-primary-icon-color:            var(--text-color-on-primary-color-background);
+  --fab-button-secondary-background-color:  #e9e9e9;
+  --fab-button-secondary-icon-color:        #000;
+
+  // Font stacks
+  --font-stack-system:               -apple-system, BlinkMacSystemFont, "Segoe UI",
+                                     Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+                                     "Helvetica Neue", sans-serif;
+  --font-stack-app-base:             "Roboto", var(--font-stack-system);
+  --font-stack-home-banner:          var(--font-stack-app-base);
+  --font-stack-top-menu:             var(--font-stack-app-base);
+  --font-stack-tei:                  "SourceSerif", Constantia, "Lucida Bright",
+                                     Lucidabright, "Lucida Serif", Lucida,
+                                     "DejaVu Serif", "Bitstream Vera Serif",
+                                     "Liberation Serif", Georgia, serif;
+  --font-stack-tei-blackletter:      "Inter", var(--font-stack-system);
+  --font-stack-tei-print-stamp:      Cambria, "Hoefler Text", Utopia,
+                                     "Liberation Serif", "Nimbus Roman No9 L Regular",
+                                     Times, "Times New Roman", serif;
+  --font-stack-tei-editorial-note:   "Helvetica Neue", "Arial Nova", Helvetica,
+                                     Arial, sans-serif;
+}
+
+
+
+h2 {
+  font-size: 1.6rem;
+}
+
+p {
+  font-size: 1.125rem; /* 18px when 1em = 16px */
+}
+
+.mainMenuItem {
+  cursor: pointer;
+}
+
+div.md_content markdown td {
+  padding: 0.5em;
+  line-height: 1.4;
+  vertical-align: top;
+}
+
+/* ??? */
+ion-list-header ion-label {
+  text-transform: unset;
+}
+
+h1.mainH1Header {
+  font-size: 1.6em;
+  margin-bottom: 1em;
+  font-weight: 700;
+}
