@@ -1,40 +1,40 @@
-table-of-contents-drilldown-menu {
-    .back-to-list-button p {
-        font-size: inherit;
-        font-weight: 400;
-        color: var(--toc-back-button-text-color);
-        position: sticky;
-        top: 0;
-    }
-    ion-item-divider {
-        background-color: $divider-bg-color !important;
-    }
-    .selected {
-        background-color: rgba(0, 0, 0, 0.1);
-    }
+@import "../../../theme/variables.scss";
 
-    ion-label > p {
-        white-space: normal;
-        font-size: 1rem !important;
-    }
+.back-to-list-button p {
+    font-size: inherit;
+    font-weight: 400;
+    color: var(--toc-back-button-text-color);
+    position: sticky;
+    top: 0;
+}
+ion-item-divider {
+    background-color: $divider-bg-color !important;
+}
+.selected {
+    background-color: rgba(0, 0, 0, 0.1);
+}
 
-    .collection-filters {
-        ion-label {
-            display: flex;
-            justify-content: space-around;
+ion-label > p {
+    white-space: normal;
+    font-size: 1rem !important;
+}
 
-            button {
-                .button-inner ion-icon {
-                    color: #ddd;
-                }
+.collection-filters {
+    ion-label {
+        display: flex;
+        justify-content: space-around;
 
-                &.active {
-                    background-color:#4a6770;
-                    color: #fff;
+        button {
+            .button-inner ion-icon {
+                color: #ddd;
+            }
 
-                    &:hover {
-                        background-color: #547a86;
-                    }
+            &.active {
+                background-color:#4a6770;
+                color: #fff;
+
+                &:hover {
+                    background-color: #547a86;
                 }
             }
         }

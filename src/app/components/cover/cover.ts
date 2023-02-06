@@ -11,7 +11,8 @@ import { TextService } from 'src/app/services/texts/text.service';
  */
 @Component({
   selector: 'cover',
-  templateUrl: 'cover.html'
+  templateUrl: 'cover.html',
+  styleUrls: ['cover.scss']
 })
 export class CoverComponent {
 

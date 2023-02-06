@@ -22,7 +22,7 @@ import {
     selector: 'pinch-zoom, [pinch-zoom]',
     exportAs: 'pinchZoom',
     templateUrl: './pinch-zoom.component.html',
-    styleUrls: ['./pinch-zoom.component.css']
+    styleUrls: ['pinch-zoom.component.scss']
   })
   export class PinchZoomComponent implements OnDestroy {
     pinchZoom: any;

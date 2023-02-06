@@ -18,7 +18,7 @@ import { LanguageService } from 'src/app/services/languages/language.service';
 @Component({
   selector: 'page-about',
   templateUrl: 'about.html',
-  styleUrls: ['./about.scss']
+  styleUrls: ['about.scss']
 })
 export class AboutPage {
   aboutPages: any;

@@ -17,7 +17,8 @@ import { ReadPopoverService } from 'src/app/services/settings/read-popover.servi
  */
 @Component({
   selector: 'comments',
-  templateUrl: 'comments.html'
+  templateUrl: 'comments.html',
+  styleUrls: ['comments.scss']
 })
 export class CommentsComponent {
 

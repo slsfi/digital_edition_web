@@ -1,89 +1,87 @@
-digital-edition-list-children {
-    .download {
-        position: absolute;
-        top: 0;
-        right: 0.5em;
-    }
+.download {
+    position: absolute;
+    top: 0;
+    right: 0.5em;
+}
 
-    .card-content-md {
-        padding: 0.2rem;
-    }
+.card-content-md {
+    padding: 0.2rem;
+}
 
-    .card {
-        cursor: pointer;
-    }
+.card {
+    cursor: pointer;
+}
 
-    .col-mobile {
-        padding: 0.2rem;
-    }
+.col-mobile {
+    padding: 0.2rem;
+}
 
-    ion-list{
-        ion-item{
-            margin-left: 0px;
-            -webkit-box-shadow: 4px 4px 4px -3px rgba(0,0,0,0.72);
-            box-shadow: 4px 4px 4px -3px rgba(0,0,0,0.72);
-            flex-basis: 20%;
-            padding: 0.5rem;
-            padding-top: 0.7rem;
+ion-list{
+    ion-item{
+        margin-left: 0px;
+        -webkit-box-shadow: 4px 4px 4px -3px rgba(0,0,0,0.72);
+        box-shadow: 4px 4px 4px -3px rgba(0,0,0,0.72);
+        flex-basis: 20%;
+        padding: 0.5rem;
+        padding-top: 0.7rem;
 
-        }
     }
+}
 
-    .item{
-        background-color: whitesmoke !important;
-        margin: 2px !important;
-        margin-top: 0.2rem !important;
-        cursor: pointer;
-        &:hover {
-            background-color: rgb(223, 219, 219);
-        }
+.item{
+    background-color: whitesmoke !important;
+    margin: 2px !important;
+    margin-top: 0.2rem !important;
+    cursor: pointer;
+    &:hover {
+        background-color: rgb(223, 219, 219);
     }
+}
 
-    .grid-mobile {
-        padding: 0.2rem;
-    }
+.grid-mobile {
+    padding: 0.2rem;
+}
 
-    .title-area {
-        margin-bottom: 2rem;
-    }
+.title-area {
+    margin-bottom: 2rem;
+}
 
-    .select-edition{
-        position: relative;
-        width: 100%;
-        text-align: center;
-        left: 0;
-    }
+.select-edition{
+    position: relative;
+    width: 100%;
+    text-align: center;
+    left: 0;
+}
 
-    .item-inner{
-        border: 0px !important;
-    }
+.item-inner{
+    border: 0px !important;
+}
 
-    .item-block{
-        border: 0px !important;
-    }
+.item-block{
+    border: 0px !important;
+}
 
-    h2{
-        white-space: normal !important;
-        font-size: 1.3rem !important;
-        margin-top: 0px !important;
-    }
-    .book_download_container {
-      display: flex;
-      justify-content: space-evenly;
-    }
-    .book_download_container p{
-      display: flex;
-      font-size: 0.9em;
-      padding-top: 1.8em;
-      line-height: 1em;
-    }
+h2{
+    white-space: normal !important;
+    font-size: 1.3rem !important;
+    margin-top: 0px !important;
+}
+.book_download_container {
+    display: flex;
+    justify-content: space-evenly;
+}
+.book_download_container p{
+    display: flex;
+    font-size: 0.9em;
+    padding-top: 1.8em;
+    line-height: 1em;
+}
 
-    .download_link{
-      border-bottom: 1px solid;
-      border-bottom-color: var(--primary-color) !important;
-    }
+.download_link{
+    border-bottom: 1px solid;
+    border-bottom-color: var(--primary-color) !important;
+}
 
-    .download_link p{
-      margin-bottom: 0.1em !important;
-    }
+.download_link p{
+    margin-bottom: 0.1em !important;
 }

@@ -6,7 +6,8 @@ import { UserSettingsService } from 'src/app/services/settings/user-settings.ser
 
 @Component({
   selector: 'title-logo',
-  templateUrl: 'title-logo.html'
+  templateUrl: 'title-logo.html',
+  styleUrls: ['title-logo.scss']
 })
 export class TitleLogoComponent {
 

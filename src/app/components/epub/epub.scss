@@ -1,4 +1,5 @@
-epub {
+
+:host {
   background-color: rgb(249, 252, 252);
   display: block;
   height: 95%;
@@ -9,6 +10,7 @@ epub {
     width: 100%;
     height: 100%;
   }
+}
 
   .secondary > .toolbar-content {
     display: flex;
@@ -326,8 +328,6 @@ epub {
     margin: auto;
     text-align: center;
   }
-
-}
 
 .mobile-view-epub epub {
   height: calc(100% - 46px);

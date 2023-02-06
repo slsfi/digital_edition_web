@@ -1,130 +1,128 @@
-date-histogram {
-  ion-row.year-input-row {
-    justify-content: flex-end;
-  }
-  ion-col.year-input-col {
-    max-width: 130px;
-  }
-  ion-row.year-input-row .year-input-col:first-child ion-item.year-input {
-    margin-left: auto;
-  }
-  ion-col.year-input-col-dash {
-    align-items: flex-end;
+ion-row.year-input-row {
+  justify-content: flex-end;
+}
+ion-col.year-input-col {
+  max-width: 130px;
+}
+ion-row.year-input-row .year-input-col:first-child ion-item.year-input {
+  margin-left: auto;
+}
+ion-col.year-input-col-dash {
+  align-items: flex-end;
+  width: fit-content;
+  max-width: fit-content;
+  padding-left: 0;
+  padding-right: 0;
+
+  ion-item.item {
+    padding: 0;
     width: fit-content;
     max-width: fit-content;
-    padding-left: 0;
-    padding-right: 0;
+    text-align: center;
 
-    ion-item.item {
+    .item-inner {
       padding: 0;
-      width: fit-content;
-      max-width: fit-content;
-      text-align: center;
 
-      .item-inner {
-        padding: 0;
-
-        .label {
-          margin: 0;
-          width: fit-content;
-        }
+      .label {
+        margin: 0;
+        width: fit-content;
       }
     }
   }
+}
 
-  ion-item.year-input.item.input-has-focus:last-child,
-  ion-item.year-input.item.item-input.input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child {
-    border-bottom-color: var(--elastic-search-date-histogram-year-bar-color);
-    box-shadow: inset 0 -1px 0 0 var(--elastic-search-date-histogram-year-bar-color);
-  }
-  ion-item.year-input.input-has-focus .label-md[floating] {
-    color: var(--elastic-search-date-histogram-year-bar-color);
-  }
+ion-item.year-input.item.input-has-focus:last-child,
+ion-item.year-input.item.item-input.input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child {
+  border-bottom-color: var(--elastic-search-date-histogram-year-bar-color);
+  box-shadow: inset 0 -1px 0 0 var(--elastic-search-date-histogram-year-bar-color);
+}
+ion-item.year-input.input-has-focus .label-md[floating] {
+  color: var(--elastic-search-date-histogram-year-bar-color);
+}
 
-  ion-item.year-input {
-    &.item.item-block {
-      border-bottom-color: #555;
-      max-width: 100px;
-      padding-left: 10px;
+ion-item.year-input {
+  &.item.item-block {
+    border-bottom-color: #555;
+    max-width: 100px;
+    padding-left: 10px;
 
 
-      input.text-input {
-        margin-right: 0;
-        width: 100%;
-        min-width: 50px;
-      }
-    }
-
-    .label {
-      color: #555;
+    input.text-input {
+      margin-right: 0;
+      width: 100%;
+      min-width: 50px;
     }
   }
 
-  .reset-buttons {
-    height: 32px;
-    ion-icon {
-      font-size: 1.5em;
-    }
-  }
-
-  .years {
-    position: relative;
-    margin: 20px 0 0 50px;
-    cursor: crosshair;
-  }
-
-  .year {
-    position: relative;
-    height: 3px;
-  }
-  .yearIsDecade {
-    height: 4px;
-    border-bottom: 1px solid #aaaaaa;
-  }
-  .yearBar {
-    position: relative;
-    height: 100%;
-    width: 0;
-    background-color: var(--elastic-search-date-histogram-year-bar-color);
-  }
-  .yearDetails {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: -20px;
-    padding: 2px;
-    font-size: 12px !important;
+  .label {
     color: #555;
-    background-color: rgba(255,255,255,0.8);
   }
+}
 
-  .year:hover {
-    background-color: var(--elastic-search-date-histogram-year-hover-color);
+.reset-buttons {
+  height: 32px;
+  ion-icon {
+    font-size: 1.5em;
   }
-  .year:hover > .yearBar, .yearBarInRange {
-    background-color: var(--elastic-search-date-histogram-year-in-range-color);
-  }
-  .year:hover .yearDetails {
-    display: block;
-  }
+}
 
-  .decadeMarker {
-    position: relative;
-    height: 0px;
-  }
+.years {
+  position: relative;
+  margin: 20px 0 0 50px;
+  cursor: crosshair;
+}
 
-  .decade {
-    position: absolute;
-    left: -55px;
-    top: -7px;
-    width: 50px;
-    font-size: 12px !important;
-    color: #555;
-    text-align: right;
-  }
+.year {
+  position: relative;
+  height: 3px;
+}
+.yearIsDecade {
+  height: 4px;
+  border-bottom: 1px solid #aaaaaa;
+}
+.yearBar {
+  position: relative;
+  height: 100%;
+  width: 0;
+  background-color: var(--elastic-search-date-histogram-year-bar-color);
+}
+.yearDetails {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: -20px;
+  padding: 2px;
+  font-size: 12px !important;
+  color: #555;
+  background-color: rgba(255,255,255,0.8);
+}
 
-  .list-md .item-input:last-child {
-    border-bottom: 1px solid var(--elastic-search-date-histogram-year-bar-color) !important;
-    box-shadow: inset 0 -1px 0 0 var(--elastic-search-date-histogram-year-bar-color) !important;
-  }
+.year:hover {
+  background-color: var(--elastic-search-date-histogram-year-hover-color);
+}
+.year:hover > .yearBar, .yearBarInRange {
+  background-color: var(--elastic-search-date-histogram-year-in-range-color);
+}
+.year:hover .yearDetails {
+  display: block;
+}
+
+.decadeMarker {
+  position: relative;
+  height: 0px;
+}
+
+.decade {
+  position: absolute;
+  left: -55px;
+  top: -7px;
+  width: 50px;
+  font-size: 12px !important;
+  color: #555;
+  text-align: right;
+}
+
+.list-md .item-input:last-child {
+  border-bottom: 1px solid var(--elastic-search-date-histogram-year-bar-color) !important;
+  box-shadow: inset 0 -1px 0 0 var(--elastic-search-date-histogram-year-bar-color) !important;
 }

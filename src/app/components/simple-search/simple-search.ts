@@ -19,7 +19,8 @@ import { StorageService } from 'src/app/services/storage/storage.service';
  */
 @Component({
   selector: 'simple-search',
-  templateUrl: 'simple-search.html'
+  templateUrl: 'simple-search.html',
+  styleUrls: ['simple-search.scss'],
 })
 export class SimpleSearchComponent {
   @Input() root?: TableOfContentsCategory[];

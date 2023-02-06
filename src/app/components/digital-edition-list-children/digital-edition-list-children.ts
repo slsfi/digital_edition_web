@@ -12,7 +12,8 @@ import { ConfigService } from 'src/app/services/config/core/config.service';
  */
 @Component({
   selector: 'digital-edition-list-children',
-  templateUrl: 'digital-edition-list-children.html'
+  templateUrl: 'digital-edition-list-children.html',
+  styleUrls: ['digital-edition-list-children.scss']
 })
 export class DigitalEditionListChildrenComponent {
   @Input() layoutType?: string;

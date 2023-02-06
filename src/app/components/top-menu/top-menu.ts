@@ -17,7 +17,8 @@ import { StorageService } from 'src/app/services/storage/storage.service';
  */
 @Component({
   selector: 'top-menu',
-  templateUrl: 'top-menu.html'
+  templateUrl: 'top-menu.html',
+  styleUrls: ['top-menu.scss']
 })
 export class TopMenuComponent {
   @Input() splitPaneMobile?: boolean;

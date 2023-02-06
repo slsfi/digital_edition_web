@@ -13,7 +13,8 @@ import { ConfigService } from 'src/app/services/config/core/config.service';
 
 @Component({
   selector: 'digital-editions-list',
-  templateUrl: `./digital-edition-list.html`
+  templateUrl: `./digital-edition-list.html`,
+  styleUrls: ['digital-edition-list.scss']
 })
 export class DigitalEditionList implements OnInit {
   errorMessage?: string;

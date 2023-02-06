@@ -16,7 +16,8 @@ import { StorageService } from 'src/app/services/storage/storage.service';
  */
 @Component({
   selector: 'table-of-contents-drilldown-menu',
-  templateUrl: 'table-of-contents-drilldown-menu.html'
+  templateUrl: 'table-of-contents-drilldown-menu.html',
+  styleUrls: ['table-of-contents-drilldown-menu.scss'],
 })
 export class TableOfContentsDrilldownMenuComponent {
   root: TableOfContentsCategory[] | any;

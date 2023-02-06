@@ -1,35 +1,34 @@
-static-pages-toc-drilldown-menu {
-    ion-item.item.selected {
-        font-weight: var(--toc-selected-item-font-weight);
-        background-color: var(--toc-selected-item-background-color);
-	    border-color: var(--toc-selected-item-border-color);
-    }
-    ion-item.item.selected p {
-        color: var(--toc-selected-item-text-color);
-    }
-    ion-item.item.selected div.item-inner {
-        border-color: var(--toc-selected-item-divider-color) !important;
-    }
-    ion-item.item.selected ion-icon {
-        color: var(--toc-selected-item-arrow-color) !important;
-    }
+@import "../../../theme/variables.scss";
 
-    /* The toc items should not have a background color so that the background color for the entire navigation panel shines through. */
-    ion-item.item {
-        background-color: unset;
-        padding-left: 12px;
-        border-left: 4px solid transparent;
-        cursor: pointer;
-    }
+ion-item.item.selected {
+    font-weight: var(--toc-selected-item-font-weight);
+    background-color: var(--toc-selected-item-background-color);
+    border-color: var(--toc-selected-item-border-color);
+}
+ion-item.item.selected p {
+    color: var(--toc-selected-item-text-color);
+}
+ion-item.item.selected div.item-inner {
+    border-color: var(--toc-selected-item-divider-color) !important;
+}
+ion-item.item.selected ion-icon {
+    color: var(--toc-selected-item-arrow-color) !important;
+}
 
-    ion-item.item.back-to-list-button {
-        padding-left: 12px;
-        border-left: 4px solid transparent;
-    }
+/* The toc items should not have a background color so that the background color for the entire navigation panel shines through. */
+ion-item.item {
+    background-color: unset;
+    padding-left: 12px;
+    border-left: 4px solid transparent;
+    cursor: pointer;
+}
 
-    ion-item.item:hover,
-    ion-item.item.back-to-list-button:hover {
-        border-left-color: var(--toc-hover-color) !important;
-    }
+ion-item.item.back-to-list-button {
+    padding-left: 12px;
+    border-left: 4px solid transparent;
+}
 
+ion-item.item:hover,
+ion-item.item.back-to-list-button:hover {
+    border-left-color: var(--toc-hover-color) !important;
 }

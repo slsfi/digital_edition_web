@@ -20,7 +20,8 @@ import { SongService } from 'src/app/services/song/song.service';
 // })
 @Component({
   selector: 'page-content',
-  templateUrl: 'content.html'
+  templateUrl: 'content.html',
+  styleUrls: ['content.scss']
 })
 export class ContentPage /*implements OnDestroy*/ {
 
@@ -61,7 +62,6 @@ export class ContentPage /*implements OnDestroy*/ {
         this.fileID = params['id'];
         this.mdContent = new MdContent({id: this.fileID, title: '...', content: null, filename: null});
         this.loadContent(this.lang);
-        console.log(this.mdContent);
       }
 
       if (!params['selectedItemInAccordion'] || params['selectedItemInAccordion'] === undefined) {

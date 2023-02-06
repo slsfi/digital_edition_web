@@ -12,7 +12,8 @@ import { CommentService } from 'src/app/services/comments/comment.service';
 */
 @Component({
   selector: 'page-comment-modal',
-  templateUrl: 'comment-modal.html'
+  templateUrl: 'comment-modal.html',
+  styleUrls: ['comment-modal.scss'],
 })
 export class CommentModalPage {
 

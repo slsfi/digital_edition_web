@@ -13,7 +13,7 @@ import { SongService } from 'src/app/services/song/song.service';
 @Component({
   selector: 'list-of-songs',
   templateUrl: 'list-of-songs.html',
-  styleUrls: ['./list-of-songs.scss'],
+  styleUrls: ['list-of-songs.scss'],
 })
 export class ListOfSongsComponent {
   @Input() songCategory?: string;

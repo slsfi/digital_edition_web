@@ -1,97 +1,95 @@
-digital-editions-list {
-    .download {
-        position: absolute;
-        top: 0;
-        right: 0.5rem;
-        color: rgba($color: #000000, $alpha: 0.3)
+  .download {
+      position: absolute;
+      top: 0;
+      right: 0.5rem;
+      color: rgba($color: #000000, $alpha: 0.3)
+  }
+  .card-content-md {
+    padding: 0 !important;
+  }
+  .card{
+      cursor: pointer;
+  }
+  .col-mobile {
+    ion-item ion-label h2 {
+      word-break: keep-all;
+      font-size: 1.25rem;
+      margin-right: 1.5rem;
     }
-    .card-content-md {
+
+  }
+  .grid-mobile{
+
+  }
+  .card-md {
+      ion-card-content {
+          h2 {
+              word-break: keep-all;
+              margin-bottom: 1em;
+              font-size: 1.25rem;
+          }
+          p {
+              text-align: left;
+              font-size: 1rem;
+              margin-bottom: 0.8rem;
+              line-height: 1em;
+          }
+      }
+  }
+  .book_download_container {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .book_download_container p {
+    display: flex;
+    font-size: 1.2em;
+  }
+
+  .list .book_download_container {
+    justify-content: start;
+  }
+
+  .download_link {
+    border-bottom: 1px solid;
+    border-bottom-color: var(--primary-color) !important;
+  }
+
+  .download_link p {
+    margin-bottom: 0.1em !important;
+  }
+
+  .item-white {
+    ion-item {
+      background-color: white;
+      padding-top: 0;
+      padding-bottom: 0;
+      cursor: pointer;
+    }
+
+    ion-item.item.item-block {
+      padding: 0;
+      margin: 0.5rem 0;
+    }
+
+    ion-item.item.item-block .item-inner {
+      border-bottom: 0;
+    }
+
+    ion-thumbnail {
       padding: 0 !important;
-    }
-    .card{
-        cursor: pointer;
-    }
-    .col-mobile {
-      ion-item ion-label h2 {
-        word-break: keep-all;
-        font-size: 1.25rem;
-        margin-right: 1.5rem;
-      }
-
-    }
-    .grid-mobile{
-
-    }
-    .card-md {
-        ion-card-content {
-            h2 {
-               word-break: keep-all;
-               margin-bottom: 1em;
-               font-size: 1.25rem;
-            }
-            p {
-                text-align: left;
-                font-size: 1rem;
-                margin-bottom: 0.8rem;
-                line-height: 1em;
-            }
-        }
-    }
-    .book_download_container {
-      display: flex;
-      justify-content: space-evenly;
-    }
-    .book_download_container p {
-      display: flex;
-      font-size: 1.2em;
+      margin: 0 !important;
     }
 
-    .list .book_download_container {
-      justify-content: start;
+    ion-item.item ion-thumbnail img {
+      height: auto;
     }
 
-    .download_link {
-      border-bottom: 1px solid;
-      border-bottom-color: var(--primary-color) !important;
+    h2 {
+      margin-left: 15px;
+      white-space: normal;
     }
 
-    .download_link p {
-      margin-bottom: 0.1em !important;
+    p {
+      margin-left: 15px;
     }
-
-    .item-white {
-      ion-item {
-        background-color: white;
-        padding-top: 0;
-        padding-bottom: 0;
-        cursor: pointer;
-      }
-
-      ion-item.item.item-block {
-        padding: 0;
-        margin: 0.5rem 0;
-      }
-
-      ion-item.item.item-block .item-inner {
-        border-bottom: 0;
-      }
-
-      ion-thumbnail {
-        padding: 0 !important;
-        margin: 0 !important;
-      }
-
-      ion-item.item ion-thumbnail img {
-        height: auto;
-      }
-
-      h2 {
-        margin-left: 15px;
-        white-space: normal;
-      }
-
-      p {
-        margin-left: 15px;
-      }
-    }
-}
+  }

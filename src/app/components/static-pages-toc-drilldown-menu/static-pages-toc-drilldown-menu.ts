@@ -16,7 +16,8 @@ import { UserSettingsService } from 'src/app/services/settings/user-settings.ser
  */
 @Component({
   selector: 'static-pages-toc-drilldown-menu',
-  templateUrl: 'static-pages-toc-drilldown-menu.html'
+  templateUrl: 'static-pages-toc-drilldown-menu.html',
+  styleUrls: ['static-pages-toc-drilldown-menu.scss']
 })
 export class StaticPagesTocDrilldownMenuComponent {
   @Input() jsonObjectID?: string;

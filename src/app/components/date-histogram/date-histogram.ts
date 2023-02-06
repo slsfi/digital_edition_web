@@ -8,7 +8,8 @@ import { Component, Input } from '@angular/core'
  */
 @Component({
   selector: 'date-histogram',
-  templateUrl: 'date-histogram.html'
+  templateUrl: 'date-histogram.html',
+  styleUrls: ['date-histogram.scss']
 })
 export class DateHistogram {
 

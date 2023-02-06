@@ -1,3 +1,5 @@
+@import "../../../theme/variables.scss";
+
 .list-of-songs {
     &__columns {
         background-color: #e4dcca;
@@ -20,7 +22,7 @@
     }
 
     &__selected-song {
-        background-color: color($colors, light);
+        background-color: map-get($map: $colors, $key: 'light');
     }
 }
 

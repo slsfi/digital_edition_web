@@ -1,31 +1,30 @@
-page-comment-modal {
+@import "../../../theme/variables.scss";
 
-  /* Styles for the notes that the modal contains are defined in src/theme/_tei_comment.scss */
+/* Styles for the notes that the modal contains are defined in src/theme/_tei_comment.scss */
 
-  /* This hides the vertical scrollbar on the right edge of the modal when it is not necessary to show it. */
-  ion-content > .scroll-content {
-    overflow: auto;
-  }
+/* This hides the vertical scrollbar on the right edge of the modal when it is not necessary to show it. */
+ion-content > .scroll-content {
+  overflow: auto;
+}
 
-  ion-title {
-    margin-left: 12px;
-  }
+ion-title {
+  margin-left: 12px;
+}
 
-  .close-button {
-    margin-right: 12.8px;
-    transition: $opacity-hover-transition;
-  }
+.close-button {
+  margin-right: 12.8px;
+  transition: $opacity-hover-transition;
+}
 
-  .close-button:hover {
-    opacity: $opacity-hover;
-  }
-  
-  .close-button:active {
-  opacity: 1;
-  }
+.close-button:hover {
+  opacity: $opacity-hover;
+}
 
-  div.tei {
-    padding: 0 8px 8px 8px;
-    line-height: 1.5em;
-  }
+.close-button:active {
+opacity: 1;
+}
+
+div.tei {
+  padding: 0 8px 8px 8px;
+  line-height: 1.5em;
 }

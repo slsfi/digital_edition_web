@@ -19,7 +19,8 @@ export class Book {
 
 @Component({
   selector: 'epub',
-  templateUrl: 'epub.html'
+  templateUrl: 'epub.html',
+  styleUrls: ['epub.scss']
 })
 export class EpubComponent {
 

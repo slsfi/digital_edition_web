@@ -1,7 +1,14 @@
-top-menu {
-  top: 0;
-  width: 100%;
-  height: 30px;
+@import "../../../theme/variables.scss";
+
+:host {
+    top: 0;
+    width: 100%;
+    height: 30px;
+
+    &.splitPanePossible ion-toolbar ion-buttons {
+      margin-left: 0 !important;
+    }
+  }
 
   ion-toolbar > .toolbar-content > ion-grid > ion-row {
     flex-wrap: nowrap;
@@ -62,10 +69,6 @@ top-menu {
     transition: 0.3s margin-left ease-in;
   }
 
-  &.splitPanePossible ion-toolbar ion-buttons {
-    margin-left: 0 !important;
-  }
-
   .toolbar-content ion-title.title {
     height: 100%;
   }
@@ -75,8 +78,6 @@ top-menu {
     margin-left: 8px;
     font-weight: normal;
   }
-
-}
 
 .toolbar-ios ion-title {
   padding: 0;
