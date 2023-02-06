@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { ConfigService } from 'src/app/services/config/core/config.service';
@@ -8,6 +8,7 @@ import { LanguageService } from 'src/app/services/languages/language.service';
 import { MdContentService } from 'src/app/services/md/md-content.service';
 import { UserSettingsService } from 'src/app/services/settings/user-settings.service';
 import { TextService } from 'src/app/services/texts/text.service';
+import { DOCUMENT } from '@angular/common';
 
 /**
  * HomePage is the first page user sees.
@@ -46,6 +47,7 @@ export class HomePage {
     private mdContentService: MdContentService,
     private userSettingsService: UserSettingsService,
     protected textService: TextService,
+    @Inject(DOCUMENT) private document: Document
   ) {
     this.appMachineName = this.config.getSettings('app.machineName');
     this.userSettingsService.temporarilyHideSplitPane();
@@ -93,7 +95,7 @@ export class HomePage {
     }
 
     // Get viewport width
-    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    const vw = Math.max(this.document.documentElement.clientWidth, window.innerWidth || 0);
 
     // Change front page image if viewport size max 900px and the image orientation is set to portrait
     if (vw <= 900 && this.imageOrientationPortrait) {

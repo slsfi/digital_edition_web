@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, Inject } from '@angular/core';
 import { ConfigService } from 'src/app/services/config/core/config.service';
 import { EventsService } from 'src/app/services/events/events.service';
 import { LanguageService } from 'src/app/services/languages/language.service';
@@ -14,11 +15,13 @@ export class TitleLogoComponent {
   public subtitle?: string;
   public siteLogoURL: string;
   public useMobileLogo: Boolean = false;
+  private window: Window;
   constructor(
     private events: EventsService,
     public userSettingsService: UserSettingsService,
     private config: ConfigService,
-    public languageService: LanguageService
+    public languageService: LanguageService,
+    @Inject(DOCUMENT) private document: Document
   ) {
     try {
       this.siteLogoURL = this.config.getSettings('app.siteLogoURL') as any;
@@ -27,6 +30,7 @@ export class TitleLogoComponent {
     }
 
     this.registerEventListeners();
+    this.window = <any>this.document.defaultView;
   }
 
   ionViewWillLeave() {
@@ -41,7 +45,7 @@ export class TitleLogoComponent {
   }
 
   ngOnInit() {
-    const viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+    const viewportWidth = Math.max(this.document.documentElement.clientWidth || 0, this.window.innerWidth || 0);
     if (viewportWidth <= 820) {
       this.useMobileLogo = true;
     } else {

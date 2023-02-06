@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, NgZone, ViewChild } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { ChangeDetectorRef, Component, Inject, NgZone, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AlertController, MenuController, Platform } from '@ionic/angular';
@@ -213,7 +214,8 @@ export class DigitalEditionsApp {
     private galleryService: GalleryService,
     private metadataService: MetadataService,
     private ngZone: NgZone,
-    private router: Router
+    private router: Router,
+    @Inject(DOCUMENT) private document: Document
   ) {
     this.mediaCollectionOptions = {};
 
@@ -415,7 +417,7 @@ export class DigitalEditionsApp {
 
   closeSplitPane() {
     setTimeout(() => {
-        const shadow = document.querySelector('.shadow');
+        const shadow = this.document.querySelector('.shadow');
 
         if (shadow !== null) {
             shadow.addEventListener('click', () => {
@@ -958,10 +960,10 @@ export class DigitalEditionsApp {
 
     this.events.getIonViewWillEnter().subscribe((currentPage: any) => {
       this.tocLoaded = false;
-      const homeUrl = document.URL.indexOf('/home');
+      const homeUrl = this.document.URL.indexOf('/home');
       if (homeUrl >= 0) {
         this.setupPageSettings(currentPage);
-      } else if ( document.URL.indexOf('/') > 0 ) {
+      } else if ( this.document.URL.indexOf('/') > 0 ) {
         if ( this.splitPaneOpen === false && this.pageFirstLoad === true ) {
           this.showSplitPane();
           this.pageFirstLoad = false;
@@ -1361,8 +1363,8 @@ export class DigitalEditionsApp {
   }
 
   setRootPage() {
-    const homeUrl = document.URL.indexOf('/home');
-    if (homeUrl >= 0 || document.URL.indexOf('#') < 0) {
+    const homeUrl = this.document.URL.indexOf('/home');
+    if (homeUrl >= 0 || this.document.URL.indexOf('#') < 0) {
       this.rootPage = 'HomePage';
     }
   }

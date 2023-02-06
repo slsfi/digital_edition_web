@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { Occurrence, OccurrenceResult } from '../../app/models/occurrence.model';
 import { SingleOccurrence } from '../../app/models/single-occurrence.model';
 import { TranslateService } from '@ngx-translate/core';
-import leaflet from 'leaflet';
+// import leaflet from 'leaflet';
 import { SemanticDataService } from 'src/app/services/semantic-data/semantic-data.service';
 import { LanguageService } from 'src/app/services/languages/language.service';
 import { ModalController, NavController, NavParams, Platform } from '@ionic/angular';
@@ -14,6 +14,7 @@ import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 import { CommonFunctionsService } from 'src/app/services/common-functions/common-functions.service';
 import { Router } from '@angular/router';
 import { ConfigService } from 'src/app/services/config/core/config.service';
+import { isPlatformBrowser } from '@angular/common';
 
 /**
  * Generated class for the OccurrencesPage page.
@@ -87,6 +88,8 @@ export class OccurrencesPage {
               private analyticsService: AnalyticsService,
               public commonFunctions: CommonFunctionsService,
               public router: Router,
+              @Inject(PLATFORM_ID) private _platformId: any,
+              @Inject(null) private L: any,
   ) {
     try {
       this.simpleWorkMetadata = this.config.getSettings('useSimpleWorkMetadata') as any;
@@ -103,6 +106,13 @@ export class OccurrencesPage {
       // console.log('occurrenceResult not in navParams, getting object data');
       this.occurrenceResult = new OccurrenceResult();
       this.getObjectData(this.navParams.get('type'), this.navParams.get('id'));
+    }
+    // this.L = null;
+  }
+
+  async ngOnInit(): Promise<void> {
+    if (isPlatformBrowser(this._platformId)) {
+      this.L = await import('leaflet');
     }
   }
 
@@ -277,18 +287,23 @@ export class OccurrencesPage {
 
   loadmap() {
     try {
-      const latlng = leaflet.latLng(this.latitude || 0, this.longitude || 0);
-      this.map = leaflet.map('map', {
-          center: latlng,
-          zoom: 8
-      });
-      leaflet.marker(latlng).addTo(this.map);
-      leaflet.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, \
-        GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community',
-        maxZoom: 18
-      }).addTo(this.map);
-      this.map.invalidateSize();
+      console.log('-----------');
+      console.log(isPlatformBrowser(this._platformId));
+      console.log('-----------');
+      if (isPlatformBrowser(this._platformId) && this.L) {
+        const latlng = this.L.latLng(this.latitude || 0, this.longitude || 0);
+        this.map = this.L.map('map', {
+            center: latlng,
+            zoom: 8
+        });
+        this.L.marker(latlng).addTo(this.map);
+        this.L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+          attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, \
+          GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community',
+          maxZoom: 18
+        }).addTo(this.map);
+        this.map.invalidateSize();
+      }
     } catch ( e ) {
 
     }

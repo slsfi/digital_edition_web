@@ -1,5 +1,5 @@
 import { ErrorHandler, Injectable, NgModule } from '@angular/core';
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserModule, Title, TransferState } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppRoutingModule } from './app-routing.module';
@@ -56,6 +56,9 @@ import { MathJaxModule } from './components/math-jax/math-jax.module';
 import { ConfigLoader } from './services/config/core/config.loader';
 import { ConfigHttpLoader } from './services/config/http-loader/http-loader';
 import { ConfigModule } from './services/config/core/config.module';
+import { httpInterceptorProviders } from './http-interceptors';
+import { TransferHttpCacheModule } from '@nguniversal/common';
+import { translateBrowserLoaderFactory } from './loaders/translate-browser.loader';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
@@ -74,8 +77,9 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
 }
 
 export function createConfigLoader(http: HttpClient): ConfigLoader {
-  return new ConfigHttpLoader(http, 'config.json');
+  // return new ConfigHttpLoader(http, 'config.json');
   // return new ConfigHttpLoader(http, 'assets/config.json');
+  return new ConfigHttpLoader(http, 'http://localhost:4200/assets/config.json');
 }
 
 @NgModule({
@@ -88,6 +92,7 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
+    TransferHttpCacheModule,
     IonicModule.forRoot(
       {
         mode: 'md',
@@ -99,8 +104,8 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [HttpClient]
+        useFactory: translateBrowserLoaderFactory,
+        deps: [HttpClient, TransferState]
       }
     }),
     ConfigModule.forRoot({
@@ -147,6 +152,8 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
     AnalyticsService,
     MetadataService,
     EventsService,
+    httpInterceptorProviders,
+    // { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
   bootstrap: [DigitalEditionsApp],
   entryComponents: [

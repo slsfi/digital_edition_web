@@ -35,6 +35,7 @@
     "@ionic/angular-server": "^6.4.2-dev.11672338764.1def15a7",
     "@ionic/storage": "^3.0.6",
     "@ionic/storage-angular": "^3.0.6",
+    "@nguniversal/common": "^15.1.0",
     "@nguniversal/express-engine": "^15.0.0",
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
