@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ModalController, NavController, NavParams } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
-import { CommentService } from '../../app/services/comments/comment.service';
-import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
+import { ReadPopoverService } from 'src/app/services/settings/read-popover.service';
+import { CommentService } from 'src/app/services/comments/comment.service';
 
 /*
   Generated class for the CommentModal page.

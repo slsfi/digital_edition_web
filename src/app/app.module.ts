@@ -10,7 +10,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
 import { DigitalEditionsApp } from './app.component';
-import { CommentModalPage } from 'src/pages/comment-modal/comment-modal';
 import { SemanticDataModalPage } from 'src/pages/semantic-data-modal/semantic-data-modal';
 import { ReferenceDataModalPage } from 'src/pages/reference-data-modal/reference-data-modal';
 import { EventsService } from './services/events/events.service';
@@ -56,6 +55,7 @@ import { MathJaxModule } from './components/math-jax/math-jax.module';
 import { ConfigLoader } from './services/config/core/config.loader';
 import { ConfigHttpLoader } from './services/config/http-loader/http-loader';
 import { ConfigModule } from './services/config/core/config.module';
+import { CommentModalPage } from './modals/comment-modal/comment-modal';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
@@ -74,8 +74,8 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
 }
 
 export function createConfigLoader(http: HttpClient): ConfigLoader {
-  return new ConfigHttpLoader(http, 'config.json');
-  // return new ConfigHttpLoader(http, 'assets/config.json');
+  // return new ConfigHttpLoader(http, 'config.json');
+  return new ConfigHttpLoader(http, 'assets/config.json');
 }
 
 @NgModule({

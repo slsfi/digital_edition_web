@@ -90,6 +90,8 @@ export class EventsService {
     private updatePositionInPageRead = new Subject<any>();
     // UpdatePositionInPageRead:TextChanger
     private updatePositionInPageReadTextChanger = new Subject<any>();
+    // pageLoaded:about
+    private pageLoadedAbout = new Subject<any>();
 
 
     publishShareDismiss(data?: any) {
@@ -426,5 +428,13 @@ export class EventsService {
 
     getUpdatePositionInPageReadTextChanger(): Subject<any> {
         return this.updatePositionInPageReadTextChanger;
+    }
+
+    publishPageLoadedAbout(data?: any) {
+        this.pageLoadedAbout.next(data);
+    }
+
+    getPageLoadedAbout(): Subject<any> {
+        return this.pageLoadedAbout;
     }
 }
