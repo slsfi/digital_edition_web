@@ -21,7 +21,7 @@ import { DigitalEditionListService } from './services/toc/digital-edition-list.s
 import { TableOfContentsService } from './services/toc/table-of-contents.service';
 
 @Component({
-  selector: 'ion-app',
+  selector: 'ion-app-v2',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
