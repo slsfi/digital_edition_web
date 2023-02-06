@@ -958,10 +958,10 @@ export class DigitalEditionsApp {
 
     this.events.getIonViewWillEnter().subscribe((currentPage: any) => {
       this.tocLoaded = false;
-      const homeUrl = document.URL.indexOf('/#/home');
+      const homeUrl = document.URL.indexOf('/home');
       if (homeUrl >= 0) {
         this.setupPageSettings(currentPage);
-      } else if ( document.URL.indexOf('/#/') > 0 ) {
+      } else if ( document.URL.indexOf('/') > 0 ) {
         if ( this.splitPaneOpen === false && this.pageFirstLoad === true ) {
           this.showSplitPane();
           this.pageFirstLoad = false;
