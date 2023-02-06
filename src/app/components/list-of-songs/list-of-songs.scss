@@ -1,0 +1,99 @@
+.list-of-songs {
+    &__columns {
+        background-color: #e4dcca;
+        padding: 1rem;
+    }
+
+    &__row {
+        background-color: #eee;
+        padding: 1rem;
+
+        button {
+            margin: 0;
+            padding-left: 0.2rem;
+            padding-right: 0.2rem;
+        }
+
+        &:hover {
+            background-color: rgb(223, 219, 219);
+        }
+    }
+
+    &__selected-song {
+        background-color: color($colors, light);
+    }
+}
+
+.mobile-grid {
+    ion-col {
+        width: 20%;
+    }
+
+    button {
+        font-size: 50%;
+    }
+}
+
+h3{
+    font-size: 1rem !important;
+}
+
+.note-md {
+    color: #666 !important;
+    padding-bottom: 0.2rem !important;
+}
+.label-md {
+    margin: 0 !important;
+}
+
+ion-label p{
+    padding-bottom: 0.2rem !important;
+}
+
+ion-label p{
+    cursor: pointer;
+}
+
+.list-of-songs__row{
+    background-color: whitesmoke;
+    margin: 2px;
+    margin-left: 0px;
+    -webkit-box-shadow: 4px 4px 4px -3px rgba(0,0,0,0.72); 
+    box-shadow: 4px 4px 4px -3px rgba(0,0,0,0.72);
+    flex-basis: 20%;
+    padding: 0.5rem;
+    padding-top: 0.7rem;
+}
+
+.result-data > div > div >  p{
+    line-height: 1rem;
+}
+
+.resultContainer{
+    display: flex;
+    cursor: pointer;
+}
+
+.result-icon{
+    padding-left: 1rem;
+    padding-right: 1rem;
+    flex-grow: 0;
+}
+
+.result-icon > div{
+    display: table;
+    height: 100%;
+}
+
+.result-icon > div > div{
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.result-data .first{
+    font-weight: 600;
+}
+
+.grid{
+    padding-left: 0px;
+}

@@ -1,0 +1,6 @@
+<ion-content padding>
+  <div class="md_content">
+    <markdown [data]="mdContent?.content"></markdown>
+  </div>
+  <list-of-songs *ngIf="songCategory" [songCategory]="songCategory" [currentSong]="songExample"></list-of-songs>
+</ion-content>

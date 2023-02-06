@@ -31,6 +31,7 @@ import { TitleLogoComponent } from './title-logo/title-logo';
 import { TableOfContentsAccordionComponent } from './table-of-contents-accordion/table-of-contents-accordion';
 import { TableOfContentsDrilldownMenuComponent } from './table-of-contents-drilldown-menu/table-of-contents-drilldown-menu';
 import { StaticPagesTocDrilldownMenuComponent } from './static-pages-toc-drilldown-menu/static-pages-toc-drilldown-menu';
+import { ListOfSongsComponent } from './list-of-songs/list-of-songs';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -50,7 +51,7 @@ export function createTranslateLoader(http: HttpClient) {
     // SongExampleComponent,
     DigitalEditionListChildrenComponent,
     TableOfContentsAccordionComponent,
-    // ListOfSongsComponent,
+    ListOfSongsComponent,
     // NgxExtendedPdfViewerComponent,
     // IllustrationsComponent,
     // TableOfContentLetterFilterComponent,
@@ -83,7 +84,7 @@ export function createTranslateLoader(http: HttpClient) {
     // SongExampleComponent,
     DigitalEditionListChildrenComponent,
     TableOfContentsAccordionComponent,
-    // ListOfSongsComponent,
+    ListOfSongsComponent,
     // NgxExtendedPdfViewerComponent,
     // TableOfContentLetterFilterComponent,
     // DateHistogram,

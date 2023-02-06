@@ -74,8 +74,8 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
 }
 
 export function createConfigLoader(http: HttpClient): ConfigLoader {
-  // return new ConfigHttpLoader(http, 'config.json');
-  return new ConfigHttpLoader(http, 'assets/config.json');
+  return new ConfigHttpLoader(http, 'config.json');
+  // return new ConfigHttpLoader(http, 'assets/config.json');
 }
 
 @NgModule({
