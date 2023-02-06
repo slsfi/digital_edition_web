@@ -1,0 +1,305 @@
+@import "../../../theme/variables.scss";
+
+:host {
+	font-size: 1.125rem;
+}
+
+ion-content > .scroll-content {
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+}
+
+ion-content.portrait-mode > .scroll-content {
+	flex-direction: row;
+}
+
+h1 {
+	text-transform: none;
+}
+
+h2 {
+	font-size: 1.6rem;
+	margin-top: 0;
+}
+
+p {
+	line-height: 1.8rem;
+}
+
+.banner {
+	position: relative;
+	margin: 0;
+	padding: 0;
+	height: 50%;
+	min-height: 50%;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	background-size: cover;
+	flex-shrink: 0;
+}
+
+.banner .title-wrapper {
+	position: relative;
+	float: left;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+}
+
+.banner-title,
+.banner-subtitle {
+	font-family: var(--font-stack-home-banner);
+	font-size: calc(1.375rem + 2.15vw);
+	font-weight: normal;
+	line-height: 1.5;
+	color: #000;
+	background-color: var(--main-background-color);
+	opacity: 0.8;
+	padding: 0 1rem;
+	margin: 1.2rem 1rem 1rem 1rem;
+}
+
+.banner-subtitle {
+	font-size: calc(1.25rem + 0.7vw);
+	font-style: italic;
+	display: inline-block;
+	margin-top: 0;
+}
+
+.text-content {
+	display: flex;
+	flex-direction: column;
+	margin: 1.5rem 3rem 0 3rem;
+}
+
+.text-content .front-page-simple-search {
+	margin: 1.5rem auto 1.5rem auto;
+	width: 100%;
+	max-width: 800px;
+}
+
+.text-content .site-presentation {
+	text-align: center;
+	max-width: 1000px;
+	margin: 0 auto 3rem auto;
+}
+
+.text-content .front-page-edition-list {
+	margin: 0 auto 3rem auto;
+}
+
+.text-content .front-page-edition-list .grid-mobile {
+	padding: 0;
+}
+
+.text-content .footer {
+	text-align: center;
+	width: 100%;
+	max-width: 1000px;
+	margin: auto auto 0 auto;
+	padding: 0 0 1.5rem 0;
+}
+
+.text-content .footer p {
+	font-size: 1rem;
+	color: rgba(0, 0, 0, 0.6);
+}
+
+.portrait-mode .banner {
+	height: 100%;
+	min-height: 100%;
+	width: 28.2%;
+	min-width: 370px;
+	background-image: none !important;
+	background-color: var(--page-home-portrait-mode-background-color-below-image);
+	position: sticky;
+	top: 0;
+}
+
+.portrait-mode .banner > img {
+	width: 100%;
+	height: auto;
+}
+
+.portrait-mode .banner.image-on-right {
+	order: 1;
+	margin-right: auto;
+}
+
+.portrait-mode .text-content {
+	max-width: 1000px;
+}
+
+.portrait-mode .text-content .front-page-simple-search {
+	margin-left: 0;
+}
+
+.portrait-mode .text-content .front-page-simple-search ion-grid.grid {
+	padding: 0;
+}
+
+.portrait-mode .text-content .site-presentation {
+	text-align: left;
+	margin: 0 0 3rem 0;
+}
+
+.portrait-mode .site-title,
+.portrait-mode .site-subtitle {
+	font-family: var(--font-stack-home-banner);
+	font-size: 3.25rem;
+	font-weight: normal;
+	line-height: 1.25;
+	text-align: left;
+	color: #000;
+	padding: 0 0 0.5rem 0;
+	margin-top: 1.2rem;
+	margin-bottom: 1rem;
+}
+
+.portrait-mode .site-subtitle {
+	font-size: 2.25rem;
+	font-style: italic;
+	margin-top: -1rem;
+}
+
+.portrait-mode .text-content .footer {
+	margin-left: 0;
+	margin-right: 0;
+	text-align: left;
+}
+
+/* Override the number of columns in the edition list to 1, 2 or max 3 
+	based on screen width in portrait mode. Both [col-xxl-3] and [col-xl-3] 
+	are needed as selectors as one is for desktop, the other tablet. */
+@media only screen and (min-width: 0) {
+	.portrait-mode .text-content .front-page-edition-list [col-xxl-3],
+	.portrait-mode .text-content .front-page-edition-list [col-xl-3] {
+		flex: 0 0 100%;
+		width: 100%;
+		max-width: 100%;
+	}
+}
+
+@media only screen and (min-width: 901px) {
+	.portrait-mode .text-content .front-page-edition-list [col-xxl-3],
+	.portrait-mode .text-content .front-page-edition-list [col-xl-3] {
+		flex: 0 0 50%;
+		width: 50%;
+		max-width: 50%;
+	}
+}
+
+@media only screen and (min-width: 1300px) {
+	.portrait-mode .text-content .front-page-edition-list [col-xxl-3],
+	.portrait-mode .text-content .front-page-edition-list [col-xl-3] {
+		flex: 0 0 33.33333%;
+		width: 33.33333%;
+		max-width: 33.33333%;
+	}
+}
+
+/* The following rules are adjustments for small screens. */
+
+@media only screen and (max-width: 1180px) {
+	.portrait-mode .banner {
+		min-width: 280px;
+	}
+}
+
+@media only screen and (max-width: 985px) {
+	.portrait-mode .banner {
+		min-width: 240px;
+	}
+}
+
+@media only screen and (max-width: 900px) {
+	ion-content.portrait-mode > .scroll-content {
+		flex-direction: column;
+	}
+
+	.portrait-mode .banner {
+		order: 0;
+		height: auto;
+		min-height: auto;
+		width: 100%;
+		min-width: 100%;
+		position: relative;
+	}
+
+	.portrait-mode.title-on-image .banner .title-wrapper {
+		position: absolute;
+		width: max-content;
+		max-width: 100%;
+	}
+
+	.portrait-mode.title-on-image .text-content .title-wrapper {
+		display: none;
+	}
+
+	.portrait-mode .text-content {
+		order: 1;
+		margin: 1.5rem 1.5rem 0 1.5rem;
+	}
+
+	.portrait-mode .text-content .site-title {
+		font-size: 2.25rem;
+		margin-top: 0.5rem;
+		text-align: center;
+	}
+
+	.portrait-mode .text-content .site-subtitle {
+		font-size: 1.625rem;
+		text-align: center;
+	}
+
+	.portrait-mode .text-content .front-page-simple-search {
+		max-width: 100%;
+	}
+}
+
+@media only screen and (max-width: 680px) {
+	.text-content.text-content {
+		margin: 1.5rem 1rem 0 1rem;
+	}
+}
+
+@media only screen and (min-width: 901px) {
+	.portrait-mode.title-on-image .banner .title-wrapper {
+		display: none;
+	}
+}
+
+/*The rules below are old and apparently not applied at all. */
+
+.scroll-content .content.content-md {
+	display: none;
+}
+
+.background {
+	width: 100%;
+	height: auto;
+	img {
+		width: 100%;
+	}
+}
+
+.fp_h1 {
+	font-size: 2rem;
+}
+
+.foreground {
+	width:100%;
+}
+
+.foreground {
+	border-bottom: 5px solid $orange-color;
+}
+
+.toolbar-ios ion-title {
+	padding: 0;
+	.toolbar-title-ios {
+		text-align: left;
+	}
+}
