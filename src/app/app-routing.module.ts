@@ -19,6 +19,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/cover/cover.module').then( m => m.CoverPageModule)
   },
   {
+    path: 'downloads',
+    loadChildren: () => import('./pages/downloads/downloads.module').then( m => m.DownloadsPageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'

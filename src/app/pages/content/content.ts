@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NavController, NavParams } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { MdContent } from 'src/app/models/md-content.model';
 import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
@@ -37,7 +37,6 @@ export class ContentPage /*implements OnDestroy*/ {
 
   constructor(
     public navCtrl: NavController,
-    public params: NavParams,
     private mdContentService: MdContentService,
     private config: ConfigService,
     protected langService: LanguageService,

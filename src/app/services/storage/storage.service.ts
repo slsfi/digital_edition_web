@@ -35,4 +35,12 @@ export class StorageService {
   public remove(key: string) {
     this._storage?.remove(key);
   }
+
+  public keys() {
+    if (this._storage) {
+      return this._storage?.keys();
+    } else {
+      return Promise.resolve([]);
+    }
+  }
 }
