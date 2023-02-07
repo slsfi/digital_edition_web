@@ -1050,7 +1050,7 @@ export class DigitalEditionsApp {
       } catch ( e ) {
       }
       const params = {};
-      this.router.navigate(['/HomePage'], { queryParams: params });
+      this.router.navigate(['/home'], { queryParams: params });
     });
 
     this.events.getDigitalEditionListRecieveData().subscribe((data: any) => {

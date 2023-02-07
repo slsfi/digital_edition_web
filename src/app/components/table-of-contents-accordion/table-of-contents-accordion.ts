@@ -1159,7 +1159,7 @@ export class TableOfContentsAccordionComponent {
     this.resetTocAccordionScroll();
     this.events.publishExitActiveCollection();
     const params = {};
-    this.router.navigate(['/HomePage'], { queryParams: params });
+    this.router.navigate(['/home'], { queryParams: params });
   }
 
   resetTocAccordionScroll() {
