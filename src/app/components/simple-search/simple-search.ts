@@ -383,6 +383,7 @@ export class SimpleSearchComponent {
     this.userDefinedSearchFields.forEach(function (val: any) {
       that.search.getAll(searchString).subscribe(
         (res: any) => {
+          console.log(res);
           // in order to get id attributes for tooltips
           // getPublicationTOCName();
           res.forEach(function(element: any, index: any, object: any) {
@@ -1052,7 +1053,7 @@ export class SimpleSearchComponent {
       searchResult: this.searchString
     }
 
-    this.router.navigate(['occurrences-result'], { queryParams: params });
+    this.router.navigate(['/occurrences-result'], { queryParams: params });
   }
 
   goToSongResultPage(id: any) {

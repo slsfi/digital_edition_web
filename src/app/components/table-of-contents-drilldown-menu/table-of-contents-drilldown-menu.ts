@@ -253,7 +253,7 @@ export class TableOfContentsDrilldownMenuComponent {
     });
   }
   ngOnDestroy() {
-    this.events.getTableOfContentsLoaded().unsubscribe();
+    this.events.getTableOfContentsLoaded().complete();
   }
 
   drillDown(item: any) {

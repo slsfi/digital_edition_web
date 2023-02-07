@@ -59,7 +59,7 @@ export class TitleLogoComponent {
     })
   }
   ngOnDestroy() {
-    this.events.getTitleLogoSetTitle().unsubscribe();
-    this.events.getTitleLogoCollectionTitle().unsubscribe();
+    this.events.getTitleLogoSetTitle().complete();
+    this.events.getTitleLogoCollectionTitle().complete();
   }
 }

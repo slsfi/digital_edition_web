@@ -18,7 +18,7 @@ import { ConfigService } from 'src/app/services/config/core/config.service';
 })
 export class DigitalEditionList implements OnInit {
   errorMessage?: string;
-  digitalEditions?: DigitalEdition[];
+  digitalEditions?: any;
   digitalEditionsFirstHalf: any = [];
   digitalEditionsSecondHalf: any = [];
   projectMachineName: string;
@@ -51,7 +51,7 @@ export class DigitalEditionList implements OnInit {
     private platform: Platform,
     protected tableOfContentsService: TableOfContentsService,
     private events: EventsService,
-    private userSettingsService: UserSettingsService,
+    public userSettingsService: UserSettingsService,
     private analyticsService: AnalyticsService,
     private navCtrl: NavController,
     private router: Router
@@ -307,7 +307,7 @@ export class DigitalEditionList implements OnInit {
     }
 
     console.log('Opening read from DigitalEditionList.openFirstPage()');
-    this.router.navigate(['read'], { queryParams: params })
+    this.router.navigate(['/read'], { queryParams: params })
   }
 
   openCollection(collection: DigitalEdition, animate = true) {

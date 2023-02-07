@@ -108,9 +108,9 @@ export class TopMenuComponent {
   }
 
   ngOnDestroy() {
-    this.events.getTitleLogoShow().unsubscribe();
-    this.events.getTitleLogoSetTitle().unsubscribe();
-    this.events.getTitleLogoSetSubTitle().unsubscribe();
+    this.events.getTitleLogoShow().complete();
+    this.events.getTitleLogoSetTitle().complete();
+    this.events.getTitleLogoSetSubTitle().complete();
   }
 
   getShowLogo() {

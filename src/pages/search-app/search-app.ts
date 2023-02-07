@@ -39,7 +39,7 @@ export class SearchAppPage {
   }
 
   ngOnDestroy() {
-    this.events.getSearchModalClosed().unsubscribe();
+    this.events.getSearchModalClosed().complete();
   }
 
   ionViewDidEnter() {

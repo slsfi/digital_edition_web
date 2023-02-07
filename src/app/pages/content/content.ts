@@ -93,7 +93,7 @@ export class ContentPage /*implements OnDestroy*/ {
     if (this.languageSubscription) {
       this.languageSubscription.unsubscribe();
     }
-    this.events.getAboutMarkdownTOCLoaded().unsubscribe();
+    this.events.getAboutMarkdownTOCLoaded().complete();
   }
 
   loadContent(lang: string) {

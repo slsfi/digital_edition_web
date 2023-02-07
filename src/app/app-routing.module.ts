@@ -23,6 +23,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/downloads/downloads.module').then( m => m.DownloadsPageModule)
   },
   {
+    path: 'publications',
+    loadChildren: () => import('./pages/editions/editions.module').then( m => m.EditionsPageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'

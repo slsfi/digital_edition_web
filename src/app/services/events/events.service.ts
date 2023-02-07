@@ -96,6 +96,8 @@ export class EventsService {
     private pageLoadedContent = new Subject<any>();
     // pageLoaded:cover
     private pageLoadedCover = new Subject<any>();
+    // pageLoaded:collections
+    private pageLoadedCollections = new Subject<any>();
 
 
     publishShareDismiss(data?: any) {
@@ -456,5 +458,13 @@ export class EventsService {
 
     getPageLoadedCover(): Subject<any> {
         return this.pageLoadedCover;
+    }
+
+    publishPageLoadedCollections(data?: any) {
+        this.pageLoadedCollections.next(data);
+    }
+
+    getPageLoadedCollections(): Subject<any> {
+        return this.pageLoadedCollections;
     }
 }

@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
-import { NavParams } from '@ionic/angular';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -53,14 +52,14 @@ export class TextChangerComponent {
   constructor(
     public events: EventsService,
     public storage: Storage,
-    public params: NavParams,
     private config: ConfigService,
     public tocService: TableOfContentsService,
     public userSettingsService: UserSettingsService,
     public translateService: TranslateService,
     private langService: LanguageService,
     protected textService: TextService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) {
     try {
       this.collectionHasCover = this.config.getSettings('HasCover');
@@ -103,12 +102,12 @@ export class TextChangerComponent {
       this.loadData();
     });
 
-    this.events.getUpdatePositionInPageReadTextChanger().unsubscribe();
+    this.events.getUpdatePositionInPageReadTextChanger().complete();
     this.events.getUpdatePositionInPageReadTextChanger().subscribe((itemId) => {
       this.setCurrentItem(itemId);
     });
 
-    this.events.getTocActiveSorting().unsubscribe();
+    this.events.getTocActiveSorting().complete();
     this.events.getTocActiveSorting().subscribe((sortType) => {
       this.loadData();
     });
@@ -440,21 +439,23 @@ export class TextChangerComponent {
   }
 
   getTocItemId() {
-    if (this.params.get('tocLinkId') !== undefined) {
-      this.legacyId = this.params.get('tocLinkId');
-    } else if (this.legacyId === undefined || this.legacyId === null || this.legacyId === '') {
-      this.legacyId = this.params.get('collectionID');
-      if (this.params.get('publicationID') !== undefined) {
-        this.legacyId += '_' + this.params.get('publicationID')
-        if (this.params.get('chapterID') !== undefined
-        && this.params.get('chapterID') !== 'nochapter'
-        && this.params.get('chapterID') !== ':chapterID'
-        && this.params.get('chapterID') !== '%3AchapterID') {
-          this.legacyId += '_' + this.params.get('chapterID');
+    this.route.queryParams.subscribe(params => {
+      if (params['tocLinkId'] !== undefined) {
+        this.legacyId = params['tocLinkId'];
+      } else if (this.legacyId === undefined || this.legacyId === null || this.legacyId === '') {
+        this.legacyId = params['collectionID'];
+        if (params['publicationID'] !== undefined) {
+          this.legacyId += '_' + params['publicationID']
+          if (params['chapterID'] !== undefined
+          && params['chapterID'] !== 'nochapter'
+          && params['chapterID'] !== ':chapterID'
+          && params['chapterID'] !== '%3AchapterID') {
+            this.legacyId += '_' + params['chapterID'];
+          }
         }
       }
-    }
-    this.legacyId = String(this.legacyId).replace('_nochapter', '').replace(':chapterID', '').replace('%3AchapterID', '');
+      this.legacyId = String(this.legacyId).replace('_nochapter', '').replace(':chapterID', '').replace('%3AchapterID', '');
+    });
   }
 
   findNext(toc: any) {
@@ -620,7 +621,7 @@ export class TextChangerComponent {
         const params = {root: null, tocItem: null, collection: {title: 'Cover Page'}} as any;
         params['collectionID'] = item.itemId;
         params['firstItem'] = '1';
-        this.router.navigate(['/cover-page'], { queryParams: params });
+        this.router.navigate(['/publication-cover'], { queryParams: params });
       } else if (item.page === 'page-title') {
         const params = {root: null, tocItem: null, collection: {title: 'Title Page'}} as any;
         params['collectionID'] = item.itemId;

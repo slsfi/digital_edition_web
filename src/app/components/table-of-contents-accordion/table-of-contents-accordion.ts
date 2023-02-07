@@ -815,11 +815,11 @@ export class TableOfContentsAccordionComponent {
   }
 
   ngOnDestroy() {
-    this.events.getSidemenuRedirect().unsubscribe();
-    this.events.getSelectedItemInMenu().unsubscribe();
-    this.events.getTableOfContentsFindMarkdownTocItem().unsubscribe();
-    this.events.getTableOfContentsLoaded().unsubscribe();
-    this.events.getTableOfContentsUnSelectSelectedTocItem().unsubscribe();
+    this.events.getSidemenuRedirect().complete();
+    this.events.getSelectedItemInMenu().complete();
+    this.events.getTableOfContentsFindMarkdownTocItem().complete();
+    this.events.getTableOfContentsLoaded().complete();
+    this.events.getTableOfContentsUnSelectSelectedTocItem().complete();
   }
 
   /**
@@ -1083,9 +1083,9 @@ export class TableOfContentsAccordionComponent {
     this.currentOption = null;
     this.unSelectAllItemsByActiveMenuTree();
     if (this.platform.is('mobile')) {
-      this.router.navigate(['/cover-page'], { queryParams: params });
+      this.router.navigate(['/publication-cover'], { queryParams: params });
     } else {
-      this.router.navigate(['/cover-page'], { queryParams: params });
+      this.router.navigate(['/publication-cover'], { queryParams: params });
     }
   }
 

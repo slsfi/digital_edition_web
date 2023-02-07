@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
-import { CoverPage } from './cover';
-
+import { EditionsPage } from './editions';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { IonicModule } from '@ionic/angular';
-import { ComponentsModule } from 'src/app/components/components.module';
 import { HttpClient } from '@angular/common/http';
+import { EditionsPageRoutingModule } from './editions-routing.module';
+import { IonicModule } from '@ionic/angular';
 import { MarkdownModule } from 'ngx-markdown';
-import { CommonModule } from '@angular/common';
+import { ComponentsModule } from 'src/app/components/components.module';
+import { DigitalEditionListModule } from 'src/app/components/digital-edition-list/digital-edition-list.module';
 import { FormsModule } from '@angular/forms';
-import { CoverPageRoutingModule } from './cover-routing.module';
+import { CommonModule } from '@angular/common';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -17,12 +17,12 @@ export function createTranslateLoader(http: HttpClient) {
 
 @NgModule({
   declarations: [
-    CoverPage,
+    EditionsPage
   ],
   imports: [
+    IonicModule,
     CommonModule,
     FormsModule,
-    IonicModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
@@ -30,9 +30,16 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    ComponentsModule,
     MarkdownModule.forRoot(),
-    CoverPageRoutingModule,
+    ComponentsModule,
+    DigitalEditionListModule,
+    EditionsPageRoutingModule
   ],
+  entryComponents: [
+    EditionsPage
+  ],
+  providers: [
+
+  ]
 })
-export class CoverPageModule {}
+export class EditionsPageModule { }

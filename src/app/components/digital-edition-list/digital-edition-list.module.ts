@@ -7,6 +7,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IonicModule } from '@ionic/angular';
 import { PipesModule } from 'src/pipes/pipes.module';
 import { DigitalEditionListService } from 'src/app/services/toc/digital-edition-list.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -16,6 +18,8 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [DigitalEditionList],
   imports: [
     IonicModule,
+    CommonModule,
+    FormsModule,
     PipesModule,
       TranslateModule.forChild({
         loader: {

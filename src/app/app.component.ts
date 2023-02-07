@@ -1591,7 +1591,7 @@ export class DigitalEditionsApp {
     console.log('Opening collection from App.openCollectionInitialPage()');
     const params = { collection: collection, fetch: true, collectionID: collection.id };
     if ( this.hasCover && this.defaultSelectedItem === 'cover' ) {
-      this.router.navigate(['/cover-page'], { queryParams: params });
+      this.router.navigate(['/publication-cover'], { queryParams: params });
     } else if ( this.hasTitle && this.defaultSelectedItem === 'title' ) {
       this.router.navigate(['/title-page'], { queryParams: params });
     } else if ( this.hasForeword && this.defaultSelectedItem === 'foreword' ) {
@@ -1599,7 +1599,7 @@ export class DigitalEditionsApp {
     } else if ( this.hasIntro && this.defaultSelectedItem === 'introduction' ) {
       this.router.navigate(['/introduction'], { queryParams: params });
     } else if ( this.hasCover ) {
-      this.router.navigate(['/cover-page'], { queryParams: params });
+      this.router.navigate(['/publication-cover'], { queryParams: params });
     } else if ( this.hasTitle ) {
       this.router.navigate(['/title-page'], { queryParams: params });
     } else if ( this.hasForeword ) {
