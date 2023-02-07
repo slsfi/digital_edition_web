@@ -15,6 +15,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/content/content.module').then( m => m.ContentPageModule)
   },
   {
+    path: 'publication-cover',
+    loadChildren: () => import('./pages/cover/cover.module').then( m => m.CoverPageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'

@@ -47,7 +47,7 @@ export class AboutPage {
     });
   }
 
-  ionViewDidLoad() {
+  ngOnInit() {
     this.events.publishPageLoadedAbout({'title': 'About'});
     const staticPagesMenus = this.config.getSettings('StaticPagesMenus');
     const aboutMenu = staticPagesMenus.find((sp: any) => sp.menuID === 'aboutMenu');

@@ -1,0 +1,15 @@
+<div class="forwardBackward">
+  <div class="backwardButtonDiv">
+    <button *ngIf="!firstItem" class="backwardButton" (click)="previous()">
+      <ion-icon name="arrow-back"></ion-icon>
+      <p *ngIf="!(userSettingsService.isMobile()) && !(userSettingsService.isTablet())" class="forwardBackward__previouspage-name">{{ ('TOC-translation.' + prevItemTitle | translate) !== 'TOC-translation.' + prevItemTitle  ?  ('TOC-translation.' + prevItemTitle | translate) : prevItemTitle }}</p>
+    </button>
+  </div>
+  <div class="forwardBackward__currentpage-name"><p>{{ ('TOC-translation.' + currentItemTitle | translate) !== 'TOC-translation.' + currentItemTitle  ?  ('TOC-translation.' + currentItemTitle | translate) : currentItemTitle }}</p></div>
+  <div class="forwardButtonDiv">
+    <button *ngIf="!lastItem" class="forwardButton" (click)="next()">
+      <p *ngIf="!(userSettingsService.isMobile()) && !(userSettingsService.isTablet())" class="forwardBackward__nextpage-name">{{ ('TOC-translation.' + nextItemTitle | translate) !== 'TOC-translation.' + nextItemTitle  ?  ('TOC-translation.' + nextItemTitle | translate) : nextItemTitle }}</p>
+      <ion-icon name="arrow-forward"></ion-icon>
+    </button>
+  </div>
+</div>

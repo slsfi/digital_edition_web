@@ -1,0 +1,25 @@
+<ion-header no-border *ngIf="!(userSettingsService.isMobile()) && !hasDigitalEditionListChildren">
+  <ion-toolbar color="secondary" class="secondary">
+    <text-changer *ngIf="!(userSettingsService.isMobile())" [parentPageType]="'page-cover'" class="text-changer-desktop-view"></text-changer>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="hasDigitalEditionListChildren" padding>
+  <div class="">
+    <digital-edition-list-children [layoutType]="'auto'" [childrenPdfs]="childrenPdfs" [collectionID]="collectionID"></digital-edition-list-children>
+  </div>
+</ion-content>
+
+<ion-content *ngIf="!hasDigitalEditionListChildren && !hasMDCover" padding [ngClass]="printMainContentClasses()">
+  <ion-card>
+    <ion-card-content>
+      <div class="tei teiContainer" [innerHTML]="text"></div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<div *ngIf="!hasDigitalEditionListChildren && hasMDCover" class="cover-image-wrapper" [ngClass]="printMainContentClasses()">
+  <img class="cover-image" [src]="image_src" [alt]="image_alt">
+</div>
+
+<text-changer *ngIf="(userSettingsService.isMobile()) && !hasDigitalEditionListChildren" [parentPageType]="'page-cover'" class="text-changer-mobile-view"></text-changer>
