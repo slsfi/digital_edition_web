@@ -27,6 +27,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/editions/editions.module').then( m => m.EditionsPageModule)
   },
   {
+    path: 'elastic-search',
+    loadChildren: () => import('./pages/elastic-search/elastic-search.module').then( m => m.ElasticSearchPageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'

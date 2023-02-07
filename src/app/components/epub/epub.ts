@@ -1,14 +1,14 @@
 import { Component, Input, NgZone, Renderer2 } from '@angular/core';
 import {} from 'fs';
-import { PopoverController, ModalController } from 'ionic-angular';
-import { ReadPopoverPage } from '../../pages/read-popover/read-popover';
-import { ReferenceDataModalPage } from '../../pages/reference-data-modal/reference-data-modal';
-import { Fontsize, ReadPopoverService } from 'src/app/services/settings/read-popover.service';
 import { Subscription } from 'rxjs';
+import { ModalController, PopoverController } from '@ionic/angular';
+import { Fontsize, ReadPopoverService } from 'src/app/services/settings/read-popover.service';
 import { UserSettingsService } from 'src/app/services/settings/user-settings.service';
 import { MdContentService } from 'src/app/services/md/md-content.service';
-import { CommonFunctionsService } from 'src/app/services/common-functions/common-functions.service';
 import { ConfigService } from 'src/app/services/config/core/config.service';
+import { CommonFunctionsService } from 'src/app/services/common-functions/common-functions.service';
+import { ReadPopoverPage } from 'src/pages/read-popover/read-popover';
+import { ReferenceDataModalPage } from 'src/pages/reference-data-modal/reference-data-modal';
 
 declare var ePub: any;
 
@@ -530,7 +530,7 @@ export class EpubComponent {
     this.rendition.prev();
   }
 
-  showReadSettingsPopover(myEvent: any) {
+  async showReadSettingsPopover(myEvent: any) {
     const toggles = {
       'comments': false,
       'personInfo': false,
@@ -543,10 +543,14 @@ export class EpubComponent {
       'pageBreakOriginal': false,
       'pageBreakEdition': false
     };
-    const popover = this.popoverCtrl.create(ReadPopoverPage, {toggles}, { cssClass: 'popover_settings' });
-    popover.present({
-      ev: myEvent
+    const popover = await this.popoverCtrl.create({
+      component: ReadPopoverPage,
+      componentProps: {
+        toggles,
+      },
+      cssClass: 'popover_settings'
     });
+    popover.present(myEvent);
   }
 
   downloadEpub() {
@@ -748,13 +752,13 @@ export class EpubComponent {
     }
   }
 
-  private showReference() {
+  public async showReference() {
     // Get URL of Page and then the URI
-    const modal = this.modalController.create(ReferenceDataModalPage, {id: document.URL, type: 'reference', origin: 'page-epub'});
-    modal.present();
-    modal.onDidDismiss(data => {
-      // console.log('dismissed', data);
+    const modal = await this.modalController.create({
+      component: ReferenceDataModalPage,
+      componentProps: {id: document.URL, type: 'reference', origin: 'page-epub'},
+      cssClass: 'popover_settings'
     });
+    modal.present();
   }
-
 }
