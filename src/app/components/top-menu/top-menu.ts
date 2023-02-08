@@ -3,11 +3,11 @@ import { UserSettingsService } from 'src/app/services/settings/user-settings.ser
 import { GenericSettingsService } from 'src/app/services/settings/generic-settings.service';
 import { EventsService } from 'src/app/services/events/events.service';
 import { ModalController, PopoverController } from '@ionic/angular';
-import { ReferenceDataModalPage } from 'src/pages/reference-data-modal/reference-data-modal';
 import { UserSettingsPopoverPage } from 'src/pages/user-settings-popover/user-settings-popover';
 import { SearchAppPage } from 'src/pages/search-app/search-app';
 import { ConfigService } from 'src/app/services/config/core/config.service';
 import { StorageService } from 'src/app/services/storage/storage.service';
+import { ReferenceDataModalPage } from 'src/app/modals/reference-data-modal/reference-data-modal';
 
 /**
  * Generated class for the TopMenuComponent component.

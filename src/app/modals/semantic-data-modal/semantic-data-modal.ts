@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController, ModalController, NavParams, Platform } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
-import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { ConfigService } from 'src/app/services/config/core/config.service';
+import { SemanticDataService } from 'src/app/services/semantic-data/semantic-data.service';
 
 /*
   Generated class for the SemanticDataModal page.

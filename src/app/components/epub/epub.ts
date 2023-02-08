@@ -8,8 +8,8 @@ import { MdContentService } from 'src/app/services/md/md-content.service';
 import { ConfigService } from 'src/app/services/config/core/config.service';
 import { CommonFunctionsService } from 'src/app/services/common-functions/common-functions.service';
 import { ReadPopoverPage } from 'src/pages/read-popover/read-popover';
-import { ReferenceDataModalPage } from 'src/pages/reference-data-modal/reference-data-modal';
 import { LanguageService } from 'src/app/services/languages/language.service';
+import { ReferenceDataModalPage } from 'src/app/modals/reference-data-modal/reference-data-modal';
 
 declare var ePub: any;
 

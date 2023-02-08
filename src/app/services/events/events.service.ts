@@ -98,6 +98,8 @@ export class EventsService {
     private pageLoadedCover = new Subject<any>();
     // pageLoaded:collections
     private pageLoadedCollections = new Subject<any>();
+    // pageLoaded:featured-facsimiles
+    private pageLoadedFeaturedFacsimiles = new Subject<any>();
 
 
     publishShareDismiss(data?: any) {
@@ -466,5 +468,13 @@ export class EventsService {
 
     getPageLoadedCollections(): Subject<any> {
         return this.pageLoadedCollections;
+    }
+
+    publishPageLoadedFeaturedFacsimiles(data?: any) {
+        this.pageLoadedFeaturedFacsimiles.next(data);
+    }
+
+    getPageLoadedFeaturedFacsimiles(): Subject<any> {
+        return this.pageLoadedFeaturedFacsimiles;
     }
 }

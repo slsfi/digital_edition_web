@@ -35,6 +35,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/epub/epub.module').then( m => m.EpubModule)
   },
   {
+    path: 'featured',
+    loadChildren: () => import('./pages/featured-facsimile/featured-facsimile.module').then( m => m.FeaturedFacsimilePageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'

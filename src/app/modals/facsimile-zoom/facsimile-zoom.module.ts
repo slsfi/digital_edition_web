@@ -18,6 +18,8 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
     ],
     imports: [
         IonicModule,
+        CommonModule,
+        FormsModule,
         PinchZoomModule,
         TranslateModule.forRoot({
             loader: {
@@ -26,8 +28,6 @@ export function createTranslateLoader(http: HttpClient): TranslateLoader {
               deps: [HttpClient]
             }
           }),
-        CommonModule,
-        FormsModule,
     ],
     entryComponents: [
       FacsimileZoomModalPage

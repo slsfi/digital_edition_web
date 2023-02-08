@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController, ModalController, NavParams } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ReferenceDataService } from '../../app/services/reference-data/reference-data.service';
 import { TranslateService } from '@ngx-translate/core';
 import { EventsService } from 'src/app/services/events/events.service';
 import { StorageService } from 'src/app/services/storage/storage.service';
+import { ReferenceDataService } from 'src/app/services/reference-data/reference-data.service';
 
 /*
   Generated class for the ReferenceDataModal page.

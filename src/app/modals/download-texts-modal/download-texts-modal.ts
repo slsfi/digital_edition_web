@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { NavController, ModalController, NavParams } from '@ionic/angular';
-import { TextService } from '../../app/services/texts/text.service';
-import { CommentService } from '../../app/services/comments/comment.service';
-import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
 import { TranslateService } from '@ngx-translate/core';
-import { ReadPopoverService } from '../../app/services/settings/read-popover.service';
-import { TableOfContentsService } from '../../app/services/toc/table-of-contents.service';
-import { LanguageService } from '../../app/services/languages/language.service';
-import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { EventsService } from 'src/app/services/events/events.service';
 import { ConfigService } from 'src/app/services/config/core/config.service';
+import { TextService } from 'src/app/services/texts/text.service';
+import { CommentService } from 'src/app/services/comments/comment.service';
+import { ReadPopoverService } from 'src/app/services/settings/read-popover.service';
+import { TableOfContentsService } from 'src/app/services/toc/table-of-contents.service';
+import { LanguageService } from 'src/app/services/languages/language.service';
+import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
+import { CommonFunctionsService } from 'src/app/services/common-functions/common-functions.service';
 
 @Component({
   selector: 'page-download-texts-modal',

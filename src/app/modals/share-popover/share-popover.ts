@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ModalController, NavController, NavParams } from '@ionic/angular';
+import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 import { EventsService } from 'src/app/services/events/events.service';
-import { AnalyticsService } from '../../app/services/analytics/analytics.service';
-import { ReferenceDataModalPage } from '../../pages/reference-data-modal/reference-data-modal';
+import { ReferenceDataModalPage } from '../reference-data-modal/reference-data-modal';
 
 /**
  * Generated class for the SharePopoverPage page.
