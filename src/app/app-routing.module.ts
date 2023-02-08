@@ -31,6 +31,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/elastic-search/elastic-search.module').then( m => m.ElasticSearchPageModule)
   },
   {
+    path: 'epub',
+    loadChildren: () => import('./pages/epub/epub.module').then( m => m.EpubModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'

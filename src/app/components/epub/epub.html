@@ -1,9 +1,9 @@
 <ion-header>
   <ion-toolbar color="secondary" class="secondary">
-    <ion-title *ngIf="showPage">
+    <!-- <ion-title *ngIf="showPage">
       <div class="page-title">{{appName}}</div>
       <div class="page-subtitle">Epub</div>
-    </ion-title>
+    </ion-title> -->
     <ion-buttons *ngIf="epubFileExists">
         <ion-grid>
             <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center justify-content-end>
@@ -56,7 +56,7 @@
   <ion-grid>
     <ion-row class="search-bar">
       <ion-col class="navigation-buttons-col">
-        <ion-searchbar class="epub-search-bar" (ionChange)=doSearch($event) (ionClear)="clearSearch($event)" *ngIf="!loading" [(ngModel)]="searchText" placeholder="{{'Epub.SearchPhrase' | translate}}"></ion-searchbar>
+        <ion-searchbar class="epub-search-bar" (ionChange)=doSearch($event) (ionClear)="clearSearch()" *ngIf="!loading" [(ngModel)]="searchText" placeholder="{{'Epub.SearchPhrase' | translate}}"></ion-searchbar>
       </ion-col>
     </ion-row>
     <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>

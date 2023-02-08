@@ -9,6 +9,7 @@ import { ConfigService } from 'src/app/services/config/core/config.service';
 import { CommonFunctionsService } from 'src/app/services/common-functions/common-functions.service';
 import { ReadPopoverPage } from 'src/pages/read-popover/read-popover';
 import { ReferenceDataModalPage } from 'src/pages/reference-data-modal/reference-data-modal';
+import { LanguageService } from 'src/app/services/languages/language.service';
 
 declare var ePub: any;
 
@@ -50,6 +51,7 @@ export class EpubComponent {
   windowResizeTimeoutId: any;
   handleWindowResize: any;
   epubFileExists: boolean;
+  appName?: string;
 
   @Input() epubFileName?: string;
 
@@ -64,7 +66,7 @@ export class EpubComponent {
 
   private unlistenKeyDownEvents?: () => void;
 
-  constructor( private userSettingsService: UserSettingsService,
+  constructor( public userSettingsService: UserSettingsService,
     public mdContentService: MdContentService,
     protected popoverCtrl: PopoverController,
     private modalController: ModalController,
@@ -72,7 +74,8 @@ export class EpubComponent {
     private renderer2: Renderer2,
     private ngZone: NgZone,
     private config: ConfigService,
-    public commonFunctions: CommonFunctionsService
+    public commonFunctions: CommonFunctionsService,
+    private languageService: LanguageService,
   ) {
     this.tocMenuOpen = false;
     this.searchMenuOpen = false;
@@ -108,6 +111,10 @@ export class EpubComponent {
     } catch (e) {
       this.showDisplayOptionsButton = true;
     }
+
+    this.languageService.getLanguage().subscribe((lang: string) => {
+      this.appName = this.config.getSettings('app.name.' + lang);
+    });
   }
 
   ngOnInit() {
