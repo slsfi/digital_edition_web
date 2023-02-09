@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 import { ajax, AjaxResponse } from 'rxjs/ajax';
 import { ConfigService } from '../config/core/config.service';
 
@@ -258,7 +258,7 @@ export class SearchDataService {
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
-    return throwError(errMsg);
+    throw errMsg;
   }
 
 }

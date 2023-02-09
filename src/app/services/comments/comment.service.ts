@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { CommentCacheService } from './comment-cache.service';
 import { CommonFunctionsService } from '../common-functions/common-functions.service';
@@ -101,7 +101,7 @@ export class CommentService {
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
-    return throwError(errMsg);
+    throw errMsg;
   }
 
   getCorrespondanceMetadata(pub_id: any) {

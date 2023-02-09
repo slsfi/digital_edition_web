@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { ConfigService } from '../config/core/config.service';
 
@@ -78,7 +78,7 @@ export class OccurrenceService {
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
-    return throwError(errMsg);
+    throw errMsg;
   }
 
 }

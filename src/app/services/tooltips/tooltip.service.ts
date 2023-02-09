@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CommentService } from '../comments/comment.service';
 import { LanguageService } from '../languages/language.service';
 import { TranslateService } from '@ngx-translate/core';
-import { catchError, map, Observable, Subscription, throwError } from 'rxjs';
+import { catchError, map, Observable, Subscription } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { ConfigService } from '../config/core/config.service';
 
@@ -178,7 +178,7 @@ export class TooltipService {
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
-    return throwError(errMsg);
+    throw errMsg;
   }
 
 

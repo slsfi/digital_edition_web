@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 import { ajax, AjaxResponse } from 'rxjs/ajax';
 import { CommonFunctionsService } from '../common-functions/common-functions.service';
 import { ConfigService } from '../config/core/config.service';
@@ -683,7 +683,7 @@ export class SemanticDataService {
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
-    return throwError(errMsg);
+    throw errMsg;
   }
 
 }

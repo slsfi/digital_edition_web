@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { catchError, map, Observable, throwError } from 'rxjs'
+import { catchError, map, Observable } from 'rxjs'
 import { ajax, AjaxResponse } from 'rxjs/ajax'
 import { ConfigService } from '../config/core/config.service'
 
@@ -488,7 +488,7 @@ export class ElasticSearchService {
       errMsg = error.message ? error.message : error.toString();
     }
     console.error('Elastic search query failed.', error);
-    return throwError(errMsg);
+    throw errMsg;
   }
 
 }
