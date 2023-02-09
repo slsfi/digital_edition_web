@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LanguageService } from '../languages/language.service';
-import { catchError, map, Observable, Subscription, throwError } from 'rxjs';
+import { catchError, map, Observable, Subscription } from 'rxjs';
 import { ajax, AjaxResponse } from 'rxjs/ajax';
 import { ConfigService } from '../config/core/config.service';
 
@@ -126,6 +126,6 @@ export class TableOfContentsService {
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
-    return throwError(errMsg);
+    throw errMsg;
   }
 }

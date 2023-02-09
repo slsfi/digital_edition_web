@@ -100,6 +100,8 @@ export class EventsService {
     private pageLoadedCollections = new Subject<any>();
     // pageLoaded:featured-facsimiles
     private pageLoadedFeaturedFacsimiles = new Subject<any>();
+    // pageLoaded:foreword
+    private pageLoadedForeword = new Subject<any>();
 
 
     publishShareDismiss(data?: any) {
@@ -476,5 +478,13 @@ export class EventsService {
 
     getPageLoadedFeaturedFacsimiles(): Subject<any> {
         return this.pageLoadedFeaturedFacsimiles;
+    }
+
+    publishPageLoadedForeword(data?: any) {
+        this.pageLoadedForeword.next(data);
+    }
+
+    getPageLoadedForeword(): Subject<any> {
+        return this.pageLoadedForeword;
     }
 }

@@ -39,6 +39,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/featured-facsimile/featured-facsimile.module').then( m => m.FeaturedFacsimilePageModule)
   },
   {
+    path: 'publication-foreword',
+    loadChildren: () => import('./pages/foreword/foreword.module').then( m => m.ForewordPageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
