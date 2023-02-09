@@ -10,10 +10,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
 import { DigitalEditionsApp } from './app.component';
-import { SemanticDataModalPage } from 'src/pages/semantic-data-modal/semantic-data-modal';
-import { ReferenceDataModalPage } from 'src/pages/reference-data-modal/reference-data-modal';
 import { EventsService } from './services/events/events.service';
-import { DownloadTextsModalPage } from 'src/pages/download-texts-modal/download-texts-modal';
 import { HtmlContentService } from './services/html/html-content.service';
 import { MdContentService } from './services/md/md-content.service';
 import { TextService } from './services/texts/text.service';
@@ -33,8 +30,6 @@ import { GalleryService } from './services/gallery/gallery.service';
 import { SongService } from './services/song/song.service';
 import { TooltipService } from './services/tooltips/tooltip.service';
 import { SearchDataService } from './services/search/search-data.service';
-import { SharePopoverPage } from 'src/pages/share-popover/share-popover';
-import { SharePopoverPageModule } from 'src/pages/share-popover/share-popover.module';
 import { SearchAppPage } from 'src/pages/search-app/search-app';
 import { SearchAppPageModule } from 'src/pages/search-app/search-app.module';
 import { CommonModule } from '@angular/common';
@@ -45,8 +40,6 @@ import { ComponentsModule } from './components/components.module';
 import { ReadPopoverPage } from 'src/pages/read-popover/read-popover';
 import { ReadPopoverPageModule } from 'src/pages/read-popover/read-popover.module';
 import { UserSettingsPopoverPage } from 'src/pages/user-settings-popover/user-settings-popover';
-import { FacsimileZoomPageModule } from 'src/pages/facsimile-zoom/facsimile-zoom.module';
-import { FacsimileZoomModalPage } from 'src/pages/facsimile-zoom/facsimile-zoom';
 import { IllustrationPage } from 'src/pages/illustration/illustration';
 import { IllustrationPageModule } from 'src/pages/illustration/illustration.module';
 import { MarkdownModule } from 'ngx-markdown';
@@ -56,6 +49,13 @@ import { ConfigLoader } from './services/config/core/config.loader';
 import { ConfigHttpLoader } from './services/config/http-loader/http-loader';
 import { ConfigModule } from './services/config/core/config.module';
 import { CommentModalPage } from './modals/comment-modal/comment-modal';
+import { SemanticDataModalPage } from './modals/semantic-data-modal/semantic-data-modal';
+import { ReferenceDataModalPage } from './modals/reference-data-modal/reference-data-modal';
+import { DownloadTextsModalPage } from './modals/download-texts-modal/download-texts-modal';
+import { SharePopoverPageModule } from './modals/share-popover/share-popover.module';
+import { FacsimileZoomPageModule } from './modals/facsimile-zoom/facsimile-zoom.module';
+import { FacsimileZoomModalPage } from './modals/facsimile-zoom/facsimile-zoom';
+import { SharePopoverPage } from './modals/share-popover/share-popover';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
