@@ -1,0 +1,52 @@
+<ion-content padding>
+    <div class="info">
+        <h1>{{"TOC.MediaCollections" | translate }}</h1>
+    </div>
+    <div class="info markdown" *ngIf="mdContent.content">
+      <markdown [data]="mdContent.content"></markdown>
+    </div>
+    <div class="filters" *ngIf="galleryTags.length > 1 || galleryLocations.length > 1 || gallerySubjects.length > 1">
+        <ion-item class="tagSelect" *ngIf="galleryTags.length > 1">
+            <ion-label>
+            {{ ("MediaCollections.tags" | translate) !== "MediaCollections.tags" ?  ("MediaCollections.tags" | translate) : ("tags" | translate) }}
+            </ion-label>
+            <ion-select [(ngModel)]="tagModel" (ngModelChange)="filterCollectionsByTag(tagModel)" [okText]="'BasicActions.Ok' | translate" [cancelText]="'BasicActions.Cancel' | translate">
+                <ion-select-option selected value=""></ion-select-option>
+                <ion-select-option *ngFor="let tag of galleryTags" value="{{tag.name}}">{{tag.name}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item class="locationSelect" *ngIf="galleryLocations.length > 1">
+            <ion-label>
+            {{ ("MediaCollections.locations" | translate) !== "MediaCollections.locations" ?  ("MediaCollections.locations" | translate) : ("locations" | translate) }}
+            </ion-label>
+            <ion-select [(ngModel)]="locationModel" (ngModelChange)="filterCollectionsByLocation(locationModel)" [okText]="'BasicActions.Ok' | translate" [cancelText]="'BasicActions.Cancel' | translate">
+                <ion-select-option selected value=""></ion-select-option>
+                <ion-select-option *ngFor="let location of galleryLocations" value="{{location.name}}">{{location.name}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item class="subjectSelect" *ngIf="gallerySubjects.length > 1">
+            <ion-label>
+            {{ ("MediaCollections.subjects" | translate) !== "MediaCollections.subjects" ?  ("MediaCollections.subjects" | translate) : ("subjects" | translate) }}
+            </ion-label>
+            <ion-select [(ngModel)]="subjectModel"
+                (ngModelChange)="filterCollectionsBySubject(subjectModel)" [okText]="'BasicActions.Ok' | translate" [cancelText]="'BasicActions.Cancel' | translate">
+                <ion-select-option selected value=""></ion-select-option>
+                <ion-select-option *ngFor="let subject of gallerySubjects" value="{{subject.name}}">{{subject.name}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+    </div>
+    <ion-grid>
+        <ion-row>
+            <ion-col *ngFor="let gallery of galleries; index as i" (click)="openMediaCollection(gallery)" col-md-4 col-sm-12 col-lg-3>
+                <ion-card>
+                    <div [ngClass]="{'remove-scan-details' : removeScanDetails}">
+                        <img alt="gallery image" id="{{gallery.id}}" src="{{apiEndPoint}}/{{projectMachineName}}/gallery/get/{{gallery.id}}/gallery_thumb.jpg" />
+                    </div>
+                    <ion-card-content>
+                        <p>{{gallery.title}} – {{gallery.media_count}} {{"MediaCollections.photos" | translate}}</p>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

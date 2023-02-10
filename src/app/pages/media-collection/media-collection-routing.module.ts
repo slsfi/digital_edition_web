@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path: ':mediaCollectionId/:id/:type',
     component: MediaCollectionPage,
+  },
+  {
+    path: ':mediaCollectionId',
+    component: MediaCollectionPage,
   }
 ];
 
