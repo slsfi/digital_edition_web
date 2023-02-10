@@ -1,0 +1,24 @@
+<ion-content padding>
+    <ion-grid *ngIf="userSettingsService.isDesktop() || userSettingsService.isTablet()">
+        <ion-row>
+          <ion-col *ngFor="let image of images" col-md-4 col-sm-6 col-lg-3>
+            <ion-card (click)="openImage(image)">
+              <img alt="gallery image" [src]="image['url']">
+              <ion-item>
+                <h2>Title</h2>
+              </ion-item>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <div *ngIf="userSettingsService.isMobile()">
+          <ion-list>
+            <ion-item *ngFor="let image of images" (click)="openImage(image)">
+              <ion-thumbnail item-left>
+                <img alt="gallery image" [src]="image['url']">
+              </ion-thumbnail>
+              <h2>Title</h2>
+            </ion-item>
+          </ion-list>
+      </div>
+</ion-content>

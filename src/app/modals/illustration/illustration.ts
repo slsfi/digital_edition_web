@@ -1,11 +1,11 @@
-import { Component, Renderer2, ElementRef, ViewChild } from '@angular/core';
-import { UserSettingsService } from '../../app/services/settings/user-settings.service';
-import { GalleryService } from '../../app/services/gallery/gallery.service';
-import { LanguageService } from '../../app/services/languages/language.service';
+import { Component, Renderer2, ElementRef } from '@angular/core';
 import { ModalController, NavController, NavParams } from '@ionic/angular';
 import { EventsService } from 'src/app/services/events/events.service';
 import { Router } from '@angular/router';
 import { ConfigService } from 'src/app/services/config/core/config.service';
+import { GalleryService } from 'src/app/services/gallery/gallery.service';
+import { UserSettingsService } from 'src/app/services/settings/user-settings.service';
+import { LanguageService } from 'src/app/services/languages/language.service';
 
 /**
  * Generated class for the IllustrationPage page.
@@ -17,6 +17,7 @@ import { ConfigService } from 'src/app/services/config/core/config.service';
 @Component({
   selector: 'page-illustration',
   templateUrl: 'illustration.html',
+  styleUrls: ['illustration.scss']
 })
 export class IllustrationPage {
   imgPath: any;

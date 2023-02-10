@@ -43,6 +43,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/foreword/foreword.module').then( m => m.ForewordPageModule)
   },
   {
+    path: 'galleries',
+    loadChildren: () => import('./pages/galleries/galleries.module').then( m => m.GalleriesPageModule)
+  },
+  {
+    path: 'gallery',
+    loadChildren: () => import('./pages/image-gallery/image-gallery.module').then( m => m.ImageGalleryPageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'

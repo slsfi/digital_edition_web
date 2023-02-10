@@ -40,8 +40,6 @@ import { ComponentsModule } from './components/components.module';
 import { ReadPopoverPage } from 'src/pages/read-popover/read-popover';
 import { ReadPopoverPageModule } from 'src/pages/read-popover/read-popover.module';
 import { UserSettingsPopoverPage } from 'src/pages/user-settings-popover/user-settings-popover';
-import { IllustrationPage } from 'src/pages/illustration/illustration';
-import { IllustrationPageModule } from 'src/pages/illustration/illustration.module';
 import { MarkdownModule } from 'ngx-markdown';
 import { PersonSearchPageModule } from 'src/pages/person-search/person-search.module';
 import { MathJaxModule } from './components/math-jax/math-jax.module';
@@ -56,6 +54,8 @@ import { SharePopoverPageModule } from './modals/share-popover/share-popover.mod
 import { FacsimileZoomPageModule } from './modals/facsimile-zoom/facsimile-zoom.module';
 import { FacsimileZoomModalPage } from './modals/facsimile-zoom/facsimile-zoom';
 import { SharePopoverPage } from './modals/share-popover/share-popover';
+import { IllustrationPageModule } from './modals/illustration/illustration.module';
+import { IllustrationPage } from './modals/illustration/illustration';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
