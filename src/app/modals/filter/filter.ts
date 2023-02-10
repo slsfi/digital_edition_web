@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ModalController, NavController, NavParams } from '@ionic/angular';
 import { EventsService } from 'src/app/services/events/events.service';
+import { SemanticDataService } from 'src/app/services/semantic-data/semantic-data.service';
 import { StorageService } from 'src/app/services/storage/storage.service';
-import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
 
 /**
  * This is a modal/page used to filter results.

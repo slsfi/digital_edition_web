@@ -12,10 +12,10 @@ import { SemanticDataService } from 'src/app/services/semantic-data/semantic-dat
 import { OccurrenceService } from 'src/app/services/occurrence/occurence.service';
 import { TableOfContentsModule } from 'src/app/components/table-of-contents/table-of-contents.module';
 import { PersonSearchRoutingModule } from './person-search-routing.module';
-import { FilterPage } from 'src/pages/filter/filter';
 import { OccurrencesPage } from 'src/app/modals/occurrences/occurrences';
-import { FilterPageModule } from 'src/pages/filter/filter.module';
 import { OccurrencesPageModule } from 'src/app/modals/occurrences/occurrences.module';
+import { FilterPageModule } from 'src/app/modals/filter/filter.module';
+import { FilterPage } from 'src/app/modals/filter/filter';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');

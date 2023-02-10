@@ -17,8 +17,8 @@ import { MetadataService } from 'src/app/services/metadata/metadata.service';
 import { TooltipService } from 'src/app/services/tooltips/tooltip.service';
 import { CommonFunctionsService } from 'src/app/services/common-functions/common-functions.service';
 import { OccurrenceResult } from 'src/app/models/occurrence.model';
-import { FilterPage } from 'src/pages/filter/filter';
 import { OccurrencesPage } from 'src/app/modals/occurrences/occurrences';
+import { FilterPage } from 'src/app/modals/filter/filter';
 
 /**
  * A page for searching person occurrences.

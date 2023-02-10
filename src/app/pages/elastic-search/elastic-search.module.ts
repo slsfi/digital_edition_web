@@ -13,8 +13,8 @@ import { ElasticSearchService } from 'src/app/services/elastic-search/elastic-se
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ElasticSearchPageRoutingModule } from './elastic-search-routing.module';
-import { FilterPageModule } from 'src/pages/filter/filter.module';
 import { OccurrencesPageModule } from 'src/app/modals/occurrences/occurrences.module';
+import { FilterPageModule } from 'src/app/modals/filter/filter.module';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');

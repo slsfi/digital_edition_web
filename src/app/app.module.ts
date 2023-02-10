@@ -49,13 +49,13 @@ import { FacsimileZoomModalPage } from './modals/facsimile-zoom/facsimile-zoom';
 import { SharePopoverPage } from './modals/share-popover/share-popover';
 import { IllustrationPageModule } from './modals/illustration/illustration.module';
 import { IllustrationPage } from './modals/illustration/illustration';
-import { SearchAppPageModule } from 'src/pages/search-app/search-app.module';
-import { UserSettingsPopoverPageModule } from 'src/pages/user-settings-popover/user-settings-popover.module';
 import { PersonSearchPageModule } from './pages/person-search/person-search.module';
 import { ReadPopoverPageModule } from './modals/read-popover/read-popover.module';
-import { SearchAppPage } from 'src/pages/search-app/search-app';
 import { ReadPopoverPage } from './modals/read-popover/read-popover';
-import { UserSettingsPopoverPage } from 'src/pages/user-settings-popover/user-settings-popover';
+import { SearchAppPageModule } from './modals/search-app/search-app.module';
+import { UserSettingsPopoverPageModule } from './modals/user-settings-popover/user-settings-popover.module';
+import { UserSettingsPopoverPage } from './modals/user-settings-popover/user-settings-popover';
+import { SearchAppPage } from './modals/search-app/search-app';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'

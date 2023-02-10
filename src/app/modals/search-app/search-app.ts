@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { ModalController, NavController, NavParams } from '@ionic/angular';
 import { SimpleSearchComponent } from 'src/app/components/simple-search/simple-search';
+import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 import { EventsService } from 'src/app/services/events/events.service';
-import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 
 /**
  * Generated class for the SearchAppPage page.
@@ -26,7 +26,7 @@ export class SearchAppPage {
     public navParams: NavParams,
     public viewCtrl: ModalController,
     public events: EventsService,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
   ) {
     this.show = 'simple';
     this.results = ['foo', 'bar', 'foobar', 'Hello World'];
