@@ -59,6 +59,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/person-search/person-search.module').then( m => m.PersonSearchPageModule)
   },
   {
+    path: 'media-collection',
+    loadChildren: () => import('./pages/media-collection/media-collection.module').then( m => m.MediaCollectionPageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'

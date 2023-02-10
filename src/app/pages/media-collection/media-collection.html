@@ -1,0 +1,90 @@
+<!--
+  Generated template for the MediaCollectionPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-toolbar color="secondary" class="secondary">
+    <ion-title>{{mediaTitle}} – {{mediaCollection.length}} {{ ("MediaCollections.photos" | translate) !== "MediaCollections.photos" ?  ("MediaCollections.photos" | translate) : ("photos" | translate) }}</ion-title>
+    <ion-buttons end>
+      <button *ngIf="showURNButton" ion-button clear (click)="showReference()" class="sec-menu-button">
+        <ion-icon class="urn-icon" name="share-alt"></ion-icon>
+        <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.refer' | translate }}</span>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="info">
+    <h1>{{mediaTitle}}</h1>
+    <p>{{mediaDescription}}</p>
+  </div>
+  <div class="info markdown" *ngIf="mdContent?.content">
+    <markdown [data]="mdContent?.content"></markdown>
+  </div>
+  <div class="filters" *ngIf="galleryTags.length > 1 || galleryLocations.length > 1 || gallerySubjects.length > 1">
+    <ion-item class="tagSelect" *ngIf="galleryTags.length > 1">
+      <ion-label>
+      {{ ("MediaCollections.tags" | translate) !== "MediaCollections.tags" ?  ("MediaCollections.tags" | translate) : ("tags" | translate) }}
+      </ion-label>
+      <ion-select [(ngModel)]="tagModel" (ngModelChange)="filterCollectionsByTag(tagModel)" [okText]="'BasicActions.Ok' | translate" [cancelText]="'BasicActions.Cancel' | translate">
+        <ion-select-option selected value=""></ion-select-option>
+        <ion-select-option *ngFor="let tag of galleryTags" value="{{tag.name}}">{{tag.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item class="locationSelect" *ngIf="galleryLocations.length > 1">
+      <ion-label>
+      {{ ("MediaCollections.locations" | translate) !== "MediaCollections.locations" ?  ("MediaCollections.locations" | translate) : ("locations" | translate) }}
+      </ion-label>
+      <ion-select [(ngModel)]="locationModel"
+        (ngModelChange)="filterCollectionsByLocation(locationModel)" [okText]="'BasicActions.Ok' | translate" [cancelText]="'BasicActions.Cancel' | translate">
+        <ion-select-option selected value=""></ion-select-option>
+        <ion-select-option *ngFor="let location of galleryLocations" value="{{location.name}}">{{location.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item class="subjectSelect" *ngIf="gallerySubjects.length > 1">
+      <ion-label>
+      {{ ("MediaCollections.subjects" | translate) !== "MediaCollections.subjects" ?  ("MediaCollections.subjects" | translate) : ("subjects" | translate) }}
+      </ion-label>
+      <ion-select [(ngModel)]="subjectModel"
+        (ngModelChange)="filterCollectionsBySubject(subjectModel)" [okText]="'BasicActions.Ok' | translate" [cancelText]="'BasicActions.Cancel' | translate">
+        <ion-select-option selected value=""></ion-select-option>
+        <ion-select-option *ngFor="let subject of gallerySubjects" value="{{subject.name}}">{{subject.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </div>
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let image of mediaCollection; index as i" col-md-4 col-sm-12 col-lg-3>
+        <ion-card *ngIf="mediaCollectionId!=undefined" (click)="openImage(i, mediaCollectionId)">
+          <div [ngClass]="{'remove-scan-details' : removeScanDetails > 0}">
+            <img alt="gallery image" src="{{apiEndPoint}}/{{projectMachineName}}/gallery/get/{{mediaCollectionId}}/{{asThumb(image.front)}}"/>
+          </div>
+          <ion-card-content>
+            <div *ngIf="image.media_title_translation" class="img-desc title">
+              {{image.media_title_translation}}
+            </div>
+            <div *ngIf="image.subject_name" class="img-desc subject_name">
+              {{image.subject_name}}
+            </div>
+            <div *ngIf="image.description" class="img-desc" [innerHTML]="image.description">
+            </div>
+          </ion-card-content>
+        </ion-card>
+        <ion-card *ngIf="mediaCollectionId==undefined" (click)="openImage(i, image.mediaCollectionId)">
+          <div [ngClass]="{'remove-scan-details' : removeScanDetails > 0}">
+            <img alt="gallery image" src="{{apiEndPoint}}/{{projectMachineName}}/gallery/get/{{image.mediaCollectionId}}/{{asThumb(image.front)}}"/>
+          </div>
+          <ion-card-content>
+            <div *ngIf="image.description" class="img-desc">
+              {{image.description}}
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
