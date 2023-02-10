@@ -13,7 +13,8 @@ import { CommonFunctionsService } from 'src/app/services/common-functions/common
 
 @Component({
   selector: 'page-download-texts-modal',
-  templateUrl: 'download-texts-modal.html'
+  templateUrl: 'download-texts-modal.html',
+  styleUrls: ['download-texts-modal.scss']
 })
 export class DownloadTextsModalPage {
 

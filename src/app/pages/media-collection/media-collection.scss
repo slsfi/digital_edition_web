@@ -1,21 +1,21 @@
 @import "../../../theme/variables.scss";
 
-ion-navbar.secondary.toolbar button.back-button ion-icon.back-button-icon {
+ion-toolbar.secondary.toolbar button.back-button ion-icon.back-button-icon {
   font-size: 1.8rem;
 }
 
-ion-navbar.secondary.toolbar button.back-button.bar-button {
+ion-toolbar.secondary.toolbar button.back-button.bar-button {
   color: var(--text-color-on-secondary-color-background);
   transition: $opacity-hover-transition;
 }
 
-ion-navbar.secondary.toolbar button.back-button.bar-button:hover:not(.disable-hover) {
+ion-toolbar.secondary.toolbar button.back-button.bar-button:hover:not(.disable-hover) {
   color: var(--text-color-on-secondary-color-background);
   background-color: transparent !important;
   opacity: $opacity-hover;
 }
 
-ion-navbar.secondary.toolbar button.back-button.bar-button:hover:active {
+ion-toolbar.secondary.toolbar button.back-button.bar-button:hover:active {
   opacity: 1;
 }
 

@@ -17,6 +17,7 @@ import { UserSettingsService } from 'src/app/services/settings/user-settings.ser
 @Component({
   selector: 'page-facsimile-zoom',
   templateUrl: 'facsimile-zoom.html',
+  styleUrls: ['facsimile-zoom.scss']
 })
 export class FacsimileZoomModalPage {
 

@@ -14,6 +14,7 @@ import { EventsService } from 'src/app/services/events/events.service';
 @Component({
   selector: 'page-search-app',
   templateUrl: 'search-app.html',
+  styleUrls: ['search-app.scss']
 })
 export class SearchAppPage {
   @ViewChild(SimpleSearchComponent) childcmp?: SimpleSearchComponent;

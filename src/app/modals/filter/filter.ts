@@ -12,6 +12,7 @@ import { StorageService } from 'src/app/services/storage/storage.service';
 @Component({
   selector: 'page-filter',
   templateUrl: 'filter.html',
+  styleUrls: ['filter.scss']
 })
 export class FilterPage {
   errorMessage?: string;

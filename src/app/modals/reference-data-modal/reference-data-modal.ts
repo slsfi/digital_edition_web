@@ -14,7 +14,8 @@ import { ReferenceDataService } from 'src/app/services/reference-data/reference-
 */
 @Component({
   selector: 'page-reference-data-modal',
-  templateUrl: './reference-data-modal.html'
+  templateUrl: './reference-data-modal.html',
+  styleUrls: ['reference-data-modal.scss']
 })
 export class ReferenceDataModalPage {
 

@@ -16,7 +16,8 @@ import { LanguageService } from 'src/app/services/languages/language.service';
 })*/
 @Component({
   selector: 'user-settings-popover-page',
-  templateUrl: 'user-settings-popover.html'
+  templateUrl: 'user-settings-popover.html',
+  styleUrls: ['user-settings-popover.scss']
 })
 export class UserSettingsPopoverPage {
   readToggles: {

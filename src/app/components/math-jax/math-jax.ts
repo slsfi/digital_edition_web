@@ -8,7 +8,8 @@ import { Component } from '@angular/core';
  */
 @Component({
   selector: 'math-jax',
-  templateUrl: 'math-jax.html'
+  templateUrl: 'math-jax.html',
+  styleUrls: ['math-jax.scss']
 })
 export class MathJaxComponent {
 

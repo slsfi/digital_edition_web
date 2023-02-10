@@ -583,7 +583,7 @@
     display: none;
   }
   
-  ion-navbar.toolbar {
+  ion-toolbar.toolbar {
     padding: 0;
   }
   
@@ -801,7 +801,7 @@
       background: var(--primary-color);
   }
   ion-toolbar.toolbar.secondary .toolbar-background,
-  ion-navbar.toolbar.secondary .toolbar-background {
+  ion-toolbar.toolbar.secondary .toolbar-background {
       background: var(--secondary-color);
   }
   top-menu ion-toolbar.toolbar .toolbar-background {
@@ -811,7 +811,7 @@
   ion-toolbar.toolbar:not(.secondary) .toolbar-content button:hover:not(.disable-hover) {
       color: var(--text-color-on-primary-color-background);
   }
-  ion-navbar.secondary.toolbar .toolbar-content .toolbar-title {
+  ion-toolbar.secondary.toolbar .toolbar-content .toolbar-title {
     color: var(--text-color-on-secondary-color-background);
   }
   

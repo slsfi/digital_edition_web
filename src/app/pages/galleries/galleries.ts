@@ -16,6 +16,7 @@ import { EventsService } from 'src/app/services/events/events.service';
 @Component({
   selector: 'page-galleries',
   templateUrl: 'galleries.html',
+  styleUrls: ['galleries.scss']
 })
 export class GalleriesPage {
 

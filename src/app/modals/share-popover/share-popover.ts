@@ -14,6 +14,7 @@ import { ReferenceDataModalPage } from '../reference-data-modal/reference-data-m
 @Component({
   selector: 'page-share-popover',
   templateUrl: './share-popover.html',
+  styleUrls: ['share-popover.scss']
 })
 export class SharePopoverPage {
   showSocial = {

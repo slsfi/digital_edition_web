@@ -1,55 +1,53 @@
-page-share-popover {
-  ion-list {
-    margin: 0 !important;
+ion-list {
+  margin: 0 !important;
+}
+
+ion-list-header {
+  font-weight: bold !important;
+  margin-bottom: 0 !important;
+  min-height: 1rem !important;
+}
+
+ion-label {
+  overflow: visible;
+  transition: font-weight 0.3s;
+}
+
+ion-item:hover:not(.disable-hover) ion-label {
+  font-weight: bold;
+}
+
+.popover-header ion-label {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2px;
+}
+
+ion-item {
+  cursor: pointer;
+
+  ion-icon {
+    display: flex;
+    align-items: center;
+    font-size: 1em !important;
   }
+}
 
-  ion-list-header {
-    font-weight: bold !important;
-		margin-bottom: 0 !important;
-		min-height: 1rem !important;
-	}
+.header-title {
+  margin-top: 14px;
+}
 
-  ion-label {
-    overflow: visible;
-    transition: font-weight 0.3s;
-  }
-
-  ion-item:hover:not(.disable-hover) ion-label {
-    font-weight: bold;
-  }
-
-  .popover-header ion-label {
-		display: flex;
-		justify-content: space-between;
-		margin-top: 2px;
-	}
-
-  ion-item {
-    cursor: pointer;
-
-    ion-icon {
-      display: flex;
-      align-items: center;
-      font-size: 1em !important;
-    }
-  }
-
-  .header-title {
-		margin-top: 14px;
-	}
-
-  .close {
-    font-size: 1rem;
-    position: absolute;
-    top: 0.5rem;
-    right: 1rem;
-    cursor: pointer;
-    transition: $opacity-hover-transition;
-	}
-  .close:hover {
-		opacity: $opacity-hover;
-	}
-  .close:active {
-		opacity: 1;
-	}
+.close {
+  font-size: 1rem;
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  cursor: pointer;
+  transition: $opacity-hover-transition;
+}
+.close:hover {
+  opacity: $opacity-hover;
+}
+.close:active {
+  opacity: 1;
 }

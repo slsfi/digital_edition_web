@@ -1,42 +1,42 @@
-user-settings-popover-page {
-	ion-list-header {
-		font-weight: bold !important;
-		margin-bottom: 0 !important;
-		min-height: 1rem !important;
-	}
-	ion-item ion-label.label {
-		line-height: 1.5;
-		margin: 9px 8px 9px 0;
-	}
+@import "../../../theme/variables.scss";
 
-	ion-list:last-child {
-		margin-bottom: 8px;
-	}
-	.user-settings-popover-header ion-label {
-		display: flex;
-		justify-content: space-between;
-		margin-top: 2px;
-	}
-	.lang-header {
-		margin-top: 14px;
-	}
-	.close {
-		font-size: 1rem;
-		position: absolute;
-		top: 0.5rem;
-		right: 1rem;
-		cursor: pointer;
-		transition: $opacity-hover-transition;
-	}
-	.close:hover {
-		opacity: $opacity-hover;
-	}
-	.close:active {
-		opacity: 1;
-	}
+ion-list-header {
+	font-weight: bold !important;
+	margin-bottom: 0 !important;
+	min-height: 1rem !important;
+}
+ion-item ion-label.label {
+	line-height: 1.5;
+	margin: 9px 8px 9px 0;
+}
 
-	ion-list.view-mode ion-icon {
-		font-size: 2rem !important;
-		min-height: 2rem !important;
-	}
+ion-list:last-child {
+	margin-bottom: 8px;
+}
+.user-settings-popover-header ion-label {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 2px;
+}
+.lang-header {
+	margin-top: 14px;
+}
+.close {
+	font-size: 1rem;
+	position: absolute;
+	top: 0.5rem;
+	right: 1rem;
+	cursor: pointer;
+	transition: $opacity-hover-transition;
+}
+.close:hover {
+	opacity: $opacity-hover;
+}
+.close:active {
+	opacity: 1;
+}
+
+ion-list.view-mode ion-icon {
+	font-size: 2rem !important;
+	min-height: 2rem !important;
 }
