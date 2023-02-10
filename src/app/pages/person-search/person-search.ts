@@ -1,25 +1,24 @@
-import { Component, ViewChild } from '@angular/core';
-import { SemanticDataService } from '../../app/services/semantic-data/semantic-data.service';
-import { LanguageService } from '../../app/services/languages/language.service';
-import { Occurrence, OccurrenceType, OccurrenceResult } from '../../app/models/occurrence.model';
-import { SingleOccurrence } from '../../app/models/single-occurrence.model';
-import { UserSettingsService } from '../../app/services/settings/user-settings.service';
+import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AnalyticsService } from '../../app/services/analytics/analytics.service';
-import { MetadataService } from '../../app/services/metadata/metadata.service';
-import { MdContentService } from '../../app/services/md/md-content.service';
-import { TooltipService } from '../../app/services/tooltips/tooltip.service';
-import { CommonFunctionsService } from '../../app/services/common-functions/common-functions.service';
 import debounce from 'lodash/debounce';
 import { EventsService } from 'src/app/services/events/events.service';
 import { LoadingController, ModalController, NavController, NavParams, Platform } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { OccurrenceService } from 'src/app/services/occurrence/occurence.service';
-import { OccurrencesPage } from '../occurrences/occurrences';
-import { FilterPage } from '../filter/filter';
 import { ConfigService } from 'src/app/services/config/core/config.service';
 import { StorageService } from 'src/app/services/storage/storage.service';
+import { SemanticDataService } from 'src/app/services/semantic-data/semantic-data.service';
+import { LanguageService } from 'src/app/services/languages/language.service';
+import { MdContentService } from 'src/app/services/md/md-content.service';
+import { UserSettingsService } from 'src/app/services/settings/user-settings.service';
+import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
+import { MetadataService } from 'src/app/services/metadata/metadata.service';
+import { TooltipService } from 'src/app/services/tooltips/tooltip.service';
+import { CommonFunctionsService } from 'src/app/services/common-functions/common-functions.service';
+import { OccurrenceResult } from 'src/app/models/occurrence.model';
+import { FilterPage } from 'src/pages/filter/filter';
+import { OccurrencesPage } from 'src/app/modals/occurrences/occurrences';
 
 /**
  * A page for searching person occurrences.
@@ -28,7 +27,8 @@ import { StorageService } from 'src/app/services/storage/storage.service';
 
 @Component({
   selector: 'page-person-search',
-  templateUrl: 'person-search.html'
+  templateUrl: 'person-search.html',
+  styleUrls: ['person-search.scss']
 })
 export class PersonSearchPage {
   persons: any[] = [];
@@ -55,7 +55,6 @@ export class PersonSearchPage {
   debouncedSearch = debounce(this.searchPersons, 500);
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
               public semanticDataService: SemanticDataService,
               protected langService: LanguageService,
               private mdContentService: MdContentService,
@@ -73,6 +72,7 @@ export class PersonSearchPage {
               private tooltipService: TooltipService,
               public commonFunctions: CommonFunctionsService,
               private router: Router,
+              private route: ActivatedRoute
   ) {
     try {
       this.showFilter = this.config.getSettings('PersonSearch.ShowFilter') as any;
@@ -116,10 +116,8 @@ export class PersonSearchPage {
     this.analyticsService.doPageView('Subjects');
   }
 
-  ionViewDidLoad() {
+  ngOnInit() {
     this.getParamsData();
-    this.selectMusicAccordionItem();
-    this.getPersons();
     this.languageSubscription = this.langService.languageSubjectChange().subscribe(lang => {
       if (lang) {
         this.getMdContent(lang + '-12-02');
@@ -138,31 +136,36 @@ export class PersonSearchPage {
   }
 
   getParamsData() {
-    this.type = this.navParams.get('type') || null;
-    this.subType = this.navParams.get('subtype');
-
-    if ( String(this.subType).includes('subtype') ) {
-      this.subType = null;
-      this.translate.get('TOC.PersonSearch').subscribe(
-        translation => {
-          this.pageTitle = translation;
-        }, error => { this.pageTitle = null; }
-      );
-    }
-
-    if (this.subType) {
-      const subTypeObj = {
-        key: this.subType,
-        name: this.subType,
-        selected: true
+    this.route.params.subscribe(params => {
+      this.type = params['type'] || null;
+      this.subType = params['subtype'];
+      if ( String(this.subType).includes('subtype') ) {
+        this.subType = null;
+        this.translate.get('TOC.PersonSearch').subscribe(
+          translation => {
+            this.pageTitle = translation;
+          }, error => { this.pageTitle = null; }
+        );
       }
-      this.filters['filterPersonTypes' as keyof typeof this.filters] = [];
-      this.filters['filterPersonTypes' as keyof typeof this.filters].push(subTypeObj);
-      /**
-       * TODO: Get correct page title if subtype person search
-       */
-      this.pageTitle = null;
-    }
+
+      if (this.subType) {
+        const subTypeObj = {
+          key: this.subType,
+          name: this.subType,
+          selected: true
+        }
+        this.filters['filterPersonTypes' as keyof typeof this.filters] = [];
+        this.filters['filterPersonTypes' as keyof typeof this.filters].push(subTypeObj);
+        /**
+         * TODO: Get correct page title if subtype person search
+         */
+        this.pageTitle = null;
+      }
+
+      this.selectMusicAccordionItem();
+      this.getPersons();
+    });
+
   }
 
   appHasMusicAccordionConfig() {

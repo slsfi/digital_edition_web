@@ -1,4 +1,3 @@
-import { FilterPageModule } from './../filter/filter.module';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
@@ -11,10 +10,12 @@ import { PipesModule } from 'src/pipes/pipes.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { SemanticDataService } from 'src/app/services/semantic-data/semantic-data.service';
 import { OccurrenceService } from 'src/app/services/occurrence/occurence.service';
-import { FilterPage } from '../filter/filter';
-import { OccurrencesPage } from '../occurrences/occurrences';
 import { TableOfContentsModule } from 'src/app/components/table-of-contents/table-of-contents.module';
-import { OccurrencesPageModule } from '../occurrences/occurrences.module';
+import { PersonSearchRoutingModule } from './person-search-routing.module';
+import { FilterPage } from 'src/pages/filter/filter';
+import { OccurrencesPage } from 'src/app/modals/occurrences/occurrences';
+import { FilterPageModule } from 'src/pages/filter/filter.module';
+import { OccurrencesPageModule } from 'src/app/modals/occurrences/occurrences.module';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -43,6 +44,7 @@ export function createTranslateLoader(http: HttpClient) {
     ComponentsModule,
     FilterPageModule,
     OccurrencesPageModule,
+    PersonSearchRoutingModule
   ],
   providers: [
     SemanticDataService,

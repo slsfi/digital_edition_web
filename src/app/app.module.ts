@@ -30,18 +30,11 @@ import { GalleryService } from './services/gallery/gallery.service';
 import { SongService } from './services/song/song.service';
 import { TooltipService } from './services/tooltips/tooltip.service';
 import { SearchDataService } from './services/search/search-data.service';
-import { SearchAppPage } from 'src/pages/search-app/search-app';
-import { SearchAppPageModule } from 'src/pages/search-app/search-app.module';
 import { CommonModule } from '@angular/common';
-import { UserSettingsPopoverPageModule } from 'src/pages/user-settings-popover/user-settings-popover.module';
 import { PipesModule } from 'src/pipes/pipes.module';
 import { DigitalEditionListModule } from './components/digital-edition-list/digital-edition-list.module';
 import { ComponentsModule } from './components/components.module';
-import { ReadPopoverPage } from 'src/pages/read-popover/read-popover';
-import { ReadPopoverPageModule } from 'src/pages/read-popover/read-popover.module';
-import { UserSettingsPopoverPage } from 'src/pages/user-settings-popover/user-settings-popover';
 import { MarkdownModule } from 'ngx-markdown';
-import { PersonSearchPageModule } from 'src/pages/person-search/person-search.module';
 import { MathJaxModule } from './components/math-jax/math-jax.module';
 import { ConfigLoader } from './services/config/core/config.loader';
 import { ConfigHttpLoader } from './services/config/http-loader/http-loader';
@@ -56,6 +49,13 @@ import { FacsimileZoomModalPage } from './modals/facsimile-zoom/facsimile-zoom';
 import { SharePopoverPage } from './modals/share-popover/share-popover';
 import { IllustrationPageModule } from './modals/illustration/illustration.module';
 import { IllustrationPage } from './modals/illustration/illustration';
+import { SearchAppPageModule } from 'src/pages/search-app/search-app.module';
+import { UserSettingsPopoverPageModule } from 'src/pages/user-settings-popover/user-settings-popover.module';
+import { PersonSearchPageModule } from './pages/person-search/person-search.module';
+import { ReadPopoverPageModule } from './modals/read-popover/read-popover.module';
+import { SearchAppPage } from 'src/pages/search-app/search-app';
+import { ReadPopoverPage } from './modals/read-popover/read-popover';
+import { UserSettingsPopoverPage } from 'src/pages/user-settings-popover/user-settings-popover';
 
 Sentry.init({
   dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'

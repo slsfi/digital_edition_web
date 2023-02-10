@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ModalController, NavController, PopoverController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { ReadPopoverPage } from 'src/app/modals/read-popover/read-popover';
 import { ReferenceDataModalPage } from 'src/app/modals/reference-data-modal/reference-data-modal';
 import { ConfigService } from 'src/app/services/config/core/config.service';
 import { EventsService } from 'src/app/services/events/events.service';
@@ -12,7 +13,6 @@ import { ReadPopoverService } from 'src/app/services/settings/read-popover.servi
 import { UserSettingsService } from 'src/app/services/settings/user-settings.service';
 import { TextService } from 'src/app/services/texts/text.service';
 import { TableOfContentsService } from 'src/app/services/toc/table-of-contents.service';
-import { ReadPopoverPage } from 'src/pages/read-popover/read-popover';
 
 /**
  * Generated class for the ForewordPage page.

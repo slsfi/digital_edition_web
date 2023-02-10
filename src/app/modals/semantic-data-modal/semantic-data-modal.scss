@@ -1,41 +1,39 @@
-page-semantic-data-modal {
-	.tei{
-		line-height: 2.2rem;
-		font-size: 1.5rem;
-	}
+.tei{
+	line-height: 2.2rem;
+	font-size: 1.5rem;
+}
 
-	ion-item{
-		cursor: pointer;
-	}
+ion-item{
+	cursor: pointer;
+}
 
-	ion-item:hover{
-		background-color: var(--secondary-color);
-	}
+ion-item:hover{
+	background-color: var(--secondary-color);
+}
 
-	.close-button {
-        float: right;
-        display: flex;
-		padding-right: 1rem;
-        font-size: 3rem !important;
-    }
+.close-button {
+	float: right;
+	display: flex;
+	padding-right: 1rem;
+	font-size: 3rem !important;
+}
 
-	.segment-header{
-        font-size: 1rem !important;
-        padding-left: 1rem;
-        padding-right: 1rem;
-        min-width: max-content;
-    }
+.segment-header{
+	font-size: 1rem !important;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	min-width: max-content;
+}
 
-    .segment-button{
-        border: 0px !important;
-        border-radius: 0px !important;
-	}
+.segment-button{
+	border: 0px !important;
+	border-radius: 0px !important;
+}
 
-	.segment-activated {
-		background-color: var(--segment-activated-background-color) !important;
-        color: var(--segment-activated-text-color) !important;
-	}
-	.header{
-		border-bottom: 1px solid var(--primary-color);
-	}
+.segment-activated {
+	background-color: var(--segment-activated-background-color) !important;
+	color: var(--segment-activated-text-color) !important;
+}
+.header{
+	border-bottom: 1px solid var(--primary-color);
 }

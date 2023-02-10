@@ -16,11 +16,11 @@ import { Subscription } from 'rxjs';
 import { DownloadTextsModalPage } from 'src/app/modals/download-texts-modal/download-texts-modal';
 import { ReferenceDataModalPage } from 'src/app/modals/reference-data-modal/reference-data-modal';
 import { SharePopoverPage } from 'src/app/modals/share-popover/share-popover';
-import { ReadPopoverPage } from 'src/pages/read-popover/read-popover';
 import { IllustrationPage } from 'src/app/modals/illustration/illustration';
-import { OccurrencesPage } from 'src/pages/occurrences/occurrences';
 import { StorageService } from 'src/app/services/storage/storage.service';
 import { ActivatedRoute } from '@angular/router';
+import { OccurrencesPage } from 'src/app/modals/occurrences/occurrences';
+import { ReadPopoverPage } from 'src/app/modals/read-popover/read-popover';
 
 /**
  * Generated class for the IntroductionPage page.

@@ -55,6 +55,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/introduction/introduction.module').then( m => m.IntroductionPageModule)
   },
   {
+    path: 'person-search',
+    loadChildren: () => import('./pages/person-search/person-search.module').then( m => m.PersonSearchPageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'

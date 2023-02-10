@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { Occurrence, OccurrenceResult } from '../../app/models/occurrence.model';
-import { SingleOccurrence } from '../../app/models/single-occurrence.model';
 import { TranslateService } from '@ngx-translate/core';
 import leaflet from 'leaflet';
 import { SemanticDataService } from 'src/app/services/semantic-data/semantic-data.service';
@@ -14,6 +12,8 @@ import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 import { CommonFunctionsService } from 'src/app/services/common-functions/common-functions.service';
 import { Router } from '@angular/router';
 import { ConfigService } from 'src/app/services/config/core/config.service';
+import { Occurrence, OccurrenceResult } from 'src/app/models/occurrence.model';
+import { SingleOccurrence } from 'src/app/models/single-occurrence.model';
 
 /**
  * Generated class for the OccurrencesPage page.
@@ -28,6 +28,7 @@ import { ConfigService } from 'src/app/services/config/core/config.service';
 @Component({
   selector: 'page-occurrences',
   templateUrl: 'occurrences.html',
+  styleUrls: ['occurrences.scss'] 
 })
 export class OccurrencesPage {
   map: any;

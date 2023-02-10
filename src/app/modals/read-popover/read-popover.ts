@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { ReadPopoverService, Fontsize } from '../../app/services/settings/read-popover.service';
-import { AnalyticsService } from '../../app/services/analytics/analytics.service';
 import { ModalController, NavParams } from '@ionic/angular';
 import { EventsService } from 'src/app/services/events/events.service';
 import { ConfigService } from 'src/app/services/config/core/config.service';
+import { Fontsize, ReadPopoverService } from 'src/app/services/settings/read-popover.service';
+import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 
 /**
  * This is a popover accessed in ReadPage.
@@ -17,7 +17,8 @@ import { ConfigService } from 'src/app/services/config/core/config.service';
 })*/
 @Component({
   selector: 'read-popover-page',
-  templateUrl: 'read-popover.html'
+  templateUrl: 'read-popover.html',
+  styleUrls: ['read-popover.scss']
 })
 export class ReadPopoverPage {
   readToggles: {

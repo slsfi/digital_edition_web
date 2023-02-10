@@ -14,7 +14,8 @@ import { SemanticDataService } from 'src/app/services/semantic-data/semantic-dat
 */
 @Component({
   selector: 'page-semantic-data-modal',
-  templateUrl: './semantic-data-modal.html'
+  templateUrl: './semantic-data-modal.html',
+  styleUrls: ['semantic-data-modal.scss']
 })
 export class SemanticDataModalPage {
 
