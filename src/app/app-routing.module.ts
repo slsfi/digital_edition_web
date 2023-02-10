@@ -67,6 +67,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/media-collections/media-collections.module').then( m => m.MediaCollectionsPageModule)
   },
   {
+    path: 'pages-list',
+    loadChildren: () => import('./pages/mobile-pages-list/mobile-pages-list.module').then( m => m.MobilePagesListPageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
