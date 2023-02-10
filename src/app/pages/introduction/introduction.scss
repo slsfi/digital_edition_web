@@ -1,0 +1,212 @@
+ion-card {
+  max-width: 710px;
+  background-color: var(--page-read-columns-background-color) !important;
+}
+
+.card-content {
+  height: 100%;
+  padding: 0;
+}
+
+.card-content > ion-scroll {
+  height: 100% !important;
+}
+
+/* This hides the vertical scrollbar on the right edge of the viewport area when it is not necessary to show it. Observe that there are two elements with class scroll-content, which is why this needs to be this specific. */
+ion-content > .scroll-content {
+  overflow: auto;
+  /* These margin and padding declarations fix the issue in Chrome where tooltips are incorrectly positioned vertically. .scroll-content has an inline style margin-top:50px which needs to be replaced with padding (The top padding is 16px by default, hence 66px). */
+  margin-top: 0 !important;
+  padding-top: 66px !important;
+}
+
+.scroll-content {
+  display: flex;
+}
+
+.scroll-zoom-wrapper {
+  width: 100%;
+  padding: 6px;
+}
+
+.toolbar-content {
+  display: flex;
+  justify-content: flex-end;
+  grid-template-columns: auto max-content;
+
+  ion-buttons {
+    order: 0;
+  }
+}
+
+.menuOpenTOC .ion-md-close {
+  margin: 0 0 0 0.184375rem;
+}
+
+#TOC {
+  background-color: var(--page-introduction-separate-toc-background-color);
+  padding: 10px 20px 70px 20px;
+  margin: 10px;
+  height: calc(100% - 102px);
+  width: 85%;
+  max-width: 375px;
+  position: fixed;
+  z-index: 10;
+  overflow-x: hidden;
+  transition: 0.25s;
+  font-size: 1rem;
+  right: 16px;
+}
+
+#TOC #toc-close-button button.button {
+  margin-bottom: 0;
+  margin-left: auto;
+  margin-right: 0;
+  display: block;
+}
+
+#TOC h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+#TOC h5 {
+  font-size: 1rem;
+  margin-bottom: 0.6rem;
+  margin-top: 0.1rem;
+}
+
+/* Links in the intro-toc. */
+#TOC a {
+  text-decoration: none;
+  color: var(--page-introduction-separate-toc-text-color);
+  transition: 0.3s;
+}
+
+#TOC p {
+  line-height: .1em;
+}
+
+#TOC h2.contentSection.smallCaps {
+  font-size: 1.2em;
+  margin-bottom: .6em;
+  margin-top: 1.2em;
+  padding-top: .2em;
+  font-variant: small-caps;
+  font-weight: 600;
+  line-height: 1;
+}
+
+#TOC h5.tei.contentSub2 {
+  font-size: 1em;
+  margin-bottom: .4em;
+  margin-top: .1em;
+  font-weight: 600;
+  line-height: 1;
+}
+
+#TOC #toc_text > div > :first-child {
+  margin-top: 0.125rem;
+}
+
+/* On large screens: the intro-toc floats to the right of the text. */
+@media (min-width: 1000px) {
+  nav#TOC {
+    position: sticky;
+    height: auto;
+    transition: none;
+    z-index: 1;
+    width: 50vw;
+    right: unset;
+  }
+}
+
+.hideIntro.tei #content {
+  display: none !important;
+}
+
+.work_title {
+  font-style: italic;
+}
+
+div[data-id="cont_introduction"] h2.tei.section {
+  text-align: left !important;
+  font-weight: normal !important;
+  margin: 1.4em 0 1.3em 0 !important;
+  font-size: 1.4em !important;
+}
+
+div[data-id="cont_introduction"] h3.italics {
+  /* text-align, font-style and font-weight are most likely unnecessary here. */
+  text-align: left !important;
+  font-style: italic;
+  font-weight: normal !important;
+  margin: 1.3em 0 1.2em 0 !important;
+  font-size: 1.2em !important;
+}
+
+div[data-id="cont_introduction"] h4 {
+  font-style: italic;
+  text-align: left;
+  font-weight: normal;
+  font-size: 1em;
+  margin: 1.1em 0 1em 0;
+}
+
+div[data-id="content"] {
+  display: none;
+}
+
+@media screen and (max-width: 820px) {
+  .secondary .toolbar-content {
+    display: flex;
+    justify-content: flex-end;
+
+    .bar-buttons:last-child {
+      margin-left: 0;
+    }
+  }
+
+  /* Reduce padding om small screens. Top still needs to be 50px since it overrides inline style margin-top:50px (see comment above). */
+  ion-content > .scroll-content {
+    padding: 50px 0 0 0 !important;
+    justify-content: center;
+  }
+  ion-scroll > .scroll-content {
+    padding: 6px !important;
+  }
+
+  #TOC {
+    height: calc(100% - 70px);
+    right: 0;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  /* Make the intro-toc narrower on very small screens. */
+  #TOC {
+    width: 75%;
+  }
+}
+
+/* Make room for the text-changer at the bottom in mobile mode. */
+.mobile-mode-intro-content > .scroll-content {
+  padding: 50px 0 50px 0 !important;
+  justify-content: center;
+}
+
+.mobile-mode-intro-content ion-card.card {
+  margin-bottom: 0;
+}
+
+.mobile-mode-intro-content #TOC {
+  height: calc(100% - 10px);
+  margin-bottom: 0;
+  right: 0;
+}
+
+@media screen and (max-width: 1000px) {
+  .mobile-mode-intro-content #TOC {
+    height: calc(100% - 110px);
+  }
+}

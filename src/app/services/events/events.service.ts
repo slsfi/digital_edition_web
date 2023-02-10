@@ -102,6 +102,8 @@ export class EventsService {
     private pageLoadedFeaturedFacsimiles = new Subject<any>();
     // pageLoaded:foreword
     private pageLoadedForeword = new Subject<any>();
+    // setSelectedStatic:true
+    private setSelectedStaticTrue = new Subject<any>();
 
 
     publishShareDismiss(data?: any) {
@@ -486,5 +488,13 @@ export class EventsService {
 
     getPageLoadedForeword(): Subject<any> {
         return this.pageLoadedForeword;
+    }
+
+    publishSetSelectedStaticTrue(data?: any) {
+        this.setSelectedStaticTrue.next(data);
+    }
+
+    getSetSelectedStaticTrue(): Subject<any> {
+        return this.setSelectedStaticTrue;
     }
 }

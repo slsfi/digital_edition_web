@@ -1,0 +1,81 @@
+<ion-header no-border>
+  <ion-toolbar color="secondary" class="secondary">
+
+    <text-changer *ngIf="!(userSettingsService.isMobile())" [parentPageType]="'page-introduction'" class="text-changer-desktop-view"></text-changer>
+
+    <ion-buttons>
+        <ion-grid>
+            <ion-row class="secondary-toolbar-icons-wrapper" nowrap align-items-center>
+              <ion-col *ngIf="showTextDownloadButton">
+                <button ion-button clear (click)="showDownloadModal()" class="sec-menu-button">
+                  <ion-icon *ngIf="!usePrintNotDownloadIcon" class="download-icon" name="download"></ion-icon>
+                  <ion-icon *ngIf="usePrintNotDownloadIcon" class="print-icon" name="print"></ion-icon>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'DownloadTexts.Download' | translate }}</span>
+                </button>
+              </ion-col>
+              <ion-col *ngIf="showURNButton">
+                <button ion-button clear (click)="showReference()" class="sec-menu-button">
+                  <ion-icon class="urn-icon" name="share-alt"></ion-icon>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.refer' | translate }}</span>
+                </button>
+              </ion-col>
+              <!--
+              <ion-col>
+                <button ion-button clear (click)="showSharePopover($event)" class="sec-menu-button">
+                  <ion-icon class="share-icon" name="share"></ion-icon>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Reference.share' | translate }}</span>
+                </button>
+              </ion-col>
+              -->
+              <ion-col *ngIf="showDisplayOptionsButton">
+                <button ion-button clear #settingsIconElement (click)="showPopover($event)" class="sec-menu-button" id="settings-icon">
+                  <ion-icon class="settings-icon" name="settings"></ion-icon>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Popover.Options' | translate }}</span>
+                </button>
+              </ion-col>
+              <ion-col *ngIf="hasSeparateIntroToc">
+                <button ion-button clear class="sec-menu-button" [ngClass]="tocMenuOpen ? 'menuOpenTOC' : 'menuClosedTOC'"  (click)="toggleTocMenu()">
+                  <ion-icon name="list" *ngIf="!tocMenuOpen"></ion-icon>
+                  <ion-icon name="close" *ngIf="tocMenuOpen"></ion-icon>
+                  <span *ngIf="!(userSettingsService.isMobile())" class="side-title">{{'Read.Introduction.Contents' | translate }}</span>
+                </button>
+              </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding [ngClass]="printMainContentClasses()">
+    <ion-card>
+        <ion-card-content>
+            <div [ngClass]="'toolTip tei teiContainer ' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')" [ngStyle]="{'position': toolTipPosType, 'top': toolTipPosition.top, 'left': toolTipPosition.left, 'max-width': toolTipMaxWidth, 'transform': 'scale(' + toolTipScaleValue + ')'}" [innerHTML]="toolTipText"></div>
+            <div [ngClass]="'infoOverlay tei teiContainer ' + ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')" [ngStyle]="{'position': infoOverlayPosType, 'bottom': infoOverlayPosition.bottom, 'left': infoOverlayPosition.left, 'width': infoOverlayWidth}">
+              <div class="infoOverlayHeader">
+                <h6 class="infoOverlayTitle" [innerHTML]="infoOverlayTitle"></h6>
+                <ion-icon name="close" class="infoOverlayButton" (click)="hideInfoOverlay()"></ion-icon>
+              </div>
+              <div class="infoOverlayContent" [innerHTML]="infoOverlayText"></div>
+            </div>
+              <ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
+              <div class="tei teiContainer"
+                [class.show_personInfo]="readPopoverService.show.personInfo && readPopoverTogglesIntro.personInfo"
+                [class.show_placeInfo]="readPopoverService.show.placeInfo && readPopoverTogglesIntro.placeInfo"
+                [class.show_workInfo]="readPopoverService.show.workInfo && readPopoverTogglesIntro.workInfo"
+                [class.show_pageNumbering]="readPopoverService.show.pageNumbering && readPopoverTogglesIntro.pageNumbering"
+                [class.show_pageBreakEdition]="readPopoverService.show.pageBreakEdition && readPopoverTogglesIntro.pageBreakEdition"
+              [innerHTML]="text" [ngClass]="(hasSeparateIntroToc ? 'hideIntro' : '') + ' ' +
+              ((readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize')"></div>
+        </ion-card-content>
+    </ion-card>
+    <nav id="TOC" *ngIf="hasSeparateIntroToc && tocMenuOpen">
+      <div id="toc-close-button" (click)="toggleTocMenu()">
+        <button ion-button clear class="sec-menu-button">
+          <ion-icon name="close" class="intro-toc-button"></ion-icon>
+        </button>
+      </div>
+      <div id="toc_text" [innerHTML]="textMenu"></div>
+    </nav>
+</ion-content>
+
+<text-changer *ngIf="(userSettingsService.isMobile())" [parentPageType]="'page-introduction'" class="text-changer-mobile-view"></text-changer>
