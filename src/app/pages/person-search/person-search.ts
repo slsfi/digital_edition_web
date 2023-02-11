@@ -298,7 +298,8 @@ export class PersonSearchPage {
         activeFilters: this.filters
       }
     });
-    filterModal.onDidDismiss().then((filters: any) => {
+    filterModal.onDidDismiss().then((detail: any) => {
+      const { filters } = detail.data;
       if (filters) {
         this.persons = [];
         this.agg_after_key = {};

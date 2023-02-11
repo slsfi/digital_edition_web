@@ -1,0 +1,65 @@
+<ion-content padding>
+  <ion-grid>
+      <ion-row class="page-info-row">
+        <h1 class="page-title">{{ 'TOC.PlaceSearch' | translate }}</h1>
+        <div class="info markdown" *ngIf="mdContent">
+          <markdown [data]="mdContent"></markdown>
+        </div>
+      </ion-row>
+      <ion-row class="search-area-row">
+          <ion-col>
+            <ion-row *ngIf="('SearchApp.infotext' | translate) !== 'SearchApp.infotext' && ('SearchApp.infotext' | translate).length>0">
+                <ion-col col-12>
+                  <p class="info_text">{{'SearchApp.infotext' | translate}}</p>
+                </ion-col>
+            </ion-row>
+
+            <ion-row>
+                <ion-col class="searchbar-col" col-10>
+                  <ion-searchbar placeholder="{{'SearchApp.search-holder' | translate}}" class="searchbar" [(ngModel)]="searchText" (ionInput)="onSearchInput()" (ionClear)="onSearchClear()"></ion-searchbar>
+                </ion-col>
+                <ion-col class="filter-button-col" col-2 *ngIf="showFilter">
+                    <button (click)="openFilterModal()" ion-button><ion-icon class="filter-button" name="funnel"></ion-icon></button>
+                </ion-col>
+            </ion-row>
+
+            <ion-row class="active-filters-row" *ngIf="filters && filters.filterPlaceCountries && !filters.isEmpty">
+              <ion-item>
+                <span class="active-filters-heading">{{'Filter.activeFilters' | translate}}:</span>
+                <ng-container *ngIf="filters.filterPlaceCountries && filters.filterPlaceCountries.length > 0">
+                  <ng-container *ngFor="let fpc of filters.filterPlaceCountries; let i = index">
+                    <span class="active-category-type">{{fpc.name}}</span><ng-container *ngIf="i < filters.filterPlaceCountries.length - 1">, </ng-container></ng-container></ng-container>
+              </ion-item>
+            </ion-row>
+
+            <ion-list>
+                <div *ngFor="let p of places">
+                  <ion-item *ngIf="p?.firstOfItsKind">
+                    <ion-item-divider color="light">{{p.firstOfItsKind.toLocaleUpperCase()}}</ion-item-divider>
+                  </ion-item>
+                  <ion-item *ngIf="p?.name.length > 1" (click)="openPlace(p)">
+                    <p>{{p.name}}</p>
+                  </ion-item>
+                </div>
+            </ion-list>
+
+            <ion-row class="load-more-wrapper">
+              <div class="loading-spinner-wrapper">
+                <ion-spinner *ngIf="showLoading" class="loading" name="crescent"></ion-spinner>
+              </div>
+              <button *ngIf="places.length > 0 && hasMore()" ion-button (click)="loadMore($event)" [disabled]="showLoading">{{"BasicActions.ShowMore" | translate}}</button>
+            </ion-row>
+
+            <ion-row class="hits-footer" *ngIf="places.length > 100">
+              <button ion-button outline (click)="scrollToTop()">{{"BasicActions.ScrollToTop" | translate}}</button>
+            </ion-row>
+          </ion-col>
+
+          <ion-col class="alphabet">
+            <button ion-fab mini (click)="showAll()"><ion-icon name="refresh"></ion-icon></button>
+            <button ion-fab mini *ngFor="let letter of alphabet" class="letter" (click)="filterByLetter(letter)">{{letter}}</button>
+            <button ion-fab mini (click)="showAll()"><ion-icon name="refresh"></ion-icon></button>
+          </ion-col>
+        </ion-row>
+  </ion-grid>
+</ion-content>

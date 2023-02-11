@@ -83,6 +83,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/pdf/pdf.module').then( m => m.PdfPageModule)
   },
   {
+    path: 'places',
+    loadChildren: () => import('./pages/place-search/place-search.module').then( m => m.PlaceSearchPageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
