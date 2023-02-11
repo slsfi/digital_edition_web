@@ -211,7 +211,7 @@ export class ElasticSearchPage {
   }
 
   ionViewDidLoad() {
-    this.route.queryParams.subscribe(params => {
+    this.route.params.subscribe(params => {
       this.getParamsData(params['query'])
     });
   }

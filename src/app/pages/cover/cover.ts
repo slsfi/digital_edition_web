@@ -88,17 +88,11 @@ export class CoverPage {
         this.loadCover(lang, this.id);
       }
     });
-    this.route.queryParams.subscribe(params => {
+    this.route.params.subscribe(params => {
       this.id = params['collectionID'];
-
+      
       if (this.lang && this.id) {
         this.loadCover(this.lang, this.id);
-      }
-
-      if ( params['publicationID'] === undefined ) {
-        this.coverSelected = true;
-      } else {
-        this.coverSelected = false;
       }
 
       if (this.collectionID !== params['collectionID']) {
@@ -109,6 +103,14 @@ export class CoverPage {
       }
       this.collectionID = params['collectionID'];
       this.checkIfCollectionHasChildrenPdfs();
+    });
+
+    this.route.queryParams.subscribe(params => {
+      if ( params['publicationID'] === undefined ) {
+        this.coverSelected = true;
+      } else {
+        this.coverSelected = false;
+      }
     });
   }
 

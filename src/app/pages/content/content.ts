@@ -56,13 +56,14 @@ export class ContentPage /*implements OnDestroy*/ {
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
+    this.route.params.subscribe(params => {
       if (this.fileID !== params['id']) {
         this.fileID = params['id'];
         this.mdContent = new MdContent({id: this.fileID, title: '...', content: null, filename: null});
         this.loadContent(this.lang);
       }
-
+    });
+    this.route.queryParams.subscribe(params => {
       if (!params['selectedItemInAccordion'] || params['selectedItemInAccordion'] === undefined) {
         this.searchTocItem();
       }

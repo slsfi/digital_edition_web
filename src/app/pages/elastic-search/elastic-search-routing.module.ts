@@ -4,7 +4,7 @@ import { ElasticSearchPage } from './elastic-search';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':query',
     component: ElasticSearchPage,
   }
 ];

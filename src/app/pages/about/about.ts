@@ -29,7 +29,6 @@ export class AboutPage {
   aboutMenuId = '';
 
   constructor(
-    public navCtrl: NavController,
     private config: ConfigService,
     public translate: TranslateService,
     public languageService: LanguageService,

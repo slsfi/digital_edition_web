@@ -4,7 +4,7 @@ import { ContentPage } from './content';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':id',
     component: ContentPage,
   }
 ];

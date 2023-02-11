@@ -38,7 +38,7 @@ export class MobilePagesListPage {
     this.router.navigate([page]);
   }
 
-  ionViewDidLoad() {
+  ngOnInit() {
     console.log('ionViewDidLoad MobilePagesListPage');
   }
 

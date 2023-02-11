@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CoverPage } from './cover';
+import { OccurrencesResultPage } from './occurrences-result';
 
 const routes: Routes = [
   {
-    path: ':collectionID',
-    component: CoverPage,
+    path: ':objectType/:id',
+    component: OccurrencesResultPage,
   }
 ];
 
@@ -13,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class CoverPageRoutingModule {}
+export class OccurrencesResultRoutingModule {}

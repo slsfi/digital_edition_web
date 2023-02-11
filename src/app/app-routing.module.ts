@@ -75,6 +75,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/music/music.module').then( m => m.MusicPageModule)
   },
   {
+    path: 'result',
+    loadChildren: () => import('./pages/occurrences-result/occurrences-result.module').then( m => m.OccurrencesResultPageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
