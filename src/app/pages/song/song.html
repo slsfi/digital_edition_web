@@ -1,0 +1,72 @@
+<ion-content padding>
+  <ng-container *ngIf="true">
+
+    <ng-container *ngIf="showOccurrencesModal" class="occurrenceButton">
+      <button ion-button small (click)="openOccurrenceResult()">{{ (occurrenceResult?.name)?occurrenceResult?.name:("Read.ShowSearchResults" | translate) }} &nbsp;<ion-icon name="search"></ion-icon></button>
+    </ng-container>
+
+  <ion-grid>
+  <!-- src="{{'assets/' + songFile}}" -->
+    <ion-row>
+      <ion-col col-md-6>
+
+          <ion-card>
+              <img alt="song image" *ngIf="song" src="assets/jpeg-files/{{songOriginalId}}.jpg"/>
+              <ion-card-content>
+                <button *ngIf="!playing" ion-button (click)="playSong()">
+                  <ion-icon name="play"></ion-icon>
+                </button>
+                <button *ngIf="playing" ion-button (click)="stopSong()">
+                  <ion-icon name="square"></ion-icon>
+                </button>
+                <ion-card-title>
+                </ion-card-title>
+                <ion-card>
+                  <ion-card-title *ngIf="song">{{song.volume}} {{song.number}}</ion-card-title>
+                  <ion-card-content>
+                <ion-list inset="true">
+                    <ion-item (click)="downloadMIDI()">
+                        {{ "Song.Download" | translate}} Midi
+                      <ion-icon name="download" item-end></ion-icon>
+                    </ion-item>
+                    <ion-item (click)="downloadXML()">
+                      {{ "Song.Download" | translate}} Music XML
+                      <ion-icon name="download" item-end></ion-icon>
+                    </ion-item>
+                    <ion-item (click)="downloadJPEG()">
+                      {{ "Song.Download" | translate}} JPEG
+                      <ion-icon name="download" item-end></ion-icon>
+                    </ion-item>
+                  </ion-list>
+                </ion-card-content>
+                </ion-card>
+              </ion-card-content>
+            </ion-card>
+      </ion-col>
+      <ion-col col-md-6>
+
+
+          <ion-list *ngIf="song">
+              <ion-item>{{"Song.Playman" | translate}}: {{song.performer_firstname}} {{song.performer_lastname}} {{(song.performer_born_name)?"("+song.performer_born_name+")":""}}</ion-item>
+              <ion-item>{{"Song.SongType" | translate}}: {{song.type}}</ion-item>
+              <ion-item>{{"Song.SongName" | translate}}: {{song.name}}</ion-item>
+              <ion-item>{{"Song.Landscape" | translate}}: {{song.landscape}}</ion-item>
+              <ion-item>{{"Song.Place" | translate}}: {{song.place}}</ion-item>
+              <ion-item>{{"Song.Recorder" | translate}}: {{song.recorder_firstname}} {{song.recorder_lastname}} {{(song.recorder_born_name)?"("+song.recorder_born_name+")":""}}</ion-item>
+              <ion-item>{{"Song.Year" | translate}}: {{song.original_publication_date}}</ion-item>
+              <ion-item>{{"Song.OCL" | translate}}: {{song.original_collection_location}}</ion-item>
+              <ion-item>{{"Song.OCS" | translate}}: {{song.original_collection_signature}}</ion-item>
+              <ion-item>{{"Song.Volume" | translate}}: {{song.volume}}</ion-item>
+              <ion-item>{{"Song.SongNumber" | translate}}: {{song.number}}</ion-item>
+              <ion-item>{{"Song.Comments" | translate}}: {{song.comment}}</ion-item>
+              <ion-item>{{"Song.SongText" | translate}}: {{song.lyrics}}</ion-item>
+            </ion-list>
+
+
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <list-of-songs *ngIf="song && song.type" [currentFilterType]="currentFilterType" [songFilters]="songFilters" [currentSong]="songID"></list-of-songs>
+ </ng-container>
+</ion-content>

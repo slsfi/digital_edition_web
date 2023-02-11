@@ -95,6 +95,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/single-edition-part/single-edition-part.module').then( m => m.SingleEditionPagePartModule)
   },
   {
+    path: 'song',
+    loadChildren: () => import('./pages/song/song.module').then( m => m.SongPageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
