@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
 import { Subscription } from 'rxjs';
 import { ConfigService } from 'src/app/services/config/core/config.service';
 import { EventsService } from 'src/app/services/events/events.service';
@@ -10,6 +9,7 @@ import { LanguageService } from 'src/app/services/languages/language.service';
 import { MdContentService } from 'src/app/services/md/md-content.service';
 import { MetadataService } from 'src/app/services/metadata/metadata.service';
 import { UserSettingsService } from 'src/app/services/settings/user-settings.service';
+import { StorageService } from 'src/app/services/storage/storage.service';
 import { TextService } from 'src/app/services/texts/text.service';
 import { TableOfContentsService } from 'src/app/services/toc/table-of-contents.service';
 
@@ -52,7 +52,7 @@ export class CoverPage {
     private textService: TextService,
     protected sanitizer: DomSanitizer,
     protected events: EventsService,
-    private storage: Storage,
+    private storage: StorageService,
     public userSettingsService: UserSettingsService,
     protected tableOfContentsService: TableOfContentsService,
     public config: ConfigService,
