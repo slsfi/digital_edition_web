@@ -103,6 +103,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/tag-search/tag-search.module').then( m => m.TagearchPageModule)
   },
   {
+    path: 'publication-title',
+    loadChildren: () => import('./pages/title/title.module').then( m => m.TitlePageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
