@@ -91,6 +91,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/single-edition/single-edition.module').then( m => m.SingleEditionPageModule)
   },
   {
+    path: 'publication-part-toc',
+    loadChildren: () => import('./pages/single-edition-part/single-edition-part.module').then( m => m.SingleEditionPagePartModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'

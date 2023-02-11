@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      <div class="page-title">{{appName}}</div>
+    </ion-title>
+    <top-menu></top-menu>
+      <ion-buttons end>
+      <button ion-button (click)="showPopover($event)">
+        <ion-icon name="settings"></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding class="card-background-page">
+
+  <ion-card *ngIf="image" class="collectionImageCard">
+    <img alt="collection image" class="collectionImage" src="{{image}}">
+    <p>test should get from API</p>
+  </ion-card>
+
+  <h1 class="subTitle">{{subTitle}}</h1>
+
+  <table-of-contents [root]="root" [tableOfContents]="tableOfContents" [tocItems]="tocItems" [collection]="collection" [showIntroduction]="false"></table-of-contents>
+
+</ion-content>
