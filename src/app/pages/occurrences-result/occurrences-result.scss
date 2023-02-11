@@ -1,33 +1,31 @@
-.occurrences-result {
-    .title-mobile {
-        font-size: 2rem;
-    }
+.title-mobile {
+    font-size: 2rem;
+}
 
-    .segment-header-mobile {
-        font-size: 1rem !important;
-        padding-left: 1rem;
-        padding-right: 1rem;
-        min-width: max-content;
-    }
+.segment-header-mobile {
+    font-size: 1rem !important;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    min-width: max-content;
+}
 
-    &__content {
-        background-color: white;
-    }
+&__content {
+    background-color: white;
+}
 
-    &__media-image {
+&__media-image {
+    display: block;
+    margin-left: 0;
+    margin-right: auto;
+    width: 50%;
+
+    &--mobile {
         display: block;
-        margin-left: 0;
+        margin-left: auto;
         margin-right: auto;
         width: 50%;
-
-        &--mobile {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            width: 50%;
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
 }
 

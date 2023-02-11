@@ -26,6 +26,7 @@ import { router } from 'sw-toolbox';
 @Component({
   selector: 'page-occurrences-result',
   templateUrl: 'occurrences-result.html',
+  styleUrls: ['occurrences-result.scss']
 })
 export class OccurrencesResultPage {
   segments = 'info';

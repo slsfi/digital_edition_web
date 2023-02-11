@@ -79,6 +79,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/occurrences-result/occurrences-result.module').then( m => m.OccurrencesResultPageModule)
   },
   {
+    path: 'facsimile',
+    loadChildren: () => import('./pages/pdf/pdf.module').then( m => m.PdfPageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'

@@ -50,6 +50,7 @@
     "leaflet": "^1.9.3",
     "lodash": "^4.17.21",
     "marked": "^4.2.12",
+    "ngx-extended-pdf-viewer": "^16.0.2",
     "ngx-markdown": "^15.1.0",
     "ngx-sharebuttons": "^11.0.0",
     "node-sass": "^8.0.0",
