@@ -99,6 +99,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/song/song.module').then( m => m.SongPageModule)
   },
   {
+    path: 'tags',
+    loadChildren: () => import('./pages/tag-search/tag-search.module').then( m => m.TagearchPageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
