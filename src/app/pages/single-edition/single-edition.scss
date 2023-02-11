@@ -1,0 +1,66 @@
+.subTitle {
+	color: #000000;
+	font-size: 1.3em;
+	font-style: italic;
+	font-weight: normal;
+}
+
+.collectionImageDiv {
+	float: left;
+}
+
+h2 {
+	font-size: 1.3em;
+}
+
+.collectionDescription {
+	text-align: left;
+	padding-top: 0;
+	padding-left: 0;
+}
+
+.collectionDescription h1 {
+	font-size: 1.7rem;
+	font-weight: bold;
+}
+
+.collectionDescription h2 {
+	font-size: 1.5rem;
+	padding-bottom: 1em;
+	font-weight: bold;
+}
+
+.indented{
+	padding-left: 1.2em;
+}
+
+.justLevel{
+	color: #000000;
+}
+
+.item-block {
+	padding-left: 0;
+}
+
+.collectionImageCard {
+	display: inline-block;
+	box-shadow: none !important;
+	margin-left: 0;
+	margin-right: 0;
+	width: 100%;
+}
+
+ion-item.back-to-list-button.collections.item.item-block.item-ios {
+	display: none;
+}
+
+.secondary-mobile {
+	display: grid;
+}
+
+.fixed-content {
+	margin-top: 0;
+}
+.scroll-content {
+	margin-top: 0;
+}

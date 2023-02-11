@@ -87,6 +87,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/place-search/place-search.module').then( m => m.PlaceSearchPageModule)
   },
   {
+    path: 'publication-toc',
+    loadChildren: () => import('./pages/single-edition/single-edition.module').then( m => m.SingleEditionPageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'

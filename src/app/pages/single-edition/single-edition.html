@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar color="secondary" class="secondary"  *ngIf="userSettingsService.isDesktop()">
+    <ion-title *ngIf="showPage">
+      <div class="page-title">{{appName}}</div>
+      <div class="page-subtitle">{{collection.title}}</div>
+    </ion-title>
+    <ion-buttons *ngIf="showPage" end>
+      <button ion-button (click)="showPopover($event)">
+        <ion-icon name="settings"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="card-background-page">
+  <ng-container *ngIf="!(userSettingsService.isMobile())">
+
+    <div *ngIf="hasDigitalEditionListChildren">
+      <digital-edition-list-children [layoutType]="'auto'" [childrenPdfs]="childrenPdfs" [collectionID]="collection.id"></digital-edition-list-children>
+    </div>
+    <ion-card *ngIf="image && showPage" class="collectionImageCard">
+      <div class="collectionImageDiv">
+        <img alt="collection image" class="collectionImage" src="{{image}}">
+      </div>
+      <div class="collectionDescription" [innerHTML]="collectionDescription.content"></div>
+    </ion-card>
+    <button *ngIf="showPage && show != 'facsimile'" ion-button round icon-end (click)="openFirstPage()">{{"Read.ReadFromBeginning" | translate }}</button>
+    <div *ngIf="showPage">
+      <markdown [data]="description"></markdown>
+    </div>
+  </ng-container>
+</ion-content>
+
+<ion-content padding class="card-background-page"  *ngIf="userSettingsService.isDesktop() && showPage">
+  <cover [id]="collection.id" [language]="translate.currentLang"></cover>
+</ion-content>
