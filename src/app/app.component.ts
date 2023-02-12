@@ -487,8 +487,8 @@ export class DigitalEditionsApp {
 
   openCollectionPage(collection: any) {
     this.currentContentName = collection.title;
-    const params = { collection: collection, fetch: false, id: collection.id };
-    this.router.navigate(['/single-edition'], { queryParams: params });
+    const params = { collection: JSON.stringify(collection), fetch: 'false' };
+    this.router.navigate([`/publication-toc/${collection.id}`], { queryParams: params });
   }
 
   getCollectionsWithTOC(collections: any, media?: any) {
@@ -983,7 +983,7 @@ export class DigitalEditionsApp {
       this.currentContentName = 'Digital Publications';
       const params = {};
       this.enableContentMenu();
-      this.router.navigate(['/EditionsPage'], { queryParams: params });
+      this.router.navigate(['/publications'], { queryParams: params });
     });
     this.events.getTopMenuContent().subscribe(() => {
       this.events.publishSelectedItemInMenu({
@@ -1412,8 +1412,7 @@ export class DigitalEditionsApp {
   }
 
   openStaticPage(id: string) {
-    const params = { id: id };
-    this.router.navigate(['/content'], { queryParams: params });
+    this.router.navigate([`/content/${id}`]);
   }
 
   openPage(page: any, selectedMenu?: any, selectedFile?: any) {
@@ -1432,11 +1431,7 @@ export class DigitalEditionsApp {
       this.events.publish('splitPaneToggle:disable');
     }*/
     try {
-      if ( selectedFile !== undefined ) {
-        this.router.navigate([page], { queryParams: {'selectedFile': selectedFile} });
-      } else {
-        this.router.navigate([page], { queryParams: {'selectedFile': selectedFile} });
-      }
+      this.router.navigate([`/${page}/${selectedFile}`]);
     } catch (e) {
       console.error('Error opening page');
     }
@@ -1456,11 +1451,7 @@ export class DigitalEditionsApp {
     if ( searchPage.object_subtype === undefined || searchPage.object_subtype === '' ) {
       searchPage.object_subtype = encodeURI('subtype');
     }
-    const params = {
-      type: searchPage.object_type,
-      subtype: searchPage.object_subtype
-    };
-    this.router.navigate(['/person-search'], { queryParams: params });
+    this.router.navigate([`/person-search/${searchPage.object_type}/${searchPage.object_subtype}`]);
   }
 
   openFirstPage(collection: DigitalEdition) {
@@ -1524,6 +1515,7 @@ export class DigitalEditionsApp {
     }
 
     console.log('Opening read from App.openFirstPage()');
+    // TODO Sami
     this.router.navigate(['/read'], { queryParams: params });
   }
 
@@ -1564,8 +1556,8 @@ export class DigitalEditionsApp {
           this.openCollectionInitialPage(collection);
         } else {
           // Open collection in single-edition page
-          const params = { collection: collection, fetch: false, id: collection.id };
-          this.router.navigate(['/single-edition'], { queryParams: params });
+          const params = { collection: JSON.stringify(collection), fetch: 'false' };
+          this.router.navigate([`publication-toc/${collection.id}`], { queryParams: params });
         }
       }
       this.cdRef.detectChanges();
@@ -1589,23 +1581,23 @@ export class DigitalEditionsApp {
 
   openCollectionInitialPage(collection: DigitalEdition) {
     console.log('Opening collection from App.openCollectionInitialPage()');
-    const params = { collection: collection, fetch: true, collectionID: collection.id };
+    const params = { collection: JSON.stringify(collection), fetch: 'true', /*collectionID: collection.id*/ };
     if ( this.hasCover && this.defaultSelectedItem === 'cover' ) {
-      this.router.navigate(['/publication-cover'], { queryParams: params });
+      this.router.navigate([`/publication-cover/${collection.id}`], { queryParams: params });
     } else if ( this.hasTitle && this.defaultSelectedItem === 'title' ) {
-      this.router.navigate(['/title-page'], { queryParams: params });
+      this.router.navigate([`/publication-title/${collection.id}`], { queryParams: params });
     } else if ( this.hasForeword && this.defaultSelectedItem === 'foreword' ) {
-      this.router.navigate(['/foreword-page'], { queryParams: params });
+      this.router.navigate([`/publication-foreword/${collection.id}`], { queryParams: params });
     } else if ( this.hasIntro && this.defaultSelectedItem === 'introduction' ) {
-      this.router.navigate(['/introduction'], { queryParams: params });
+      this.router.navigate([`/publication-introduction/${collection.id}`], { queryParams: params });
     } else if ( this.hasCover ) {
-      this.router.navigate(['/publication-cover'], { queryParams: params });
+      this.router.navigate([`/publication-cover/${collection.id}`], { queryParams: params });
     } else if ( this.hasTitle ) {
-      this.router.navigate(['/title-page'], { queryParams: params });
+      this.router.navigate([`/publication-title/${collection.id}`], { queryParams: params });
     } else if ( this.hasForeword ) {
-      this.router.navigate(['/sforeword-page'], { queryParams: params });
+      this.router.navigate([`/publication-foreword/${collection.id}`], { queryParams: params });
     } else if ( this.hasIntro ) {
-      this.router.navigate(['/introduction'], { queryParams: params });
+      this.router.navigate([`/publication-introduction/${collection.id}`], { queryParams: params });
     }
   }
 
@@ -1615,14 +1607,14 @@ export class DigitalEditionsApp {
 
   /* Legacy code */
   openGalleries() {
-    const params = { fetch: true };
+    const params = { fetch: 'true' };
     this.router.navigate(['/galleries'], { queryParams: params });
   }
 
   /* Legacy code */
   openGalleryPage(galleryPage: string) {
-    const params = { galleryPage: galleryPage, fetch: false };
-    this.router.navigate(['/image-gallery'], { queryParams: params });
+    const params = { fetch: 'false' };
+    this.router.navigate([`/gallery/${galleryPage}`], { queryParams: params });
   }
 
   async getMediaCollections(): Promise<any> {
@@ -1643,8 +1635,8 @@ export class DigitalEditionsApp {
         element.highlight = false;
       }
     });
-    const params = { mediaCollectionId: gallery.id, mediaTitle: this.makeTitle(gallery.image_path), fetch: false };
-    this.router.navigate(['/media-collections'], { queryParams: params });
+    const params = { mediaTitle: this.makeTitle(gallery.image_path), fetch: false };
+    this.router.navigate([`/media-collection/${gallery.id}`], { queryParams: params });
   }
 
   selectMediaCollectionInToc(id: string) {

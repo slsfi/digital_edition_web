@@ -903,6 +903,7 @@ export class TableOfContentsAccordionComponent {
           } else {
             this.events.publishTitleLogoShow(false);
           }
+          // TODO Sami
           this.router.navigate(['/read'], { queryParams: params });
         }
       } else {
@@ -1000,16 +1001,9 @@ export class TableOfContentsAccordionComponent {
     }
 
     const params = {
-      id: item.markdownID,
       selectedItemInAccordion: true
     };
-
-    if ((this.platform.is('mobile') || this.userSettingsService.isMobile()) && !this.userSettingsService.isDesktop()) {
-      this.router.navigate(['/content'], { queryParams: params });
-      console.log('pushed mobile')
-    } else {
-      this.router.navigate(['/content'], { queryParams: params });
-    }
+    this.router.navigate([`/content/${item.markdownID}`], { queryParams: params });
   }
 
   selectGallery(item: any) {
@@ -1018,29 +1012,23 @@ export class TableOfContentsAccordionComponent {
       this.router.navigate(['/media-collections'], { queryParams: params });
     } else {
       const params = {mediaCollectionId: item.targetOption.id , mediaTitle: item.targetOption.title, fetch: false};
-      this.router.navigate(['/media-collection'], { queryParams: params });
+      this.router.navigate([`/media-collection/${item.targetOption.id}`], { queryParams: params });
     }
   }
 
   openIntroduction(id: any) {
-    const params = {root: this.root, tocItem: null, collection: {title: 'Introduction'}} as any;
-    params['collectionID'] = id;
+    const params = {root: this.root, tocItem: null, collection: JSON.stringify({title: 'Introduction'})} as any;
     this.coverSelected = false;
     this.titleSelected = false;
     this.forewordSelected = false;
     this.introductionSelected = true;
     this.currentOption = null;
     this.unSelectAllItemsByActiveMenuTree();
-    if (this.platform.is('mobile')) {
-      this.router.navigate(['/introduction'], { queryParams: params });
-    } else {
-      this.router.navigate(['/introduction'], { queryParams: params });
-    }
+    this.router.navigate([`/publication-introduction/${id}`], { queryParams: params });
   }
 
   openForewordPage(id: any) {
-    const params = {root: this.root, tocItem: null, collection: {title: 'Foreword Page'}} as any;
-    params['collectionID'] = id;
+    const params = {root: this.root, tocItem: null, collection: JSON.stringify({title: 'Foreword Page'})} as any;
     params['firstItem'] = '1';
     this.coverSelected = false;
     this.titleSelected = false;
@@ -1048,16 +1036,11 @@ export class TableOfContentsAccordionComponent {
     this.introductionSelected = false;
     this.currentOption = null;
     this.unSelectAllItemsByActiveMenuTree();
-    if (this.platform.is('mobile')) {
-      this.router.navigate(['/foreword-page'], { queryParams: params });
-    } else {
-      this.router.navigate(['/foreword-page'], { queryParams: params });
-    }
+    this.router.navigate([`/publication-foreword/${id}`], { queryParams: params });
   }
 
   openTitlePage(id: any) {
-    const params = {root: this.root, tocItem: null, collection: {title: 'Title Page'}} as any;
-    params['collectionID'] = id;
+    const params = {root: this.root, tocItem: null, collection: JSON.stringify({title: 'Title Page'})} as any;
     params['firstItem'] = '1';
     this.coverSelected = false;
     this.titleSelected = true;
@@ -1065,16 +1048,11 @@ export class TableOfContentsAccordionComponent {
     this.introductionSelected = false;
     this.currentOption = null;
     this.unSelectAllItemsByActiveMenuTree();
-    if (this.platform.is('mobile')) {
-      this.router.navigate(['/title-page'], { queryParams: params });
-    } else {
-      this.router.navigate(['/title-page'], { queryParams: params });
-    }
+    this.router.navigate([`/publication-title/${id}`], { queryParams: params });
   }
 
   openCoverPage(id: any) {
-    const params = {root: this.root, tocItem: null, collection: {title: 'Cover Page'}} as any;
-    params['collectionID'] = id;
+    const params = {root: this.root, tocItem: null, collection: JSON.stringify({title: 'Cover Page'})} as any;
     params['firstItem'] = '1';
     this.coverSelected = true;
     this.titleSelected = false;
@@ -1082,11 +1060,7 @@ export class TableOfContentsAccordionComponent {
     this.introductionSelected = false;
     this.currentOption = null;
     this.unSelectAllItemsByActiveMenuTree();
-    if (this.platform.is('mobile')) {
-      this.router.navigate(['/publication-cover'], { queryParams: params });
-    } else {
-      this.router.navigate(['/publication-cover'], { queryParams: params });
-    }
+    this.router.navigate([`/publication-cover/${id}`], { queryParams: params });
   }
 
   unSelectOptions(list: any) {

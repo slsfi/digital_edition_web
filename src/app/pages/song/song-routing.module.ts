@@ -4,6 +4,10 @@ import { SongPage } from './song';
 
 const routes: Routes = [
   {
+    path: ':song_number',
+    component: SongPage,
+  },
+  {
     path: ':song_number/:filter_songs_by',
     component: SongPage,
   },

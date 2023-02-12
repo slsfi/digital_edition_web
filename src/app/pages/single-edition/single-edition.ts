@@ -147,7 +147,7 @@ export class SingleEditionPage {
 
     this.route.queryParams.subscribe(params => {
       if (params['collection']) {
-        this.collection = params['collection'];
+        this.collection = JSON.parse(params['collection']);
       }
 
       this.parentItem = params['tocItem'];
@@ -299,7 +299,7 @@ export class SingleEditionPage {
   }
 
   maybeLoadIntroductionPage(collectionID: string) {
-      const params = { collection: this.collection, fetch: true };
+      const params = { collection: JSON.stringify(this.collection), fetch: true };
       if ( this.hasCover && this.defaultSelectedItem === 'cover' ) {
         this.router.navigate([`/publication-cover/${this.collection.id}`], { queryParams: params });
         // nav[0].setRoot('cover-page', params);

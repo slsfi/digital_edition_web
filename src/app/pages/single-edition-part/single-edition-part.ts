@@ -75,7 +75,7 @@ export class SingleEditionPagePart {
 
     this.route.queryParams.subscribe(params => {
       if (params['collection']) {
-        this.collection = params['collection'];
+        this.collection = JSON.parse(params['collection']);
       }
 
       this.parentItem = params['tocItem'];

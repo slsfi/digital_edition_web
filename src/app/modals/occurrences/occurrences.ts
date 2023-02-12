@@ -392,6 +392,7 @@ export class OccurrencesPage {
       params['objectType'] = this.objectType;
     }
 
+    // TODO Sami
     this.router.navigate(['read'], { queryParams: params });
   }
 
@@ -410,14 +411,11 @@ export class OccurrencesPage {
     }
 
     const params = {
-      id: data.id,
-      type: type,
-      mediaCollectionId: null,
       mediaTitle: ''
     };
 
     this.viewCtrl.dismiss();
-    this.router.navigate(['media-collection'], { queryParams: params });
+    this.router.navigate([`/media-collection/${null}/${data.id}/${type}`], { queryParams: params });
   }
 
   /**
@@ -425,17 +423,16 @@ export class OccurrencesPage {
    */
   selectSong(song_name: any) {
     const params = {
-      song_number: song_name
     } as any;
 
-    params['occurrenceResult'] = this.occurrenceResult;
+    params['occurrenceResult'] = JSON.stringify(this.occurrenceResult);
     params['objectType'] = this.objectType;
 
     if (this.navParams.get('showOccurrencesModalOnSong')) {
       params['showOccurrencesModalOnSong'] = true;
     }
     this.viewCtrl.dismiss();
-    this.router.navigate(['so'], { queryParams: params });
+    this.router.navigate([`/song/${song_name}`], { queryParams: params });
   }
 
   setOccurrence(occurrence: Occurrence, type: string) {

@@ -307,6 +307,7 @@ export class DigitalEditionList implements OnInit {
     }
 
     console.log('Opening read from DigitalEditionList.openFirstPage()');
+    // TODO Sami
     this.router.navigate(['/read'], { queryParams: params })
   }
 

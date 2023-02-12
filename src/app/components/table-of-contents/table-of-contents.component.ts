@@ -47,6 +47,7 @@ export class TableOfContentsList {
     params['collectionID'] = this.collection?.id;
     params['publicationID'] = 'introduction';
     params['firstItem'] = '1'; // this.getFirstLink(this.tocItems);
+    // TODO Sami
     this.router.navigate(['read'], { queryParams: params });
   }
 
@@ -75,11 +76,11 @@ export class TableOfContentsList {
       params['tocLinkId'] = tocItem.toc_ed_id + '_' + tocItem.toc_linkID;
       params['publicationID'] = tocItem.toc_linkID;
       params['collectionID'] = tocItem.toc_ed_id;
+      // TODO Sami
       this.router.navigate(['read'], { queryParams: params });
     } else {
-      params['collectionID'] = this.collection?.id;
       params['publicationID'] = tocItem.toc_id;
-      this.router.navigate(['single-edition-part'], { queryParams: params });
+      this.router.navigate([`publication-part-toc/${this.collection?.id}`], { queryParams: params });
     }
   }
 }

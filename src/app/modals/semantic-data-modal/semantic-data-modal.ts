@@ -331,6 +331,7 @@ export class SemanticDataModalPage {
     }
 
       this.viewCtrl.dismiss();
+      // TODO Sami
       this.router.navigate(['/read'], params);
   }
 

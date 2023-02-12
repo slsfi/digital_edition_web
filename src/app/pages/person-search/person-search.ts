@@ -25,6 +25,11 @@ import { FilterPage } from 'src/app/modals/filter/filter';
  * Can be filtered by person type and year born, as well as searched.
  */
 
+// @IonicPage({
+//   name: 'person-search',
+//   segment: 'person-search/:type/:subtype',
+//   defaultHistory: ['HomePage']
+// })
 @Component({
   selector: 'page-person-search',
   templateUrl: 'person-search.html',
@@ -369,16 +374,7 @@ export class PersonSearchPage {
     }
 
     if (openOccurrencesAndInfoOnNewPage) {
-      const params = {
-        id: occurrenceResult.id,
-        objectType: this.objectType
-      }
-
-      if ((this.platform.is('mobile') || this.userSettingsService.isMobile()) && !this.userSettingsService.isDesktop()) {
-        this.router.navigate(['occurrences-result'], { queryParams: params });
-      } else {
-        this.router.navigate(['occurrences-result'], { queryParams: params });
-      }
+      this.router.navigate([`/result/${this.objectType}/${occurrenceResult.id}`])
 
     } else {
       const occurrenceModal = await this.modalCtrl.create({

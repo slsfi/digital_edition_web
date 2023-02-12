@@ -69,7 +69,7 @@ export class SongPage {
 
     this.route.queryParams.subscribe(params => {
       if (params['occurrenceResult']) {
-        this.occurrenceResult = params['occurrenceResult'];
+        this.occurrenceResult = JSON.parse(params['occurrenceResult']);
         this.showOccurrencesModal = true;
       }
       this.objectType = params['objectType'];

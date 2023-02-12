@@ -97,7 +97,9 @@ export class ForewordPage {
     })
 
     this.route.queryParams.subscribe(params => {
-      this.collection = params['collection'];
+      if (params['collection']) {
+        this.collection = JSON.parse(params['collection']);
+      }
 
       if (params['publicationID'] === undefined) {
         this.forewordSelected = true;

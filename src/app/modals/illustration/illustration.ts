@@ -120,10 +120,9 @@ export class IllustrationPage {
 
   goToMediaCollection() {
     const params = {
-      mediaCollectionId: this.imgMetadata['media_collection_id' as keyof typeof this.imgMetadata],
       mediaTitle: this.imgMetadata['media_collection_title_translation' as keyof typeof this.imgMetadata], fetch: false
     };
-    this.router.navigate(['media-collection'], { queryParams: params });
+    this.router.navigate([`/media-collection/${this.imgMetadata['media_collection_id' as keyof typeof this.imgMetadata]}`], { queryParams: params });
   }
 
   zoomIn() {

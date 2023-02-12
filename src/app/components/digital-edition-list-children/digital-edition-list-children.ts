@@ -124,7 +124,7 @@ export class DigitalEditionListChildrenComponent {
 
   showPDF(edition: any) {
     const isChildPdf = true;
-    const params = {facsimileId: edition.facsimileId, page: 1};
-    this.router.navigate(['pdf'], { queryParams: params })
+    const params = { page: 1};
+    this.router.navigate([`/facsimile/pdf/${edition.facsimileId}`], { queryParams: params })
   }
 }

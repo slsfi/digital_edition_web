@@ -348,6 +348,7 @@ export class TableOfContentsDrilldownMenuComponent {
       this.events.publishTitleLogoShow(false);
     }
     console.log('Opening read from TableOfContentsDrilldownMenuComponent.open()');
+    // TODO Sami
     this.router.navigate(['/read'], { queryParams: params });
 
     try {
@@ -360,24 +361,14 @@ export class TableOfContentsDrilldownMenuComponent {
   }
 
   openIntroduction() {
-   const params = {root: this.root, tocItem: null, collection: {title: 'Introduction'}} as any;
-    params['collectionID'] = this.collectionId;
-    if (this.platform.is('mobile')) {
-      this.router.navigate(['/introduction'], { queryParams: params});
-    } else {
-      this.router.navigate(['/introduction'], { queryParams: params});
-    }
+    const params = {root: this.root, tocItem: null, collection: JSON.stringify({title: 'Introduction'})} as any;
+    this.router.navigate([`/publication-introduction/${this.collectionId}`], { queryParams: params });
   }
 
   openTitlePage() {
-    const params = {root: this.root, tocItem: null, collection: {title: 'Title Page'}} as any;
-     params['collectionID'] = this.collectionId;
+    const params = {root: this.root, tocItem: null, collection: JSON.stringify({title: 'Title Page'})} as any;
      params['firstItem'] = '1';
-     if (this.platform.is('mobile')) {
-      this.router.navigate(['/title-page'], { queryParams: params});
-    } else {
-      this.router.navigate(['/title-page'], { queryParams: params});
-    }
+    this.router.navigate([`/publication-title/${this.collectionId}`], { queryParams: params });
   }
 
   private scrollToTOC(element: HTMLElement) {
@@ -394,7 +385,7 @@ export class TableOfContentsDrilldownMenuComponent {
     this.menuStack = [];
     this.collectionId = null;
     this.collectionName = null;
-    this.router.navigate(['/EditionsPage']);
+    this.router.navigate(['/publications']);
     this.events.publishExitedTo('EditionsPage');
   }
 }

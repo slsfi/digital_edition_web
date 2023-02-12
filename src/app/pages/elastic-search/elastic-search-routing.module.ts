@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path: ':query',
     component: ElasticSearchPage,
+  },
+  {
+    path: '',
+    component: ElasticSearchPage,
   }
 ];
 

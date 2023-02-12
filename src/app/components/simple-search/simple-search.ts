@@ -901,13 +901,10 @@ export class SimpleSearchComponent {
     }
 
     const params = {
-      id: id,
-      type: type,
-      mediaCollectionId: null,
       mediaTitle: ''
     };
 
-    this.router.navigate(['media-collection'], { queryParams: params })
+    this.router.navigate([`/media-collection/null/${id}/${type}`], { queryParams: params });
     if (this.platform.is('mobile')) {
       this.events.publishSearchModalClosed({});
     }
@@ -1040,6 +1037,7 @@ export class SimpleSearchComponent {
       }
     ];
 
+    // TODO Sami
     this.router.navigate(['read'], { queryParams: params });
     if (this.platform.is('mobile')) {
       this.events.publishSearchModalClosed({});
@@ -1048,12 +1046,10 @@ export class SimpleSearchComponent {
 
   goToOccurrencesResultPage(objectType: String, id: any) {
     const params = {
-      objectType: objectType,
-      id: id,
       searchResult: this.searchString
     }
 
-    this.router.navigate(['/occurrences-result'], { queryParams: params });
+    this.router.navigate([`/result/${objectType}/${id}`], { queryParams: params });
   }
 
   goToSongResultPage(id: any) {
@@ -1062,16 +1058,16 @@ export class SimpleSearchComponent {
       filter_songs_by: 'all'
     }
 
-    this.router.navigate(['song'], { queryParams: params });
+    this.router.navigate([`/song/${params.song_number}/${params.filter_songs_by}`]);
   }
 
   showPDF(facsimileId: any, pageNbr: any) {
     const isChildPdf = true;
-    const params = { facsimileId: facsimileId, page: pageNbr, search: 'fooo' };
+    const params = { page: pageNbr, search: 'fooo' };
     if ( this.pdfViewOpen ) {
       this.events.publishOpenPdf(params);
     } else {
-      this.router.navigate(['pdf'], { queryParams: params });
+      this.router.navigate([`/facsimile/pdf/${facsimileId}`], { queryParams: params })
       this.pdfViewOpen = true;
     }
     if (this.platform.is('mobile')) {

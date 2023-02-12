@@ -126,7 +126,7 @@ export class ListOfSongsComponent {
     if (this.songCategory) {
       params.filter_songs_by = this.songCategory;
     }
-    this.router.navigate(['/song'], { queryParams: params });
+    this.router.navigate([`/song/${song.publication_song_id}/${params.filter_songs_by}`]);
   }
 
   /**
@@ -138,8 +138,7 @@ export class ListOfSongsComponent {
       objectType: 'subject',
       id: subjectID
     }
-
-    this.router.navigate(['/occurrences-result'], { queryParams: params });
+    this.router.navigate([`/result/${params.objectType}/${params.id}`]);
   }
 
   /**
@@ -152,7 +151,7 @@ export class ListOfSongsComponent {
       id: locationID
     }
 
-    this.router.navigate(['/occurrences-result'], { queryParams: params });
+    this.router.navigate([`/result/${params.objectType}/${params.id}`]);
   }
 
   /**
@@ -165,7 +164,7 @@ export class ListOfSongsComponent {
       id: tagID
     }
 
-    this.router.navigate(['/occurrences-result'], { queryParams: params });
+    this.router.navigate([`/result/${params.objectType}/${params.id}`]);
   }
 
   /**

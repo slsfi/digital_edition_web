@@ -618,24 +618,20 @@ export class TextChangerComponent {
     if (item.page !== undefined) {
       // Open text in page-cover, page-title, page-foreword, page-introduction or media-collections
       if (item.page === 'page-cover') {
-        const params = {root: null, tocItem: null, collection: {title: 'Cover Page'}} as any;
-        params['collectionID'] = item.itemId;
+        const params = {root: null, tocItem: null, collection: JSON.stringify({title: 'Cover Page'})} as any;
         params['firstItem'] = '1';
-        this.router.navigate(['/publication-cover'], { queryParams: params });
+        this.router.navigate([`/publication-cover/${item.itemId}`], { queryParams: params });
       } else if (item.page === 'page-title') {
-        const params = {root: null, tocItem: null, collection: {title: 'Title Page'}} as any;
-        params['collectionID'] = item.itemId;
+        const params = {root: null, tocItem: null, collection: JSON.stringify({title: 'Title Page'})} as any;
         params['firstItem'] = '1';
-        this.router.navigate(['/title-page'], { queryParams: params });
+        this.router.navigate([`/publication-title/${item.itemId}`], { queryParams: params });
       } else if (item.page === 'page-foreword') {
-        const params = {root: null, tocItem: null, collection: {title: 'Foreword Page'}} as any;
-        params['collectionID'] = item.itemId;
+        const params = {root: null, tocItem: null, collection: JSON.stringify({title: 'Foreword Page'})} as any;
         params['firstItem'] = '1';
-        this.router.navigate(['/foreword-page'], { queryParams: params });
+        this.router.navigate([`/publication-foreword/${item.itemId}`], { queryParams: params });
       } else if (item.page === 'page-introduction') {
-        const params = {root: null, tocItem: null, collection: {title: 'Introduction'}} as any;
-        params['collectionID'] = item.itemId;
-        this.router.navigate(['/introduction'], { queryParams: params });
+        const params = {root: null, tocItem: null, collection: JSON.stringify({title: 'Introduction'})} as any;
+        this.router.navigate([`/publication-introduction/${item.itemId}`], { queryParams: params });
       } else if (item.page === 'media-collections') {
         const params = {};
         this.router.navigate(['/media-collections'], { queryParams: params });

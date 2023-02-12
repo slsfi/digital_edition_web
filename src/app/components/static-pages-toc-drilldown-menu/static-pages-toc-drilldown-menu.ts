@@ -174,11 +174,7 @@ export class StaticPagesTocDrilldownMenuComponent {
 
     const params = {id: itemId};
 
-    if ((this.platform.is('mobile') || this.userSettingsService.isMobile()) && !this.userSettingsService.isDesktop()) {
-      this.router.navigate(['/content'], { queryParams: params });
-    } else {
-      this.router.navigate(['/content'], { queryParams: params });
-    }
+    this.router.navigate([`/content/${itemId}`]);
   }
 
   public front() {
@@ -186,7 +182,7 @@ export class StaticPagesTocDrilldownMenuComponent {
   }
 
   private exit() {
-    this.router.navigate(['/EditionsPage']);
+    this.router.navigate(['/publications']);
   }
 
 }
