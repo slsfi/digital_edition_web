@@ -845,7 +845,7 @@ export class ElasticSearchPage {
   }
 
   getHitHref(hit: any) {
-    let path = '/#/';
+    let path = '/';
 
     if (hit.source.text_type === 'tit') {
       path = path + 'publication-title/' + hit.source.collection_id;
