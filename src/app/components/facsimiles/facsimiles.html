@@ -1,0 +1,78 @@
+
+<div *ngIf="externalFacsimilesExist || facsimiles.length>0" class="text-select-wrapper facsimile-header" [ngClass]="selectedFacsimileIsExternal?'external-urls-header':''">
+  <h3 *ngIf="!selectedFacsimileIsExternal" [innerHTML]="selectedFacsimileName"></h3>
+  <h3 *ngIf="selectedFacsimileIsExternal">{{"Read.Facsimiles.ExternalHeading" | translate}}</h3>
+  <div *ngIf="facsimiles.length>1 || (facsimiles.length==1 && externalFacsimilesExist)" class="flex-buttons">
+    <button ion-button (click)="selectFacsimile()">{{"Read.Facsimiles.ChangeFacsimile" | translate}}</button>
+  </div>
+</div>
+
+<ion-scroll *ngIf="selectedFacsimileIsExternal" scrollY="true" class="external_urls_wrapper" [ngStyle]="{'height': '100%', 'max-height': 'calc(100% - 60px)'}">
+  <div [ngClass]="(readPopoverService.fontsize==0)?'tei teiContainer xsmallFontSize':(readPopoverService.fontsize==1)?'tei teiContainer smallFontSize':(readPopoverService.fontsize==2)?'tei teiContainer mediumFontSize':(readPopoverService.fontsize==3)?'tei teiContainer largeFontSize':'tei teiContainer xlargeFontSize'">
+    <ul>
+      <li *ngFor="let ext of externalURLs"><a target="_blank" href="{{ext.url}}" [innerHTML]="ext.title"></a></li>
+    </ul>
+  </div>
+</ion-scroll>
+
+<ion-item *ngIf="externalURLs.length===0 && numberOfPages>1" class="page-number-wrapper">
+  <ion-label class="page_number_label">{{"Read.Facsimiles.Page" | translate}} ({{"Read.Facsimiles.Of" | translate}}
+    {{numberOfPages ? numberOfPages : (images ? images.length : 0)}}):</ion-label>
+  <ion-input class="page_number_input" type="number" (change)="setPage($event)" [(ngModel)]="manualPageNumber"></ion-input>
+</ion-item>
+
+<div id="facsimilies-image" *ngIf="!facsimilePagesInfinite && !selectedFacsimileIsExternal">
+  <img
+    [src]="images ? images[activeImage] : ''"
+    [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
+    (wheel)="onMouseWheel($event)"
+    (pan)="handleSwipeEvent($event)"
+    (mouseup)="onMouseUp($event)"
+    (touchend)="onTouchEnd($event)"
+    (mousedown)="$event.preventDefault();"
+  >
+</div>
+
+<div id="facsimilies-image" *ngIf="facsimilePagesInfinite && facsNumber && !selectedFacsimileIsExternal">
+  <img
+    [src]="facsBase ? facsBase +'/'+ facsPage['publication_facsimile_collection_id'] +'/'+ facsSize + '/' + facsNumber + '.jpg' : facsUrl + facsNumber + (facsSize ? '/' + facsSize : '')"
+    [ngStyle]="{'transform':'scale('+zoom+') rotate('+angle+'deg) translate3d(' + prevX + 'px, ' + prevY + 'px, 0px)'}"
+    (wheel)="onMouseWheel($event)"
+    (pan)="handleSwipeEvent($event)"
+    (mouseup)="onMouseUp($event)"
+    (touchend)="onTouchEnd($event)"
+    (mousedown)="$event.preventDefault();"
+  >
+</div>
+
+<ng-container *ngIf="facsimiles.length>0">
+  <ion-fab *ngIf="numberOfPages > 1 && !selectedFacsimileIsExternal" middle left class="leftFacsimileArrow">
+    <button *ngIf="numberOfPages > 1" ion-fab color="primary" mini (click)="previous()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </button>
+  </ion-fab>
+  <ion-fab middle right *ngIf="!selectedFacsimileIsExternal" class="rightFacsimileArrowAndControls">
+    <button *ngIf="numberOfPages > 1" ion-fab color="primary" mini (click)="next()">
+      <ion-icon name="arrow-forward"></ion-icon>
+    </button>
+    <button ion-fab color="secondary" mini (click)="openZoom()">
+      <ion-icon name="expand"></ion-icon>
+    </button>
+    <button ion-fab color="secondary" mini (click)="zoomIn()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+    <button ion-fab color="secondary" mini (click)="zoomOut()">
+      <ion-icon name="remove"></ion-icon>
+    </button>
+    <button ion-fab color="secondary" mini (click)="rotate()">
+      <ion-icon name="refresh"></ion-icon>
+    </button>
+    <button ion-fab color="secondary" mini (click)="resetFacsimile()">
+      <ion-icon name="undo"></ion-icon>
+    </button>
+  </ion-fab>
+</ng-container>
+
+<div class="tei teiContainer" [innerHTML]="text"
+  [ngClass]="(readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize'">
+</div>

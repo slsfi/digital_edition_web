@@ -9,23 +9,25 @@
     min-width: max-content;
 }
 
-&__content {
-    background-color: white;
-}
-
-&__media-image {
-    display: block;
-    margin-left: 0;
-    margin-right: auto;
-    width: 50%;
-
-    &--mobile {
+:host {
+    &__content {
+        background-color: white;
+    }
+    
+    &__media-image {
         display: block;
-        margin-left: auto;
+        margin-left: 0;
         margin-right: auto;
         width: 50%;
-        margin-top: 10px;
-        margin-bottom: 10px;
+    
+        &--mobile {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
     }
 }
 

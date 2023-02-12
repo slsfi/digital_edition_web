@@ -12,8 +12,8 @@ export class Facsimile {
 
   public title: any;
   public content = '';
-  public images = [];
-  public zoomedImages = [];
+  public images: any = [];
+  public zoomedImages: any = [];
 
   public type: number;
 

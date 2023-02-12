@@ -19,7 +19,6 @@ import { DigitalEditionListChildrenComponent } from './digital-edition-list-chil
 // import { IllustrationsComponent } from './illustrations/illustrations';
 // import { TableOfContentLetterFilterComponent } from './table-of-content-letter-filter/table-of-content-letter-filter';
 import { DateHistogram } from './date-histogram/date-histogram';
-// import { MathJaxComponent } from './math-jax/math-jax';
 import { IonicModule } from '@ionic/angular';
 import { UserSettingsService } from '../services/settings/user-settings.service';
 import { PipesModule } from 'src/pipes/pipes.module';
@@ -33,6 +32,7 @@ import { TableOfContentsDrilldownMenuComponent } from './table-of-contents-drill
 import { StaticPagesTocDrilldownMenuComponent } from './static-pages-toc-drilldown-menu/static-pages-toc-drilldown-menu';
 import { ListOfSongsComponent } from './list-of-songs/list-of-songs';
 import { TextChangerComponent } from './text-changer/text-changer';
+import { MathJaxComponent } from './math-jax/math-jax';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -57,7 +57,7 @@ export function createTranslateLoader(http: HttpClient) {
     // IllustrationsComponent,
     // TableOfContentLetterFilterComponent,
     DateHistogram,
-    // MathJaxComponent,
+    MathJaxComponent,
   ],
   imports: [
     IonicModule,
@@ -92,7 +92,7 @@ export function createTranslateLoader(http: HttpClient) {
     // IllustrationsComponent,
     // TableOfContentLetterFilterComponent,
     DateHistogram,
-    // MathJaxComponent,
+    MathJaxComponent,
   ],
   providers: [
     UserSettingsService,

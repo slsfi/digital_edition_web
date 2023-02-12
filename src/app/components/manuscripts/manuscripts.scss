@@ -1,0 +1,21 @@
+.XMLcomment {
+    display: none;
+}
+
+.tei img {
+  width: 0.9rem;
+  display: inline;
+}
+
+ion-item.item.show-normalized-toggle {
+  background-color: var(--main-background-color);
+}
+
+/* Highlight for search match. */
+match {
+  background-color: $search-match-color !important;
+}
+
+.mobile-mode-manuscripts manuscripts .text-select-wrapper {
+  display: none !important;
+}

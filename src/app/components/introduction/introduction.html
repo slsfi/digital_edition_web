@@ -1,0 +1,9 @@
+<ion-spinner *ngIf="textLoading" class="loading" name="crescent"></ion-spinner>
+<div class="tei teiContainer" [innerHTML]="text"
+  [class.show_comments]="readPopoverService.show.comments"
+  [class.show_personInfo]="readPopoverService.show.personInfo"
+  [class.show_workInfo]="readPopoverService.show.workInfo"
+  [class.show_abbreviations]="readPopoverService.show.abbreviations"
+  [class.show_pageNumbering]="readPopoverService.show.pageNumbering"
+  [ngClass]="(readPopoverService.fontsize==0)?'xsmallFontSize':(readPopoverService.fontsize==1)?'smallFontSize':(readPopoverService.fontsize==2)?'mediumFontSize':(readPopoverService.fontsize==3)?'largeFontSize':'xlargeFontSize'">
+</div>

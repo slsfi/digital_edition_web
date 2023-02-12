@@ -1,0 +1,108 @@
+    .leftFacsimileArrow {
+        left: 0;
+        right: auto !important;
+    }
+
+    #facsimilies-image {
+        max-height: 100%;
+        height: 100%;
+    }
+    #facsimilies-image img {
+      max-height: -webkit-fill-available;
+      max-height: fill-available;
+      object-fit: scale-down;
+      object-position: top;
+      width: 100%;
+      height: 100%;
+    }
+
+    .external_url a {
+      white-space: normal;
+    }
+
+    img {
+        cursor: move;
+        // https://github.com/hammerjs/hammer.js/issues/1050#issuecomment-267595556
+        // Need to use !important because something is trying to override the value.
+        touch-action: none !important;
+    }
+
+    .external_urls_wrapper > .scroll-content {
+        padding: 0 !important;
+    }
+    .external_urls_wrapper div.tei {
+        font-family: var(--font-stack-app-base);
+        padding-bottom: 100px;
+    }
+    .external_urls_wrapper ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: table;
+    }
+    .external_urls_wrapper ul > li {
+        padding: 0 0 0.5em 0;
+        display: table-row;
+    }
+
+    .external_urls_wrapper ul > li::before {
+        content: "\203A";
+        padding-right: 0.5em;
+        display: table-cell;
+        text-align: right;
+    }
+
+    ion-item.item.page-number-wrapper {
+        background-color: var(--facsimile-column-page-number-wrapper-background-color);
+        padding-left: 0;
+
+        div.item-inner {
+            padding: 8px 0;
+            box-shadow: inset 0 -1px 0 0 var(--fab-button-primary-background-color) !important;
+            border-bottom: 0;
+
+            div.input-wrapper {
+                display: inline-block;
+
+                ion-label.page_number_label {
+                    float: left;
+                    margin: 9px 8px;
+                    color: var(--dark-color);
+                    max-width: max-content;
+                }
+
+                ion-input.page_number_input {
+                    float: left;
+                    width: auto;
+
+                    input {
+                        width: 4.5rem;
+                        padding: 5px;
+                        border: 1px solid #666;
+                        margin: 0;
+                        border-radius: $corner-roundness;
+                        background-color: #fafafa;
+                    }
+                    input:focus {
+                        border-color: var(--fab-button-primary-background-color);
+                        filter: brightness(110%);
+                    }
+                }
+            }
+        }
+    }
+
+.mobile-mode-facsimiles facsimiles .facsimile-header {
+  display: none;
+}
+
+.mobile-mode-facsimiles facsimiles #facsimilies-image {
+  padding-top: 1rem;
+}
+
+.mobile-mode-facsimiles facsimiles {
+    .leftFacsimileArrow,
+    .rightFacsimileArrowAndControls {
+        margin-top: -60px;
+    }
+}

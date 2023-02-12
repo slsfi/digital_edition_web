@@ -104,6 +104,14 @@ export class EventsService {
     private pageLoadedForeword = new Subject<any>();
     // setSelectedStatic:true
     private setSelectedStaticTrue = new Subject<any>();
+    // give:illustration
+    private giveIllustration = new Subject<any>();
+    // next:facsimile
+    private nextFacsimile = new Subject<any>();
+    // previous:facsimile
+    private previousFacsimile = new Subject<any>();
+    // zoom:facsimile
+    private zoomFacsimile = new Subject<any>();
 
 
     publishShareDismiss(data?: any) {
@@ -496,5 +504,37 @@ export class EventsService {
 
     getSetSelectedStaticTrue(): Subject<any> {
         return this.setSelectedStaticTrue;
+    }
+
+    publishGiveIllustration(data?: any) {
+        this.giveIllustration.next(data);
+    }
+
+    getGiveIllustration(): Subject<any> {
+        return this.giveIllustration;
+    }
+
+    publishNextFacsimile(data?: any) {
+        this.nextFacsimile.next(data);
+    }
+
+    getNextFacsimile(): Subject<any> {
+        return this.nextFacsimile;
+    }
+
+    publishPreviousFacsimile(data?: any) {
+        this.previousFacsimile.next(data);
+    }
+
+    getPreviousFacsimile(): Subject<any> {
+        return this.previousFacsimile;
+    }
+
+    publishZoomFacsimile(data?: any) {
+        this.zoomFacsimile.next(data);
+    }
+
+    getZoomFacsimile(): Subject<any> {
+        return this.zoomFacsimile;
     }
 }
