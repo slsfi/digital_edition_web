@@ -1,0 +1,20 @@
+.illustration-image-wrapper {
+  margin: 0 0 1rem 0;
+  img {
+    cursor: zoom-in;
+    width: auto;
+    height: auto;
+  }
+}
+div.illustration-image-wrapper:last-of-type {
+  padding-bottom: 2rem;
+}
+button.view-all-button + div.illustration-image-wrapper {
+  margin-top: 1rem;
+}
+button.button {
+  font-size: 0.75rem;
+  height: 1.875rem !important;
+}
+
+
