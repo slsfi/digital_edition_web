@@ -1,29 +1,25 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable } from 'rxjs';
-import { ajax, AjaxResponse } from 'rxjs/ajax';
+import { Observable } from 'rxjs';
 import { ConfigService } from '../config/core/config.service';
-
 
 @Injectable()
 export class MdContentService {
-
   private mdUrl = '/md/';
-  private staticPagesURL = '/static-pages-toc/'
-  private apiEndpoint: string
+  private staticPagesURL = '/static-pages-toc/';
+  private apiEndpoint: string;
 
-  constructor(private config: ConfigService) {
+  constructor(private config: ConfigService, private http: HttpClient) {
     this.apiEndpoint = this.config.getSettings('app.apiEndpoint') as string;
     try {
       const simpleApi = this.config.getSettings('app.simpleApi');
       if (simpleApi) {
         this.apiEndpoint = simpleApi as string;
       }
-    } catch (e) {
-
-    }
+    } catch (e) {}
   }
 
-  getMdContent (fileID: string): Observable<any> {
+  getMdContent(fileID: string): Observable<any> {
     // This is a TEMPORARY bugfix, that is solved in this way because it
     // is 11 pm and there is to be a presentation tomorrow.
     const id_parts = fileID.split('-');
@@ -34,28 +30,33 @@ export class MdContentService {
       fileID = id_parts.join('-');
     }
 
-    const url = this.apiEndpoint + '/' + this.config.getSettings('app.machineName') + this.mdUrl + fileID;
-    return ajax(url)
-      .pipe(
-        map(this.extractData),
-        catchError(this.handleError),
-      );
+    const url =
+      this.apiEndpoint +
+      '/' +
+      this.config.getSettings('app.machineName') +
+      this.mdUrl +
+      fileID;
+    return this.http.get(url);
   }
 
   getStaticPagesToc(language: string): Observable<any> {
-    const url = this.apiEndpoint + '/' +
-      this.config.getSettings('app.machineName') + this.staticPagesURL + language;
-    return ajax(url)
-       .pipe(
-        map(this.extractData),
-        catchError(this.handleError),
-       );
+    const url =
+      this.apiEndpoint +
+      '/' +
+      this.config.getSettings('app.machineName') +
+      this.staticPagesURL +
+      language;
+    return this.http.get(url);
   }
 
   async getStaticPagesTocPromise(language: string): Promise<any> {
     try {
-      const url = this.apiEndpoint + '/' +
-      this.config.getSettings('app.machineName') + this.staticPagesURL + language;
+      const url =
+        this.apiEndpoint +
+        '/' +
+        this.config.getSettings('app.machineName') +
+        this.staticPagesURL +
+        language;
       const response = await fetch(url);
       return response.json();
     } catch (e) {}
@@ -70,7 +71,9 @@ export class MdContentService {
       return pages;
     } else {
       try {
-        const startIndex: number = Number(this.config.getSettings('staticPages.about_index'));
+        const startIndex: number = Number(
+          this.config.getSettings('staticPages.about_index')
+        );
         return markdownData.children[startIndex].children;
       } catch (e) {
         return markdownData.children[3].children;
@@ -84,27 +87,15 @@ export class MdContentService {
   getNodeById(id: any, tree: any) {
     const reduce = [].reduce;
     const runner: any = (result: any, node: any) => {
-        if (result || !node) { return result; }
-        return node.id === id && node ||
-            runner(null, node.children) ||
-            reduce.call(Object(node), runner, result);
-    }
+      if (result || !node) {
+        return result;
+      }
+      return (
+        (node.id === id && node) ||
+        runner(null, node.children) ||
+        reduce.call(Object(node), runner, result)
+      );
+    };
     return runner(null, tree);
-  }
-
-  private extractData(res: AjaxResponse<unknown>) {
-    return res.response;
-  }
-
-  private async handleError (error: Response | any) {
-    let errMsg: string;
-    if (error instanceof Response) {
-      const body = await error.json() || '';
-      const err = body.error || JSON.stringify(body);
-      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-    } else {
-      errMsg = error.message ? error.message : error.toString();
-    }
-    throw errMsg;
   }
 }

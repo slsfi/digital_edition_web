@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
 
 import { LanguageService } from '../languages/language.service';
-import { catchError, map, Observable } from 'rxjs';
-import { ajax, AjaxResponse } from 'rxjs/ajax';
+import { Observable } from 'rxjs';
 import { ConfigService } from '../config/core/config.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class GalleryService {
-
   private language: string;
 
-  constructor(public languageService: LanguageService, private config: ConfigService) {
+  constructor(
+    public languageService: LanguageService,
+    private config: ConfigService,
+    private http: HttpClient
+  ) {
     this.language = this.config.getSettings('i18n.locale') as string;
     this.languageService.getLanguage().subscribe((lang: string) => {
       this.language = lang;
@@ -20,8 +23,13 @@ export class GalleryService {
 
   async getGalleries(language: string): Promise<any> {
     try {
-      const response = await fetch(this.config.getSettings('app.apiEndpoint') + '/' +
-      this.config.getSettings('app.machineName') + '/gallery/data/' + language);
+      const response = await fetch(
+        this.config.getSettings('app.apiEndpoint') +
+          '/' +
+          this.config.getSettings('app.machineName') +
+          '/gallery/data/' +
+          language
+      );
       return response.json();
     } catch (e) {}
   }
@@ -32,10 +40,15 @@ export class GalleryService {
       if (id) {
         incId = '/' + id;
       }
-      const response = await fetch(this.config.getSettings('app.apiEndpoint') + '/' +
-      this.config.getSettings('app.machineName') + '/gallery/connections/tag' + incId);
+      const response = await fetch(
+        this.config.getSettings('app.apiEndpoint') +
+          '/' +
+          this.config.getSettings('app.machineName') +
+          '/gallery/connections/tag' +
+          incId
+      );
       return response.json();
-    } catch (e) { }
+    } catch (e) {}
   }
 
   async getGalleryLocations(id?: any): Promise<any> {
@@ -44,10 +57,15 @@ export class GalleryService {
       if (id) {
         incId = '/' + id;
       }
-      const response = await fetch(this.config.getSettings('app.apiEndpoint') + '/' +
-      this.config.getSettings('app.machineName') + '/gallery/connections/location' + incId);
+      const response = await fetch(
+        this.config.getSettings('app.apiEndpoint') +
+          '/' +
+          this.config.getSettings('app.machineName') +
+          '/gallery/connections/location' +
+          incId
+      );
       return response.json();
-    } catch (e) { }
+    } catch (e) {}
   }
 
   async getGallerySubjects(id?: any): Promise<any> {
@@ -56,50 +74,57 @@ export class GalleryService {
       if (id) {
         incId = '/' + id;
       }
-      const response = await fetch(this.config.getSettings('app.apiEndpoint') + '/' +
-      this.config.getSettings('app.machineName') + '/gallery/connections/subject' + incId);
+      const response = await fetch(
+        this.config.getSettings('app.apiEndpoint') +
+          '/' +
+          this.config.getSettings('app.machineName') +
+          '/gallery/connections/subject' +
+          incId
+      );
       return response.json();
-    } catch (e) { }
+    } catch (e) {}
   }
 
-  getGallery (id: string, lang: string): Observable<any> {
-    return ajax(this.config.getSettings('app.apiEndpoint') + '/' +
-    this.config.getSettings('app.machineName') + '/gallery/data/' +
-    id + '/' + lang)
-      .pipe(
-        map(this.extractData),
-        catchError(this.handleError),
-      );
+  getGallery(id: string, lang: string): Observable<any> {
+    return this.http.get(
+      this.config.getSettings('app.apiEndpoint') +
+        '/' +
+        this.config.getSettings('app.machineName') +
+        '/gallery/data/' +
+        id +
+        '/' +
+        lang
+    );
   }
 
-  getMediaMetadata (id: string, lang: String): Observable<any> {
-    return ajax(this.config.getSettings('app.apiEndpoint') + '/' +
-    this.config.getSettings('app.machineName') + '/media/image/metadata/' +
-    id + '/' + lang)
-      .pipe(
-        map(this.extractData),
-        catchError(this.handleError),
-      );
+  getMediaMetadata(id: string, lang: String): Observable<any> {
+    return this.http.get(
+      this.config.getSettings('app.apiEndpoint') +
+        '/' +
+        this.config.getSettings('app.machineName') +
+        '/media/image/metadata/' +
+        id +
+        '/' +
+        lang
+    );
   }
 
-  private extractData(res: AjaxResponse<unknown>) {
-    return res.response;
+  getGalleryOccurrences(type: any, id: any): Observable<any> {
+    return this.http.get(
+      this.config.getSettings('app.apiEndpoint') +
+        '/' +
+        this.config.getSettings('app.machineName') +
+        '/gallery/' +
+        type +
+        '/connections/' +
+        id
+    );
   }
 
-  getGalleryOccurrences( type: any, id: any ) {
-    return ajax(this.config.getSettings('app.apiEndpoint')  + '/' +
-    this.config.getSettings('app.machineName') +
-    '/gallery/' + type + '/connections/' + id)
-       .pipe(
-        map((res) => (res.response || ' - no content - ')),
-        catchError(this.handleError),
-       );
-  }
-
-  private async handleError (error: Response | any) {
+  private async handleError(error: Response | any) {
     let errMsg: string;
     if (error instanceof Response) {
-      const body = await error.json() || '';
+      const body = (await error.json()) || '';
       const err = body.error || JSON.stringify(body);
       errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
     } else {
@@ -107,5 +132,4 @@ export class GalleryService {
     }
     throw errMsg;
   }
-
 }

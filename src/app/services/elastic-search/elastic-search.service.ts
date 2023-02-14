@@ -1,23 +1,22 @@
-import { Injectable } from '@angular/core'
-import { catchError, map, Observable } from 'rxjs'
-import { ajax, AjaxResponse } from 'rxjs/ajax'
-import { ConfigService } from '../config/core/config.service'
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ConfigService } from '../config/core/config.service';
 
 @Injectable()
 export class ElasticSearchService {
-
-  private searchApiPath = '/search/elastic/'
-  private termApiPath = '/search/mtermvector/'
-  private indices = []
-  private apiEndpoint: string
-  private machineName: string
+  private searchApiPath = '/search/elastic/';
+  private termApiPath = '/search/mtermvector/';
+  private indices = [];
+  private apiEndpoint: string;
+  private machineName: string;
   private source = [] as any;
-  private aggregations: any = {}
-  private suggestions: SuggestionsConfig = {}
-  private fixedFilters?: object[]
+  private aggregations: any = {};
+  private suggestions: SuggestionsConfig = {};
+  private fixedFilters?: object[];
   private textTypes = [];
 
-  constructor(private config: ConfigService) {
+  constructor(private config: ConfigService, private http: HttpClient) {
     // Should fail if config is missing.
     try {
       this.apiEndpoint = this.config.getSettings('app.apiEndpoint');
@@ -25,8 +24,11 @@ export class ElasticSearchService {
       this.indices = this.config.getSettings('ElasticSearch.indices');
       this.aggregations = this.config.getSettings('ElasticSearch.aggregations');
     } catch (e: any) {
-      console.error('Failed to load Elastic Search Service. Configuration error.', e.message)
-      throw e
+      console.error(
+        'Failed to load Elastic Search Service. Configuration error.',
+        e.message
+      );
+      throw e;
     }
     // Add fields that should always be returned in hits
     this.source = [
@@ -39,12 +41,14 @@ export class ElasticSearchService {
       'publication_data',
       'orig_date_year',
       'orig_date_certain',
-      'orig_date_sort'
+      'orig_date_sort',
     ];
 
     // Add additional fields that should be returned in hits from config file
     try {
-      const configSourceFields = this.config.getSettings('ElasticSearch.source');
+      const configSourceFields = this.config.getSettings(
+        'ElasticSearch.source'
+      );
       if (configSourceFields !== undefined && configSourceFields.length > 0) {
         // Append additional fields to this.source if not already present
         for (let i = 0; i < configSourceFields.length; i++) {
@@ -53,8 +57,7 @@ export class ElasticSearchService {
           }
         }
       }
-    } catch (e) {
-    }
+    } catch (e) {}
 
     // Should not fail if config is missing.
     try {
@@ -62,69 +65,61 @@ export class ElasticSearchService {
       this.textTypes = this.config.getSettings('ElasticSearch.types');
       this.suggestions = this.config.getSettings('ElasticSearch.suggestions');
     } catch (e: any) {
-      console.error('Failed to load Elastic Search Service. Configuration error.', e.message)
+      console.error(
+        'Failed to load Elastic Search Service. Configuration error.',
+        e.message
+      );
     }
   }
 
   executeTermQuery(terms: String[], ids: String[]): Observable<any> {
     const payload = {
-      'ids' : ids,
-      'parameters': {
-        'fields': [
-             'text_data'
-          ],
-          'term_statistics': false,
-          'field_statistics' : false
-      }
-    }
+      ids: ids,
+      parameters: {
+        fields: ['text_data'],
+        term_statistics: false,
+        field_statistics: false,
+      },
+    };
 
-    return ajax.post(this.getTermUrl() + '/' + terms, payload)
-       .pipe(
-        map(this.extractData),
-        catchError(this.handleError),
-       );
+    return this.http.post(this.getTermUrl() + '/' + terms, payload);
   }
 
   /**
    * Returns hits.
    */
   executeSearchQuery(options: any): Observable<any> {
-    const payload = this.generateSearchQueryPayload(options)
-
-    return ajax.post(this.getSearchUrl(), payload)
-       .pipe(
-        map(this.extractData),
-        catchError(this.handleError),
-       );
+    const payload = this.generateSearchQueryPayload(options);
+    return this.http.post(this.getSearchUrl(), payload);
   }
 
   /**
    * Returns aggregations that are used for faceted search.
    */
   executeAggregationQuery(options: any): Observable<any> {
-    const payload = this.generateAggregationQueryPayload(options)
+    const payload = this.generateAggregationQueryPayload(options);
 
-    return ajax.post(this.getSearchUrl(), payload)
-       .pipe(
-        map(this.extractData),
-        catchError(this.handleError),
-       );
+    return this.http.post(this.getSearchUrl(), payload);
   }
 
   /**
    * Returns facet suggestions.
    */
   executeSuggestionsQuery(options: SuggestionsQuery): Observable<any> {
-    const payload = this.generateSuggestionsQueryPayload(options)
+    const payload = this.generateSuggestionsQueryPayload(options);
 
-    return ajax.post(this.getSearchUrl(), payload)
-       .pipe(
-        map(this.extractData),
-        catchError(this.handleError),
-       );
+    return this.http.post(this.getSearchUrl(), payload);
   }
 
-  private generateSearchQueryPayload({ queries, highlight, from, size, range, facetGroups, sort }: SearchQuery): object {
+  private generateSearchQueryPayload({
+    queries,
+    highlight,
+    from,
+    size,
+    range,
+    facetGroups,
+    sort,
+  }: SearchQuery): object {
     const payload: any = {
       from,
       size,
@@ -133,48 +128,48 @@ export class ElasticSearchService {
         function_score: {
           query: {
             bool: {
-              must: []
-            }
+              must: [],
+            },
           },
           functions: [
             {
-              filter: { term: { 'text_type': 'est' } },
-              weight: 10
+              filter: { term: { text_type: 'est' } },
+              weight: 10,
             },
             {
-              filter: { term: { 'text_type': 'inl' } },
-              weight: 8
+              filter: { term: { text_type: 'inl' } },
+              weight: 8,
             },
             {
-              filter: { term: { 'text_type': 'com' } },
-              weight: 2
+              filter: { term: { text_type: 'com' } },
+              weight: 2,
             },
             {
-              filter: { term: { 'text_type': 'ms' } },
-              weight: 2
-            }
+              filter: { term: { text_type: 'ms' } },
+              weight: 2,
+            },
           ],
           score_mode: 'sum',
-        }
+        },
       },
       sort,
-    }
+    };
 
     // Add free text query. Only matches the text data and publication name.
-    queries.forEach(query => {
+    queries.forEach((query) => {
       if (query) {
         payload.query.function_score.query.bool.must.push({
           simple_query_string: {
             query,
-            fields: ['text_data', 'text_title^5']
-          }
+            fields: ['text_data', 'text_title^5'],
+          },
         });
       }
     });
 
     // Include highlighted text matches to hits if a query is present.
-    if (queries.some(query => !!query)) {
-      payload.highlight = highlight
+    if (queries.some((query) => !!query)) {
+      payload.highlight = highlight;
     }
 
     // Add date range filter.
@@ -184,21 +179,27 @@ export class ElasticSearchService {
           orig_date_sort: {
             gte: range.from,
             lte: range.to,
-          }
-        }
+          },
+        },
       });
     }
 
     // Add fixed filters that apply to all queries.
     if (this.fixedFilters) {
-      this.fixedFilters.forEach(filter => {
+      this.fixedFilters.forEach((filter) => {
         payload.query.function_score.query.bool.must.push(filter);
       });
     }
 
     // Add text type filter that applies to all queries.
-    if (this.textTypes && Array.isArray(this.textTypes) && this.textTypes.length > 0) {
-      payload.query.function_score.query.bool.must.push({ 'terms': { 'text_type': this.textTypes } });
+    if (
+      this.textTypes &&
+      Array.isArray(this.textTypes) &&
+      this.textTypes.length > 0
+    ) {
+      payload.query.function_score.query.bool.must.push({
+        terms: { text_type: this.textTypes },
+      });
     }
 
     if (facetGroups) {
@@ -223,54 +224,60 @@ export class ElasticSearchService {
         function_score: {
           query: {
             bool: {
-              must: []
-            }
+              must: [],
+            },
           },
           functions: [
             {
-              filter: { term: { 'text_type': 'est' } },
-              weight: 6
+              filter: { term: { text_type: 'est' } },
+              weight: 6,
             },
             {
-              filter: { term: { 'text_type': 'inl' } },
-              weight: 4
+              filter: { term: { text_type: 'inl' } },
+              weight: 4,
             },
             {
-              filter: { term: { 'text_type': 'com' } },
-              weight: 1
+              filter: { term: { text_type: 'com' } },
+              weight: 1,
             },
             {
-              filter: { term: { 'text_type': 'ms' } },
-              weight: 1
-            }
+              filter: { term: { text_type: 'ms' } },
+              weight: 1,
+            },
           ],
           score_mode: 'sum',
-        }
+        },
       },
-    }
+    };
 
     // Add free text query.
-    queries.forEach(query => {
+    queries.forEach((query) => {
       if (query) {
         payload.query.function_score.query.bool.must.push({
           simple_query_string: {
             query,
-            fields: ['text_data', 'text_title^5']
-          }
+            fields: ['text_data', 'text_title^5'],
+          },
         });
       }
     });
 
     // Add fixed filters that apply to all queries.
     if (this.fixedFilters) {
-      this.fixedFilters.forEach(filter => {
+      this.fixedFilters.forEach((filter) => {
         payload.query.function_score.query.bool.must.push(filter);
       });
     }
 
     // Add text type filter that applies to all queries.
-    if (this.textTypes && Array.isArray(this.textTypes) && this.textTypes.length > 0) {
-      payload.query.function_score.query.bool.must.push({ 'terms': { 'text_type': this.textTypes } });
+    if (
+      this.textTypes &&
+      Array.isArray(this.textTypes) &&
+      this.textTypes.length > 0
+    ) {
+      payload.query.function_score.query.bool.must.push({
+        terms: { text_type: this.textTypes },
+      });
     }
 
     if (facetGroups || range) {
@@ -284,17 +291,17 @@ export class ElasticSearchService {
     return payload;
   }
 
-  private generateSuggestionsQueryPayload({
-    query,
-  }: SuggestionsQuery): object {
+  private generateSuggestionsQueryPayload({ query }: SuggestionsQuery): object {
     const payload: any = {
       from: 0,
       size: 0,
       _source: this.source,
       aggs: {},
-    }
+    };
 
-    for (const [aggregationKey, suggestion] of Object.entries(this.suggestions)) {
+    for (const [aggregationKey, suggestion] of Object.entries(
+      this.suggestions
+    )) {
       const aggregation = this.aggregations[aggregationKey];
       if (aggregation.terms) {
         payload.aggs[aggregationKey] = {
@@ -305,28 +312,28 @@ export class ElasticSearchService {
                   wildcard: {
                     [suggestion.field]: {
                       value: `*${query}*`,
-                    }
-                  }
+                    },
+                  },
                 },
                 {
                   fuzzy: {
                     [suggestion.field]: {
                       value: query,
-                    }
-                  }
-                }
-              ]
-            }
+                    },
+                  },
+                },
+              ],
+            },
           },
           aggs: {
             filtered: {
               terms: {
                 field: aggregation.terms.field,
                 size: suggestion.size,
-              }
-            }
-          }
-        }
+              },
+            },
+          },
+        };
       }
     }
 
@@ -336,27 +343,32 @@ export class ElasticSearchService {
   }
 
   private injectFacetsToPayload(payload: any, facetGroups: FacetGroups) {
-    Object.entries(facetGroups).forEach(([facetGroupKey, facets]: [string, Facets]) => {
-      const terms = this.filterSelectedFacetKeys(facets);
-      if (terms.length > 0) {
-        payload.query.function_score.query.bool.filter = payload.query.function_score.query.bool.filter || []
-        if (this.aggregations && facetGroupKey) {
-          payload.query.function_score.query.bool.filter.push({
-            terms: {
-              [this.aggregations[facetGroupKey].terms.field]: terms,
-            }
-          });
+    Object.entries(facetGroups).forEach(
+      ([facetGroupKey, facets]: [string, Facets]) => {
+        const terms = this.filterSelectedFacetKeys(facets);
+        if (terms.length > 0) {
+          payload.query.function_score.query.bool.filter =
+            payload.query.function_score.query.bool.filter || [];
+          if (this.aggregations && facetGroupKey) {
+            payload.query.function_score.query.bool.filter.push({
+              terms: {
+                [this.aggregations[facetGroupKey].terms.field]: terms,
+              },
+            });
+          }
         }
       }
-    });
+    );
   }
 
   private filterSelectedFacetKeys(facets: Facets): string[] {
-    return Object.values(facets).filter(facet => facet.selected).map((facet: any) => facet.key);
+    return Object.values(facets)
+      .filter((facet) => facet.selected)
+      .map((facet: any) => facet.key);
   }
 
   private injectUnfilteredAggregationsToPayload(payload: any) {
-    payload.aggs = {}
+    payload.aggs = {};
     for (const [key, aggregation] of Object.entries(this.aggregations)) {
       payload.aggs[key] = aggregation;
     }
@@ -370,10 +382,19 @@ export class ElasticSearchService {
    * Up to date documentation:
    * https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-filter-aggregation.html
    */
-  private injectFilteredAggregationsToPayload(payload: any, facetGroups?: FacetGroups, range?: TimeRange) {
-    payload.aggs = {}
+  private injectFilteredAggregationsToPayload(
+    payload: any,
+    facetGroups?: FacetGroups,
+    range?: TimeRange
+  ) {
+    payload.aggs = {};
     for (const [key, aggregation] of Object.entries(this.aggregations)) {
-      const filteredAggregation = this.generateFilteredAggregation(key, aggregation, facetGroups, range);
+      const filteredAggregation = this.generateFilteredAggregation(
+        key,
+        aggregation,
+        facetGroups,
+        range
+      );
 
       // If filtered aggregation doesn't have filters, then use an unfiltered aggregation.
       payload.aggs[key] = filteredAggregation || aggregation;
@@ -387,35 +408,36 @@ export class ElasticSearchService {
     facetGroups?: FacetGroups,
     range?: TimeRange
   ) {
-
     const filtered = {
       filter: {
         bool: {
           // Selected facets go here as filters.
-          filter: [] as any
-        }
+          filter: [] as any,
+        },
       },
       aggs: {
         // Aggregation goes here.
         filtered: aggregation,
-      }
-    }
+      },
+    };
 
     // Add term filters.
     if (facetGroups) {
-      Object.entries(facetGroups).forEach(([groupKey, facets]: [string, Facets]) => {
-        // Don't filter itself.
-        if (aggregationKey !== groupKey) {
-          const selectedFacetKeys = this.filterSelectedFacetKeys(facets);
-          if (selectedFacetKeys.length > 0) {
-            filtered.filter.bool.filter.push({
-              terms: {
-                [this.getAggregationField(groupKey)]: selectedFacetKeys,
-              }
-            });
+      Object.entries(facetGroups).forEach(
+        ([groupKey, facets]: [string, Facets]) => {
+          // Don't filter itself.
+          if (aggregationKey !== groupKey) {
+            const selectedFacetKeys = this.filterSelectedFacetKeys(facets);
+            if (selectedFacetKeys.length > 0) {
+              filtered.filter.bool.filter.push({
+                terms: {
+                  [this.getAggregationField(groupKey)]: selectedFacetKeys,
+                },
+              });
+            }
           }
         }
-      });
+      );
     }
 
     // Add date range filter.
@@ -425,8 +447,8 @@ export class ElasticSearchService {
           orig_date_sort: {
             gte: range.from,
             lte: range.to,
-          }
-        }
+          },
+        },
       });
     }
 
@@ -460,28 +482,36 @@ export class ElasticSearchService {
   getAggregationField(key: string): string {
     const agg = this.aggregations[key];
     if (agg.terms || agg.date_histogram) {
-      const foo = agg.terms || agg.date_histogram as any;
+      const foo = agg.terms || (agg.date_histogram as any);
       return foo.field;
     }
-    return ''
+    return '';
   }
 
   private getSearchUrl(): string {
-    return this.apiEndpoint + '/' + this.machineName + this.searchApiPath + this.indices.join(',');
+    return (
+      this.apiEndpoint +
+      '/' +
+      this.machineName +
+      this.searchApiPath +
+      this.indices.join(',')
+    );
   }
 
   private getTermUrl(): string {
-    return this.apiEndpoint + '/' + this.machineName + this.termApiPath + this.indices.join(',');
-  }
-
-  private extractData(res: AjaxResponse<unknown>) {
-    return res.response;
+    return (
+      this.apiEndpoint +
+      '/' +
+      this.machineName +
+      this.termApiPath +
+      this.indices.join(',')
+    );
   }
 
   private async handleError(error: Response | any) {
     let errMsg: string;
     if (error instanceof Response) {
-      const body = await error.json() || '';
+      const body = (await error.json()) || '';
       const err = body.error || JSON.stringify(body);
       errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
     } else {
@@ -490,5 +520,4 @@ export class ElasticSearchService {
     console.error('Elastic search query failed.', error);
     throw errMsg;
   }
-
 }
