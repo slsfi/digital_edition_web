@@ -1,5 +1,8 @@
 import 'zone.js/node';
 
+import sourceMapSupport from 'source-map-support'
+sourceMapSupport.install()
+
 import { APP_BASE_HREF } from '@angular/common';
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import * as express from 'express';

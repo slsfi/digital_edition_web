@@ -3,7 +3,6 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppRoutingModule } from './app-routing.module';
-import * as Sentry from '@sentry/browser';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -36,9 +35,6 @@ import { DigitalEditionListModule } from './components/digital-edition-list/digi
 import { ComponentsModule } from './components/components.module';
 import { MarkdownModule } from 'ngx-markdown';
 import { MathJaxModule } from './components/math-jax/math-jax.module';
-import { ConfigLoader } from './services/config/core/config.loader';
-import { ConfigHttpLoader } from './services/config/http-loader/http-loader';
-import { ConfigModule } from './services/config/core/config.module';
 import { CommentModalPage } from './modals/comment-modal/comment-modal';
 import { SemanticDataModalPage } from './modals/semantic-data-modal/semantic-data-modal';
 import { ReferenceDataModalPage } from './modals/reference-data-modal/reference-data-modal';
@@ -57,25 +53,8 @@ import { UserSettingsPopoverPageModule } from './modals/user-settings-popover/us
 import { UserSettingsPopoverPage } from './modals/user-settings-popover/user-settings-popover';
 import { SearchAppPage } from './modals/search-app/search-app';
 
-Sentry.init({
-  dsn: 'https://765ecffd6ada4d409b6d77802ca6289d@sentry.io/1229311'
-});
-
-@Injectable()
-export class SentryErrorHandler implements ErrorHandler {
-  constructor() { }
-  handleError(error: any) {
-    const eventId = Sentry.captureException(error.originalError || error);
-  }
-}
-
 export function createTranslateLoader(http: HttpClient): TranslateLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
-
-export function createConfigLoader(http: HttpClient): ConfigLoader {
-  return new ConfigHttpLoader(http, 'config.json');
-  // return new ConfigHttpLoader(http, 'assets/config.json');
 }
 
 @NgModule({
@@ -102,11 +81,6 @@ export function createConfigLoader(http: HttpClient): ConfigLoader {
         useFactory: (createTranslateLoader),
         deps: [HttpClient]
       }
-    }),
-    ConfigModule.forRoot({
-      provide: ConfigLoader,
-      useFactory: (createConfigLoader),
-      deps: [HttpClient]
     }),
     IonicStorageModule.forRoot(),
     SharePopoverPageModule,

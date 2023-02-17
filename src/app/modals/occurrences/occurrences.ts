@@ -28,7 +28,7 @@ import { SingleOccurrence } from 'src/app/models/single-occurrence.model';
 @Component({
   selector: 'page-occurrences',
   templateUrl: 'occurrences.html',
-  styleUrls: ['occurrences.scss'] 
+  styleUrls: ['occurrences.scss']
 })
 export class OccurrencesPage {
   map: any;
@@ -277,7 +277,7 @@ export class OccurrencesPage {
   }
 
   loadmap() {
-    try {
+    /*try {
       const latlng = leaflet.latLng(this.latitude || 0, this.longitude || 0);
       this.map = leaflet.map('map', {
           center: latlng,
@@ -292,7 +292,7 @@ export class OccurrencesPage {
       this.map.invalidateSize();
     } catch ( e ) {
 
-    }
+    }*/
   }
 
   getOccurrence(occurrence: Occurrence) {
