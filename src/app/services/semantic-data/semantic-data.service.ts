@@ -343,7 +343,7 @@ export class SemanticDataService {
       });
     }
 
-    return this.http.post(this.getSearchUrl(this.elasticSubjectIndex), payload);
+    return this.http.post<any>(this.getSearchUrl(this.elasticSubjectIndex), payload);
   }
 
   getSingleObjectElastic(type: any, id: any) {
@@ -395,7 +395,7 @@ export class SemanticDataService {
       delete payload.query.bool.should[0];
     }
 
-    return this.http.post(this.getSearchUrl(type), payload);
+    return this.http.post<any>(this.getSearchUrl(type), payload);
   }
 
   getLocationElastic(
@@ -511,7 +511,7 @@ export class SemanticDataService {
       });
     }
 
-    return this.http.get(this.getSearchUrl(this.elasticLocationIndex), payload);
+    return this.http.post<any>(this.getSearchUrl(this.elasticLocationIndex), payload);
   }
 
   getWorksElastic(from: any, searchText?: any) {
@@ -600,7 +600,7 @@ export class SemanticDataService {
         },
       });
     }
-    return this.http.post(this.getSearchUrl(this.elasticWorkIndex), payload);
+    return this.http.post<any>(this.getSearchUrl(this.elasticWorkIndex), payload);
   }
 
   getTagElastic(after_key?: any, searchText?: any, filters?: any, max?: any) {
@@ -716,7 +716,7 @@ export class SemanticDataService {
       });
     }
 
-    return this.http.get(this.getSearchUrl(this.elasticTagIndex), payload);
+    return this.http.post<any>(this.getSearchUrl(this.elasticTagIndex), payload);
   }
 
   getSubjectOccurrencesById(id: string): Observable<any> {

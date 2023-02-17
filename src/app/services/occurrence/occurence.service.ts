@@ -31,7 +31,7 @@ export class OccurrenceService {
   }
 
   getGalleryOccurrences(type: any, id: any) {
-    this.http.get(
+    return this.http.get(
       this.config.getSettings('app.apiEndpoint') +
         '/' +
         this.config.getSettings('app.machineName') +
