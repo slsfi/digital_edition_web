@@ -7,6 +7,8 @@ import { HttpClient } from '@angular/common/http';
 import { IonicModule } from '@ionic/angular';
 import { PinchZoomModule } from '../pinch-zoom/pinch-zoom.module';
 import { FacsimileService } from 'src/app/services/facsimile/facsimile.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
@@ -16,6 +18,8 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [FacsimilesComponent],
   imports: [
     IonicModule,
+    CommonModule,
+    FormsModule,
     PinchZoomModule,
     TranslateModule.forChild({
       loader: {

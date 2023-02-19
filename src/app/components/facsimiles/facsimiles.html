@@ -7,15 +7,13 @@
   </div>
 </div>
 
-<ion-scroll *ngIf="selectedFacsimileIsExternal" scrollY="true" class="external_urls_wrapper" [ngStyle]="{'height': '100%', 'max-height': 'calc(100% - 60px)'}">
-  <div [ngClass]="(readPopoverService.fontsize==0)?'tei teiContainer xsmallFontSize':(readPopoverService.fontsize==1)?'tei teiContainer smallFontSize':(readPopoverService.fontsize==2)?'tei teiContainer mediumFontSize':(readPopoverService.fontsize==3)?'tei teiContainer largeFontSize':'tei teiContainer xlargeFontSize'">
-    <ul>
-      <li *ngFor="let ext of externalURLs"><a target="_blank" href="{{ext.url}}" [innerHTML]="ext.title"></a></li>
-    </ul>
-  </div>
-</ion-scroll>
+<div [ngClass]="(readPopoverService.fontsize==0)?'tei teiContainer xsmallFontSize':(readPopoverService.fontsize==1)?'tei teiContainer smallFontSize':(readPopoverService.fontsize==2)?'tei teiContainer mediumFontSize':(readPopoverService.fontsize==3)?'tei teiContainer largeFontSize':'tei teiContainer xlargeFontSize'">
+  <ul>
+    <li *ngFor="let ext of externalURLs"><a target="_blank" href="{{ext.url}}" [innerHTML]="ext.title"></a></li>
+  </ul>
+</div>
 
-<ion-item *ngIf="externalURLs.length===0 && numberOfPages>1" class="page-number-wrapper">
+<ion-item *ngIf="externalURLs.length===0 && numberOfPages && numberOfPages>1" class="page-number-wrapper">
   <ion-label class="page_number_label">{{"Read.Facsimiles.Page" | translate}} ({{"Read.Facsimiles.Of" | translate}}
     {{numberOfPages ? numberOfPages : (images ? images.length : 0)}}):</ion-label>
   <ion-input class="page_number_input" type="number" (change)="setPage($event)" [(ngModel)]="manualPageNumber"></ion-input>
@@ -46,13 +44,13 @@
 </div>
 
 <ng-container *ngIf="facsimiles.length>0">
-  <ion-fab *ngIf="numberOfPages > 1 && !selectedFacsimileIsExternal" middle left class="leftFacsimileArrow">
-    <button *ngIf="numberOfPages > 1" ion-fab color="primary" mini (click)="previous()">
+  <ion-fab *ngIf="numberOfPages && numberOfPages > 1 && !selectedFacsimileIsExternal" middle left class="leftFacsimileArrow">
+    <button *ngIf="numberOfPages && numberOfPages > 1" ion-fab color="primary" mini (click)="previous()">
       <ion-icon name="arrow-back"></ion-icon>
     </button>
   </ion-fab>
   <ion-fab middle right *ngIf="!selectedFacsimileIsExternal" class="rightFacsimileArrowAndControls">
-    <button *ngIf="numberOfPages > 1" ion-fab color="primary" mini (click)="next()">
+    <button *ngIf="numberOfPages && numberOfPages > 1" ion-fab color="primary" mini (click)="next()">
       <ion-icon name="arrow-forward"></ion-icon>
     </button>
     <button ion-fab color="secondary" mini (click)="openZoom()">

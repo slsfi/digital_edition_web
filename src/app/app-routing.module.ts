@@ -111,6 +111,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/work-search/work-search.module').then( m => m.WorkearchPageModule)
   },
   {
+    path: 'publication',
+    loadChildren: () => import('./pages/read/read.module').then( m => m.ReadPageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'

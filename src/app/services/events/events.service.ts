@@ -112,6 +112,8 @@ export class EventsService {
     private previousFacsimile = new Subject<any>();
     // zoom:facsimile
     private zoomFacsimile = new Subject<any>();
+    // help:continue
+    private helpContinue = new Subject<any>();
 
 
     publishShareDismiss(data?: any) {
@@ -536,5 +538,13 @@ export class EventsService {
 
     getZoomFacsimile(): Subject<any> {
         return this.zoomFacsimile;
+    }
+
+    publishHelpContinue(data?: any) {
+        this.helpContinue.next(data);
+    }
+
+    getHelpContinue(): Subject<any> {
+        return this.helpContinue;
     }
 }

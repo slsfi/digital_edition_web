@@ -439,10 +439,8 @@ export class TextChangerComponent {
   }
 
   getTocItemId() {
-    this.route.queryParams.subscribe(params => {
-      if (params['tocLinkId'] !== undefined) {
-        this.legacyId = params['tocLinkId'];
-      } else if (this.legacyId === undefined || this.legacyId === null || this.legacyId === '') {
+    this.route.params.subscribe(params => {
+      if (this.legacyId === undefined || this.legacyId === null || this.legacyId === '') {
         this.legacyId = params['collectionID'];
         if (params['publicationID'] !== undefined) {
           this.legacyId += '_' + params['publicationID']
@@ -453,6 +451,12 @@ export class TextChangerComponent {
             this.legacyId += '_' + params['chapterID'];
           }
         }
+      }
+      this.legacyId = String(this.legacyId).replace('_nochapter', '').replace(':chapterID', '').replace('%3AchapterID', '');
+    });
+    this.route.queryParams.subscribe(params => {
+      if (params['tocLinkId'] !== undefined) {
+        this.legacyId = params['tocLinkId'];
       }
       this.legacyId = String(this.legacyId).replace('_nochapter', '').replace(':chapterID', '').replace('%3AchapterID', '');
     });

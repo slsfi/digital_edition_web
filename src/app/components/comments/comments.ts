@@ -1,7 +1,6 @@
 import { Component, Input, Renderer2, ElementRef, EventEmitter, Output, NgZone } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
-import { IllustrationPage } from '../../pages/illustration/illustration';
 import { ModalController } from '@ionic/angular';
 import { CommonFunctionsService } from 'src/app/services/common-functions/common-functions.service';
 import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
@@ -9,6 +8,7 @@ import { EventsService } from 'src/app/services/events/events.service';
 import { TextService } from 'src/app/services/texts/text.service';
 import { CommentService } from 'src/app/services/comments/comment.service';
 import { ReadPopoverService } from 'src/app/services/settings/read-popover.service';
+import { IllustrationPage } from 'src/app/modals/illustration/illustration';
 /**
  * Class for the CommentsComponent component.
  *

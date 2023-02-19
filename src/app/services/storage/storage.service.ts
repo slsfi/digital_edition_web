@@ -21,7 +21,7 @@ export class StorageService {
   // Create and expose methods that users of this service can
   // call, for example:
   public set(key: string, value: any) {
-    this._storage?.set(key, value);
+    return this._storage?.set(key, value);
   }
 
   public get(key: string) {
