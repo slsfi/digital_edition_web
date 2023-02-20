@@ -13,7 +13,7 @@
     "serve:ssr": "node dist/app/server/main.js",
     "build:ssr": "ng build && ng run app:server",
     "prerender": "ng run app:prerender",
-    "build:prod": "ng build --aot --output-hashing=none --output-path=www && npm run postbuild",
+    "build:prod": "ng build --aot --output-path=www",
     "postbuild": "./scripts/cache-busting.js"
   },
   "private": true,
